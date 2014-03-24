@@ -1,0 +1,17 @@
+<phpunit
+    bootstrap="bootstrap.php"
+    backupGlobals="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    >
+    <testsuites>
+        <testsuite name="themosis">
+            <directory suffix=".php">./tests</directory>
+        </testsuite>
+        <testsuite name="app">
+            <directory suffix=".php">app/tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

@@ -1,4 +1,5 @@
 /vendor
+bootstrap.php
 .DS_Store
 Thumbs.db
 composer.lock
