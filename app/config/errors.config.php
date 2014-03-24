@@ -5,7 +5,7 @@ return array(
 	/*
 	* Edit this file in order to configure your application
 	* errors settings
-	* 
+	*
 	*/
 
 	/* --------------------------------------------------------------- */

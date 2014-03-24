@@ -44,7 +44,7 @@ class PostType {
 	/**
 	 * Used to build a new custom post type.
 	 * It will use default datas from the PostTypeData class.
-	 * 
+	 *
 	 * @param string
 	 * @param string
 	 * @return object
@@ -65,7 +65,7 @@ class PostType {
 	 * Override or add properties to the custom post type
 	 * by passing an array.
 	 * Also install the postType
-	 * 
+	 *
 	 * @param array
 	 * @return object
 	*/
@@ -91,7 +91,7 @@ class PostType {
 
 	/**
 	 * Retrieve the custom post type slug
-	 * 
+	 *
 	 * @return string
 	*/
 	public function getSlug()
@@ -101,8 +101,8 @@ class PostType {
 
 	/**
 	 * Retrieve the custom post type datas
-	 * 
-	 * @return array
+	 *
+	 * @return object
 	*/
 	public function getData()
 	{
@@ -111,7 +111,7 @@ class PostType {
 
 	/**
 	 * Register the custom post type
-	 * 
+	 *
 	 * @return object
 	*/
 	public function register()
@@ -121,12 +121,12 @@ class PostType {
 			$this->rewrite();
 		}
 
-		return register_post_type($this->slug, $this->data->get());
+		return register_post_type($this->slug, $this->data->getArgs());
 	}
 
 	/**
 	 * Enqueue the new media uploader
-	 * 
+	 *
 	 * @return boolean
 	*/
 	public function enqueueMediaUploader()
@@ -143,7 +143,7 @@ class PostType {
 
 	/**
 	 * Tell the Custom Post Type to be RESTful.
-	 * 
+	 *
 	 * @return object
 	*/
 	public function isRestful()
