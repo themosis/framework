@@ -17,14 +17,14 @@
   Deny from all
 </Files>
 
-# Protect phpunit.xml
-<Files ~ "\phpunit.xml">
+# Protect phpunit.xml file
+<Files ~ "phpunit.xml$">
   Order deny,allow
   Deny from all
 </Files>
 
-# Protect boostrap.php
-<Files ~ "\bootstrap.php">
+# Protect bootstrap.php
+<Files ~ "bootstrap.php$">
   Order deny,allow
   Deny from all
 </Files>
