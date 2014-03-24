@@ -11,7 +11,7 @@
             <directory suffix=".php">./tests</directory>
         </testsuite>
         <testsuite name="app">
-            <directory suffix=".php">app/tests</directory>
+            <directory suffix=".php">./app/tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>
