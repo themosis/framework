@@ -1,0 +1,176 @@
+/*
+|
+| Options input styles
+|
+*/
+.themosis-regular-text
+{
+	width: 299px;
+	padding: 3px;
+	border: 1px solid #dfdfdf;
+	margin: 1px;
+	height: 158px;
+}
+/*
+|
+| End Options input styles
+|
+*/
+
+/*
+|
+| Metabox Infinite style
+|
+*/
+.themosis-infinite{
+	border-collapse: collapse;
+	width: 100%;
+	clear: both;
+	border-spacing: 0px;
+	background-color: #cbcbcb;
+}
+
+.themosis-infinite td{
+	margin: 0px;
+	padding: 0px;
+}
+
+/*--- INFINITE ROW ---*/
+.themosis-infinite-row{
+	background-color: #f5f5f5;
+	border: 1px solid #f0f0f0;
+}
+
+/*--- INFINITE ORDER CELL ---*/
+.themosis-infinite-order{
+	width: 31px;
+	text-align: center;
+	border-right: 1px solid #f0f0f0;
+	cursor: move;
+}
+
+.themosis-infinite-order span{
+	font-weight: 700;
+	color: #aaaaaa;
+	text-shadow: 0 1px 0 #fff;
+}
+
+/*--- INNER TABLE ---*/
+.themosis-infinite-inner{
+	padding: 10px 5px 5px 5px !important;
+	background-color: #f9f9f9;
+	box-shadow: inset 0 1px 0 #ffffff;
+	-webkit-box-shadow: inset 0 2px 0 #ffffff;
+}
+
+.themosis-infinite-inner>table{
+	width: 100%;
+}
+
+/*--- INFINITE LABEL ---*/
+.themosis-infinite-label{
+	padding: 0 10px 0 10px !important;
+}
+
+/*--- INFINITE INPUT ---*/
+.themosis-infinite-input{
+	width: 80%;
+}
+
+/*--- INFINITE OPTIONS ---*/
+.themosis-infinite-options{
+	width: 31px;
+	text-align: center;
+	height: 100%;
+	border-left: 1px solid #f0f0f0;
+	position: relative;
+}
+
+/* ADD ROW BUTTON */
+.themosis-infinite-options:hover .themosis-infinite-add{
+	visibility: visible;
+}
+
+.themosis-infinite-add{
+	display: block;
+	width:18px;
+	height: 18px;
+	background: url('../images/infinite_sprite_001.png') 0 0 no-repeat;
+	margin-left: 7px;
+	cursor: pointer;
+	visibility: hidden;
+	position: absolute;
+}
+
+.themosis-infinite-add:hover{
+	background-position: -18px 0;
+}
+
+/* REMOVE ROW BUTTON */
+.themosis-infinite-remove{
+	display:block;
+	width:18px;
+	height: 18px;
+	background: url('../images/infinite_sprite_001.png') 0 -18px no-repeat;
+	margin: 0 auto;
+	cursor: pointer;
+}
+
+.themosis-infinite-remove:hover{
+	background-position: -18px -18px;
+}
+
+/*--- ADD FIELD ---*/
+.themosis-infinite-add-field-container{
+	padding: 10px 0;
+}
+
+/*--- PLACEHOLDER STYLE ---*/
+.themosis-ui-state-highlight{
+	display: block;
+}
+/*
+|
+| END Metabox Infinite style
+|
+*/
+
+/*
+|
+| Metabox Media style
+|
+*/
+.themosis-media-table{
+	border-collapse: collapse;
+	width: 100%;
+	clear: both;
+	border-spacing: 0px;
+}
+
+.themosis-media-table td{
+	margin: 0px;
+	padding: 0px;
+}
+
+.themosis-media-input{
+	width: 100%;
+}
+
+.themosis-media-button{
+	margin: 0 6px !important;
+}
+
+/*
+|
+| END Metabox Media style
+|
+*/
+
+/**
+ * Metabox Editor style
+*/
+.themosis-wp-editor .wp-editor-container{
+
+    background-color: #ffffff;
+
+}
