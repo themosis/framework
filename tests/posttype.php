@@ -190,6 +190,29 @@ class PostType_Test extends WP_UnitTestCase {
         $this->assertContainsOnlyInstancesOf('Themosis\PostType\PostType', array($post));
     }
 
+
+    /**
+     * testCanCreateACustomPostType function.
+     *
+     * @access public
+     * @return void
+     */
+    public function testCanCreateACustomPostType()
+    {
+    	$post = $this->post->set();
+
+    	// Insert a new post and make sure it's working.
+    	$new = wp_insert_post(array(
+
+    	    'post_title'    => 'A new book',
+    	    'post_content'  => 'This is the content of the new book',
+    	    'post_type'     => $post->getSlug()
+
+    	));
+
+    	$this->assertTrue(is_int($new));
+    }
+
 }
 
 ?>
