@@ -95,17 +95,20 @@ class Metabox
     /**
      * Trigger everything. Set the fields of the metabox.
      *
-     * @param array
+     * @param array By default empty, allow empty metabox UI.
+     * @return object A metabox instance
      * @throws MetaboxException
      */
-	public function set($datas)
+	public function set($datas = array())
 	{
-		if (is_array($datas) && !empty($datas)) {
+		if (is_array($datas)) {
 			$this->data->set($datas);
 
 			// Now the datas are saved.
 			// Trigger the installation of the metabox.
 			$this->installEvent->dispatch();
+
+			return $this;
 
 		} else {
 			throw new MetaboxException("Invalid metabox datas. Accepts only an array.");
@@ -114,6 +117,8 @@ class Metabox
 
 	/**
 	 * Handle the Metabox installation
+	 *
+	 * @return boolean
 	*/
 	public function install()
 	{
@@ -122,6 +127,8 @@ class Metabox
 		$priority = (isset($this->options['priority'])) ? $this->options['priority'] : 'high';
 
 		add_meta_box($id, $this->title, array(&$this, 'build'), $this->postType, $context, $priority, $this->data->get());
+
+		return true;
 	}
 
 	/**
@@ -145,7 +152,7 @@ class Metabox
 
 	/**
 	 * Set a user capability check.
-	 * 
+	 *
 	 * @param string
 	 * @param int
 	 * @param mixed (optional)
@@ -154,13 +161,13 @@ class Metabox
 	{
 		if (is_string($cap) && !empty($cap)) {
 			$this->parser->setType($this->postType);
-			$this->parser->userCheck($cap, $userId, $args);	
+			$this->parser->userCheck($cap, $userId, $args);
 		}
 	}
 
 	/**
 	 * Parse the given optionals parameters
-	 * 
+	 *
 	 * @param array
 	 * @return array
 	*/
@@ -169,11 +176,11 @@ class Metabox
 		$newOptions = array();
 
 		if (is_array($options) && !empty($options)) {
-			
+
 			foreach ($options as $param => $value) {
-				
+
 				if (in_array($param, $this->allowedOptions)) {
-					
+
 					$newOptions[$param] = $value;
 
 				}
@@ -183,6 +190,6 @@ class Metabox
 			return $newOptions;
 
 		}
-		
+
 	}
 }
