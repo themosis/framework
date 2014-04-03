@@ -29,7 +29,8 @@ class User
 	 * @param string
 	 * @param string
 	 * @param string
-	 * @return object (In case of errors, return an Error object)
+	 * @return int|WP_Error Use ID or WP_error object in case of errors
+	 * @throws UserException
 	*/
 	public static function make($username, $password, $email)
 	{
