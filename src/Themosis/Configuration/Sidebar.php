@@ -38,6 +38,8 @@ class Sidebar implements ConfigInterface
 	/**
 	 * Run by the 'after_setup_theme' hook.
 	 * Execute the "register_sidebar" function from WP.
+     *
+     * @return void
 	*/
 	public function install()
 	{

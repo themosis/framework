@@ -22,13 +22,14 @@ class Menu implements ConfigInterface
 		$this->event = Action::listen('init', $this, 'install');
 	}
 
-	/**
-	 * Retrieve and set the datas returned
-	 * by the include function using
-	 * the given path.
-	 * 
-	 * @param string
-	*/
+    /**
+     * Retrieve and set the datas returned
+     * by the include function using
+     * the given path.
+     *
+     * @param string $path
+     * @return void
+     */
 	public function set($path)
 	{
 		$this->datas = include($path);
@@ -38,6 +39,8 @@ class Menu implements ConfigInterface
 	/**
 	 * Run by the 'after_setup_theme' hook.
 	 * Execute the "register_nav_menus" function from WP
+     *
+     * @return void
 	*/
 	public function install()
 	{

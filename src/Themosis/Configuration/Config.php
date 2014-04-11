@@ -21,13 +21,13 @@ class Config
 		static::$configs[] = $configFile;
 	}
 
-	/**
-	 * Initialize configuration loading.
-	 * 
-	 * @param array
-	 * @return boolean
-	*/
-	public static function make($configFiles)
+    /**
+     * Initialize configuration loading.
+     *
+     * @param array $configFiles
+     * @return bool True, False if errors.
+     */
+	public static function make(array $configFiles)
 	{
 		if (!is_array($configFiles) || empty($configFiles)) return false;
 
@@ -37,7 +37,7 @@ class Config
 	/**
 	 * Install, read all configurations
 	 * 
-	 * @return int
+	 * @return bool
 	*/
 	public static function set()
 	{
@@ -58,7 +58,7 @@ class Config
 	 * @param array
 	 * @return boolean
 	*/
-	private static function parse($configFiles)
+	private static function parse(array $configFiles)
 	{
 		$errors = array();
 
@@ -91,9 +91,9 @@ class Config
 	 * Check if the config file exists inside the app/config
 	 * directory.
 	 * 
-	 * @param string - key of the $GLOBALS themosis_paths.
-	 * @param string - filename config file.
-	 * @return mixed (array|boolean)
+	 * @param string $key Key of the $GLOBALS themosis_paths.
+	 * @param string $configFile Filename of the config file.
+	 * @return array|boolean Array if successful, False if errors.
 	*/
 	private static function has($key, $configFile)
 	{

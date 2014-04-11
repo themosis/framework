@@ -8,7 +8,7 @@ interface ConfigInterface
 	/**
 	 * Used to saved the retrieved datas from a given path
 	 * 
-	 * @param string
+	 * @param string $path
 	*/
 	public function set($path);
 

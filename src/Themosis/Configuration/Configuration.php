@@ -33,6 +33,11 @@ class Configuration
 		Action::listen('admin_head', $this, 'adminHead')->dispatch();
 	}
 
+    /**
+     * Start the configuration.
+     *
+     * @return object A configuration instance
+    */
 	public static function make()
 	{
 		if (is_null(static::$instance)) {
@@ -43,6 +48,8 @@ class Configuration
 
 	/**
 	 * Run a series of methods at WP init hook
+     *
+     * @return void
 	*/
 	public function init()
 	{
@@ -57,6 +64,7 @@ class Configuration
 	 * Run at 'generate_rewrite_rules' action.
 	 * 
 	 * @param object
+     * @return void
 	*/
 	public function rewrite($rewriteObject)
 	{
@@ -69,6 +77,8 @@ class Configuration
 
 	/**
 	 * Cleanup the WP head tag.
+     *
+     * @return void
 	*/
 	private function cleanup()
 	{
@@ -88,6 +98,8 @@ class Configuration
 
 	/**
 	 * Restrict access to the wp-admin.
+     *
+     * @return void
 	*/
 	private function restrict()
 	{
@@ -107,15 +119,15 @@ class Configuration
 		
 	}
 
-	/**
-	 * When editing the permalink structure in the admin,
-	 * we check if the .htaccess file as the HTMLBP htaccess settings in.
-	 * If not, add them.
-	 * 
-	 * @param object WP_Rewrite
-	 * @return object
-	*/
-	private function addHtaccess($rewriteObject)
+    /**
+     * When editing the permalink structure in the admin,
+     * we check if the .htaccess file as the HTMLBP htaccess settings in.
+     * If not, add them.
+     *
+     * @param \WP_Rewrite $rewriteObject
+     * @return object The WP_Rewrite instance
+     */
+	private function addHtaccess(\WP_Rewrite $rewriteObject)
 	{
 		$homePath = function_exists('get_home_path') ? get_home_path() : ABSPATH;
 		$htaccessFile = $homePath . '.htaccess';
@@ -149,9 +161,9 @@ class Configuration
 	 * Core rewrite works but the admin bar css doesn't display correctly
 	 * in the front-end. Relatives paths to the admin sprite image file don't work.
 	 * 
-	 * @param object
+	 * @param \WP_Rewrite $rewriteObject
 	*/
-	private function rewritePaths($rewriteObject)
+	private function rewritePaths(\WP_Rewrite $rewriteObject)
 	{
 		$themeName = $this->getThemeName();
 
@@ -183,7 +195,7 @@ class Configuration
 	 * Rewrite assets urls.
 	 * Core assets, theme assets and further plugins.
 	 * 
-	 * @param string
+	 * @param string $url
 	 * @return string
 	*/
 	public function rewriteAssetUrl($url)
@@ -266,6 +278,8 @@ class Configuration
 
 	/**
 	 * Retrieve the relative PLUGINS path.
+     *
+     * @return string
 	*/
 	private function getPluginsPath()
 	{

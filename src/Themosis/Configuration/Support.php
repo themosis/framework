@@ -37,6 +37,8 @@ class Support implements ConfigInterface
 	/**
 	 * Run by the 'after_setup_theme' hook.
 	 * Execute the "add_theme_support" function from WP
+     *
+     * @return void
 	*/
 	public function install()
 	{

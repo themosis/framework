@@ -20,10 +20,6 @@ class ConfigFactory
 	*/
 	private $path = '';
 
-	/**
-	 * Save a copy of the path
-	*/
-
 	public function __construct($configFile)
 	{
 		$this->name = $configFile['name'];
@@ -34,7 +30,7 @@ class ConfigFactory
 	 * Handle the config class creation depending
 	 * of the config name.
 	 * 
-	 * @param string
+	 * @return void
 	*/
 	public function dispatch()
 	{

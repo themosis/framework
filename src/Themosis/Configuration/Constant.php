@@ -11,7 +11,9 @@ class Constant extends ConfigTemplate
 	protected static $datas = array();
 
 	/**
-	 * Load all theme's constants
+	 * Load all plugin's constants
+     *
+     * @return void
 	*/
 	public static function load()
 	{
