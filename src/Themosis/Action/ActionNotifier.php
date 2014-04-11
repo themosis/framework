@@ -10,6 +10,11 @@ class ActionNotifier implements ActionObserver
 	*/
 	private $action;
 
+    /**
+     * Save the event instance as a property
+     *
+     * @param ActionSubject $action
+    */
 	public function __construct(ActionSubject $action)
 	{
 		$this->action = $action;
@@ -17,6 +22,8 @@ class ActionNotifier implements ActionObserver
 
 	/**
 	 * Execute the event.
+     *
+     * @return void
 	*/
 	public function update()
 	{

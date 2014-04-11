@@ -35,19 +35,20 @@ class Ajax
 		Action::listen('wp_head', $this, 'install')->dispatch();
 	}
 
-	/**
-	* Handle the Ajax response. Run the appropriate
-	* action hooks used by wordpress in order to perform
-	* POST ajax request securely.
-	* Developers have the option to run ajax for the
-	* Front-end, Back-end either users are logged in or not
-	* or both.
-	*
-	* @param string
-	* @param string - 'no', 'yes', 'both'
-	* @param closure
-	*/
-	public static function run($action, $logged, $closure)
+    /**
+     * Handle the Ajax response. Run the appropriate
+     * action hooks used by WordPress in order to perform
+     * POST ajax request securely.
+     * Developers have the option to run ajax for the
+     * Front-end, Back-end either users are logged in or not
+     * or both.
+     *
+     * @param string $action Your ajax 'action' name
+     * @param string $logged Accepted values are 'no', 'yes', 'both'
+     * @param callable $closure The function to run when ajax action is called
+     * @throws AjaxException
+     */
+	public static function run($action, $logged, callable $closure)
 	{
 		if (is_string($action) && is_callable($closure)) {
 
@@ -73,16 +74,18 @@ class Ajax
 		}
 	}
 
-	/**
-	 * Set the global ajax variable
-	*/
+    /**
+     * Set the global ajax variable
+     *
+     * @return object An Ajax instance
+     */
 	public static function set()
 	{
 		return new static();
 	}
 
 	/**
-	 * Install the Ajax global variable
+	 * Install the Ajax global variable in the <head> tag.
 	*/
 	public static function install()
 	{	

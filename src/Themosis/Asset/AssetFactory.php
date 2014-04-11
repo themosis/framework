@@ -29,7 +29,7 @@ class AssetFactory
 	*/
 	private static $instances;
 
-	public function __construct($isCore, $type, $args)
+	public function __construct($isCore, $type, array $args)
 	{
 		$this->isCore = $isCore;
 		$this->key = strtolower(trim($args['handle']));
@@ -51,6 +51,8 @@ class AssetFactory
 	/**
 	 * Install the appropriate asset
 	 * depending of its area.
+     *
+     * @return void
 	*/
 	public static function install()
 	{
@@ -102,11 +104,11 @@ class AssetFactory
 
 	}
 
-	/**
-	 * Register the script or the style asset file.
-	 * 
-	 * @param object
-	*/
+    /**
+     * Register the script or the style asset file.
+     *
+     * @param AssetFactory $asset
+     */
 	private static function register(AssetFactory $asset)
 	{
 		if ($asset->assetHandler->getType() === 'script') {
@@ -123,7 +125,7 @@ class AssetFactory
 	/**
 	 * Set the area of the asset
 	 * 
-	 * @param string
+	 * @param string $area
 	*/
 	public function setArea($area)
 	{

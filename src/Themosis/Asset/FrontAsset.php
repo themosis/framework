@@ -10,13 +10,18 @@ class FrontAsset extends AssetInterface
 	*/
 	protected $dir;
 
-	public function __construct($type, $args)
+	public function __construct($type, array $args)
 	{
 		$this->type = $type;
 		$this->args = $args;
 		$this->dir = get_template_directory_uri().DS.'app'.DS.'assets';
 	}
 
+    /**
+     * Register a javascript file for the application.
+     *
+     * @return void
+    */
 	public function registerScript()
 	{
 		$path = $this->parsePath($this->args['path']);
@@ -28,6 +33,11 @@ class FrontAsset extends AssetInterface
 		wp_enqueue_script($this->args['handle'], $path, $this->args['deps'], $version, $footer);
 	}
 
+    /**
+     * Register a stylesheet file for the application.
+     *
+     * @return void
+    */
 	public function registerStyle()
 	{
 		$path = $this->parsePath($this->args['path']);

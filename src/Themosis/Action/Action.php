@@ -36,17 +36,17 @@ class Action extends ActionSubject
 	*/
 	private $args;
 
-	/**
-	 * Used to interact with the WP core action hooks
-	 * system. You'll need to provide which hooks you're
-	 * "listening to" and the callback function
-	 * which will be processed by the object.
-	 * 
-	 * @param string
-	 * @param object
-	 * @param string
-	 * @param mixed
-	*/
+    /**
+     * Used to interact with the WP core action hooks
+     * system. You'll need to provide which hooks you're
+     * "listening to" and the callback function
+     * which will be processed by the object.
+     *
+     * @param string $hook
+     * @param string $object
+     * @param string $callback
+     * @param mixed $args
+     */
 	public function __construct($hook, $object, $callback, $args = null)
 	{
 		$this->hook = $hook;
@@ -58,14 +58,16 @@ class Action extends ActionSubject
 		$this->register($this->notifier);
 	}
 
-	/**
-	 * Launch / Listen to an event / hook.
-	 * 
-	 * @param string
-	 * @param object
-	 * @param string
-	 * @param mixed (additional parameters)
-	*/
+    /**
+     * Launch / Listen to an event / hook.
+     *
+     * @param string $hook The action/hook name
+     * @param string $object The class instance name to use
+     * @param string $callback The instance method to call
+     * @param null|mixed $args The add_action extra arguments
+     * @internal param $mixed (additional parameters)
+     * @return static An Action instance
+     */
 	public static function listen($hook, $object, $callback, $args = null)
 	{
 		return new static($hook, $object, $callback, $args);
@@ -74,20 +76,24 @@ class Action extends ActionSubject
 	/**
 	 * Run by the client in order to dispatch
 	 * the registered hook.
-	 * THIS IS WHAT TRIGGER EVERYTHING
+	 * THIS IS WHAT TRIGGERS EVERYTHING
+     *
+     * @return void
 	*/
 	public function dispatch()
 	{
 		$args = $this->args;
 
-		add_action($this->hook, array(&$this, 'action'));
+		add_action($this->hook, array(&$this, 'action'), 10, $args);
 	}
 
-	/**
-	 * Hook method
-	 * 
-	 * @param mixed
-	*/
+    /**
+     * Hook method
+     *
+     * @param null|mixed $params The associated parameters given by the WordPress hook.
+     * @internal param mixed $param
+     * @return void
+     */
 	public function action($params = null)
 	{
 		$this->params = $params;
@@ -98,7 +104,7 @@ class Action extends ActionSubject
 	 * Execute the callback function associated
 	 * to the given object.
 	 * 
-	 * @return string
+	 * @return void
 	*/
 	public function run()
 	{

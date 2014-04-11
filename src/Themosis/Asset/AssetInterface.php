@@ -30,8 +30,8 @@ abstract class AssetInterface
 	 * Check if there is a DirectorySeparator
 	 * at the beginning of the path.
 	 * 
-	 * @param string
-	 * @return string
+	 * @param string $path
+	 * @return string $path
 	*/
 	protected function parsePath($path)
 	{
@@ -66,7 +66,9 @@ abstract class AssetInterface
 	}
 
 	/**
-	 * Return the asset type;
+	 * Return the asset type.
+     *
+     * @return string
 	*/
 	public function getType()
 	{

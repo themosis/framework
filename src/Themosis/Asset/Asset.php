@@ -15,27 +15,28 @@ class Asset
 	*/
 	protected $factory;
 
-	public function __construct($type, $args)
+	public function __construct($type, array $args)
 	{	
 		$this->factory = new AssetFactory(false, $type, $args);
 	}
 
-	/**
-	 * Add an asset in the FRONTEND or BACKEND or LOGIN
-	 * Nearly give default WP parameters: the asset handle,
-	 * its path, its dependencies and if it has to be loaded in the
-	 * footer.
-	 * 
-	 * NOTE : The path is relative to the "assets" folder situated
-	 * in the "app" folder.
-	 * By default, add the asset in the FRONTEND
-	 * 
-	 * @param string
-	 * @param string
-	 * @param array (optional)
-	 * @param mixed (optional)
-	*/
-	public static function add($handle, $path, $deps = array(), $version = '1.0', $mixed = null)
+    /**
+     * Add an asset in the FRONTEND or BACKEND or LOGIN.
+     *
+     * NOTE : The path is relative to the "assets" folder situated
+     * in the "app" folder of the Themosis framework theme.
+     * You can also pass an absolute URL to an external asset.
+     * By default, add the asset in the FRONTEND
+     *
+     * @param string $handle The asset handle name
+     * @param string $path The URI to the asset or the absolute URL.
+     * @param array $deps An array with asset dependencies
+     * @param string $version The version of your asset
+     * @param bool|string $mixed Boolean if javascript file | String if stylesheet file
+     * @throws AssetException
+     * @return static
+     */
+	public static function add($handle, $path, array $deps = array(), $version = '1.0', $mixed = null)
 	{
 		if (is_string($handle) && is_string($path)) {
 
@@ -54,13 +55,14 @@ class Asset
 		}
 	}
 
-	/**
-	 * Allow the developer to define where
-	 * to load the asset. Only 'admin' or 'login'
-	 * are accepted.
-	 * 
-	 * @param string
-	*/
+    /**
+     * Allow the developer to define where
+     * to load the asset. Only 'admin' or 'login'
+     * are accepted.
+     *
+     * @param string $area Specify where to load the asset: 'admin' or 'login'
+     * @throws AssetException
+     */
 	public function to($area)
 	{
 		if (is_string($area) && in_array($area, $this->allowedAreas)) {
