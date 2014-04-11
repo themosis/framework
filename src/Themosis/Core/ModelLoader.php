@@ -28,8 +28,8 @@ class ModelLoader extends Loader implements LoaderInterface
      * any actions with it. Force the developer to always extends its model
      * class. Should avoid php conflicts with class names and alias.
      *
-     * @param string $class_name
-     * @return bool|\ReflectionClass
+     * @param string $class_name The class name.
+     * @return ReflectionClass|Bool False if not a child of the Themosis\Model\BaseModel class.
      */
     private static function isChild($class_name)
     {
@@ -48,8 +48,8 @@ class ModelLoader extends Loader implements LoaderInterface
      * Performs a check to see if the class called belong to the
      * framework models.
      * 
-     * @param string The class/file name.
-     * @return bool True if a model, false if not.
+     * @param string $name The class/file name.
+     * @return bool True, False if not a model.
     */
     private static function isModel($name){
 
@@ -60,7 +60,7 @@ class ModelLoader extends Loader implements LoaderInterface
     /**
      * Clean the class name and returns it.
      * 
-     * @param string The class/file name.
+     * @param string $name The class/file name.
      * @return string The clean/correct class name.
     */
     private static function clean($name){
@@ -73,6 +73,8 @@ class ModelLoader extends Loader implements LoaderInterface
 
     /**
      * Build the paths to load the models for the application.
+     *
+     * @return void
      */
     public static function add()
     {

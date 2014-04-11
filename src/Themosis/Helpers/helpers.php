@@ -5,18 +5,18 @@
 */
 
 /**
-* Define if the current page is a child page
-*
-* @param array
-* @return boolean
-*/
+ * Define if the current page is a child page
+ *
+ * @param array $parent
+ * @return int|bool Parent page ID if subpage. False if not.
+ */
 function themosis_is_subpage($parent)
 {
 	global $post;
 
-	$parentPage = get_page($post->post_parent);
+	$parentPage = get_post($post->post_parent);
 
-    if ( is_page() && $post->post_parent && $parentPage->post_name === $parent[0]) {
+    if (is_page() && $post->post_parent && $parentPage->post_name === $parent[0]) {
         return $post->post_parent;
     }
 
@@ -24,12 +24,12 @@ function themosis_is_subpage($parent)
 }
 
 /**
- * Tell wordpress we're in maintenance mode.
+ * Tell WordPress we're in maintenance mode.
  * Only the user with 'administrator' role can
  * surf the site.
  *
- * @return boolean
-*/
+ * @return bool True. False if not in maintenance mode.
+ */
 function themosisIsInMaintenanceMode()
 {
 	list($maintenance) = Option::get('themosis-maintenance', 'activate');
@@ -55,12 +55,11 @@ function themosisIsInMaintenanceMode()
 }
 
 /**
-* Convert '.' into '/' directory separators
-*
-* @param string
-* @return string
-*
-*/
+ * Convert '.' into '/' directory separators
+ *
+ * @param string $path The initial path with '.'
+ * @return string The converted path with '/'
+ */
 function themosis_convert_path($path){
 
 	if(strpos($path, '.') !== false){
@@ -78,11 +77,11 @@ function themosis_convert_path($path){
 }
 
 /**
-* Print and die a value - Used for debugging
-*
-* @param mixed
-*
-*/
+ * Print and die a value - Used for debugging
+ *
+ * @param mixed $value Any PHP value.
+ * @return void
+ */
 function td($value){
 
 	echo '<pre>';
@@ -93,11 +92,11 @@ function td($value){
 }
 
 /**
-* Print a value
-*
-* @param mixed
-*
-*/
+ * Print a value
+ *
+ * @param mixed $value Any PHP value
+ * @return void
+ */
 function tp($value){
 	echo '<pre>';
 	print_r($value);
@@ -106,10 +105,10 @@ function tp($value){
 
 /**
  * Return the application assets
- * directory path.
+ * directory URL.
  *
  * @return string
-*/
+ */
 function themosisAssets()
 {
 	if (Themosis\Configuration\Application::get('rewrite')) {
@@ -132,7 +131,7 @@ function themosisAssets()
  * directory path.
  *
  * @return string
-*/
+ */
 function themosisViews()
 {
 	if (defined('THEMOSIS_VIEWS')) {
@@ -143,10 +142,10 @@ function themosisViews()
 }
 
 /**
-* Return the WP Query variable
-*
-* @return object
-*/
+ * Return the WP Query variable
+ *
+ * @return object The global WP_Query instance.
+ */
 function themosisGetTheQuery()
 {
 	global $wp_query;
@@ -158,8 +157,8 @@ function themosisGetTheQuery()
  * Conditional function that checks if WP
  * is using a pretty permalink structure.
  *
- * @return boolean
-*/
+ * @return bool True. False if not using permalink.
+ */
 function themosisUsePermalink()
 {
 	global $wp_rewrite;
@@ -176,10 +175,11 @@ function themosisUsePermalink()
  * Helper that runs multiple add_filter
  * functions at once.
  *
- * @param array
- * @param string
-*/
-function themosisAddFilters($tags, $function) {
+ * @param array $tags Filter tags.
+ * @param string $function The name of the global function to call.
+ * @return void
+ */
+function themosisAddFilters(array $tags, $function) {
   foreach($tags as $tag) {
     add_filter($tag, $function);
   }
@@ -195,9 +195,9 @@ function themosisAddFilters($tags, $function) {
  *
  * Give the post ID. Visible in the admin uri in your browser.
  *
- * @param int
- * @return boolean
-*/
+ * @param int $id A WP_Post ID
+ * @return bool True. False if not a WordPress post type.
+ */
 function themosisIsPost($id)
 {
     $postId = null;
@@ -223,9 +223,9 @@ function themosisIsPost($id)
  * A function that returns the 'attachment_id' of a
  * media file by giving its URL.
  *
- * @param string The media/image URL - Works only for images uploaded from within wordpress
+ * @param string $url The media/image URL - Works only for images uploaded from within WordPress.
  * @return int|boolean The image/attachment_id if it exists, false if not.
-*/
+ */
 function themosisAttachmentIdFromUrl($url = null)
 {
     /*-----------------------------------------------------------------------*/
@@ -286,9 +286,10 @@ function themosisAttachmentIdFromUrl($url = null)
 /**
  * A function that checks if we are using a page template.
  *
+ * @param array $name
  * @return boolean True: use of a template. False: no template.
-*/
-function themosisIsTemplate($name = array())
+ */
+function themosisIsTemplate(array $name = array())
 {
 	$queriedObject = get_queried_object();
 

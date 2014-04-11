@@ -11,8 +11,8 @@ class Error extends Exception
 	/**
 	 * Handle PHP exceptions
 	 * 
-	 * @param object
-	 * @param boolean
+	 * @param \Exception $exception
+	 * @param bool $trace
 	 * @return void
 	*/
     public static function exception($exception, $trace = true)
@@ -46,10 +46,10 @@ class Error extends Exception
     /**
 	 * Handle a native PHP error as an ErrorException.
 	 *
-	 * @param  int     $code
-	 * @param  string  $error
-	 * @param  string  $file
-	 * @param  int     $line
+	 * @param  int $code
+	 * @param  string $error
+	 * @param  string $file
+	 * @param  int $line
 	 * @return void
 	 */
 	public static function native($code, $error, $file, $line)

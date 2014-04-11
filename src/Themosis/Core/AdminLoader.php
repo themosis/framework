@@ -9,7 +9,7 @@ class AdminLoader extends Loader implements LoaderInterface
 	 * Build the path where the class has to scan
 	 * the files for the ADMIN.
 	 * 
-	 * @return boolean
+	 * @return bool True. False if not appended.
 	*/
 	public static function add()
 	{

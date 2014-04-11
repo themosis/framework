@@ -65,7 +65,7 @@ class WidgetLoader extends Loader implements LoaderInterface
 	/**
 	 * Install the widgets
 	 * 
-	 * @return boolean
+	 * @return bool True, False if not installed.
 	*/
 	public static function install()
 	{

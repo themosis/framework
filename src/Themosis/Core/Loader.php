@@ -19,8 +19,8 @@ abstract class Loader
 	 * Scan the directory at the given path and include
 	 * all files. Only 1 level iteration.
 	 * 
-	 * @param string
-	 * @return boolean
+	 * @param string $path
+	 * @return bool True. False if not appended.
 	*/
 	protected static function append($path){
 
@@ -38,7 +38,7 @@ abstract class Loader
 
 						static::$names[] = $file->getBasename('.php');
 
-						include_once $file->getPath() . DS . $file->getBasename();
+						include_once $file->getPath().DS.$file->getBasename();
 
 					}
 
