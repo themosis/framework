@@ -10,7 +10,7 @@ class PageData
 	*/
 	private $datas = array();
 
-	public function __construct($params)
+	public function __construct(array $params)
 	{
 		$this->datas = $params;
 		$this->datas['sections'] = $this->parseSections($this->datas['sections']);
@@ -18,12 +18,12 @@ class PageData
 	}
 
 	/**
-	 * Parse the sections
+	 * Parse the sections.
 	 * 
-	 * @param array
-	 * @return array
-	*/
-	private function parseSections($sections)
+	 * @param array $sections The page sections.
+	 * @return array The parsed sections.
+	 */
+	private function parseSections(array $sections)
 	{
 		$newSections = array();
 
@@ -43,12 +43,12 @@ class PageData
 	}
 
 	/**
-	 * Parse the settings
+	 * Parse the settings.
 	 * 
-	 * @param array
-	 * @return array
+	 * @param array $settings The page settings.
+	 * @return array The parsed settings.
 	*/
-	private function parse($settings)
+	private function parse(array $settings)
 	{
 		$newSettings = array();
 
@@ -92,12 +92,13 @@ class PageData
 		return $newSettings;
 	}
 
-	/**
-	 * Return the property
-	 * 
-	 * @param string
-	 * @return string
-	*/
+    /**
+     * Return the page property.
+     *
+     * @param string $param The page data property.
+     * @throws PageException
+     * @return mixed The property values.
+     */
 	public function get($param)
 	{
 		if (array_key_exists($param, $this->datas)) {
@@ -110,16 +111,16 @@ class PageData
 	/**
 	 * Sanitize setting before saving it to the DB
 	 * 
-	 * @param array
-	 * @return array
-	*/
+	 * @param array $input The setting field values.
+	 * @return array The sanitized field values.
+	 */
 	public function validate($input)
 	{
 		// Will be returned with sanitized values
 		// and saved in the wp_options table.
 		$validInput = array();
        
-		// Grab the settings given by the developper
+		// Grab the settings given by the developer
 		// and switch by their type in order
 		// to validate the settings.
 		$settings = $this->get('settings');
@@ -128,9 +129,7 @@ class PageData
 				
 			switch ($setting['type']) {
 
-				//
 				// TEXT input
-				//
 				case 'text':
 					// Check if value are set
 					if (!isset($input[$setting['name']])) {
@@ -162,9 +161,7 @@ class PageData
 					}
 					break; // END "TEXT"
 
-				//
 				// TEXTAREA input
-				//
 				case 'textarea':
 
 					// Check if value are set
@@ -208,9 +205,7 @@ class PageData
 
 					break;
 
-				//
 				// CHECKBOX input
-				//
 				case 'checkbox':
 
 					if (!isset($input[$setting['name']])) {
@@ -220,9 +215,7 @@ class PageData
 					$validInput[$setting['name']] = ($input[$setting['name']] === 'on') ? 'on' : 'off';
 					break;
 
-				//
 				// CHECKBOXES input
-				//
 				case 'checkboxes':
 
 					if (!isset($input[$setting['name']])) {
@@ -232,9 +225,7 @@ class PageData
 					$validInput[$setting['name']] = $input[$setting['name']];
 					break;
 
-				//
 				// RADIO input
-				//
 				case 'radio':
 
 					if (!isset($input[$setting['name']])) {
@@ -244,9 +235,7 @@ class PageData
 					$validInput[$setting['name']] = $input[$setting['name']];
 					break;
 
-				//
 				// SELECT input
-				//
 				case 'select':
 
 					if (!isset($input[$setting['name']])) {
@@ -257,9 +246,7 @@ class PageData
 					$validInput[$setting['name']] = $input[$setting['name']];
 					break;
 
-				//
 				// MEDIA input
-				//
 				case 'media':
 
 					// Check if value are set
@@ -270,6 +257,7 @@ class PageData
 					$validInput[$setting['name']] = htmlentities(sanitize_text_field($input[$setting['name']]));
 					break;
 
+                // INFINITE input
 				case 'infinite':
 
 					if (!isset($input[$setting['name']])) {

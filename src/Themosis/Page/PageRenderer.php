@@ -17,7 +17,9 @@ class PageRenderer
 
 	/**
 	 * Handle page main display
-	*/
+     *
+     * @return void
+	 */
 	public function page()
 	{
 		?>
@@ -79,16 +81,17 @@ class PageRenderer
 	}
 
 	/**
-	 * Handle settings display
+	 * Handle settings display.
 	 *
-	 * @param array
-	*/
+	 * @param array $args The option field properties.
+     * @return void
+	 */
 	public function settings($args)
 	{
 		extract($args);
 		// Check for a default value for everything excepts checkboxes.
 		// If none exists, give the $default standard value from the settings
-		// defined by the developper.
+		// defined by the developer.
 		$setting = get_option($args['section']);
 
 		// Check if there is a value set for the setting
@@ -100,7 +103,7 @@ class PageRenderer
 		}
 
 		// Display each settings and switch by their input type
-		// "type" is defined by the developper
+		// "type" is defined by the developer
 		switch ($type) {
 			case 'text':
 
@@ -156,13 +159,13 @@ class PageRenderer
 
 	} // END SETTINGS METHOD
 
-	/**
-	* Display labels
-	*
-	* @param string name attribute of the associated field
-	* @param string (optional) the title value if exists
-	*
-	*/
+    /**
+     * Display labels.
+     *
+     * @param string $name The label field name. Used in the 'for' attribute.
+     * @param string $title The display text.
+     * @return void
+     */
 	private static function displayLabel($name, $title = '')
 	{
 		?>
@@ -170,13 +173,14 @@ class PageRenderer
 		<?php
 	}
 
-	/**
-	* Display text inputs
-	*
-	* @param string name attribute for the field
-	* @param string (optional) the saved value
-	*
-	*/
+    /**
+     * Display text input.
+     *
+     * @param string $name The text input name.
+     * @param string $id The text input 'id' attribute.
+     * @param string $value The text input saved value.
+     * @return void
+     */
 	private static function displayText($name, $id, $value = '')
 	{
 		?>
@@ -184,13 +188,14 @@ class PageRenderer
 		<?php
 	}
 
-	/**
-	* Display textarea inputs
-	*
-	* @param string name attribute for the field
-	* @param string (optional) the saved value
-	*
-	*/
+    /**
+     * Display textarea input.
+     *
+     * @param string $name The textarea tag name.
+     * @param string $id The textarea 'id' attribute.
+     * @param string $value The textarea saved value.
+     * @return void
+     */
 	private static function displayTextarea($name, $id, $value = '')
 	{
 		?>
@@ -198,13 +203,14 @@ class PageRenderer
 		<?php
 	}
 
-	/**
-	* Display one checkbox
-	*
-	* @param string name attribute for the field
-	* @param string (optional) the saved value
-	*
-	*/
+    /**
+     * Display one checkbox
+     *
+     * @param string $name The checkbox input name.
+     * @param string $id The checkbox 'id' attribute.
+     * @param string $value The checkbox saved value.
+     * @return void
+     */
 	private static function displayCheckbox($name, $id, $value = 'off')
 	{
 		?>
@@ -214,15 +220,16 @@ class PageRenderer
 		<?php
 	}
 
-	/**
-	* Display multi checkboxes. Allow the user to select more than one checkbox.
-	*
-	* @param string name attribute for the field
-	* @param array checkbox options
-	* @param array (optional) the saved value
-	*
-	*/
-	private static function displayCheckboxes($name, $id, $options, $value = array())
+    /**
+     * Display multiple checkboxes.
+     *
+     * @param string $name The checkbox input name.
+     * @param string $id The checkbox 'id' attribute.
+     * @param array $options The checkbox options.
+     * @param array $value The checkbox saved values.
+     * @return void
+     */
+	private static function displayCheckboxes($name, $id, array $options, array $value = array())
 	{
 
 		$i = 0;
@@ -246,15 +253,18 @@ class PageRenderer
 
 	}
 
-	/**
-	* Display radio buttons.
-	*
-	* @param string name attribute for the field
-	* @param array radio options
-	* @param array (optional) the saved value
-	*
-	*/
-	private static function displayRadio($name, $id, $options, $value = array())
+    /**
+     * Display radio buttons.
+     *
+     * @todo Why the 'id' parameter is not used?
+     *
+     * @param string $name The radio input name.
+     * @param string $id The radio input 'id' attribute.
+     * @param array $options The radio input options.
+     * @param array $value The radio input saved value.
+     * @return void
+     */
+	private static function displayRadio($name, $id, array $options, array $value = array())
 	{
 
 		$i = 0;
@@ -278,15 +288,18 @@ class PageRenderer
 
 	}
 
-	/**
-	* Display select input
-	*
-	* @param string name attribute for the field
-	* @param array select options
-	* @param mixed (string or array) the saved value
-	* @param boolean enable multi selection on input
-	*
-	*/
+    /**
+     * Display select input.
+     *
+     * @todo Why 'id' parameter not used?
+     *
+     * @param string $name The select input name.
+     * @param string $id The select input 'id' attribute.
+     * @param array $options The select input option tags.
+     * @param string|array $value A single value or an array if multiple selection.
+     * @param bool $multiple False by default. True to allow multiple selection.
+     * @return void
+     */
     private static function displaySelect($name, $id, $options, $value = null, $multiple = false)
     {
         ?>
@@ -440,13 +453,14 @@ class PageRenderer
 
     }
 
-	/**
-	* Display media inputs
-	*
-	* @param string name attribute for the field
-	* @param string (optional) the saved value
-	*
-	*/
+    /**
+     * Display media input.
+     *
+     * @param string $name The media field name.
+     * @param string $id The media field 'id' attribute.
+     * @param string $value The media field saved value.
+     * @return void
+     */
 	private static function displayMedia($name, $id, $value = '')
 	{
 		?>
@@ -462,17 +476,16 @@ class PageRenderer
 		<?php
 	}
 
-	/**
-	* Display infinite field
-	*
-	* @param string name attribute for the field
-	* @param array fields of each row
-	* @param array (optional) the saved value
-	*
-	*/
-	private static function displayInfinite($name, $fields, $value = array())
+    /**
+     * Display infinite field.
+     *
+     * @param string $name The infinite field name.
+     * @param array $fields The infinite fields to repeat.
+     * @param array $value The infinite field saved values.
+     * @return void
+     */
+	private static function displayInfinite($name, array $fields, array $value = array())
 	{
-
 		?>
 			<div class="themosis-infinite-container">
 				<table class="themosis-infinite" id="themosis-infinite-sortable">
@@ -517,7 +530,7 @@ class PageRenderer
 											</td>
 											<td class="themosis-infinite-input" data-type="<?php echo $field['type']; ?>">
 												<?php
-													// Method name has changed compate
+													// Method name has changed compare
 													// to the MetaboxRenderer class
 													$signature = ucfirst($field['type']);
 													$signature = 'display'.$signature;

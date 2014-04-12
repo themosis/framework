@@ -7,7 +7,6 @@ defined('DS') or die('No direct script access.');
 
 class Page
 {
-
 	/**
 	 * Page datas
 	*/
@@ -33,7 +32,7 @@ class Page
 	*/
 	private $cap = 'manage_options';
 
-	public function __construct($params)
+	public function __construct(array $params)
 	{
 		$this->data = new PageData($params);
 		$this->renderer = new PageRenderer($this->data);
@@ -43,17 +42,20 @@ class Page
 		Action::listen('admin_enqueue_scripts', $this, 'enqueueMediaUploader')->dispatch();
 	}
 
-	/**
-	 * Define an options page. Can be a main or submenu page.
-	 * 
-	 * @param string
-	 * @param string
-	 * @param array
-	 * @param array
-	 * @param string (optional)
-	 * @return object
-	*/
-	public static function make($title, $slug, $sections, $settings, $parent = null)
+    /**
+     * Define an options page. Can be a main or submenu page.
+     *
+     * @todo Move the $sections and $settings to the 'set()' method.
+     *
+     * @param string $title The page display title.
+     * @param string $slug The page slug name.
+     * @param array $sections A list of sections.
+     * @param array $settings A list of settings, fields.
+     * @param string $parent The slug of the parent page.
+     * @throws PageException
+     * @return object A Themosis\Page\Page instance.
+     */
+	public static function make($title, $slug, array $sections, array $settings, $parent = null)
 	{
 		if (is_string(trim($title)) && is_string(trim($slug)) && is_array($sections) && is_array($settings)) {
 
@@ -69,7 +71,7 @@ class Page
 	/**
 	 * Build the options page.
 	 * 
-	 * @return object
+	 * @return object A Themosis\Page\Page instance.
 	*/
 	public function set()
 	{
@@ -79,10 +81,10 @@ class Page
 	}
 
 	/**
-	 * Define the menu icon url. Define the absolute URL.
+	 * Define the menu icon url.
 	 * 
-	 * @param string
-	 * @return object
+	 * @param string $url The absolute URL to the icon.
+	 * @return object A Themosis\Page\Page instance.
 	*/
 	public function setMenuIcon($url)
 	{
@@ -91,12 +93,12 @@ class Page
 		return $this;
 	}
 
-	/**
-	 * Define page capability.
-	 * 
-	 * @param string
-	 * @param object
-	*/
+    /**
+     * Define page capability.
+     *
+     * @param string $cap The capability name.
+     * @return object A Themosis\Page\Page instance.
+     */
 	public function setCap($cap)
 	{
 		$this->cap = (is_string($cap) && !empty($cap)) ? $cap : 'manage_options';
@@ -106,6 +108,8 @@ class Page
 
 	/**
 	 * Construct the page
+     *
+     * @return void
 	*/
 	public function build()
 	{
@@ -118,6 +122,8 @@ class Page
 
 	/**
 	 * Display the page
+     *
+     * @return void
 	*/
 	public function display()
 	{
@@ -126,6 +132,8 @@ class Page
 
 	/**
 	 * Install page settings
+     *
+     * @return void
 	*/
 	public function install()
 	{
@@ -157,37 +165,44 @@ class Page
 		}
 	}
 
-	/**
-	 * Handle section display
-	*/
-	public function displaySections($args)
+    /**
+     * Handle section display
+     *
+     * @param array $args The section properties.
+     * @return void
+     */
+	public function displaySections(array $args)
 	{
-
+        // Customize the section display.
 	}
 
 	/**
 	 * Handle settings display
 	 * 
-	 * @param array
+	 * @param array $args The setting properties.
+     * @return void
 	*/
-	public function displaySettings($args)
+	public function displaySettings(array $args)
 	{
 		$this->renderer->settings($args);
 	}
 
-	/**
-	 * Validate settings
-	 * 
-	 * @param array
-	*/
-	public function validate($input)
+    /**
+     * Validate settings
+     *
+     * @param array $input The option field values.
+     * @return array The sanitized field values.
+     */
+	public function validate(array $input)
 	{
 		return $this->data->validate($input);
 	}
 
 	/**
 	 * Enqueue the new WP > 3.5 media Uploader
-	*/
+     *
+     * @return void
+	 */
 	public function enqueueMediaUploader()
 	{
 		// If WP > 3.5
