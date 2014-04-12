@@ -10,10 +10,10 @@ class Html
 	/**
 	 * Build a list of HTML attributes from an array.
 	 *
-	 * @param  array
-	 * @return string
+	 * @param  array $attributes An array of html tag attributes.
+	 * @return string The html attributes output.
 	 */
-	public static function attributes($attributes)
+	public static function attributes(array $attributes)
 	{
 		$html = array();
 
@@ -37,8 +37,8 @@ class Html
 	 * Convert HTML characters to entities.
 	 * The encoding specified in the application configuration file will be used.
 	 *
-	 * @param  string
-	 * @return string
+	 * @param string $value A character to encode.
+	 * @return string The encoded character.
 	 */
 	public static function entities($value)
 	{

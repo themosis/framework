@@ -45,6 +45,9 @@ class MetaboxParser
 
 	/**
 	 * Set the page type where the metabox is saved.
+     *
+     * @param string $postType The post type the metabox is associated with.
+     * @return void
 	*/
 	public function setType($postType)
 	{
@@ -54,9 +57,9 @@ class MetaboxParser
 	/**
 	 * Set user capability check for the custom metabox
 	 *
-	 * @param string
-	 * @param int
-	 * @param mixed (optional)
+	 * @param string $cap The capability name.
+	 * @param int $userId The user ID.
+	 * @param mixed $args Capability parameters.
 	*/
 	public function userCheck($cap, $userId = null, $args = null)
 	{
@@ -70,9 +73,11 @@ class MetaboxParser
 	 * Handle the save methodology for each metabox.
 	 * Receive the post it belongs to and the metabox datas.
 	 *
-	 * @param int
+     * @param array $inputs The custom fields to save.
+	 * @param int The post type ID.
+     * @return void
 	*/
-	public function save($inputs, $postId)
+	public function save(array $inputs, $postId)
 	{
 		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
 

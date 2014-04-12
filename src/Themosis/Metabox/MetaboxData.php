@@ -13,9 +13,9 @@ class MetaboxData
 	/**
 	 * Set the datas for the associated metabox.
 	 * 
-	 * @param array
+	 * @param array $datas The fields of the metabox.
 	*/
-	public function set($datas)
+	public function set(array $datas)
 	{
 		$this->datas = $datas;
 	}
@@ -23,7 +23,7 @@ class MetaboxData
 	/**
 	 * Get the datas of the metabox
 	 * 
-	 * @return array
+	 * @return array The metabox fields.
 	*/
 	public function get()
 	{

@@ -1,7 +1,6 @@
 <?php
 namespace Themosis\Metabox;
 
-use Themosis\Configuration\Application;
 use Themosis\Session\Session;
 
 defined('DS') or die('No direct script access.');
@@ -12,10 +11,11 @@ class MetaboxRenderer extends MetaboxTemplate
 	 * Display the metabox content. Only drawing the custom fields with their
 	 * associated value(s) if available.
 	 *
-	 * @param object
-	 * @param array
+	 * @param object $post The post object WP_Post.
+	 * @param array $datas The metabox fields.
+     * @return void
 	*/
-	public static function render($post, $datas)
+	public static function render($post, array $datas)
 	{
 		// Add nonce fields
 		wp_nonce_field(Session::nonceAction, Session::nonceName);

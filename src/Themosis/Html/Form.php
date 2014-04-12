@@ -12,13 +12,13 @@ class Form
 	/**
 	 * Build opening tags for a form
 	 * 
-	 * @param string
-	 * @param string
-	 * @param boolean Default value is false
-	 * @param array
-	 * @return string
+	 * @param string $action The action attribute value.
+	 * @param string $method The request method. Default to 'POST'.
+	 * @param bool $ssl Default value is false. True converts to https URL.
+	 * @param array An array of form attributes.
+	 * @return string The <form> open tag.
 	*/
-	public static function open($action = null, $method = 'POST', $ssl = false, $attributes = array())
+	public static function open($action = null, $method = 'POST', $ssl = false, array $attributes = array())
 	{
 		$attributes['action'] = static::action($action, $ssl);
 		$attributes['method'] = static::method($method);
@@ -45,7 +45,7 @@ class Form
 	/**
 	 * Build the closing tag
 	 * 
-	 * @return string
+	 * @return string The </form> close tag.
 	*/
 	public static function close()
 	{
@@ -55,9 +55,9 @@ class Form
 	/**
 	 * Define the action attribute
 	 * 
-	 * @param string
-	 * @param boolean $ssl Tell to set the URL ot https or not.
-	 * @return string
+	 * @param string $action The action attribute value.
+	 * @param bool $ssl Tell to set the URL to https or not.
+	 * @return string The converted action attribute value.
 	*/
 	public static function action($action, $ssl)
 	{	
@@ -78,8 +78,8 @@ class Form
 	/**
 	 * Define the form method attribute
 	 * 
-	 * @param string
-	 * @return string
+	 * @param string $method The request method.
+	 * @return string The sanitized request method.
 	*/
 	public static function method($method)
 	{

@@ -1,9 +1,6 @@
 <?php
 namespace Themosis\Metabox;
 
-use stdClass;
-use Themosis\Action\Action;
-
 defined('DS') or die('No direct script access.');
 
 abstract class MetaboxTemplate
@@ -11,11 +8,11 @@ abstract class MetaboxTemplate
     /**
 	 * Add the field saved value and properties for display
 	 *
-	 * @param int
-	 * @param array
-	 * @return array
+	 * @param int $id The post type ID.
+	 * @param array $datas The defined field properties.
+	 * @return array All field properties.
 	*/
-	protected static function populate($id, $datas)
+	protected static function populate($id, array $datas)
 	{
 		$newDatas = array();
 
@@ -41,10 +38,10 @@ abstract class MetaboxTemplate
 	 * Set the 'title' property for the custom field.
 	 * Add a default value if the 'title' does not exist.
 	 *
-	 * @param array (the custom field)
-	 * @return string
+	 * @param array $field The custom field properties.
+	 * @return string The field title property.
 	*/
-	private static function setTitle($field)
+	private static function setTitle(array $field)
 	{
 		// If not exists, set the title equal to the name property
 		if (!isset($field['title'])) {
@@ -56,12 +53,12 @@ abstract class MetaboxTemplate
 
 	/**
 	 * Set the 'info' property for the custom field
-	 * Return an emplty string if there is no value.
+	 * Return an empty string if there is no value.
 	 *
-	 * @param array (the custom field)
-	 * @return string
+	 * @param array $field The custom field properties.
+	 * @return string The field info property.
 	*/
-	private static function setInfo($field)
+	private static function setInfo(array $field)
 	{
 		// If not exists, set the title equal to the name property
 		if (!isset($field['info'])) {
@@ -74,9 +71,10 @@ abstract class MetaboxTemplate
 	/**
 	 * Output the <input type="text" /> tag template.
 	 *
-	 * @param array
+	 * @param array $field The text field properties
+     * @return void
 	*/
-	protected static function text($field)
+	protected static function text(array $field)
 	{
 		?>
 
@@ -102,9 +100,10 @@ abstract class MetaboxTemplate
 	/**
 	 * Output the <textarea> tag template
 	 *
-	 * @param array
+	 * @param array $field The textarea properties.
+     * @return void
 	*/
-	protected static function textarea($field)
+	protected static function textarea(array $field)
 	{
 		?>
 
@@ -130,9 +129,10 @@ abstract class MetaboxTemplate
 	/**
 	 * Output a single <input type="checkbox" /> tag template
 	 *
-	 * @param array
+	 * @param array $field The checkbox field properties.
+     * @return void
 	*/
-	protected static function checkbox($field)
+	protected static function checkbox(array $field)
 	{
 		?>
 			<tr class="themosis-field-container">
@@ -153,12 +153,13 @@ abstract class MetaboxTemplate
 		<?php
 	}
 
-	/**
-	 * Output multiple <input type="checkbox" /> tags template
-	 *
-	 * @param array
-	*/
-	protected static function checkboxes($field)
+    /**
+     * Output multiple <input type="checkbox" /> tags template
+     *
+     * @param array $field The checkboxes field properties.
+     * @return void
+     */
+	protected static function checkboxes(array $field)
 	{
 
 		extract($field);
@@ -194,9 +195,10 @@ abstract class MetaboxTemplate
 	/**
 	 * Output <input type="radio" /> tags template
 	 *
-	 * @param array
+	 * @param array $field The radio field properties.
+     * @return void
 	*/
-	protected static function radio($field)
+	protected static function radio(array $field)
 	{
 
 		extract($field);
@@ -232,9 +234,10 @@ abstract class MetaboxTemplate
 	/**
 	 * Output <select /> tag template
 	 *
-	 * @param array
+	 * @param array $field The select field properties.
+     * @return void
 	*/
-	protected static function select($field)
+	protected static function select(array $field)
 	{
 
 		extract($field);
@@ -407,9 +410,10 @@ abstract class MetaboxTemplate
 	/**
 	 * Output media template
 	 *
-	 * @param array
+	 * @param array $field The media field properties.
+     * @return void
 	*/
-	protected static function media($field)
+	protected static function media(array $field)
 	{
 
 	    extract($field);
@@ -463,9 +467,10 @@ abstract class MetaboxTemplate
 	/**
 	 * Output the 'infinite' template
 	 *
-	 * @param array
+	 * @param array $field The infinite field properties.
+     * @return void
 	*/
-	protected static function infinite($field)
+	protected static function infinite(array $field)
 	{
 	    extract($field);
 		?>
@@ -562,12 +567,10 @@ abstract class MetaboxTemplate
 	/**
 	 * Output the editor custom field.
 	 *
-	 * @access protected
-	 * @static
-	 * @param array The custom field.
+	 * @param array $field The editor field properties.
 	 * @return void
 	 */
-	protected static function editor($field)
+	protected static function editor(array $field)
 	{
         ?>
 
@@ -579,12 +582,15 @@ abstract class MetaboxTemplate
 				<td class="themosis-wp-editor">
 					<?php
 						wp_editor($field['value'], $field['name'], $field['editor_args']);
-					?>
-					<?php if ($field['info']) : ?>
+
+                        if ($field['info']) :
+                    ?>
 						<div class="themosis-field-info">
 							<p><?php echo($field['info']); ?></p>
 						</div>
-					<?php endif; ?>
+					<?php
+                        endif;
+                    ?>
 				</td>
 
 			</tr>

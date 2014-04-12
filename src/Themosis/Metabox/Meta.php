@@ -7,12 +7,12 @@ class Meta
 {
 	/**
 	 * Retrieve the meta data from the given
-	 * post ID and meta key.
+	 * post type ID and meta key.
 	 * 
-	 * @param int
-	 * @param string (optional)
-	 * @param boolean (optional)
-	 * @return mixed
+	 * @param int $id The post type ID.
+	 * @param string $key The meta name.
+	 * @param bool $single Default to true. False to return as an array.
+	 * @return mixed The meta value.
 	*/
 	public static function get($id, $key = '', $single = true)
 	{
@@ -32,8 +32,8 @@ class Meta
 	 * URLs from the domain to their 'https' equivalent.
 	 * Avoid getting an alert message for non-secure asset in browsers.
 	 * 
-	 * @param  mixed $default The default value returned by 'get_post_meta'. Could be of type: string, boolean, int, array,...
-	 * @return mixed          The converted value if needed or the default one.
+	 * @param mixed $default The default value returned by 'get_post_meta'. Could be of type: string, boolean, int, array,...
+	 * @return mixed The converted value if needed or the default one.
 	 */
 	private static function parse($default)
 	{
@@ -90,8 +90,8 @@ class Meta
 	 * Tell if the URL is internal and not pointing to
 	 * an external domain.
 	 * 
-	 * @param  string  $url The URL from a custom field
-	 * @return boolean      True if internet URL, false if external.
+	 * @param string $url The URL from a custom field
+	 * @return bool True if application URL, false if external.
 	 */
 	private static function isFromDomain($url)
 	{
