@@ -9,23 +9,20 @@ defined('DS') or die('No direct script access.');
  * Utility class that output html in order to display
  * the custom fields of the taxonomies.
  *
- * @since 1.0
- * @author Julien Lambé (julien@themosis.com)
- * @link http://www.themosis.com/
 */
 
 class TaxFieldRenderer
 {
-    
+
     /**
      * Handle output for the "add term" page.
      *
-     * @param string Type of the page where to output the field - Accepted values : add, edit.
-     * @param array Fields datas.
-     * @param object Term object given in the edit page. Optional parameter, default value null
-     * @access public
-    */
-    public static function render($typeOfPage, $fields, $term = null)
+     * @param string $typeOfPage Type of the page where to output the field - Accepted values : 'add', 'edit'.
+     * @param array $fields The fields to output.
+     * @param \stdClass $term The term object sent by WordPress.
+     * @return void
+     */
+    public static function render($typeOfPage, array $fields, \stdClass $term = null)
     {        
         foreach ($fields as $field):
     	    
@@ -61,10 +58,9 @@ class TaxFieldRenderer
     /**
      * Helper function that checks the page type.
      *
-     * @param string Type of the page - 'add' or 'edit'
-     * @return boolean
-     * @access private
-    */
+     * @param string $typeOfPage Type of the page: 'add' or 'edit'.
+     * @return bool True. False if not the 'add' page.
+     */
     private static function isAddPage($typeOfPage)
     {
     	if ($typeOfPage === 'add') {
@@ -77,11 +73,10 @@ class TaxFieldRenderer
     /**
      * Open tags for the 'Add term' page.
      *
-     * @param string The name attribute of the custom field
-     * @param string The title property of the custom field
-     * @return html
-     * @access private
-    */
+     * @param string $name The name attribute of the custom field.
+     * @param string $title The title property of the custom field.
+     * @return void
+     */
     private static function openTagsForAddPage($name, $title)
     {
         ?>
@@ -95,9 +90,8 @@ class TaxFieldRenderer
     /**
      * Close tags for the 'Add term' page.
      *
-     * @return html
-     * @access private
-    */
+     * @return void
+     */
     private static function closeTagsForAddPage()
     {
     	?>
@@ -110,11 +104,10 @@ class TaxFieldRenderer
     /**
      * Open tags for the 'Edit term' page.
      *
-     * @param string The name attribute of the custom field.
-     * @param string The title property of the custom field.
-     * @return html
-     * @access private   
-    */
+     * @param string $name The name attribute of the custom field.
+     * @param string $title The title property of the custom field.
+     * @return void
+     */
     private static function openTagsForEditPage($name, $title)
     {
     	?>
@@ -131,9 +124,8 @@ class TaxFieldRenderer
     /**
      * Close tags for the 'Edit term' page.
      *
-     * @return html
-     * @access private
-    */
+     * @return void
+     */
     private static function closeTagsForEditPage()
     {
     	?>
@@ -146,11 +138,10 @@ class TaxFieldRenderer
     /**
      * Display the 'info' html tags.
      *
-     * @param string Type of page 'edit' or 'add' term page.
-     * @param string The info text to display
-     * @return html
-     * @access private
-    */
+     * @param string $typeOfPage Type of page: 'edit' or 'add'.
+     * @param string $info The info text to display.
+     * @return void
+     */
     private static function infos($typeOfPage, $info)
     {
         /*-----------------------------------------------------------------------*/
@@ -186,16 +177,16 @@ class TaxFieldRenderer
         	
     	}
     }
-    
+
     /**
      * Render a text field.
      *
-     * @param string Which tags to output depending of the page.
-     * @param array Field properties like name, value, ...
-     * @param object The term object, stdObject given in the edit term page. (optional)
-     * @access private
-    */
-    private static function text($typeOfPage, $field, $term = null)
+     * @param string $typeOfPage Which page is viewed: 'add' or 'edit'.
+     * @param array $field The field properties.
+     * @param \stdClass $term The term object sent by WordPress.
+     * @return void
+     */
+    private static function text($typeOfPage, array $field, \stdClass $term = null)
     {
         extract($field);
         
@@ -263,16 +254,16 @@ class TaxFieldRenderer
     	    
     	endif;
     }
-    
+
     /**
      * Render a Media field.
      *
-     * @param string Which tags to output depending of the page.
-     * @param array Field properties like name, value, ...
-     * @param object The term object, stdObject given in the edit term page. (optional)
-     * @access private
-    */
-    private static function media($typeOfPage, $field, $term = null)
+     * @param string $typeOfPage Which page is viewed: 'add' or 'edit'.
+     * @param array $field The field properties.
+     * @param \stdClass $term The term object sent by WordPress.
+     * @return void
+     */
+    private static function media($typeOfPage, array $field, \stdClass $term = null)
     {
     	extract($field);
     	

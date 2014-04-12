@@ -41,14 +41,15 @@ class PostType {
 		$this->mediaEvent = Action::listen('admin_enqueue_scripts', $this, 'enqueueMediaUploader');
 	}
 
-	/**
-	 * Used to build a new custom post type.
-	 * It will use default datas from the PostTypeData class.
-	 *
-	 * @param string
-	 * @param string
-	 * @return object
-	*/
+    /**
+     * Used to build a new custom post type.
+     * It will use default datas from the PostTypeData class.
+     *
+     * @param string $slug The post type slug name.
+     * @param string $name The plural display name.
+     * @throws PostTypeException
+     * @return object A Themosis\PostType\PostType instance.
+     */
 	public static function make($slug, $name)
 	{
 		if (is_string($slug) && is_string($name)) {
@@ -64,12 +65,12 @@ class PostType {
 	/**
 	 * Override or add properties to the custom post type
 	 * by passing an array.
-	 * Also install the postType
+	 * Also install the custom post type.
 	 *
-	 * @param array
-	 * @return object
-	*/
-	public function set($params = array())
+	 * @param array $params The custom post type arguments: https://codex.wordpress.org/Function_Reference/register_post_type
+	 * @return object A Themosis\PostType\PostType instance.
+	 */
+	public function set(array $params = array())
 	{
 		if (is_array($params) && !empty($params)) {
 
@@ -92,7 +93,7 @@ class PostType {
 	/**
 	 * Retrieve the custom post type slug
 	 *
-	 * @return string
+	 * @return string The custom post type slug property.
 	*/
 	public function getSlug()
 	{
@@ -102,7 +103,7 @@ class PostType {
 	/**
 	 * Retrieve the custom post type datas
 	 *
-	 * @return object
+	 * @return object A Themosis\PostType\PostTypeData instance.
 	*/
 	public function getData()
 	{
@@ -112,7 +113,7 @@ class PostType {
 	/**
 	 * Register the custom post type
 	 *
-	 * @return object
+	 * @return object|WP_Error The custom post type object or a WP_Error instance if error.
 	*/
 	public function register()
 	{
@@ -127,7 +128,7 @@ class PostType {
 	/**
 	 * Enqueue the new media uploader
 	 *
-	 * @return boolean
+	 * @return bool True. False if not enqueue.
 	*/
 	public function enqueueMediaUploader()
 	{
@@ -143,8 +144,11 @@ class PostType {
 
 	/**
 	 * Tell the Custom Post Type to be RESTful.
+     *
+     * @todo Remove restful methods. Wait for core restul API.
 	 *
-	 * @return object
+     * @deprecated No longer used by internal code and not recommended.
+	 * @return object A Themosis\PostType\PostType instance.
 	*/
 	public function isRestful()
 	{
@@ -156,6 +160,8 @@ class PostType {
 
 	/**
 	 * Handle custom rewrite for the custom post type.
+     *
+     * @return void
 	*/
 	private function rewrite()
 	{
@@ -169,6 +175,8 @@ class PostType {
 	/**
 	 * Add the query var. Is similar to the post type
 	 * slug.
+     *
+     * @return void
 	*/
 	private function rewriteTag()
 	{
@@ -177,6 +185,9 @@ class PostType {
 
 	/**
 	 * Add rewrite rules in order to handle RESTful.
+     *
+     * @deprecated No longer used by internal code and not recommended.
+     * @return void
 	*/
 	private function rewriteRules()
 	{

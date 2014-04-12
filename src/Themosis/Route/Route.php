@@ -9,16 +9,16 @@ class Route extends Router
 	 * Route instance infos
 	*/
 	protected $data;
-    
+
     /**
      * Route constructor. Define a route instance.
      *
-     * @param string $callback The Wordpress conditional method name based on the Router class $conds.
-     * @param mixed (closure | string) $closure Could be a closure or string defining a controller path.
-     * @param array (optional) $terms The Wordpress conditional method parameters, terms like objects slug, id or title,...
-     * @param array (optional) $params Additional options in order to control the route. Like 'method', 'template',...
-    */
-	public function __construct($callback, $closure, $terms = array(), $options = array())
+     * @param string $callback The WordPress conditional method name based on the Router class $conds property.
+     * @param callable|string $closure Could be a closure or string defining a controller path.
+     * @param array $terms The WordPress conditional method parameters: terms like objects slug, id, title,...
+     * @param array $options The Route options.
+     */
+	public function __construct($callback, $closure, array $terms = array(), array $options = array())
 	{
 	
 		$datas = compact('callback', 'closure', 'terms', 'options');
@@ -28,25 +28,26 @@ class Route extends Router
 		
 	}
 
-	/**
-	 * Parse the query and dispatch. Execute Wordpress
-	 * conditionals tags to find which page the user is viewing
-	 * 
-	 * @param string $path The Wordpress conditional method. Specify the method as in the Router conditionals tags.
-	 * @param mixed (closure | string) $func The user can pass a closure or string defining a Controller
-	 * @param array (associative array) $options The route options like 'method',... see RouteDate class for allowed options.
-	 * @return object
-	*/
-	public static function is($path, $func, $options = array())
+    /**
+     * Parse the query and dispatch. Execute WordPress
+     * conditionals tags to find which page the user is viewing
+     *
+     * @param string $path The WordPress conditional method.
+     * @param callable|string $func The user can pass a closure or a string defining a controller path.
+     * @param array $options The route options like 'method'. See RouteData class for allowed options.
+     * @throws RouteException
+     * @return \Themosis\Route\Route
+     */
+	public static function is($path, $func, array $options = array())
 	{	
 	    /*-----------------------------------------------------------------------*/
-	    // Check if givin path is registered in the $conds property in the Router
+	    // Check if given path is registered in the $conds property in the Router
 	    // class.
 	    /*-----------------------------------------------------------------------*/
 		if (is_string($path) && array_key_exists($path, static::$conds)) {
             
             /*-----------------------------------------------------------------------*/
-            // Build the Wordpress conditional method signature.
+            // Build the WordPress conditional method signature.
             /*-----------------------------------------------------------------------*/
 			$signature = static::$conds[$path];
             
@@ -79,17 +80,18 @@ class Route extends Router
 
 	}
 
-	/**
-	 * Same as 'is' excepts that you can fine tuned your request
-	 * by passing an array of searchable query terms.
-	 * 
-	 * @param string $path The Wordpress conditional method to use.
-	 * @param array $terms The Wordpress query terms like the post slug, id, title... check Wordpress codex about conditionals and their values.
-	 * @param mixed (closure | string) $func Closure or controller path.
-	 * @param array (optional) $options The route options like 'method',...
-	 * @return object
-	*/
-	public static function are($path, $terms, $func, $options = array())
+    /**
+     * Same as 'is' excepts that you can fine tuned your request
+     * by passing an array of searchable query terms.
+     *
+     * @param string $path The WordPress conditional method to use.
+     * @param array $terms The WordPress query terms: the post slug, id, title,...
+     * @param callable|string $func Closure or controller path.
+     * @param array $options The route options like 'method',...
+     * @throws RouteException
+     * @return \Themosis\Route\Route
+     */
+	public static function are($path, array $terms, $func, array $options = array())
 	{
 		if (is_string($path) && array_key_exists($path, static::$conds)) {
 
@@ -118,67 +120,28 @@ class Route extends Router
 		}
 	}
 
-	/**
-	 * Just give an interface if the user wants
-	 * to specify ONLY one term.
-	 * 
-	 * @param string
-	 * @param string
-	 * @param mixed (closure | string)
-	 * @param array (optional) $options The route options like 'method',...
-	 * @return object
-	*/
-	public static function only($path, $term, $func, $options = array())
+    /**
+     * Gives an interface if the user wants
+     * to specify only ONE term.
+     *
+     * @param string $path The conditional to use.
+     * @param string $term The term parameter for the conditional.
+     * @param callable|string $func A closure or a controller path.
+     * @param array $options The route options like 'method',...
+     * @throws RouteException
+     * @return \Themosis\Route\Route
+     */
+	public static function only($path, $term, $func, array $options = array())
 	{
 		$terms = array();
 
 		if (is_string($term) && strlen(trim($term)) > 0) {
 
 			$terms[] = $term;
-			static::are($path, $terms, $func, $options);
+			return static::are($path, $terms, $func, $options);
 
 		} else {
 			throw new RouteException("Accept only one term.");
-		}
-	}
-
-	/**
-	 * Used for page template
-	 *
-	 * @todo Refactor the method to use the $options array...
-	 * 
-	 * @param string
-	 * @param string
-	 * @param closure
-	*/
-	public static function template($path, $term, $func)
-	{
-		$terms = array();
-		$terms[] = $term;
-
-		if (is_string($path) && array_key_exists($path, static::$conds)) {
-
-			$signature = static::$conds[$path];
-
-			if (is_array($terms) && !empty($terms)) {
-
-				if (is_callable($func)) {
-                    
-                    /*-----------------------------------------------------------------------*/
-                    // Send the option 'template' to 'true'
-                    /*-----------------------------------------------------------------------*/
-					return new static($signature, $func, $terms, array('template' => true));
-
-				} else if (!is_callable($func)) {
-					throw new RouteException("Closure expected as a third argument.");
-				}
-
-			} else {
-				throw new RouteException("Wrong list of terms.");
-			}
-
-		} else {
-			throw new RouteException("Incorrect Route conditional.");
 		}
 	}
 

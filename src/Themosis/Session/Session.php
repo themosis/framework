@@ -21,7 +21,7 @@ class Session
 	/**
 	 * Private constructor. Avoid building instances using the
 	 * 'new' keyword.
-	*/
+	 */
 	private function __construct()
 	{
 

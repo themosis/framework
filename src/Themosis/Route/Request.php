@@ -15,7 +15,7 @@ class Request extends SymfonyRequest
 	/**
 	 * Get the Symfony HttpFoundation Request instance.
 	 *
-	 * @return HttpFoundation\Request
+	 * @return \Symfony\Component\HttpFoundation\Request instance.
 	 */
 	public static function foundation()
 	{

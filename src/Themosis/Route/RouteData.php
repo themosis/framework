@@ -34,6 +34,8 @@ class RouteData
 
 	/**
 	 * Route is using a template
+     *
+     * @deprecated
 	*/
 	private $template = false;
 
@@ -42,7 +44,7 @@ class RouteData
 	*/
 	private $controller = array();
 
-	public function __construct($datas)
+	public function __construct(array $datas)
 	{	    
 		$this->callback = $datas['callback'];
 		$this->closure = (is_callable($datas['closure'])) ? $datas['closure'] : '';
@@ -57,14 +59,15 @@ class RouteData
 		/*-----------------------------------------------------------------------*/
 		$this->options = $this->parseOptions($datas['options']);
 	}
-	
-	/**
-	 * Check and parse the route options.
-	 *
-	 * @param array $options The route options. By default the method receive an empty array
-	 * @return array Return default and/or defined options.
-	*/
-	private function parseOptions($options)
+
+    /**
+     * Check and parse the route options.
+     *
+     * @param array $options The route options. By default the method receive an empty array
+     * @throws RouteException
+     * @return array Return default and/or defined options.
+     */
+	private function parseOptions(array $options)
 	{
 		$newOptions = array();
 		
@@ -156,11 +159,11 @@ class RouteData
 	}
 
 	/**
-	 * Set infos for the controller.
+	 * Set info for the controller.
 	 * 
-	 * @param string
-	 * @return array
-	*/
+	 * @param string $path The defined controller path.
+	 * @return array The controller properties.
+	 */
 	private function parseController($path)
 	{
 		// Check if it's a "controller path" before processing.
@@ -183,20 +186,20 @@ class RouteData
 	}
 
 	/**
-	 * Return the WP conditional function signature
+	 * Return the WordPress conditional function signature.
 	 * 
-	 * @return string
-	*/
+	 * @return string The core WordPress function signature.
+	 */
 	public function getCallback()
 	{
 		return $this->callback;
 	}
 
 	/**
-	 * Return the WP conditional function terms
+	 * Return the WordPress conditional function terms.
 	 * 
-	 * @return array
-	*/
+	 * @return array The conditional terms.
+	 */
 	public function getTerms()
 	{
 		return $this->terms;
@@ -205,8 +208,8 @@ class RouteData
 	/**
 	 * Return the route closure object
 	 * 
-	 * @return object
-	*/
+	 * @return object|string The closure object or empty string if no closure.
+	 */
 	public function getClosure()
 	{
 		return $this->closure;
@@ -215,10 +218,10 @@ class RouteData
 	/**
 	 * Return a boolean. True when there is
 	 * a registered template, false when no
-	 * templates assigned.
+	 * template assigned.
 	 * 
-	 * @return boolean
-	*/
+	 * @return bool True. False if no template.
+	 */
 	public function getTemplate()
 	{
 	    if (isset($this->options['template']) && true === $this->options['template']) {
@@ -231,20 +234,20 @@ class RouteData
 	}
 
 	/**
-	 * Retrieve the controller infos
+	 * Retrieve the controller info.
 	 * 
-	 * @return string
-	*/
+	 * @return array The controller properties.
+	 */
 	public function getController()
 	{
 		return $this->controller;
 	}
 	
 	/**
-	 * Retrieve the method option
+	 * Retrieve the method option.
 	 *
-	 * @return string The HTTP method value - 'ANY', 'GET', 'POST',...
-	*/
+	 * @return string The HTTP method value: 'ANY', 'GET', 'POST',...
+	 */
 	public function getMethod()
 	{
 		
@@ -262,8 +265,9 @@ class RouteData
 	}
 
 	/**
-	 * Retrieve the 'ssl' option value
-	 * @return bool True or false (default)
+	 * Retrieve the 'ssl' option value.
+     *
+	 * @return bool False. True if ssl is defined.
 	 */
 	public function getSsl()
 	{

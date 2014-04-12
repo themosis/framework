@@ -7,10 +7,6 @@ defined('DS') or die('No direct script access.');
  * TaxField class
  * 
  * Allow the user to add custom fields to a taxonomy.
- *
- * @since 1.0
- * @author Julien Lambé (julien@themosis.com)
- * @link http://www.themosis.com/
 */
 
 class TaxField
@@ -42,9 +38,8 @@ class TaxField
     /**
      * Class constructor.
      *
-     * @param string The taxonomy slug used by action hooks.
-     * @access private
-    */
+     * @param string $taxonomySlug The taxonomy slug used by action hooks.
+     */
     private function __construct($taxonomySlug)
     {   
         $this->slug = $taxonomySlug;
@@ -54,14 +49,14 @@ class TaxField
         /*-----------------------------------------------------------------------*/
     	add_action('wp_loaded', array(&$this, 'check'));
     }
-    
+
     /**
      * Init the custom taxonomy field.
      *
-     * @param string The taxonomy slug.
-     * @return object An instance of TaxField. Allow for chaining methods.
-     * @access public
-    */
+     * @param string $taxonomySlug The taxonomy slug.
+     * @throws TaxonomyException
+     * @return \Themosis\Taxonomy\TaxField
+     */
     public static function make($taxonomySlug)
     {   
         $slug = trim($taxonomySlug);
@@ -76,13 +71,14 @@ class TaxField
             
         }
     }
-    
+
     /**
      * Check if the taxonomy exists. Call by the action hook 'wp_loaded'.
      * If not, throw an exception.
      *
-     * @access public
-    */
+     * @throws TaxonomyException
+     * @return void
+     */
     public function check()
     {
     	if (taxonomy_exists($this->slug)) {
@@ -99,15 +95,15 @@ class TaxField
         	
     	}
     }
-    
+
     /**
      * Set the custom fields for the taxonomy.
      *
-     * @param array Array of arrays. Use the Field class to add custom field.
-     * @return object Return the instance for chaining.
-     * @access public
-    */
-    public function set($fields)
+     * @param array $fields A list of fields.
+     * @throws TaxonomyException
+     * @return \Themosis\Taxonomy\TaxField
+     */
+    public function set(array $fields)
     {        
         if (is_array($fields) && !empty($fields)) {
             
@@ -155,8 +151,8 @@ class TaxField
     /**
      * Display the custom fields on the add terms page.
      *
-     * @access public
-    */
+     * @return void
+     */
     public function addFields()
     {
     	/*-----------------------------------------------------------------------*/
@@ -164,14 +160,14 @@ class TaxField
     	/*-----------------------------------------------------------------------*/
     	TaxFieldRenderer::render('add', $this->fields);
     }
-    
+
     /**
      * Display the custom fields on the edit term page.
      *
-     * @param object The term object stdObject
-     * @access public
-    */
-    public function editFields($term)
+     * @param \stdClass $term The term object passed by WordPress.
+     * @return void
+     */
+    public function editFields(\stdClass $term)
     {
     	/*-----------------------------------------------------------------------*/
     	// Output the custom fields
@@ -182,9 +178,9 @@ class TaxField
     /**
      * Save the fields values in the options table.
      *
-     * @param int The term ID
-     * @access public
-    */
+     * @param int $term_id The term ID.
+     * @return void
+     */
     public function save($term_id)
     {    	
     	if (isset($_POST[$this->slug])) {
@@ -220,15 +216,15 @@ class TaxField
     		update_option($optionKey, $term_meta );
     	}
     }
-    
+
     /**
      * Delete the fields from the database.
      *
-     * @param object The term object - stdObject
-     * @param int The term ID
-     * @access public
-    */
-    public function delete($term, $term_id)
+     * @param \stdClass $term The term object.
+     * @param int $term_id The term ID.
+     * @return void
+     */
+    public function delete(\stdClass $term, $term_id)
     {
         $key = $this->slug.'_'.$term_id;
         
@@ -238,12 +234,11 @@ class TaxField
     /**
      * Parse the fields and mix them with a default one.
      *
-     * @param array The registered fields.
-     * @param string The taxonomy slug.
+     * @param array $fields The defined fields and their properties.
+     * @param string $taxonomySlug The taxonomy slug.
      * @return array The parsed array of fields with a TaxonomySlug key/value.
-     * @access private
-    */
-    private function parse($fields, $taxonomySlug)
+     */
+    private function parse(array $fields, $taxonomySlug)
 	{
 		$newFields = array();
 

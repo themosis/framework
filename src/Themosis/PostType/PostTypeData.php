@@ -14,7 +14,7 @@ class PostTypeData
 	/**
 	 * Saved default values for the associated custom post type.
 	 *
-	 * @param string
+	 * @param string $name The custom post type plural name.
 	*/
 	public function __construct($name)
 	{
@@ -50,18 +50,19 @@ class PostTypeData
 	 * Allow the developer to override the default values
 	 * by passing an array.
 	 *
-	 * @param array
-	*/
-	public function set($params)
+	 * @param array $params The custom post type arguments.
+     * @return void
+	 */
+	public function set(array $params)
 	{
 		$this->defaults = array_merge($this->defaults, $params);
 	}
 
 	/**
-	 * Retrieve the saved values of the custom post type
+	 * Retrieve the datas of the custom post type.
 	 *
-	 * @return object
-	*/
+	 * @return object A Themosis\PostType\PostTypeData instance.
+	 */
 	public function get()
 	{
 		return $this;
@@ -72,7 +73,7 @@ class PostTypeData
 	 * Return the custom post type arguments.
 	 *
 	 * @access public
-	 * @return array
+	 * @return array The custom post type arguments.
 	 */
 	public function getArgs()
 	{
@@ -84,8 +85,8 @@ class PostTypeData
 	 * post type supports the editor. If not, load
 	 * WP new uploader assets.
 	 *
-	 * @return boolean
-	*/
+	 * @return bool True. False if editor not supported.
+	 */
 	public function handleEditor()
 	{
 		if (isset($this->defaults['supports'])) {
@@ -104,7 +105,12 @@ class PostTypeData
 	/**
 	 * Define a set of properties in order to make
 	 * the custom post type restful.
-	*/
+     *
+     * @todo Remove restful methods.
+     *
+     * @deprecated Not recommended.
+     * @return void
+	 */
 	public function rest()
 	{
 		$rests = array(

@@ -10,7 +10,7 @@ defined('DS') or die('No direct script access.');
 class Router
 {
 	/**
-	* Available Wordpress conditionals
+	* Available WordPress conditionals
 	*/
 	protected static $conds = array(
 		'404'			       => 'is_404',
@@ -47,22 +47,23 @@ class Router
 	public function __construct()
 	{
 		Action::listen('themosis_render', $this, 'render')->dispatch();
-		/*Action::listen('template_redirect', $this, 'render')->dispatch();*/
 	}
 
 	/**
-	 * Initialize the router
+	 * Initialize the router.
 	 *
-	 * @return object
-	*/
+	 * @return \Themosis\Route\Router
+	 */
 	public static function init()
 	{
 		return new static();
 	}
 
 	/**
-	 * Launch the render of each views
-	*/
+	 * Launch the render of each views.
+     *
+     * @return void
+	 */
 	public function render()
 	{
 	    /*-----------------------------------------------------------------------*/
@@ -105,13 +106,14 @@ class Router
 		}
 	}
 
-	/**
-	 * Use the route instance in order to send
-	 * a response to the browser.
-	 *
-	 * @param object $route The route instance
-	*/
-	private static function send($route)
+    /**
+     * Use the route instance in order to send
+     * a response to the browser.
+     *
+     * @param \Themosis\Route\Route $route The route instance.
+     * @return void
+     */
+	private static function send(Route $route)
 	{
 		// Check WP conditional
 		if (call_user_func($route->data->getCallback(), $route->data->getTerms())) {
@@ -162,14 +164,14 @@ class Router
 		}
 	}
 
-	/**
-	 * Handle output methods. Check if we use a closure
-	 * or a controller and send the results for output.
-	 *
-	 * @param object The Route object
-	 * @return void
-	*/
-	private static function handleBeforeOutput($route)
+    /**
+     * Handle output methods. Check if we use a closure
+     * or a controller and send the results for output.
+     *
+     * @param \Themosis\Route\Route $route The route instance.
+     * @return void
+     */
+	private static function handleBeforeOutput(Route $route)
 	{
 		// Check if we got a closure or not
 		// If not, we're using a controller
@@ -202,8 +204,8 @@ class Router
 	 * If there is a '_themosisPageTemplate' meta data,
      * the page should be rendered with the template route only.
      *
-     * @return boolean True if it has a '_themosisPageTemplate'
-	*/
+     * @return bool True if it has a '_themosisPageTemplate'. False.
+	 */
 	private static function parseTemplate()
 	{
 		$qo = get_queried_object();
@@ -226,11 +228,12 @@ class Router
 		return false;
 	}
 
-	/**
-	 * Render the view.
-	 *
-	 * @param mixed
-	*/
+    /**
+     * Render the view.
+     *
+     * @param string|\Themosis\View\View
+     * @throws RouteException
+     */
 	protected static function output($view)
 	{
 		if (is_string($view)) {
@@ -244,23 +247,23 @@ class Router
 
 	/**
 	 * Parse the queries.
-	*/
+	 */
 	public static function parse()
 	{
 		// Retrieve all server vars
 		$requests = $_SERVER;
 
-		// Allow developpers to hook and analysed the request
+		// Allow developers to hook and analysed the request
 		do_action('themosis_parse_requests', $requests);
 
 	}
 
-	/**
-	 * Parse the given controller string.
-	 *
-	 * @param string
-	 * @param boolean
-	*/
+    /**
+     * Parse the given controller string.
+     *
+     * @param string $controllerPath The defined controller path.
+     * @return bool True if valid path. False if not.
+     */
 	public static function valid($controllerPath)
 	{
 		if (strpos($controllerPath, '@') !== false) {
@@ -279,8 +282,9 @@ class Router
 	 * NOTE: the query var value is a boolean, defined in the API class
 	 * when rules are added.
 	 *
+     * @deprecated
 	 * @return boolean
-	*/
+	 */
 	protected static function isApi()
 	{
 		$qv = get_query_var(Application::get('api_qv'));
