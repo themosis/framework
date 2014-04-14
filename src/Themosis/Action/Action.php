@@ -65,7 +65,6 @@ class Action extends ActionSubject
      * @param string $object The class instance name to use
      * @param string $callback The instance method to call
      * @param null|mixed $args The add_action extra arguments
-     * @internal param $mixed (additional parameters)
      * @return static An Action instance
      */
 	public static function listen($hook, $object, $callback, $args = null)
@@ -82,9 +81,7 @@ class Action extends ActionSubject
 	*/
 	public function dispatch()
 	{
-		$args = $this->args;
-
-		add_action($this->hook, array(&$this, 'action'), 10, $args);
+		add_action($this->hook, array(&$this, 'action'));
 	}
 
     /**
