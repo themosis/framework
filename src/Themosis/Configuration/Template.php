@@ -1,12 +1,8 @@
 <?php
 namespace Themosis\Configuration;
 
-use Themosis\Action\Action;
 use Themosis\Field\Field;
-use Themosis\Metabox\Meta;
 use Themosis\Metabox\Metabox;
-use Themosis\Route\Route;
-use Themosis\View\View;
 
 defined('DS') or die('No direct script access.');
 

@@ -187,7 +187,7 @@ class MetaboxParser
 
 						$value = $_POST[$input['name']];
 
-						// Could be a string or an array - Let's let the conditionnal statements for now...
+						// Could be a string or an array - Let's let the conditional statements for now...
 						if (is_string($value)) {
 
 							update_post_meta($postId, $input['name'], $value);
