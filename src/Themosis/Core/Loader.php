@@ -11,7 +11,7 @@ defined('DS') or die('No direct script access.');
 abstract class Loader
 {	
 	/**
-	 * Keep a copy of filenames
+	 * Keep a copy of file names.
 	*/
 	protected static $names = array();
 
@@ -19,9 +19,9 @@ abstract class Loader
 	 * Scan the directory at the given path and include
 	 * all files. Only 1 level iteration.
 	 * 
-	 * @param string $path
+	 * @param string $path The directory/file path.
 	 * @return bool True. False if not appended.
-	*/
+	 */
 	protected static function append($path){
 
 		if (is_dir($path)) {

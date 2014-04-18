@@ -23,10 +23,13 @@ class WidgetLoader extends Loader implements LoaderInterface
 	private static $widgets = array();
 
 	/**
-	 * List of filenames
+	 * List of file names
 	*/
 	protected static $names = array();
 
+    /**
+     * The WidgetLoader constructor.
+    */
 	public function __construct()
 	{
 		Action::listen('widgets_init', $this, 'install')->dispatch();
@@ -36,8 +39,8 @@ class WidgetLoader extends Loader implements LoaderInterface
 	 * Build the path where the class has to scan
 	 * the files for adding the WIDGETS.
 	 * 
-	 * @return boolean
-	*/
+	 * @return bool True. False if not able to add the widget.
+	 */
 	public static function add()
 	{
 		static::$path = themosis_path('datas').'widgets'.DS;
@@ -45,10 +48,10 @@ class WidgetLoader extends Loader implements LoaderInterface
 	}
 
 	/**
-	 * Load custom widgets
+	 * Load custom widgets.
 	 * 
-	 * @return object
-	*/
+	 * @return \Themosis\Core\WidgetLoader
+	 */
 	public static function load()
 	{
 		foreach (static::$names as $name) {
@@ -63,10 +66,10 @@ class WidgetLoader extends Loader implements LoaderInterface
 	}
 
 	/**
-	 * Install the widgets
+	 * Install the widgets.
 	 * 
-	 * @return bool True, False if not installed.
-	*/
+	 * @return bool True. False if not installed.
+	 */
 	public static function install()
 	{
 		if (count(static::$widgets) > 0) {

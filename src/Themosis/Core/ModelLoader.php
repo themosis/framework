@@ -3,7 +3,6 @@
 namespace Themosis\Core;
 
 use ReflectionClass;
-use Themosis\PostType\PostType;
 
 class ModelLoader extends Loader implements LoaderInterface
 {
@@ -50,7 +49,7 @@ class ModelLoader extends Loader implements LoaderInterface
      * 
      * @param string $name The class/file name.
      * @return bool True, False if not a model.
-    */
+     */
     private static function isModel($name){
 
         return strrpos($name, static::$ext);
@@ -62,7 +61,7 @@ class ModelLoader extends Loader implements LoaderInterface
      * 
      * @param string $name The class/file name.
      * @return string The clean/correct class name.
-    */
+     */
     private static function clean($name){
 
         $name = substr($name, 0, static::isModel($name));

@@ -10,7 +10,7 @@ class AdminLoader extends Loader implements LoaderInterface
 	 * the files for the ADMIN.
 	 * 
 	 * @return bool True. False if not appended.
-	*/
+	 */
 	public static function add()
 	{
 		$path = themosis_path('datas').'admin'.DS;
