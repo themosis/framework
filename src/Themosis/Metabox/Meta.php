@@ -13,7 +13,7 @@ class Meta
 	 * @param string $key The meta name.
 	 * @param bool $single Default to true. False to return as an array.
 	 * @return mixed The meta value.
-	*/
+	 */
 	public static function get($id, $key = '', $single = true)
 	{
 		$default = get_post_meta($id, $key, $single);

@@ -38,6 +38,11 @@ class MetaboxParser
 	*/
 	private $datas;
 
+    /**
+     * The MetaboxParser constructor.
+     *
+     * @param MetaboxData $datas The metabox datas.
+     */
 	public function __construct(MetaboxData $datas)
 	{
 		$this->datas = $datas;
@@ -48,7 +53,7 @@ class MetaboxParser
      *
      * @param string $postType The post type the metabox is associated with.
      * @return void
-	*/
+	 */
 	public function setType($postType)
 	{
 		$this->postType = $postType;
@@ -60,7 +65,8 @@ class MetaboxParser
 	 * @param string $cap The capability name.
 	 * @param int $userId The user ID.
 	 * @param mixed $args Capability parameters.
-	*/
+     * @return void
+	 */
 	public function userCheck($cap, $userId = null, $args = null)
 	{
 		$this->cap = (is_string($cap)) ? $cap : null;
@@ -76,7 +82,7 @@ class MetaboxParser
      * @param array $inputs The custom fields to save.
 	 * @param int The post type ID.
      * @return void
-	*/
+	 */
 	public function save(array $inputs, $postId)
 	{
 		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;

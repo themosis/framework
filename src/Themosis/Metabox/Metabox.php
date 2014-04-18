@@ -50,7 +50,12 @@ class Metabox
 
 	/**
 	 * Initialize each metabox and register its hooks.
-	*/
+     *
+     * @param string $title The metabox display title.
+     * @param string $postType The post type to associate the metabox with.
+     * @param array $options The metabox options.
+     * @ignore
+	 */
 	public function __construct($title, $postType, array $options = array())
 	{
 		$this->title = $title;
@@ -116,7 +121,8 @@ class Metabox
 	 * Handle the Metabox installation
 	 *
 	 * @return void
-	*/
+     * @ignore
+	 */
 	public function install()
 	{
 		$id = md5($this->title);
@@ -133,7 +139,8 @@ class Metabox
      * @param object $post The WP_Post object.
      * @param array $datas The metabox fields.
      * @return void
-	*/
+     * @ignore
+	 */
 	public function build($post, array $datas)
 	{
 		$this->post = $post;
@@ -146,7 +153,8 @@ class Metabox
      *
      * @param int $postId The post type ID.
      * @return void
-	*/
+     * @ignore
+	 */
 	public function save($postId)
 	{
 		$this->parser->save($this->data->get(), $postId);
@@ -157,9 +165,9 @@ class Metabox
 	 *
 	 * @param string $cap The capability name.
 	 * @param int $userId The user ID.
-	 * @param mixed
+	 * @param mixed $args The capability arguments.
      * @return void
-	*/
+	 */
 	public function userCap($cap, $userId = null, $args = null)
 	{
 		if (is_string($cap) && !empty($cap)) {
@@ -173,7 +181,7 @@ class Metabox
 	 *
 	 * @param array $options An array of extra parameters for the metabox: 'context', 'priority'
 	 * @return array The checked options.
-	*/
+	 */
 	private function parseOptions(array $options)
 	{
 		$newOptions = array();

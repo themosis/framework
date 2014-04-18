@@ -14,7 +14,7 @@ class MetaboxRenderer extends MetaboxTemplate
 	 * @param object $post The post object WP_Post.
 	 * @param array $datas The metabox fields.
      * @return void
-	*/
+	 */
 	public static function render($post, array $datas)
 	{
 		// Add nonce fields

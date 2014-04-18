@@ -11,7 +11,7 @@ abstract class MetaboxTemplate
 	 * @param int $id The post type ID.
 	 * @param array $datas The defined field properties.
 	 * @return array All field properties.
-	*/
+	 */
 	protected static function populate($id, array $datas)
 	{
 		$newDatas = array();
@@ -40,7 +40,7 @@ abstract class MetaboxTemplate
 	 *
 	 * @param array $field The custom field properties.
 	 * @return string The field title property.
-	*/
+	 */
 	private static function setTitle(array $field)
 	{
 		// If not exists, set the title equal to the name property
@@ -57,7 +57,7 @@ abstract class MetaboxTemplate
 	 *
 	 * @param array $field The custom field properties.
 	 * @return string The field info property.
-	*/
+	 */
 	private static function setInfo(array $field)
 	{
 		// If not exists, set the title equal to the name property
@@ -73,7 +73,7 @@ abstract class MetaboxTemplate
 	 *
 	 * @param array $field The text field properties
      * @return void
-	*/
+	 */
 	protected static function text(array $field)
 	{
 		?>
@@ -102,7 +102,7 @@ abstract class MetaboxTemplate
 	 *
 	 * @param array $field The textarea properties.
      * @return void
-	*/
+	 */
 	protected static function textarea(array $field)
 	{
 		?>
@@ -131,7 +131,7 @@ abstract class MetaboxTemplate
 	 *
 	 * @param array $field The checkbox field properties.
      * @return void
-	*/
+	 */
 	protected static function checkbox(array $field)
 	{
 		?>
@@ -197,7 +197,7 @@ abstract class MetaboxTemplate
 	 *
 	 * @param array $field The radio field properties.
      * @return void
-	*/
+	 */
 	protected static function radio(array $field)
 	{
 
@@ -236,7 +236,7 @@ abstract class MetaboxTemplate
 	 *
 	 * @param array $field The select field properties.
      * @return void
-	*/
+	 */
 	protected static function select(array $field)
 	{
 
@@ -412,7 +412,7 @@ abstract class MetaboxTemplate
 	 *
 	 * @param array $field The media field properties.
      * @return void
-	*/
+	 */
 	protected static function media(array $field)
 	{
 
@@ -469,7 +469,7 @@ abstract class MetaboxTemplate
 	 *
 	 * @param array $field The infinite field properties.
      * @return void
-	*/
+	 */
 	protected static function infinite(array $field)
 	{
 	    extract($field);
