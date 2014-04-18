@@ -22,6 +22,7 @@ class View extends Viewer
      * @param string $path The view file path relative to the 'views' directory.
      * @param array $datas The datas to pass to the view.
      * @param bool $engine False by default. True if we use the 'scout' engine.
+     * @ignore
      */
 	public function __construct($path, array $datas = array(), $engine = false)
 	{
@@ -57,6 +58,7 @@ class View extends Viewer
 	 * Render the requested view.
      *
      * @return void
+     * @ignore
 	 */
 	public function render()
 	{	
