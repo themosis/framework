@@ -17,7 +17,7 @@ class TaxMeta
      * @param string $taxonomySlug The registered taxonomy slug.
      * @param int $term_id The term ID.
      * @return array|boolean The custom field values. False if empty.
-    */
+     */
     public static function all($taxonomySlug, $term_id)
     {
     	$key = $taxonomySlug.'_'.$term_id;

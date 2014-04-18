@@ -28,6 +28,7 @@ class Taxonomy
      * @param string $slug The slug name of the custom taxonomy.
      * @param string $name The display name of the custom taxonomy.
      * @param string $postType The slug of the post type to associate with.
+     * @ignore
      */
 	public function __construct($slug, $name, $postType)
 	{
@@ -70,6 +71,7 @@ class Taxonomy
 	 * Executed by the Event class 'init' hook.
      *
      * @return void
+     * @ignore
 	 */
 	public function install()
 	{

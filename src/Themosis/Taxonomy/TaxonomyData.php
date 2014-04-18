@@ -13,7 +13,7 @@ class TaxonomyData
 	/**
 	 * Saved default values for the associated taxonomy.
 	 * 
-	 * @param string $name The taxonomy display name.
+	 * @param string $name The taxonomy display plural name.
 	 */
 	public function __construct($name)
 	{

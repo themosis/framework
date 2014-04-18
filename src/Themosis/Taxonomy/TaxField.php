@@ -36,7 +36,7 @@ class TaxField
     private $fields = array();
 
     /**
-     * Class constructor.
+     * The TaxField constructor.
      *
      * @param string $taxonomySlug The taxonomy slug used by action hooks.
      */
@@ -47,7 +47,7 @@ class TaxField
         /*-----------------------------------------------------------------------*/
         // Check if the taxonomy exists before going further.
         /*-----------------------------------------------------------------------*/
-    	add_action('wp_loaded', array(&$this, 'check'));
+    	add_action('wp_loaded', array($this, 'check'));
     }
 
     /**
@@ -78,6 +78,7 @@ class TaxField
      *
      * @throws TaxonomyException
      * @return void
+     * @ignore
      */
     public function check()
     {
@@ -118,20 +119,20 @@ class TaxField
             /*-----------------------------------------------------------------------*/
             $slug = $this->slug.'_add_form_fields';
             
-            add_action($slug, array(&$this, 'addFields'));
+            add_action($slug, array($this, 'addFields'));
             
             /*-----------------------------------------------------------------------*/
             // Add the field to the "edit term page"
             /*-----------------------------------------------------------------------*/
             $slug = $this->slug.'_edit_form_fields';
             
-            add_action($slug, array(&$this, 'editFields'));
+            add_action($slug, array($this, 'editFields'));
             
             /*-----------------------------------------------------------------------*/
             // Register the save hooks on the add + edit pages.
             /*-----------------------------------------------------------------------*/
-            add_action('edited_'.$this->slug, array(&$this, 'save'), 10, 2);
-            add_action('create_'.$this->slug, array(&$this, 'save'), 10, 2);
+            add_action('edited_'.$this->slug, array($this, 'save'), 10, 2);
+            add_action('create_'.$this->slug, array($this, 'save'), 10, 2);
             
             /*-----------------------------------------------------------------------*/
             // Register the delete hook in order to remove the custom fields
@@ -152,6 +153,7 @@ class TaxField
      * Display the custom fields on the add terms page.
      *
      * @return void
+     * @ignore
      */
     public function addFields()
     {
@@ -166,6 +168,7 @@ class TaxField
      *
      * @param \stdClass $term The term object passed by WordPress.
      * @return void
+     * @ignore
      */
     public function editFields(\stdClass $term)
     {
@@ -180,6 +183,7 @@ class TaxField
      *
      * @param int $term_id The term ID.
      * @return void
+     * @ignore
      */
     public function save($term_id)
     {    	
@@ -223,6 +227,7 @@ class TaxField
      * @param \stdClass $term The term object.
      * @param int $term_id The term ID.
      * @return void
+     * @ignore
      */
     public function delete(\stdClass $term, $term_id)
     {
