@@ -6,7 +6,7 @@ defined('DS') or die('No direct script access.');
 class Route extends Router
 {
 	/**
-	 * Route instance infos
+	 * Route instance info
 	*/
 	protected $data;
 
@@ -17,15 +17,14 @@ class Route extends Router
      * @param callable|string $closure Could be a closure or string defining a controller path.
      * @param array $terms The WordPress conditional method parameters: terms like objects slug, id, title,...
      * @param array $options The Route options.
+     * @ignore
      */
 	public function __construct($callback, $closure, array $terms = array(), array $options = array())
 	{
-	
 		$datas = compact('callback', 'closure', 'terms', 'options');
 		$this->data = new RouteData($datas);
 
 		static::$instances[] = $this;
-		
 	}
 
     /**

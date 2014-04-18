@@ -44,6 +44,11 @@ class RouteData
 	*/
 	private $controller = array();
 
+    /**
+     * The RouteData constructor.
+     *
+     * @param array $datas The route datas.
+     */
 	public function __construct(array $datas)
 	{	    
 		$this->callback = $datas['callback'];
@@ -142,13 +147,11 @@ class RouteData
         		$newOptions['ssl'] = false;
         		
     		}
-    		
         
             /*-----------------------------------------------------------------------*/
             // Return the $newOptions
             /*-----------------------------------------------------------------------*/
             return $newOptions;
-        
     		
 		} else {
     		

@@ -44,6 +44,9 @@ class Router
 	*/
 	protected static $instances = array();
 
+    /**
+     * The Router constructor.
+     */
 	public function __construct()
 	{
 		Action::listen('themosis_render', $this, 'render')->dispatch();
