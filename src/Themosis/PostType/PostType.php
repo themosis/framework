@@ -32,6 +32,13 @@ class PostType {
 	*/
 	private $restful = false;
 
+    /**
+     * The PostType constructor.
+     *
+     * @param string $slug The custom post type slug name.
+     * @param string $name The custom post type plural name.
+     * @ignore
+     */
 	public function __construct($slug, $name)
 	{
 		$this->slug = $slug;
@@ -48,7 +55,7 @@ class PostType {
      * @param string $slug The post type slug name.
      * @param string $name The plural display name.
      * @throws PostTypeException
-     * @return object A Themosis\PostType\PostType instance.
+     * @return \Themosis\PostType\PostType
      */
 	public static function make($slug, $name)
 	{
@@ -68,7 +75,7 @@ class PostType {
 	 * Also install the custom post type.
 	 *
 	 * @param array $params The custom post type arguments: https://codex.wordpress.org/Function_Reference/register_post_type
-	 * @return object A Themosis\PostType\PostType instance.
+	 * @return \Themosis\PostType\PostType
 	 */
 	public function set(array $params = array())
 	{
@@ -91,7 +98,7 @@ class PostType {
 	}
 
 	/**
-	 * Retrieve the custom post type slug
+	 * Retrieve the custom post type slug.
 	 *
 	 * @return string The custom post type slug property.
 	 */
@@ -101,9 +108,9 @@ class PostType {
 	}
 
 	/**
-	 * Retrieve the custom post type datas
+	 * Retrieve the custom post type datas.
 	 *
-	 * @return object A Themosis\PostType\PostTypeData instance.
+	 * @return \Themosis\PostType\PostTypeData
 	 */
 	public function getData()
 	{
@@ -111,9 +118,10 @@ class PostType {
 	}
 
 	/**
-	 * Register the custom post type
+	 * Register the custom post type.
 	 *
-	 * @return object|WP_Error The custom post type object or a WP_Error instance if error.
+	 * @return WP_Post|WP_Error The custom post type object or a WP_Error instance if error.
+     * @ignore
 	 */
 	public function register()
 	{
@@ -126,9 +134,10 @@ class PostType {
 	}
 
 	/**
-	 * Enqueue the new media uploader
+	 * Enqueue the new media uploader.
 	 *
 	 * @return bool True. False if not enqueue.
+     * @ignore
 	 */
 	public function enqueueMediaUploader()
 	{
@@ -149,6 +158,7 @@ class PostType {
 	 *
      * @deprecated No longer used by internal code and not recommended.
 	 * @return object A Themosis\PostType\PostType instance.
+     * @ignore
 	 */
 	public function isRestful()
 	{

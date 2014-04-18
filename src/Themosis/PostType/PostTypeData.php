@@ -61,7 +61,7 @@ class PostTypeData
 	/**
 	 * Retrieve the datas of the custom post type.
 	 *
-	 * @return object A Themosis\PostType\PostTypeData instance.
+	 * @return \Themosis\PostType\PostTypeData
 	 */
 	public function get()
 	{

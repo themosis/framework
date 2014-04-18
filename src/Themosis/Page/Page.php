@@ -36,6 +36,7 @@ class Page
      * The Page constructor.
      *
      * @param array $params The page datas.
+     * @ignore
      */
 	public function __construct(array $params)
 	{
@@ -115,6 +116,7 @@ class Page
 	 * Construct the page.
      *
      * @return void
+     * @ignore
 	 */
 	public function build()
 	{
@@ -129,6 +131,7 @@ class Page
 	 * Display the page.
      *
      * @return void
+     * @ignore
 	 */
 	public function display()
 	{
@@ -139,6 +142,7 @@ class Page
 	 * Install page settings.
      *
      * @return void
+     * @ignore
 	 */
 	public function install()
 	{
@@ -175,6 +179,7 @@ class Page
      *
      * @param array $args The section properties.
      * @return void
+     * @ignore
      */
 	public function displaySections(array $args)
 	{
@@ -186,6 +191,7 @@ class Page
 	 * 
 	 * @param array $args The setting properties.
      * @return void
+     * @ignore
 	 */
 	public function displaySettings(array $args)
 	{
@@ -197,6 +203,7 @@ class Page
      *
      * @param array $input The option field values.
      * @return array The sanitized field values.
+     * @ignore
      */
 	public function validate(array $input)
 	{
@@ -207,6 +214,7 @@ class Page
 	 * Enqueue the new WP > 3.5 media Uploader.
      *
      * @return void
+     * @ignore
 	 */
 	public function enqueueMediaUploader()
 	{
