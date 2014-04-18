@@ -32,6 +32,11 @@ class Page
 	*/
 	private $cap = 'manage_options';
 
+    /**
+     * The Page constructor.
+     *
+     * @param array $params The page datas.
+     */
 	public function __construct(array $params)
 	{
 		$this->data = new PageData($params);
@@ -43,7 +48,7 @@ class Page
 	}
 
     /**
-     * Define an options page. Can be a main or submenu page.
+     * Define an options page. Can be a main or sub-menu page.
      *
      * @todo Move the $sections and $settings to the 'set()' method.
      *
@@ -71,8 +76,8 @@ class Page
 	/**
 	 * Build the options page.
 	 * 
-	 * @return object A Themosis\Page\Page instance.
-	*/
+	 * @return \Themosis\Page\Page
+	 */
 	public function set()
 	{
 		$this->buildEvent->dispatch();
@@ -84,8 +89,8 @@ class Page
 	 * Define the menu icon url.
 	 * 
 	 * @param string $url The absolute URL to the icon.
-	 * @return object A Themosis\Page\Page instance.
-	*/
+	 * @return \Themosis\Page\Page
+	 */
 	public function setMenuIcon($url)
 	{
 		$this->iconUrl = (is_string($url) && !empty($url)) ? $url : '';
@@ -97,7 +102,7 @@ class Page
      * Define page capability.
      *
      * @param string $cap The capability name.
-     * @return object A Themosis\Page\Page instance.
+     * @return \Themosis\Page\Page
      */
 	public function setCap($cap)
 	{
@@ -107,34 +112,34 @@ class Page
 	}
 
 	/**
-	 * Construct the page
+	 * Construct the page.
      *
      * @return void
-	*/
+	 */
 	public function build()
 	{
 		if (!is_null($this->data->get('parent'))) {
-			add_submenu_page($this->data->get('parent'), $this->data->get('title'), $this->data->get('title'), $this->cap, $this->data->get('slug'), array(&$this, 'display'));
+			add_submenu_page($this->data->get('parent'), $this->data->get('title'), $this->data->get('title'), $this->cap, $this->data->get('slug'), array($this, 'display'));
 		} else {
-			add_menu_page($this->data->get('title'), $this->data->get('title'), $this->cap, $this->data->get('slug'), array(&$this, 'display'), $this->iconUrl, null);
+			add_menu_page($this->data->get('title'), $this->data->get('title'), $this->cap, $this->data->get('slug'), array($this, 'display'), $this->iconUrl, null);
 		}
 	}
 
 	/**
-	 * Display the page
+	 * Display the page.
      *
      * @return void
-	*/
+	 */
 	public function display()
 	{
 		$this->renderer->page($this->data);
 	}
 
 	/**
-	 * Install page settings
+	 * Install page settings.
      *
      * @return void
-	*/
+	 */
 	public function install()
 	{
 		// If the theme options don't exist, create them.
@@ -146,12 +151,12 @@ class Page
 
 		// Display sections
 		foreach($this->data->get('sections') as $section){
-			add_settings_section($section['name'], $section['title'], array(&$this, 'displaySections'), $section['name']);
+			add_settings_section($section['name'], $section['title'], array($this, 'displaySections'), $section['name']);
 		}
 
 		// Display settings
 		foreach($this->data->get('settings') as $setting){
-			add_settings_field($setting['name'], $setting['title'], array(&$this, 'displaySettings'), $setting['section'], $setting['section'], $setting);
+			add_settings_field($setting['name'], $setting['title'], array($this, 'displaySettings'), $setting['section'], $setting['section'], $setting);
 		}
 
 		// Register the settings and define the sanitized callback
@@ -161,12 +166,12 @@ class Page
 		// name and the setting id. Check documentation for the
 		// Option class of the Themosis utility framework.
 		foreach ($this->data->get('sections') as $section) {
-			register_setting($section['name'], $section['name'], array(&$this, 'validate'));	
+			register_setting($section['name'], $section['name'], array($this, 'validate'));
 		}
 	}
 
     /**
-     * Handle section display
+     * Handle section display.
      *
      * @param array $args The section properties.
      * @return void
@@ -177,18 +182,18 @@ class Page
 	}
 
 	/**
-	 * Handle settings display
+	 * Handle settings display.
 	 * 
 	 * @param array $args The setting properties.
      * @return void
-	*/
+	 */
 	public function displaySettings(array $args)
 	{
 		$this->renderer->settings($args);
 	}
 
     /**
-     * Validate settings
+     * Validate settings.
      *
      * @param array $input The option field values.
      * @return array The sanitized field values.
@@ -199,7 +204,7 @@ class Page
 	}
 
 	/**
-	 * Enqueue the new WP > 3.5 media Uploader
+	 * Enqueue the new WP > 3.5 media Uploader.
      *
      * @return void
 	 */

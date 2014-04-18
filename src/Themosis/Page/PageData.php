@@ -10,6 +10,11 @@ class PageData
 	*/
 	private $datas = array();
 
+    /**
+     * The PageData constructor.
+     *
+     * @param array $params The page parameters.
+     */
 	public function __construct(array $params)
 	{
 		$this->datas = $params;
@@ -47,7 +52,7 @@ class PageData
 	 * 
 	 * @param array $settings The page settings.
 	 * @return array The parsed settings.
-	*/
+	 */
 	private function parse(array $settings)
 	{
 		$newSettings = array();
@@ -109,7 +114,7 @@ class PageData
 	}
 
 	/**
-	 * Sanitize setting before saving it to the DB
+	 * Sanitize setting before saving it to the DB.
 	 * 
 	 * @param array $input The setting field values.
 	 * @return array The sanitized field values.

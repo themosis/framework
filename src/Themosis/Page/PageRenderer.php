@@ -10,13 +10,18 @@ class PageRenderer
 	*/
 	private $data;
 
+    /**
+     * The PageRenderer constructor.
+     *
+     * @param PageData $data The page datas.
+     */
 	public function __construct(PageData $data)
 	{
 		$this->data = $data;
 	}
 
 	/**
-	 * Handle page main display
+	 * Handle page main display.
      *
      * @return void
 	 */
