@@ -14,8 +14,9 @@ abstract class ConfigTemplate
 	 * Retrieve and set the datas returned
 	 * by the include function.
 	 * 
-	 * @param string $path
-	*/
+	 * @param string $path The config file path.
+     * @return void
+	 */
 	public function set($path)
 	{
 		static::$datas = include($path);

@@ -13,20 +13,21 @@ class Configuration
 	*/
 	private static $instance = null;
 
-	// Avoid building an instance the 'normal' way
-	// by setting visibility to 'private'
+	/**
+     * The Configuration constructor.
+	 */
 	private function __construct()
 	{
 		Action::listen('init', $this, 'init')->dispatch();
 		Action::listen('generate_rewrite_rules', $this, 'rewrite')->dispatch();
 
 		if (Application::get('rewrite') && !is_admin()) {
-			add_filter('script_loader_src', array(&$this, 'rewriteAssetUrl'));
-			add_filter('style_loader_src', array(&$this, 'rewriteAssetUrl'));
-			add_filter('stylesheet_directory_uri', array(&$this, 'rewriteAssetUrl'));
-			add_filter('template_directory_uri', array(&$this, 'rewriteAssetUrl'));
-			add_filter('bloginfo', array(&$this, 'rewriteAssetUrl'));
-			add_filter('plugins_url', array(&$this, 'rewriteAssetUrl'));	
+			add_filter('script_loader_src', array($this, 'rewriteAssetUrl'));
+			add_filter('style_loader_src', array($this, 'rewriteAssetUrl'));
+			add_filter('stylesheet_directory_uri', array($this, 'rewriteAssetUrl'));
+			add_filter('template_directory_uri', array($this, 'rewriteAssetUrl'));
+			add_filter('bloginfo', array($this, 'rewriteAssetUrl'));
+			add_filter('plugins_url', array($this, 'rewriteAssetUrl'));
 		}
 
 		// Admin actions
@@ -36,8 +37,8 @@ class Configuration
     /**
      * Start the configuration.
      *
-     * @return object A configuration instance
-    */
+     * @return \Themosis\Configuration\Configuration
+     */
 	public static function make()
 	{
 		if (is_null(static::$instance)) {
@@ -50,7 +51,7 @@ class Configuration
 	 * Run a series of methods at WP init hook
      *
      * @return void
-	*/
+	 */
 	public function init()
 	{
 		if (Application::get('cleanup')) $this->cleanup();
@@ -63,10 +64,10 @@ class Configuration
 	 * Run a series of methods when changing WP permalinks.
 	 * Run at 'generate_rewrite_rules' action.
 	 * 
-	 * @param object
+	 * @param \WP_Rewrite $rewriteObject The WordPress WP_Rewrite instance.
      * @return void
-	*/
-	public function rewrite($rewriteObject)
+	 */
+	public function rewrite(\WP_Rewrite $rewriteObject)
 	{
 		// Add HTML5 BoilerPlate htaccess default settings.
 		if (Application::get('htaccess')) $this->addHtaccess($rewriteObject);
@@ -79,7 +80,7 @@ class Configuration
 	 * Cleanup the WP head tag.
      *
      * @return void
-	*/
+	 */
 	private function cleanup()
 	{
 		global $wp_widget_factory;
@@ -100,7 +101,7 @@ class Configuration
 	 * Restrict access to the wp-admin.
      *
      * @return void
-	*/
+	 */
 	private function restrict()
 	{
 		$access = Application::get('access');
@@ -124,8 +125,8 @@ class Configuration
      * we check if the .htaccess file as the HTMLBP htaccess settings in.
      * If not, add them.
      *
-     * @param \WP_Rewrite $rewriteObject
-     * @return object The WP_Rewrite instance
+     * @param \WP_Rewrite $rewriteObject The WordPress WP_Rewrite instance.
+     * @return \WP_Rewrite
      */
 	private function addHtaccess(\WP_Rewrite $rewriteObject)
 	{
@@ -161,8 +162,9 @@ class Configuration
 	 * Core rewrite works but the admin bar css doesn't display correctly
 	 * in the front-end. Relatives paths to the admin sprite image file don't work.
 	 * 
-	 * @param \WP_Rewrite $rewriteObject
-	*/
+	 * @param \WP_Rewrite $rewriteObject The WordPress WP_Rewrite instance.
+     * @return void
+	 */
 	private function rewritePaths(\WP_Rewrite $rewriteObject)
 	{
 		$themeName = $this->getThemeName();
@@ -195,9 +197,9 @@ class Configuration
 	 * Rewrite assets urls.
 	 * Core assets, theme assets and further plugins.
 	 * 
-	 * @param string $url
-	 * @return string
-	*/
+	 * @param string $url The url to rewrite.
+	 * @return string The converted url.
+	 */
 	public function rewriteAssetUrl($url)
 	{
 		// Change the THEME assets urls
@@ -230,7 +232,7 @@ class Configuration
 	 * Allow developers to add parameters to the admin global JS object.
 	 * 
 	 * @return void
-	*/
+	 */
 	public function adminHead()
 	{
 		$datas = apply_filters('themosisAdminGlobalObject', array());
@@ -255,10 +257,10 @@ class Configuration
 	}
 
 	/**
-	 * Return the theme folder name
+	 * Return the theme folder name.
 	 * 
-	 * @return string
-	*/
+	 * @return string The theme folder name.
+	 */
 	private function getThemeName()
 	{
 		$name = explode(DS.'themes'.DS, get_stylesheet_directory());
@@ -267,10 +269,10 @@ class Configuration
 	}
 
 	/**
-	 * Retrieve the relative WP-CONTENT path
+	 * Retrieve the relative WP-CONTENT path.
 	 * 
-	 * @return string
-	*/
+	 * @return string The 'wp-content' relative path.
+	 */
 	private function getWpContentPath()
 	{
 		return str_replace(site_url().DS, '', content_url());
@@ -279,8 +281,8 @@ class Configuration
 	/**
 	 * Retrieve the relative PLUGINS path.
      *
-     * @return string
-	*/
+     * @return string The relative 'plugins' path.
+	 */
 	private function getPluginsPath()
 	{
 		return str_replace(site_url().DS, '', content_url().DS.'plugins');
@@ -289,8 +291,8 @@ class Configuration
 	/**
 	 * Return the relative Theme path
 	 * 
-	 * @return string
-	*/
+	 * @return string The relative 'themes' path.
+	 */
 	private function getThemePath()
 	{
 		return $this->getWpContentPath().DS.'themes'.DS.$this->getThemeName();
@@ -299,8 +301,8 @@ class Configuration
 	/**
 	 * Return the wp-include relative path.
 	 * 
-	 * @return string
-	*/
+	 * @return string The relative 'wp-includes' path.
+	 */
 	private function getCorePath()
 	{
 		return str_replace(site_url().DS, '', includes_url());
@@ -309,8 +311,8 @@ class Configuration
 	/**
 	 * Return the wp-admin relative path.
 	 * 
-	 * @return string
-	*/
+	 * @return string The relative 'wp-admin' path.
+	 */
 	private function getAdminPath()
 	{
 		return str_replace(site_url().DS, '', admin_url());

@@ -20,7 +20,12 @@ class ConfigFactory
 	*/
 	private $path = '';
 
-	public function __construct($configFile)
+    /**
+     * The ConfigFactory constructor.
+     *
+     * @param array $configFile The configuration file properties.
+     */
+	public function __construct(array $configFile)
 	{
 		$this->name = $configFile['name'];
 		$this->path = $configFile['path'];
@@ -31,7 +36,7 @@ class ConfigFactory
 	 * of the config name.
 	 * 
 	 * @return void
-	*/
+	 */
 	public function dispatch()
 	{
 		switch ($this->name) {

@@ -17,6 +17,9 @@ class Sidebar implements ConfigInterface
 	*/
 	private $event;
 
+    /**
+     * The Sidebar constructor.
+     */
 	public function __construct()
 	{
 		$this->event = Action::listen('init', $this, 'install');
@@ -27,8 +30,9 @@ class Sidebar implements ConfigInterface
 	 * by the include function using
 	 * the given path.
 	 *
-	 * @param string
-	*/
+	 * @param string $path The configuration file path.
+     * @return void
+	 */
 	public function set($path)
 	{
 		$this->datas = include($path);
@@ -40,7 +44,7 @@ class Sidebar implements ConfigInterface
 	 * Execute the "register_sidebar" function from WP.
      *
      * @return void
-	*/
+	 */
 	public function install()
 	{
 		if (is_array($this->datas) && !empty($this->datas)) {

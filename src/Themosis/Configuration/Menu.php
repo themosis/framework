@@ -17,6 +17,9 @@ class Menu implements ConfigInterface
 	*/
 	private $event;
 
+    /**
+     * The Menu constructor.
+     */
 	public function __construct()
 	{
 		$this->event = Action::listen('init', $this, 'install');
@@ -27,7 +30,7 @@ class Menu implements ConfigInterface
      * by the include function using
      * the given path.
      *
-     * @param string $path
+     * @param string $path The config file path.
      * @return void
      */
 	public function set($path)
@@ -41,7 +44,7 @@ class Menu implements ConfigInterface
 	 * Execute the "register_nav_menus" function from WP
      *
      * @return void
-	*/
+	 */
 	public function install()
 	{
 		if (is_array($this->datas) && !empty($this->datas)) {

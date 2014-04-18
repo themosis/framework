@@ -9,12 +9,14 @@ defined('DS') or die('No direct script access.');
 class Template extends ConfigTemplate
 {
 	/**
-	 * Save the retrieved datas
+	 * Save the retrieved datas.
 	*/
 	protected static $datas = array();
 
 	/**
-	 * Init the page template module
+	 * Init the page template module.
+     *
+     * @return void
 	*/
 	public static function init()
 	{
@@ -38,7 +40,7 @@ class Template extends ConfigTemplate
 	 * Get the template names data and return them
 	 *
 	 * @return array An array of template names.
-	*/
+	 */
 	private static function names()
 	{
 		$names = array();

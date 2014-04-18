@@ -16,7 +16,12 @@ class Config
 	*/
 	private static $configs = array();
 
-	public function __construct($configFile)
+    /**
+     * The Config constructor.
+     *
+     * @param array $configFile The configuration file properties.
+     */
+	public function __construct(array $configFile)
 	{
 		static::$configs[] = $configFile;
 	}
@@ -24,8 +29,8 @@ class Config
     /**
      * Initialize configuration loading.
      *
-     * @param array $configFiles
-     * @return bool True, False if errors.
+     * @param array $configFiles The configuration files.
+     * @return bool True. False if errors.
      */
 	public static function make(array $configFiles)
 	{
@@ -37,8 +42,8 @@ class Config
 	/**
 	 * Install, read all configurations
 	 * 
-	 * @return bool
-	*/
+	 * @return bool True.
+	 */
 	public static function set()
 	{
 		foreach (static::$configs as $config) {
@@ -55,9 +60,9 @@ class Config
 	 * Parse the array with configurations and will
 	 * check if they exists.
 	 * 
-	 * @param array
-	 * @return boolean
-	*/
+	 * @param array $configFiles The configuration files.
+	 * @return bool True. False if errors.
+	 */
 	private static function parse(array $configFiles)
 	{
 		$errors = array();
@@ -93,8 +98,8 @@ class Config
 	 * 
 	 * @param string $key Key of the $GLOBALS themosis_paths.
 	 * @param string $configFile Filename of the config file.
-	 * @return array|boolean Array if successful, False if errors.
-	*/
+	 * @return array|bool Array if successful, false if errors.
+	 */
 	private static function has($key, $configFile)
 	{
 		$path = themosis_path($key).'config'.DS.$configFile.CONFIG_EXT;

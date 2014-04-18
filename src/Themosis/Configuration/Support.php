@@ -17,6 +17,9 @@ class Support implements ConfigInterface
 	*/
 	private $event;
 
+    /**
+     * The Support constructor.
+     */
 	public function __construct()
 	{
 		$this->event = Action::listen('init', $this, 'install');
@@ -26,8 +29,9 @@ class Support implements ConfigInterface
 	 * Retrieve and set the datas returned
 	 * by the include function.
 	 * 
-	 * @param string
-	*/
+	 * @param string $path The configuration file path.
+     * @return void
+	 */
 	public function set($path)
 	{
 		$this->datas = include($path);
@@ -39,7 +43,7 @@ class Support implements ConfigInterface
 	 * Execute the "add_theme_support" function from WP
      *
      * @return void
-	*/
+	 */
 	public function install()
 	{
 		if (is_array($this->datas) && !empty($this->datas)) {
