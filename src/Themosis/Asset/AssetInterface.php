@@ -30,9 +30,9 @@ abstract class AssetInterface
 	 * Check if there is a DirectorySeparator
 	 * at the beginning of the path.
 	 * 
-	 * @param string $path
-	 * @return string $path
-	*/
+	 * @param string $path The raw asset path.
+	 * @return string The sanitized asset path.
+	 */
 	protected function parsePath($path)
 	{
 		if(substr($path, 0, 1) !== DS && substr($path, 0, 4) !== 'http'){
@@ -47,9 +47,9 @@ abstract class AssetInterface
 	 * Contains http or similar pattens in its
 	 * path.
 	 * 
-	 * @param string
-	 * @return string
-	*/
+	 * @param string $path The asset path.
+	 * @return string The asset path.
+	 */
 	protected function isExternal($path)
 	{
 		// Check for '//'
@@ -68,8 +68,8 @@ abstract class AssetInterface
 	/**
 	 * Return the asset type.
      *
-     * @return string
-	*/
+     * @return string The asset type: 'style' or 'script'
+	 */
 	public function getType()
 	{
 		return $this->type;

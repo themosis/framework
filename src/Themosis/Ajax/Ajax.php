@@ -18,6 +18,10 @@ class Ajax
 	*/
 	private static $url;
 
+    /**
+     * The Ajax constructor.
+     *
+     */
 	public function __construct()
 	{
 		static::$namespace = (Application::get('namespace')) ? Application::get('namespace') : 'themosis';
@@ -77,7 +81,8 @@ class Ajax
     /**
      * Set the global ajax variable
      *
-     * @return object An Ajax instance
+     * @return \Themosis\Ajax\Ajax
+     * @ignore
      */
 	public static function set()
 	{
@@ -86,7 +91,10 @@ class Ajax
 
 	/**
 	 * Install the Ajax global variable in the <head> tag.
-	*/
+     *
+     * @return void
+     * @ignore
+	 */
 	public static function install()
 	{	
 		$datas = apply_filters('themosisGlobalObject', array());

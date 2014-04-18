@@ -49,11 +49,10 @@ class AssetFactory
 	}
 
 	/**
-	 * Install the appropriate asset
-	 * depending of its area.
+	 * Install the appropriate asset depending of its area.
      *
      * @return void
-	*/
+	 */
 	public static function install()
 	{
 		$from = current_filter();
@@ -108,6 +107,7 @@ class AssetFactory
      * Register the script or the style asset file.
      *
      * @param AssetFactory $asset
+     * @return void
      */
 	private static function register(AssetFactory $asset)
 	{
@@ -125,8 +125,9 @@ class AssetFactory
 	/**
 	 * Set the area of the asset
 	 * 
-	 * @param string $area
-	*/
+	 * @param string $area The area where the asset should load.
+     * @return void
+	 */
 	public function setArea($area)
 	{
 		$this->area = $area;
@@ -136,7 +137,9 @@ class AssetFactory
 	/**
 	 * Manipulate the static::$instances variable
 	 * in order to separate each asset in its area.
-	*/
+     *
+     * @return void
+	 */
 	private function orderInstances()
 	{
 		if (array_key_exists($this->key, static::$instances['front'])) {

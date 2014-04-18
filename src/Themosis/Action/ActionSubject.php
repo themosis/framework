@@ -22,7 +22,7 @@ abstract class ActionSubject
      * Trigger each observers.
      *
      * @return void
-    */
+     */
 	protected function notify()
 	{
 		foreach ($this->observers as $observer) {

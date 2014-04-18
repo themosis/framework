@@ -12,6 +12,12 @@ class CoreAsset extends AssetInterface
 	*/
 	protected $dir;
 
+    /**
+     * The CoreAsset constructor.
+     *
+     * @param string $type The asset type.
+     * @param array $args The asset arguments.
+     */
 	public function __construct($type, array $args)
 	{
 		$this->type = $type;
@@ -23,7 +29,7 @@ class CoreAsset extends AssetInterface
      * Register a javascript file for the core framework.
      *
      * @return void
-    */
+     */
 	public function registerScript()
 	{
 		$path = $this->parsePath($this->args['path']);
@@ -39,7 +45,7 @@ class CoreAsset extends AssetInterface
      * Register a stylesheet file for the core framework.
      *
      * @return void
-    */
+     */
 	public function registerStyle()
 	{
 		$path = $this->parsePath($this->args['path']);

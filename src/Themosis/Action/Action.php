@@ -46,6 +46,7 @@ class Action extends ActionSubject
      * @param string $object
      * @param string $callback
      * @param mixed $args
+     * @ignore
      */
 	public function __construct($hook, $object, $callback, $args = null)
 	{
@@ -78,18 +79,18 @@ class Action extends ActionSubject
 	 * THIS IS WHAT TRIGGERS EVERYTHING
      *
      * @return void
-	*/
+	 */
 	public function dispatch()
 	{
-		add_action($this->hook, array(&$this, 'action'));
+		add_action($this->hook, array($this, 'action'));
 	}
 
     /**
      * Hook method
      *
      * @param null|mixed $params The associated parameters given by the WordPress hook.
-     * @internal param mixed $param
      * @return void
+     * @ignore
      */
 	public function action($params = null)
 	{
@@ -102,6 +103,7 @@ class Action extends ActionSubject
 	 * to the given object.
 	 * 
 	 * @return void
+     * @ignore
 	*/
 	public function run()
 	{

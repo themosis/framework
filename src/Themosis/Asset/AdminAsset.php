@@ -8,8 +8,8 @@ class AdminAsset extends Asset
     /**
      * Core framework assets constructor.
      *
-     * @param string $type
-     * @param array $args
+     * @param string $type The asset type.
+     * @param array $args The asset arguments.
      */
 	public function __construct($type, array $args)
 	{
