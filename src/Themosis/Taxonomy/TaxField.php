@@ -16,7 +16,7 @@ class TaxField
      *
      * @var string
      * @access private
-    */
+     */
     private $slug;
     
     /**
@@ -24,7 +24,7 @@ class TaxField
      *
      * @var boolean
      * @access private
-    */
+     */
     private $exists = false;
     
     /**
@@ -32,7 +32,7 @@ class TaxField
      *
      * @var array
      * @access private
-    */
+     */
     private $fields = array();
 
     /**

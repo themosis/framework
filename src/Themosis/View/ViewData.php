@@ -22,7 +22,7 @@ class ViewData
 	private $compiled;
 
 	/**
-	 * View passsed datas
+	 * View passed datas
 	*/
 	private $datas;
 
@@ -31,7 +31,12 @@ class ViewData
 	*/
 	private $viewID;
 
-	public function __construct($params)
+    /**
+     * The ViewData constructor.
+     *
+     * @param array $params The view data parameters.
+     */
+	public function __construct(array $params)
 	{
 		$this->path = $params['path'];
 		$this->engine = $params['engine'];
@@ -45,8 +50,8 @@ class ViewData
 	/**
 	 * Compile the view content.
 	 * 
-	 * @return string
-	*/
+	 * @return string The converted view content.
+	 */
 	private function compile()
 	{	
 		if($this->engine){
@@ -61,18 +66,20 @@ class ViewData
 	}
 
 	/**
-	 * Return view compiled content
+	 * Return view compiled content.
 	 * 
-	 * @return string
-	*/
+	 * @return string The converted view content.
+	 */
 	public function get()
 	{
 		return $this->compiled;
 	}
 
-	/**
-	 * Return the ViewID
-	*/
+    /**
+     * Return the ViewID
+     *
+     * @return string The view ID name.
+     */
 	public function getViewID()
 	{
 		return $this->viewID;
@@ -80,7 +87,9 @@ class ViewData
 
 	/**
 	 * Retrieve passed datas
-	*/
+     *
+     * @return array The datas passed to the view.
+	 */
 	public function getDatas()
 	{
 		return $this->datas;
@@ -88,19 +97,21 @@ class ViewData
 
 	/**
 	 * Retrieve view changed value
-	*/
+     *
+     * @TODO Not currently in use. Will be used with "cache" methods.
+     * @return bool True. False if view is identical to the stored one.
+	 */
 	public function hasChanged()
 	{
 		return $this->hasChanged;
 	}
 
 	/**
-	 * Allow the view to pass more
-	 * datas.
+	 * Allow the view to pass more datas.
 	 * 
-	 * @param array
-	*/
-	public function setDatas($datas)
+	 * @param array $datas The datas to pass to the view.
+	 */
+	public function setDatas(array $datas)
 	{
 		$this->datas = array_merge($this->datas, $datas);
 	}

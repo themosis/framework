@@ -8,7 +8,7 @@ defined('DS') or die('No direct script access.');
 class User
 {
 	/**
-	 * User's id
+	 * User ID
 	*/
 	protected $id;
 
@@ -17,20 +17,27 @@ class User
 	*/
 	private $datas;
 
+    /**
+     * The User constructor.
+     *
+     * @param int $id The user ID.
+     */
 	private function __construct($id)
 	{
 		$this->id = $id;
 		$this->datas = new WP_User($id);
 	}
 
-	/**
-	 * Create a NEW user and insert it in the DB
-	 * 
-	 * @param string
-	 * @param string
-	 * @param string
-	 * @return object (In case of errors, return an Error object)
-	*/
+    /**
+     * Create a new user and insert it in the DB. If user exists, returns
+     * an instance of the user.
+     *
+     * @param string $username The user username.
+     * @param string $password The user password.
+     * @param string $email THe user email.
+     * @throws UserException
+     * @return \Themosis\User\User|WP_Error A User instance or WP_Error in case of errors.
+     */
 	public static function make($username, $password, $email)
 	{
 		if (is_string($username) && !empty($username)) {
@@ -76,12 +83,11 @@ class User
 
 	/**
 	 * Update the user credentials.
-	 * Use the params defined in the codex at:
-	 * http://codex.wordpress.org/Function_Reference/wp_update_user
 	 * 
-	 * @param mixed array|object
-	 * @return boolean
-	*/
+	 * @param array|object $userdata The user datas.
+     * @see http://codex.wordpress.org/Function_Reference/wp_update_user
+	 * @return bool True. False if unable to update user credentials.
+	 */
 	public function update($userdata)
 	{
 		// Check if there is an ID in $userdatas
@@ -121,9 +127,9 @@ class User
 	/**
 	 * Set the actual user role.
 	 * 
-	 * @param string role slug
-	 * @return mixed object|boolean
-	*/
+	 * @param string $role The user role slug.
+	 * @return \Themosis\User\User|bool A User instance or false of unable to set the user role.
+	 */
 	public function setRole($role)
 	{
 		if (is_string($role) && !empty($role)) {
@@ -135,21 +141,21 @@ class User
 	}
 
 	/**
-	 * Return the USER id.
+	 * Return the user ID.
 	 * 
-	 * @return int
-	*/
+	 * @return int The user ID.
+	 */
 	public function getId()
 	{
 		return $this->id;
 	}
 
 	/**
-	 * Return a particular user based on its
-	 * ID.
+	 * Return a user based on its ID.
 	 * 
-	 * @param int (optional)
-	*/
+	 * @param int $id The user ID.
+     * @return \WP_User
+	 */
 	public static function get($id = null)
 	{
 		if (is_numeric($id)) {
@@ -160,12 +166,11 @@ class User
 	}
 
 	/**
-	 * Checks if a defined user has a certain
-	 * role.
+	 * Checks if a defined user has a certain role.
 	 *
-	 * @param string role slug
-	 * @param int (optional) user ID
-	 * @return boolean
+	 * @param string $role The user role slug.
+	 * @param int $userId The user ID.
+	 * @return bool True. False if no role.
 	 */
 	public static function hasRole($role, $userId = null) {
 	 
@@ -188,11 +193,12 @@ class User
 	 * Check if a user can do a defined
 	 * capability or defined role.
 	 * 
-	 * @param string
-	 * @param int (optional)
-	 * @param mixed (current_user_can params)
-	 * @return boolean
-	*/
+	 * @param string $cap The capability slug.
+	 * @param int $id The user ID. By default, use the current user.
+	 * @param mixed $args Check the current_user_can function arguments.
+     * @see https://codex.wordpress.org/Function_Reference/current_user_can
+	 * @return bool True. False if user has no capability or role.
+	 */
 	public static function can($cap, $id = null, $args = null)
 	{
 		if (is_string($cap) && !empty($cap)) {

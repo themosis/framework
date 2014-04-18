@@ -6,15 +6,13 @@ defined('DS') or die('No direct script access.');
 abstract class Viewer
 {
 	/**
-	* Parse the given path and check if we need to include
-	* a file from a subdirectory or not. Convert all "." into
-	* directory separator "/".
-	* Return the converted path.
-	*
-	* @param string
-	* @return string
-	*
-	*/
+	 * Parse the given path and check if we need to include
+	 * a file from a subdirectory or not. Convert all "." into
+	 * directory separator "/".
+	 *
+	 * @param string $path The view file raw path.
+	 * @return string The converted path.
+	 */
 	protected static function parsePath($path)
 	{
 		if (strpos($path, '.') !== false) {
@@ -30,14 +28,15 @@ abstract class Viewer
 		return (string)$path;
 	}
 
-	/**
-	 * Handle the logic for processing the new view
-	 * 
-	 * @param string
-	 * @param array
-	 * @return object
-	*/
-	protected static function parse($path, $datas = array())
+    /**
+     * Handle the logic for processing the new view.
+     *
+     * @param string $path The view file real path.
+     * @param array $datas The datas to pass to the view.
+     * @throws ViewException
+     * @return \Themosis\View\Viewer
+     */
+	protected static function parse($path, array $datas = array())
 	{
 		// Check if a file using the Scout engine exists first.
 		// If not check for a standard view file.

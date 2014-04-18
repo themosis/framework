@@ -13,8 +13,8 @@ class TaxonomyData
 	/**
 	 * Saved default values for the associated taxonomy.
 	 * 
-	 * @param string
-	*/
+	 * @param string $name The taxonomy display name.
+	 */
 	public function __construct($name)
 	{
 		$labels = array(
@@ -41,13 +41,15 @@ class TaxonomyData
 		$this->defaults = $defaults;
 	}
 
-	/**
-	 * Allow the developer to override the default values
-	 * by passing an array.
-	 * 
-	 * @param array
-	*/
-	public function set($params)
+    /**
+     * Allow the developer to override the default values
+     * by passing an array.
+     *
+     * @param array $params The register_taxonomy arguments.
+     * @see https://codex.wordpress.org/Function_Reference/register_taxonomy
+     * @return void
+     */
+	public function set(array $params)
 	{
 		$this->defaults = array_merge($this->defaults, $params);
 	}
@@ -55,8 +57,8 @@ class TaxonomyData
 	/**
 	 * Retrieve the saved values of the taxonomy
 	 * 
-	 * @return array
-	*/
+	 * @return array The taxonomy arguments, properties.
+	 */
 	public function get()
 	{
 		return $this->defaults;

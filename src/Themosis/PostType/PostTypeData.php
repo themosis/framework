@@ -11,11 +11,11 @@ class PostTypeData
 	*/
 	private $defaults = array();
 
-	/**
-	 * Saved default values for the associated custom post type.
-	 *
-	 * @param string $name The custom post type plural name.
-	*/
+    /**
+     * Saved default values for the associated custom post type.
+     *
+     * @param string $name The custom post type plural name.
+     */
 	public function __construct($name)
 	{
 		$labels = array(

@@ -25,33 +25,23 @@ class ViewRenderer
 	*/
 	protected static $cache = array();
 
-	public function __construct($view)
+    /**
+     * The ViewRenderer constructor.
+     *
+     * @param \Themosis\View\ViewData $view The view datas.
+     */
+	public function __construct(ViewData $view)
 	{
 		$this->view = $view;
 		$this->viewID = $this->view->getViewID();
 	}
 
-	/**
-	 * Start the view renderer
-	 * 
-	 * @param string
-	 * @param array
-	 * @return object
-	*/
-	public static function make($view, $datas = array())
-	{
-		if (is_string($view) && !empty($view) && is_array($datas)){
-			return new static($view, $datas);
-		} else {
-			throw new ViewException("Enable to render the view.");
-		}
-	}
-
-	/**
-	 * Evaluate the view and return the output
-	 * 
-	 * @param string
-	*/
+    /**
+     * Evaluate the view and return the output.
+     *
+     * @throws Exception
+     * @return string The view content.
+     */
 	public function get()
 	{
 		// Start output buffer
@@ -81,9 +71,10 @@ class ViewRenderer
 
 	/**
 	 * Load the view content.
-	 * 
-	 * @return string
-	*/
+	 *
+     * @TODO Not implemented yet.
+	 * @return string The view cached content.
+	 */
 	private function load()
 	{
 		if (isset(static::$cache[$this->viewID])) {

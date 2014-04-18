@@ -94,7 +94,7 @@ class PostType {
 	 * Retrieve the custom post type slug
 	 *
 	 * @return string The custom post type slug property.
-	*/
+	 */
 	public function getSlug()
 	{
 		return $this->slug;
@@ -104,7 +104,7 @@ class PostType {
 	 * Retrieve the custom post type datas
 	 *
 	 * @return object A Themosis\PostType\PostTypeData instance.
-	*/
+	 */
 	public function getData()
 	{
 		return $this->data->get();
@@ -114,7 +114,7 @@ class PostType {
 	 * Register the custom post type
 	 *
 	 * @return object|WP_Error The custom post type object or a WP_Error instance if error.
-	*/
+	 */
 	public function register()
 	{
 		if ($this->restful) {
@@ -129,7 +129,7 @@ class PostType {
 	 * Enqueue the new media uploader
 	 *
 	 * @return bool True. False if not enqueue.
-	*/
+	 */
 	public function enqueueMediaUploader()
 	{
 		// If WP > 3.5
@@ -149,7 +149,7 @@ class PostType {
 	 *
      * @deprecated No longer used by internal code and not recommended.
 	 * @return object A Themosis\PostType\PostType instance.
-	*/
+	 */
 	public function isRestful()
 	{
 		$this->data->rest();
@@ -162,7 +162,7 @@ class PostType {
 	 * Handle custom rewrite for the custom post type.
      *
      * @return void
-	*/
+	 */
 	private function rewrite()
 	{
 		// Overwrite the custom post type query var
@@ -177,7 +177,7 @@ class PostType {
 	 * slug.
      *
      * @return void
-	*/
+	 */
 	private function rewriteTag()
 	{
 		add_rewrite_tag('%'.$this->slug.'%','([^&]+)', 'books');
@@ -188,7 +188,7 @@ class PostType {
      *
      * @deprecated No longer used by internal code and not recommended.
      * @return void
-	*/
+	 */
 	private function rewriteRules()
 	{
 		// Catch ALL custom post types

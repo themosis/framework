@@ -6,7 +6,7 @@ defined('DS') or die('No direct script access.');
 class Scout
 {
 	/**
-	* All engine converters commands
+	 * All engine converters commands.
 	*/
 	private static $_converters = array(
 			'loop',
@@ -20,11 +20,11 @@ class Scout
 		);
 
 	/**
-	* Parse the view and return a converted view ready for output
-	*
-	* @param string
-	* @return string
-	*/
+	 * Parse the view and return a converted view ready for output.
+	 *
+	 * @param string $path The view file path.
+	 * @return string The converted php code.
+	 */
 	public static function parse($path){
 
 		$value = static::convert_all(file_get_contents($path));
@@ -34,12 +34,12 @@ class Scout
 	}
 
 	/**
-	* Used to launch all engine converters. Return a converted content
-	* with valid data.
-	*
-	* @param string
-	* @return string
-	*/
+	 * Used to launch all engine converters. Return a converted content
+	 * with valid data.
+	 *
+	 * @param string $value The view file raw content.
+	 * @return string The converted php code.
+	 */
 	private static function convert_all($value){
 
 		foreach (static::$_converters as $converter) {
@@ -54,10 +54,10 @@ class Scout
 	}
 
 	/**
-	 * Allow the user to write PHP comments in HTML context
+	 * Allow the user to write PHP comments in HTML context: {* Comment *}
 	 *
-	 * @param  string
-	 * @return string
+	 * @param string $value The view file raw content.
+	 * @return string The converted php code.
 	 */
 	private static function convert_comments($value)
 	{
@@ -65,10 +65,10 @@ class Scout
 	}
 
 	/**
-	 * Used to convert {{ $value }} statements into PHP echo $value
+	 * Used to convert {{ $value }} statements into PHP echo($value).
 	 *
-	 * @param  string
-	 * @return string
+	 * @param string $value The view file raw content.
+	 * @return string The converted php code.
 	 */
 	private static function convert_echos($value)
 	{
@@ -76,13 +76,13 @@ class Scout
 	}
 
 	/**
-	* Used to convert "@loop(some params)" into a valid WP_Query
-	* object. Start a Wordpress loop using the given params.
-	* CAREFUL - KEEP THE FIRST WHITESPACE in the replace part
-	*
-	* @param string
-	* @return string
-	*/
+	 * Used to convert "@loop(array($params))" into a valid WP_Query
+	 * object. Start a WordPress loop using the given params.
+	 * CAREFUL - KEEP THE FIRST WHITESPACE in the replace part
+	 *
+	 * @param string $value The view file raw content.
+	 * @return string The converted php code.
+	 */
 	private static function convert_loop($value){
 
 		$value = preg_replace("/(\s*)@loop(\s*)?\((.+)\)/", ' <?php $themosisQuery = new WP_Query('."$3".'); if($themosisQuery->have_posts()){ while($themosisQuery->have_posts()){ $themosisQuery->the_post(); ?> ', $value);
@@ -92,12 +92,12 @@ class Scout
 	}
 
 	/**
-	* Used to convert "@endloop" into a valid closing Wordpress loop.
-	* Reset the loop query
-	*
-	* @param string
-	* @return string
-	*/
+	 * Used to convert "@endloop" into a valid closing WordPress loop.
+	 * Reset the loop query.
+	 *
+	 * @param string $value The view file raw content.
+	 * @return string The converted php code.
+	 */
 	private static function convert_endloop($value){
 
 		$value = preg_replace("/(\s*)@endloop(\s*)?/", " <?php } } wp_reset_query(); ?> ", $value);
@@ -106,13 +106,13 @@ class Scout
 
 	}
 
-	/**
-	* Used to include other template file.
-	* Keep variables scope of included files.
-	*
-	* @param string
-	* @return @string
-	*/
+    /**
+     * Used to include other template file.
+     * Keep variables scope of included files.
+     *
+     * @param string $value The view file raw content.
+     * @return string The converted php code.
+     */
 	private static function convert_include($value){
 
 		preg_match_all("/(\s*)@include(\s*)?\((\'|\")(.+)(\'|\")\)/", $value, $matches);
@@ -140,10 +140,11 @@ class Scout
 	}
 
 	/**
-	 * Used for conditional statements.
+	 * Used for conditional statements. Converts 'if', 'elseif',
+     * 'foreach', 'for', 'while' statements.
 	 *
-	 * @param  string 
-	 * @return string
+	 * @param string $value The view file raw content.
+	 * @return string The converted php code.
 	 */
 	private static function convert_conditional_openings($value)
 	{
@@ -155,8 +156,8 @@ class Scout
 	/**
 	 * Used to close conditional statements.
 	 *
-	 * @param  string
-	 * @return string
+	 * @param string $value The view file raw content.
+	 * @return string The converted php code.
 	 */
 	private static function convert_conditional_closings($value)
 	{
@@ -166,10 +167,10 @@ class Scout
 	}
 
 	/**
-	 * Used for the "else" conditional statement
+	 * Used for the "else" conditional statement.
 	 *
-	 * @param  string
-	 * @return string
+	 * @param string $value The view file raw content.
+	 * @return string The converted php code.
 	 */
 	private static function convert_else($value)
 	{
