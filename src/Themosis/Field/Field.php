@@ -20,11 +20,11 @@ class Field
 	 * If extras are allowed, return them with the field
 	 * properties.
 	 *
-	 * @param array $properties
-	 * @param array $extras
+	 * @param array $properties The field properties.
+	 * @param array $extras The field extra parameters.
 	 * @return array An array of all properties.
-	*/
-	private static function parse($properties, $extras)
+	 */
+	private static function parse(array $properties, array $extras)
 	{
 		$output = array();
 

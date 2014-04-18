@@ -7,10 +7,10 @@
 /**
  * Define if the current page is a child page
  *
- * @param array $parent
+ * @param array $parent The parent page properties.
  * @return int|bool Parent page ID if subpage. False if not.
  */
-function themosis_is_subpage($parent)
+function themosis_is_subpage(array $parent)
 {
 	global $post;
 
@@ -286,7 +286,7 @@ function themosisAttachmentIdFromUrl($url = null)
 /**
  * A function that checks if we are using a page template.
  *
- * @param array $name
+ * @param array $name Template properties.
  * @return boolean True: use of a template. False: no template.
  */
 function themosisIsTemplate(array $name = array())

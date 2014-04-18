@@ -11,10 +11,10 @@ class Error extends Exception
 	/**
 	 * Handle PHP exceptions
 	 * 
-	 * @param \Exception $exception
-	 * @param bool $trace
+	 * @param \Exception $exception The thrown exception.
+	 * @param bool $trace Display the stack trace or not.
 	 * @return void
-	*/
+	 */
     public static function exception($exception, $trace = true)
     {
 		ob_get_level() and ob_end_clean();
@@ -46,10 +46,10 @@ class Error extends Exception
     /**
 	 * Handle a native PHP error as an ErrorException.
 	 *
-	 * @param  int $code
-	 * @param  string $error
-	 * @param  string $file
-	 * @param  int $line
+	 * @param int $code The error code.
+	 * @param string $error The error message.
+	 * @param string $file The error file.
+	 * @param int $line The error line.
 	 * @return void
 	 */
 	public static function native($code, $error, $file, $line)
