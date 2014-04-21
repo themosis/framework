@@ -20,7 +20,7 @@ class FrontAsset extends AssetInterface
 	{
 		$this->type = $type;
 		$this->args = $args;
-		$this->dir = get_template_directory_uri().DS.'app'.DS.'assets';
+		$this->dir = get_template_directory_uri().'/app/assets';
 	}
 
     /**

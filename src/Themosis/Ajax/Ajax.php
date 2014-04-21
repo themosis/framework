@@ -28,7 +28,7 @@ class Ajax
 
 		if (Application::get('rewrite')) {
 
-			static::$url = (Application::get('ajaxurl')) ? home_url().DS.'ajax'.DS.Application::get('ajaxurl').EXT : '';
+			static::$url = (Application::get('ajaxurl')) ? home_url().'/ajax/'.Application::get('ajaxurl').EXT : '';
 
 		} else {
 

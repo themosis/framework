@@ -113,17 +113,17 @@ function themosisAssets()
 {
 	if (Themosis\Configuration\Application::get('rewrite')) {
 
-		if (substr(site_url(), -1) === DS) {
+		if (substr(site_url(), -1) === '/') {
 
 			return site_url().'assets';
 
 		}
 
-		return site_url().DS.'assets';
+		return site_url().'/assets';
 
 	}
 
-	return get_template_directory_uri().DS.'app'.DS.'assets';
+	return get_template_directory_uri().'/app/assets';
 }
 
 /**

@@ -35,8 +35,8 @@ abstract class AssetInterface
 	 */
 	protected function parsePath($path)
 	{
-		if(substr($path, 0, 1) !== DS && substr($path, 0, 4) !== 'http'){
-			$path = DS . $path;
+		if(substr($path, 0, 1) !== '/' && substr($path, 0, 4) !== 'http'){
+			$path = '/'.$path;
 		}
 
 		return $path;

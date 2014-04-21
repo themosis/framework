@@ -22,7 +22,7 @@ class CoreAsset extends AssetInterface
 	{
 		$this->type = $type;
 		$this->args = $args;
-		$this->dir = plugins_url(Themosis::getDirName()).DS.'src'.DS.'Themosis'.DS.'_assets';
+		$this->dir = plugins_url(Themosis::getDirName()).'/src/Themosis/_assets';
 	}
 
     /**

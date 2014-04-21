@@ -171,23 +171,23 @@ class Configuration
 
 		$nonWpRules = array(
 			// CORE ASSETS
-			'libraries'.DS.'js'.DS.'(.*)'			=> 'wp-includes'.DS.'js'.DS.'$1',
-			'libraries'.DS.'css'.DS.'(.*)'			=> 'wp-includes'.DS.'css'.DS.'$1',
-			'libraries'.DS.'images'.DS.'(.*)'		=> 'wp-includes'.DS.'images'.DS.'$1',
+			'libraries/js/(.*)'			=> 'wp-includes/js/$1',
+			'libraries/css/(.*)'		=> 'wp-includes/css/$1',
+			'libraries/images/(.*)'		=> 'wp-includes/images/$1',
 
 			// LOGIN
-			Application::get('loginurl').DS.'?$'		=> 'wp-login'.EXT,
+			Application::get('loginurl').'/?$'		=> 'wp-login'.EXT,
 
 			// AJAX URL
-			'ajax'.DS.Application::get('ajaxurl').EXT 	=> $this->getAdminPath().Application::get('ajaxurl').EXT,
+			'ajax/'.Application::get('ajaxurl').EXT 	=> $this->getAdminPath().Application::get('ajaxurl').EXT,
 
 			// PLUGINS
-			'plugins'.DS.'(.*)'		=> 'wp-content'.DS.'plugins'.DS.'$1',
+			'plugins/(.*)'		=> 'wp-content/plugins/$1',
 
 			// THEME ASSETS
-			'assets'.DS.'css'.DS.'(.*)'		=> 'wp-content'.DS.'themes'.DS.$themeName.DS.'app'.DS.'assets'.DS.'css'.DS.'$1',  
-			'assets'.DS.'js'.DS.'(.*)'		=> 'wp-content'.DS.'themes'.DS.$themeName.DS.'app'.DS.'assets'.DS.'js'.DS.'$1',  
-			'assets'.DS.'images'.DS.'(.*)'	=> 'wp-content'.DS.'themes'.DS.$themeName.DS.'app'.DS.'assets'.DS.'images'.DS.'$1'
+			'assets/css/(.*)'		=> 'wp-content/themes/'.$themeName.'/app/assets/css/$1',
+			'assets/js/(.*)'		=> 'wp-content/themes/'.$themeName.'/app/assets/js/$1',
+			'assets/images/(.*)'	=> 'wp-content/themes/'.$themeName.'/app/assets/images/$1'
 		);
 
 		$rewriteObject->non_wp_rules += $nonWpRules;
@@ -205,14 +205,14 @@ class Configuration
 		// Change the THEME assets urls
 		if (strpos($url, $this->getThemePath()) !== false) {
 			
-			return str_replace(DS.$this->getThemePath().DS.'app', '', $url);
+			return str_replace('/'.$this->getThemePath().'/app', '', $url);
 		
 		}
 
 		// Change the WP CORE assets urls
 		if (strpos($url, $this->getCorePath()) !== false) {
 			
-			return str_replace($this->getCorePath(), 'libraries'.DS, $url);
+			return str_replace($this->getCorePath(), 'libraries/', $url);
 		
 		}
 
@@ -263,7 +263,7 @@ class Configuration
 	 */
 	private function getThemeName()
 	{
-		$name = explode(DS.'themes'.DS, get_stylesheet_directory());
+		$name = explode('/themes/', get_stylesheet_directory());
 
 		return next($name);
 	}
@@ -275,7 +275,7 @@ class Configuration
 	 */
 	private function getWpContentPath()
 	{
-		return str_replace(site_url().DS, '', content_url());
+		return str_replace(site_url().'/', '', content_url());
 	}
 
 	/**
@@ -285,7 +285,7 @@ class Configuration
 	 */
 	private function getPluginsPath()
 	{
-		return str_replace(site_url().DS, '', content_url().DS.'plugins');
+		return str_replace(site_url().'/', '', content_url().'/plugins');
 	}
 
 	/**
@@ -295,7 +295,7 @@ class Configuration
 	 */
 	private function getThemePath()
 	{
-		return $this->getWpContentPath().DS.'themes'.DS.$this->getThemeName();
+		return $this->getWpContentPath().'/themes/'.$this->getThemeName();
 	}
 
 	/**
@@ -305,7 +305,7 @@ class Configuration
 	 */
 	private function getCorePath()
 	{
-		return str_replace(site_url().DS, '', includes_url());
+		return str_replace(site_url().'/', '', includes_url());
 	}
 
 	/**
@@ -315,6 +315,6 @@ class Configuration
 	 */
 	private function getAdminPath()
 	{
-		return str_replace(site_url().DS, '', admin_url());
+		return str_replace(site_url().'/', '', admin_url());
 	}
 }

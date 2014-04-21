@@ -12,7 +12,7 @@ License: GPLv2
 /*----------------------------------------------------*/
 // The directory separator
 /*----------------------------------------------------*/
-defined('DS') ? DS : define('DS', '/');
+defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
 
 /**
  * Helper function to retrieve the path.

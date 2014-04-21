@@ -97,7 +97,7 @@ Themosis\Configuration\Constant::load();
 |
 |
 |---------------------------------------------------*/
-include_once(themosis_path('sys').'Helpers/helpers.php');
+include_once(themosis_path('sys').'Helpers'.DS.'helpers.php');
 
 /*----------------------------------------------------
 | Set the request object - Helper class for manipulating

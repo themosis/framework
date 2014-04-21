@@ -39,7 +39,7 @@ class Meta
 	{
 		/*-----------------------------------------------------------------*/
 		// Use of recursive function if $default is an array.
-		// Check all values for arrays and their chidlren arrays...
+		// Check all values for arrays and their children arrays...
 		/*-----------------------------------------------------------------*/
 		if (is_array($default)) {
 
