@@ -11,7 +11,7 @@ return array(
 	/* --------------------------------------------------------------- */
 	// Display errors - Turn it 'off' for production
 	/* --------------------------------------------------------------- */
-	'display'	=> false,
+	'display'	=> true,
 
 	/* --------------------------------------------------------------- */
 	// Listen to PHP shutdown event and display last errors
@@ -23,7 +23,7 @@ return array(
 	// Errors reporting - Use INT values only
 	// 0 - Production | -1 - Development
 	/* --------------------------------------------------------------- */
-	'report'	=> 0
+	'report'	=> -1
 
 );
 
