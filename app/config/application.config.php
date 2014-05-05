@@ -96,7 +96,8 @@ return array(
 		'Themosis\\Taxonomy\\Taxonomy'				=> 'Taxonomy',
 		'Themosis\\User\\User'						=> 'User',
 		'Themosis\\View\\Loop'						=> 'Loop',
-		'Themosis\\View\\View'						=> 'View'
+		'Themosis\\View\\View'						=> 'View',
+        'Themosis\\Facades\\FormNew'                => 'FormNew'
 	)
 
 );
