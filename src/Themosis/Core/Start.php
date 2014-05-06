@@ -7,10 +7,6 @@
 /*----------------------------------------------------
 | Themosis core constants
 |
-|
-|
-|
-|
 |---------------------------------------------------*/
 defined('EXT') ? EXT : define('EXT', '.php');
 defined('SCOUT_EXT') ? SCOUT_EXT : define('SCOUT_EXT', '.scout.php');
@@ -20,10 +16,6 @@ defined('MODEL_EXT') ? MODEL_EXT : define('MODEL_EXT', '.model.php');
 
 /*----------------------------------------------------
 | Setup configurations - For the datas
-|
-|
-|
-|
 |
 |---------------------------------------------------*/
 $configs = array(
@@ -40,19 +32,29 @@ Themosis\Configuration\Config::set();
 /*----------------------------------------------------
 | Trigger for configurations
 |
-|
-|
-|
-|
 |---------------------------------------------------*/
 do_action('themosis_configurations');
 
 /*----------------------------------------------------
-| Set application classes's alias
+| Create the application instance.
 |
+|---------------------------------------------------*/
+$app = new Themosis\Core\Application();
+
+/*----------------------------------------------------
+| Register the igniter services.
 |
+|---------------------------------------------------*/
+$app->registerCoreIgniters();
+
+/*----------------------------------------------------
+| Make the application available to the facade.
 |
-|
+|---------------------------------------------------*/
+Themosis\Facades\Facade::setFacadeApplication($app);
+
+/*----------------------------------------------------
+| Set application classes' alias
 |
 |---------------------------------------------------*/
 foreach (Themosis\Configuration\Application::get('aliases') as $namespace => $className){
@@ -62,19 +64,11 @@ foreach (Themosis\Configuration\Application::get('aliases') as $namespace => $cl
 /*----------------------------------------------------
 | Themosis textdomain
 |
-|
-|
-|
-|
 |---------------------------------------------------*/
 defined('THEMOSIS_TEXTDOMAIN') ? THEMOSIS_TEXTDOMAIN : define('THEMOSIS_TEXTDOMAIN', Themosis\Configuration\Application::get('textdomain'));
 
 /*----------------------------------------------------
 | Set framework main configuration
-|
-|
-|
-|
 |
 |---------------------------------------------------*/
 Themosis\Configuration\Configuration::make();
@@ -82,19 +76,11 @@ Themosis\Configuration\Configuration::make();
 /*----------------------------------------------------
 | Application constants
 |
-|
-|
-|
-|
 |---------------------------------------------------*/
 Themosis\Configuration\Constant::load();
 
 /*----------------------------------------------------
 | Add global helpers functions
-|
-|
-|
-|
 |
 |---------------------------------------------------*/
 include_once(themosis_path('sys').'Helpers'.DS.'helpers.php');
@@ -103,18 +89,11 @@ include_once(themosis_path('sys').'Helpers'.DS.'helpers.php');
 | Set the request object - Helper class for manipulating
 | PHP globals.
 |
-|
-|
-|
 |---------------------------------------------------*/
 Themosis\Route\Request::$foundation = Symfony\Component\HttpFoundation\Request::createFromGlobals();
 
 /*----------------------------------------------------
-| Themosis Page Templates
-|
-|
-|
-|
+| Themosis Page Templates.
 |
 |---------------------------------------------------*/
 Themosis\Configuration\Template::init();
@@ -125,20 +104,12 @@ Themosis\Configuration\Template::init();
 | (available only for the Themosis - Datas plugin
 | under the 'admin' folder).
 |
-|
-|
-|
 |---------------------------------------------------*/
 Themosis\Core\AdminLoader::add();
 Themosis\Core\WidgetLoader::add();
 
 /*----------------------------------------------------
 | Load the models.
-|
-|
-|
-|
-|
 |
 |---------------------------------------------------*/
 Themosis\Core\ModelLoader::add();
@@ -147,32 +118,17 @@ Themosis\Core\ModelLoader::alias();
 /*----------------------------------------------------
 | Load custom widgets
 |
-|
-|
-|
-|
-|
 |---------------------------------------------------*/
 Themosis\Core\WidgetLoader::load();
 
 /*----------------------------------------------------
 | Install global JS variables
 |
-|
-|
-|
-|
-|
 |---------------------------------------------------*/
 Themosis\Ajax\Ajax::set();
 
 /*----------------------------------------------------
 | Handle core frameworks assets
-|
-|
-|
-|
-|
 |
 |---------------------------------------------------*/
 // Themosis custom styles
@@ -183,11 +139,6 @@ Themosis\Asset\AdminAsset::add('themosis_core_metabox', 'js/metabox.js', array('
 
 /*----------------------------------------------------
 | Handle all errors, warnings, exceptions
-|
-|
-|
-|
-|
 |
 |---------------------------------------------------*/
 set_exception_handler(function($e)

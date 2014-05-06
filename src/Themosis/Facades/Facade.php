@@ -4,33 +4,54 @@ namespace Themosis\Facades;
 abstract class Facade {
 
     /**
-     * The instances to call.
+     * The Application instance.
      *
-     * @var array
+     * @var \Themosis\Core\Application
      */
-    protected static $instances = array();
+    protected static $app;
 
     /**
-     * Retrieve the class instance used by the facade.
+     * Each facade must define their igniter service
+     * class key name.
      *
-     * @return mixed A class instance.
+     * @throws \RuntimeException
+     * @return string
+     */
+    protected static function getFacadeKey()
+    {
+        throw new \RuntimeException('Facade does not implement getInstanceKey method.');
+    }
+
+    /**
+     * Retrieve the instance called by the igniter service.
+     *
+     * @return mixed
      */
     private static function getInstance()
     {
         /**
-         * Grab the property defined in the child class.
+         * Grab the igniter service class.
          */
-        list($classSlug, $class) = static::$instance;
+        $igniter = static::$app->getIgniter(static::getFacadeKey());
+
+        $service = new $igniter(static::$app);
+        $service->ignite();
 
         /**
-         * Check at runtime if an instance already exists.
-         * If so, use it and do not create another one.
+         * We retrieve the instance called by the igniter class.
          */
-        if(isset(static::$instances[$classSlug])){
-            return static::$instances[$classSlug];
-        }
+        return static::$app[static::getFacadeKey()];
+    }
 
-        return static::$instances[$classSlug] = new $class(); // What if the instance has parameters in its constructor - dependencies ?!?
+    /**
+     * Store the application instance.
+     *
+     * @param \Themosis\Core\Application $app
+     * @return void
+     */
+    public static function setFacadeApplication($app)
+    {
+        static::$app = $app;
     }
 
     /**
