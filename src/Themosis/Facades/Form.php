@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Facades;
 
-class FormNew extends Facade {
+class Form extends Facade {
 
     /**
      * Return the igniter service key responsible for the form class.
