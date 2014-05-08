@@ -8,12 +8,28 @@ use Themosis\Session\Session;
 class FormBuilder {
 
     /**
+     * An HtmlBuilder instance.
+     * @var HtmlBuilder
+     */
+    private $html;
+
+    /**
+     * Define a FormBuilder instance.
+     *
+     * @param HtmlBuilder $html
+     */
+    public function __construct(HtmlBuilder $html)
+    {
+        $this->html = $html;
+    }
+
+    /**
      * Build opening tags for a form
      *
      * @param string $action The action attribute value.
      * @param string $method The request method. Default to 'POST'.
      * @param bool $ssl Default value is false. True converts to https URL.
-     * @param array An array of form attributes.
+     * @param array $attributes An array of form attributes.
      * @return string The <form> open tag.
      */
     public function open($action = null, $method = 'POST', $ssl = false, array $attributes = array())
@@ -37,7 +53,7 @@ class FormBuilder {
             $append = wp_nonce_field(Session::nonceAction, Session::nonceName, true, false);
         }
 
-        return '<form'.Html::attributes($attributes).'>'.$append;
+        return '<form'.$this->html->attributes($attributes).'>'.$append;
     }
 
     /**
@@ -88,7 +104,7 @@ class FormBuilder {
 
     /**
      * Build a text input <input type="text">.
-     * (not for xhtml)
+     * Note: the input are for HTML5 <
      *
      * @return string
      */

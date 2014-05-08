@@ -24,12 +24,14 @@ class FormIgniterService extends IgniterService{
      */
     protected function igniteForm()
     {
-        $this->app->bind('form', function(){
+        // The '$app' variable use the main Application instance
+        // when the closure is called.
+        $this->app->bind('form', function($app){
 
             /**
-             * @TODO Find a way to get the dependencies for the called class!
+             * This create a FormBuilder instance with its dependencies.
              */
-            return new FormBuilder();
+            return new FormBuilder($app['html']);
 
         });
     }

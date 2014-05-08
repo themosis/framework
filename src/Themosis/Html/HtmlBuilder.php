@@ -5,7 +5,7 @@ use Themosis\Configuration\Application;
 
 defined('DS') or die('No direct script access.');
 
-class Html
+class HtmlBuilder
 {
 	/**
 	 * Build a list of HTML attributes from an array.
@@ -13,7 +13,7 @@ class Html
 	 * @param  array $attributes An array of html tag attributes.
 	 * @return string The html attributes output.
 	 */
-	public static function attributes(array $attributes)
+	public function attributes(array $attributes)
 	{
 		$html = array();
 
@@ -26,7 +26,7 @@ class Html
 
 			if (!is_null($value))
 			{
-				$html[] = $key.'="'.static::entities($value).'"';
+				$html[] = $key.'="'.$this->entities($value).'"';
 			}
 		}
 
@@ -40,7 +40,7 @@ class Html
 	 * @param string $value A character to encode.
 	 * @return string The encoded character.
 	 */
-	public static function entities($value)
+	public function entities($value)
 	{
 		return htmlentities($value, ENT_QUOTES, Application::get('encoding'), false);
 	}

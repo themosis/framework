@@ -30,17 +30,11 @@ abstract class Facade {
     private static function getInstance()
     {
         /**
-         * Grab the igniter service class.
+         * Grab the igniter service class and get the instance
+         * called by the service.
          */
-        $igniter = static::$app->getIgniter(static::getFacadeKey());
+        return static::$app->fire(static::getFacadeKey());
 
-        $service = new $igniter(static::$app);
-        $service->ignite();
-
-        /**
-         * We retrieve the instance called by the igniter class.
-         */
-        return static::$app[static::getFacadeKey()];
     }
 
     /**

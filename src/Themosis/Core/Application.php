@@ -12,7 +12,8 @@ class Application extends Container {
     {
         $services = array(
 
-            'form'          => '\Themosis\Html\FormIgniterService'
+            'form'          => '\Themosis\Html\FormIgniterService',
+            'html'          => '\Themosis\Html\HtmlIgniterService'
 
         );
 
@@ -28,17 +29,6 @@ class Application extends Container {
     }
 
     /**
-     * Retrieve the igniter class name.
-     *
-     * @param $key The igniter key name
-     * @return string
-     */
-    public function getIgniter($key)
-    {
-        return $this->igniters[$key];
-    }
-
-    /**
      * Add the instance to the application.
      *
      * @param string $key The facade key.
@@ -47,7 +37,9 @@ class Application extends Container {
      */
     public function bind($key, Callable $closure)
     {
-        $this->instances[$key] = $closure();
+        // Send the application instance to the closure.
+        // Allows the container to call the dependencies.
+        $this->instances[$key] = $closure($this);
     }
 
 } 

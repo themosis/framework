@@ -20,6 +20,33 @@ abstract class Container implements ArrayAccess{
     protected $instances = array();
 
     /**
+     * Retrieve the igniter class name.
+     *
+     * @param string $key The igniter key name.
+     * @return string
+     */
+    public function getIgniter($key)
+    {
+        return $this->igniters[$key];
+    }
+
+    /**
+     * Fire the igniterService.
+     *
+     * @param string $facadeKey The facade key name.
+     * @return mixed
+     */
+    public function fire($facadeKey)
+    {
+        $igniter = $this->getIgniter($facadeKey);
+        $service = new $igniter($this);
+        $service->ignite();
+
+        // Return the associated builder class instance.
+        return $this[$facadeKey];
+    }
+
+    /**
      * An offset to check for. Run when used with isset()
      *
      * @link http://www.php.net/manual/fr/class.arrayaccess.php
@@ -40,6 +67,15 @@ abstract class Container implements ArrayAccess{
      */
     public function offsetGet($key)
     {
+        // Check if $key is already registered in $instances
+        // If not, create it.
+        if(!isset($this->instances[$key])){
+
+            $this->instances[$key] = $this->fire($key);
+
+        }
+
+        // If $key is registered, return it.
         return isset($this->instances[$key]) ? $this->instances[$key] : null;
     }
 
