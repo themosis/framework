@@ -32,6 +32,11 @@ class ViewData
 	private $viewID;
 
     /**
+     * View path
+     */
+    private $viewPath;
+
+    /**
      * The ViewData constructor.
      *
      * @param array $params The view data parameters.
@@ -44,6 +49,7 @@ class ViewData
 
 		$this->compiled = $this->compile();
 		$this->viewID = md5($this->path);
+        $this->viewPath = themosis_path('storage').$this->viewID;
 			
 	}
 
@@ -76,7 +82,7 @@ class ViewData
 	}
 
     /**
-     * Return the ViewID
+     * Return the ViewID.
      *
      * @return string The view ID name.
      */
@@ -85,7 +91,17 @@ class ViewData
 		return $this->viewID;
 	}
 
-	/**
+    /**
+     * Return the stored view path.
+     *
+     * @return string The view path.
+     */
+    public function getViewPath()
+    {
+        return $this->viewPath;
+    }
+
+    /**
 	 * Retrieve passed datas
      *
      * @return array The datas passed to the view.

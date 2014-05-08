@@ -10,20 +10,15 @@ class ViewRenderer
 	*/
 	private $view;
 
-	/**
-	 * View id
-	*/
-	private $viewID;
-
-	/**
+    /**
 	 * Temp view file path
 	*/
 	protected $path;
 
 	/**
-	 * Cached view content
+	 * Cached view content.
 	*/
-	protected $cache = array();
+	protected static $cache = array();
 
     /**
      * The ViewRenderer constructor.
@@ -33,7 +28,6 @@ class ViewRenderer
 	public function __construct(ViewData $view)
 	{
 		$this->view = $view;
-		$this->viewID = $this->view->getViewID();
 	}
 
     /**
@@ -50,15 +44,11 @@ class ViewRenderer
 		// Extract sent datas
 		extract($this->view->getDatas());
 
-        // Create the temp file and fill it with the view
-        // content.
-        $this->path = $this->setViewFile($this->load());
-
 		// Compile the view
 		try
 		{
 			// Include the view
-            include($this->path);
+            include($this->load());
 
 		} catch (Exception $e)
 		{
@@ -66,61 +56,71 @@ class ViewRenderer
 			throw $e;
 		}
 
-        // Remove temporary file reference.
-        // Clear the filesystem.
-        unlink($this->path);
-
 		// Return the compiled view and terminate the output buffer
 		return ob_get_clean();
 	}
 
 	/**
-	 * Load the view content.
+	 * Load the view file.
 	 *
-     * @TODO Implement cache
-	 * @return string The view cached content.
+	 * @return string The view file path.
 	 */
 	private function load()
 	{
-        if (isset($this->cache[$this->viewID])) {
+        // The view file path to the storage directory.
+        $filename = $this->view->getViewPath();
 
-            return $this->cache[$this->viewID];
+        // Check if the file already exists.
+        if(file_exists($filename)){
+
+            // Content of the currently stored view file.
+            $fileContent = file_get_contents($this->view->getViewPath());
+
+            if($this->view->get() === $fileContent){
+
+                // Content is the same, so let's just return it.
+                return $filename;
+
+            }
+
+            // The content has changed, so let's remove the old file.
+            unlink($filename);
 
         }
 
-        return $this->cache[$this->viewID] = $this->view->get();
+        // No file exists, so let's build it!
+        return $this->setViewFile($filename, $this->view->get());
 	}
 
     /**
      * Create a temporary view file, set its content and returns
      * the file path.
      *
+     * @param string $path The stored file path.
      * @param string $content The temporary file content.
      * @throws ViewException
      * @return string|bool The temporary view file path. False if error when creating the temporary file.
      */
-    private function setViewFile($content)
+    private function setViewFile($path, $content)
     {
         if(!is_string($content)){
             throw new ViewException("Invalid view content. Can't create a temporary view file.");
         }
 
-        // Create the temporary file
+        // At this point, the file does not exist.
+        // Create the temporary file and add its content.
         // Make sure the 'storage' directory is writable.
-        $tmp = tempnam(themosis_path('storage'), $this->view->getViewID());
+        // The temporary file is  empty.
+        // Add the view content to the file.
+        $handle = fopen($path, 'w');
+        fwrite($handle, $content);
+        $closed = fclose($handle);
 
-        // Check if we get a string so it makes sure
-        // the file exists.
-        if(is_string($tmp) && !empty($tmp)){
+        // Return the file path
+        if($closed){
 
-            // The temporary file is  empty.
-            // Add the view content to the file.
-            $handle = fopen($tmp, 'w');
-            fwrite($handle, $content);
-            fclose($handle);
+            return $path;
 
-            // Return the file path
-            return $tmp;
         }
 
         return false;
