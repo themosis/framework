@@ -23,8 +23,13 @@ class HtmlIgniterService extends IgniterService{
      */
     protected function igniteHtml()
     {
+        // The '$app' variable use the main Application instance
+        // when the closure is called.
         $this->app->bind('html', function($app){
 
+            /**
+             * This creates a HtmlBuilder instance.
+             */
             return new HtmlBuilder();
 
         });

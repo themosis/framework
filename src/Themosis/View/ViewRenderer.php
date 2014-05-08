@@ -41,7 +41,7 @@ class ViewRenderer
 		// Start output buffer
 		ob_start();
 
-		// Extract sent datas
+		// Extract view datas
 		extract($this->view->getDatas());
 
 		// Compile the view
