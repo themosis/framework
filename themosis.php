@@ -112,6 +112,9 @@ class THFWK_Themosis
 	    // Application datas - This plugin 'app' folder
     	$paths['datas'] = realpath(__DIR__).DS.'app'.DS;
 
+        // Application storage directory
+        $paths['storage'] = realpath(__DIR__).DS.'app'.DS.'storage'.DS;
+
 	    // Register globally the paths
 	    foreach ($paths as $name => $path) {
 	       if(!isset($GLOBALS['themosis_paths'][$name])){

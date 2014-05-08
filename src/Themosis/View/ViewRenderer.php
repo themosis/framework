@@ -23,7 +23,7 @@ class ViewRenderer
 	/**
 	 * Cached view content
 	*/
-	protected static $cache = array();
+	protected $cache = array();
 
     /**
      * The ViewRenderer constructor.
@@ -67,6 +67,7 @@ class ViewRenderer
 		}
 
         // Remove temporary file reference.
+        // Clear the filesystem.
         unlink($this->path);
 
 		// Return the compiled view and terminate the output buffer
@@ -81,11 +82,13 @@ class ViewRenderer
 	 */
 	private function load()
 	{
-		if (isset(static::$cache[$this->viewID])) {
-			return static::$cache[$this->viewID];
-		} else {
-			return static::$cache[$this->viewID] = $this->view->get();
-		}
+        if (isset($this->cache[$this->viewID])) {
+
+            return $this->cache[$this->viewID];
+
+        }
+
+        return $this->cache[$this->viewID] = $this->view->get();
 	}
 
     /**
@@ -103,7 +106,8 @@ class ViewRenderer
         }
 
         // Create the temporary file
-        $tmp = tempnam(sys_get_temp_dir(), $this->view->getViewID());
+        // Make sure the 'storage' directory is writable.
+        $tmp = tempnam(themosis_path('storage'), $this->view->getViewID());
 
         // Check if we get a string so it makes sure
         // the file exists.

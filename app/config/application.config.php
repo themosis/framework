@@ -83,7 +83,7 @@ return array(
 		'Themosis\\Configuration\\Application'		=> 'Application',
 		'Themosis\\Model\\BaseModel'                => 'BaseModel',
 		'Themosis\\Field\\Field'					=> 'Field',
-		'Themosis\\Html\\Form'						=> 'Form',
+		'Themosis\\Facades\\Form'					=> 'Form',
 		'Themosis\\Metabox\\Meta'					=> 'Meta',
 		'Themosis\\Metabox\\Metabox'				=> 'Metabox',
 		'Themosis\\Page\\Option'					=> 'Option',
@@ -96,8 +96,7 @@ return array(
 		'Themosis\\Taxonomy\\Taxonomy'				=> 'Taxonomy',
 		'Themosis\\User\\User'						=> 'User',
 		'Themosis\\View\\Loop'						=> 'Loop',
-		'Themosis\\View\\View'						=> 'View',
-        'Themosis\\Facades\\FormNew'                => 'FormNew'
+		'Themosis\\View\\View'						=> 'View'
 	)
 
 );

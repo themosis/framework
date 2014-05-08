@@ -60,6 +60,7 @@ abstract class Facade {
      *
      * @param string $method The class method used.
      * @param array $args The method arguments.
+     * @return mixed
      */
     public static function __callStatic($method, $args)
     {
@@ -68,7 +69,7 @@ abstract class Facade {
         /**
          * Call the instance and its method.
          */
-        call_user_func_array(array($instance, $method), $args);
+        return call_user_func_array(array($instance, $method), $args);
     }
 
 } 

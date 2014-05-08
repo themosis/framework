@@ -26,6 +26,9 @@ class FormIgniterService extends IgniterService{
     {
         $this->app->bind('form', function(){
 
+            /**
+             * @TODO Find a way to get the dependencies for the called class!
+             */
             return new FormBuilder();
 
         });
