@@ -33,7 +33,7 @@ class ViewRenderer
     /**
      * Evaluate the view and return the output.
      *
-     * @throws Exception
+     * @throws \Exception
      * @return string The view content.
      */
 	public function get()
@@ -50,7 +50,7 @@ class ViewRenderer
 			// Include the view
             include($this->load());
 
-		} catch (Exception $e)
+		} catch (\Exception $e)
 		{
 			ob_get_clean();
 			throw $e;
