@@ -9,7 +9,7 @@ return array(
 	*/
 
 	/* --------------------------------------------------------------- */
-	// Theme textdomain
+	// Plugin textdomain
 	/* --------------------------------------------------------------- */
 	'textdomain'	=> 'themosis',
 
@@ -19,7 +19,7 @@ return array(
 	'namespace'	=> 'themosis',
 
 	/* --------------------------------------------------------------- */
-	// Set wordpress admin ajax file without the PHP extension
+	// Set WordPress admin ajax file without the PHP extension
 	/* --------------------------------------------------------------- */
 	'ajaxurl'	=> 'admin-ajax',
 
@@ -28,10 +28,16 @@ return array(
 	/* --------------------------------------------------------------- */
 	'encoding'	=> 'UTF-8',
 
+    /* --------------------------------------------------------------- */
+    // View engine
+    // Accepted values: 'db' (default), 'file'
+    /* --------------------------------------------------------------- */
+    'view'    => 'db',
+
 	/* --------------------------------------------------------------- */
-	// Rewrite - If you want to modify default Wordpress paths.
-	// If you change this parameter, you need to go to the 'Permalinks'
-	// tab in the Wordpress admin and update the structure by saving
+	// Rewrite - If you want to modify default WordPress paths.
+	// If you change this parameter, you need to go to the 'permalinks'
+	// tab in the WordPress admin and update the structure by saving
 	// the changes.
 	/* --------------------------------------------------------------- */
 	'rewrite'	=> false,
@@ -50,7 +56,7 @@ return array(
 	// Add custom htaccess settings.
 	// The settings are a mix of Themosis parameters and HTML5 Boilerplate
 	// htaccess settings.
-	// Will overwrite your htacess settings each time
+	// Will overwrite your htaccess settings each time
 	// you go to the permalinks settings page in the admin.
 	// If you edit your main .htaccess file and you want to avoid the
 	// framework to overwrite your settings, set this to "false".
@@ -58,7 +64,7 @@ return array(
 	'htaccess'	=> true,
 
 	/* --------------------------------------------------------------- */
-	// Restrict access to the Wordpress Admin for users with a
+	// Restrict access to the WordPress Admin for users with a
 	// specific role. 
 	// Once the theme is activated, you can only log in by going
 	// to 'wp-login.php' or 'login' (if permalinks changed) urls.
@@ -75,7 +81,7 @@ return array(
 	),
 
 	/* --------------------------------------------------------------- */
-	// Application classes's alias
+	// Application classes' alias
 	/* --------------------------------------------------------------- */
 	'aliases'	=> array(
 		'Themosis\\Ajax\\Ajax'						=> 'Ajax',
@@ -101,5 +107,3 @@ return array(
 	)
 
 );
-
-?>

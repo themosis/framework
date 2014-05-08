@@ -7,7 +7,7 @@ class ViewData
 {
 
 	/**
-	 * Use engine
+	 * Use template engine
 	*/
 	private $engine = false;
 
