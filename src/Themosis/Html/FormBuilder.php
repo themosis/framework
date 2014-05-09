@@ -271,11 +271,19 @@ class FormBuilder {
      * @param array $attributes
      * @return string
      */
-    public function select($name, array $options, $value = null, array $attributes = array())
+    public function select($name, array $options = array(), $value = null, array $attributes = array())
     {
         $merge = compact('name');
 
         $attributes = array_merge($attributes, $merge);
+
+        // Check if multiple is defined.
+        // If defined, change the name attribute.
+        if(isset($attributes['multiple']) && 'multiple' === $attributes['multiple']){
+            $attributes['name'] = $attributes['name'].'[]';
+        } else {
+            unset($attributes['multiple']);
+        }
 
         return '<select'.$this->html->attributes($attributes).'></select>';
     }
