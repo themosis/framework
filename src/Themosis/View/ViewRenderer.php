@@ -1,9 +1,6 @@
 <?php
 namespace Themosis\View;
 
-use Themosis\Configuration\Application;
-use Themosis\View\Engines\EngineFactory;
-
 defined('DS') or die('No direct script access.');
 
 class ViewRenderer
@@ -14,13 +11,6 @@ class ViewRenderer
 	private $view;
 
     /**
-     * The engine factory instance.
-     *
-     * @var \Themosis\View\Engines\EngineFactory
-     */
-    private $factory;
-
-    /**
      * The ViewRenderer constructor.
      *
      * @param \Themosis\View\ViewData $view The view datas.
@@ -28,7 +18,6 @@ class ViewRenderer
 	public function __construct(ViewData $view)
 	{
 		$this->view = $view;
-        $this->factory = new EngineFactory(Application::get('view'), $view);
 	}
 
     /**

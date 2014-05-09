@@ -28,12 +28,6 @@ return array(
 	/* --------------------------------------------------------------- */
 	'encoding'	=> 'UTF-8',
 
-    /* --------------------------------------------------------------- */
-    // View engine
-    // Accepted values: 'db' (default), 'file'
-    /* --------------------------------------------------------------- */
-    'view'    => 'db',
-
 	/* --------------------------------------------------------------- */
 	// Rewrite - If you want to modify default WordPress paths.
 	// If you change this parameter, you need to go to the 'permalinks'
