@@ -285,7 +285,200 @@ class FormBuilder {
             unset($attributes['multiple']);
         }
 
-        return '<select'.$this->html->attributes($attributes).'></select>';
+        // Build the options of the select tag.
+        $options = $this->makeOptionTags($options, $value);
+
+        return '<select'.$this->html->attributes($attributes).'>'.$options.'</select>';
     }
+
+    /**
+     * Define inner option tags for the select tag.
+     *
+     * @param array $options The option fields to output.
+     * @param mixed $value Array if multiple, string if single.
+     * @return string
+     */
+    private function makeOptionTags(array $options, $value)
+    {
+        $output = '';
+
+        $options = $this->parseSelectOptions($options);
+
+        // Start looping through the options.
+        foreach($options as $key => $option):
+
+            // Check the $key. If $key is a string, then we are dealing
+            // with <optgroup> tags.
+            if(is_string($key)):
+
+                $output.= $this->buildOptgroupTags($key, $option, $value);
+
+            else:
+                // No <optgroup> tags, $key is int.
+                $output.= $this->parseOptionTags($option, $value);
+
+            endif;
+
+        endforeach;
+        // End options loop.
+
+        return $output;
+    }
+
+    /**
+     * Parse the options and re-order optgroup options if no custom keys defined.
+     *
+     * @param array $options The select tag options.
+     * @throws HtmlException
+     * @return array The parsed options.
+     */
+    private function parseSelectOptions(array $options)
+    {
+        $parsedOptions = array();
+
+        foreach($options as $key => $option)
+        {
+            // Check $option is array in order to continue.
+            if(!is_array($option)) throw new HtmlException("In order to build the select tag, the parameter must be an array of arrays.");
+
+            // Re-order <optgroup> options
+            if(is_string($key)){
+
+                $parsedOptions[$key] = $this->organizeOptions($options, $option);
+
+            } else {
+
+                $parsedOptions[$key] = $option;
+
+            }
+        }
+
+        return $parsedOptions;
+    }
+
+    /**
+     * Re-order/re-index <optgroup> options.
+     *
+     * @param array $options The select tag options(all).
+     * @param array $subOptions The optgroup options.
+     * @return array
+     */
+    private function organizeOptions(array $options, array $subOptions)
+    {
+        $indexedOptions = array();
+        $convertedOptions = array();
+
+        // Build the re-indexed options array.
+        foreach($options as $group){
+
+            foreach($group as $i => $value){
+
+                // Custom values - No need to change something.
+                if(is_string($i)){
+
+                    $indexedOptions[$i] = $value;
+
+                } else {
+
+                    // Int values - Reorder options so there are
+                    // no duplicates.
+                    array_push($indexedOptions, $value);
+
+                }
+            }
+        }
+
+        // Grab the converted values and return them.
+        foreach($indexedOptions as $index => $option){
+
+            if(in_array($option, $subOptions)){
+
+                $convertedOptions[$index] = $option;
+
+            }
+
+        }
+
+        return $convertedOptions;
+    }
+
+    /**
+     * Build the option group tag <optgroup></optgroup>
+     *
+     * @param string $label The tag label attribute.
+     * @param array $options The options to add to the group.
+     * @param mixed $value See makeOptionTags method.
+     * @return string
+     */
+    private function buildOptgroupTags($label, array $options, $value)
+    {
+        $options = $this->parseOptionTags($options, $value);
+
+        return '<optgroup label="'.ucfirst($label).'">'.$options.'</optgroup>';
+    }
+
+    /**
+     * Prepare select tag options for output.
+     *
+     * @param array $options The option values.
+     * @param mixed $value Array if multiple, string if single.
+     * @return string
+     */
+    private function parseOptionTags(array $options, $value)
+    {
+        $output = '';
+
+        foreach($options as $key => $option):
+
+            $selected = $this->setSelectable($key, $value);
+
+            $output.= $this->makeOptionTag($key, $option, $selected);
+
+        endforeach;
+
+        return $output;
+    }
+
+    /**
+     * Build an option tag <option></option>
+     *
+     * @param mixed $key String if custom "value", otherwise int.
+     * @param string $option Option name to display.
+     * @param string $selected The selected attribute.
+     * @return string
+     */
+    private function makeOptionTag($key, $option, $selected = null)
+    {
+        return '<option value="'.$key.'" '.$selected.'>'.ucfirst($option).'</option>';
+    }
+
+    /**
+     * Define the selected attribute of an option tag.
+     *
+     * @param string $key The option tag value.
+     * @param mixed $value The retrieved value. Array if multiple, string if single.
+     * @return string
+     */
+    private function setSelectable($key, $value)
+    {
+        $selected = 'selected="selected"';
+        // Deal if multiple selection.
+        if(is_array($value) && in_array($key, $value)){
+
+            return $selected;
+
+        }
+
+        // Deal single selection.
+        // $key might be an int or a string
+        if(is_string($value) && $key == $value){
+
+            return $selected;
+
+        }
+
+        return '';
+    }
+
 
 }
