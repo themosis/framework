@@ -480,5 +480,46 @@ class FormBuilder {
         return '';
     }
 
+    /**
+     * Output a <button type="button"> tag.
+     *
+     * @param string $name The tag name attribute.
+     * @param string $display The button display text.
+     * @param array $attributes Other tag attributes.
+     * @return string
+     */
+    public function button($name, $display = null, array $attributes = array())
+    {
+        return $this->makeButton('button', $name, $display, $attributes);
+    }
+
+    /**
+     * @param string $name The tag name attribute.
+     * @param null $display The button display text.
+     * @param array $attributes Other tag attributes.
+     * @return string
+     */
+    public function submit($name, $display = null, array $attributes = array())
+    {
+        return $this->makeButton('submit', $name, $display, $attributes);
+    }
+
+    /**
+     * Build a <button> tag.
+     *
+     * @param string $type The button type attribute.
+     * @param string $name The button name attribute.
+     * @param string $display The button display text.
+     * @param array $attributes Other tag attributes.
+     * @return string
+     */
+    private function makeButton($type, $name, $display = null, array $attributes = array())
+    {
+        $merge = compact('type', 'name');
+
+        $attributes = array_merge($attributes, $merge);
+
+        return '<button '.$this->html->attributes($attributes).'>'.$display.'</button>';
+    }
 
 }
