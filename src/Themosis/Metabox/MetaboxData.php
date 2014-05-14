@@ -1,32 +1,9 @@
 <?php
 namespace Themosis\Metabox;
 
-defined('DS') or die('No direct script access.');
+use Themosis\Core\DataContainer;
 
-class MetaboxData
-{
-	/**
-	 * All metabox datas
-	*/
-	private $datas = array();
+class MetaboxData extends DataContainer {
 
-	/**
-	 * Set the datas for the associated metabox.
-	 * 
-	 * @param array $datas The fields of the metabox.
-	 */
-	public function set(array $datas)
-	{
-		$this->datas = $datas;
-	}
 
-	/**
-	 * Get the datas of the metabox
-	 * 
-	 * @return array The metabox fields.
-	 */
-	public function get()
-	{
-		return $this->datas;
-	}
-}
+} 

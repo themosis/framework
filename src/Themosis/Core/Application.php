@@ -13,7 +13,8 @@ class Application extends Container {
         $services = array(
 
             'form'          => '\Themosis\Html\FormIgniterService',
-            'html'          => '\Themosis\Html\HtmlIgniterService'
+            'html'          => '\Themosis\Html\HtmlIgniterService',
+            'metabox'       => '\Themosis\Metabox\MetaboxIgniterService'
 
         );
 

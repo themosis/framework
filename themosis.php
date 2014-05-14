@@ -100,7 +100,7 @@ class THFWK_Themosis
 		/**
 	    * Define all framework paths
 	    * These are real paths, not URLs to the framework files.
-	    * These paths are extensibles with the help of Wordpress
+	    * These paths are extensible with the help of WordPress
 	    * filters.
 	    */
 	    // All framework paths

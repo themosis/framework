@@ -86,7 +86,7 @@ return array(
 		'Themosis\\Facades\\Form'					=> 'Form',
         'Themosis\\Facades\\Html'                   => 'Html',
 		'Themosis\\Metabox\\Meta'					=> 'Meta',
-		'Themosis\\Metabox\\Metabox'				=> 'Metabox',
+		'Themosis\\Facades\\Metabox'				=> 'Metabox',
 		'Themosis\\Page\\Option'					=> 'Option',
 		'Themosis\\Page\\Page'						=> 'Page',
 		'Themosis\\PostType\\PostType'				=> 'PostType',
