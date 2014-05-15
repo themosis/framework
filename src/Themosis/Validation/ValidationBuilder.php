@@ -93,4 +93,16 @@ class ValidationBuilder {
         return is_email($email) ? $email : '';
     }
 
+    /**
+     * Validate a URL value.
+     *
+     * @param string $data The URL to validate.
+     * @return string
+     */
+    private function validate_url($data)
+    {
+        //@TODO Allow to specify properties to validation rules so we can add the request protocols to esc_url function.
+        return esc_url($data);
+    }
+
 } 
