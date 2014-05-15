@@ -18,5 +18,3 @@ $metabox->validate(array(
     'email'     => array('email'),
     'website'   => array('url')
 ));
-
-?>
