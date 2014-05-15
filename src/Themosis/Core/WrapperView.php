@@ -78,14 +78,15 @@ class WrapperView {
     }
 
     /**
+     * Fill all sections of the container view with their
+     * associated fields.
+     *
      * @param string $section The section name.
      * @param string $field The rendered field html.
      */
     public function fillSection($section, $field)
     {
-        $content = str_replace('%section_'.$section.'%', $field.'%section_'.$section.'%', $this->content);
-
-        $this->content = $content;
+        $this->content = str_replace('%section_'.$section.'%', $field.'%section_'.$section.'%', $this->content);
     }
 
     /**

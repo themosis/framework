@@ -5,6 +5,7 @@ use Themosis\Action\Action;
 use Themosis\Core\DataContainer;
 use Themosis\Core\WrapperView;
 use Themosis\Session\Session;
+use Themosis\Validation\ValidationBuilder;
 
 class MetaboxBuilder {
 
@@ -23,6 +24,11 @@ class MetaboxBuilder {
     private $view;
 
     /**
+     * A validator instance.
+     */
+    private $validator;
+
+    /**
      * The display/install event to listen to.
      */
     private $installEvent;
@@ -32,11 +38,13 @@ class MetaboxBuilder {
      *
      * @param DataContainer $datas The metabox properties.
      * @param \Themosis\Core\WrapperView $view The metabox default view.
+     * @param \Themosis\Validation\ValidationBuilder $validator
      */
-    public function __construct(DataContainer $datas, WrapperView $view)
+    public function __construct(DataContainer $datas, WrapperView $view, ValidationBuilder $validator)
     {
         $this->datas = $datas;
         $this->view = $view;
+        $this->validator = $validator;
         $this->installEvent = Action::listen('add_meta_boxes', $this, 'display');
         Action::listen('save_post', $this, 'save')->dispatch();
     }
@@ -67,12 +75,14 @@ class MetaboxBuilder {
      * Build the set metabox.
      *
      * @param array $fields A list of fields to display.
-     * @return void
+     * @return \Themosis\Metabox\MetaboxBuilder
      */
-    public function set(array $fields)
+    public function set(array $fields = array())
     {
         $this->datas['fields'] = $fields;
         $this->installEvent->dispatch();
+
+        return $this;
     }
 
     /**
@@ -145,12 +155,32 @@ class MetaboxBuilder {
 
             foreach($fields as $field){
 
-                update_post_meta($postId, $field['name'], $_POST[$field['name']]);
+                // Fetch the post value.
+                $value = $_POST[$field['name']];
+
+                // Apply validation if defined.
+                // Check if the rule exists for the field in order to validate.
+                if(isset($this->datas['rules'][$field['name']])){
+                    $value = $this->validator->single($value, $this->datas['rules'][$field['name']]);
+                }
+
+                update_post_meta($postId, $field['name'], $value);
 
             }
 
         }
 
+    }
+
+    /**
+     * Register validation rules for the custom fields.
+     *
+     * @param array $rules A list of field names and their associated validation rule.
+     * @return void
+     */
+    public function validate(array $rules = array())
+    {
+        $this->datas['rules'] = $rules;
     }
 
     /**

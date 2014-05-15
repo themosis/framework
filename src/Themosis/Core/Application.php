@@ -15,7 +15,8 @@ class Application extends Container {
             'field'         => '\Themosis\Field\FieldIgniterService',
             'form'          => '\Themosis\Html\FormIgniterService',
             'html'          => '\Themosis\Html\HtmlIgniterService',
-            'metabox'       => '\Themosis\Metabox\MetaboxIgniterService'
+            'metabox'       => '\Themosis\Metabox\MetaboxIgniterService',
+            'validation'    => '\Themosis\Validation\ValidationIgniterService'
 
         );
 

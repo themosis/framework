@@ -96,6 +96,7 @@ return array(
 		'Themosis\\Taxonomy\\TaxMeta'               => 'TaxMeta',
 		'Themosis\\Taxonomy\\Taxonomy'				=> 'Taxonomy',
 		'Themosis\\User\\User'						=> 'User',
+        'Themosis\\Facades\\Validator'              => 'Validator',
 		'Themosis\\View\\Loop'						=> 'Loop',
 		'Themosis\\View\\View'						=> 'View'
 	)

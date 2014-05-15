@@ -18,7 +18,7 @@ class MetaboxIgniterService extends IgniterService {
             $datas = new MetaboxData();
             $view = new WrapperView(themosis_path('sys').'Metabox'.DS.'Views'.DS.'default.php');
 
-            return new MetaboxBuilder($datas, $view);
+            return new MetaboxBuilder($datas, $view, $app['validation']);
 
         });
     }

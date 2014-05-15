@@ -5,12 +5,16 @@ use Themosis\Facades\Form;
 
 class TextField extends FieldBuilder{
 
-    public function __construct(array $properties){
-
+    /**
+     * Define a core TextField.
+     *
+     * @param array $properties The text field properties.
+     */
+    public function __construct(array $properties)
+    {
         $this->properties = $properties;
         $this->setId();
         $this->setTitle();
-
     }
 
     /**
