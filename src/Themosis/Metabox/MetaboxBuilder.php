@@ -3,11 +3,10 @@ namespace Themosis\Metabox;
 
 use Themosis\Action\Action;
 use Themosis\Core\DataContainer;
-use Themosis\Core\IWrapper;
 use Themosis\Core\WrapperView;
 use Themosis\Session\Session;
 
-class MetaboxBuilder implements IWrapper {
+class MetaboxBuilder {
 
     /**
      * Metabox instance datas.
@@ -67,10 +66,12 @@ class MetaboxBuilder implements IWrapper {
     /**
      * Build the set metabox.
      *
+     * @param array $fields A list of fields to display.
      * @return void
      */
-    public function set()
+    public function set(array $fields)
     {
+        $this->datas['fields'] = $fields;
         $this->installEvent->dispatch();
     }
 
@@ -84,16 +85,7 @@ class MetaboxBuilder implements IWrapper {
         $id = md5($this->datas['title']);
 
         // Fields are passed to the metabox $args parameter.
-        add_meta_box($id, $this->datas['title'], array($this, 'build'), 'post', 'normal', 'core', array(
-            'main' => array(
-                '<p>My custom field</p>',
-                '<p>Second custom field</p>'
-            ),
-            'sidebar'   => array(
-                '<h1>Sidebar field 01</h1>',
-                \Themosis\Facades\Form::text('m-field', 'Hello')
-            )
-        ));
+        add_meta_box($id, $this->datas['title'], array($this, 'build'), 'post', 'normal', 'core', $this->datas['fields']);
     }
 
     /**
@@ -112,10 +104,17 @@ class MetaboxBuilder implements IWrapper {
         // Place the fields at the right section
         foreach($this->view->getSections() as $section){
 
-            foreach($datas['args'][$section] as $field){
+            if(isset($datas['args'][$section])){
 
-                // Only pass the calculated field view.
-                $this->view->fillSection($section, $field);
+                foreach($datas['args'][$section] as $field){
+
+                    // Set the value property of the $field
+                    $field['value'] = get_post_meta($post->ID, $field['name'], true);
+
+                    // Add the rendered field view.
+                    $this->view->fillSection($section, $field->metabox());
+
+                }
 
             }
 
@@ -128,11 +127,30 @@ class MetaboxBuilder implements IWrapper {
     /**
      * The wrapper install method. Save container values.
      *
+     * @param int $postId The post ID value.
      * @return void
      */
-    public function save()
+    public function save($postId)
     {
-        // TODO: Implement save() method.
+        if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+
+        $nonceName = (isset($_POST[Session::nonceName])) ? $_POST[Session::nonceName] : Session::nonceName;
+        if (!wp_verify_nonce($nonceName, Session::nonceAction)) return;
+
+        // The $fields in the array defined for each sections.
+
+        // BEFORE saving, PROVIDE A WAY TO SANITIZE DATAS.
+
+        foreach($this->datas['fields'] as $fields){
+
+            foreach($fields as $field){
+
+                update_post_meta($postId, $field['name'], $_POST[$field['name']]);
+
+            }
+
+        }
+
     }
 
     /**

@@ -90,6 +90,8 @@ class WrapperView {
 
     /**
      * Render the wrapper view and its inner fields.
+     *
+     * @return void
      */
     public function render()
     {

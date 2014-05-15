@@ -8,7 +8,7 @@ defined('DS') or die('No direct script access.');
  * the creation of custom fields.
 */
 
-class Field
+class OLD_Field
 {
 	/**
 	 * Allowed field keys

@@ -32,7 +32,7 @@ class Template extends ConfigTemplate
 		$defaultNames[] = $templateNames;
 
 		// Build a select field
-		$fields[] = Field::select('_themosisPageTemplate', $defaultNames, false, array('title' => __('Template', THEMOSIS_TEXTDOMAIN)));
+		//$fields[] = Field::select('_themosisPageTemplate', $defaultNames, false, array('title' => __('Template', THEMOSIS_TEXTDOMAIN)));
 		/*Metabox::make('Themosis Page Template', 'page', array('context' => 'side', 'priority' => 'core'))->set($fields);*/
 	}
 
