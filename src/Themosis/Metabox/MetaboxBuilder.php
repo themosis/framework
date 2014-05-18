@@ -147,16 +147,23 @@ class MetaboxBuilder {
         $nonceName = (isset($_POST[Session::nonceName])) ? $_POST[Session::nonceName] : Session::nonceName;
         if (!wp_verify_nonce($nonceName, Session::nonceAction)) return;
 
-        // The $fields in the array defined for each sections.
-
-        // BEFORE saving, PROVIDE A WAY TO SANITIZE DATAS.
-
+        // Loop through the registered fields.
         foreach($this->datas['fields'] as $fields){
 
             foreach($fields as $field){
 
-                // Fetch the post value.
-                $value = $_POST[$field['name']];
+                // Check if it's a checkbox,... If not checked, no values
+                // are in the $_POST array
+                if(!isset($_POST[$field['name']]) && 'checkbox' === $field['type']){
+
+                    $value = 'off';
+
+                } else {
+
+                    // Fetch the post value.
+                    $value = $_POST[$field['name']];
+
+                }
 
                 // Apply validation if defined.
                 // Check if the rule exists for the field in order to validate.

@@ -20,9 +20,13 @@ class FieldFactory {
         // Only check for "CORE" field classes.
         $class = 'Themosis\\Field\\Fields\\'.ucfirst($type).'Field';
 
+        // Add the field type in the properties.
+        $properties = compact('type');
+        $properties = array_merge($fieldProperties, $properties);
+
         // Return the called class.
         // @TODO Try-catch the class call. If errors, log it. (must implement log system)
-        return new $class($fieldProperties);
+        return new $class($properties);
 
     }
 
@@ -40,6 +44,15 @@ class FieldFactory {
         $properties = array_merge($extras, $properties);
 
         return $this->make('text', $properties);
+    }
+
+    public function checkbox($name, array $extras = array())
+    {
+        $properties = compact('name');
+
+        $properties = array_merge($extras, $properties);
+
+        return $this->make('checkbox', $properties);
     }
 
 } 

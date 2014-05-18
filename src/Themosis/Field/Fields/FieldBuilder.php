@@ -16,7 +16,7 @@ abstract class FieldBuilder extends DataContainer{
      * Method that handle the field HTML code for
      * metabox output.
      *
-     * @return mixed
+     * @return string
      */
     abstract public function metabox();
 

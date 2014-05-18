@@ -3,13 +3,8 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\Form;
 
-class TextField extends FieldBuilder{
+class CheckboxField extends FieldBuilder{
 
-    /**
-     * Define a core TextField.
-     *
-     * @param array $properties The text field properties.
-     */
     public function __construct(array $properties)
     {
         $this->properties = $properties;
@@ -48,7 +43,7 @@ class TextField extends FieldBuilder{
         $output = '<tr class="themosis-field-container">';
         $output .= '<th class="themosis-label" scope="row">';
         $output .= Form::label($this['id'], $this['title']).'</th><td>';
-        $output .= Form::text($this['name'], $this['value'], array('id' => $this['id'], 'class' => 'large-text', 'data-type' => 'text'));
+        $output .= Form::checkbox($this['name'], $this['value'], array('id' => $this['id'], 'data-type' => 'checkbox'));
 
         if(isset($this['info'])){
 
@@ -61,5 +56,4 @@ class TextField extends FieldBuilder{
 
         return $output;
     }
-
 }

@@ -8,7 +8,8 @@ $metabox = Metabox::make('Informations', 'post')->set(array(
         Field::text('author', array('info' => 'Un message pour l\'auteur.')),
         Field::text('age'),
         Field::text('email', array('info' => 'Please insert your email address.')),
-        Field::text('website', array('info' => 'Please specify your website address.'))
+        Field::text('website', array('info' => 'Please specify your website address.')),
+        Field::checkbox('enabled', array('title' => 'Activate'))
     )
 ));
 

@@ -170,21 +170,20 @@ class FormBuilder {
 
     /**
      * Build a single checkbox input <input type="checkbox">
-     * Create your own method for multiple checkboxes.
      *
      * @param string $name The input name attribute.
      * @param string $value String value if single.
      * @param array $attributes Input extra attributes.
      * @return string
      */
-    public function checkbox($name, $value = 'on', array $attributes = array())
+    public function checkbox($name, $value = null, array $attributes = array())
     {
         // If checkbox value is 'on', show it checked.
         if('on' === $value){
             $attributes['checked'] = 'checked';
         }
 
-        return $this->input('checkbox', $name, $value, $attributes);
+        return $this->input('checkbox', $name, null, $attributes);
     }
 
     /**
