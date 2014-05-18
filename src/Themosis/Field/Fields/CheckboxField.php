@@ -5,11 +5,27 @@ use Themosis\Facades\Form;
 
 class CheckboxField extends FieldBuilder{
 
+    /**
+     * Define a core CheckboxField.
+     *
+     * @param array $properties The checkbox field properties.
+     */
     public function __construct(array $properties)
     {
         $this->properties = $properties;
         $this->setId();
         $this->setTitle();
+    }
+
+    /**
+     * Method to override to define the input type
+     * that handles the value.
+     *
+     * @return void
+     */
+    protected function fieldType()
+    {
+        $this->type = 'checkbox';
     }
 
     /**

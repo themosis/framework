@@ -10,23 +10,25 @@ class FieldFactory {
     /**
      * Call the appropriate field class.
      *
-     * @param string $type The class name to use: $class_Field.
+     * @param string $class The custom field class name.
      * @param array $fieldProperties The defined field properties. Muse be an associative array.
      * @throws FieldException
      * @return object Themosis\Field\FieldBuilder
      */
-    public function make($type, array $fieldProperties)
+    public function make($class, array $fieldProperties)
     {
-        // Only check for "CORE" field classes.
-        $class = 'Themosis\\Field\\Fields\\'.ucfirst($type).'Field';
+        try{
 
-        // Add the field type in the properties.
-        $properties = compact('type');
-        $properties = array_merge($fieldProperties, $properties);
+            // Return the called class.
+            $class =  new $class($fieldProperties);
 
-        // Return the called class.
-        // @TODO Try-catch the class call. If errors, log it. (must implement log system)
-        return new $class($properties);
+        } catch(\Exception $e){
+
+            //@TODO Implement log if class is not found
+
+        }
+
+        return $class;
 
     }
 
@@ -43,16 +45,21 @@ class FieldFactory {
 
         $properties = array_merge($extras, $properties);
 
-        return $this->make('text', $properties);
+        return $this->make('Themosis\\Field\\Fields\\TextField', $properties);
     }
 
+    /**
+     * @param string $name The name attribute of the checkbox input.
+     * @param array $extras Extra field properties.
+     * @return \Themosis\Field\Fields\CheckboxField
+     */
     public function checkbox($name, array $extras = array())
     {
         $properties = compact('name');
 
         $properties = array_merge($extras, $properties);
 
-        return $this->make('checkbox', $properties);
+        return $this->make('Themosis\\Field\\Fields\\CheckboxField', $properties);
     }
 
 } 

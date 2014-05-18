@@ -3,11 +3,12 @@ namespace Themosis\Metabox;
 
 use Themosis\Action\Action;
 use Themosis\Core\DataContainer;
+use Themosis\Core\Wrapper;
 use Themosis\Core\WrapperView;
 use Themosis\Session\Session;
 use Themosis\Validation\ValidationBuilder;
 
-class MetaboxBuilder {
+class MetaboxBuilder extends Wrapper {
 
     /**
      * Metabox instance datas.
@@ -152,18 +153,7 @@ class MetaboxBuilder {
 
             foreach($fields as $field){
 
-                // Check if it's a checkbox,... If not checked, no values
-                // are in the $_POST array
-                if(!isset($_POST[$field['name']]) && 'checkbox' === $field['type']){
-
-                    $value = 'off';
-
-                } else {
-
-                    // Fetch the post value.
-                    $value = $_POST[$field['name']];
-
-                }
+                $value = $this->parseValue($_POST, $field);
 
                 // Apply validation if defined.
                 // Check if the rule exists for the field in order to validate.

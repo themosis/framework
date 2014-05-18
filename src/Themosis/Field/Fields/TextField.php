@@ -18,6 +18,17 @@ class TextField extends FieldBuilder{
     }
 
     /**
+     * Method to override to define the input type
+     * that handles the value.
+     *
+     * @return void
+     */
+    protected function fieldType()
+    {
+        $this->type = 'text';
+    }
+
+    /**
      * Set a default ID attribute if not defined.
      *
      * @return void
