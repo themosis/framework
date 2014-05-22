@@ -239,6 +239,9 @@ class FormBuilder {
             // Build html output
             $field.= '<label>'.$this->input($type, $name.'[]', $choice, $attributes).ucfirst($choice).'</label>';
 
+            // Reset 'checked' attributes.
+            unset($attributes['checked']);
+
         endforeach;
 
         return $field;

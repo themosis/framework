@@ -28,7 +28,12 @@ abstract class Wrapper {
                 case 'checkbox':
 
                     $value = 'off';
+                    break;
 
+                case 'checkboxes':
+                case 'radio':
+
+                    $value = array();
                     break;
 
                 default:

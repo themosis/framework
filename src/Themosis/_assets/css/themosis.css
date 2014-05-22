@@ -19,6 +19,24 @@
 
 /*
 |
+| Themosis Checkboxes custom field.
+|
+*/
+.themosis-checkboxes label{
+    display: block;
+}
+
+/*
+|
+| Themosis Radio custom field.
+|
+*/
+.themosis-radio label{
+    display: block;
+}
+
+/*
+|
 | Metabox Infinite style
 |
 */
