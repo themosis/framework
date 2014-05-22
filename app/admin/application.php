@@ -10,7 +10,8 @@ $metabox = Metabox::make('Informations', 'post')->set(array(
         Field::text('email', array('info' => 'Please insert your email address.')),
         Field::text('website', array('info' => 'Please specify your website address.')),
         Field::checkbox('enabled', array('title' => 'Activate')),
-        Field::textarea('content', array('info' => 'Insert content here.', 'title' => 'Summary'))
+        Field::textarea('content', array('info' => 'Insert content here.', 'title' => 'Summary')),
+        Field::text('color', array('info' => 'Define an hexadecimal color.'))
     )
 ));
 
@@ -19,5 +20,6 @@ $metabox->validate(array(
     'age'       => array('num'),
     'email'     => array('email'),
     'website'   => array('url:http'),
-    'content'   => array('min:10', 'max:100')
+    'content'   => array('kses:a|href|title,p,h3'),
+    'color'     => array('color')
 ));
