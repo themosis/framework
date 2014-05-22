@@ -169,6 +169,19 @@ class FormBuilder {
     }
 
     /**
+     * Build a single hidden input <input type="hidden">
+     *
+     * @param string $name The name attribute.
+     * @param null $value The value attribute.
+     * @param array $attributes
+     * @return string
+     */
+    public function hidden($name, $value = null, array $attributes = array())
+    {
+        return $this->input('hidden', $name, $value, $attributes);
+    }
+
+    /**
      * Build a single checkbox input <input type="checkbox">
      *
      * @param string $name The input name attribute.
