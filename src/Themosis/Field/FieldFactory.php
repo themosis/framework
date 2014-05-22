@@ -33,7 +33,7 @@ class FieldFactory {
     }
 
     /**
-     * Return a Text_Field instance.
+     * Return a TextField instance.
      *
      * @param string $name The name attribute of the text input.
      * @param array $extras Extra field properties.
@@ -49,6 +49,24 @@ class FieldFactory {
     }
 
     /**
+     * Return a TextareaField instance.
+     *
+     * @param string $name The name attribute of the textarea.
+     * @param array $extras Extra field properties.
+     * @return \Themosis\Field\Fields\TextareaField
+     */
+    public function textarea($name, array $extras = array())
+    {
+        $properties = compact('name');
+
+        $properties = array_merge($extras, $properties);
+
+        return $this->make('Themosis\\Field\\Fields\\TextareaField', $properties);
+    }
+
+    /**
+     * Return a CheckboxField instance.
+     *
      * @param string $name The name attribute of the checkbox input.
      * @param array $extras Extra field properties.
      * @return \Themosis\Field\Fields\CheckboxField
