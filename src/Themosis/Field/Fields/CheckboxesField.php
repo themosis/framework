@@ -10,7 +10,7 @@ class CheckboxesField extends FieldBuilder {
      *
      * @param array $properties The checkboxes field properties.
      */
-    public function __construct($properties)
+    public function __construct(array $properties)
     {
         $this->properties = $properties;
         $this->setId();

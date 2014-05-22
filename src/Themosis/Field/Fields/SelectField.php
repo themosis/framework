@@ -3,13 +3,8 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\Form;
 
-class RadioField extends FieldBuilder{
+class SelectField extends FieldBuilder {
 
-    /**
-     * Define a core CheckboxesField.
-     *
-     * @param array $properties The checkboxes field properties.
-     */
     public function __construct(array $properties)
     {
         $this->properties = $properties;
@@ -25,20 +20,7 @@ class RadioField extends FieldBuilder{
      */
     protected function fieldType()
     {
-        $this->type = 'radio';
-    }
-
-    /**
-     * Define a default value as array.
-     * Checkboxes field accept only array as value.
-     *
-     * @return void
-     */
-    private function defaultValue()
-    {
-        if(empty($this['value']) || is_string($this['value'])){
-            $this['value'] = array();
-        }
+        $this->type = 'select';
     }
 
     /**
@@ -69,14 +51,10 @@ class RadioField extends FieldBuilder{
      */
     public function metabox()
     {
-        // If non existing values or if string sent,
-        // define the default value for the field.
-        $this->defaultValue();
-
         $output = '<tr class="themosis-field-container">';
         $output .= '<th class="themosis-label" scope="row">';
-        $output .= Form::label($this['id'], $this['title']).'</th><td class="themosis-radio">';
-        $output .= Form::radio($this['name'], $this['options'], $this['value'], array('data-type' => 'radio'));
+        $output .= Form::label($this['id'], $this['title']).'</th><td>';
+        $output .= Form::select($this['name'], $this['options'], $this['value'], array('multiple' => $this['multiple'], 'data-type' => 'select', 'id' => $this['id']));
 
         if(isset($this['info'])){
 
@@ -89,5 +67,4 @@ class RadioField extends FieldBuilder{
 
         return $output;
     }
-
-} 
+}

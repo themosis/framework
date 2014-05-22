@@ -114,4 +114,27 @@ class FieldFactory {
         return $this->make('Themosis\\Field\\Fields\\RadioField', $properties);
     }
 
+    /**
+     * Define a SelectField instance.
+     *
+     * @param string $name The name attribute of the select custom field.
+     * @param array $options The select options tag.
+     * @param bool $multiple
+     * @param array $extras
+     * @return \Themosis\Field\Fields\SelectField
+     */
+    public function select($name, array $options, $multiple = false, array $extras = array())
+    {
+        $properties = compact('name', 'options');
+
+        // Check the multiple attribute.
+        if(true == $multiple){
+            $properties['multiple'] = 'multiple';
+        }
+
+        $properties = array_merge($extras, $properties);
+
+        return $this->make('Themosis\\Field\\Fields\\SelectField', $properties);
+    }
+
 } 
