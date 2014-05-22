@@ -96,7 +96,7 @@ class MetaboxBuilder extends Wrapper {
         $id = md5($this->datas['title']);
 
         // Fields are passed to the metabox $args parameter.
-        add_meta_box($id, $this->datas['title'], array($this, 'build'), 'post', 'normal', 'core', $this->datas['fields']);
+        add_meta_box($id, $this->datas['title'], array($this, 'build'), $this->datas['postType'], $this->datas['options']['context'], $this->datas['options']['priority'], $this->datas['fields']);
     }
 
     /**
@@ -188,6 +188,17 @@ class MetaboxBuilder extends Wrapper {
      */
     private function parseOptions(array $options)
     {
+        // Default
+        if(empty($options)){
+
+            return array(
+                'context'   => 'normal',
+                'priority'  => 'default'
+            );
+
+        }
+
+        // If options defined...
         $newOptions = array();
 
         $allowed = array('context', 'priority');
