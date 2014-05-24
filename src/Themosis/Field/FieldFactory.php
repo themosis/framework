@@ -137,4 +137,20 @@ class FieldFactory {
         return $this->make('Themosis\\Field\\Fields\\SelectField', $properties);
     }
 
+    /**
+     * Return a MediaField instance.
+     *
+     * @param string $name The name attribute of the hidden input.
+     * @param array $extras Extra field properties.
+     * @return \Themosis\Field\Fields\MediaField
+     */
+    public function media($name, array $extras = array())
+    {
+        $properties = compact('name');
+
+        $properties = array_merge($extras, $properties);
+
+        return $this->make('Themosis\\Field\\Fields\\MediaField', $properties);
+    }
+
 } 

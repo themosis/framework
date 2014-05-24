@@ -3,7 +3,7 @@
  * Metabox PHP class.
  *
  * Combination of jQuery & BackboneJS, used in the
- * Wordpress Core.
+ * WordPress Core.
 */
 jQuery(document).ready(function($){
 
@@ -21,19 +21,15 @@ jQuery(document).ready(function($){
 		// Media View
 		MediaApp.Views.Media = Backbone.View.extend({
 
-		    initialize: function(options){
-
-		    },
-
 		    events: {
     		    'click #themosis-media-add': 'add',
-    		    'click #themosis-media-clear': 'clear'
+    		    'click #themosis-media-delete': 'delete'
 		    },
 
 		    /**
     		 * Open the WP media uploader and allow
     		 * the user to add a media file.
-		    */
+		     */
 		    add: function(e){
     		    e.preventDefault();
 
@@ -41,51 +37,104 @@ jQuery(document).ready(function($){
 		    },
 
 		    /**
-             * Clear the value of <input /> tag
-		    */
-		    clear: function(e){
+             * Delete the value of the hidden <input /> tag
+		     */
+		    delete: function(e){
     		    e.preventDefault();
 
     		    var button = $(e.currentTarget);
-    		    button.closest('tr').find('td.themosis-media-input input').val('');
+                // Remove input value
+    		    button.closest('tr.themosis-field-media').find('td #themosis-media-input').val('');
+
+                // Remove display text
+                button.closest('tr').find('td p.themosis-media__path').html('');
+
+                this.toggleButtonDisplay(button);
 		    },
+
+            /**
+             * Show/hide the buttons: Add - Delete
+             *
+             * @param button
+             */
+            toggleButtonDisplay: function(button){
+
+                var cells = button.closest('tr').find('td');
+                _.each(cells, function(elem){
+
+                    elem = $(elem);
+
+                    if(elem.hasClass('themosis-media--hidden')){
+
+                        elem.removeClass('themosis-media--hidden');
+
+                    } else {
+
+                        elem.addClass('themosis-media--hidden');
+
+                    }
+
+                });
+
+            },
 
 		    /**
     		 * Toggle the Media Uploader
-		    */
+             *
+             * @param button
+		     */
 		    toggleMediaUploader: function(button){
 
-    		    var button = $(button),
-					input = button.closest('tr').find('td.themosis-media-input input');
+    		    button = $(button);
+				var	input = button.closest('tr.themosis-field-media').find('td #themosis-media-input'),
+                    display = button.closest('tr.themosis-field-media').find('td p.themosis-media__path');
+
+                // Remove error display style
+                if(display.hasClass('themosis-media__path--error')){
+                    display.removeClass('themosis-media__path--error');
+                }
 
 				window.send_to_editor = function(html)
 				{
 					// Check if there is an img tag inside html
-					var html = $(html);
-					var img = html.find('img');
+					html = $(html);
+					var img = html.find('img'),
+                        value = '';
 
 		        	if(img.length !== 0){
 
-		        		var value = img.attr('src');
+		        		value = img.attr('src');
 
 		        	} else {
 
-		        		var value = html.attr('href');
+		        		value = html.attr('href');
 
 		        	}
 
 		            // Place image URL to the input field
 		            input.val(value);
 
+                    // Place value to the display
+                    display.html(value);
+
 		            // Close ThickBox
 		            if (typeof tb_remove == 'function') {
 		            	tb_remove();
-		            };
-		        };
+                    }
+
+                    // Alert message if no file added...
+                    if('' == input.val()){
+                        display.addClass('themosis-media__path--error');
+                        display.html('No file added. Press delete and try again!');
+                    }
+                };
+
+                // Toggle buttons display
+                this.toggleButtonDisplay(button);
 
 		        /*
 				* This handle the new media manager added in
-				* Wordpress 3.5
+				* WordPress 3.5
 		        */
 		        if(wp !== undefined){
 
@@ -95,7 +144,7 @@ jQuery(document).ready(function($){
 		        } else {
 
 		        	/*
-					* Old media manager for Wordpress versions < 3.5
+					* Old media manager for WordPress versions < 3.5
 					* Will have to be removed a day
 		        	*/
 		        	tb_show('', 'media-upload.php?post_id=' + this.ID + '&amp;TB_iframe=true');
@@ -110,7 +159,7 @@ jQuery(document).ready(function($){
 		_.each(medias, function(elem, i){
 
     		// Build a View for each media custom field
-    		var mediaField = new MediaApp.Views.Media({
+    		new MediaApp.Views.Media({
         		el: $(elem)
     		});
 

@@ -158,24 +158,43 @@
 | Metabox Media style
 |
 */
-.themosis-media-table{
+.themosis-media{
 	border-collapse: collapse;
 	width: 100%;
 	clear: both;
 	border-spacing: 0px;
 }
 
-.themosis-media-table td{
-	margin: 0px;
-	padding: 0px;
+.themosis-media tr td p{
+    margin-top: 0;
 }
 
-.themosis-media-input{
-	width: 100%;
+.themosis-media__path{
+    background-color: #f0f0f0;
+    padding: 2px 5px 3px 5px;
+    margin-top: 0;
+    border: 1px solid #dddddd;
+    color: #888888;
 }
 
-.themosis-media-button{
-	margin: 0 6px !important;
+.themosis-media__path--error{
+    color: #e57373;
+    background-color: #fff1f1;
+    border: 1px solid #f0bfbf;
+}
+
+.themosis-media td{
+    margin: 0px;
+    padding: 0px;
+}
+
+.themosis-media .themosis-media__buttons{
+    width: 1%;
+    padding-right: 10px;
+}
+
+.themosis-media--hidden{
+    display: none;
 }
 
 /*
