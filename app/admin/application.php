@@ -27,5 +27,6 @@ $metabox->validate(array(
     'email'     => array('email'),
     'website'   => array('url:http'),
     'content'   => array('kses:a|href|title,p,h3'),
-    'color'     => array('color')
+    'color'     => array('color'),
+    'file'      => array('file:pages')
 ));

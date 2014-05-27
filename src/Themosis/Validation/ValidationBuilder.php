@@ -367,4 +367,18 @@ class ValidationBuilder {
         return preg_match('/#([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?\b/', $data) ? $data : '';
     }
 
+    /**
+     * Validate a file extension.
+     *
+     * @param string $data
+     * @param array $attributes
+     * @return string
+     */
+    private function validate_file($data, array $attributes = array())
+    {
+        $ext = pathinfo($data, PATHINFO_EXTENSION);
+
+        return (in_array($ext, $attributes)) ? $data : '';
+    }
+
 } 
