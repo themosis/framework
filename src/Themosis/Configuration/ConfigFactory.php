@@ -54,7 +54,12 @@ class ConfigFactory
 			   $error = new Error();
 			   $error->set($this->path);
 			   break;
-            
+
+            case 'images':
+               $images = new Images();
+               $images->set($this->path);
+               break;
+
 			case 'menus':
 			   $menu = new Menu();
 			   $menu->set($this->path);

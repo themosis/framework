@@ -3,19 +3,6 @@
 /**
  * application.php - Write your custom code below.
 */
-add_image_size('themosis-custom', 200, 150, true);
-
-add_filter('image_size_names_choose', function($mediaSizes){
-
-    $sizes = array(
-        'themosis-custom' => __('Themosis custom', THEMOSIS_TEXTDOMAIN),
-    );
-
-    $newImageSizes = array_merge($mediaSizes, $sizes);
-
-    return $newImageSizes;
-});
-
 $metabox = Metabox::make('Informations', 'post')->set(array(
     'main' => array(
         Field::text('author', array('info' => 'Un message pour l\'auteur.')),
@@ -29,7 +16,7 @@ $metabox = Metabox::make('Informations', 'post')->set(array(
         Field::radio('transport', array('none', 'postal', 'ups'), array('title' => 'Delivery', 'info' => 'Choose one delivery service.')),
         Field::select('country', array(array('belgique', 'portugal', 'canada'))),
         Field::select('country-invoice', array(array('belgique', 'portugal', 'canada')), true, array('title' => 'Invoice country')),
-        Field::media('image', array('info' => 'Only accepts .jpg, .gif, .png files.', 'size' => 'themosis-custom')),
+        Field::media('image', array('info' => 'Only accepts .jpg, .gif, .png files.', 'size' => 'themosis')),
         Field::media('file', array('info' => 'Only files.', 'type' => 'application'))
     )
 ));

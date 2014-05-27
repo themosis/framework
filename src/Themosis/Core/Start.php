@@ -22,7 +22,8 @@ $configs = array(
     'datas' => array(
         'application',
         'constants',
-        'errors'
+        'errors',
+        'images'
     )
 );
 
@@ -99,10 +100,15 @@ Themosis\Route\Request::$foundation = Symfony\Component\HttpFoundation\Request::
 Themosis\Configuration\Template::init();
 
 /*----------------------------------------------------
-| Parse application files and include them
-| Extends the 'functions.php' file
-| (available only for the Themosis - Datas plugin
-| under the 'admin' folder).
+| Register image sizes.
+|
+|---------------------------------------------------*/
+Themosis\Configuration\Images::install();
+
+/*----------------------------------------------------
+| Parse application files and include them.
+| Extends the 'functions.php' file by loading
+| files located under the 'admin' folder.
 |
 |---------------------------------------------------*/
 Themosis\Core\AdminLoader::add();

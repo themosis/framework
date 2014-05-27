@@ -73,6 +73,50 @@ class MediaField extends FieldBuilder {
     }
 
     /**
+     * Handle the media field inner table HTML.
+     *
+     * @param string $value The field value.
+     * @return string
+     */
+    private function mediaTable($value)
+    {
+        $output = '<table class="themosis-media"><tr>';
+
+        // If a value exists, do not show the ADD button.
+        if(!empty($value)){
+            $output .=  '<td class="themosis-media__buttons themosis-media--hidden">';
+        } else {
+            $output .= '<td class="themosis-media__buttons">';
+        }
+
+        $output .= '<button id="themosis-media-add" type="button" class="button button-primary">'.__('Add', THEMOSIS_TEXTDOMAIN).'</button>';
+        $output .= '</td>';
+
+        // If a value exists, show the DELETE button.
+        if(!empty($value)){
+            $output .= '<td class="themosis-media__buttons">';
+        } else {
+            $output .= '<td class="themosis-media__buttons themosis-media--hidden">';
+        }
+
+        $output .= '<button id="themosis-media-delete" type="button" class="button">'.__('Delete', THEMOSIS_TEXTDOMAIN).'</button>';
+        $output .= '</td>';
+
+        // If a value exists, show the PATH
+        if(!empty($value)){
+            $output .= '<td>';
+        } else {
+            $output .= '<td class="themosis-media--hidden">';
+        }
+
+        $output .= '<p class="themosis-media__path">'.$value.'</p>';
+        $output .= '</td>';
+        $output .= '</tr></table>';
+
+        return $output;
+    }
+
+    /**
      * Method that handle the field HTML code for
      * metabox output.
      *
@@ -83,38 +127,8 @@ class MediaField extends FieldBuilder {
         $output = '<tr class="themosis-field-container themosis-field-media"><th class="themosis-label" scope="row">';
         $output .= Form::label($this['id'], $this['title']).'</th><td>';
         $output .= Form::hidden($this['name'], $this['value'], array('id' => 'themosis-media-input', 'data-type' => $this['type'], 'data-size' => $this['size']));
-        $output .= '<table class="themosis-media"><tr>';
 
-        // If a value exists, do not show the ADD button.
-        if(!empty($this['value'])){
-            $output .=  '<td class="themosis-media__buttons themosis-media--hidden">';
-        } else {
-            $output .= '<td class="themosis-media__buttons">';
-        }
-
-        $output .= '<button id="themosis-media-add" type="button" class="button button-primary">'.__('Add', THEMOSIS_TEXTDOMAIN).'</button>';
-        $output .= '</td>';
-
-        // If a value exists, show the DELETE button.
-        if(!empty($this['value'])){
-            $output .= '<td class="themosis-media__buttons">';
-        } else {
-            $output .= '<td class="themosis-media__buttons themosis-media--hidden">';
-        }
-
-        $output .= '<button id="themosis-media-delete" type="button" class="button">'.__('Delete', THEMOSIS_TEXTDOMAIN).'</button>';
-        $output .= '</td>';
-
-        // If a value exists, show the PATH
-        if(!empty($this['value'])){
-            $output .= '<td>';
-        } else {
-            $output .= '<td class="themosis-media--hidden">';
-        }
-
-        $output .= '<p class="themosis-media__path">'.$this['value'].'</p>';
-        $output .= '</td>';
-        $output .= '</tr></table>';
+        $output .= $this->mediaTable($this['value']);
 
         if(isset($this['info'])){
             $output .= '<div class="themosis-field-info">';
