@@ -59,7 +59,7 @@ class TextField extends FieldBuilder{
         $output = '<tr class="themosis-field-container">';
         $output .= '<th class="themosis-label" scope="row">';
         $output .= Form::label($this['id'], $this['title']).'</th><td>';
-        $output .= Form::text($this['name'], $this['value'], array('id' => $this['id'], 'class' => 'large-text', 'data-type' => 'text'));
+        $output .= Form::text($this['name'], $this['value'], array('id' => $this['id'], 'class' => 'large-text', 'data-field' => 'text'));
 
         if(isset($this['info'])){
 

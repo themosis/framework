@@ -153,4 +153,21 @@ class FieldFactory {
         return $this->make('Themosis\\Field\\Fields\\MediaField', $properties);
     }
 
+    /**
+     * Define an InfiniteField instance.
+     *
+     * @param string $name The name attribute of the infinite inner inputs.
+     * @param array $fields The fields to repeat.
+     * @param array $extras
+     * @return \Themosis\Field\Fields\InfiniteField
+     */
+    public function infinite($name, array $fields, array $extras = array())
+    {
+        $properties = compact('name', 'fields');
+
+        $properties = array_merge($extras, $properties);
+
+        return $this->make('Themosis\\Field\\Fields\\InfiniteField', $properties);
+    }
+
 } 

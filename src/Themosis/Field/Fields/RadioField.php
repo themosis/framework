@@ -76,7 +76,7 @@ class RadioField extends FieldBuilder{
         $output = '<tr class="themosis-field-container">';
         $output .= '<th class="themosis-label" scope="row">';
         $output .= Form::label($this['id'], $this['title']).'</th><td class="themosis-radio">';
-        $output .= Form::radio($this['name'], $this['options'], $this['value'], array('data-type' => 'radio'));
+        $output .= Form::radio($this['name'], $this['options'], $this['value'], array('data-field' => 'radio'));
 
         if(isset($this['info'])){
 

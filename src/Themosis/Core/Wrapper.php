@@ -33,6 +33,7 @@ abstract class Wrapper {
                 case 'checkboxes':
                 case 'radio':
                 case 'select':
+                case 'infinite':
 
                     $value = array();
                     break;

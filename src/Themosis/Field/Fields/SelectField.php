@@ -54,7 +54,7 @@ class SelectField extends FieldBuilder {
         $output = '<tr class="themosis-field-container">';
         $output .= '<th class="themosis-label" scope="row">';
         $output .= Form::label($this['id'], $this['title']).'</th><td>';
-        $output .= Form::select($this['name'], $this['options'], $this['value'], array('multiple' => $this['multiple'], 'data-type' => 'select', 'id' => $this['id']));
+        $output .= Form::select($this['name'], $this['options'], $this['value'], array('multiple' => $this['multiple'], 'data-field' => 'select', 'id' => $this['id']));
 
         if(isset($this['info'])){
 

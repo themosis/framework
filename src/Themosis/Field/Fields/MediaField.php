@@ -126,7 +126,7 @@ class MediaField extends FieldBuilder {
     {
         $output = '<tr class="themosis-field-container themosis-field-media"><th class="themosis-label" scope="row">';
         $output .= Form::label($this['id'], $this['title']).'</th><td>';
-        $output .= Form::hidden($this['name'], $this['value'], array('id' => 'themosis-media-input', 'data-type' => $this['type'], 'data-size' => $this['size']));
+        $output .= Form::hidden($this['name'], $this['value'], array('id' => 'themosis-media-input', 'data-type' => $this['type'], 'data-size' => $this['size'], 'data-field' => 'media'));
 
         $output .= $this->mediaTable($this['value']);
 

@@ -76,7 +76,7 @@ class CheckboxesField extends FieldBuilder {
         $output = '<tr class="themosis-field-container">';
         $output .= '<th class="themosis-label" scope="row">';
         $output .= Form::label($this['id'], $this['title']).'</th><td class="themosis-checkboxes">';
-        $output .= Form::checkboxes($this['name'], $this['options'], $this['value'], array('data-type' => 'checkboxes'));
+        $output .= Form::checkboxes($this['name'], $this['options'], $this['value'], array('data-field' => 'checkboxes'));
 
         if(isset($this['info'])){
 

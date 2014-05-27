@@ -59,7 +59,7 @@ class TextareaField extends FieldBuilder {
         $output = '<tr class="themosis-field-container">';
         $output .= '<th class="themosis-label" scope="row">';
         $output .= Form::label($this['id'], $this['title']).'</th><td>';
-        $output .= Form::textarea($this['name'], $this['value'], array('class' => 'large-text', 'data-type' => 'textarea', 'id' => $this['id'], 'rows' => '5'));
+        $output .= Form::textarea($this['name'], $this['value'], array('class' => 'large-text', 'data-field' => 'textarea', 'id' => $this['id'], 'rows' => '5'));
 
         if(isset($this['info'])){
 
