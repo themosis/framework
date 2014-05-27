@@ -14,6 +14,42 @@ class MediaField extends FieldBuilder {
     {
         $this->properties = $properties;
         $this->setTitle();
+        $this->setType();
+        $this->setSize();
+    }
+
+    /**
+     * Set the type data of the media to insert.
+     * If no type is defined, default to 'image'.
+     *
+     * @return void
+     */
+    private function setType()
+    {
+        $allowed = array('image', 'application', 'video', 'audio');
+
+        if(isset($this['type']) && !in_array($this['type'], $allowed)){
+            $this['type'] = 'image';
+        } elseif(!isset($this['type'])){
+            $this['type'] = 'image';
+        }
+    }
+
+    /**
+     * Set the size data of the media to insert.
+     * If no size is defined, default to 'full'.
+     *
+     * @return void
+     */
+    private function setSize()
+    {
+        $sizes = get_intermediate_image_sizes();
+
+        if(isset($this['size']) && !in_array($this['size'], $sizes)){
+            $this['size'] = 'full';
+        } elseif(!isset($this['size'])){
+            $this['size'] = 'full';
+        }
     }
 
     /**
@@ -46,7 +82,7 @@ class MediaField extends FieldBuilder {
     {
         $output = '<tr class="themosis-field-container themosis-field-media"><th class="themosis-label" scope="row">';
         $output .= Form::label($this['id'], $this['title']).'</th><td>';
-        $output .= Form::hidden($this['name'], $this['value'], array('id' => 'themosis-media-input', 'data-type' => 'media'));
+        $output .= Form::hidden($this['name'], $this['value'], array('id' => 'themosis-media-input', 'data-type' => $this['type'], 'data-size' => $this['size']));
         $output .= '<table class="themosis-media"><tr>';
 
         // If a value exists, do not show the ADD button.
