@@ -69,8 +69,8 @@
          * Listen to view events.
          */
         events: {
-            'click #themosis-media-add': 'add',
-            'click #themosis-media-delete': 'delete'
+            'click #themosis-media-add': 'addMedia',
+            'click #themosis-media-delete': 'deleteMedia'
         },
 
         /**
@@ -78,7 +78,7 @@
          *
          * @param {object} event
          */
-        add: function(event){
+        addMedia: function(event){
             event.preventDefault();
 
             // Open the media window
@@ -167,7 +167,7 @@
          *
          * @param {object} event
          */
-        delete: function(event){
+        deleteMedia: function(event){
             event.preventDefault();
 
             // Reset input
