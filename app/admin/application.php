@@ -3,6 +3,7 @@
 /**
  * application.php - Write your custom code below.
 */
+
 $metabox = Metabox::make('Informations', 'post')->set(array(
     'main' => array(
         Field::text('author', array('info' => 'Un message pour l\'auteur.')),
@@ -20,8 +21,9 @@ $metabox = Metabox::make('Informations', 'post')->set(array(
         Field::media('file', array('info' => 'Only files.', 'type' => 'application')),
         Field::infinite('members', array(
             Field::text('name', array('info' => 'Set the name of the member.')),
-            Field::checkbox('show')
-        ))
+            Field::checkbox('show'),
+            Field::select('department', array(array('none', 'design', 'research', 'finance')))
+        ), array('info' => 'Define your company members.'))
     )
 ));
 

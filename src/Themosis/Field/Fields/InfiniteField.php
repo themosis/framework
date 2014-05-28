@@ -118,6 +118,7 @@ class InfiniteField extends FieldBuilder {
         }
 
         $output .= '</tbody></table>';
+        $output .= $this->info();
         $output .= $this->addButton();
         $output .= '</div>';
 
@@ -134,10 +135,24 @@ class InfiniteField extends FieldBuilder {
     private function row($index, $method)
     {
         $row = '<tr class="themosis-infinite-row">';
-        $row .= '<td class="themosis-infinite-order">'.$this->order($index).'</td>';
+        $row .= $this->innerRow($index, $method);
+        $row .= '</tr>';
+
+        return $row;
+    }
+
+    /**
+     * Handle the inner row HTML.
+     *
+     * @param int $index The row index.
+     * @param string $method The method name that handles field output.
+     * @return string
+     */
+    private function innerRow($index, $method)
+    {
+        $row = '<td class="themosis-infinite-order">'.$this->order($index).'</td>';
         $row .= '<td class="themosis-infinite-inner"><table><tbody>'.$this->fields($index, $this['fields'], $method).'</tbody></table></td>';
         $row .= '<td class="themosis-infinite-options"><span class="themosis-infinite-add"></span><span class="themosis-infinite-remove"></span></td>';
-        $row .= '</tr>';
 
         return $row;
     }
@@ -160,14 +175,14 @@ class InfiniteField extends FieldBuilder {
             $field['id'] = $index.'-'.$field['name'].'-id';
 
             // Grab the value if it exists.
-            if(isset($this['value'][$index]['fields'][$field['name']])){
-                $field['value'] = $this['value'][$index]['fields'][$field['name']];
+            if(isset($this['value'][$index][$field['name']])){
+                $field['value'] = $this['value'][$index][$field['name']];
             }
 
             // Set the name attribute.
             // Note: this completely change the name attribute. Do not write
             // any code that would need the default 'name' attribute below.
-            $field['name'] = $this['name'].'['.$index.'][fields]['.$field['name'].']';
+            $field['name'] = $this['name'].'['.$index.']['.$field['name'].']';
 
             // Render the field.
             $output.= $field->$method();
@@ -191,7 +206,6 @@ class InfiniteField extends FieldBuilder {
         // Output main structure of the infinite field.
         $output .= $this->infinite('metabox');
 
-        $output .= $this->info();
         $output .= '</td></tr>';
 
         return $output;
