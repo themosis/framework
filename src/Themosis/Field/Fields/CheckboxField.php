@@ -15,6 +15,7 @@ class CheckboxField extends FieldBuilder{
         $this->properties = $properties;
         $this->setId();
         $this->setTitle();
+        $this->fieldType();
     }
 
     /**

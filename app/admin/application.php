@@ -38,5 +38,9 @@ $metabox->validate(array(
     'website'   => array('url:http'),
     'content'   => array('kses:a|href|title,p,h3'),
     'color'     => array('color'),
-    'file'      => array('file:pages')
+    'file'      => array('file:pages'),
+    'members'   => array(
+        'name'      => array('textfield', 'max:5'),
+        'profile'   => array('file:png')
+    )
 ));

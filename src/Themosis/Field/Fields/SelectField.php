@@ -10,6 +10,7 @@ class SelectField extends FieldBuilder {
         $this->properties = $properties;
         $this->setId();
         $this->setTitle();
+        $this->fieldType();
     }
 
     /**

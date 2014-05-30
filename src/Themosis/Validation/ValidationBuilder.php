@@ -114,6 +114,17 @@ class ValidationBuilder {
     }
 
     /**
+     * Check if a given array is associative.
+     *
+     * @param array $arr
+     * @return bool True if associative.
+     */
+    public function isAssociative(array $arr)
+    {
+        return array_keys($arr) !== range(0, count($arr) - 1);
+    }
+
+    /**
      * Validate a value with only alphabetic characters.
      *
      * @param string $data The data to validate.

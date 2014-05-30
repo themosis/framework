@@ -23,6 +23,7 @@ class InfiniteField extends FieldBuilder {
         $this->setTitle();
         $this->setRows();
         $this->setLimit();
+        $this->fieldType();
     }
 
     /**

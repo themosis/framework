@@ -16,6 +16,7 @@ class MediaField extends FieldBuilder {
         $this->setTitle();
         $this->setType();
         $this->setSize();
+        $this->fieldType();
     }
 
     /**

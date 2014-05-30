@@ -15,6 +15,7 @@ class TextareaField extends FieldBuilder {
         $this->properties = $properties;
         $this->setId();
         $this->setTitle();
+        $this->fieldType();
     }
 
     /**

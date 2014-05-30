@@ -158,7 +158,22 @@ class MetaboxBuilder extends Wrapper {
                 // Apply validation if defined.
                 // Check if the rule exists for the field in order to validate.
                 if(isset($this->datas['rules'][$field['name']])){
-                    $value = $this->validator->single($value, $this->datas['rules'][$field['name']]);
+
+                    $rules = $this->datas['rules'][$field['name']];
+                    // Check if $rules array is an associative array
+                    if($this->validator->isAssociative($rules) && 'infinite' == $field->getFieldType()){
+                        // Check Infinite fields validation.
+                        foreach($value as $row => $rowValues){
+                            foreach($rowValues as $name => $val){
+                                if(isset($rules[$name])){
+                                    $value[$row][$name] = $this->validator->single($val, $rules[$name]);
+                                }
+                            }
+                        }
+
+                    } else {
+                        $value = $this->validator->single($value, $this->datas['rules'][$field['name']]);
+                    }
                 }
 
                 update_post_meta($postId, $field['name'], $value);
@@ -216,4 +231,5 @@ class MetaboxBuilder extends Wrapper {
         return $newOptions;
 
     }
+
 }
