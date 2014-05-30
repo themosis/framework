@@ -367,6 +367,13 @@
                         this.resetSelect(f);
                         break;
 
+                    case 'media':
+                        // Reset <input type="hidden">
+                        this.resetInput(f);
+                        // Reset media value display and set a new backbone object media.
+                        this.resetMedia(f);
+                        break;
+
                     default:
                         // Reset <input> tag.
                         this.resetInput(f);
@@ -422,6 +429,53 @@
          */
         resetTextarea: function(field){
             field.val('');
+        },
+
+        /**
+         * Reset the custom media field display.
+         *
+         * @param {Object} field The media hidden input tag wrapped in jQuery object.
+         * @return void
+         */
+        resetMedia: function(field){
+            var cells = field.closest('td').find('table.themosis-media>tbody>tr>td'),
+                addCell = cells.first(),
+                mediaField = field.closest('tr.themosis-field-media');
+
+            // Reset path content
+            field.closest('td').find('p.themosis-media__path').html('');
+
+            // Toggle media cells only if it's on "delete" state.
+            if(addCell.hasClass('themosis-media--hidden')){
+
+                _.each(cells, function(elem){
+
+                    elem = $(elem);
+
+                    if(elem.hasClass('themosis-media--hidden')){
+
+                        elem.removeClass('themosis-media--hidden');
+
+                    } else {
+
+                        elem.addClass('themosis-media--hidden');
+
+                    }
+
+                });
+            }
+
+            // Set a new backbone object for the media field.
+            var data = new MediaApp.Models.Media({
+                value: field.val(),
+                type: field.data('type'),
+                size: field.data('size')
+            });
+
+            new MediaApp.Views.MediaView({
+                model:data,
+                el:mediaField
+            });
         }
 
     });
@@ -448,6 +502,9 @@
         initialize: function(){
             // Number of rows.
             this.updateCount();
+
+            // Set the limit.
+            this.limit();
 
             // Global events.
             vent.on('row:add', this.add, this);
@@ -501,6 +558,9 @@
          * Add a new row to the collection.
          */
         add: function(){
+            // Check the limit.
+            if(0 < this.limit && this.count+1 > this.limit) return;
+
             var row = this.getFirstRow();
 
             // Add the new row to the DOM.
@@ -515,6 +575,9 @@
          * @param {Object} currentRow The current row view object.
          */
         insert: function(currentRow){
+            // Check the limit.
+            if(0 < this.limit && this.count+1 > this.limit) return;
+
             var row = this.getFirstRow();
 
             // Add the new row before the current one.
@@ -583,20 +646,21 @@
                     field = $(field);
 
                     var input = field.find('input, textarea, select'),
-                        label = field.find('th.themosis-label>label'),
-                        fieldId = input.attr('id'),
-                        fieldName = input.attr('name'),
-                        id = this.renameId(fieldId, index),
-                        name = this.renameName(fieldName, index);
+                        label = field.find('th.themosis-label>label');
 
-                    // Update the label 'for' attribute.
-                    label.attr('for', id);
+                    if(1 < input.length){
+                        // Contains more than one input.
+                        _.each(input, function(io){
 
-                    // Update input 'id' attribute.
-                    input.attr('id', id);
+                            io = $(io);
+                            this.renameField(io, label, index);
 
-                    // Update input 'name' attribute.
-                    input.attr('name', name);
+                        }, this);
+
+                    } else {
+                        // Only one input inside the field.
+                        this.renameField(input, label, index);
+                    }
 
                 }, this); // End inner fields.
 
@@ -604,6 +668,32 @@
                 order.html(index);
 
             }, this);
+        },
+
+        /**
+         * Rename field input and label.
+         *
+         * @param {Object} input The field input wrapped in jQuery object.
+         * @param {Object} label The field label wrapped in jQuery object.
+         * @param {String} index The index used to rename the attributes.
+         * @return void
+         */
+        renameField: function(input, label, index){
+
+            var fieldId = input.attr('id'),
+                fieldName = input.attr('name'),
+                id = this.renameId(fieldId, index),
+                name = this.renameName(fieldName, index);
+
+            // Update the label 'for' attribute.
+            label.attr('for', id);
+
+            // Update input 'id' attribute.
+            input.attr('id', id);
+
+            // Update input 'name' attribute.
+            input.attr('name', name);
+
         },
 
         /**
@@ -632,6 +722,13 @@
             var regex = new RegExp('([0-9])');
 
             return currentName.replace(regex, index);
+        },
+
+        /**
+         * Define the limit of rows a user can add.
+         */
+        limit: function(){
+            this.limit = this.$el.data('limit');
         }
 
     });

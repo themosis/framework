@@ -23,8 +23,11 @@ $metabox = Metabox::make('Informations', 'post')->set(array(
             Field::text('name', array('info' => 'Set the name of the member.')),
             Field::checkbox('show'),
             Field::select('department', array(array('none', 'design', 'research', 'finance'))),
-            Field::textarea('biography')
-        ), array('info' => 'Define your company members.'))
+            Field::textarea('biography'),
+            Field::checkboxes('colors', array('red', 'blue', 'green')),
+            Field::radio('size', array('small', 'medium', 'large')),
+            Field::media('profile', array('size' => 'themosis'))
+        ), array('info' => 'Define your company members.', 'limit' => 5))
     )
 ));
 

@@ -22,6 +22,17 @@ class InfiniteField extends FieldBuilder {
         $this->properties = $properties;
         $this->setTitle();
         $this->setRows();
+        $this->setLimit();
+    }
+
+    /**
+     * Define the limit of rows we can add.
+     *
+     * @return void
+     */
+    private function setLimit()
+    {
+        $this['limit'] = isset($this['limit']) ? (int)$this['limit'] : 0;
     }
 
     /**
@@ -107,10 +118,13 @@ class InfiniteField extends FieldBuilder {
     private function infinite($method)
     {
         $output = '<div class="themosis-infinite-container">';
-        $output .= '<table class="themosis-infinite"><tbody class="themosis-infinite-sortable">';
+        $output .= '<table class="themosis-infinite"><tbody class="themosis-infinite-sortable" data-limit="'.$this['limit'].'">';
 
         // ROWs
         for($i = 1; $i <= $this->rows; $i++){
+
+            // Check the limit.
+            if(0 < $this['limit'] && $i > $this['limit']) break;
 
             // Specify the method each field will use to render.
             $output .= $this->row($i, $method);
