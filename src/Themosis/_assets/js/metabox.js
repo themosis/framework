@@ -305,10 +305,6 @@
     // Single row view
     InfiniteApp.Views.Row = Backbone.View.extend({
 
-        initialize: function(){
-
-        },
-
         events: {
             'mouseenter .themosis-infinite-options': 'placeButton',
             'click span.themosis-infinite-add': 'insert',
@@ -319,14 +315,14 @@
          * Triggered when click on the row 'add' button.
          */
         insert: function(){
-            console.log('Insert a new row');
+            vent.trigger('row:insert', this);
         },
 
         /**
          * Triggered when 'delete' button is clicked.
          */
         remove: function(){
-            console.log('Delete the row');
+            vent.trigger('row:delete', this);
         },
 
         /**
@@ -337,6 +333,95 @@
                 cellHeight = this.$el.find('td.themosis-infinite-options').height();
 
             plusButton.css('margin-top', (cellHeight / 2) * -1);
+        },
+
+        /**
+         * Reset all fields value.
+         *
+         * @return {Object} The view object.
+         */
+        reset: function(){
+
+            var fields = this.$el.find('input, textarea, select');
+
+            _.each(fields, function(field){
+
+                var f = $(field),
+                    type = f.data('field');
+
+                switch(type){
+
+                    case 'textarea':
+                        // Reset <textarea> input
+                        this.resetTextarea(f);
+                        break;
+
+                    case 'checkbox':
+                    case 'radio':
+                        // Reset <input type="checkbox|radio">
+                        this.resetCheckable(f);
+                        break;
+
+                    case 'select':
+                        // Reset <select> tag.
+                        this.resetSelect(f);
+                        break;
+
+                    default:
+                        // Reset <input> tag.
+                        this.resetInput(f);
+                }
+
+            }, this);
+
+            return this;
+
+        },
+
+        /**
+         * Reset <input> value attribute.
+         *
+         * @param {Object} field The input tag wrapped in jQuery object.
+         * @return void
+         */
+        resetInput: function(field){
+            field.attr('value', '');
+        },
+
+        /**
+         * Reset <input type="checkbox"> and <input type="radio">.
+         *
+         * @param {Object} field The input tag wrapped in jQuery object.
+         * @return void
+         */
+        resetCheckable: function(field){
+            field.removeAttr('checked');
+        },
+
+        /**
+         * Reset <select> tag.
+         *
+         * @param {Object} field The <select> tag wrapped in Jquery object.
+         * @return void
+         */
+        resetSelect: function(field){
+            var options = field.find('option');
+
+            options.each(function(i, option){
+
+                $(option).removeAttr('selected');
+
+            });
+        },
+
+        /**
+         * Reset <textarea> tag.
+         *
+         * @param {Object} field The <textarea> tag wrapped in jQuery object.
+         * @return void
+         */
+        resetTextarea: function(field){
+            field.val('');
         }
 
     });
@@ -364,23 +449,108 @@
             // Number of rows.
             this.updateCount();
 
-            console.log(this);
-
             // Global events.
             vent.on('row:add', this.add, this);
+            vent.on('row:insert', this.insert, this);
+            vent.on('row:delete', this.remove, this);
+            vent.on('row:sort', this.update, this);
+
+            // Make it sortable.
+            this.sort();
+        },
+
+        /**
+         * Handle the sortable event/feature.
+         */
+        sort: function(){
+
+            this.$el.sortable({
+                helper : function(e, ui) {
+                    ui.children().each(function() {
+                        $(this).width($(this).width());
+                    });
+                    return ui;
+                },
+                forcePlaceholderSize : true,
+                placeholder : 'themosis-ui-state-highlight',
+                handle : '.themosis-infinite-order',
+                update : function(){
+                    vent.trigger('row:sort');
+                }
+            });
+
+        },
+
+        /**
+         * Grab the first row, reset its values and returns it.
+         *
+         * @returns {Object} A row view object.
+         */
+        getFirstRow: function(){
+
+            var row = this.$el.find('tr.themosis-infinite-row').first().clone(),
+                rowView = new InfiniteApp.Views.Row({
+                    el: row
+                });
+
+            return rowView.reset();
+
         },
 
         /**
          * Add a new row to the collection.
          */
         add: function(){
-            var row = this.$el.find('tr.themosis-infinite-row').clone(),
-                rowView = new InfiniteApp.Views.Row({
-                    el: row
-                });
-            this.$el.append(rowView.el);
+            var row = this.getFirstRow();
+
+            // Add the new row to the DOM.
+            this.$el.append(row.el);
+
+            this.update();
+        },
+
+        /**
+         * Insert a new row before the current one.
+         *
+         * @param {Object} currentRow The current row view object.
+         */
+        insert: function(currentRow){
+            var row = this.getFirstRow();
+
+            // Add the new row before the current one.
+            currentRow.$el.before(row.el);
+
+            this.update();
+        },
+
+        /**
+         * Remove a row of the collection.
+         *
+         * @param {Object} row The row view object.
+         */
+        remove: function(row){
+            // Keep at least one row.
+            if(1 >= this.count) return;
+
+            row.$el.remove();
+
+            this.update();
+        },
+
+        /**
+         * Update the Infinite custom fields values.
+         * Update row count.
+         * Update row order.
+         * Update row inner fields attributes.
+         *
+         * @return void
+         */
+        update: function(){
+            // Update row count.
             this.updateCount();
-            console.log(this);
+
+            // Rename the fields
+            this.rename();
         },
 
         /**
@@ -388,6 +558,80 @@
          */
         updateCount: function(){
             this.count = this.$el.find('tr.themosis-infinite-row').length;
+        },
+
+        /**
+         * Rename all 'name', 'id' and 'for' attributes.
+         */
+        rename: function(){
+            var rows = this.$el.find('tr.themosis-infinite-row');
+
+            _.each(rows, function(row, index){
+
+                // Order is 1 based.
+                index = String(index + 1);
+                row = $(row);
+
+                // Get row fields.
+                var fields = row.find('tr.themosis-field-container'),
+                    order = row.children('td.themosis-infinite-order').children('span');
+
+                // Update the row inner fields.
+                _.each(fields, function(field){
+
+                    // "Field" is the <tr> tag containing all the custom field html.
+                    field = $(field);
+
+                    var input = field.find('input, textarea, select'),
+                        label = field.find('th.themosis-label>label'),
+                        fieldId = input.attr('id'),
+                        fieldName = input.attr('name'),
+                        id = this.renameId(fieldId, index),
+                        name = this.renameName(fieldName, index);
+
+                    // Update the label 'for' attribute.
+                    label.attr('for', id);
+
+                    // Update input 'id' attribute.
+                    input.attr('id', id);
+
+                    // Update input 'name' attribute.
+                    input.attr('name', name);
+
+                }, this); // End inner fields.
+
+                // Update order display.
+                order.html(index);
+
+            }, this);
+        },
+
+        /**
+         * Returns a new ID attribute value.
+         *
+         * @param {String} currentId
+         * @param {String} index
+         * @return {String}
+         */
+        renameId: function(currentId, index){
+
+            var regex = new RegExp('([0-9])');
+
+            return currentId.replace(regex, index);
+        },
+
+        /**
+         * Returns a new name attribute value.
+         *
+         * @param {String} currentName
+         * @param {String} index
+         * @return {String}
+         */
+        renameName: function(currentName, index){
+
+            var regex = new RegExp('([0-9])');
+
+            return currentName.replace(regex, index);
         }
 
     });

@@ -22,7 +22,8 @@ $metabox = Metabox::make('Informations', 'post')->set(array(
         Field::infinite('members', array(
             Field::text('name', array('info' => 'Set the name of the member.')),
             Field::checkbox('show'),
-            Field::select('department', array(array('none', 'design', 'research', 'finance')))
+            Field::select('department', array(array('none', 'design', 'research', 'finance'))),
+            Field::textarea('biography')
         ), array('info' => 'Define your company members.'))
     )
 ));

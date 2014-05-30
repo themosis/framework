@@ -41,7 +41,7 @@ class InfiniteField extends FieldBuilder {
      */
     private function setRows()
     {
-        return (is_array($this['value']) && !empty($this['value'])) ? count($this['value']) : 1;
+        $this->rows = (is_array($this['value']) && !empty($this['value'])) ? count($this['value']) : 1;
     }
 
     /**
@@ -107,7 +107,7 @@ class InfiniteField extends FieldBuilder {
     private function infinite($method)
     {
         $output = '<div class="themosis-infinite-container">';
-        $output .= '<table class="themosis-infinite"><tbody>';
+        $output .= '<table class="themosis-infinite"><tbody class="themosis-infinite-sortable">';
 
         // ROWs
         for($i = 1; $i <= $this->rows; $i++){
@@ -172,6 +172,7 @@ class InfiniteField extends FieldBuilder {
         foreach($fields as $field){
 
             // Set the id attribute.
+            $defaultId = $field['id'];
             $field['id'] = $index.'-'.$field['name'].'-id';
 
             // Grab the value if it exists.
@@ -182,10 +183,16 @@ class InfiniteField extends FieldBuilder {
             // Set the name attribute.
             // Note: this completely change the name attribute. Do not write
             // any code that would need the default 'name' attribute below.
+            $defaultName = $field['name'];
             $field['name'] = $this['name'].'['.$index.']['.$field['name'].']';
 
             // Render the field.
             $output.= $field->$method();
+
+            // Reset Id, name and value.
+            $field['id'] = $defaultId;
+            $field['name'] = $defaultName;
+            unset($field['value']);
 
         }
 
@@ -200,6 +207,9 @@ class InfiniteField extends FieldBuilder {
      */
     public function metabox()
     {
+        // Check rows number.
+        $this->setRows();
+
         $output = '<tr class="themosis-field-container themosis-field-infinite"><th class="themosis-label" scope="row">';
         $output .= Form::label($this['id'], $this['title']).'</th><td>';
 
