@@ -19,6 +19,7 @@ $metabox = Metabox::make('Informations', 'post')->set(array(
         Field::select('country-invoice', array(array('belgique', 'portugal', 'canada')), true, array('title' => 'Invoice country')),
         Field::media('image', array('info' => 'Only accepts .jpg, .gif, .png files.', 'size' => 'themosis')),
         Field::media('file', array('info' => 'Only files.', 'type' => 'application')),
+        Field::editor('summary'),
         Field::infinite('members', array(
             Field::text('name', array('info' => 'Set the name of the member.')),
             Field::checkbox('show'),

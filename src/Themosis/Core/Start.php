@@ -141,7 +141,7 @@ Themosis\Ajax\Ajax::set();
 Themosis\Asset\AdminAsset::add('themosis_core_styles', 'css/themosis.css')->to('admin');
 
 // Themosis custom scripts
-Themosis\Asset\AdminAsset::add('themosis_core_metabox', 'js/metabox.js', array('jquery', 'jquery-ui-sortable', 'underscore', 'backbone'), false, true)->to('admin');
+Themosis\Asset\AdminAsset::add('themosis_core_scripts', 'js/themosis.js', array('jquery', 'jquery-ui-sortable', 'underscore', 'backbone'), false, true)->to('admin');
 
 /*----------------------------------------------------
 | Handle all errors, warnings, exceptions

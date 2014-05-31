@@ -170,4 +170,24 @@ class FieldFactory {
         return $this->make('Themosis\\Field\\Fields\\InfiniteField', $properties);
     }
 
+    /**
+     * Define an EditorField instance.
+     * @link http://codex.wordpress.org/Function_Reference/wp_editor
+     *
+     * @param string $name The name attribute if the editor field.
+     * @param array $settings The 'wp_editor' settings.
+     * @param array $extras
+     * @return \Themosis\Field\Fields\EditorField
+     */
+    public function editor($name, array $settings = array(), array $extras = array())
+    {
+        // $name may only contain lower-case characters.
+        $name = strtolower($name);
+
+        $properties = compact('name', 'settings');
+        $properties = array_merge($extras, $properties);
+
+        return $this->make('Themosis\\Field\\Fields\\EditorField', $properties);
+    }
+
 } 
