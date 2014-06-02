@@ -5,5 +5,4 @@ use Themosis\Core\DataContainer;
 
 class MetaboxData extends DataContainer {
 
-
 } 

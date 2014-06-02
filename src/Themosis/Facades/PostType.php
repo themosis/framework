@@ -1,10 +1,10 @@
 <?php
 namespace Themosis\Facades;
 
-class Metabox extends Facade {
+class PostType extends Facade {
 
     /**
-     * Return the igniter service key responsible for the Metabox class.
+     * Return the igniter service key responsible for the PostType class.
      * The key must be the same as the one used in the assigned
      * igniter service.
      *
@@ -12,9 +12,8 @@ class Metabox extends Facade {
      */
     protected static function getFacadeKey()
     {
-        return 'metabox';
+        return 'posttype';
     }
 
-}
 
-?>
+} 

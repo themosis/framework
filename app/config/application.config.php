@@ -89,7 +89,7 @@ return array(
 		'Themosis\\Facades\\Metabox'				=> 'Metabox',
 		'Themosis\\Page\\Option'					=> 'Option',
 		'Themosis\\Page\\Page'						=> 'Page',
-		'Themosis\\PostType\\PostType'				=> 'PostType',
+		'Themosis\\Facades\\PostType'				=> 'PostType',
 		'Themosis\\Route\\Route'					=> 'Route',
 		'Themosis\\Session\\Session'				=> 'Session',
 		'Themosis\\Taxonomy\\TaxField'              => 'TaxField',

@@ -15,10 +15,10 @@ class MetaboxIgniterService extends IgniterService {
     {
         $this->app->bind('metabox', function($app){
 
-            $datas = new MetaboxData();
+            $data = new MetaboxData();
             $view = new WrapperView(themosis_path('sys').'Metabox'.DS.'Views'.DS.'default.php');
 
-            return new MetaboxBuilder($datas, $view, $app['validation']);
+            return new MetaboxBuilder($data, $view, $app['validation']);
 
         });
     }

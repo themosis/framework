@@ -13,7 +13,7 @@ class MetaboxBuilder extends Wrapper {
     /**
      * Metabox instance datas.
      *
-     * @var array
+     * @var \Themosis\Core\DataContainer
      */
     private $datas;
 

@@ -45,3 +45,5 @@ $metabox->validate(array(
         'profile'   => array('file:png')
     )
 ));
+
+$books = PostType::make('th-books', 'Books', 'book')->set();
