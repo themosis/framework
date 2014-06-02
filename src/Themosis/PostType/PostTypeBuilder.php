@@ -106,7 +106,7 @@ class PostTypeBuilder {
      * Allow a user to change the title placeholder text.
      *
      * @param string $title The title placeholder text.
-     * @return void
+     * @return \Themosis\PostType\PostTypeBuilder
      */
     public function setTitle($title)
     {
@@ -123,6 +123,8 @@ class PostTypeBuilder {
             return $default;
 
         });
+
+        return $this;
     }
 
     /**
