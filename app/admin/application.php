@@ -47,3 +47,4 @@ $metabox->validate(array(
 ));
 
 $books = PostType::make('th-books', 'Books', 'book')->set();
+$books->setTitle('Enter the book name');

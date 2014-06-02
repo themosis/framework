@@ -103,6 +103,29 @@ class PostTypeBuilder {
     }
 
     /**
+     * Allow a user to change the title placeholder text.
+     *
+     * @param string $title The title placeholder text.
+     * @return void
+     */
+    public function setTitle($title)
+    {
+        $slug = $this->getSlug();
+
+        add_filter('enter_title_here', function($default) use($slug, $title){
+
+            $screen = get_current_screen();
+
+            if($slug == $screen->post_type){
+                $default = $title;
+            }
+
+            return $default;
+
+        });
+    }
+
+    /**
      * Set the custom post type default arguments.
      *
      * @param string $plural The post type plural display name.
