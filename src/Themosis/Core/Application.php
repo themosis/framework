@@ -17,6 +17,7 @@ class Application extends Container {
             'html'          => '\Themosis\Html\HtmlIgniterService',
             'metabox'       => '\Themosis\Metabox\MetaboxIgniterService',
             'posttype'      => '\Themosis\PostType\PostTypeIgniterService',
+            'taxonomy'      => '\Themosis\Taxonomy\TaxonomyIgniterService',
             'validation'    => '\Themosis\Validation\ValidationIgniterService'
 
         );

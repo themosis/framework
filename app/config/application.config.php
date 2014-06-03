@@ -94,7 +94,7 @@ return array(
 		'Themosis\\Session\\Session'				=> 'Session',
 		'Themosis\\Taxonomy\\TaxField'              => 'TaxField',
 		'Themosis\\Taxonomy\\TaxMeta'               => 'TaxMeta',
-		'Themosis\\Taxonomy\\Taxonomy'				=> 'Taxonomy',
+		'Themosis\\Facades\\Taxonomy'				=> 'Taxonomy',
 		'Themosis\\User\\User'						=> 'User',
         'Themosis\\Facades\\Validator'              => 'Validator',
 		'Themosis\\View\\Loop'						=> 'Loop',

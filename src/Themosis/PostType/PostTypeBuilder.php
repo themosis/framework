@@ -65,8 +65,8 @@ class PostTypeBuilder {
     /**
      * Set the custom post type. A user can also override the
      * arguments by passing an array of custom post type arguments.
-     * @link http://codex.wordpress.org/Function_Reference/register_post_type
      *
+     * @link http://codex.wordpress.org/Function_Reference/register_post_type
      * @param array $params The custom post type arguments.
      * @return \Themosis\PostType\PostTypeBuilder
      */
