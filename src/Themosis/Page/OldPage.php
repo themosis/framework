@@ -5,7 +5,7 @@ use Themosis\Action\Action;
 
 defined('DS') or die('No direct script access.');
 
-class Page
+class OldPage
 {
 	/**
 	 * Page datas

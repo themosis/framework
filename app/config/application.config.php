@@ -88,7 +88,7 @@ return array(
 		'Themosis\\Metabox\\Meta'					=> 'Meta',
 		'Themosis\\Facades\\Metabox'				=> 'Metabox',
 		'Themosis\\Page\\Option'					=> 'Option',
-		'Themosis\\Page\\Page'						=> 'Page',
+		'Themosis\\Facades\\Page'					=> 'Page',
 		'Themosis\\Facades\\PostType'				=> 'PostType',
 		'Themosis\\Route\\Route'					=> 'Route',
 		'Themosis\\Session\\Session'				=> 'Session',
