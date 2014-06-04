@@ -98,7 +98,7 @@ return array(
 		'Themosis\\User\\User'						=> 'User',
         'Themosis\\Facades\\Validator'              => 'Validator',
 		'Themosis\\View\\Loop'						=> 'Loop',
-		'Themosis\\View\\View'						=> 'View'
+		'Themosis\\Facades\\View'					=> 'View'
 	)
 
 );

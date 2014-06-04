@@ -19,7 +19,8 @@ class Application extends Container {
             'page'          => '\Themosis\Page\PageIgniterService',
             'posttype'      => '\Themosis\PostType\PostTypeIgniterService',
             'taxonomy'      => '\Themosis\Taxonomy\TaxonomyIgniterService',
-            'validation'    => '\Themosis\Validation\ValidationIgniterService'
+            'validation'    => '\Themosis\Validation\ValidationIgniterService',
+            'view'          => '\Themosis\View\ViewIgniterService'
 
         );
 

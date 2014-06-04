@@ -1,88 +1,101 @@
 <?php
 namespace Themosis\View;
 
-defined('DS') or die('No direct script access.');
+use ArrayAccess;
 
-class View extends Viewer
-{
-
-	/**
-	 * Saved view content
-	*/
-	protected $view;
-
-	/**
-	 * Saved view renderer
-	*/
-	protected $renderer;
+class View implements ArrayAccess, IRenderable {
 
     /**
-     * The View constructor.
+     * View data.
      *
-     * @param string $path The view file path relative to the 'views' directory.
-     * @param array $datas The datas to pass to the view.
-     * @param bool $engine False by default. True if we use the 'scout' engine.
-     * @ignore
+     * @var array
      */
-	public function __construct($path, array $datas = array(), $engine = false)
-	{
-		$params = compact('path', 'datas', 'engine');
-
-		$this->view = new ViewData($params);
-		$this->renderer = new ViewRenderer($this->view);
-	}
+    protected $data;
 
     /**
-     * Build the view defined with the given path.
-     * Users can define variables and pass them for use in the view file.
+     * Define a View instance.
+     */
+    public function __construct()
+    {
+        // @TODO Define the $this->data as array.
+    }
+
+    /**
+     * Get the evaluated content of the object.
      *
-     * @param string $path The view file path relative to the 'views' directory.
-     * @param array $datas The datas to pass to the view.
-     * @throws ViewException
+     * @return string
+     */
+    public function render()
+    {
+        // TODO: Implement render() method.
+    }
+
+    /**
+     * Add view data. A user can pass an array of data
+     * or a single piece of data by providing its key and
+     * its value.
+     *
+     * @param string|array $key
+     * @param mixed $value
      * @return \Themosis\View\View
      */
-	public static function make($path, array $datas = array())
-	{
-		if (is_string($path) && strlen(trim($path)) > 0) {
+    public function with($key, $value = null)
+    {
+        if(is_array($key)){
 
-			$path = static::parsePath($path);
+            $this->data = array_merge($this->data, $key);
 
-			return static::parse($path, $datas);
+        } else {
 
-		} else {
-			throw new ViewException("Invalid view parameters for the View::make method.");
-		}
-	}
+            $this->data[$key] = $value;
 
-	/**
-	 * Render the requested view.
+        }
+
+        return $this;
+    }
+
+    /**
+     * Check if a view data exists.
      *
+     * @param string $key The data key name.
+     * @return bool
+     */
+    public function offsetExists($key)
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    /**
+     * Return a view data value.
+     *
+     * @param string $key The data key name.
+     * @return mixed
+     */
+    public function offsetGet($key)
+    {
+        return $this->data[$key];
+    }
+
+    /**
+     * Set a view data.
+     *
+     * @param string $key The data key name.
+     * @param mixed $value The data value.
      * @return void
-     * @ignore
-	 */
-	public function render()
-	{	
-		return $this->renderer->get();
-	}
+     */
+    public function offsetSet($key, $value)
+    {
+        $this->with($key, $value);
+    }
 
     /**
-     * Allow to add other variables that will be passed to the view.
+     * Remove, unset a view data.
      *
-     * @param array $datas The datas to pass to the view.
-     * @throws ViewException
-     * @return \Themosis\View\View
+     * @param string $key
+     * @return void
      */
-	public function with(array $datas)
-	{
-		if (is_array($datas)) {
-
-			$this->view->setDatas($datas);
-
-			return $this;
-			
-		} else {
-			throw new ViewException("Invalid datas given. Please be sure to pass an associative array.");
-		}
-	}
-
+    public function offsetUnset($key)
+    {
+        unset($this->data[$key]);
+    }
 }

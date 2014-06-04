@@ -1,8 +1,6 @@
 <?php
 namespace Themosis\View;
 
-defined('DS') or die('No direct script access.');
-
 class Loop
 {
 	/**
