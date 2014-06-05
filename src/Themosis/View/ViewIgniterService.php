@@ -2,6 +2,10 @@
 namespace Themosis\View;
 
 use Themosis\Core\IgniterService;
+use Themosis\View\Compilers\ScoutCompiler;
+use Themosis\View\Engines\EngineResolver;
+use Themosis\View\Engines\PhpEngine;
+use Themosis\View\Engines\ScoutEngine;
 
 class ViewIgniterService extends IgniterService{
 
@@ -12,9 +16,92 @@ class ViewIgniterService extends IgniterService{
      */
     public function ignite()
     {
+        $this->igniteEngineResolver();
+        $this->igniteViewFactory();
+    }
+
+    /**
+     * Register the EngineResolver instance to the application.
+     *
+     * @return void
+     */
+    private function igniteEngineResolver()
+    {
+        $igniterService = $this;
+
+        $this->app->bind('view.engine.resolver', function() use ($igniterService){
+
+            $resolver = new EngineResolver();
+
+            // Register the engines.
+            foreach(array('php', 'scout') as $engine){
+                $igniterService->{'register'.ucfirst($engine).'Engine'}($engine, $resolver);
+            }
+
+            return $resolver;
+
+        });
+    }
+
+    /**
+     * Register the PHP engine to the EngineResolver.
+     *
+     * @param string $engine Name of the engine.
+     * @param EngineResolver $resolver
+     * @return void
+     */
+    /** @noinspection PhpUnusedPrivateMethodInspection */
+    private function registerPhpEngine($engine, EngineResolver $resolver)
+    {
+        $resolver->register($engine, function(){
+            return new PhpEngine();
+        });
+    }
+
+    /**
+     * Register the Scout engine to the EngineResolver.
+     *
+     * @param string $engine Name of the engine.
+     * @param EngineResolver $resolver
+     * @return void
+     */
+    /** @noinspection PhpUnusedPrivateMethodInspection */
+    private function registerScoutEngine($engine, EngineResolver $resolver)
+    {
+        $app = $this->app;
+
+        // Register a ScoutCompiler instance so we can
+        // inject it into the ScoutEngine class.
+        $app->bind('scout.compiler', function(){
+
+            return new ScoutCompiler();
+
+        });
+
+        $resolver->register($engine, function() use ($app){
+            return new ScoutEngine($app['scout.compiler']);
+        });
+    }
+
+    /**
+     * Register the view factory. The factory is
+     * available in all views.
+     *
+     * @return void
+     */
+    private function igniteViewFactory()
+    {
         $this->app->bind('view', function($app){
 
-            return new ViewFactory();
+            $viewEnv = new ViewFactory($app['view.engine.resolver']);
+
+            // Set the IoC container.
+            $viewEnv->setContainer($app);
+
+            // Register the container as a shared view data.
+            $viewEnv->share('__app', $app);
+
+            return $viewEnv;
 
         });
     }

@@ -2,11 +2,12 @@
 namespace Themosis\View;
 
 use ArrayAccess;
+use Themosis\View\Engines\IEngine;
 
 class View implements ArrayAccess, IRenderable {
 
     /**
-     * View data.
+     * View data(s).
      *
      * @var array
      */
@@ -14,10 +15,16 @@ class View implements ArrayAccess, IRenderable {
 
     /**
      * Define a View instance.
+     *
+     * @param ViewFactory $factory The view environment.
+     * @param Engines\IEngine $engine The view engine.
+     * @param string $view The view name.
+     * @param string $path The view real path.
+     * @param array $data The passed data to the view.
      */
-    public function __construct()
+    public function __construct(ViewFactory $factory, IEngine $engine, $view, $path, $data = array())
     {
-        // @TODO Define the $this->data as array.
+        $this->data = $data;
     }
 
     /**
