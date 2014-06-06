@@ -67,6 +67,8 @@ class View implements ArrayAccess, IRenderable {
     public function render()
     {
         $content = $this->renderContent();
+
+        return $content;
     }
 
     /**

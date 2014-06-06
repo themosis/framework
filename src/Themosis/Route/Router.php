@@ -153,7 +153,7 @@ class Router
 						// Stay with a 'permanent' redirection code 301
 						// 307 http code preserve the HTTP METHOD
 						// however 307 code not well supported by Firefox
-						// As for SEO, 307 is still a temporaray redirect, so we have to
+						// As for SEO, 307 is still a temporary redirect, so we have to
 						// avoid it.
 						/*-----------------------------------------------------------------*/
 						wp_redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], 301);
@@ -241,7 +241,7 @@ class Router
 	{
 		if (is_string($view)) {
 			echo $view;
-		} elseif (is_a($view, 'Themosis\\View\\View')) {
+		} elseif ($view instanceof View) {
 			echo $view->render();
 		} else {
 			throw new RouteException("Enable to output the requested content.");
