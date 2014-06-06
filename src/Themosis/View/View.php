@@ -66,7 +66,54 @@ class View implements ArrayAccess, IRenderable {
      */
     public function render()
     {
-        // TODO: Implement render() method.
+        $content = $this->renderContent();
+    }
+
+    /**
+     * Get the view content.
+     *
+     * @return string
+     */
+    private function renderContent()
+    {
+        // @TODO Increment amount of views rendering
+
+        $content = $this->getContent();
+
+        // @TODO Decrement amount of views rendering
+
+        return $content;
+    }
+
+    /**
+     * Get the compiled content of the view.
+     *
+     * @return string
+     */
+    private function getContent()
+    {
+        return $this->engine->get($this->path, $this->gatherData());
+    }
+
+    /**
+     * Merge factory and view datas. So all views can
+     * get shared datas.
+     *
+     * @return array
+     */
+    private function gatherData()
+    {
+        $data = array_merge($this->factory->getShared(), $this->data);
+
+        // Check if one of the 'data' is a view instance.
+        // If so, evaluate its content and save it as data.
+        foreach($data as $key => $value){
+            if($value instanceof IRenderable){
+                $data[$key] = $value->render();
+            }
+        }
+
+        return $data;
     }
 
     /**

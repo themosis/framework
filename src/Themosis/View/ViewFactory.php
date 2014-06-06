@@ -107,6 +107,16 @@ class ViewFactory {
     }
 
     /**
+     * Return view shared data.
+     *
+     * @return array
+     */
+    public function getShared()
+    {
+        return $this->shared;
+    }
+
+    /**
      * Fetch the engine instance regarding the view path.
      *
      * @param string $path The view full path.
@@ -128,6 +138,7 @@ class ViewFactory {
     private function getExtension($path)
     {
         $extensions = array_keys($this->extensions);
+        $ext = null;
 
         foreach($extensions as $extension){
 
@@ -135,11 +146,13 @@ class ViewFactory {
 
             if($end === $extension){
 
-                return $extension;
+                $ext = $extension;
 
             }
 
         }
+
+        return $ext;
     }
 
 } 
