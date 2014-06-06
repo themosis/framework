@@ -75,7 +75,9 @@ class ViewIgniterService extends IgniterService{
         // inject it into the ScoutEngine class.
         $app->bind('scout.compiler', function(){
 
-            return new ScoutCompiler();
+            $storage = themosis_path('storage').'views'.DS;
+
+            return new ScoutCompiler($storage);
 
         });
 

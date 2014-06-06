@@ -5,9 +5,60 @@ use Themosis\View\Compilers\ICompiler;
 
 class ScoutEngine extends PhpEngine {
 
+    /**
+     * The Scout compiler instance.
+     *
+     * @var \Themosis\View\Compilers\ICompiler
+     */
+    protected $compiler;
+
+    /**
+     * A list of compiled views. Keep a copy
+     * of their original paths.
+     *
+     * @var array
+     */
+    protected $lastCompiled = array();
+
+    /**
+     * Build a ScoutEngine instance.
+     *
+     * @param ICompiler $compiler
+     */
     public function __construct(ICompiler $compiler)
     {
         $this->compiler = $compiler;
     }
+
+    /**
+     * Get the evaluated content of the view.
+     *
+     * @param string $path
+     * @param array $data
+     * @return string
+     */
+    public function get($path, array $data = array())
+    {
+        // Keep a copy of the original path so if there is an
+        // error, we can tell the user which view is wrong.
+        $this->lastCompiled[] = $path;
+
+        // Compile the view if it's expired or do not exists.
+        if($this->compiler->isExpired($path)){
+            $this->compiler->compile($path);
+        }
+
+        // Get the compiled view path.
+        $compiled = $this->compiler->getCompiledPath($path);
+
+        // Evaluate the compiled view.
+        $content = $this->evaluatePath($compiled, $data);
+
+        // Remove the currently compiled view from the lastCompiled list.
+        array_pop($this->lastCompiled);
+
+        return $content;
+    }
+
 
 } 

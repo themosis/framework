@@ -37,7 +37,7 @@ class THFWK_Themosis
 	/**
 	 * Framework version
 	*/
-	private $version = 0.8;
+	const VERSION = 0.8;
 
 	/**
 	 * Plugin directory name
@@ -153,5 +153,3 @@ add_action('plugins_loaded', function(){
 	$GLOBALS['THFWK_Themosis'] = THFWK_Themosis::getInstance();
 
 });
-
-?>

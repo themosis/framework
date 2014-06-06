@@ -146,13 +146,12 @@ class ViewFactory {
 
             if($end === $extension){
 
-                $ext = $extension;
+                return $extension;
 
             }
 
         }
 
-        return $ext;
     }
 
 } 
