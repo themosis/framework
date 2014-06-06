@@ -17,6 +17,7 @@ class ViewIgniterService extends IgniterService{
     public function ignite()
     {
         $this->igniteEngineResolver();
+        $this->igniteViewFinder();
         $this->igniteViewFactory();
     }
 
@@ -84,6 +85,23 @@ class ViewIgniterService extends IgniterService{
     }
 
     /**
+     * Register the ViewFinder instance.
+     *
+     * @return void
+     */
+    private function igniteViewFinder()
+    {
+        $this->app->bind('view.finder', function($app){
+
+            // Paths to view directories.
+            $paths = apply_filters('themosisViewPaths', array());
+
+            return new ViewFinder($paths);
+
+        });
+    }
+
+    /**
      * Register the view factory. The factory is
      * available in all views.
      *
@@ -93,7 +111,7 @@ class ViewIgniterService extends IgniterService{
     {
         $this->app->bind('view', function($app){
 
-            $viewEnv = new ViewFactory($app['view.engine.resolver']);
+            $viewEnv = new ViewFactory($app['view.engine.resolver'], $app['view.finder']);
 
             // Set the IoC container.
             $viewEnv->setContainer($app);

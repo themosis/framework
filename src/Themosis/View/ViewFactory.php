@@ -14,6 +14,13 @@ class ViewFactory {
     protected $engines;
 
     /**
+     * Search view files.
+     *
+     * @var ViewFinder
+     */
+    protected $finder;
+
+    /**
      * The container instance.
      *
      * @var \Themosis\Core\Container;
@@ -28,13 +35,22 @@ class ViewFactory {
     protected $shared = array();
 
     /**
+     * The view extensions.
+     *
+     * @var array
+     */
+    protected $extensions = array('scout.php' => 'scout', 'php' => 'php');
+
+    /**
      * Define a ViewFactory instance.
      *
      * @param Engines\EngineResolver $engines The available engines.
+     * @param ViewFinder $finder
      */
-    public function __construct(EngineResolver $engines)
+    public function __construct(EngineResolver $engines, ViewFinder $finder)
     {
         $this->engines = $engines;
+        $this->finder = $finder;
 
         // Share the factory to all views.
         $this->share('__env', $this);
@@ -44,16 +60,15 @@ class ViewFactory {
      * Build a view instance. This is the 1st method called
      * when defining a View.
      *
-     * @param string $view View name.
+     * @param string $view The view name.
      * @param array $datas Passed data to the view.
      * @return \Themosis\View\View
      */
     public function make($view, array $datas = array())
     {
-        //@TODO Find the real path of the view file.
-        $path = '';
+        $path = $this->finder->find($view);
 
-        $view = new View($this, $this->engines->resolve('scout'), $view, $path, $datas);
+        $view = new View($this, $this->getEngineFromPath($path), $view, $path, $datas);
 
         return $view;
     }
@@ -86,6 +101,42 @@ class ViewFactory {
 
             foreach($key as $innerKey => $val){
                 $this->share($innerKey, $val);
+            }
+
+        }
+    }
+
+    /**
+     * Fetch the engine instance regarding the view path.
+     *
+     * @param string $path The view full path.
+     * @return \Themosis\View\Engines\IEngine
+     */
+    private function getEngineFromPath($path)
+    {
+        $engine = $this->extensions[$this->getExtension($path)];
+
+        return $this->engines->resolve($engine);
+    }
+
+    /**
+     * Return the view file extension: 'scout.php' | 'php'
+     *
+     * @param string $path
+     * @return string
+     */
+    private function getExtension($path)
+    {
+        $extensions = array_keys($this->extensions);
+
+        foreach($extensions as $extension){
+
+            $end = substr($path, -strlen($extension));
+
+            if($end === $extension){
+
+                return $extension;
+
             }
 
         }

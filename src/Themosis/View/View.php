@@ -7,6 +7,34 @@ use Themosis\View\Engines\IEngine;
 class View implements ArrayAccess, IRenderable {
 
     /**
+     * View environment.
+     *
+     * @var ViewFactory
+     */
+    protected $factory;
+
+    /**
+     * The view engine.
+     *
+     * @var Engines\IEngine
+     */
+    protected $engine;
+
+    /**
+     * The view name.
+     *
+     * @var string
+     */
+    protected $view;
+
+    /**
+     * The view full path.
+     *
+     * @var string
+     */
+    protected $path;
+
+    /**
      * View data(s).
      *
      * @var array
@@ -24,6 +52,10 @@ class View implements ArrayAccess, IRenderable {
      */
     public function __construct(ViewFactory $factory, IEngine $engine, $view, $path, $data = array())
     {
+        $this->factory = $factory;
+        $this->engine = $engine;
+        $this->view = $view;
+        $this->path = $path;
         $this->data = $data;
     }
 

@@ -55,6 +55,19 @@ $app->registerCoreIgniters();
 Themosis\Facades\Facade::setFacadeApplication($app);
 
 /*----------------------------------------------------
+| Register core view paths.
+|
+|---------------------------------------------------*/
+add_filter('themosisViewPaths', function($paths){
+
+    $paths[] = themosis_path('sys').'Metabox'.DS.'Views'.DS;
+    $paths[] = themosis_path('sys').'Page'.DS.'Views'.DS;
+
+    return $paths;
+
+});
+
+/*----------------------------------------------------
 | Set application classes' alias
 |
 |---------------------------------------------------*/
@@ -106,6 +119,13 @@ Themosis\Configuration\Template::init();
 Themosis\Configuration\Images::install();
 
 /*----------------------------------------------------
+| Load the models.
+|
+|---------------------------------------------------*/
+Themosis\Core\ModelLoader::add();
+Themosis\Core\ModelLoader::alias();
+
+/*----------------------------------------------------
 | Parse application files and include them.
 | Extends the 'functions.php' file by loading
 | files located under the 'admin' folder.
@@ -113,13 +133,6 @@ Themosis\Configuration\Images::install();
 |---------------------------------------------------*/
 Themosis\Core\AdminLoader::add();
 Themosis\Core\WidgetLoader::add();
-
-/*----------------------------------------------------
-| Load the models.
-|
-|---------------------------------------------------*/
-Themosis\Core\ModelLoader::add();
-Themosis\Core\ModelLoader::alias();
 
 /*----------------------------------------------------
 | Load custom widgets
