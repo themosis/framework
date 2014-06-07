@@ -68,6 +68,9 @@ class View implements ArrayAccess, IRenderable {
     {
         $content = $this->renderContent();
 
+        // Flush all sections when the view is rendered.
+        $this->factory->flushSectionsIfDoneRendering();
+
         return $content;
     }
 
@@ -78,11 +81,17 @@ class View implements ArrayAccess, IRenderable {
      */
     private function renderContent()
     {
-        // @TODO Increment amount of views rendering
+        // We will keep track of the amount of views being rendered so we can flush
+        // the section after the complete rendering operation is done. This will
+        // clear out the sections for any separate views that may be rendered.
+        $this->factory->incrementRender();
 
         $content = $this->getContent();
 
-        // @TODO Decrement amount of views rendering
+        // Once we've finished rendering the view, we'll decrement the render count
+        // so that each sections get flushed out next time a view is created and
+        // no old sections are staying around in the memory of an environment.
+        $this->factory->decrementRender();
 
         return $content;
     }

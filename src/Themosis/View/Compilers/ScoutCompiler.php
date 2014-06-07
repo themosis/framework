@@ -235,6 +235,61 @@ class ScoutCompiler extends Compiler implements ICompiler {
     }
 
     /**
+     * Compile the yield statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileYield($expression)
+    {
+        return "<?php echo \$__env->yieldContent{$expression}; ?>";
+    }
+
+    /**
+     * Compile the section statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileSection($expression)
+    {
+        return "<?php \$__env->startSection{$expression}; ?>";
+    }
+
+    /**
+     * Compile the stop statements to valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileStop($expression)
+    {
+        return "<?php \$__env->stopSection(); ?>";
+    }
+
+    /**
+     * Compile the show statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileShow($expression)
+    {
+        return "<?php echo \$__env->yieldSection(); ?>";
+    }
+
+    /**
+     * Compile the overwrite statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileOverwrite($expression)
+    {
+        return "<?php \$__env->stopSection(true); ?>";
+    }
+
+    /**
      * Compile include statements.
      *
      * @param string $expression

@@ -42,6 +42,27 @@ class ViewFactory {
     protected $extensions = array('scout.php' => 'scout', 'php' => 'php');
 
     /**
+     * A list of captured sections.
+     *
+     * @var array
+     */
+    protected $sections = array();
+
+    /**
+     * A stack of in-progress sections.
+     *
+     * @var array
+     */
+    protected $sectionStack = array();
+
+    /**
+     * The number of active rendering operations.
+     *
+     * @var int
+     */
+    protected $renderCount = 0;
+
+    /**
      * Define a ViewFactory instance.
      *
      * @param Engines\EngineResolver $engines The available engines.
@@ -152,6 +173,135 @@ class ViewFactory {
 
         }
 
+    }
+
+    /**
+     * Get the string content of a section.
+     *
+     * @param string $section
+     * @param string $default
+     * @return string
+     */
+    public function yieldContent($section, $default = '')
+    {
+        return isset($this->sections[$section]) ? $this->sections[$section] : $default;
+    }
+
+    /**
+     * Start injecting content into a section.
+     *
+     * @param string $section
+     * @param string $content
+     * @return void
+     */
+    public function startSection($section, $content = '')
+    {
+        if($content === ''){
+            ob_start() && array_push($this->sectionStack, $section);
+        } else {
+            $this->extendSection($section, $content);
+        }
+    }
+
+    /**
+     * Append content to a given section.
+     *
+     * @param string $section
+     * @param string $content
+     * @return void
+     */
+    protected function extendSection($section, $content)
+    {
+        if(isset($this->sections[$section])){
+
+            $content = str_replace('@parent', $content, $this->sections[$section]);
+
+            $this->sections[$section] = $content;
+        } else {
+            $this->sections[$section] = $content;
+        }
+    }
+
+    /**
+     * Stop injecting content into a section.
+     *
+     * @param bool $overwrite
+     * @return string
+     */
+    public function stopSection($overwrite = false)
+    {
+        $last = array_pop($this->sectionStack);
+
+        if($overwrite){
+            $this->sections[$last] = ob_get_clean();
+        } else {
+            $this->extendSection($last, ob_get_clean());
+        }
+
+        return $last;
+    }
+
+    /**
+     * Stop injecting content into a section and return its contents.
+     *
+     * @return string
+     */
+    public function yieldSection()
+    {
+        return $this->yieldContent($this->stopSection());
+    }
+
+    /**
+     * Flush all of the section contents if done rendering.
+     *
+     * @return void
+     */
+    public function flushSectionsIfDoneRendering()
+    {
+        if($this->doneRendering()){
+            $this->flushSections();
+        }
+    }
+
+    /**
+     * Check if there are no active render operations.
+     *
+     * @return bool
+     */
+    public function doneRendering()
+    {
+        return $this->renderCount == 0;
+    }
+
+    /**
+     * Flush all of the section contents.
+     *
+     * @return void
+     */
+    public function flushSections()
+    {
+        $this->sections = array();
+        $this->sectionStack = array();
+    }
+
+    /**
+     * Increment the rendering counter.
+     *
+     * @return void
+     */
+    public function incrementRender()
+    {
+        $this->renderCount++;
+    }
+
+    /**
+     * Decrement the rendering counter.
+     *
+     * @return void
+     */
+    public function decrementRender()
+    {
+        $this->renderCount--;
     }
 
 } 
