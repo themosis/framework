@@ -100,7 +100,8 @@ class ScoutCompiler extends Compiler implements ICompiler {
 
         if($id == T_INLINE_HTML){
 
-            foreach(array('Echos') as $type){
+            // Keep 'Echos' as last compiler.
+            foreach(array('Statements', 'Comments', 'Echos') as $type){
 
                 $content = $this->{"compile{$type}"}($content);
 
@@ -112,14 +113,28 @@ class ScoutCompiler extends Compiler implements ICompiler {
     }
 
     /**
-     * Compile to native PHP statements.
+     * Compile to native PHP statements. Compile all methods
+     * that start with '@'.
      *
      * @param string $content
      * @return string
      */
     protected function compileStatements($content)
     {
+        $compiler = $this;
 
+        $callback = function($match) use($compiler){
+
+            if(method_exists($compiler, $method = 'compile'.ucfirst($match[1]))){
+
+                $match[0] = $compiler->$method(array_get($match, 3));
+
+            }
+
+            return isset($match[3]) ? $match[0] : $match[0].$match[2];
+        };
+
+        return preg_replace_callback('/\B@(\w+)([ \t]*)(\( ( (?>[^()]+) | (?3) )* \))?/x', $callback, $content);
     }
 
     /**
@@ -130,7 +145,9 @@ class ScoutCompiler extends Compiler implements ICompiler {
      */
     protected function compileComments($content)
     {
+        $pattern = sprintf('/%s--((.|\s)*?)--%s/', $this->echoTags[0], $this->echoTags[1]);
 
+        return preg_replace($pattern, '<?php /*$1*/ ?>', $content);
     }
 
     /**
@@ -199,6 +216,21 @@ class ScoutCompiler extends Compiler implements ICompiler {
     protected function compileEchoDefaults($content)
     {
         return preg_replace('/^(?=\$)(.+?)(?:\s+or\s+)(.+?)$/s', 'isset($1) ? $1 : $2', $content);
+    }
+
+    /**
+     * Compile include statements.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileInclude($expression)
+    {
+        if(starts_with($expression, '(')){
+            $expression = substr($expression, 1, -1);
+        }
+
+        return "<?php echo \$__env->make($expression, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>";
     }
 
     /**

@@ -374,7 +374,7 @@ if(!function_exists('e')){
     /**
      * Escape HTML entities in a string.
      *
-     * @param  string  $value
+     * @param string $value
      * @return string
      */
     function e($value)
@@ -382,4 +382,99 @@ if(!function_exists('e')){
         return htmlentities($value, ENT_QUOTES, 'UTF-8', false);
     }
 
+}
+
+if(!function_exists('starts_with')){
+
+    /**
+     * Determine if a given string starts with a given substring.
+     *
+     * @param string $haystack
+     * @param string|array $needles
+     * @return bool
+     */
+    function starts_with($haystack, $needles)
+    {
+        foreach ((array) $needles as $needle){
+
+            if ($needle != '' && strpos($haystack, $needle) === 0) return true;
+
+        }
+
+        return false;
+    }
+}
+
+if(!function_exists('array_get')){
+
+    /**
+     * Get an item from an array using "dot" notation.
+     *
+     * @param array $array
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    function array_get($array, $key, $default = null)
+    {
+        if (is_null($key)) return $array;
+
+        if (isset($array[$key])) return $array[$key];
+
+        foreach (explode('.', $key) as $segment)
+        {
+            if ( ! is_array($array) || ! array_key_exists($segment, $array))
+            {
+                return value($default);
+            }
+
+            $array = $array[$segment];
+        }
+
+        return $array;
+    }
+}
+
+if(!function_exists('array_except')){
+
+    /**
+     * Get all of the given array except for a specified array of items.
+     *
+     * @param array $array
+     * @param array $keys
+     * @return array
+     */
+    function array_except($array, $keys)
+    {
+        return array_diff_key($array, array_flip((array) $keys));
+    }
+}
+
+if(!function_exists('value')){
+
+    /**
+     * Return the default value of the given value.
+     *
+     * @param mixed $value
+     * @return mixed
+     */
+    function value($value)
+    {
+        return $value instanceof Closure ? $value() : $value;
+    }
+
+}
+
+if(!function_exists('with')){
+
+    /**
+     * Return the given object. Useful for chaining.
+     *
+     * @param mixed $object
+     * @return mixed
+     */
+    function with($object)
+    {
+        return $object;
+    }
 }
