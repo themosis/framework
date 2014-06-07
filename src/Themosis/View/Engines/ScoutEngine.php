@@ -60,5 +60,39 @@ class ScoutEngine extends PhpEngine {
         return $content;
     }
 
+    /**
+     * Handle a view exception.
+     *
+     * @param \Exception $e
+     * @return void
+     * @throws $e
+     */
+    protected function handleException($e)
+    {
+        $e = new \ErrorException($this->getMessage($e), 0, 1, $e->getFile(), $e->getLine(), $e);
+
+        ob_get_clean(); throw $e;
+    }
+
+    /**
+     * Get the exception message for an exception.
+     *
+     * @param \Exception $e
+     * @return string
+     */
+    protected function getMessage($e)
+    {
+        return $e->getMessage().' (View: '.realpath(end($this->lastCompiled)).')';
+    }
+
+    /**
+     * Get the compiler implementation.
+     *
+     * @return \Themosis\View\Compilers\ICompiler
+     */
+    public function getCompiler()
+    {
+        return $this->compiler;
+    }
 
 } 

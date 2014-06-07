@@ -180,7 +180,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
         $compiler = $this;
 
         $callback = function($matches) use($compiler){
-            return $matches[1] ? substr($matches[0], 1) : '<?php echo '.$compiler->compileEchoDefaults($matches[2]).'; ?>';
+            return $matches[1] ? substr($matches[0], 1) : '<?php echo('.$compiler->compileEchoDefaults($matches[2]).'); ?>';
         };
 
         return preg_replace_callback($pattern, $callback, $content);
