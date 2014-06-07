@@ -27,6 +27,13 @@ class ScoutCompiler extends Compiler implements ICompiler {
     protected $escapedTags = array('{{{', '}}}');
 
     /**
+     * List of lines to add to templates.
+     *
+     * @var array
+     */
+    protected $footer = array();
+
+    /**
      * Compile the view at the given path.
      *
      * @param string $path
@@ -34,6 +41,9 @@ class ScoutCompiler extends Compiler implements ICompiler {
      */
     public function compile($path)
     {
+        // Reset footer.
+        $this->footer = array();
+
         if($path){
             $this->setPath($path);
         }
@@ -63,6 +73,12 @@ class ScoutCompiler extends Compiler implements ICompiler {
 
             $result .= is_array($token) ? $this->parseToken($token) : $token;
 
+        }
+
+        // Add extends lines at the end of compiled results
+        // so we can inherit templates.
+        if(count($this->footer) > 0){
+            $result = ltrim($result, PHP_EOL).PHP_EOL.implode(PHP_EOL, array_reverse($this->footer));
         }
 
         return $result;
@@ -231,6 +247,157 @@ class ScoutCompiler extends Compiler implements ICompiler {
         }
 
         return "<?php echo \$__env->make($expression, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>";
+    }
+
+    /**
+     * Compile the unless statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileUnless($expression)
+    {
+        return "<?php if(!$expression): ?>";
+    }
+
+    /**
+     * Compile the end unless statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileEndunless($expression)
+    {
+        return "<?php endif; ?>";
+    }
+
+    /**
+     * Compile the else statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileElse($expression)
+    {
+        return "<?php else: ?>";
+    }
+
+    /**
+     * Compile the for statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileFor($expression)
+    {
+        return "<?php for{$expression}: ?>";
+    }
+
+    /**
+     * Compile the foreach statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileForeach($expression)
+    {
+        return "<?php foreach{$expression}: ?>";
+    }
+
+    /**
+     * Compile the if statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileIf($expression)
+    {
+        return "<?php if{$expression}: ?>";
+    }
+
+    /**
+     * Compile the else-if statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileElseif($expression)
+    {
+        return "<?php elseif{$expression}: ?>";
+    }
+
+    /**
+     * Compile the while statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileWhile($expression)
+    {
+        return "<?php while{$expression}: ?>";
+    }
+
+    /**
+     * Compile the end-while statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileEndwhile($expression)
+    {
+        return "<?php endwhile; ?>";
+    }
+
+    /**
+     * Compile the end-for statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileEndfor($expression)
+    {
+        return "<?php endfor; ?>";
+    }
+
+    /**
+     * Compile the end-for-each statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileEndforeach($expression)
+    {
+        return "<?php endforeach; ?>";
+    }
+
+    /**
+     * Compile the end-if statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileEndif($expression)
+    {
+        return "<?php endif; ?>";
+    }
+
+    /**
+     * Compile the extends statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileExtends($expression)
+    {
+        if(starts_with($expression, '(')){
+            $expression = substr($expression, 1, -1);
+        }
+
+        $data = "<?php echo \$__env->make($expression, array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>";
+
+        $this->footer[] = $data;
+
+        return '';
     }
 
     /**
