@@ -13,6 +13,20 @@ class ScoutCompiler extends Compiler implements ICompiler {
     protected $path;
 
     /**
+     * Opening and closing echo tags.
+     *
+     * @var array
+     */
+    protected $echoTags = array('{{', '}}');
+
+    /**
+     * Opening and closing escaped tags.
+     *
+     * @var array
+     */
+    protected $escapedTags = array('{{{', '}}}');
+
+    /**
      * Compile the view at the given path.
      *
      * @param string $path
@@ -43,7 +57,15 @@ class ScoutCompiler extends Compiler implements ICompiler {
      */
     public function compileString($content)
     {
-        return 'Super Yo';
+        $result = '';
+
+        foreach(token_get_all($content) as $token){
+
+            $result .= is_array($token) ? $this->parseToken($token) : $token;
+
+        }
+
+        return $result;
     }
 
     /**
@@ -64,6 +86,119 @@ class ScoutCompiler extends Compiler implements ICompiler {
     public function getPath()
     {
         return $this->path;
+    }
+
+    /**
+     * Parse token from template.
+     *
+     * @param array $token
+     * @return string
+     */
+    protected function parseToken(array $token)
+    {
+        list($id, $content) = $token;
+
+        if($id == T_INLINE_HTML){
+
+            foreach(array('Echos') as $type){
+
+                $content = $this->{"compile{$type}"}($content);
+
+            }
+
+        }
+
+        return $content;
+    }
+
+    /**
+     * Compile to native PHP statements.
+     *
+     * @param string $content
+     * @return string
+     */
+    protected function compileStatements($content)
+    {
+
+    }
+
+    /**
+     * Compile to native PHP comments.
+     *
+     * @param string $content
+     * @return string
+     */
+    protected function compileComments($content)
+    {
+
+    }
+
+    /**
+     * Compile to native PHP echos.
+     *
+     * @param string $content
+     * @return string
+     */
+    protected function compileEchos($content)
+    {
+        $difference = strlen($this->echoTags[0]) - strlen($this->escapedTags[0]);
+
+        if($difference > 0){
+            return $this->compileEscapedEchos($this->compileRegularEchos($content));
+        }
+
+        return $this->compileRegularEchos($this->compileEscapedEchos($content));
+    }
+
+    /**
+     * Compile regular echos.
+     *
+     * @param string $content
+     * @return string
+     */
+    protected function compileRegularEchos($content)
+    {
+        $pattern = sprintf('/(@)?%s\s*(.+?)\s*%s/s', $this->echoTags[0], $this->echoTags[1]);
+
+        $compiler = $this;
+
+        $callback = function($matches) use($compiler){
+            return $matches[1] ? substr($matches[0], 1) : '<?php echo '.$compiler->compileEchoDefaults($matches[2]).'; ?>';
+        };
+
+        return preg_replace_callback($pattern, $callback, $content);
+    }
+
+    /**
+     * Compile escape echos.
+     *
+     * @param string $content
+     * @return string
+     */
+    protected function compileEscapedEchos($content)
+    {
+        $pattern = sprintf('/%s\s*(.+?)\s*%s/s', $this->escapedTags[0], $this->escapedTags[1]);
+
+        $compiler = $this;
+
+        $callback = function($matches) use($compiler){
+            return '<?php echo e('.$compiler->compileEchoDefaults($matches[1]).'); ?>';
+        };
+
+        return preg_replace_callback($pattern, $callback, $content);
+    }
+
+    /**
+     * Compile default echo content.
+     * Allow user to check for value existence by using the 'or' shortcut
+     * to define a default value.
+     *
+     * @param string $content
+     * @return string
+     */
+    protected function compileEchoDefaults($content)
+    {
+        return preg_replace('/^(?=\$)(.+?)(?:\s+or\s+)(.+?)$/s', 'isset($1) ? $1 : $2', $content);
     }
 
     /**
