@@ -19,10 +19,10 @@
 
 /*
 |
-| Themosis Checkboxes custom field.
+| Themosis custom field styles.
 |
 */
-.themosis-checkboxes label{
+.themosis-field-container>td>label {
     display: block;
 }
 
