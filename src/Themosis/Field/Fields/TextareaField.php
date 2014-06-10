@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\Form;
+use Themosis\Facades\View;
 
 class TextareaField extends FieldBuilder {
 
@@ -57,20 +57,6 @@ class TextareaField extends FieldBuilder {
      */
     public function metabox()
     {
-        $output = '<tr class="themosis-field-container">';
-        $output .= '<th class="themosis-label" scope="row">';
-        $output .= Form::label($this['id'], $this['title']).'</th><td>';
-        $output .= Form::textarea($this['name'], $this['value'], array('class' => 'large-text', 'data-field' => 'textarea', 'id' => $this['id'], 'rows' => '5'));
-
-        if(isset($this['info'])){
-
-            $output .= '<div class="themosis-field-info">';
-            $output .= '<p>'.$this['info'].'</p></div>';
-
-        }
-
-        $output .= '</td></tr>';
-
-        return $output;
+        return View::make('metabox._themosisTextareaField', array('field' => $this))->render();
     }
 }
