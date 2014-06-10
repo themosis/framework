@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\Form;
+use Themosis\Facades\View;
 
 class EditorField extends FieldBuilder{
 
@@ -56,24 +56,6 @@ class EditorField extends FieldBuilder{
      */
     public function metabox()
     {
-        $output = '<tr class="themosis-field-container">';
-        $output .= '<th class="themosis-label" scope="row">';
-        $output .= Form::label($this['id'], $this['title']).'</th><td>';
-
-        // Start output buffer 'cause 'wp_editor' function is echoing its data.
-        ob_start();
-            wp_editor($this['value'], $this['name'], $this['settings']);
-        $output .= ob_get_clean();
-
-        if(isset($this['info'])){
-
-            $output .= '<div class="themosis-field-info">';
-            $output .= '<p>'.$this['info'].'</p></div>';
-
-        }
-
-        $output .= '</td></tr>';
-
-        return $output;
+        return View::make('metabox._themosisEditorField', array('field' => $this))->render();
     }
 }
