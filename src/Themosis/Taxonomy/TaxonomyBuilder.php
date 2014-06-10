@@ -94,7 +94,7 @@ class TaxonomyBuilder extends Wrapper {
      * @link http://codex.wordpress.org/Function_Reference/register_taxonomy_for_object_type
      * @return \Themosis\Taxonomy\TaxonomyBuilder
      */
-    public function link()
+    public function bind()
     {
         register_taxonomy_for_object_type($this->datas['slug'], $this->datas['postType']);
 

@@ -57,6 +57,6 @@ $bookInfos = Metabox::make('Details', $books->getSlug())->set(array(
     )
 ));
 
-Taxonomy::make('th-categories', $books->getSlug(), 'Categories', 'category')->set()->link();
+Taxonomy::make('th-categories', $books->getSlug(), 'Categories', 'category')->set()->bind();
 
 Page::make('th-settings-page', 'Themosis')->set();

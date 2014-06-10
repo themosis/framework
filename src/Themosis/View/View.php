@@ -152,6 +152,19 @@ class View implements ArrayAccess, IRenderable {
     }
 
     /**
+     * Add a view instance to the view data.
+     *
+     * @param string $key
+     * @param string $view
+     * @param array $data
+     * @return \Themosis\View\View
+     */
+    public function nest($key, $view, array $data = array())
+    {
+        return $this->with($key, $this->factory->make($view, $data));
+    }
+
+    /**
      * Check if a view data exists.
      *
      * @param string $key The data key name.
