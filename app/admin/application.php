@@ -48,11 +48,9 @@ $books = PostType::make('th-books', 'Books', 'book')->set();
 $books->setTitle('Enter the book name');
 
 $bookInfos = Metabox::make('Details', $books->getSlug())->set(array(
-    'main' => array(
-        Field::text('auteur', array('info' => 'Inscrire le nom de l\'auteur.')),
-        Field::textarea('sommaire'),
-        Field::media('cover', array('title' => 'Couverture'))
-    )
+    Field::text('auteur', array('info' => 'Inscrire le nom de l\'auteur.')),
+    Field::textarea('sommaire'),
+    Field::media('cover', array('title' => 'Couverture'))
 ));
 
 Taxonomy::make('th-categories', $books->getSlug(), 'Categories', 'category')->set()->bind();

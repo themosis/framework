@@ -29,9 +29,7 @@ class Template extends ConfigTemplate
 
 		// Build a select field
 		Metabox::make('Themosis Page Template', 'page', array('context' => 'side', 'priority' => 'core'))->set(array(
-            'main'  => array(
-                Field::select('_themosisPageTemplate', array($templateNames), false, array('title' => __('Template', THEMOSIS_TEXTDOMAIN)))
-            )
+            Field::select('_themosisPageTemplate', array($templateNames), false, array('title' => __('Template', THEMOSIS_TEXTDOMAIN)))
         ));
 	}
 
