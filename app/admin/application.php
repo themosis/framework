@@ -6,11 +6,12 @@
 
 $metabox = Metabox::make('Informations', 'post')->set(array(
     'main' => array(
-        Field::text('author', array('info' => 'Un message pour l\'auteur.'))
-        /*Field::text('age'),
+        Field::text('author', array('info' => 'Un message pour l\'auteur.')),
+        Field::text('age'),
         Field::text('email', array('info' => 'Please insert your email address.')),
         Field::text('website', array('info' => 'Please specify your website address.')),
-        Field::checkbox('enabled', array('title' => 'Activate')),
+        Field::checkbox('enabled', array('title' => 'Activate'))
+        /*
         Field::textarea('content', array('info' => 'Insert content here.', 'title' => 'Summary')),
         Field::text('color', array('info' => 'Define an hexadecimal color.')),
         Field::checkboxes('sizes', array('small', 'medium', 'large'), array('info' => 'Choose one or more sizes.')),

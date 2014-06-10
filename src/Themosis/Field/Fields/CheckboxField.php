@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\Form;
+use Themosis\Facades\View;
 
 class CheckboxField extends FieldBuilder{
 
@@ -57,20 +57,6 @@ class CheckboxField extends FieldBuilder{
      */
     public function metabox()
     {
-        $output = '<tr class="themosis-field-container">';
-        $output .= '<th class="themosis-label" scope="row">';
-        $output .= Form::label($this['id'], $this['title']).'</th><td>';
-        $output .= Form::checkbox($this['name'], $this['value'], array('id' => $this['id'], 'data-field' => 'checkbox'));
-
-        if(isset($this['info'])){
-
-            $output .= '<div class="themosis-field-info">';
-            $output .= '<p>'.$this['info'].'</p></div>';
-
-        }
-
-        $output .= '</td></tr>';
-
-        return $output;
+        return View::make('metabox._themosisCheckboxField', array('field' => $this))->render();
     }
 }

@@ -56,7 +56,7 @@ class TextField extends FieldBuilder{
      */
     public function metabox()
     {
-        return View::make('_themosisTextField-metabox', array('field' => $this))->render();
+        return View::make('metabox._themosisTextField', array('field' => $this))->render();
     }
 
 }
