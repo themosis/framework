@@ -440,7 +440,7 @@
         resetMedia: function(field){
             var cells = field.closest('td').find('table.themosis-media>tbody>tr>td'),
                 addCell = cells.first(),
-                mediaField = field.closest('tr.themosis-field-media');
+                mediaField = field.closest('tr.themosis-field-container');
 
             // Reset path content
             field.closest('td').find('p.themosis-media__path').html('');
@@ -735,7 +735,7 @@
 
     // Implementation
     // List all infinite fields.
-    var infinites = $('tr.themosis-field-infinite');
+    var infinites = $('div.themosis-infinite-container').closest('tr.themosis-field-container');
 
     _.each(infinites, function(elem){
 

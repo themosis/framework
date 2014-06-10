@@ -2,6 +2,7 @@
 namespace Themosis\Field\Fields;
 
 use Themosis\Facades\Form;
+use Themosis\Facades\View;
 
 class InfiniteField extends FieldBuilder {
 
@@ -57,6 +58,16 @@ class InfiniteField extends FieldBuilder {
     }
 
     /**
+     * Return the numbers of rows to display.
+     *
+     * @return int
+     */
+    public function getRows()
+    {
+        return $this->rows;
+    }
+
+    /**
      * Define the input type that handle the data.
      *
      * @return void
@@ -64,23 +75,6 @@ class InfiniteField extends FieldBuilder {
     protected function fieldType()
     {
         $this->type = 'infinite';
-    }
-
-    /**
-     * Handle the info HTML.
-     *
-     * @return string
-     */
-    private function info()
-    {
-        $output = '';
-
-        if(isset($this['info'])){
-            $output .= '<div class="themosis-field-info">';
-            $output .= '<p>'.$this['info'].'</p></div>';
-        }
-
-        return $output;
     }
 
     /**
@@ -92,22 +86,6 @@ class InfiniteField extends FieldBuilder {
     private function order($number)
     {
         return '<span>'.$number.'</span>';
-    }
-
-    /**
-     * Handle the add button section HTML.
-     *
-     * @return string
-     */
-    private function addButton()
-    {
-        $output = '<div class="themosis-infinite-add-field-container">';
-        $output .= '<button type="button" id="themosis-infinite-main-add" class="button-primary">';
-        $output .= __('Add row', THEMOSIS_TEXTDOMAIN);
-        $output .= '</button>';
-        $output .= '</div>';
-
-        return $output;
     }
 
     /**
@@ -225,14 +203,6 @@ class InfiniteField extends FieldBuilder {
         // Check rows number.
         $this->setRows();
 
-        $output = '<tr class="themosis-field-container themosis-field-infinite"><th class="themosis-label" scope="row">';
-        $output .= Form::label($this['id'], $this['title']).'</th><td>';
-
-        // Output main structure of the infinite field.
-        $output .= $this->infinite('metabox');
-
-        $output .= '</td></tr>';
-
-        return $output;
+        return View::make('metabox._themosisInfiniteField', array('field' => $this))->render();
     }
 }
