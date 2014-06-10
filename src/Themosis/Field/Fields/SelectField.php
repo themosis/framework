@@ -2,6 +2,7 @@
 namespace Themosis\Field\Fields;
 
 use Themosis\Facades\Form;
+use Themosis\Facades\View;
 
 class SelectField extends FieldBuilder {
 
@@ -52,20 +53,6 @@ class SelectField extends FieldBuilder {
      */
     public function metabox()
     {
-        $output = '<tr class="themosis-field-container">';
-        $output .= '<th class="themosis-label" scope="row">';
-        $output .= Form::label($this['id'], $this['title']).'</th><td>';
-        $output .= Form::select($this['name'], $this['options'], $this['value'], array('multiple' => $this['multiple'], 'data-field' => 'select', 'id' => $this['id']));
-
-        if(isset($this['info'])){
-
-            $output .= '<div class="themosis-field-info">';
-            $output .= '<p>'.$this['info'].'</p></div>';
-
-        }
-
-        $output .= '</td></tr>';
-
-        return $output;
+        return View::make('metabox._themosisSelectField', array('field' => $this))->render();
     }
 }
