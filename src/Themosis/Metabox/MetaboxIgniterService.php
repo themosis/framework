@@ -2,7 +2,7 @@
 namespace Themosis\Metabox;
 
 use Themosis\Core\IgniterService;
-use Themosis\Core\WrapperView;
+use Themosis\Facades\View;
 
 class MetaboxIgniterService extends IgniterService {
 
@@ -16,7 +16,7 @@ class MetaboxIgniterService extends IgniterService {
         $this->app->bind('metabox', function($app){
 
             $data = new MetaboxData();
-            $view = new WrapperView(themosis_path('sys').'Metabox'.DS.'Views'.DS.'default.php');
+            $view = View::make('_themosisCoreMetabox');
 
             return new MetaboxBuilder($data, $view, $app['validation']);
 

@@ -176,6 +176,42 @@ class ViewFactory {
     }
 
     /**
+     * Get the rendered contents of a partial from a loop.
+     *
+     * @param string $view
+     * @param array $data
+     * @param string $iterator
+     * @param string $empty
+     * @return string
+     */
+    public function renderEach($view, $data, $iterator, $empty = 'raw|')
+    {
+        $result = '';
+
+        // If is actually data in the array, we will loop through the data and append
+        // an instance of the partial view to the final result HTML passing in the
+        // iterated value of this data array, allowing the views to access them.
+        if(count($data) > 0){
+            foreach($data as $key => $value){
+                $data = array('key' => $key, $iterator => $value);
+
+                $result .= $this->make($view, $data)->render();
+            }
+        } else {
+            // If there is no data in the array, we will render the contents of the empty
+            // view. Alternatively, the "empty view" could be a raw string that begins
+            // with "raw|" for convenience and to let this know that it is a string.
+            if (starts_with($empty, 'raw|')) {
+                $result = substr($empty, 4);
+            } else {
+                $result = $this->make($empty)->render();
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Get the string content of a section.
      *
      * @param string $section

@@ -62,6 +62,7 @@ add_filter('themosisViewPaths', function($paths){
 
     $paths[] = themosis_path('sys').'Metabox'.DS.'Views'.DS;
     $paths[] = themosis_path('sys').'Page'.DS.'Views'.DS;
+    $paths[] = themosis_path('sys').'Field'.DS.'Fields'.DS.'Views'.DS;
 
     return $paths;
 

@@ -4,9 +4,9 @@ namespace Themosis\Metabox;
 use Themosis\Action\Action;
 use Themosis\Core\DataContainer;
 use Themosis\Core\Wrapper;
-use Themosis\Core\WrapperView;
 use Themosis\Session\Session;
 use Themosis\Validation\ValidationBuilder;
+use Themosis\View\IRenderable;
 
 class MetaboxBuilder extends Wrapper {
 
@@ -20,9 +20,16 @@ class MetaboxBuilder extends Wrapper {
     /**
      * The metabox view.
      *
-     * @var
+     * @var \Themosis\View\View
      */
     private $view;
+
+    /**
+     * The metabox view sections.
+     *
+     * @var array
+     */
+    private $sections = array();
 
     /**
      * A validator instance.
@@ -38,10 +45,10 @@ class MetaboxBuilder extends Wrapper {
      * Build a metabox instance.
      *
      * @param DataContainer $datas The metabox properties.
-     * @param \Themosis\Core\WrapperView $view The metabox default view.
+     * @param \Themosis\View\IRenderable $view The metabox default view.
      * @param \Themosis\Validation\ValidationBuilder $validator
      */
-    public function __construct(DataContainer $datas, WrapperView $view, ValidationBuilder $validator)
+    public function __construct(DataContainer $datas, IRenderable $view, ValidationBuilder $validator)
     {
         $this->datas = $datas;
         $this->view = $view;
@@ -56,10 +63,10 @@ class MetaboxBuilder extends Wrapper {
      * @param string $title The metabox title.
      * @param string $postType The metabox parent slug name.
      * @param array $options Metabox extra options.
-     * @param \Themosis\Core\WrapperView $view The metabox view.
+     * @param \Themosis\View\IRenderable $view The metabox view.
      * @return object
      */
-    public function make($title, $postType, array $options = array(), WrapperView $view = null)
+    public function make($title, $postType, array $options = array(), IRenderable $view = null)
     {
         $this->datas['title'] = $title;
         $this->datas['postType'] = $postType;
@@ -80,7 +87,11 @@ class MetaboxBuilder extends Wrapper {
      */
     public function set(array $fields = array())
     {
+        // Check if sections are defined.
+        $this->sections = $this->getSections($fields);
+
         $this->datas['fields'] = $fields;
+
         $this->installEvent->dispatch();
 
         return $this;
@@ -104,6 +115,7 @@ class MetaboxBuilder extends Wrapper {
      *
      * @param \WP_Post $post The WP_Post object.
      * @param array $datas The metabox $args and associated fields.
+     * @throws MetaboxException
      * @return void
      */
     public function build($post, array $datas)
@@ -111,28 +123,30 @@ class MetaboxBuilder extends Wrapper {
         // Add nonce fields
         wp_nonce_field(Session::nonceAction, Session::nonceName);
 
-        // Build all the html with the fields
-        // Place the fields at the right section
-        foreach($this->view->getSections() as $section){
+        // Set the default 'value' attribute regarding sections.
+        if(!empty($this->sections)){
 
-            if(isset($datas['args'][$section])){
+            foreach($this->sections as $section){
 
-                foreach($datas['args'][$section] as $field){
+                if(isset($datas['args'][$section])){
 
-                    // Set the value property of the $field
-                    $field['value'] = get_post_meta($post->ID, $field['name'], true);
+                    $fields = $datas['args'][$section];
 
-                    // Add the rendered field view.
-                    $this->view->fillSection($section, $field->metabox());
+                    // Set the default 'value' property of all fields.
+                    $this->setDefaultValue($post, $fields);
 
                 }
-
             }
+
+        } else {
+
+            // Set the default 'value' property of all fields.
+            $this->setDefaultValue($post, $datas['args']);
 
         }
 
-        // Render the full content.
-        $this->view->render();
+        $this->render($datas['args']);
+
     }
 
     /**
@@ -148,39 +162,25 @@ class MetaboxBuilder extends Wrapper {
         $nonceName = (isset($_POST[Session::nonceName])) ? $_POST[Session::nonceName] : Session::nonceName;
         if (!wp_verify_nonce($nonceName, Session::nonceAction)) return;
 
+        $fields = array();
+
         // Loop through the registered fields.
-        foreach($this->datas['fields'] as $fields){
+        // With sections.
+        if(!empty($this->sections)){
 
-            foreach($fields as $field){
+            foreach($this->datas['fields'] as $fs){
 
-                $value = $this->parseValue($_POST, $field);
-
-                // Apply validation if defined.
-                // Check if the rule exists for the field in order to validate.
-                if(isset($this->datas['rules'][$field['name']])){
-
-                    $rules = $this->datas['rules'][$field['name']];
-                    // Check if $rules array is an associative array
-                    if($this->validator->isAssociative($rules) && 'infinite' == $field->getFieldType()){
-                        // Check Infinite fields validation.
-                        foreach($value as $row => $rowValues){
-                            foreach($rowValues as $name => $val){
-                                if(isset($rules[$name])){
-                                    $value[$row][$name] = $this->validator->single($val, $rules[$name]);
-                                }
-                            }
-                        }
-
-                    } else {
-                        $value = $this->validator->single($value, $this->datas['rules'][$field['name']]);
-                    }
-                }
-
-                update_post_meta($postId, $field['name'], $value);
+                $fields = $fs;
 
             }
 
+        } else {
+
+            $fields = $this->datas['fields'];
+
         }
+
+        $this->register($postId, $fields);
 
     }
 
@@ -193,6 +193,45 @@ class MetaboxBuilder extends Wrapper {
     public function validate(array $rules = array())
     {
         $this->datas['rules'] = $rules;
+    }
+
+    /**
+     * Register the metabox and its fields into the DB.
+     *
+     * @param int $postId
+     * @param array $fields
+     * @return void
+     */
+    private function register($postId, array $fields)
+    {
+        foreach($fields as $field){
+
+            $value = $this->parseValue($_POST, $field);
+
+            // Apply validation if defined.
+            // Check if the rule exists for the field in order to validate.
+            if(isset($this->datas['rules'][$field['name']])){
+
+                $rules = $this->datas['rules'][$field['name']];
+                // Check if $rules array is an associative array
+                if($this->validator->isAssociative($rules) && 'infinite' == $field->getFieldType()){
+                    // Check Infinite fields validation.
+                    foreach($value as $row => $rowValues){
+                        foreach($rowValues as $name => $val){
+                            if(isset($rules[$name])){
+                                $value[$row][$name] = $this->validator->single($val, $rules[$name]);
+                            }
+                        }
+                    }
+
+                } else {
+                    $value = $this->validator->single($value, $this->datas['rules'][$field['name']]);
+                }
+            }
+
+            update_post_meta($postId, $field['name'], $value);
+
+        }
     }
 
     /**
@@ -230,6 +269,56 @@ class MetaboxBuilder extends Wrapper {
 
         return $newOptions;
 
+    }
+
+    /**
+     * Set the metabox view sections.
+     *
+     * @param array $fields
+     * @return array
+     */
+    private function getSections(array $fields)
+    {
+        $sections = array();
+
+        foreach($fields as $section => $subFields){
+
+            if(!is_numeric($section)){
+                array_push($sections, $section);
+            }
+
+        }
+
+        return $sections;
+    }
+
+    /**
+     * Set the default 'value' property for all fields.
+     *
+     * @param \WP_Post $post
+     * @param array $fields
+     * @return void
+     */
+    private function setDefaultValue(\WP_Post $post, array $fields)
+    {
+        foreach($fields as $field){
+            // Set the value property of the $field
+            $field['value'] = get_post_meta($post->ID, $field['name'], true);
+        }
+    }
+
+    /**
+     * Render the metabox.
+     *
+     * @param array $fields
+     * @return void
+     */
+    private function render(array $fields)
+    {
+        // Pass the fields to the main metabox view.
+        $this->view->with('__fields', $fields);
+
+        echo($this->view->render());
     }
 
 }

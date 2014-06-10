@@ -305,6 +305,17 @@ class ScoutCompiler extends Compiler implements ICompiler {
     }
 
     /**
+     * Compile the each statements into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileEach($expression)
+    {
+        return "<?php echo \$__env->renderEach{$expression}; ?>";
+    }
+
+    /**
      * Compile the unless statements into valid PHP.
      *
      * @param string $expression

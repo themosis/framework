@@ -6,8 +6,8 @@
 
 $metabox = Metabox::make('Informations', 'post')->set(array(
     'main' => array(
-        Field::text('author', array('info' => 'Un message pour l\'auteur.')),
-        Field::text('age'),
+        Field::text('author', array('info' => 'Un message pour l\'auteur.'))
+        /*Field::text('age'),
         Field::text('email', array('info' => 'Please insert your email address.')),
         Field::text('website', array('info' => 'Please specify your website address.')),
         Field::checkbox('enabled', array('title' => 'Activate')),
@@ -28,7 +28,7 @@ $metabox = Metabox::make('Informations', 'post')->set(array(
             Field::checkboxes('colors', array('red', 'blue', 'green')),
             Field::radio('size', array('small', 'medium', 'large')),
             Field::media('profile', array('size' => 'themosis'))
-        ), array('info' => 'Define your company members.', 'limit' => 5))
+        ), array('info' => 'Define your company members.', 'limit' => 5))*/
     )
 ));
 

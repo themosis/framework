@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\Form;
+use Themosis\Facades\View;
 
 class TextField extends FieldBuilder{
 
@@ -50,28 +50,13 @@ class TextField extends FieldBuilder{
     }
 
     /**
-     * Method that handle the field HTML code for
-     * metabox output.
+     * Handle the field HTML code for metabox output.
      *
      * @return string
      */
     public function metabox()
     {
-        $output = '<tr class="themosis-field-container">';
-        $output .= '<th class="themosis-label" scope="row">';
-        $output .= Form::label($this['id'], $this['title']).'</th><td>';
-        $output .= Form::text($this['name'], $this['value'], array('id' => $this['id'], 'class' => 'large-text', 'data-field' => 'text'));
-
-        if(isset($this['info'])){
-
-            $output .= '<div class="themosis-field-info">';
-            $output .= '<p>'.$this['info'].'</p></div>';
-
-        }
-
-        $output .= '</td></tr>';
-
-        return $output;
+        return View::make('_themosisTextField-metabox', array('field' => $this))->render();
     }
 
 }
