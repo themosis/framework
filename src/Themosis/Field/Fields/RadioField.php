@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\Form;
+use Themosis\Facades\View;
 
 class RadioField extends FieldBuilder{
 
@@ -74,21 +74,7 @@ class RadioField extends FieldBuilder{
         // define the default value for the field.
         $this->defaultValue();
 
-        $output = '<tr class="themosis-field-container">';
-        $output .= '<th class="themosis-label" scope="row">';
-        $output .= Form::label($this['id'], $this['title']).'</th><td class="themosis-radio">';
-        $output .= Form::radio($this['name'], $this['options'], $this['value'], array('data-field' => 'radio', 'id' => $this['name'].'-id'));
-
-        if(isset($this['info'])){
-
-            $output .= '<div class="themosis-field-info">';
-            $output .= '<p>'.$this['info'].'</p></div>';
-
-        }
-
-        $output .= '</td></tr>';
-
-        return $output;
+        return View::make('metabox._themosisRadioField', array('field' => $this))->render();
     }
 
 } 

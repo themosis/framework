@@ -13,9 +13,9 @@ $metabox = Metabox::make('Informations', 'post')->set(array(
         Field::checkbox('enabled', array('title' => 'Activate')),
         Field::textarea('article-summary', array('info' => 'Insert content here.', 'title' => 'Summary')),
         Field::text('color', array('info' => 'Define an hexadecimal color.')),
-        Field::checkboxes('sizes', array('small', 'medium', 'large'), array('info' => 'Choose one or more sizes.'))
+        Field::checkboxes('sizes', array('small', 'medium', 'large'), array('info' => 'Choose one or more sizes.')),
+        Field::radio('transport', array('none', 'postal', 'ups'), array('title' => 'Delivery', 'info' => 'Choose one delivery service.'))
         /*
-        Field::radio('transport', array('none', 'postal', 'ups'), array('title' => 'Delivery', 'info' => 'Choose one delivery service.')),
         Field::select('country', array(array('belgique', 'portugal', 'canada'))),
         Field::select('country-invoice', array(array('belgique', 'portugal', 'canada')), true, array('title' => 'Invoice country')),
         Field::media('image', array('info' => 'Only accepts .jpg, .gif, .png files.', 'size' => 'themosis')),
