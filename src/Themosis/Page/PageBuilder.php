@@ -45,6 +45,20 @@ class PageBuilder extends Wrapper {
     private $sections;
 
     /**
+     * The settings install action.
+     *
+     * @var static
+     */
+    private $settingsEvent;
+
+    /**
+     * The page settings.
+     *
+     * @var array
+     */
+    private $settings;
+
+    /**
      * Build a Page instance.
      *
      * @param DataContainer $datas The page properties.
@@ -59,6 +73,7 @@ class PageBuilder extends Wrapper {
 
         // Events
         $this->pageEvent = Action::listen('admin_menu', $this, 'build');
+        $this->settingsEvent = Action::listen('admin_init', $this, 'installSettings');
     }
 
     /**
@@ -196,6 +211,35 @@ class PageBuilder extends Wrapper {
     public function hasSections()
     {
         return count($this->sections) ? true : false;
+    }
+
+    /**
+     * Add settings to the page.
+     *
+     * @param array $settings The page settings.
+     * @return \Themosis\Page\PageBuilder
+     */
+    public function addSettings(array $settings = array())
+    {
+        $this->settings = $settings;
+
+        // Trigger the 'admin_init' action.
+        $this->settingsEvent->dispatch();
+
+        return $this;
+    }
+
+    /**
+     * Triggered by the 'admin_init' action.
+     * Perform the WordPress settings API.
+     *
+     * @return void
+     */
+    public function installSettings()
+    {
+        // 2 ways to register the settings
+        // a - With sections
+        // b - Without sections
     }
 
 } 

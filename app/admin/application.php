@@ -60,3 +60,7 @@ $page->addSections(array(
     Section::make('th-general', 'General'),
     Section::make('th-contact', 'Contact')
 ));
+
+$page->addSettings(array(
+    Field::text('facebook')
+));
