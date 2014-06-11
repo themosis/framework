@@ -55,4 +55,8 @@ $bookInfos = Metabox::make('Details', $books->getSlug())->set(array(
 
 Taxonomy::make('th-categories', $books->getSlug(), 'Categories', 'category')->set()->bind();
 
-Page::make('th-settings-page', 'Themosis')->set();
+$page = Page::make('th-settings-page', 'Themosis')->set();
+$page->addSections(array(
+    Section::make('th-general', 'General'),
+    Section::make('th-contact', 'Contact')
+));

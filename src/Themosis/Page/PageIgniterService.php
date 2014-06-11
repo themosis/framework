@@ -2,7 +2,7 @@
 namespace Themosis\Page;
 
 use Themosis\Core\IgniterService;
-use Themosis\Core\WrapperView;
+use Themosis\Facades\View;
 
 class PageIgniterService extends IgniterService {
 
@@ -16,7 +16,7 @@ class PageIgniterService extends IgniterService {
         $this->app->bind('page', function($app){
 
             $data = new PageData();
-            $view = new WrapperView(themosis_path('sys').'Page'.DS.'Views'.DS.'default.php');
+            $view = View::make('pages._themosisCorePage');
 
             return new PageBuilder($data, $view, $app['validation']);
 
