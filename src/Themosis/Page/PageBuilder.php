@@ -214,7 +214,9 @@ class PageBuilder extends Wrapper {
     }
 
     /**
-     * Add settings to the page.
+     * Add settings to the page. Define settings per section
+     * by setting the 'key' name equal to a registered section and
+     * pass it an array of 'settings' fields.
      *
      * @param array $settings The page settings.
      * @return \Themosis\Page\PageBuilder
@@ -237,9 +239,151 @@ class PageBuilder extends Wrapper {
      */
     public function installSettings()
     {
-        // 2 ways to register the settings
-        // a - With sections
-        // b - Without sections
+        // The WordPress Settings API make
+        // always use of sections and fields.
+        // So let's set it up!
+        if($this->datas['args']['tabs']){
+
+            // A - With tabs
+            $this->installWithTabs();
+
+        } else {
+
+            // B - Without tabs
+            $this->installWithoutTabs();
+
+        }
+    }
+
+    /**
+     * Register sections and settings in order
+     * to work with tabs.
+     *
+     * @return void
+     */
+    private function installWithTabs()
+    {
+        // 1 - Prepare the DB table.
+        foreach($this->sections as $section){
+
+            $section = $section->getData();
+
+            if(false === get_option($section['slug'])){
+                add_option($section['slug']);
+            }
+        }
+
+        // 2 - Display sections
+        foreach($this->sections as $section){
+
+            $section = $section->getData();
+
+            add_settings_section($section['slug'], $section['name'], array($this, 'displaySections'), $section['slug']);
+
+        }
+
+        // 3 - Display settings
+        foreach($this->settings as $section => $settings){
+            foreach($settings as $setting){
+
+                // Add the section to the field.
+                $setting['section'] = $section;
+
+                add_settings_field($setting['id'], $setting['title'], array($this, 'displaySettings'), $section, $section, array($setting));
+
+            }
+        }
+
+        // 4 - Register the settings and define the sanitized callback
+        // Group all page settings in one, avoid polluting
+        // the wp_options table.
+        // When you want to retrieve a setting use the option_group
+        // name and the setting id.
+        foreach($this->sections as $section){
+            $section = $section->getData();
+
+            register_setting($section['slug'], $section['slug'], array($this, 'validate'));
+        }
+    }
+
+    /**
+     * Register sections and settings in a page.
+     *
+     * @return void
+     */
+    private function installWithoutTabs()
+    {
+        // 1 - Prepare the DB table.
+        if(false === $val = get_option($this->datas['slug'])){
+            add_option($this->datas['slug']);
+        }
+
+        // 2 - Display sections
+        foreach($this->sections as $section){
+
+            $section = $section->getData();
+
+            add_settings_section($section['slug'], $section['name'], array($this, 'displaySections'), $this->datas['slug']);
+
+        }
+
+        // 3 - Display settings
+        foreach($this->settings as $section => $settings){
+            foreach($settings as $setting){
+
+                // Add the section to the field.
+                $setting['section'] = $this->datas['slug'];
+
+                add_settings_field($setting['id'], $setting['title'], array($this, 'displaySettings'), $this->datas['slug'], $section, array($setting));
+
+            }
+        }
+
+        // 4 - Register the settings and define the sanitized callback
+        // Group all page settings in one, avoid polluting
+        // the wp_options table.
+        // When you want to retrieve a setting use the option_group
+        // name and the setting id.
+        register_setting($this->datas['slug'], $this->datas['slug'], array($this, 'validate'));
+    }
+
+    /**
+     * Handle section display of the Settings API.
+     *
+     * @param array $args
+     * @return void
+     */
+    public function displaySections(array $args)
+    {
+    }
+
+    /**
+     * Handle setting display of the Settings API.
+     *
+     * @param array $setting
+     * @return void
+     */
+    public function displaySettings(array $setting)
+    {
+        // Check if a registered value exists.
+        $setting = array_shift($setting);
+        $value = get_option($setting['section']);
+        $setting['value'] = isset($value[$setting['name']]) ? $value[$setting['name']] : $this->parseValue($setting);
+        $setting['name'] = $setting['section'].'['.$setting['name'].']';
+
+        // Display the setting.
+        echo($setting->settings());
+    }
+
+    /**
+     * Validate the defined settings.
+     *
+     * @param array $settings
+     * @return array
+     */
+    public function validate(array $settings)
+    {
+        return $settings;
     }
 
 } 

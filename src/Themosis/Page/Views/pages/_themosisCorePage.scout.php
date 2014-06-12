@@ -2,14 +2,16 @@
 <div class="wrap">
     <h2>{{ $__page->get('title') }}</h2>
 
-    <?php settings_errors(); ?>
+    <?php
+        settings_errors();
+        // Some needed "globals".
+        $firstSection = $__sections[0]->getData();
+        $activeTab = isset($_GET['tab']) ? $_GET['tab'] : $firstSection['slug'];
+        $args = $__page->get('args');
+    ?>
 
     {{-- Tabs --}}
-    @if($__page->hasSections() && $__page->get('args')['tabs'])
-        <?php
-            $firstSection = $__sections[0]->getData();
-            $activeTab = isset($_GET['tab']) ? $_GET['tab'] : $firstSection['slug'];
-        ?>
+    @if($__page->hasSections() && $args['tabs'])
         <h2 class="nav-tab-wrapper">
             @foreach($__sections as $section)
                 <?php
@@ -21,4 +23,36 @@
         </h2>
     @endif
     {{-- End tabs --}}
+
+    {{-- Main content --}}
+    <form action="options.php" method="post">
+
+    <?php
+        submit_button();
+
+        // Display sections and settings
+        // for tabs.
+        if($args['tabs']){
+            foreach($__sections as $section){
+                $section = $section->getData();
+
+                // Display settings regarding the active tab.
+                if($activeTab === $section['slug']){
+                    settings_fields($section['slug']);
+                    do_settings_sections($section['slug']);
+                }
+            }
+        } else {
+            // Do not use the tab navigation.
+            // Display all sections in one page.
+            settings_fields($__page->get('slug'));
+            do_settings_sections($__page->get('slug'));
+        }
+
+        submit_button();
+    ?>
+
+    </form>
+    {{-- End main content--}}
+
 </div>

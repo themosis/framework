@@ -6,43 +6,34 @@ use Themosis\Field\Fields\FieldBuilder;
 abstract class Wrapper {
 
     /**
-     * Parse a wrapper value and returns it.
+     * Set a default value for a given field.
      *
-     * @param array $request An associative array of values.
      * @param FieldBuilder $field A field instance
      * @return mixed
      */
-    protected function parseValue(array $request, FieldBuilder $field)
+    protected function parseValue(FieldBuilder $field)
     {
         $value = null;
 
-        if(isset($request[$field['name']])){
+        // No data found, define a default by field type.
+        switch($field->getFieldType()){
 
-            $value = $request[$field['name']];
+            case 'checkbox':
 
-        } else {
+                $value = 'off';
+                break;
 
-            // No data found, define a default by field type.
-            switch($field->getFieldType()){
+            case 'checkboxes':
+            case 'radio':
+            case 'select':
+            case 'infinite':
 
-                case 'checkbox':
+                $value = array();
+                break;
 
-                    $value = 'off';
-                    break;
+            default:
 
-                case 'checkboxes':
-                case 'radio':
-                case 'select':
-                case 'infinite':
-
-                    $value = array();
-                    break;
-
-                default:
-
-                    $value = '';
-
-            }
+                $value = '';
 
         }
 

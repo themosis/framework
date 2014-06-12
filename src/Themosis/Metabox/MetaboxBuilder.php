@@ -206,7 +206,7 @@ class MetaboxBuilder extends Wrapper {
     {
         foreach($fields as $field){
 
-            $value = $this->parseValue($_POST, $field);
+            $value = isset($_POST[$field['name']]) ? $_POST[$field['name']] : $this->parseValue($field);
 
             // Apply validation if defined.
             // Check if the rule exists for the field in order to validate.

@@ -62,5 +62,28 @@ $page->addSections(array(
 ));
 
 $page->addSettings(array(
-    Field::text('facebook')
+    'th-general' => array(
+        Field::text('facebook'),
+        Field::text('phone')
+    ),
+    'th-contact' => array(
+        Field::text('company-name', array('title' => 'Your Company Name')),
+        Field::text('address1')
+    )
+));
+
+$otherPage = Page::make('th-main-options', 'Options')->set(array('tabs' => false, 'position' => 100));
+
+$otherPage->addSections(array(
+    Section::make('th-main-general', 'General Options'),
+    Section::make('th-main-setup', 'Setup')
+));
+
+$otherPage->addsettings(array(
+    'th-main-general' => array(
+        Field::text('application-name')
+    ),
+    'th-main-setup'     => array(
+        Field::text('installation-name')
+    )
 ));
