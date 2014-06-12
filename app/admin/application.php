@@ -63,7 +63,7 @@ $page->addSections(array(
 
 $page->addSettings(array(
     'th-general' => array(
-        Field::text('facebook'),
+        Field::text('facebook', array('info' => 'Enter your Facebook page name.')),
         Field::text('phone')
     ),
     'th-contact' => array(
@@ -72,7 +72,7 @@ $page->addSettings(array(
     )
 ));
 
-$otherPage = Page::make('th-main-options', 'Options')->set(array('tabs' => false, 'position' => 100));
+$otherPage = Page::make('th-main-options', 'Options')->set(array('tabs' => false));
 
 $otherPage->addSections(array(
     Section::make('th-main-general', 'General Options'),

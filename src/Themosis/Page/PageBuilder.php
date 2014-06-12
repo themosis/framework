@@ -106,7 +106,7 @@ class PageBuilder extends Wrapper {
         $this->datas['args'] = array(
             'capability'    => 'manage_options',
             'icon'          => '',
-            'position'      => 85,
+            'position'      => null,
             'tabs'          => true
         );
 
@@ -314,7 +314,7 @@ class PageBuilder extends Wrapper {
     private function installWithoutTabs()
     {
         // 1 - Prepare the DB table.
-        if(false === $val = get_option($this->datas['slug'])){
+        if(false === get_option($this->datas['slug'])){
             add_option($this->datas['slug']);
         }
 
@@ -331,7 +331,8 @@ class PageBuilder extends Wrapper {
         foreach($this->settings as $section => $settings){
             foreach($settings as $setting){
 
-                // Add the section to the field.
+                // Add the section to the field - In this case,
+                // it is associated to the page slug.
                 $setting['section'] = $this->datas['slug'];
 
                 add_settings_field($setting['id'], $setting['title'], array($this, 'displaySettings'), $this->datas['slug'], $section, array($setting));
