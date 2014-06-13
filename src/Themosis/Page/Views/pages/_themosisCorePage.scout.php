@@ -9,7 +9,7 @@
         $__page->renderTabs();
     ?>
 
-    <form action="options.php" method="post">
+    <form action="options.php" method="post" class="themosis-core-page">
         <?php
             submit_button();
 
