@@ -370,10 +370,12 @@ class PageBuilder extends Wrapper {
         $setting = array_shift($setting);
         $value = get_option($setting['section']);
         $setting['value'] = isset($value[$setting['name']]) ? $value[$setting['name']] : $this->parseValue($setting);
+
+        // Set the name attribute.
         $setting['name'] = $setting['section'].'['.$setting['name'].']';
 
         // Display the setting.
-        echo($setting->settings());
+        echo($setting->page());
     }
 
     /**
@@ -385,6 +387,64 @@ class PageBuilder extends Wrapper {
     public function validate(array $settings)
     {
         return $settings;
+    }
+
+    /**
+     * Return the active tab slug of the settings page.
+     *
+     * @return string
+     */
+    private function getActiveTab()
+    {
+        $firstSection = $this->sections[0]->getData();
+        return isset($_GET['tab']) ? $_GET['tab'] : $firstSection['slug'];
+    }
+
+    /**
+     * Helper method that output the tab navigation
+     * if available.
+     *
+     * @return void
+     */
+    public function renderTabs()
+    {
+        if($this->hasSections() && $this->datas['args']['tabs']){
+            echo('<h2 class="nav-tab-wrapper">');
+
+                foreach($this->sections as $section){
+                    $section = $section->getData();
+                    $class = ($this->getActiveTab() === $section['slug']) ? 'nav-tab-active' : '';
+
+                    printf('<a href="?page=%s&tab=%s" class="nav-tab %s">%s</a>', $this->datas['slug'], $section['slug'], $class, $section['name']);
+                }
+
+            echo('</h2>');
+        }
+    }
+
+    /**
+     * Helper method that output the page settings.
+     *
+     * @return void
+     */
+    public function renderSettings()
+    {
+        if($this->datas['args']['tabs']){
+            foreach($this->sections as $section){
+                $section = $section->getData();
+
+                // Display settings regarding the active tab.
+                if($this->getActiveTab() === $section['slug']){
+                    settings_fields($section['slug']);
+                    do_settings_sections($section['slug']);
+                }
+            }
+        } else {
+            // Do not use the tab navigation.
+            // Display all sections in one page.
+            settings_fields($this->datas['slug']);
+            do_settings_sections($this->datas['slug']);
+        }
     }
 
 } 

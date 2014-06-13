@@ -64,7 +64,7 @@ class TextField extends FieldBuilder{
      *
      * @return string
      */
-    public function settings()
+    public function page()
     {
         return $this->metabox();
     }
