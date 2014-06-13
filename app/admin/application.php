@@ -57,18 +57,14 @@ Taxonomy::make('th-categories', $books->getSlug(), 'Categories', 'category')->se
 
 $page = Page::make('th-settings-page', 'Themosis')->set();
 $page->addSections(array(
-    Section::make('th-general', 'General'),
-    Section::make('th-contact', 'Contact')
+    Section::make('th-general', 'General')
 ));
 
 $page->addSettings(array(
     'th-general' => array(
         Field::text('facebook', array('info' => 'Enter your Facebook page name.')),
-        Field::text('phone')
-    ),
-    'th-contact' => array(
-        Field::text('company-name', array('title' => 'Your Company Name')),
-        Field::text('address1')
+        Field::text('phone'),
+        Field::textarea('address', array('info' => 'Type your full address.', 'title' => 'Votre adresse'))
     )
 ));
 
