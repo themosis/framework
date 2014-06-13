@@ -64,7 +64,8 @@ $page->addSettings(array(
     'th-general' => array(
         Field::text('facebook', array('info' => 'Enter your Facebook page name.')),
         Field::text('phone'),
-        Field::textarea('address', array('info' => 'Type your full address.', 'title' => 'Votre adresse'))
+        Field::textarea('address', array('info' => 'Type your full address.', 'title' => 'Votre adresse')),
+        Field::select('offices', array(array('Belgique', 'Luxembourg', 'Portugal')), false, array('title' => 'Bureau', 'info' => 'Choose your location.'))
     )
 ));
 
