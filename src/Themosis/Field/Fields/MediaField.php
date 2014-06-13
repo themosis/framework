@@ -83,4 +83,15 @@ class MediaField extends FieldBuilder {
     {
         return View::make('metabox._themosisMediaField', array('field' => $this))->render();
     }
+
+    /**
+     * Handle the field HTML code for the
+     * Settings API output.
+     *
+     * @return string
+     */
+    public function page()
+    {
+        return $this->metabox();
+    }
 }

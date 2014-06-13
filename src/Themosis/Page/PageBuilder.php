@@ -74,6 +74,7 @@ class PageBuilder extends Wrapper {
         // Events
         $this->pageEvent = Action::listen('admin_menu', $this, 'build');
         $this->settingsEvent = Action::listen('admin_init', $this, 'installSettings');
+        Action::listen('admin_enqueue_scripts', $this, 'enqueueMediaUploader')->dispatch();
     }
 
     /**
@@ -444,6 +445,20 @@ class PageBuilder extends Wrapper {
             // Display all sections in one page.
             settings_fields($this->datas['slug']);
             do_settings_sections($this->datas['slug']);
+        }
+    }
+
+    /**
+     * Enqueue the WordPress media scripts.
+     * Make the 'wp' object available to javascript.
+     *
+     * @return void
+     */
+    public function enqueueMediaUploader()
+    {
+        // If WordPress version > 3.5
+        if (get_bloginfo('version') >= 3.5) {
+            wp_enqueue_media();
         }
     }
 

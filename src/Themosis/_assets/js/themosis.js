@@ -217,7 +217,7 @@
     });
 
     // Implementation
-    var mediaFields = $('table.themosis-media').closest('tr.themosis-field-container');
+    var mediaFields = $('table.themosis-media').closest('tr');
 
     _.each(mediaFields, function(elem){
 
