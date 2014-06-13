@@ -39,6 +39,20 @@ class EditorField extends FieldBuilder{
     }
 
     /**
+     * Set default settings for the WordPress editor.
+     *
+     * @return void
+     */
+    private function setSettings()
+    {
+        $settings = array(
+            'textarea_name' => $this['name']
+        );
+
+        $this['settings'] = isset($this['settings']) ? array_merge($settings, $this['settings']) : $settings;
+    }
+
+    /**
      * Define input where the value is saved.
      *
      * @return void
@@ -56,6 +70,19 @@ class EditorField extends FieldBuilder{
      */
     public function metabox()
     {
+        $this->setSettings();
+        
         return View::make('metabox._themosisEditorField', array('field' => $this))->render();
+    }
+
+    /**
+     * Handle the field HTML code for the
+     * Settings API output.
+     *
+     * @return string
+     */
+    public function page()
+    {
+        return $this->metabox();
     }
 }

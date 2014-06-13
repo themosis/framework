@@ -72,7 +72,8 @@ $page->addSettings(array(
             Field::text('title'),
             Field::textarea('text'),
             Field::media('file')
-        ))
+        )),
+        Field::editor('conditions')
     )
 ));
 

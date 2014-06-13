@@ -1,4 +1,4 @@
-<?php wp_editor($field['value'], $field['name'], $field['settings']); ?>
+<?php wp_editor($field['value'], $field['id'], $field['settings']); ?>
 
 @if(isset($field['info']))
     <div class="themosis-field-info">
