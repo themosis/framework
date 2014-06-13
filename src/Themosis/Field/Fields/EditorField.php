@@ -71,7 +71,7 @@ class EditorField extends FieldBuilder{
     public function metabox()
     {
         $this->setSettings();
-        
+
         return View::make('metabox._themosisEditorField', array('field' => $this))->render();
     }
 

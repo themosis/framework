@@ -59,4 +59,15 @@ class CheckboxField extends FieldBuilder{
     {
         return View::make('metabox._themosisCheckboxField', array('field' => $this))->render();
     }
+
+    /**
+     * Handle the field HTML code for the
+     * Settings API output.
+     *
+     * @return string
+     */
+    public function page()
+    {
+        return $this->metabox();
+    }
 }
