@@ -67,7 +67,12 @@ $page->addSettings(array(
         Field::textarea('address', array('info' => 'Type your full address.', 'title' => 'Votre adresse')),
         Field::select('offices', array(array('Belgique', 'Luxembourg', 'Portugal')), false, array('title' => 'Bureau', 'info' => 'Choose your location.')),
         Field::radio('css', array('blue', 'orange', 'green')),
-        Field::media('company-picture', array('title' => 'Company Picture'))
+        Field::media('company-picture', array('title' => 'Company Picture')),
+        Field::infinite('policies', array(
+            Field::text('title'),
+            Field::textarea('text'),
+            Field::media('file')
+        ))
     )
 ));
 

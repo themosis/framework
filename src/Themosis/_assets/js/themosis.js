@@ -735,7 +735,7 @@
 
     // Implementation
     // List all infinite fields.
-    var infinites = $('div.themosis-infinite-container').closest('tr.themosis-field-container');
+    var infinites = $('div.themosis-infinite-container').closest('tr');
 
     _.each(infinites, function(elem){
 
