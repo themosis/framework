@@ -320,7 +320,25 @@ class MetaboxBuilder extends Wrapper {
         // Pass the fields to the main metabox view.
         $this->view->with('__fields', $fields);
 
+        // Pass the MetaboxBuilder instance to the main view.
+        $this->view->with('__metabox', $this);
+
         echo($this->view->render());
+    }
+
+    /**
+     * Allow a user to pass custom datas to
+     * the metabox main view.
+     *
+     * @param string|array $key
+     * @param mixed $value
+     * @return \Themosis\Metabox\MetaboxBuilder
+     */
+    public function with($key, $value = null)
+    {
+        $this->view->with($key, $value);
+
+        return $this;
     }
 
 }
