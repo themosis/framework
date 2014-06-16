@@ -48,4 +48,12 @@ abstract class FieldBuilder extends DataContainer{
      */
     abstract public function metabox();
 
+    /**
+     * Method that handle the field HTML code for
+     * page settings output.
+     *
+     * @return string
+     */
+    abstract public function page();
+
 } 
