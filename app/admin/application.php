@@ -57,7 +57,8 @@ Taxonomy::make('th-categories', $books->getSlug(), 'Categories', 'category')->se
 
 $page = Page::make('th-settings-page', 'Themosis')->set();
 $page->addSections(array(
-    Section::make('th-general', 'General')
+    Section::make('th-general', 'General'),
+    Section::make('th-extras', 'Extras')
 ));
 
 $page->addSettings(array(
@@ -76,7 +77,19 @@ $page->addSettings(array(
             Field::media('file')
         )),
         Field::editor('conditions')
+    ),
+    'th-extras' => array(
+        Field::text('something'),
+        Field::checkbox('show-it')
     )
+));
+
+$page->validate(array(
+    'facebook'  => array('textfield', 'max:10'),
+    'policies'  => array(
+        'title' => array('num')
+    ),
+    'something' => array('email')
 ));
 
 $otherPage = Page::make('th-main-options', 'Options')->set(array('tabs' => false));
@@ -93,4 +106,8 @@ $otherPage->addsettings(array(
     'th-main-setup'     => array(
         Field::text('installation-name')
     )
+));
+
+$otherPage->validate(array(
+    'application-name'  => array('max:20')
 ));

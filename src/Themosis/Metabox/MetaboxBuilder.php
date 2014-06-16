@@ -188,11 +188,13 @@ class MetaboxBuilder extends Wrapper {
      * Register validation rules for the custom fields.
      *
      * @param array $rules A list of field names and their associated validation rule.
-     * @return void
+     * @return \Themosis\Metabox\MetaboxBuilder
      */
     public function validate(array $rules = array())
     {
         $this->datas['rules'] = $rules;
+
+        return $this;
     }
 
     /**

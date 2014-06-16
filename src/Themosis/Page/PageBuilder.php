@@ -110,6 +110,7 @@ class PageBuilder extends Wrapper {
             'position'      => null,
             'tabs'          => true
         );
+        $this->datas['rules'] = array();
 
         return $this;
     }
@@ -303,7 +304,7 @@ class PageBuilder extends Wrapper {
         foreach($this->sections as $section){
             $section = $section->getData();
 
-            register_setting($section['slug'], $section['slug'], array($this, 'validate'));
+            register_setting($section['slug'], $section['slug'], array($this, 'validateSettings'));
         }
     }
 
@@ -346,7 +347,7 @@ class PageBuilder extends Wrapper {
         // the wp_options table.
         // When you want to retrieve a setting use the option_group
         // name and the setting id.
-        register_setting($this->datas['slug'], $this->datas['slug'], array($this, 'validate'));
+        register_setting($this->datas['slug'], $this->datas['slug'], array($this, 'validateSettings'));
     }
 
     /**
@@ -382,12 +383,96 @@ class PageBuilder extends Wrapper {
     /**
      * Validate the defined settings.
      *
-     * @param array $settings
+     * @param array $values
      * @return array
      */
-    public function validate(array $settings)
+    public function validateSettings(array $values)
     {
-        return $settings;
+        if(!isset($this->datas['rules']) || !is_array($this->datas['rules'])) return $values;
+
+        $sanitized = array();
+
+        foreach($values as $setting => $value){
+
+            $rules = array_keys($this->datas['rules']);
+
+            // 1 - Check if a rule exists
+            if(in_array($setting, $rules)){
+
+                // 1.1 - Check for infinite settings.
+                if(is_array($value) && $this->isInfinite($setting)){
+
+                    foreach($value as $index => $row){
+
+                        if($this->validator->isAssociative($row) && !empty($row)){
+
+                            foreach($row as $infiniteSetting => $infiniteValue){
+
+                                // 1.1.1 - Check if a rule is defined for the infinite sub fields.
+                                if(isset($this->datas['rules'][$setting][$infiniteSetting])){
+
+                                    $rule = $this->datas['rules'][$setting][$infiniteSetting];
+
+                                    $sanitized[$setting][$index][$infiniteSetting] = $this->validator->single($infiniteValue, $rule);
+
+                                } else {
+
+                                    $sanitized[$setting][$index][$infiniteSetting] = $infiniteValue;
+
+                                }
+                            }
+                        }
+                    }
+
+                } else {
+
+                    // 1.2 - Apply rule to other settings.
+                    $sanitized[$setting] = $this->validator->single($value, $this->datas['rules'][$setting]);
+
+                }
+
+            } else {
+
+                // 2 - No rule, just set the default value.
+                $sanitized[$setting] = $value;
+
+            }
+
+        }
+
+        return $sanitized;
+    }
+
+    /**
+     * Set validation rules to settings.
+     *
+     * @param array $rules
+     * @return \Themosis\Page\PageBuilder
+     */
+    public function validate(array $rules = array())
+    {
+        $this->datas['rules'] = $rules;
+
+        return $this;
+    }
+
+    /**
+     * Check if a field/settings is of type 'infinite'.
+     *
+     * @param string $name The name of the field/setting.
+     * @return bool
+     */
+    private function isInfinite($name)
+    {
+        foreach($this->settings as $settings){
+            foreach($settings as $setting){
+
+                if($name === $setting['name']) return true;
+
+            }
+        }
+
+        return false;
     }
 
     /**
