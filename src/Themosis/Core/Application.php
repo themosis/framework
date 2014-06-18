@@ -51,6 +51,7 @@ class Application extends Container {
             'metabox'       => '\Themosis\Metabox\MetaboxIgniterService',
             'page'          => '\Themosis\Page\PageIgniterService',
             'posttype'      => '\Themosis\PostType\PostTypeIgniterService',
+            'router'        => '\Themosis\Route\RouteIgniterService',
             'sections'      => '\Themosis\Page\Sections\SectionIgniterService',
             'taxonomy'      => '\Themosis\Taxonomy\TaxonomyIgniterService',
             'validation'    => '\Themosis\Validation\ValidationIgniterService',

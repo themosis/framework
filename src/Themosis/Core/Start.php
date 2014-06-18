@@ -95,13 +95,6 @@ Themosis\Configuration\Constant::load();
 include_once(themosis_path('sys').'Helpers'.DS.'helpers.php');
 
 /*----------------------------------------------------
-| Set the request object - Helper class for manipulating
-| PHP globals.
-|
-|---------------------------------------------------*/
-Themosis\Route\Request::$foundation = Symfony\Component\HttpFoundation\Request::createFromGlobals();
-
-/*----------------------------------------------------
 | Themosis Page Templates.
 |
 |---------------------------------------------------*/
@@ -184,6 +177,5 @@ if (Themosis\Configuration\Error::get('shutdown')) {
 error_reporting(Themosis\Configuration\Error::get('report'));
 
 // ---------------------------------------------------
-// Done ! Handle all routes.
+// Done
 // ---------------------------------------------------
-Themosis\Route\Router::init();

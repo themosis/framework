@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 defined('DS') or die('No direct script access.');
 
-class Request extends SymfonyRequest
+class OLDRequest extends SymfonyRequest
 {	
 	/**
 	 * The global request object

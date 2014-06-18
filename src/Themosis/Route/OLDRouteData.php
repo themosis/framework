@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Route;
 
-class RouteData
+class OLDRouteData
 {
 	/**
 	 * Route callback function

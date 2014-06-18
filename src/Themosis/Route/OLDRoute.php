@@ -3,7 +3,7 @@ namespace Themosis\Route;
 
 defined('DS') or die('No direct script access.');
 
-class Route extends Router
+class OLDRoute extends Router
 {
 	/**
 	 * Route instance info

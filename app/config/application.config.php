@@ -90,7 +90,7 @@ return array(
 		'Themosis\\Page\\Option'					=> 'Option',
 		'Themosis\\Facades\\Page'					=> 'Page',
 		'Themosis\\Facades\\PostType'				=> 'PostType',
-		'Themosis\\Route\\Route'					=> 'Route',
+		'Themosis\\Facades\\Route'					=> 'Route',
         'Themosis\\Facades\\Section'                => 'Section',
 		'Themosis\\Session\\Session'				=> 'Session',
 		'Themosis\\Taxonomy\\TaxField'              => 'TaxField',
