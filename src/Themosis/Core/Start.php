@@ -43,12 +43,6 @@ do_action('themosis_configurations');
 $app = new Themosis\Core\Application();
 
 /*----------------------------------------------------
-| Register the igniter services.
-|
-|---------------------------------------------------*/
-$app->registerCoreIgniters();
-
-/*----------------------------------------------------
 | Make the application available to the facade.
 |
 |---------------------------------------------------*/

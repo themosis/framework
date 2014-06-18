@@ -3,12 +3,45 @@ namespace Themosis\Core;
 
 class Application extends Container {
 
+    protected static $requestClass = 'Themosis\Core\Request';
+
+    /**
+     * Build an Application instance.
+     */
+    public function __construct()
+    {
+        $this->registerBaseBindings($this->createNewRequest());
+        $this->registerCoreIgniters();
+    }
+
+    /**
+     * Create a new Request instance.
+     *
+     * @return \Themosis\Core\Request
+     */
+    private function createNewRequest()
+    {
+        return forward_static_call(array(static::$requestClass, 'createFromGlobals'));
+    }
+
+    /**
+     * Register base framework classes into the container.
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function registerBaseBindings(Request $request)
+    {
+        $this->instance('request', $request);
+        $this->instance('Themosis\Core\Container', $this);
+    }
+
     /**
      * Register all igniter services classes.
      *
      * @return void
      */
-    public function registerCoreIgniters()
+    private function registerCoreIgniters()
     {
         $services = array(
 

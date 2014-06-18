@@ -20,6 +20,18 @@ abstract class Container implements ArrayAccess{
     protected $instances = array();
 
     /**
+     * Register an existing instance as shared in the container.
+     *
+     * @param string $abstract
+     * @param mixed $instance
+     * @return void
+     */
+    protected function instance($abstract, $instance)
+    {
+        $this->instances[$abstract] = $instance;
+    }
+
+    /**
      * Retrieve the igniter class name.
      *
      * @param string $key The igniter key name.
