@@ -82,6 +82,7 @@ return array(
 		'Themosis\\Asset\\Asset'					=> 'Asset',
 		'Themosis\\Configuration\\Application'		=> 'Application',
 		'Themosis\\Model\\BaseModel'                => 'BaseModel',
+        'Themosis\\Route\\Controller'               => 'Controller',
 		'Themosis\\Facades\\Field'					=> 'Field',
 		'Themosis\\Facades\\Form'					=> 'Form',
         'Themosis\\Facades\\Html'                   => 'Html',
