@@ -128,8 +128,7 @@ abstract class Container implements ArrayAccess{
      * @param string $concrete
      * @param array $parameters
      * @return mixed
-     *
-     * @throws BindingResolutionException
+     * @throws \Exception
      */
     public function build($concrete, $parameters = array())
     {
@@ -151,7 +150,7 @@ abstract class Container implements ArrayAccess{
 
             $message = "Target [$concrete] is not instantiable.";
 
-            throw new BindingResolutionException($message);
+            throw new \Exception($message);
         }
 
         // Return the class instance.
