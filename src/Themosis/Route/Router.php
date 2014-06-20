@@ -144,12 +144,13 @@ class Router {
     protected function getClassClosure($controller)
     {
         $d = $this->getControllerDispatcher();
-        $r = $this;
 
-        return function() use($d, $controller, $r){
+        return function() use($d, $controller){
 
-            $route = $r->current();
-            $request = $r->getCurrentRequest();
+            $ioc = $d->getContainer();
+            $router = $ioc['router'];
+            $route = $router->current();
+            $request = $router->getCurrentRequest();
 
             // Now we can split the controller and method out of the action string so that we
             // can call them appropriately on the class. This controller and method are in

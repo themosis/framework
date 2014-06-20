@@ -77,4 +77,14 @@ class ControllerDispatcher {
         return $instance->callAction($method, $parameters);
     }
 
+    /**
+     * Return the IoC.
+     *
+     * @return Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
 } 
