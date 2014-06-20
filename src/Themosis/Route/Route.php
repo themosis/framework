@@ -1,6 +1,8 @@
 <?php
 namespace Themosis\Route;
 
+use Themosis\Core\Request;
+
 class Route {
 
     /**
@@ -26,10 +28,42 @@ class Route {
 
     /**
      * The array of matched parameters.
+     * Parameters passed to the route callback or controller action method.
      *
      * @var array
      */
-    protected $parameters;
+    protected $parameters = array();
+
+    /**
+     * WordPress conditional tags.
+     *
+     * @var array
+     */
+    protected $conditions = array(
+        '404'			       => 'is_404',
+        'archive'		       => 'is_archive',
+        'attachment'	       => 'is_attachment',
+        'author'		       => 'is_author',
+        'category'		       => 'is_category',
+        'date'			       => 'is_date',
+        'day'			       => 'is_day',
+        'front'			       => 'is_front_page',
+        'home'			       => 'is_home',
+        'month'			       => 'is_month',
+        'page'			       => 'is_page',
+        'paged'			       => 'is_paged',
+        'postTypeArchive'      => 'is_post_type_archive',
+        'search'		       => 'is_search',
+        'subpage'		       => 'themosis_is_subpage',
+        'single'		       => 'is_single',
+        'sticky'		       => 'is_sticky',
+        'singular'		       => 'is_singular',
+        'tag'			       => 'is_tag',
+        'tax'			       => 'is_tax',
+        'template'             => 'themosisIsTemplate',
+        'time'			       => 'is_time',
+        'year'			       => 'is_year'
+    );
 
     /**
      * Build a Route instance.
@@ -41,7 +75,7 @@ class Route {
     public function __construct($methods, $condition, $action)
     {
         $this->methods = (array) $methods;
-        $this->condition = $condition;
+        $this->condition = $this->parseCondition($condition);
         $this->action = $this->parseAction($action);
     }
 
@@ -69,6 +103,24 @@ class Route {
         }
 
         return $action;
+    }
+
+    /**
+     * Return the real WordPress conditional tag.
+     *
+     * @param string $condition
+     * @return string
+     * @throws RouteException
+     */
+    protected function parseCondition($condition)
+    {
+        if(isset($this->conditions[$condition])){
+
+            return $this->conditions[$condition];
+
+        }
+
+        throw new RouteException('The route condition ['.$condition.'] is no found.');
     }
 
     /**
@@ -116,6 +168,19 @@ class Route {
         return array_filter($this->parameters(), function($p){
             return !is_null($p);
         });
+    }
+
+    /**
+     * Run the route action and return the response.
+     * A string or a View.
+     *
+     * @return mixed
+     */
+    public function run()
+    {
+        $parameters = array_filter($this->parameters(), function($p) { return isset($p); });
+
+        return call_user_func_array($this->action['uses'], $parameters);
     }
 
     /**

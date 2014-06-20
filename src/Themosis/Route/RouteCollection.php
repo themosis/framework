@@ -2,6 +2,7 @@
 namespace Themosis\Route;
 
 use Countable;
+use Themosis\Core\Request;
 
 class RouteCollection implements Countable {
 
@@ -12,14 +13,14 @@ class RouteCollection implements Countable {
      *
      * @var array
      */
-    protected $routes = array();
+    protected static $routes = array();
 
     /**
      * All routes flattened in the collection.
      * 'GET'.$condition' => $routeInstance
      * @var array
      */
-    protected $allRoutes = array();
+    protected static $allRoutes = array();
 
     /**
      * A look-up table of routes by their names.
@@ -52,15 +53,15 @@ class RouteCollection implements Countable {
     /**
      * Add the given route to the arrays of routes.
      *
-     * @param  \Themosis\Route\Route $route
+     * @param \Themosis\Route\Route $route
      * @return void
      */
     protected function addToCollection(Route $route)
     {
         foreach ($route->methods() as $method)
         {
-            $this->routes[$method][$route->condition()] = $route;
-            $this->allRoutes[$method.$route->condition()] = $route;
+            static::$routes[$method][$route->condition()] = $route;
+            static::$allRoutes[$method.$route->condition()] = $route;
         }
     }
 
@@ -110,6 +111,54 @@ class RouteCollection implements Countable {
     }
 
     /**
+     * Find the first route matching a given request.
+     *
+     * @param \Themosis\Core\Request $request
+     * @return \Themosis\Route\Route
+     */
+    public function match(Request $request)
+    {
+        // Return a group of registered routes regarding the HTTP method.
+        $routes = $this->get($request->getMethod());
+
+        // Check if we find a matching "route" the WordPress way.
+        return $this->check($routes, $request);
+    }
+
+    /**
+     * Find a matching route.
+     *
+     * @param array $routes
+     * @param Request $request
+     * @return \Themosis\Route\Route
+     */
+    protected function check(array $routes, Request $request)
+    {
+        foreach($routes as $route){
+
+            if(call_user_func($route->condition(), array())){
+
+                return $route;
+
+            }
+
+        }
+    }
+
+    /**
+     * Get all of the routes in the collection.
+     *
+     * @param string|null $method
+     * @return array
+     */
+    protected function get($method = null)
+    {
+        if(is_null($method)) return $this->getRoutes();
+
+        return array_get(static::$routes, $method, array());
+    }
+
+    /**
      * Return all routes of the collection.
      *
      * @return array
@@ -117,7 +166,7 @@ class RouteCollection implements Countable {
     public function getRoutes()
     {
         // Associative array ? 'uri' => $routeInstance
-        return array_values($this->allRoutes);
+        return array_values(static::$allRoutes);
     }
 
     /**

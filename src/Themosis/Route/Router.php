@@ -3,6 +3,8 @@ namespace Themosis\Route;
 
 use Closure;
 use Themosis\Core\Container;
+use Themosis\Core\Request;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 class Router {
 
@@ -192,6 +194,71 @@ class Router {
     public function getCurrentRequest()
     {
         return $this->currentRequest;
+    }
+
+    /**
+     * Dispatch the request to the application.
+     *
+     * @param \Themosis\Core\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function dispatch(Request $request)
+    {
+        $this->currentRequest = $request;
+
+        $response = $this->dispatchToRoute($request);
+
+        $response = $this->prepareResponse($request, $response);
+
+        return $response;
+    }
+
+    /**
+     * Dispatch the request to a route and return the response.
+     *
+     * @param \Themosis\Core\Request $request
+     * @return mixed
+     */
+    public function dispatchToRoute(Request $request)
+    {
+        $route = $this->findRoute($request);
+
+        $response = $route->run();
+
+        $response = $this->prepareResponse($request, $response);
+
+        return $response;
+    }
+
+    /**
+     * Find the route matching a given request.
+     *
+     * @param  \Themosis\Core\Request $request
+     * @return \Themosis\Route\Route
+     */
+    protected function findRoute($request)
+    {
+        $this->current = $route = $this->routes->match($request);
+
+        return $route;
+    }
+
+    /**
+     * Create a response instance from the given value.
+     *
+     * @param \Themosis\Core\Request $request
+     * @param mixed $response
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function prepareResponse($request, $response)
+    {
+        if(!$response instanceof SymfonyResponse){
+
+            $response = new SymfonyResponse($response);
+
+        }
+
+        return $response->prepare($request);
     }
 
 } 

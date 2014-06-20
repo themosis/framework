@@ -1,6 +1,9 @@
 <?php
 namespace Themosis\Core;
 
+use Themosis\Action\Action;
+use Symfony\Component\HttpFoundation\Response;
+
 class Application extends Container {
 
     protected static $requestClass = 'Themosis\Core\Request';
@@ -12,6 +15,9 @@ class Application extends Container {
     {
         $this->registerBaseBindings($this->createNewRequest());
         $this->registerCoreIgniters();
+
+        // Listen to front-end request.
+        Action::listen('themosis_run', $this, 'run')->dispatch();
     }
 
     /**
@@ -82,6 +88,51 @@ class Application extends Container {
         // Send the application instance to the closure.
         // Allows the container to call the dependencies.
         $this->instances[$key] = $closure($this);
+    }
+
+    /**
+     * Run the front-end application and send the response.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $request = $this['request'];
+
+        $response = with($this)->handle($request);
+
+        $response->send();
+    }
+
+    /**
+     * Handle the given request and get the response.
+     *
+     * @param \Themosis\Core\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function handle(Request $request)
+    {
+        try{
+
+            return $this->dispatch($request);
+
+        } catch(\Exception $e){
+
+            throw $e;
+
+        }
+    }
+
+    /**
+     * Handle the given request and get the response.
+     *
+     * @param  \Themosis\Core\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function dispatch(Request $request)
+    {
+        return $this['router']->dispatch($request);
     }
 
 } 

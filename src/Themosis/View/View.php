@@ -208,4 +208,14 @@ class View implements ArrayAccess, IRenderable {
     {
         unset($this->data[$key]);
     }
+
+    /**
+     * Get the string contents of the view.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->render();
+    }
 }

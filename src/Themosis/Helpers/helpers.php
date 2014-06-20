@@ -27,40 +27,6 @@ if(!function_exists('themosis_is_page')){
 
 }
 
-if(!function_exists('themosisIsInMaintenanceMode')){
-
-    /**
-     * Tell WordPress we're in maintenance mode.
-     * Only the user with 'administrator' role can surf the site.
-     *
-     * @return bool True. False if not in maintenance mode.
-     */
-    function themosisIsInMaintenanceMode()
-    {
-        list($maintenance) = Option::get('themosis-maintenance', 'activate');
-
-        if ($maintenance === 'yes') {
-
-            list($user) = (User::get()->roles) ? User::get()->roles : array('');
-
-            if ($user !== 'administrator') {
-
-                $time = (Option::get('themosis-maintenance', 'duration')) ? Option::get('themosis-maintenance', 'duration') : 3600;
-
-                // Set the header response
-                header('HTTP/1.1 503 Service Temporarily Unavailable');
-                header('Status: 503 Service Temporarily Unavailable');
-                header('Retry-After: '.$time);
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-}
-
 if(!function_exists('themosis_convert_path')){
 
     /**
