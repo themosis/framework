@@ -130,19 +130,22 @@ class RouteCollection implements Countable {
      *
      * @param array $routes
      * @param Request $request
-     * @return \Themosis\Route\Route
+     * @return null|\Themosis\Route\Route
      */
     protected function check(array $routes, Request $request)
     {
         foreach($routes as $route){
 
-            if(call_user_func($route->condition(), array())){
+            if(call_user_func($route->condition(), $route->getParams())){
 
                 return $route;
 
             }
 
         }
+
+        return null;
+
     }
 
     /**

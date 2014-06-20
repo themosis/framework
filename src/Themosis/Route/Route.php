@@ -1,8 +1,6 @@
 <?php
 namespace Themosis\Route;
 
-use Themosis\Core\Request;
-
 class Route {
 
     /**
@@ -211,6 +209,16 @@ class Route {
     public function getAction()
     {
         return $this->action;
+    }
+
+    /**
+     * Return the 'params' value.
+     *
+     * @return array
+     */
+    public function getParams()
+    {
+        return isset($this->action['params']) ? $this->action['params'] : array();
     }
 
 } 

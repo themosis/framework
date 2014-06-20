@@ -223,7 +223,16 @@ class Router {
     {
         $route = $this->findRoute($request);
 
-        $response = $route->run();
+        // Check if a route exists for the request.
+        if(!is_null($route)){
+
+            $response = $route->run();
+
+        } else {
+
+            $response = __("No routes defined for this request.", THEMOSIS_TEXTDOMAIN);
+
+        }
 
         $response = $this->prepareResponse($request, $response);
 
