@@ -86,6 +86,7 @@ return array(
 		'Themosis\\Facades\\Field'					=> 'Field',
 		'Themosis\\Facades\\Form'					=> 'Form',
         'Themosis\\Facades\\Html'                   => 'Html',
+        'Themosis\\Facades\\Input'                  => 'Input',
 		'Themosis\\Metabox\\Meta'					=> 'Meta',
 		'Themosis\\Facades\\Metabox'				=> 'Metabox',
 		'Themosis\\Page\\Option'					=> 'Option',

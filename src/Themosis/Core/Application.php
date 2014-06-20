@@ -24,7 +24,7 @@ class Application extends Container {
      *
      * @return \Themosis\Core\Request
      */
-    private function createNewRequest()
+    protected function createNewRequest()
     {
         return forward_static_call(array(static::$requestClass, 'createFromGlobals'));
     }
@@ -35,7 +35,7 @@ class Application extends Container {
      * @param Request $request
      * @return void
      */
-    private function registerBaseBindings(Request $request)
+    protected function registerBaseBindings(Request $request)
     {
         $this->instance('request', $request);
         $this->instance('Themosis\Core\Container', $this);
@@ -46,7 +46,7 @@ class Application extends Container {
      *
      * @return void
      */
-    private function registerCoreIgniters()
+    protected function registerCoreIgniters()
     {
         $services = array(
 
