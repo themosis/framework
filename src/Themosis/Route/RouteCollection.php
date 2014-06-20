@@ -27,14 +27,14 @@ class RouteCollection implements Countable {
      *
      * @var array
      */
-    protected $nameList = array();
+    protected static $nameList = array();
 
     /**
      * A look-up table of routes by controller action.
      *
      * @var array
      */
-    protected $actionList = array();
+    protected static $actionList = array();
 
     /**
      * Add a Route instance to the collection.
@@ -80,7 +80,7 @@ class RouteCollection implements Countable {
 
         if(isset($action['as'])){
 
-            $this->nameList[$action['as']] = $route;
+            static::$nameList[$action['as']] = $route;
 
         }
 
@@ -103,9 +103,9 @@ class RouteCollection implements Countable {
      */
     protected function addToActionList(array $action, $route)
     {
-        if(!isset($this->actionList[$action['controller']])){
+        if(!isset(static::$actionList[$action['controller']])){
 
-            $this->actionList[$action['controller']] = $route;
+            static::$actionList[$action['controller']] = $route;
 
         }
     }
