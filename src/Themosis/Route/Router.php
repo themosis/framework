@@ -57,13 +57,25 @@ class Router {
     /**
      * Register a route listening to GET requests.
      *
-     * @param string $condition A WordPress template condition.
+     * @param string $condition A WordPress conditional tag.
      * @param \Closure|array|string $action
      * @return \Themosis\Route\Route
      */
     public function get($condition, $action)
     {
         return $this->addRoute(array('GET', 'HEAD'), $condition, $action);
+    }
+
+    /**
+     * Register a new POST route with the router.
+     *
+     * @param string $condition A WordPress conditional tag.
+     * @param \Closure|array|string $action
+     * @return \Themosis\Route\Route
+     */
+    public function post($condition, $action)
+    {
+        return $this->addRoute('POST', $condition, $action);
     }
 
     /**
