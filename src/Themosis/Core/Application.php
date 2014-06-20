@@ -2,7 +2,6 @@
 namespace Themosis\Core;
 
 use Themosis\Action\Action;
-use Symfony\Component\HttpFoundation\Response;
 
 class Application extends Container {
 

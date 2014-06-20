@@ -1,8 +1,8 @@
 <?php
 namespace Themosis\Html;
 
+use Themosis\Core\Request;
 use Themosis\Configuration\Application;
-use Themosis\Route\Request;
 use Themosis\Session\Session;
 
 class FormBuilder {
@@ -14,13 +14,22 @@ class FormBuilder {
     private $html;
 
     /**
+     * The request instance.
+     *
+     * @var \Themosis\Core\Request
+     */
+    private $request;
+
+    /**
      * Define a FormBuilder instance.
      *
      * @param HtmlBuilder $html
+     * @param \Themosis\Core\Request $request
      */
-    public function __construct(HtmlBuilder $html)
+    public function __construct(HtmlBuilder $html, Request $request)
     {
         $this->html = $html;
+        $this->request = $request;
     }
 
     /**
@@ -80,11 +89,11 @@ class FormBuilder {
 
         // Check the given path
         // If none given, set to the current page url
-        $uri = ($action === null || empty($action)) ? Request::foundation()->getPathInfo() : '/'.trim($action, '/').'/';
+        $uri = ($action === null || empty($action)) ? $this->request->getPathInfo() : '/'.trim($action, '/').'/';
 
         // Build the action url
         // Check if we are using ssl or not and build the url.
-        $action = (is_ssl() || $ssl) ? 'https://'.Request::foundation()->getHttpHost().$uri : 'http://'.Request::foundation()->getHttpHost().$uri;
+        $action = (is_ssl() || $ssl) ? 'https://'.$this->request->getHttpHost().$uri : 'http://'.$this->request->getHttpHost().$uri;
 
         return $action;
     }

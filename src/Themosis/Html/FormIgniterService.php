@@ -31,7 +31,7 @@ class FormIgniterService extends IgniterService{
             /**
              * This create a FormBuilder instance with its dependencies.
              */
-            return new FormBuilder($app['html']);
+            return new FormBuilder($app['html'], $app['request']);
 
         });
     }
