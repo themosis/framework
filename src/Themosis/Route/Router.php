@@ -79,6 +79,33 @@ class Router {
     }
 
     /**
+     * Register a new route responding to all verbs.
+     *
+     * @param string $condition
+     * @param \Closure|array|string $action
+     * @return \Themosis\Route\Route
+     */
+    public function any($condition, $action)
+    {
+        $verbs = array('GET', 'HEAD', 'POST');
+
+        return $this->addRoute($verbs, $condition, $action);
+    }
+
+    /**
+     * Register a new route with the given verbs.
+     *
+     * @param array|string $methods
+     * @param string $condition
+     * @param \Closure|array|string  $action
+     * @return \Themosis\Route\Route
+     */
+    public function match($methods, $condition, $action)
+    {
+        return $this->addRoute($methods, $condition, $action);
+    }
+
+    /**
      * Add a route to route collection.
      *
      * @param array|string $methods Http methods.
