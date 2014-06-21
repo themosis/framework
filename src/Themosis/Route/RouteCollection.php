@@ -139,6 +139,12 @@ class RouteCollection implements Countable {
 
             if(call_user_func($route->condition(), $route->getParams())){
 
+                // Check if http only.
+                if(!$route->httpOnly() && $request->isSecure()) continue;
+
+                // Check if https only.
+                if($route->secure() && !$request->isSecure()) continue;
+
                 // Check if a template is associated and compare it to current route condition.
                 if($this->hasTemplate() && 'themosis_is_template' !== $route->condition()) continue;
 
@@ -197,7 +203,6 @@ class RouteCollection implements Countable {
      */
     public function getRoutes()
     {
-        // Associative array ? 'uri' => $routeInstance
         return array_values(static::$allRoutes);
     }
 
