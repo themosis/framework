@@ -3,6 +3,7 @@ namespace Themosis\Route;
 
 use Countable;
 use Themosis\Core\Request;
+use Themosis\Metabox\Meta;
 
 class RouteCollection implements Countable {
 
@@ -138,6 +139,9 @@ class RouteCollection implements Countable {
 
             if(call_user_func($route->condition(), $route->getParams())){
 
+                // Check if a template is associated and compare it to current route condition.
+                if($this->hasTemplate() && 'themosis_is_template' !== $route->condition()) continue;
+
                 return $route;
 
             }
@@ -145,6 +149,31 @@ class RouteCollection implements Countable {
         }
 
         return null;
+
+    }
+
+    /**
+     * Check if the current request is using a page template.
+     *
+     * @return bool
+     */
+    protected function hasTemplate()
+    {
+        $qo = get_queried_object();
+
+        if(is_a($qo, 'WP_Post') && 'page' === $qo->post_type){
+
+            $template = Meta::get($qo->ID, '_themosisPageTemplate');
+
+            if('none' !== $template && !empty($template)){
+
+                return true;
+
+            }
+
+        }
+
+        return false;
 
     }
 

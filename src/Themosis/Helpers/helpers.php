@@ -35,8 +35,8 @@ if(!function_exists('themosis_convert_path')){
      * @param string $path The initial path with '.'
      * @return string The converted path with '/'
      */
-    function themosis_convert_path($path){
-
+    function themosis_convert_path($path)
+    {
         if(strpos($path, '.') !== false){
 
             $path = str_replace('.', DS, $path);
@@ -48,7 +48,6 @@ if(!function_exists('themosis_convert_path')){
         }
 
         return (string)$path;
-
     }
 
 }
@@ -61,13 +60,12 @@ if(!function_exists('td')){
      * @param mixed $value Any PHP value.
      * @return void
      */
-    function td($value){
-
+    function td($value)
+    {
         echo '<pre>';
         print_r($value);
         echo '</pre>';
-        die();
-
+        wp_die();
     }
 
 }
@@ -80,7 +78,8 @@ if(!function_exists('tp')){
      * @param mixed $value Any PHP value
      * @return void
      */
-    function tp($value){
+    function tp($value)
+    {
         echo '<pre>';
         print_r($value);
         echo '</pre>';
@@ -88,14 +87,14 @@ if(!function_exists('tp')){
 
 }
 
-if(!function_exists('themosisAssets')){
+if(!function_exists('themosis_assets')){
 
     /**
      * Return the application assets directory URL.
      *
      * @return string
      */
-    function themosisAssets()
+    function themosis_assets()
     {
         if (Themosis\Configuration\Application::get('rewrite')) {
 
@@ -114,17 +113,19 @@ if(!function_exists('themosisAssets')){
 
 }
 
-if(!function_exists('themosisViews')){
+if(!function_exists('themosis_views')){
 
     /**
      * Return the application views directory path.
      *
      * @return string
      */
-    function themosisViews()
+    function themosis_views()
     {
-        if (defined('THEMOSIS_VIEWS')) {
+        if(defined('THEMOSIS_VIEWS')){
+
             return THEMOSIS_VIEWS;
+
         }
 
         return false;
@@ -132,14 +133,14 @@ if(!function_exists('themosisViews')){
 
 }
 
-if(!function_exists('themosisGetTheQuery')){
+if(!function_exists('themosis_get_the_query')){
 
     /**
      * Return the WP Query variable.
      *
      * @return object The global WP_Query instance.
      */
-    function themosisGetTheQuery()
+    function themosis_get_the_query()
     {
         global $wp_query;
 
@@ -148,7 +149,7 @@ if(!function_exists('themosisGetTheQuery')){
 
 }
 
-if(!function_exists('themosisUsePermalink')){
+if(!function_exists('themosis_use_permalink')){
 
     /**
      * Conditional function that checks if WP
@@ -156,7 +157,7 @@ if(!function_exists('themosisUsePermalink')){
      *
      * @return bool True. False if not using permalink.
      */
-    function themosisUsePermalink()
+    function themosis_use_permalink()
     {
         global $wp_rewrite;
 
@@ -170,7 +171,7 @@ if(!function_exists('themosisUsePermalink')){
 
 }
 
-if(!function_exists('themosisAddFilters')){
+if(!function_exists('themosis_add_filters')){
 
     /**
      * Helper that runs multiple add_filter
@@ -180,7 +181,7 @@ if(!function_exists('themosisAddFilters')){
      * @param string $function The name of the global function to call.
      * @return void
      */
-    function themosisAddFilters(array $tags, $function) {
+    function themosis_add_filters(array $tags, $function) {
         foreach($tags as $tag) {
             add_filter($tag, $function);
         }
@@ -188,7 +189,7 @@ if(!function_exists('themosisAddFilters')){
 
 }
 
-if(!function_exists('themosisIsPost')){
+if(!function_exists('themosis_is_post')){
 
     /**
      * A function that checks you're on a specified
@@ -203,7 +204,7 @@ if(!function_exists('themosisIsPost')){
      * @param int $id A WP_Post ID
      * @return bool True. False if not a WordPress post type.
      */
-    function themosisIsPost($id)
+    function themosis_is_post($id)
     {
         $postId = null;
 
@@ -226,7 +227,7 @@ if(!function_exists('themosisIsPost')){
 
 }
 
-if(!function_exists('themosisAttachmentIdFromUrl')){
+if(!function_exists('themosis_attachment_id_from_url')){
 
     /**
      * A function that returns the 'attachment_id' of a
@@ -235,7 +236,7 @@ if(!function_exists('themosisAttachmentIdFromUrl')){
      * @param string $url The media/image URL - Works only for images uploaded from within WordPress.
      * @return int|boolean The image/attachment_id if it exists, false if not.
      */
-    function themosisAttachmentIdFromUrl($url = null)
+    function themosis_attachment_id_from_url($url = null)
     {
         /*-----------------------------------------------------------------------*/
         // Load the DB class
@@ -293,7 +294,7 @@ if(!function_exists('themosisAttachmentIdFromUrl')){
 
 }
 
-if(!function_exists('themosisIsTemplate')){
+if(!function_exists('themosis_is_template')){
 
     /**
      * A function that checks if we are using a page template.
@@ -301,7 +302,7 @@ if(!function_exists('themosisIsTemplate')){
      * @param array $name Template properties.
      * @return boolean True: use of a template. False: no template.
      */
-    function themosisIsTemplate(array $name = array())
+    function themosis_is_template(array $name = array())
     {
         $queriedObject = get_queried_object();
 
@@ -313,7 +314,7 @@ if(!function_exists('themosisIsTemplate')){
             // If no template selected, just return;
             if ($template === 'none') return false;
 
-            // Send the appropriate view
+            // If template...
             if (isset($template) && !empty($template)) {
 
                 /*-----------------------------------------------------------------------*/
