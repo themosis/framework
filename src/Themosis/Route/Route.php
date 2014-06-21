@@ -196,7 +196,7 @@ class Route {
      *
      * @return bool
      */
-    public function secure()
+    public function httpsOnly()
     {
         return in_array('https', $this->action, true);
     }

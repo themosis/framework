@@ -61,8 +61,8 @@ class RouteCollection implements Countable {
     {
         foreach ($route->methods() as $method)
         {
-            static::$routes[$method][$route->condition()] = $route;
-            static::$allRoutes[$method.$route->condition()] = $route;
+            static::$routes[$method][$route->condition()][] = $route;
+            static::$allRoutes[$method.$route->condition()][] = $route;
         }
     }
 
@@ -129,26 +129,38 @@ class RouteCollection implements Countable {
     /**
      * Find a matching route.
      *
-     * @param array $routes
+     * @param array $routesByCondition
      * @param Request $request
      * @return null|\Themosis\Route\Route
      */
-    protected function check(array $routes, Request $request)
+    protected function check(array $routesByCondition, Request $request)
     {
-        foreach($routes as $route){
+        foreach($routesByCondition as $routes){
 
-            if(call_user_func($route->condition(), $route->getParams())){
+            foreach($routes as $route){
 
-                // Check if http only.
-                if(!$route->httpOnly() && $request->isSecure()) continue;
+                if(call_user_func($route->condition(), $route->getParams())){
 
-                // Check if https only.
-                if($route->secure() && !$request->isSecure()) continue;
+                    // Check if a template is associated and compare it to current route condition.
+                    if($this->hasTemplate() && 'themosis_is_template' !== $route->condition()) continue;
 
-                // Check if a template is associated and compare it to current route condition.
-                if($this->hasTemplate() && 'themosis_is_template' !== $route->condition()) continue;
+                    // Check if http only.
+                    if($route->httpOnly()){
+                        if($request->isSecure()){
+                            continue;
+                        }
+                    }
 
-                return $route;
+                    // Check if https only.
+                    if($route->httpsOnly()){
+                        if(!$request->isSecure()){
+                            continue;
+                        }
+                    }
+
+                    return $route;
+
+                }
 
             }
 
