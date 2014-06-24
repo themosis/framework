@@ -11,8 +11,6 @@
 
     <form action="options.php" method="post" class="themosis-core-page">
         <?php
-            submit_button();
-
             // Display sections and settings.
             $__page->renderSettings();
 
