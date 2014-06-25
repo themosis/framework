@@ -1,78 +1,248 @@
 <?php
 namespace Themosis\Asset;
 
-defined('DS') or die('No direct script access.');
+use Themosis\Action\Action;
 
-class Asset
-{
-	/**
-	 * Allowed areas
-	*/
-	protected $allowedAreas = array('admin', 'login');
-
-	/**
-	 * AssetFactory
-	*/
-	protected $factory;
-
-	public function __construct($type, array $args)
-	{	
-		$this->factory = new AssetFactory(false, $type, $args);
-	}
+class Asset {
 
     /**
-     * Add an asset in the FRONTEND or BACKEND or LOGIN.
+     * The default area where to load assets.
      *
-     * NOTE : The path is relative to the "assets" folder situated
-     * in the "app" folder of the Themosis framework theme.
-     * You can also pass an absolute URL to an external asset.
-     * By default, add the asset in the FRONTEND
-     *
-     * @param string $handle The asset handle name
-     * @param string $path The URI to the asset or the absolute URL.
-     * @param array $deps An array with asset dependencies
-     * @param string $version The version of your asset
-     * @param bool|string $mixed Boolean if javascript file | String if stylesheet file
-     * @throws AssetException
-     * @return static
+     * @var string
      */
-	public static function add($handle, $path, array $deps = array(), $version = '1.0', $mixed = null)
-	{
-		if (is_string($handle) && is_string($path)) {
-
-			// Define if we use a script or a style file
-			$type = (pathinfo($path, PATHINFO_EXTENSION) == 'css') ? 'style' : 'script';
-			// Group all parameters
-			$args = compact('handle', 'path', 'deps', 'version', 'mixed');
-
-			// Build the Asset for the Front-End by default
-			return new static($type, $args);
-
-		} else {
-
-			throw new AssetException("Invalid parameters for Asset::add method.");
-
-		}
-	}
+    protected $area = 'front';
 
     /**
-     * Allow the developer to define where
-     * to load the asset. Only 'admin' or 'login'
-     * are accepted.
+     * Allowed areas.
      *
-     * @param string $area Specify where to load the asset: 'admin' or 'login'
-     * @throws AssetException
+     * @var array
      */
-	public function to($area)
-	{
-		if (is_string($area) && in_array($area, $this->allowedAreas)) {
+    protected $allowedAreas = array('admin', 'login');
 
-			$this->factory->setArea($area);
+    /**
+     * Type of the asset.
+     *
+     * @var string
+     */
+    protected $type;
 
-		} else {
-			
-			throw new AssetException("Invalid parameters for Asset->to() method.");
+    /**
+     * WordPress properties of an asset.
+     *
+     * @var array
+     */
+    protected $args;
 
-		}
-	}
-}
+    /**
+     * Asset key name.
+     *
+     * @var string
+     */
+    protected $key;
+
+    /**
+     * A list of all Asset instances.
+     *
+     * @var array
+     */
+    protected static $instances;
+
+    /**
+     * Build an Asset instance.
+     *
+     * @param $type
+     * @param array $args
+     */
+    public function __construct($type, array $args)
+    {
+        $this->type = $type;
+        $this->args = $args;
+        $this->key = strtolower(trim($args['handle']));
+
+        $this->registerInstance();
+
+        // Listen to WordPress asset events.
+        Action::listen('wp_enqueue_scripts', $this, 'install')->dispatch();
+        Action::listen('admin_enqueue_scripts', $this, 'install')->dispatch();
+        Action::listen('login_enqueue_scripts', $this, 'install')->dispatch();
+    }
+
+    /**
+     * Register asset instances.
+     *
+     * @return void
+     */
+    protected function registerInstance()
+    {
+        if(isset(static::$instances[$this->area][$this->key])) return;
+
+        static::$instances[$this->area][$this->key] = $this;
+    }
+
+    /**
+     * Allow the developer to define where to load the asset.
+     * Only 'admin' or 'login' are accepted. If none of those
+     * values are used, simply keep the default front-end area.
+     *
+     * @param string $area Specify where to load the asset: 'admin' or 'login'.
+     * @return void
+     */
+    public function to($area)
+    {
+        if(is_string($area) && in_array($area, $this->allowedAreas)) {
+
+            $this->area = $area;
+            $this->orderInstances();
+
+        }
+    }
+
+    /**
+     * Manipulate the static::$instances variable
+     * in order to separate each asset in its area.
+     *
+     * @return void
+     */
+    protected function orderInstances()
+    {
+        if (array_key_exists($this->key, static::$instances['front'])) {
+
+            $instance = static::$instances['front'][$this->key];
+            unset(static::$instances['front'][$this->key]);
+
+            static::$instances[$this->area][$instance->key] = $instance;
+
+        }
+    }
+
+    /**
+     * Install the appropriate asset depending of its area.
+     *
+     * @return void
+     */
+    public function install()
+    {
+        $from = current_filter();
+
+        switch($from){
+
+            // Front-end assets.
+            case 'wp_enqueue_scripts':
+
+                if(isset(static::$instances['front']) && !empty(static::$instances['front'])){
+
+                    foreach(static::$instances['front'] as $asset){
+
+                        $this->register($asset);
+
+                    }
+
+                }
+
+                break;
+
+            // WordPress admin assets.
+            case 'admin_enqueue_scripts':
+
+                if(isset(static::$instances['admin']) && !empty(static::$instances['admin'])){
+
+                    foreach(static::$instances['admin'] as $asset){
+
+                        $this->register($asset);
+
+                    }
+
+                }
+
+                break;
+
+            // Login assets.
+            case 'login_enqueue_scripts':
+
+                if(isset(static::$instances['login']) && !empty(static::$instances['login'])){
+
+                    foreach(static::$instances['login'] as $asset){
+
+                        $this->register($asset);
+
+                    }
+
+                }
+
+                break;
+        }
+
+    }
+
+    /**
+     * Register the asset.
+     *
+     * @param Asset $asset
+     * @return void
+     */
+    protected function register(Asset $asset)
+    {
+        if($asset->getType() === 'script'){
+
+            $this->registerScript($asset);
+
+        } else {
+
+            $this->registerStyle($asset);
+
+        }
+    }
+
+    /**
+     * Register a 'script' asset.
+     *
+     * @param Asset $asset
+     * @return void
+     */
+    protected function registerScript(Asset $asset)
+    {
+        $args = $asset->getArgs();
+
+        $footer = (is_bool($args['mixed'])) ? $args['mixed'] : false;
+        $version = (is_string($args['version'])) ? $args['version'] : false;
+
+        wp_enqueue_script($args['handle'], $args['path'], $args['deps'], $version, $footer);
+    }
+
+    /**
+     * Register a 'style' asset.
+     *
+     * @param Asset $asset
+     * @return void
+     */
+    protected function registerStyle(Asset $asset)
+    {
+        $args = $asset->getArgs();
+
+        $media = (is_string($args['mixed'])) ? $args['mixed'] : 'all';
+        $version = (is_string($args['version'])) ? $args['version'] : false;
+
+        wp_enqueue_style($args['handle'], $args['path'], $args['deps'], $version, $media);
+    }
+
+    /**
+     * Return the asset type.
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Return the asset properties.
+     *
+     * @return array
+     */
+    public function getArgs()
+    {
+        return $this->args;
+    }
+
+} 

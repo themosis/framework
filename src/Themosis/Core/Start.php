@@ -63,6 +63,20 @@ add_filter('themosisViewPaths', function($paths){
 });
 
 /*----------------------------------------------------
+| Register core asset paths.
+|
+|---------------------------------------------------*/
+add_filter('themosisAssetPaths', function($paths){
+
+    // Core paths.
+    $coreUrl = themosis_plugin_url().'/src/Themosis/_assets';
+    $paths[$coreUrl] = themosis_path('sys').'_assets';
+
+    return $paths;
+
+});
+
+/*----------------------------------------------------
 | Set application classes' alias
 |
 |---------------------------------------------------*/
@@ -139,10 +153,10 @@ Themosis\Ajax\Ajax::set();
 |
 |---------------------------------------------------*/
 // Themosis custom styles
-Themosis\Asset\AdminAsset::add('themosis_core_styles', 'css/themosis.css')->to('admin');
+Themosis\Facades\Asset::add('themosis_core_styles', 'css/_themosis-core.css')->to('admin');
 
 // Themosis custom scripts
-Themosis\Asset\AdminAsset::add('themosis_core_scripts', 'js/themosis.js', array('jquery', 'jquery-ui-sortable', 'underscore', 'backbone'), false, true)->to('admin');
+Themosis\Facades\Asset::add('themosis_core_scripts', 'js/_themosis-core.js', array('jquery', 'jquery-ui-sortable', 'underscore', 'backbone'), false, true)->to('admin');
 
 /*----------------------------------------------------
 | Handle all errors, warnings, exceptions

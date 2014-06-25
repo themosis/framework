@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: Themosis framework
-Plugin URI: http://themosis.com/
-Description: A PHP framework for WordPress developers.
+Plugin URI: http://www.themosis.com/
+Description: A framework for WordPress developers.
 Version: 0.8
 Author: Julien Lambé
 Author URI: http://jlambe.be/en/

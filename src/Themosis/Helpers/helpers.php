@@ -90,7 +90,7 @@ if(!function_exists('tp')){
 if(!function_exists('themosis_assets')){
 
     /**
-     * Return the application assets directory URL.
+     * Return the application front-end assets directory URL.
      *
      * @return string
      */
@@ -109,6 +109,36 @@ if(!function_exists('themosis_assets')){
         }
 
         return get_template_directory_uri().'/app/assets';
+    }
+
+}
+
+if(!function_exists('themosis_plugin_directory_name')){
+
+    /**
+     * Return the core plugin directory name.
+     * Default name if any luck.
+     *
+     * @return string
+     */
+    function themosis_plugin_directory_name()
+    {
+        return class_exists('THFWK_Themosis') ? THFWK_Themosis::getDirName() : 'themosis';
+    }
+
+}
+
+if(!function_exists('themosis_plugin_url')){
+
+    /**
+     * Return the core plugin directory name.
+     * Default name if any luck.
+     *
+     * @return string
+     */
+    function themosis_plugin_url()
+    {
+        return plugins_url(themosis_plugin_directory_name());
     }
 
 }

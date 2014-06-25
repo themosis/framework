@@ -50,6 +50,7 @@ class Application extends Container {
     {
         $services = array(
 
+            'asset'         => '\Themosis\Asset\AssetIgniterService',
             'field'         => '\Themosis\Field\FieldIgniterService',
             'form'          => '\Themosis\Html\FormIgniterService',
             'html'          => '\Themosis\Html\HtmlIgniterService',

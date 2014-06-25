@@ -69,7 +69,7 @@ class ViewFinder {
             }
         }
 
-        throw new ViewException('View "'.$name.'" not found');
+        throw new ViewException('View "'.$name.'" not found.');
 
     }
 

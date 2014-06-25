@@ -79,7 +79,7 @@ return array(
 	/* --------------------------------------------------------------- */
 	'aliases'	=> array(
 		'Themosis\\Ajax\\Ajax'						=> 'Ajax',
-		'Themosis\\Asset\\Asset'					=> 'Asset',
+		'Themosis\\Facades\\Asset'					=> 'Asset',
 		'Themosis\\Configuration\\Application'		=> 'Application',
 		'Themosis\\Model\\BaseModel'                => 'BaseModel',
         'Themosis\\Route\\Controller'               => 'Controller',
