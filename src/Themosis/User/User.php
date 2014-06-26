@@ -3,8 +3,6 @@ namespace Themosis\User;
 
 use WP_User;
 
-defined('DS') or die('No direct script access.');
-
 class User
 {
 	/**
@@ -36,7 +34,7 @@ class User
      * @param string $password The user password.
      * @param string $email THe user email.
      * @throws UserException
-     * @return \Themosis\User\User|WP_Error A User instance or WP_Error in case of errors.
+     * @return \Themosis\User\User|\WP_Error A User instance or WP_Error in case of errors.
      */
 	public static function make($username, $password, $email)
 	{
@@ -53,7 +51,7 @@ class User
 		if (is_email($email)) {
 			$email = sanitize_email($email);
 		} else {
-			throw new UserException("Invalid email adress.");
+			throw new UserException("Invalid email address.");
 		}
 
 		// Create the user
@@ -83,14 +81,14 @@ class User
 
 	/**
 	 * Update the user credentials.
+     * @link http://codex.wordpress.org/Function_Reference/wp_update_user
 	 * 
 	 * @param array|object $userdata The user datas.
-     * @see http://codex.wordpress.org/Function_Reference/wp_update_user
-	 * @return bool True. False if unable to update user credentials.
+	 * @return \Themosis\User\User | bool
 	 */
 	public function update($userdata)
 	{
-		// Check if there is an ID in $userdatas
+		// Check if there is an ID in $userdata
 		// As stdClass
 		if (is_a($userdata, 'stdClass')) {
 
@@ -117,7 +115,7 @@ class User
 		if (is_int($update)) {
 			// Update object user data
 			$this->datas = new WP_User($update);
-			return true;
+			return $this;
 		}
 
 		return false;
@@ -128,7 +126,7 @@ class User
 	 * Set the actual user role.
 	 * 
 	 * @param string $role The user role slug.
-	 * @return \Themosis\User\User|bool A User instance or false of unable to set the user role.
+	 * @return \Themosis\User\User|bool A User instance or false if unable to set the user role.
 	 */
 	public function setRole($role)
 	{
@@ -192,11 +190,11 @@ class User
 	/**
 	 * Check if a user can do a defined
 	 * capability or defined role.
+     * @link https://codex.wordpress.org/Function_Reference/current_user_can
 	 * 
 	 * @param string $cap The capability slug.
 	 * @param int $id The user ID. By default, use the current user.
 	 * @param mixed $args Check the current_user_can function arguments.
-     * @see https://codex.wordpress.org/Function_Reference/current_user_can
 	 * @return bool True. False if user has no capability or role.
 	 */
 	public static function can($cap, $id = null, $args = null)

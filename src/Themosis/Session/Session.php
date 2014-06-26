@@ -4,7 +4,7 @@ namespace Themosis\Session;
 class Session
 {
 	/**
-	 * Action identitfier for a nonce field
+	 * Action identifier for a nonce field
 	*/
 	const nonceAction = 'themosis-nonce-action';
 
@@ -12,11 +12,6 @@ class Session
 	 * Name attribute for a nonce field
 	*/
 	const nonceName = '_themosisnonce';
-
-	/**
-	 * Keep references of all Session instances
-	*/
-	private static $instances = array();
 	
 	/**
 	 * Private constructor. Avoid building instances using the
