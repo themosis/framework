@@ -60,6 +60,7 @@ class Application extends Container {
             'router'        => '\Themosis\Route\RouteIgniterService',
             'sections'      => '\Themosis\Page\Sections\SectionIgniterService',
             'taxonomy'      => '\Themosis\Taxonomy\TaxonomyIgniterService',
+            'user'          => '\Themosis\User\UserIgniterService',
             'validation'    => '\Themosis\Validation\ValidationIgniterService',
             'view'          => '\Themosis\View\ViewIgniterService'
 
