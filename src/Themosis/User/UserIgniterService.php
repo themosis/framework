@@ -14,7 +14,12 @@ class UserIgniterService extends IgniterService {
     {
         $this->app->bind('user', function($app){
 
-            return new UserFactory;
+            $factory = new UserFactory;
+
+            // Register a User instance for the administrator user.
+            $factory->add(1);
+
+            return $factory;
 
         });
     }

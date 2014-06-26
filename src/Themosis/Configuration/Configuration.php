@@ -2,9 +2,6 @@
 namespace Themosis\Configuration;
 
 use Themosis\Action\Action;
-use Themosis\User\User;
-
-defined('DS') or die('No direct script access.');
 
 class Configuration
 {
@@ -107,8 +104,9 @@ class Configuration
 		$access = Application::get('access');
 
 	    if (is_admin()) {
-	    	
-	    	$role = User::get()->roles;
+
+            $user = wp_get_current_user();
+	    	$role = $user->roles;
 	    	$role = (count($role) > 0) ? $role[0] : '';
 
 	    	if (!in_array($role, $access) && !(defined('DOING_AJAX') && DOING_AJAX)  && !(defined('WP_CLI') && WP_CLI)) {
