@@ -11,22 +11,22 @@ return array(
 	/* --------------------------------------------------------------- */
 	// Plugin textdomain
 	/* --------------------------------------------------------------- */
-	'textdomain'	=> 'themosis',
+	'textdomain'    => 'themosis',
 
 	/* --------------------------------------------------------------- */
 	// Global Javascript namespace of your application
 	/* --------------------------------------------------------------- */
-	'namespace'	=> 'themosis',
+	'namespace'     => 'themosis',
 
 	/* --------------------------------------------------------------- */
 	// Set WordPress admin ajax file without the PHP extension
 	/* --------------------------------------------------------------- */
-	'ajaxurl'	=> 'admin-ajax',
+	'ajaxurl'	    => 'admin-ajax',
 
 	/* --------------------------------------------------------------- */
 	// Encoding
 	/* --------------------------------------------------------------- */
-	'encoding'	=> 'UTF-8',
+	'encoding'	    => 'UTF-8',
 
 	/* --------------------------------------------------------------- */
 	// Rewrite - If you want to modify default WordPress paths.
@@ -34,17 +34,17 @@ return array(
 	// tab in the WordPress admin and update the structure by saving
 	// the changes.
 	/* --------------------------------------------------------------- */
-	'rewrite'	=> false,
+	'rewrite'	    => false,
 	
 	/* --------------------------------------------------------------- */
 	// Allow to define the path for the login page
 	/* --------------------------------------------------------------- */
-	'loginurl'	=> 'login',
+	'loginurl'	    => 'login',
 
 	/* --------------------------------------------------------------- */
 	// Cleanup Header
 	/* --------------------------------------------------------------- */
-	'cleanup'	=> true,
+	'cleanup'	    => true,
 
 	/* --------------------------------------------------------------- */
 	// Add custom htaccess settings.
@@ -55,7 +55,7 @@ return array(
 	// If you edit your main .htaccess file and you want to avoid the
 	// framework to overwrite your settings, set this to "false".
 	/* --------------------------------------------------------------- */
-	'htaccess'	=> true,
+	'htaccess'	    => true,
 
 	/* --------------------------------------------------------------- */
 	// Restrict access to the WordPress Admin for users with a
@@ -66,7 +66,7 @@ return array(
 	// 'contributor' and 'subscriber' to access the ADMIN area.
 	// Edit this configuration in order to limit access.
 	/* --------------------------------------------------------------- */
-	'access'	=> array(
+	'access'	    => array(
 		'administrator',
 		'editor',
 		'author',
@@ -77,7 +77,7 @@ return array(
 	/* --------------------------------------------------------------- */
 	// Application classes' alias
 	/* --------------------------------------------------------------- */
-	'aliases'	=> array(
+	'aliases'	    => array(
 		'Themosis\\Ajax\\Ajax'						=> 'Ajax',
 		'Themosis\\Facades\\Asset'					=> 'Asset',
 		'Themosis\\Configuration\\Application'		=> 'Application',

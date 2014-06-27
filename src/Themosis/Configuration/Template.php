@@ -4,8 +4,6 @@ namespace Themosis\Configuration;
 use Themosis\Facades\Field;
 use Themosis\Facades\Metabox;
 
-defined('DS') or die('No direct script access.');
-
 class Template extends ConfigTemplate
 {
 	/**

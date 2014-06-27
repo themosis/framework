@@ -1,8 +1,6 @@
 <?php
 namespace Themosis\Configuration;
 
-defined('DS') or die('No direct script access.');
-
 abstract class ConfigTemplate
 {
 	/**

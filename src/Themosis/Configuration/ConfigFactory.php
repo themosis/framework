@@ -1,13 +1,10 @@
 <?php
 namespace Themosis\Configuration;
 
-defined('DS') or die('No direct script access.');
-
 /**
  * Dispatch the right Configuration class
  * depending on its name.
 */
-
 class ConfigFactory
 {
 	/**
@@ -39,7 +36,8 @@ class ConfigFactory
 	 */
 	public function dispatch()
 	{
-		switch ($this->name) {
+		switch ($this->name)
+        {
 			case 'application':
 				$application = new Application();
 				$application->set($this->path);

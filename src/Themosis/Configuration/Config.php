@@ -1,8 +1,6 @@
 <?php
 namespace Themosis\Configuration;
 
-defined('DS') or die('No direct script access.');
-
 /**
  * Parse the configuration values and call
  * a configuration Factory in order to install
@@ -42,18 +40,15 @@ class Config
 	/**
 	 * Install, read all configurations
 	 * 
-	 * @return bool True.
+	 * @return void
 	 */
 	public static function set()
 	{
-		foreach (static::$configs as $config) {
-			
+		foreach (static::$configs as $config)
+        {
 			$factory = new ConfigFactory($config);
 			$factory->dispatch();
-
 		}
-
-		return true;
 	}
 
 	/**
@@ -67,17 +62,18 @@ class Config
 	{
 		$errors = array();
 
-		foreach ($configFiles as $key => $configs) {
-            
-            foreach ($configs as $config) {
-                
+		foreach ($configFiles as $key => $configs)
+        {
+            foreach ($configs as $config)
+            {
                 $config = static::has($key, $config);
 
-    			if ($config) {
-    			    
+    			if ($config)
+                {
     				new static($config);
-    				
-    			} else {
+    			}
+                else
+                {
     				$errors[] = $config.' does not exists !';
     			}
                         
@@ -85,7 +81,8 @@ class Config
             
 		}
 
-		if (count($errors) > 0) {
+		if (count($errors) > 0)
+        {
 			return false;
 		}
 
@@ -104,7 +101,8 @@ class Config
 	{
 		$path = themosis_path($key).'config'.DS.$configFile.CONFIG_EXT;
 
-		if (file_exists($path)) {
+		if (file_exists($path))
+        {
 			return array(
 				'name'	=> $configFile,
 				'path'	=> $path
