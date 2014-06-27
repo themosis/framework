@@ -57,6 +57,7 @@ add_filter('themosisViewPaths', function($paths){
     $paths[] = themosis_path('sys').'Metabox'.DS.'Views'.DS;
     $paths[] = themosis_path('sys').'Page'.DS.'Views'.DS;
     $paths[] = themosis_path('sys').'Field'.DS.'Fields'.DS.'Views'.DS;
+    $paths[] = themosis_path('admin').'views'.DS;
 
     return $paths;
 
@@ -71,6 +72,10 @@ add_filter('themosisAssetPaths', function($paths){
     // Core paths.
     $coreUrl = themosis_plugin_url().'/src/Themosis/_assets';
     $paths[$coreUrl] = themosis_path('sys').'_assets';
+
+    // Admin paths.
+    $adminUrl = themosis_plugin_url().'/app/assets';
+    $paths[$adminUrl] = themosis_path('admin').'assets';
 
     return $paths;
 
