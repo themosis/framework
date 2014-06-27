@@ -125,7 +125,7 @@ class FormBuilder {
 
         $attributes = array_merge($attributes, $merge);
 
-        return '<label '.$this->html->attributes($attributes).'>'.$display.'</label>';
+        return '<label'.$this->html->attributes($attributes).'>'.$display.'</label>';
     }
 
     /**

@@ -19,8 +19,12 @@ defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
  *
  * @param string
 */
-function themosis_path($name){
-	return $GLOBALS['themosis_paths'][$name];
+if (!function_exists('themosis_path'))
+{
+    function themosis_path($name)
+    {
+        return $GLOBALS['themosis_paths'][$name];
+    }
 }
 
 /**
