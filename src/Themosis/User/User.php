@@ -13,7 +13,7 @@ class User extends WP_User
      */
     public function hasRole($role)
     {
-        return user_can($this, $role);
+        return in_array($role, $this->roles);
     }
 
     /**
@@ -37,7 +37,7 @@ class User extends WP_User
      */
     public function can($cap)
     {
-        return $this->hasRole($cap);
+        return user_can($this, $cap);
     }
 
     /**

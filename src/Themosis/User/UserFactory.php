@@ -42,17 +42,17 @@ class UserFactory
         $user_id = wp_create_user($username, $password, $email);
 
         // If user created.
-        if(is_int($user_id))
+        if (is_int($user_id))
         {
             return $this->createUser($user_id);
         }
-        elseif(is_array($user_id->errors) && array_key_exists('existing_user_login', $user_id->errors))
+        elseif (is_array($user_id->errors) && array_key_exists('existing_user_login', $user_id->errors))
         {
             $user = get_user_by('login', $username);
             $registeredEmail = $user->data->user_email;
 
             // Compare the given email address before returning a user instance.
-            if($email === $registeredEmail)
+            if ($email === $registeredEmail)
             {
                 return $this->createUser($user->ID);
             }
@@ -60,6 +60,18 @@ class UserFactory
 
         // Error.
         return $user_id;
+    }
+
+    /**
+     * Look at the current user and return an instance.
+     *
+     * @return \Themosis\User\User
+     */
+    public function current()
+    {
+        $user = wp_get_current_user();
+
+        return $this->createUser($user->ID);
     }
 
     /**
@@ -84,18 +96,16 @@ class UserFactory
      */
     protected function parseCredentials(array $credentials)
     {
-        foreach($credentials as $name => $cred)
+        foreach ($credentials as $name => $cred)
         {
-            if('email' === $name && !is_email($cred)){
-
+            if ('email' === $name && !is_email($cred))
+            {
                 throw new UserException("Invalid user property '{$name}'.");
-
             }
 
-            if(!is_string($cred) || empty($cred)){
-
+            if (!is_string($cred) || empty($cred))
+            {
                 throw new UserException("Invalid user property '{$name}'.");
-
             }
         }
     }
@@ -117,7 +127,7 @@ class UserFactory
      * @param null $id
      * @return \Themosis\User\User|bool
      */
-    public function add($id = null)
+    public function add($id)
     {
         $user = get_userdata((int)$id);
 

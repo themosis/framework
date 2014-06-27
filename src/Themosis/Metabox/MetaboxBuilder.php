@@ -5,6 +5,7 @@ use Themosis\Action\Action;
 use Themosis\Core\DataContainer;
 use Themosis\Core\Wrapper;
 use Themosis\Session\Session;
+use Themosis\User\User;
 use Themosis\Validation\ValidationBuilder;
 use Themosis\View\IRenderable;
 
@@ -42,17 +43,40 @@ class MetaboxBuilder extends Wrapper {
     private $installEvent;
 
     /**
+     * The current user instance.
+     *
+     * @var \Themosis\User\User
+     */
+    private $user;
+
+    /**
+     * Whether or not check for user capability.
+     *
+     * @var bool
+     */
+    private $check = false;
+
+    /**
+     * The capability to check.
+     *
+     * @var string
+     */
+    private $capability;
+
+    /**
      * Build a metabox instance.
      *
      * @param DataContainer $datas The metabox properties.
      * @param \Themosis\View\IRenderable $view The metabox default view.
      * @param \Themosis\Validation\ValidationBuilder $validator
+     * @param \Themosis\User\User $user
      */
-    public function __construct(DataContainer $datas, IRenderable $view, ValidationBuilder $validator)
+    public function __construct(DataContainer $datas, IRenderable $view, ValidationBuilder $validator, User $user)
     {
         $this->datas = $datas;
         $this->view = $view;
         $this->validator = $validator;
+        $this->user = $user;
         $this->installEvent = Action::listen('add_meta_boxes', $this, 'display');
         Action::listen('save_post', $this, 'save')->dispatch();
     }
@@ -72,7 +96,8 @@ class MetaboxBuilder extends Wrapper {
         $this->datas['postType'] = $postType;
         $this->datas['options'] = $this->parseOptions($options);
 
-        if(!is_null($view)){
+        if (!is_null($view))
+        {
             $this->view = $view;
         }
 
@@ -98,12 +123,26 @@ class MetaboxBuilder extends Wrapper {
     }
 
     /**
+     * Restrict access to a specific user capability.
+     *
+     * @param string $capability
+     * @return void
+     */
+    public function can($capability)
+    {
+        $this->capability = $capability;
+        $this->check = true;
+    }
+
+    /**
      * The wrapper display method.
      *
      * @return void
      */
     public function display()
     {
+        if($this->check && !$this->user->can($this->capability)) return;
+
         $id = md5($this->datas['title']);
 
         // Fields are passed to the metabox $args parameter.
@@ -124,25 +163,23 @@ class MetaboxBuilder extends Wrapper {
         wp_nonce_field(Session::nonceAction, Session::nonceName);
 
         // Set the default 'value' attribute regarding sections.
-        if(!empty($this->sections)){
-
-            foreach($this->sections as $section){
-
-                if(isset($datas['args'][$section])){
-
+        if (!empty($this->sections))
+        {
+            foreach ($this->sections as $section)
+            {
+                if (isset($datas['args'][$section]))
+                {
                     $fields = $datas['args'][$section];
 
                     // Set the default 'value' property of all fields.
                     $this->setDefaultValue($post, $fields);
-
                 }
             }
-
-        } else {
-
+        }
+        else
+        {
             // Set the default 'value' property of all fields.
             $this->setDefaultValue($post, $datas['args']);
-
         }
 
         $this->render($datas['args']);
@@ -157,27 +194,31 @@ class MetaboxBuilder extends Wrapper {
      */
     public function save($postId)
     {
-        if(defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
 
         $nonceName = (isset($_POST[Session::nonceName])) ? $_POST[Session::nonceName] : Session::nonceName;
         if (!wp_verify_nonce($nonceName, Session::nonceAction)) return;
+
+        // Check user capability.
+        if ($this->check && $this->datas['postType'] === $_POST['post_type'])
+        {
+            if (!$this->user->can($this->capability)) return;
+        }
 
         $fields = array();
 
         // Loop through the registered fields.
         // With sections.
-        if(!empty($this->sections)){
-
-            foreach($this->datas['fields'] as $fs){
-
+        if (!empty($this->sections))
+        {
+            foreach ($this->datas['fields'] as $fs)
+            {
                 $fields = $fs;
-
             }
-
-        } else {
-
+        }
+        else
+        {
             $fields = $this->datas['fields'];
-
         }
 
         $this->register($postId, $fields);
@@ -212,21 +253,27 @@ class MetaboxBuilder extends Wrapper {
 
             // Apply validation if defined.
             // Check if the rule exists for the field in order to validate.
-            if(isset($this->datas['rules'][$field['name']])){
-
+            if (isset($this->datas['rules'][$field['name']]))
+            {
                 $rules = $this->datas['rules'][$field['name']];
                 // Check if $rules array is an associative array
-                if($this->validator->isAssociative($rules) && 'infinite' == $field->getFieldType()){
+                if ($this->validator->isAssociative($rules) && 'infinite' == $field->getFieldType())
+                {
                     // Check Infinite fields validation.
-                    foreach($value as $row => $rowValues){
-                        foreach($rowValues as $name => $val){
-                            if(isset($rules[$name])){
+                    foreach ($value as $row => $rowValues)
+                    {
+                        foreach ($rowValues as $name => $val)
+                        {
+                            if (isset($rules[$name]))
+                            {
                                 $value[$row][$name] = $this->validator->single($val, $rules[$name]);
                             }
                         }
                     }
 
-                } else {
+                }
+                else
+                {
                     $value = $this->validator->single($value, $this->datas['rules'][$field['name']]);
                 }
             }
@@ -245,13 +292,12 @@ class MetaboxBuilder extends Wrapper {
     private function parseOptions(array $options)
     {
         // Default
-        if(empty($options)){
-
+        if (empty($options))
+        {
             return array(
                 'context'   => 'normal',
                 'priority'  => 'default'
             );
-
         }
 
         // If options defined...
@@ -259,14 +305,12 @@ class MetaboxBuilder extends Wrapper {
 
         $allowed = array('context', 'priority');
 
-        foreach ($options as $param => $value) {
-
-            if (in_array($param, $allowed)) {
-
+        foreach ($options as $param => $value)
+        {
+            if (in_array($param, $allowed))
+            {
                 $newOptions[$param] = $value;
-
             }
-
         }
 
         return $newOptions;
@@ -283,12 +327,12 @@ class MetaboxBuilder extends Wrapper {
     {
         $sections = array();
 
-        foreach($fields as $section => $subFields){
-
-            if(!is_numeric($section)){
+        foreach ($fields as $section => $subFields)
+        {
+            if (!is_numeric($section))
+            {
                 array_push($sections, $section);
             }
-
         }
 
         return $sections;
@@ -303,7 +347,8 @@ class MetaboxBuilder extends Wrapper {
      */
     private function setDefaultValue(\WP_Post $post, array $fields)
     {
-        foreach($fields as $field){
+        foreach ($fields as $field)
+        {
             // Set the value property of the $field
             $field['value'] = get_post_meta($post->ID, $field['name'], true);
         }

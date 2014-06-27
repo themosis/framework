@@ -18,7 +18,10 @@ class MetaboxIgniterService extends IgniterService {
             $data = new MetaboxData();
             $view = View::make('_themosisCoreMetabox');
 
-            return new MetaboxBuilder($data, $view, $app['validation']);
+            $userFactory = $app['user'];
+            $user = $userFactory->current();
+
+            return new MetaboxBuilder($data, $view, $app['validation'], $user);
 
         });
     }

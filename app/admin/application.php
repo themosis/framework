@@ -44,6 +44,13 @@ $metabox->validate(array(
     )
 ));
 
+// Metabox for "posts" with user check.
+$m = Metabox::make('Special User', 'post')->set(array(
+    Field::text('hello')
+));
+
+$m->can('publish_posts');
+
 $books = PostType::make('th-books', 'Books', 'book')->set();
 $books->setTitle('Enter the book name');
 
