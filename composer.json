@@ -13,6 +13,7 @@
     "type": "wordpress-plugin",
 	"require": {
 		"symfony/http-foundation": "2.4.2",
+        "symfony/class-loader": "v2.5.0",
         "composer/installers" : "~1.0"
 	},
 	"autoload": {
