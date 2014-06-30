@@ -13,9 +13,7 @@ License: GPLv2
 // The directory separator
 /*----------------------------------------------------*/
 defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
-
-// Implement plugin check later
-if (!class_exists('Symfony\Component\ClassLoader\ClassLoader')) return;
+defined('THEMOSISPLUGIN_TEXTDOMAIN') ? THEMOSISPLUGIN_TEXTDOMAIN : define('THEMOSISPLUGIN_TEXTDOMAIN', 'themosis-plugin');
 
 /**
  * Helper function to retrieve the path.
@@ -56,6 +54,8 @@ class THFWK_Themosis
 	private function __construct()
 	{
 		static::$dirName = static::setDirName(__DIR__);
+
+        // Perform plugin load...
 		$this->load();
 	}
 
@@ -86,18 +86,39 @@ class THFWK_Themosis
     	return $dirName;
     }
 
+    /**
+     * Display a notice in the administration.
+     *
+     * @return void
+     */
+    public function displayMessage()
+    {
+    ?>
+        <div id="message" class="error">
+            <p><?php _e(sprintf('<b>Themosis plugin:</b> %s', "Symfony Class Loader component not found. Make sure to include it before proceeding."), THEMOSISPLUGIN_TEXTDOMAIN); ?></p>
+        </div>
+    <?php
+    }
+
 	/**
 	 * Load the framework classes
+     *
+     * @return void
 	*/
 	private function load()
 	{
+        if (!class_exists('Symfony\Component\ClassLoader\ClassLoader'))
+        {
+            add_action('admin_notices', array($this, 'displayMessage'));
+
+            return;
+        }
+
         // Autoload PSR-0 classes.
         $loader = new Symfony\Component\ClassLoader\ClassLoader();
-
         $loader->addPrefixes(array(
             'Themosis' => __DIR__.DS.'src'.DS
         ));
-
         $loader->register();
 
 		// Set the framework paths and starts the framework.
