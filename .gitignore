@@ -4,5 +4,3 @@ bootstrap.php
 Thumbs.db
 composer.lock
 /.idea/
-app/storage/*
-app/storage/!index.php
