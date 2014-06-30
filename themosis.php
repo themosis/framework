@@ -14,6 +14,9 @@ License: GPLv2
 /*----------------------------------------------------*/
 defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
 
+// Implement plugin check later
+if (!class_exists('Symfony\Component\ClassLoader\ClassLoader')) return;
+
 /**
  * Helper function to retrieve the path.
  *
@@ -88,8 +91,14 @@ class THFWK_Themosis
 	*/
 	private function load()
 	{
-		// Insert Composer autoloading feature.
-		require 'vendor/autoload.php';
+        // Autoload PSR-0 classes.
+        $loader = new Symfony\Component\ClassLoader\ClassLoader();
+
+        $loader->addPrefixes(array(
+            'Themosis' => __DIR__.DS.'src'.DS
+        ));
+
+        $loader->register();
 
 		// Set the framework paths and starts the framework.
 		add_action('after_setup_theme', array($this, 'bootstrap'));
