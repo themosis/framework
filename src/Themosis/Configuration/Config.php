@@ -76,9 +76,7 @@ class Config
                 {
     				$errors[] = $config.' does not exists !';
     			}
-                        
             }
-            
 		}
 
 		if (count($errors) > 0)
