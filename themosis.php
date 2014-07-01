@@ -3,7 +3,7 @@
 Plugin Name: Themosis framework
 Plugin URI: http://www.themosis.com/
 Description: A framework for WordPress developers.
-Version: 0.8
+Version: 0.9
 Author: Julien Lambé
 Author URI: http://jlambe.be/en/
 License: GPLv2
@@ -42,7 +42,7 @@ class THFWK_Themosis
 	/**
 	 * Framework version
 	*/
-	const VERSION = 0.8;
+	const VERSION = 0.9;
 
 	/**
 	 * Plugin directory name
@@ -101,7 +101,7 @@ class THFWK_Themosis
     }
 
 	/**
-	 * Load the framework classes
+	 * Load the framework classes.
      *
      * @return void
 	*/
@@ -126,8 +126,9 @@ class THFWK_Themosis
 	}
 
 	/**
-	 * Define paths and bootstrap the framework
-	 * 
+	 * Define paths and bootstrap the framework.
+	 *
+     * @return void
 	*/
 	public function bootstrap(){
 
@@ -180,7 +181,7 @@ class THFWK_Themosis
 }
 
 /**
- * Load the main class
+ * Load the main class.
 */
 add_action('plugins_loaded', function(){
 
