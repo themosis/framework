@@ -143,26 +143,6 @@ if(!function_exists('themosis_plugin_url')){
 
 }
 
-if(!function_exists('themosis_views')){
-
-    /**
-     * Return the application views directory path.
-     *
-     * @return string
-     */
-    function themosis_views()
-    {
-        if(defined('THEMOSIS_VIEWS')){
-
-            return THEMOSIS_VIEWS;
-
-        }
-
-        return false;
-    }
-
-}
-
 if(!function_exists('themosis_get_the_query')){
 
     /**

@@ -174,10 +174,10 @@ class Configuration
 			'libraries/images/(.*)'		=> 'wp-includes/images/$1',
 
 			// LOGIN
-			Application::get('loginurl').'/?$'		=> 'wp-login'.EXT,
+			Application::get('loginurl').'/?$'		=> 'wp-login.php',
 
 			// AJAX URL
-			'ajax/'.Application::get('ajaxurl').EXT 	=> $this->getAdminPath().Application::get('ajaxurl').EXT,
+			'ajax/'.Application::get('ajaxurl').'php' 	=> $this->getAdminPath().Application::get('ajaxurl').'php',
 
 			// PLUGINS
 			'plugins/(.*)'		=> 'wp-content/plugins/$1',

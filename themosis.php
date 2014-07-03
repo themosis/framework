@@ -13,7 +13,11 @@ License: GPLv2
 // The directory separator
 /*----------------------------------------------------*/
 defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
-defined('THEMOSISPLUGIN_TEXTDOMAIN') ? THEMOSISPLUGIN_TEXTDOMAIN : define('THEMOSISPLUGIN_TEXTDOMAIN', 'themosis-plugin');
+
+/*----------------------------------------------------*/
+// Plugin core textdomain
+/*----------------------------------------------------*/
+defined('THEMOSIS_PLUGIN_TEXTDOMAIN') ? THEMOSIS_PLUGIN_TEXTDOMAIN : define('THEMOSIS_PLUGIN_TEXTDOMAIN', 'themosis-plugin');
 
 /**
  * Helper function to retrieve the path.
@@ -95,7 +99,7 @@ class THFWK_Themosis
     {
     ?>
         <div id="message" class="error">
-            <p><?php _e(sprintf('<b>Themosis plugin:</b> %s', "Symfony Class Loader component not found. Make sure to include it before proceeding."), THEMOSISPLUGIN_TEXTDOMAIN); ?></p>
+            <p><?php _e(sprintf('<b>Themosis plugin:</b> %s', "Symfony Class Loader component not found. Make sure to include it before proceeding."), THEMOSIS_PLUGIN_TEXTDOMAIN); ?></p>
         </div>
     <?php
     }

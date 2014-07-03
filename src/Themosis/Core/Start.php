@@ -8,10 +8,7 @@
 | Themosis core constants
 |
 |---------------------------------------------------*/
-defined('EXT') ? EXT : define('EXT', '.php');
-defined('SCOUT_EXT') ? SCOUT_EXT : define('SCOUT_EXT', '.scout.php');
 defined('CONFIG_EXT') ? CONFIG_EXT : define('CONFIG_EXT', '.config.php');
-defined('CONTROLLER_EXT') ? CONTROLLER_EXT : define('CONTROLLER_EXT', '.controller.php');
 defined('MODEL_EXT') ? MODEL_EXT : define('MODEL_EXT', '.model.php');
 
 /*----------------------------------------------------
@@ -158,10 +155,10 @@ Themosis\Ajax\Ajax::set();
 |
 |---------------------------------------------------*/
 // Themosis custom styles
-Themosis\Facades\Asset::add('themosis_core_styles', 'css/_themosis-core.css')->to('admin');
+Themosis\Facades\Asset::add('themosis-core-styles', 'css/_themosis-core.css')->to('admin');
 
 // Themosis custom scripts
-Themosis\Facades\Asset::add('themosis_core_scripts', 'js/_themosis-core.js', array('jquery', 'jquery-ui-sortable', 'underscore', 'backbone'), false, true)->to('admin');
+Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosis-core.js', array('jquery', 'jquery-ui-sortable', 'underscore', 'backbone'), false, true)->to('admin');
 
 /*----------------------------------------------------
 | Handle all errors, warnings, exceptions

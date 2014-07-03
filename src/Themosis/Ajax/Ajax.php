@@ -28,11 +28,11 @@ class Ajax
 
 		if (Application::get('rewrite')) {
 
-			static::$url = (Application::get('ajaxurl')) ? home_url().'/ajax/'.Application::get('ajaxurl').EXT : '';
+			static::$url = (Application::get('ajaxurl')) ? home_url().'/ajax/'.Application::get('ajaxurl').'php' : '';
 
 		} else {
 
-			static::$url = (Application::get('ajaxurl')) ? admin_url().Application::get('ajaxurl').EXT : '';
+			static::$url = (Application::get('ajaxurl')) ? admin_url().Application::get('ajaxurl').'php' : '';
 
 		}
 
