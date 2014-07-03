@@ -23,7 +23,7 @@ class Template extends ConfigTemplate
 		}
 
 		// Set an empty value for no templates.
-		$templateNames = array_merge(array('none' => __('No template')), static::names());
+		$templateNames = array_merge(array('none' => __('- None -')), static::names());
 
 		// Build a select field
 		Metabox::make('Themosis Page Template', 'page', array('context' => 'side', 'priority' => 'core'))->set(array(
@@ -41,7 +41,7 @@ class Template extends ConfigTemplate
 		$names = array();
 
 		foreach (static::$datas as $name) {
-			$names[$name] = ucfirst(trim($name));
+			$names[$name] = str_replace(array('-', '_'), ' ', ucfirst(trim($name)));
 		}
 
 		return $names;
