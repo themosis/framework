@@ -9,7 +9,6 @@
 |
 |---------------------------------------------------*/
 defined('CONFIG_EXT') ? CONFIG_EXT : define('CONFIG_EXT', '.config.php');
-defined('MODEL_EXT') ? MODEL_EXT : define('MODEL_EXT', '.model.php');
 
 /*----------------------------------------------------
 | Setup configurations - For the datas

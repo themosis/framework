@@ -68,9 +68,11 @@ class THFWK_Themosis
 	*/
 	public static function getInstance()
 	{
-		if (is_null(static::$instance)) {
+		if (is_null(static::$instance))
+        {
 	    	static::$instance = new static();
 	    }
+
 	 	return static::$instance;
 	}
 
@@ -139,8 +141,8 @@ class THFWK_Themosis
 	 *
      * @return void
 	*/
-	public function bootstrap(){
-
+	public function bootstrap()
+    {
 		/**
 	    * Define all framework paths
 	    * These are real paths, not URLs to the framework files.
@@ -163,17 +165,18 @@ class THFWK_Themosis
         $paths['storage'] = realpath(__DIR__).DS.'app'.DS.'storage'.DS;
 
 	    // Register globally the paths
-	    foreach ($paths as $name => $path) {
-	       if(!isset($GLOBALS['themosis_paths'][$name])){
+	    foreach ($paths as $name => $path)
+        {
+	       if (!isset($GLOBALS['themosis_paths'][$name]))
+           {
 	           $GLOBALS['themosis_paths'][$name] = $path;
 	       }
 	    }
 
 	    // Start the framework
-	    if (isset($GLOBALS['THFWK_Themosis'])) {
-
+	    if (isset($GLOBALS['THFWK_Themosis']))
+        {
 	        require_once themosis_path('sys').'Core'.DS.'Start.php';
-
 	    }
 	}
 
@@ -182,10 +185,9 @@ class THFWK_Themosis
 	 * 
 	 * @return string
 	*/
-	public static function getDirName(){
-
+	public static function getDirName()
+    {
 		return static::$dirName;
-
 	}
 }
 

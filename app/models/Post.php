@@ -1,6 +1,6 @@
 <?php
 
-class PostModel extends BaseModel{
+class Post {
 
     public static function all()
     {
