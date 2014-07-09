@@ -125,6 +125,11 @@ class THFWK_Themosis
         ));
         $loader->register();
 
+        // Autoload PSR-4 classes.
+        $loader = new Symfony\Component\ClassLoader\Psr4ClassLoader();
+        $loader->addPrefix('', __DIR__.DS.'app'.DS.'models');
+        $loader->register();
+
 		// Set the framework paths and starts the framework.
 		add_action('after_setup_theme', array($this, 'bootstrap'));
 	}

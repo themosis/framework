@@ -81,7 +81,7 @@ return array(
 		'Themosis\\Ajax\\Ajax'						=> 'Ajax',
 		'Themosis\\Facades\\Asset'					=> 'Asset',
 		'Themosis\\Configuration\\Application'		=> 'Application',
-		'Themosis\\Model\\BaseModel'                => 'BaseModel',
+		'Themosis\\Model\\Model'                    => 'Model',
         'Themosis\\Route\\Controller'               => 'Controller',
 		'Themosis\\Facades\\Field'					=> 'Field',
 		'Themosis\\Facades\\Form'					=> 'Form',
