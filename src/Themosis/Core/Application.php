@@ -5,6 +5,11 @@ use Themosis\Action\Action;
 
 class Application extends Container {
 
+    /**
+     * The request class name.
+     *
+     * @var string
+     */
     protected static $requestClass = 'Themosis\Core\Request';
 
     /**

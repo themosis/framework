@@ -3,8 +3,6 @@ namespace Themosis\Error;
 
 use Themosis\Configuration\Error as ConfigError;
 use Exception;
-
-defined('DS') or die('No direct script access.');
 	
 class Error extends Exception
 {
@@ -71,7 +69,7 @@ class Error extends Exception
 	 */
 	public static function shutdown()
 	{
-		// If a fatal error occured that we have not handled yet, we will
+		// If a fatal error occurred that we have not handled yet, we will
 		// create an ErrorException and feed it to the exception handler,
 		// as it will not yet have been handled.
 		$error = error_get_last();

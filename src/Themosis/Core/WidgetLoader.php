@@ -3,8 +3,6 @@ namespace Themosis\Core;
 
 use Themosis\Action\Action;
 
-defined('DS') or die('No direct script access.');
-
 class WidgetLoader extends Loader implements LoaderInterface
 {
 	/**

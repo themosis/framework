@@ -27,6 +27,4 @@ abstract class IgniterService {
      */
     abstract public function ignite();
 
-
-
 } 

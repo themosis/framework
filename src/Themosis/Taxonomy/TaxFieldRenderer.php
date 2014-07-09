@@ -1,8 +1,6 @@
 <?php
 namespace Themosis\Taxonomy;
 
-defined('DS') or die('No direct script access.');
-
 /**
  * TaxFieldRenderer class
  *
@@ -10,7 +8,6 @@ defined('DS') or die('No direct script access.');
  * the custom fields of the taxonomies.
  *
 */
-
 class TaxFieldRenderer
 {
 
@@ -377,5 +374,3 @@ class TaxFieldRenderer
     }
     
 }
-
-?>

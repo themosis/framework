@@ -1,8 +1,6 @@
 <?php
 namespace Themosis\Metabox;
 
-defined('DS') or die('No direct script access.');
-
 class Meta
 {
 	/**

@@ -3,11 +3,6 @@ namespace Themosis\Validation;
 
 class ValidationBuilder {
 
-    public function __construct()
-    {
-
-    }
-
     /**
      * Runs a validation rule on a single passed data.
      *

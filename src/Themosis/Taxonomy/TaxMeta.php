@@ -1,14 +1,11 @@
 <?php
 namespace Themosis\Taxonomy;
 
-defined('DS') or die('No direct script access.');
-
 /**
  * TaxMeta class
  * 
  * Allow the user to retrieve a custom field of a taxonomy.
 */
-
 class TaxMeta
 {    
     /**
@@ -41,5 +38,3 @@ class TaxMeta
     }
     
 }
-
-?>

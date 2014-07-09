@@ -1,8 +1,6 @@
 <?php
 namespace Themosis\Core;
 
-defined('DS') or die('No direct script access.');
-
 class AdminLoader extends Loader implements LoaderInterface
 {
 	/**

@@ -4,8 +4,6 @@ namespace Themosis\Ajax;
 use Themosis\Configuration\Application;
 use Themosis\Action\Action;
 
-defined('DS') or die('No direct script access.');
-
 class Ajax
 {
 	/**
@@ -28,11 +26,11 @@ class Ajax
 
 		if (Application::get('rewrite')) {
 
-			static::$url = (Application::get('ajaxurl')) ? home_url().'/ajax/'.Application::get('ajaxurl').'php' : '';
+			static::$url = (Application::get('ajaxurl')) ? home_url().'/ajax/'.Application::get('ajaxurl').'.php' : '';
 
 		} else {
 
-			static::$url = (Application::get('ajaxurl')) ? admin_url().Application::get('ajaxurl').'php' : '';
+			static::$url = (Application::get('ajaxurl')) ? admin_url().Application::get('ajaxurl').'.php' : '';
 
 		}
 
@@ -99,25 +97,24 @@ class Ajax
 	{	
 		$datas = apply_filters('themosisGlobalObject', array());
 
-		?>
-		<script type='text/javascript'>
-  
-  			//<![CDATA[
-			var <?php echo(static::$namespace); ?> = {
-				ajaxurl: '<?php echo(static::$url); ?>',
-				<?php
-					if (!empty($datas)) {
-						foreach ($datas as $key => $value) {
-							echo $key.": ".json_encode($value).",";
-						}
-					}
-				?>
-			};
-			//]]>
+        $output = "<script type=\"text/javascript\">\n\r";
+        $output.= "//<![CDATA[\n\r";
+        $output.= "var ".static::$namespace." = {\n\r";
+        $output.= "ajaxurl: '".static::$url."',\n\r";
 
-		</script>
-		<?php
+        if (!empty($datas))
+        {
+            foreach ($datas as $key => $value)
+            {
+                $output.= $key.": ".json_encode($value).",\n\r";
+            }
+        }
+
+        $output.= "};\n\r";
+        $output.= "//]]>\n\r";
+        $output.= "</script>";
+
+        // Output the datas.
+        echo($output);
 	}
 }
-
-?>

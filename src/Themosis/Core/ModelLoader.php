@@ -1,5 +1,4 @@
 <?php
-
 namespace Themosis\Core;
 
 use ReflectionClass;

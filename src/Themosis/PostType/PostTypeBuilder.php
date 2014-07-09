@@ -21,7 +21,7 @@ class PostTypeBuilder {
     /**
      * The registered custom post type.
      *
-     * @var Object|WP_Error
+     * @var Object|\WP_Error
      */
     private $postType;
 

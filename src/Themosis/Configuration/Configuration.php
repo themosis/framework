@@ -177,7 +177,7 @@ class Configuration
 			Application::get('loginurl').'/?$'		=> 'wp-login.php',
 
 			// AJAX URL
-			'ajax/'.Application::get('ajaxurl').'php' 	=> $this->getAdminPath().Application::get('ajaxurl').'php',
+			'ajax/'.Application::get('ajaxurl').'.php' 	=> $this->getAdminPath().Application::get('ajaxurl').'.php',
 
 			// PLUGINS
 			'plugins/(.*)'		=> 'wp-content/plugins/$1',
@@ -235,23 +235,24 @@ class Configuration
 	{
 		$datas = apply_filters('themosisAdminGlobalObject', array());
 
-		?>
-		<script type='text/javascript'>
-  
-  			//<![CDATA[
-			var thfmk_themosis = {
-				<?php
-					if (!empty($datas)) {
-						foreach ($datas as $key => $value) {
-							echo "'$key'".": ".json_encode($value).",";
-						}
-					}
-				?>
-			};
-			//]]>
+        $output = "<script type=\"text/javascript\">\n\r";
+        $output.= "//<![CDATA[\n\r";
+        $output.= "var thfmk_themosis = {\n\r";
 
-		</script>
-		<?php
+        if (!empty($datas))
+        {
+            foreach ($datas as $key => $value)
+            {
+                $output.= $key.": ".json_encode($value).",\n\r";
+            }
+        }
+
+        $output.= "};\n\r";
+        $output.= "//]]>\n\r";
+        $output.= "</script>";
+
+        // Output the datas.
+        echo($output);
 	}
 
 	/**

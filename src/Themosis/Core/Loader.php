@@ -1,12 +1,9 @@
 <?php
 namespace Themosis\Core;
 
-defined('DS') or die('No direct script access.');
-
 /**
- * Common "interface" for extending the Wordpress
+ * Common "interface" for extending the WordPress
  * 'functions.php' file.
- * Use the Template Design Pattern
 */
 abstract class Loader
 {	

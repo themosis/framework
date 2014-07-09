@@ -1,8 +1,6 @@
 <?php
 namespace Themosis\Taxonomy;
 
-defined('DS') or die('No direct script access.');
-
 /**
  * TaxField class
  * 
@@ -293,5 +291,3 @@ class TaxField
 	}
     
 }
-
-?>

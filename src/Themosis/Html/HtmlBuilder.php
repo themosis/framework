@@ -3,8 +3,6 @@ namespace Themosis\Html;
 
 use Themosis\Configuration\Application;
 
-defined('DS') or die('No direct script access.');
-
 class HtmlBuilder
 {
 	/**

@@ -1,8 +1,6 @@
 <?php
 namespace Themosis\Action;
 
-defined('DS') or die('No direct script access.');
-
 class ActionNotifier implements ActionObserver
 {
 	/**

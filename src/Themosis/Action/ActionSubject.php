@@ -1,8 +1,6 @@
 <?php
 namespace Themosis\Action;
 
-defined('DS') or die('No direct script access.');
-
 abstract class ActionSubject
 {
 	private $observers = array();

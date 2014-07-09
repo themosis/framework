@@ -1,4 +1,4 @@
-<?php defined('DS') or die('No direct script access.');
+<?php
 
 /**
 * Helpers functions globally available

@@ -1,13 +1,11 @@
 <?php
 namespace Themosis\Page;
 
-defined('DS') or die('No direct script access.');
-
 class Option
 {
     /**
      * Utility method to retrieve an option saved using the Page class.
-     * Give the 'option_group' name and the option 'name' defined by the developper.
+     * Give the 'option_group' name and the option 'name' defined by the developer.
      *
      * @param string $optionGroup The section name.
      * @param $name $name The option name.
