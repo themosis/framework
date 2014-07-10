@@ -11,7 +11,10 @@ foreach(PostModel::all() as $post)
 
 Metabox::make('Link', 'post')->set(array(
 
-    Field::select('related', array($posts), false, array('title' => 'Related post'))
+    Field::select('related', array($posts), false, array('title' => 'Related post')),
+    Field::infinite('things', array(
+        Field::text('sock')
+    ))
 
 ));
 
