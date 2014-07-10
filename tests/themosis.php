@@ -30,7 +30,7 @@ class Themosis_Test extends WP_UnitTestCase
      */
     public function testThemosisFrameworkCoreDirectoryPaths()
     {
-        $paths = array('sys', 'datas', 'admin', 'storage');
+        $paths = array('sys', 'plugin', 'admin', 'storage');
 
         foreach($paths as $path)
         {
@@ -59,7 +59,7 @@ class Themosis_Test extends WP_UnitTestCase
     public function testLoadThemosisPluginConfigurationFiles()
     {
         $configs = array(
-            'datas' => array(
+            'plugin' => array(
                 'application',
                 'constants',
                 'errors',
@@ -82,7 +82,7 @@ class Themosis_Test extends WP_UnitTestCase
                 // Check config file path.
                 $this->assertTrue(file_exists($config['path']), "File [{$config['name']}] not found.");
                 // Compare plugin config file name.
-                if (isset($configs['datas'][$index]))
+                if (isset($configs['plugin'][$index]))
                 {
                     $this->assertEquals($configs['datas'][$index], $config['name']);
                 }
@@ -99,7 +99,7 @@ class Themosis_Test extends WP_UnitTestCase
     {
         $configuration = array(
             'name'  => 'application',
-            'path'  => themosis_path('datas').'config'.DS.'application'.CONFIG_EXT
+            'path'  => themosis_path('plugin').'config'.DS.'application'.CONFIG_EXT
         );
 
         $application = new \Themosis\Configuration\Application();

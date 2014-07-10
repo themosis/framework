@@ -15,7 +15,7 @@ defined('CONFIG_EXT') ? CONFIG_EXT : define('CONFIG_EXT', '.config.php');
 |
 |---------------------------------------------------*/
 $configs = array(
-    'datas' => array(
+    'plugin' => array(
         'application',
         'constants',
         'errors',

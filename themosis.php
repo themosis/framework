@@ -170,7 +170,7 @@ class THFWK_Themosis
 	    $paths['sys'] = realpath(__DIR__).DS.'src'.DS.'Themosis'.DS;
 
 	    // Application datas - This plugin 'app' folder
-    	$paths['datas'] = realpath(__DIR__).DS.'app'.DS;
+    	$paths['plugin'] = realpath(__DIR__).DS.'app'.DS;
 
         // Application admin folder
         $paths['admin'] = realpath(__DIR__).DS.'app'.DS.'admin'.DS;

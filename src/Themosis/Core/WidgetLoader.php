@@ -41,7 +41,7 @@ class WidgetLoader extends Loader implements LoaderInterface
 	 */
 	public static function add()
 	{
-		static::$path = themosis_path('datas').'widgets'.DS;
+		static::$path = themosis_path('plugin').'widgets'.DS;
 		return static::append(static::$path);
 	}
 

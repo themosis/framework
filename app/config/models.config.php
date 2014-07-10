@@ -8,6 +8,6 @@ return array(
      * value is the absolute path to your model file.
      *
      */
-    'PostModel' => themosis_path('datas').'models'.DS.'PostModel.php',
+    'PostModel' => themosis_path('plugin').'models'.DS.'PostModel.php',
 
 );
