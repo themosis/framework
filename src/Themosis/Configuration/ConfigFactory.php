@@ -78,6 +78,16 @@ class ConfigFactory
 			   $template->set($this->path);
 			   break;
 
+            case 'models':
+                $models = new Models();
+                $models->set($this->path);
+                break;
+
+            case 'controllers':
+                $controllers = new Controllers();
+                $controllers->set($this->path);
+                break;
+
 			default:
 				break;
 		}

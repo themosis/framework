@@ -19,7 +19,8 @@ $configs = array(
         'application',
         'constants',
         'errors',
-        'images'
+        'images',
+        'models'
     )
 );
 
@@ -120,13 +121,6 @@ Themosis\Configuration\Template::init();
 |
 |---------------------------------------------------*/
 Themosis\Configuration\Images::install();
-
-/*----------------------------------------------------
-| Load the models.
-|
-|---------------------------------------------------*/
-Themosis\Core\ModelLoader::add();
-Themosis\Core\ModelLoader::alias();
 
 /*----------------------------------------------------
 | Parse application files and include them.

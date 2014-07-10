@@ -72,7 +72,6 @@ class THFWK_Themosis
         {
 	    	static::$instance = new static();
 	    }
-
 	 	return static::$instance;
 	}
 
@@ -121,15 +120,10 @@ class THFWK_Themosis
         }
 
         // Autoload PSR-0 classes.
-        $loader = new Symfony\Component\ClassLoader\ClassLoader();
+        $loader = new \Symfony\Component\ClassLoader\ClassLoader();
         $loader->addPrefixes(array(
             'Themosis' => __DIR__.DS.'src'.DS
         ));
-        $loader->register();
-
-        // Autoload PSR-4 classes.
-        $loader = new Symfony\Component\ClassLoader\Psr4ClassLoader();
-        $loader->addPrefix('', __DIR__.DS.'app'.DS.'models');
         $loader->register();
 
 		// Set the framework paths and starts the framework.

@@ -38,7 +38,7 @@ class Menu implements ConfigInterface
 	}
 
 	/**
-	 * Run by the 'after_setup_theme' hook.
+	 * Run by the 'init' hook.
 	 * Execute the "register_nav_menus" function from WP
      *
      * @return void
