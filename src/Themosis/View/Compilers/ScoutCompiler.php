@@ -467,6 +467,28 @@ class ScoutCompiler extends Compiler implements ICompiler {
     }
 
     /**
+     * Compile the loop statement into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileLoop($expression)
+    {
+        return '<?php $themosisQuery = new WP_Query('.$expression.'); if($themosisQuery->have_posts()){ while($themosisQuery->have_posts()){ $themosisQuery->the_post(); ?>';
+    }
+
+    /**
+     * Compile the endloop statement into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileEndloop($expression)
+    {
+        return '<?php }} wp_reset_postdata(); ?>';
+    }
+
+    /**
      * Return the defined view content.
      *
      * @param string $path
