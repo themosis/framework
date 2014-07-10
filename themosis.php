@@ -112,14 +112,34 @@ class THFWK_Themosis
 	*/
 	private function load()
 	{
+        // Default path to Composer autoload file.
+        $autoload = __DIR__.DS.'vendor'.DS.'autoload.php';
+
+        if (defined('THEMOSIS_AUTOLOAD'))
+        {
+            if (!THEMOSIS_AUTOLOAD && file_exists($autoload))
+            {
+                require_once($autoload);
+            }
+        }
+        elseif (!defined('THEMOSIS_AUTOLOAD'))
+        {
+            if (file_exists($autoload))
+            {
+                require_once($autoload);
+            }
+        }
+
         if (!class_exists('Symfony\Component\ClassLoader\ClassLoader'))
         {
             add_action('admin_notices', array($this, 'displayMessage'));
-
             return;
         }
 
         // Autoload PSR-0 classes.
+        // The autoloading process is not handled by Composer...
+        // This mechanism allows a developer to use dependencies inside the plugin
+        // or to use them at the root of the WordPress project.
         $loader = new \Symfony\Component\ClassLoader\ClassLoader();
         $loader->addPrefixes(array(
             'Themosis' => __DIR__.DS.'src'.DS
