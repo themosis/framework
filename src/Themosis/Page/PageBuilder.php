@@ -494,10 +494,12 @@ class PageBuilder extends Wrapper {
      */
     public function renderTabs()
     {
-        if($this->hasSections() && $this->datas['args']['tabs']){
+        if ($this->hasSections() && $this->datas['args']['tabs'])
+        {
             echo('<h2 class="nav-tab-wrapper">');
 
-                foreach($this->sections as $section){
+                foreach ($this->sections as $section)
+                {
                     $section = $section->getData();
                     $class = ($this->getActiveTab() === $section['slug']) ? 'nav-tab-active' : '';
 
@@ -515,17 +517,25 @@ class PageBuilder extends Wrapper {
      */
     public function renderSettings()
     {
-        if($this->datas['args']['tabs']){
-            foreach($this->sections as $section){
+        // Check if there are sections before proceeding.
+        if (!$this->hasSections()) return;
+
+        if ($this->datas['args']['tabs'])
+        {
+            foreach ($this->sections as $section)
+            {
                 $section = $section->getData();
 
                 // Display settings regarding the active tab.
-                if($this->getActiveTab() === $section['slug']){
+                if ($this->getActiveTab() === $section['slug'])
+                {
                     settings_fields($section['slug']);
                     do_settings_sections($section['slug']);
                 }
             }
-        } else {
+        }
+        else
+        {
             // Do not use the tab navigation.
             // Display all sections in one page.
             settings_fields($this->datas['slug']);
@@ -542,7 +552,8 @@ class PageBuilder extends Wrapper {
     public function enqueueMediaUploader()
     {
         // If WordPress version > 3.5
-        if (get_bloginfo('version') >= 3.5) {
+        if (get_bloginfo('version') >= 3.5)
+        {
             wp_enqueue_media();
         }
     }
