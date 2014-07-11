@@ -47,5 +47,3 @@ tests_add_filter('muplugins_loaded', '_manually_load_plugin' );
  * We've got our action set up, so we can load this now.
  */
 require(WP_TESTS_DIR.'includes/bootstrap.php');
-
-?>
