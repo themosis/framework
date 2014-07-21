@@ -24,15 +24,7 @@ class Ajax
 	{
 		static::$namespace = (Application::get('namespace')) ? Application::get('namespace') : 'themosis';
 
-		if (Application::get('rewrite')) {
-
-			static::$url = (Application::get('ajaxurl')) ? home_url().'/ajax/'.Application::get('ajaxurl').'.php' : '';
-
-		} else {
-
-			static::$url = (Application::get('ajaxurl')) ? admin_url().Application::get('ajaxurl').'.php' : '';
-
-		}
+		static::$url = (Application::get('ajaxurl')) ? admin_url().Application::get('ajaxurl').'.php' : '';
 
 		Action::listen('wp_head', $this, 'install')->dispatch();
 	}

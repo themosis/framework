@@ -3,18 +3,18 @@
     <h2>{{ $__page->get('title') }}</h2>
 
     <?php
-        settings_errors();
+    settings_errors();
 
-        // Display, handle tab navigation.
-        $__page->renderTabs();
+    // Display, handle tab navigation.
+    $__page->renderTabs();
     ?>
 
     <form action="options.php" method="post" class="themosis-core-page">
         <?php
-            // Display sections and settings.
-            $__page->renderSettings();
+        // Display sections and settings.
+        $__page->renderSettings();
 
-            submit_button();
+        submit_button();
         ?>
     </form>
 
