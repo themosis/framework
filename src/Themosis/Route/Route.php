@@ -88,12 +88,12 @@ class Route {
         // If the action is already a Closure instance, we will just set that instance
         // as the "uses" property, because there is nothing else we need to do when
         // it is available. Otherwise we will need to find it in the action list.
-        if(is_callable($action)){
-
+        if (is_callable($action))
+        {
             return array('uses' => $action);
-
-        } elseif (!isset($action['uses'])){
-
+        }
+        elseif (!isset($action['uses']))
+        {
             // If no "uses" property has been set, we will dig through the array to find a
             // Closure instance within this list. We will set the first Closure we come
             // across into the "uses" property that will get fired off by this route.
@@ -112,10 +112,13 @@ class Route {
      */
     protected function parseCondition($condition)
     {
-        if(isset($this->conditions[$condition])){
+        // Allow developers to define non-core conditions by providing a key/value property.
+        $conditions = apply_filters('themosisRouteConditions', array());
+        $conditions = array_merge($this->conditions, $conditions);
 
-            return $this->conditions[$condition];
-
+        if (isset($conditions[$condition]))
+        {
+            return $conditions[$condition];
         }
 
         throw new RouteException('The route condition ['.$condition.'] is no found.');
@@ -144,12 +147,11 @@ class Route {
      */
     public function parameters()
     {
-        if(isset($this->parameters)){
-
-            return array_map(function($value){
-
+        if (isset($this->parameters))
+        {
+            return array_map(function($value)
+            {
                 return is_string($value) ? rawurldecode($value) : $value;
-
             }, $this->parameters);
         }
 
@@ -163,7 +165,8 @@ class Route {
      */
     public function parametersWithoutNulls()
     {
-        return array_filter($this->parameters(), function($p){
+        return array_filter($this->parameters(), function($p)
+        {
             return !is_null($p);
         });
     }
