@@ -27,14 +27,6 @@ return array(
 	// Encoding
 	/* --------------------------------------------------------------- */
 	'encoding'	    => 'UTF-8',
-
-	/* --------------------------------------------------------------- */
-	// Rewrite - If you want to modify default WordPress paths.
-	// If you change this parameter, you need to go to the 'permalinks'
-	// tab in the WordPress admin and update the structure by saving
-	// the changes.
-	/* --------------------------------------------------------------- */
-	'rewrite'	    => false,
 	
 	/* --------------------------------------------------------------- */
 	// Allow to define the path for the login page
