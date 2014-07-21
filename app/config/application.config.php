@@ -39,17 +39,6 @@ return array(
 	'cleanup'	    => true,
 
 	/* --------------------------------------------------------------- */
-	// Add custom htaccess settings.
-	// The settings are a mix of Themosis parameters and HTML5 Boilerplate
-	// htaccess settings.
-	// Will overwrite your htaccess settings each time
-	// you go to the permalinks settings page in the admin.
-	// If you edit your main .htaccess file and you want to avoid the
-	// framework to overwrite your settings, set this to "false".
-	/* --------------------------------------------------------------- */
-	'htaccess'	    => true,
-
-	/* --------------------------------------------------------------- */
 	// Restrict access to the WordPress Admin for users with a
 	// specific role. 
 	// Once the theme is activated, you can only log in by going
