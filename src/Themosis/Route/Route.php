@@ -25,7 +25,6 @@ class Route {
     protected $action;
 
     /**
-     * The array of matched parameters.
      * Parameters passed to the route callback or controller action method.
      *
      * @var array
@@ -140,22 +139,23 @@ class Route {
     }
 
     /**
-     * Get the key / value list of parameters for the route.
+     * Get the key / value list of parameters for the route callback/method.
      *
      * @return array
      * @throws \Exception
      */
     public function parameters()
     {
-        if (isset($this->parameters))
-        {
-            return array_map(function($value)
-            {
-                return is_string($value) ? rawurldecode($value) : $value;
-            }, $this->parameters);
-        }
+        global $post, $wp_query;
 
-        throw new \Exception("Route is not bound.");
+        // Pass WordPress globals to closures or controller methods as parameters.
+        $parameters = array_merge($this->parameters, array('post' => $post, 'query' => $wp_query));
+
+        return array_map(function($value)
+        {
+            return is_string($value) ? rawurldecode($value) : $value;
+        }, $parameters);
+
     }
 
     /**
