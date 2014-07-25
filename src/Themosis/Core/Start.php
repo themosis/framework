@@ -71,7 +71,7 @@ add_filter('themosisAssetPaths', function($paths){
     $paths[$coreUrl] = themosis_path('sys').'_assets';
 
     // Admin paths.
-    $adminUrl = themosis_plugin_url().'/app/assets';
+    $adminUrl = themosis_plugin_url().'/app/admin/assets';
     $paths[$adminUrl] = themosis_path('admin').'assets';
 
     return $paths;
