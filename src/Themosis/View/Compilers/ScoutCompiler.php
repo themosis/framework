@@ -474,7 +474,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      */
     protected function compileLoop($expression)
     {
-        return '<?php $themosisQuery = new WP_Query('.$expression.'); if($themosisQuery->have_posts()){ while($themosisQuery->have_posts()){ $themosisQuery->the_post(); ?>';
+        return '<?php if(have_posts()){ while(have_posts()){ the_post(); ?>';
     }
 
     /**
@@ -484,6 +484,28 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * @return string
      */
     protected function compileEndloop($expression)
+    {
+        return '<?php }} ?>';
+    }
+
+    /**
+     * Compile the query statement into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileQuery($expression)
+    {
+        return '<?php $themosisQuery = new WP_Query('.$expression.'); if($themosisQuery->have_posts()){ while($themosisQuery->have_posts()){ $themosisQuery->the_post(); ?>';
+    }
+
+    /**
+     * Compile the endquery statement into valid PHP.
+     *
+     * @param string $expression
+     * @return string
+     */
+    protected function compileEndquery($expression)
     {
         return '<?php }} wp_reset_postdata(); ?>';
     }
