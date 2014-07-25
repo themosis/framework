@@ -64,7 +64,12 @@ class Configuration
 		remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
 		remove_action('wp_head', 'wp_generator');
 		remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
-		remove_action('wp_head', array($wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style'));
+
+        if (array_key_exists('WP_Widget_Recent_Comments', $wp_widget_factory->widgets))
+        {
+            remove_action('wp_head', array($wp_widget_factory->widgets['WP_Widget_Recent_Comments'], 'recent_comments_style'));
+        }
+        
 		add_filter('use_default_gallery_style', '__return_null');
 	}
 
