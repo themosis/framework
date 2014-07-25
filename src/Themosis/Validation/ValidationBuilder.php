@@ -12,8 +12,8 @@ class ValidationBuilder {
      */
     public function single($data, array $rules)
     {
-        foreach($rules as $rule){
-
+        foreach ($rules as $rule)
+        {
             // Parse $rule and check for attributes.
             $ruleProperties = $this->parseRule($rule);
 
@@ -23,26 +23,45 @@ class ValidationBuilder {
             // Check if the datas given is an array
             // If array, parse each item and return them
             // into the array.
-            if(is_array($data)){
-
+            if (is_array($data))
+            {
                 // Overwrite each array value
-                foreach($data as $key => $value){
-
+                foreach ($data as $key => $value)
+                {
                     // Validate the data value.
                     $data[$key] = $this->$signature($value, $ruleProperties['attributes']);
-
                 }
 
-            } else {
-
+            }
+            else
+            {
                 // The data is a string or single value.
                 $data = $this->$signature($data, $ruleProperties['attributes']);
-
             }
-
         }
 
         return $data;
+    }
+
+    /**
+     * Validate multiple inputs.
+     *
+     * @param array $data
+     * @param array $rules
+     * @return array
+     */
+    public function multiple(array $data, array $rules)
+    {
+        $validates = array();
+
+        foreach ($rules as $field => $fieldRules)
+        {
+            $input = array_get($data, $field);
+
+            $validates[$field] = $this->single($input, $fieldRules);
+        }
+
+        return $validates;
     }
 
     /**
@@ -59,8 +78,8 @@ class ValidationBuilder {
         );
 
         // Check if attributes are defined...
-        if(0 < strpos($rule, ':')){
-
+        if (0 < strpos($rule, ':'))
+        {
             $extract = explode(':', $rule);
 
             // The rule
@@ -68,13 +87,12 @@ class ValidationBuilder {
 
             // The attributes
             $properties['attributes'] = $this->getAttributes($extract[1]);
-
-        } else {
-
+        }
+        else
+        {
             // No attributes, simply defined the rule.
             // Leave attributes as empty array.
             $properties['rule'] = $rule;
-
         }
 
         return $properties;
@@ -89,20 +107,19 @@ class ValidationBuilder {
     private function getAttributes($attributes)
     {
         // If comma, get a list of attributes
-        if(0 < strpos($attributes, ',')){
-
+        if (0 < strpos($attributes, ','))
+        {
             $attributes = explode(',', $attributes);
             $attributes = array_map(function($att){
 
                 return trim($att);
 
             }, $attributes);
-
-        } else {
-
+        }
+        else
+        {
             // No comma, only one attribute
             $attributes = array(trim($attributes));
-
         }
 
         return $attributes;
@@ -228,10 +245,9 @@ class ValidationBuilder {
      */
     private function validate_url($data, array $attributes = array())
     {
-        if(!empty($attributes)){
-
+        if (!empty($attributes))
+        {
             return esc_url($data, $attributes);
-
         }
 
         return esc_url($data);
@@ -253,10 +269,9 @@ class ValidationBuilder {
         $length = $attributes[0];
         $data = trim($data);
 
-        if($length <= strlen($data)){
-
+        if ($length <= strlen($data))
+        {
             return $data;
-
         }
 
         return '';
@@ -278,10 +293,9 @@ class ValidationBuilder {
         $length = $attributes[0];
         $data = trim($data);
 
-        if($length >= strlen($data)){
-
+        if ($length >= strlen($data))
+        {
             return $data;
-
         }
 
         return '';
@@ -326,8 +340,8 @@ class ValidationBuilder {
     {
         $params = array();
 
-        foreach($attributes as $atts){
-
+        foreach ($attributes as $atts)
+        {
             $atts = explode('|', $atts);
 
             // Set the HTML tag.
@@ -335,14 +349,12 @@ class ValidationBuilder {
             $params[$key] = array();
 
             // Add tag attributes.
-            if(!empty($atts)){
-
-                foreach($atts as $attribute){
-
+            if (!empty($atts))
+            {
+                foreach ($atts as $attribute)
+                {
                     $params[$key][$attribute] = array();
-
                 }
-
             }
         }
 

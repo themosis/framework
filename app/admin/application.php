@@ -9,13 +9,21 @@ foreach(PostModel::all() as $post)
     $posts[$post->ID] = $post->post_title;
 }
 
-Metabox::make('Link', 'post')->set(array(
+$metabox = Metabox::make('Link', 'post')->set(array(
 
     Field::select('related', array($posts), false, array('title' => 'Related post')),
+    Field::text('actor'),
     Field::infinite('things', array(
         Field::text('sock')
     ))
 
+));
+
+$metabox->validate(array(
+    'actor'     => array('textfield', 'min:5'),
+    'things'    => array(
+        'sock'  => array('num')
+    )
 ));
 
 PostType::make('jl_books', 'Books', 'Book')->set();
