@@ -231,7 +231,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      */
     protected function compileEchoDefaults($content)
     {
-        return preg_replace('/^(?=\$)(.+?)(?:\s+or\s+)(.+?)$/s', 'isset($1) ? $1 : $2', $content);
+        return preg_replace('/^.*?([\'"])(?:(?!\1).)*or(?:(?!\1).)*\1.*?$(*SKIP)(*F)|^(\S+) or (.*)$/', 'isset($2) ? $2 : $3', $content);
     }
 
     /**
