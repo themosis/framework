@@ -9,7 +9,7 @@
 /**
  * The path to the WordPress tests checkout.
  */
-define('WP_TESTS_DIR', 'path-to-wordpress-core-trunk/tests/phpunit/');
+define('WP_TESTS_DIR', '../../../../svn-wordpress/tests/phpunit/');
 
 /**
  * The path to the main file of the plugin.
@@ -35,6 +35,16 @@ require_once(WP_TESTS_DIR.'includes/functions.php');
  */
 function _manually_load_plugin() {
 
+    // Make sure to run 'composer install' before running unit tests.
+    // Use Composer autoloading.
+    $autoload = 'vendor/autoload.php';
+
+    if (file_exists($autoload))
+    {
+        require($autoload);
+    }
+
+    // Include the main plugin file.
     require(TEST_PLUGIN_FILE);
 
 }

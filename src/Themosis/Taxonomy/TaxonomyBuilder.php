@@ -111,21 +111,21 @@ class TaxonomyBuilder extends Wrapper {
     private function setDefaultArguments($plural, $singular)
     {
         $labels = array(
-            'name' => _x($plural, THEMOSIS_TEXTDOMAIN),
-            'singular_name' => _x($singular, THEMOSIS_TEXTDOMAIN),
-            'search_items' =>  __( 'Search ' . $plural, THEMOSIS_TEXTDOMAIN),
-            'all_items' => __( 'All ' . $plural, THEMOSIS_TEXTDOMAIN),
-            'parent_item' => __( 'Parent ' . $singular,THEMOSIS_TEXTDOMAIN),
-            'parent_item_colon' => __( 'Parent ' . $singular . ': ' ,THEMOSIS_TEXTDOMAIN),
-            'edit_item' => __( 'Edit ' . $singular,THEMOSIS_TEXTDOMAIN),
-            'update_item' => __( 'Update ' . $singular,THEMOSIS_TEXTDOMAIN),
-            'add_new_item' => __( 'Add New ' . $singular,THEMOSIS_TEXTDOMAIN),
-            'new_item_name' => __( 'New '. $singular .' Name' ,THEMOSIS_TEXTDOMAIN),
-            'menu_name' => __($plural ,THEMOSIS_TEXTDOMAIN)
+            'name' => _x($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'singular_name' => _x($singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'search_items' =>  __( 'Search ' . $plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'all_items' => __( 'All ' . $plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'parent_item' => __( 'Parent ' . $singular,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'parent_item_colon' => __( 'Parent ' . $singular . ': ' ,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'edit_item' => __( 'Edit ' . $singular,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'update_item' => __( 'Update ' . $singular,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'add_new_item' => __( 'Add New ' . $singular,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'new_item_name' => __( 'New '. $singular .' Name' ,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'menu_name' => __($plural ,THEMOSIS_FRAMEWORK_TEXTDOMAIN)
         );
 
         $defaults = array(
-            'label' 		=> __($plural, THEMOSIS_TEXTDOMAIN),
+            'label' 		=> __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
             'labels' 		=> $labels,
             'public'		=> true,
             'query_var'		=> true

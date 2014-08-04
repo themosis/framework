@@ -15,9 +15,9 @@ License: GPLv2
 defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
 
 /*----------------------------------------------------*/
-// Plugin core textdomain
+// Framework textdomain
 /*----------------------------------------------------*/
-defined('THEMOSIS_PLUGIN_TEXTDOMAIN') ? THEMOSIS_PLUGIN_TEXTDOMAIN : define('THEMOSIS_PLUGIN_TEXTDOMAIN', 'themosis-plugin');
+defined('THEMOSIS_FRAMEWORK_TEXTDOMAIN') ? THEMOSIS_FRAMEWORK_TEXTDOMAIN : define('THEMOSIS_FRAMEWORK_TEXTDOMAIN', 'themosis-framework');
 
 /**
  * Helper function to retrieve the path.
@@ -61,7 +61,7 @@ if (!class_exists('THFWK_Themosis'))
         {
             static::$dirName = static::setDirName(__DIR__);
 
-            // Perform plugin load...
+            // Load plugin.
             $this->load();
         }
 
@@ -102,7 +102,7 @@ if (!class_exists('THFWK_Themosis'))
         {
         ?>
             <div id="message" class="error">
-                <p><?php _e(sprintf('<b>Themosis plugin:</b> %s', "Symfony Class Loader component not found. Make sure to include it before proceeding."), THEMOSIS_PLUGIN_TEXTDOMAIN); ?></p>
+                <p><?php _e(sprintf('<b>Themosis plugin:</b> %s', "Symfony Class Loader component not found. Make sure to include it before proceeding."), THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></p>
             </div>
         <?php
         }
@@ -165,20 +165,14 @@ if (!class_exists('THFWK_Themosis'))
             * These paths are extensible with the help of WordPress
             * filters.
             */
-            // All framework paths
+            // Framework paths.
             $paths = apply_filters('themosis_framework_paths', array());
 
-            // Framework core path
+            // Plugin base path.
+            $paths['plugin'] = realpath(__DIR__).DS;
+
+            // Framework base path.
             $paths['sys'] = realpath(__DIR__).DS.'src'.DS.'Themosis'.DS;
-
-            // Application datas - This plugin 'app' folder
-            $paths['plugin'] = realpath(__DIR__).DS.'app'.DS;
-
-            // Application admin folder
-            $paths['admin'] = realpath(__DIR__).DS.'app'.DS.'admin'.DS;
-
-            // Application storage directory
-            $paths['storage'] = realpath(__DIR__).DS.'app'.DS.'storage'.DS;
 
             // Register globally the paths
             foreach ($paths as $name => $path)
@@ -189,10 +183,10 @@ if (!class_exists('THFWK_Themosis'))
                }
             }
 
-            // Start the framework
+            // Bootstrap the framework
             if (isset($GLOBALS['THFWK_Themosis']))
             {
-                require_once themosis_path('sys').'Core'.DS.'Start.php';
+                require_once themosis_path('plugin').'bootstrap'.DS.'start.php';
             }
         }
 

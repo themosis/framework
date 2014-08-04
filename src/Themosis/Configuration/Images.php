@@ -50,7 +50,7 @@ class Images extends ConfigTemplate {
             $show = array_pop($properties);
 
             if($show){
-                $new[$slug] = __(static::label($slug), THEMOSIS_TEXTDOMAIN);
+                $new[$slug] = __(static::label($slug), THEMOSIS_FRAMEWORK_TEXTDOMAIN);
             }
 
         }

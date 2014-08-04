@@ -49,11 +49,11 @@ class Sidebar implements ConfigInterface
 
 			foreach ($this->datas as $sidebar) {
 
-				$sidebar['name'] = __($sidebar['name'], THEMOSIS_TEXTDOMAIN);
+				$sidebar['name'] = __($sidebar['name'], THEMOSIS_FRAMEWORK_TEXTDOMAIN);
 
 				if (isset($sidebar['description'])) {
 
-    			    $sidebar['description'] = __($sidebar['description'], THEMOSIS_TEXTDOMAIN);
+    			    $sidebar['description'] = __($sidebar['description'], THEMOSIS_FRAMEWORK_TEXTDOMAIN);
 
 				}
 

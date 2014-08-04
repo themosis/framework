@@ -287,11 +287,11 @@ class TaxFieldRenderer
 						</td>
 						
 						<td>
-						    <button type="button" class="button-primary themosis-media-button" id="themosis-media-add"><?php _e('Add', THEMOSIS_TEXTDOMAIN); ?></button>
+						    <button type="button" class="button-primary themosis-media-button" id="themosis-media-add"><?php _e('Add', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
 						</td>
 						
 						<td>
-						    <button type="button" class="button themosis-media-clear" id="themosis-media-clear"><?php _e('Clear', THEMOSIS_TEXTDOMAIN); ?></button>
+						    <button type="button" class="button themosis-media-clear" id="themosis-media-clear"><?php _e('Clear', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
 						</td>
 						
 					</tr>
@@ -345,11 +345,11 @@ class TaxFieldRenderer
 						</td>
 						
 						<td>
-						    <button type="button" class="button-primary themosis-media-button" id="themosis-media-add"><?php _e('Add', THEMOSIS_TEXTDOMAIN); ?></button>
+						    <button type="button" class="button-primary themosis-media-button" id="themosis-media-add"><?php _e('Add', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
 						</td>
 						
 						<td>
-						    <button type="button" class="button themosis-media-clear" id="themosis-media-clear"><?php _e('Clear', THEMOSIS_TEXTDOMAIN); ?></button>
+						    <button type="button" class="button themosis-media-clear" id="themosis-media-clear"><?php _e('Clear', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
 						</td>
 						
 					</tr>
