@@ -162,7 +162,7 @@ if (!class_exists('THFWK_Themosis'))
          * Define paths and bootstrap the framework.
          *
          * @return void
-        */
+         */
         public function bootstrap()
         {
             /**
