@@ -3,10 +3,10 @@
 <table class="themosis-media">
     <tr>
         <td class="themosis-media__buttons <?php if(!empty($field['value'])){ echo('themosis-media--hidden'); } ?>">
-            <button id="themosis-media-add" type="button" class="button button-primary"><?php _e('Add', THEMOSIS_TEXTDOMAIN); ?></button>
+            <button id="themosis-media-add" type="button" class="button button-primary"><?php _e('Add', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
         </td>
         <td class="themosis-media__buttons <?php if(empty($field['value'])){ echo('themosis-media--hidden'); } ?>">
-            <button id="themosis-media-delete" type="button" class="button"><?php  _e('Delete', THEMOSIS_TEXTDOMAIN); ?></button>
+            <button id="themosis-media-delete" type="button" class="button"><?php  _e('Delete', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
         </td>
         <td <?php if(empty($field['value'])){ echo('class="themosis-media--hidden"'); } ?>>
             <p class="themosis-media__path">{{ $field['value'] }}</p>

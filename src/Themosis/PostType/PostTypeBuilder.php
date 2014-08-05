@@ -137,23 +137,23 @@ class PostTypeBuilder {
     private function setDefaultArguments($plural, $singular)
     {
         $labels = array(
-            'name' => __($plural, THEMOSIS_TEXTDOMAIN),
-            'singular_name' => __($singular, THEMOSIS_TEXTDOMAIN),
-            'add_new' => __('Add New', THEMOSIS_TEXTDOMAIN),
-            'add_new_item' => __('Add New '. $singular, THEMOSIS_TEXTDOMAIN),
-            'edit_item' => __('Edit '. $singular, THEMOSIS_TEXTDOMAIN),
-            'new_item' => __('New ' . $singular, THEMOSIS_TEXTDOMAIN),
-            'all_items' => __('All ' . $plural, THEMOSIS_TEXTDOMAIN),
-            'view_item' => __('View ' . $singular, THEMOSIS_TEXTDOMAIN),
-            'search_items' => __('Search ' . $singular, THEMOSIS_TEXTDOMAIN),
-            'not_found' =>  __('No '. $singular .' found', THEMOSIS_TEXTDOMAIN),
-            'not_found_in_trash' => __('No '. $singular .' found in Trash', THEMOSIS_TEXTDOMAIN),
+            'name' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'singular_name' => __($singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'add_new' => __('Add New', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'add_new_item' => __('Add New '. $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'edit_item' => __('Edit '. $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'new_item' => __('New ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'all_items' => __('All ' . $plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'view_item' => __('View ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'search_items' => __('Search ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'not_found' =>  __('No '. $singular .' found', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'not_found_in_trash' => __('No '. $singular .' found in Trash', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
             'parent_item_colon' => '',
-            'menu_name' => __($plural, THEMOSIS_TEXTDOMAIN)
+            'menu_name' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN)
         );
 
         $defaults = array(
-            'label' 		=> __($plural, THEMOSIS_TEXTDOMAIN),
+            'label' 		=> __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
             'labels' 		=> $labels,
             'description'	=> '',
             'public'		=> true,

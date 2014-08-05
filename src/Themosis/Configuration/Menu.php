@@ -51,7 +51,7 @@ class Menu implements ConfigInterface
 
 			foreach ($this->datas as $slug => $desc) {
 				
-				$locations[$slug] = __($desc, THEMOSIS_TEXTDOMAIN);
+				$locations[$slug] = __($desc, THEMOSIS_FRAMEWORK_TEXTDOMAIN);
 
 			}
 
