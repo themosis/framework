@@ -10,12 +10,12 @@ License: GPLv2
 */
 
 /*----------------------------------------------------*/
-// The directory separator
+// The directory separator.
 /*----------------------------------------------------*/
 defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
 
 /*----------------------------------------------------*/
-// Framework textdomain
+// Framework textdomain.
 /*----------------------------------------------------*/
 defined('THEMOSIS_FRAMEWORK_TEXTDOMAIN') ? THEMOSIS_FRAMEWORK_TEXTDOMAIN : define('THEMOSIS_FRAMEWORK_TEXTDOMAIN', 'themosis-framework');
 
@@ -23,7 +23,8 @@ defined('THEMOSIS_FRAMEWORK_TEXTDOMAIN') ? THEMOSIS_FRAMEWORK_TEXTDOMAIN : defin
  * Helper function to retrieve the path.
  *
  * @param string
-*/
+ * @return string
+ */
 if (!function_exists('themosis_path'))
 {
     function themosis_path($name)
@@ -34,27 +35,30 @@ if (!function_exists('themosis_path'))
 
 /**
  * Main class that bootstraps the framework.
- * 
-*/
+ */
 if (!class_exists('THFWK_Themosis'))
 {
     class THFWK_Themosis
     {
         /**
-         * Framework bootstrap instance
-        */
+         * Framework bootstrap instance.
+         *
+         * @var \THFWK_Themosis
+         */
         private static $instance = null;
 
         /**
-         * Framework version
-        */
+         * Framework version.
+         *
+         * @var float
+         */
         const VERSION = 0.9;
 
         /**
-         * Plugin directory name
+         * Plugin directory name.
          *
          * @var string
-        */
+         */
         private static $dirName = '';
 
         private function __construct()
@@ -67,7 +71,9 @@ if (!class_exists('THFWK_Themosis'))
 
         /**
          * Init the framework classes
-        */
+         *
+         * @return \THFWK_Themosis
+         */
         public static function getInstance()
         {
             if (is_null(static::$instance))
@@ -84,7 +90,7 @@ if (!class_exists('THFWK_Themosis'))
          *
          * @param string
          * @return string
-        */
+         */
         private static function setDirName($path)
         {
             $dirName = explode('plugins', $path);
@@ -111,7 +117,7 @@ if (!class_exists('THFWK_Themosis'))
          * Load the framework classes.
          *
          * @return void
-        */
+         */
         private function load()
         {
             // Default path to Composer autoload file.
@@ -160,11 +166,11 @@ if (!class_exists('THFWK_Themosis'))
         public function bootstrap()
         {
             /**
-            * Define all framework paths
-            * These are real paths, not URLs to the framework files.
-            * These paths are extensible with the help of WordPress
-            * filters.
-            */
+             * Define all framework paths
+             * These are real paths, not URLs to the framework files.
+             * These paths are extensible with the help of WordPress
+             * filters.
+             */
             // Framework paths.
             $paths = apply_filters('themosis_framework_paths', array());
 
@@ -194,7 +200,7 @@ if (!class_exists('THFWK_Themosis'))
          * Returns the directory name.
          *
          * @return string
-        */
+         */
         public static function getDirName()
         {
             return static::$dirName;
@@ -204,7 +210,8 @@ if (!class_exists('THFWK_Themosis'))
 
 /**
  * Load the main class.
-*/
+ *
+ */
 add_action('plugins_loaded', function(){
 
 	$GLOBALS['THFWK_Themosis'] = THFWK_Themosis::getInstance();

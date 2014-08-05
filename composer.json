@@ -1,6 +1,6 @@
 {
-	"name": "themosis/plugin",
-	"description": "The Themosis framework plugin.",
+	"name": "themosis/framework",
+	"description": "The Themosis framework.",
 	"keywords": ["themosis", "framework", "WordPress", "plugin"],
 	"license": "GPL-2.0+",
 	"authors":[
