@@ -113,7 +113,7 @@ class Route {
     {
         // Allow developers to define non-core conditions by providing a key/value property.
         $conditions = apply_filters('themosisRouteConditions', array());
-        $conditions = array_merge($this->conditions, $conditions);
+        $conditions = $this->conditions + $conditions;
 
         if (isset($conditions[$condition]))
         {
