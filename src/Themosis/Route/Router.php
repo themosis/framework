@@ -270,7 +270,8 @@ class Router {
 
         } else {
 
-            $response = __("No routes defined for this request.", THEMOSIS_FRAMEWORK_TEXTDOMAIN);
+            $view = $this->container['view'];
+            $response = $view->make('_themosisNoRoute');
 
         }
 
