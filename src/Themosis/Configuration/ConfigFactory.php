@@ -47,11 +47,6 @@ class ConfigFactory
 			   $constant = new Constant();
 			   $constant->set($this->path);
 			   break;
-            
-			case 'errors':
-			   $error = new Error();
-			   $error->set($this->path);
-			   break;
 
             case 'images':
                $images = new Images();

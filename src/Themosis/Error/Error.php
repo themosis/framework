@@ -1,7 +1,6 @@
 <?php
 namespace Themosis\Error;
 
-use Themosis\Configuration\Error as ConfigError;
 use Exception;
 	
 class Error extends Exception
@@ -20,7 +19,8 @@ class Error extends Exception
 		// If detailed errors are enabled, we'll just format the exception into
 		// a simple error message and display it on the screen. We don't use a
 		// View in case the problem is in the View class.
-		if (ConfigError::get('display')) {
+        $display = defined('THEMOSIS_ERROR_DISPLAY') ? THEMOSIS_ERROR_DISPLAY : false;
+		if ($display) {
 
 			echo "<html><h2>Unhandled Exception</h2>
 				  <h3>Message:</h3>
