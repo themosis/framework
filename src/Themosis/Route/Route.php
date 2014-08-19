@@ -99,6 +99,13 @@ class Route {
             $action['uses'] = $this->findClosure($action);
         }
 
+        if (!isset($action['params']))
+        {
+            // The first element passed in the action is used
+            // for the WordPress conditional function parameters.
+            $action['params'] = $action[0];
+        }
+
         return $action;
     }
 
