@@ -431,32 +431,29 @@
          * @return void
          */
         resetMedia: function(field){
-            var cells = field.closest('td').find('table.themosis-media>tbody>tr>td'),
-                addCell = cells.first(),
+
+            var cells = field.closest('td').find('table.themosis-media>tbody>tr').find('.themosis-media-preview, .themosis-media-infos, button'),
                 mediaField = field.closest('tr.themosis-field-container');
 
             // Reset path content
             field.closest('td').find('p.themosis-media__path').html('');
 
             // Toggle media cells only if it's on "delete" state.
-            if(addCell.hasClass('themosis-media--hidden')){
+            _.each(cells, function(elem){
 
-                _.each(cells, function(elem){
+                elem = $(elem);
 
-                    elem = $(elem);
+                if(elem.hasClass('themosis-media--hidden')){
 
-                    if(elem.hasClass('themosis-media--hidden')){
+                    elem.removeClass('themosis-media--hidden');
 
-                        elem.removeClass('themosis-media--hidden');
+                } else {
 
-                    } else {
+                    elem.addClass('themosis-media--hidden');
 
-                        elem.addClass('themosis-media--hidden');
+                }
 
-                    }
-
-                });
-            }
+            });
 
             // Set a new backbone object for the media field.
             var data = new MediaApp.Models.Media({
