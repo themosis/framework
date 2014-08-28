@@ -298,6 +298,13 @@
     // Single row view
     InfiniteApp.Views.Row = Backbone.View.extend({
 
+        initialize: function(){
+
+            _.bindAll(this, 'placeButton');
+            $(window).on('resize', this.placeButton);
+
+        },
+
         events: {
             'mouseenter .themosis-infinite-options': 'placeButton',
             'click span.themosis-infinite-add': 'insert',
@@ -323,9 +330,11 @@
          */
         placeButton: function(){
             var plusButton = this.$el.find('.themosis-infinite-add'),
-                cellHeight = this.$el.find('td.themosis-infinite-options').height();
+                cellHeight = this.$el.find('td.themosis-infinite-options').height(),
+                cellWidth = this.$el.find('td.themosis-infinite-options').width();
 
-            plusButton.css('margin-top', (cellHeight / 2) * -1);
+            plusButton.css('margin-top', ((cellHeight / 2) - 13) * -1);
+            plusButton.css('margin-left', (cellWidth / 2) - 9);
         },
 
         /**
