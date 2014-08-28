@@ -165,8 +165,21 @@
 	border-spacing: 0px;
 }
 
+.themosis-media-details{
+    vertical-align: top !important;
+}
+
+.themosis-media-inner{
+    padding: 0 0 0 1em;
+}
+
 .themosis-media tr td p{
     margin-top: 0;
+}
+
+.themosis-media tr td h4{
+    padding: 0;
+    margin: 0.5em 0;
 }
 
 .themosis-media__path{
@@ -189,7 +202,7 @@
 }
 
 .themosis-media .themosis-media__buttons{
-    width: 1%;
+    width: 100px;
     padding-right: 10px;
 }
 

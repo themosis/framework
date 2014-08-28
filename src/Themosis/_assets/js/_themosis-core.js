@@ -16,9 +16,11 @@
     // Media model
     MediaApp.Models.Media = Backbone.Model.extend({
         defaults: {
-            value : '',
+            value : '', // Register the attachment ID if image, URL if application file
             type : 'image',
-            size : 'full'
+            size : 'full',
+            display : '',
+            thumbUrl : ''
         }
     });
 
@@ -37,6 +39,9 @@
 
             // The <p> DOM element.
             this.display = this.$el.find('p.themosis-media__path');
+
+            // The img thumbnail DOM element.
+            this.thumbnail = this.$el.find('img.themosis-media-thumbnail');
 
             // Init a WordPress media window.
             this.frame = wp.media({
@@ -105,26 +110,50 @@
             var selection = this.getItem(),
                 type = selection.get('type');
 
+            console.log(selection);
+
             // Deal with an application file type.
             // Simply get the URL property.
             if('application' === type){
 
-                this.setField(selection.get('url'));
+                var val = selection.get('id'),
+                    display = selection.get('id'),
+                    thumbUrl = thfmk_themosis._themosisAssets + '/images/themosisFileIcon.png';
+
+                // Update the model.
+                this.model.set({
+                    value: val,
+                    display: display,
+                    thumbUrl: thumbUrl
+                });
+
+                // Update the DOM elements.
+                this.input.val(val);
+                this.display.html(display);
+                this.thumbnail.attr('src', thumbUrl);
+
                 this.toggleButtons();
 
             } else if('image' === type){
 
                 // Check if the defined size is available.
-                var sizes = selection.get('sizes'),
-                    image = sizes[this.model.get('size')];
+                //this.setField(selection.get('id'));
+                var val = selection.get('id'),
+                    display = selection.get('id'),
+                    sizes = selection.get('sizes'),
+                    thumbUrl = sizes._themosis_media.url;
 
-                if(undefined !== image){
-                    // If available, grab its URL.
-                    this.setField(image.url);
-                } else {
-                    // If not available, take the full size URL.
-                    this.setField(selection.get('url'));
-                }
+                // Update the model.
+                this.model.set({
+                    value: val,
+                    display: display,
+                    thumbUrl: thumbUrl
+                });
+
+                // Update the DOM elements.
+                this.input.val(val);
+                this.display.html(display);
+                this.thumbnail.attr('src', thumbUrl);
 
                 this.toggleButtons();
 
@@ -149,16 +178,16 @@
          * Set the media field hidden input value and display html value.
          * Set the model value attribute.
          *
-         * @param {string} url
+         * @param {string} val If image = attachment ID, if file = URL
          */
-        setField: function(url){
+        setField: function(val){
 
             // Update the model.
-            this.model.set({value: url});
+            this.model.set({value: val});
 
             // Update the DOM elements.
-            this.input.val(url);
-            this.display.html(url);
+            this.input.val(val);
+            this.display.html(val);
 
         },
 

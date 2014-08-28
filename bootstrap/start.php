@@ -55,6 +55,59 @@ add_filter('themosisAssetPaths', function($paths){
 include_once(themosis_path('sys').'Helpers'.DS.'helpers.php');
 
 /*----------------------------------------------------*/
+// Register framework media image size.
+/*----------------------------------------------------*/
+add_image_size('_themosis_media', 100, 100, true);
+
+add_filter('image_size_names_choose', function($sizes){
+
+    $sizes['_themosis_media'] = __('Themosis Media Thumbnail', THEMOSIS_FRAMEWORK_TEXTDOMAIN);
+
+    return $sizes;
+});
+
+/*----------------------------------------------------*/
+// Allow developers to add parameters to
+// the admin global JS object.
+/*----------------------------------------------------*/
+add_action('admin_head', function(){
+
+    $datas = apply_filters('themosisAdminGlobalObject', array());
+
+    $output = "<script type=\"text/javascript\">\n\r";
+    $output.= "//<![CDATA[\n\r";
+    $output.= "var thfmk_themosis = {\n\r";
+
+    if (!empty($datas))
+    {
+        foreach ($datas as $key => $value)
+        {
+            $output.= $key.": ".json_encode($value).",\n\r";
+        }
+    }
+
+    $output.= "};\n\r";
+    $output.= "//]]>\n\r";
+    $output.= "</script>";
+
+    // Output the datas.
+    echo($output);
+
+});
+
+/*----------------------------------------------------*/
+// Register framework core assets URL to
+// admin global object.
+/*----------------------------------------------------*/
+add_filter('themosisAdminGlobalObject', function($paths){
+
+    $paths['_themosisAssets'] = themosis_plugin_url().'/src/Themosis/_assets';
+
+    return $paths;
+
+});
+
+/*----------------------------------------------------*/
 // Enqueue frameworks assets.
 /*----------------------------------------------------*/
 // Themosis styles

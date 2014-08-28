@@ -16,9 +16,6 @@ class Configuration
 	private function __construct()
 	{
 		Action::listen('init', $this, 'init')->dispatch();
-
-		// Admin actions
-		Action::listen('admin_head', $this, 'adminHead')->dispatch();
 	}
 
     /**
@@ -96,34 +93,4 @@ class Configuration
 	    }
 		
 	}
-
-	/**
-	 * Allow developers to add parameters to the admin global JS object.
-	 * 
-	 * @return void
-	 */
-	public function adminHead()
-	{
-		$datas = apply_filters('themosisAdminGlobalObject', array());
-
-        $output = "<script type=\"text/javascript\">\n\r";
-        $output.= "//<![CDATA[\n\r";
-        $output.= "var thfmk_themosis = {\n\r";
-
-        if (!empty($datas))
-        {
-            foreach ($datas as $key => $value)
-            {
-                $output.= $key.": ".json_encode($value).",\n\r";
-            }
-        }
-
-        $output.= "};\n\r";
-        $output.= "//]]>\n\r";
-        $output.= "</script>";
-
-        // Output the datas.
-        echo($output);
-	}
-
 }
