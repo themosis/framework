@@ -192,7 +192,7 @@ if (!class_exists('THFWK_Themosis'))
             // Bootstrap the framework
             if (isset($GLOBALS['THFWK_Themosis']))
             {
-                require_once themosis_path('plugin').'bootstrap'.DS.'start.php';
+                require_once themosis_path('plugin').'bootstrap'.DS.'Start.php';
             }
         }
 
