@@ -2,7 +2,7 @@
 
 <table class="themosis-media">
     <tr>
-        <td <?php if(empty($field['value'])){ echo('class="themosis-media--hidden"'); } ?>>
+        <td class="themosis-media-preview <?php if(empty($field['value'])){ echo('themosis-media--hidden'); } ?>">
             <?php if(!empty($field['value']) && is_numeric($field['value'])){ ?>
                 <?php
                     if (wp_attachment_is_image($field['value']))
@@ -20,19 +20,17 @@
                 <img class="themosis-media-thumbnail" alt="Media Icon" src="<?php echo(themosis_plugin_url()); ?>/src/Themosis/_assets/images/themosisFileIcon.png"/>
             <?php } ?>
         </td>
-        <td class="themosis-media-details <?php if(empty($field['value'])){ echo('themosis-media--hidden'); } ?>">
+        <td class="themosis-media-details">
             <div class="themosis-media-inner">
-                <h4><?php _e('Attachment ID', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?>:</h4>
-                <p class="themosis-media__path">{{ $field['value'] }}</p>
+                <div class="themosis-media-infos <?php if(empty($field['value'])){ echo('themosis-media--hidden'); } ?>">
+                    <h4><?php _e('Attachment ID', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?>:</h4>
+                    <p class="themosis-media__path">{{ $field['value'] }}</p>
+                </div>
+                <div class="themosis-media__buttons">
+                    <button id="themosis-media-add" type="button" class="button button-primary <?php if(!empty($field['value'])){ echo('themosis-media--hidden'); } ?>"><?php _e('Add', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
+                    <button id="themosis-media-delete" type="button" class="button <?php if(empty($field['value'])){ echo('themosis-media--hidden'); } ?>"><?php  _e('Delete', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
+                </div>
             </div>
-        </td>
-    </tr>
-    <tr>
-        <td class="themosis-media__buttons <?php if(!empty($field['value'])){ echo('themosis-media--hidden'); } ?>">
-            <button id="themosis-media-add" type="button" class="button button-primary"><?php _e('Add', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
-        </td>
-        <td class="themosis-media__buttons <?php if(empty($field['value'])){ echo('themosis-media--hidden'); } ?>">
-            <button id="themosis-media-delete" type="button" class="button"><?php  _e('Delete', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
         </td>
     </tr>
 </table>
