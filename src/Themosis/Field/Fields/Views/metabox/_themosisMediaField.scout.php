@@ -3,6 +3,7 @@
 <table class="themosis-media">
     <tr>
         <td class="themosis-media-preview <?php if(empty($field['value'])){ echo('themosis-media--hidden'); } ?>">
+            <div class="themosis-media-preview-inner">
             <?php if(!empty($field['value']) && is_numeric($field['value'])){ ?>
                 <?php
                     if (wp_attachment_is_image($field['value']))
@@ -19,6 +20,7 @@
             <?php } else { ?>
                 <img class="themosis-media-thumbnail" alt="Media Icon" src="<?php echo(themosis_plugin_url()); ?>/src/Themosis/_assets/images/themosisFileIcon.png"/>
             <?php } ?>
+            </div>
         </td>
         <td class="themosis-media-details">
             <div class="themosis-media-inner">
