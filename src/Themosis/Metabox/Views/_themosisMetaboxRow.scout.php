@@ -1,6 +1,6 @@
 <tr class="themosis-field-container">
     <th class="themosis-label" scope="row">
-        {{ Form::label($field['id'], $field['title']) }}
+        {{ Themosis\Facades\Form::label($field['id'], $field['title']) }}
     </th>
     <td>
         {{ $field->metabox() }}
