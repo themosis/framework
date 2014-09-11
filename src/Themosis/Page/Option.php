@@ -12,21 +12,19 @@ class Option
      * @throws OptionException
      * @return mixed The option value.
      */
-	public static function get($optionGroup, $name)
-	{
-		$option = get_option($optionGroup);
+    public static function get($optionGroup, $name)
+    {
+        $option = get_option($optionGroup);
 
-		if (!empty($option)) {
-			$option = $option[$name];
+        if (!empty($option))
+        {
+            if (isset($option[$name]))
+            {
+                return $option[$name];
+            }
+        }
 
-			if (isset($option)) {
-				return $option;
-			} else {
-				throw new OptionException("Invalid option name or value not found.");
-			}
-		}
+        return '';
 
-		return false;
-
-	}
+    }
 }
