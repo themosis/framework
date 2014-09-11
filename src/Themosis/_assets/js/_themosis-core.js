@@ -1,7 +1,7 @@
 /**
-* This file supports the Themosis custom fields.
-* Combination of jQuery & BackboneJS.
-*/
+ * This file supports the Themosis custom fields.
+ * Combination of jQuery & BackboneJS.
+ */
 (function($){
 
     //------------------------------------------------
@@ -118,7 +118,7 @@
 
                 thumbUrl = thfmk_themosis._themosisAssets + '/images/themosisFileIcon.png';
 
-            // Deal with an image.
+                // Deal with an image.
             } else if('image' === type){
 
                 // Check if the defined size is available.
@@ -267,29 +267,11 @@
          * @return void
          */
         setupBackbone: function(){
-
-            _.each(this.rows, function(elem){
-
-                // DOM elements.
-                var row = $(elem);
-
-                // Backbone elements.
-                // Setup row views.
-                new InfiniteApp.Views.Row({
-                    el: row
-                });
-
-            });
-
             // Setup the views.
-            // Set the main ADD button view.
-            new InfiniteApp.Views.Add({
-                el: this.infinite.find('div.themosis-infinite-add-field-container')
-            });
-
             // Set the main INFINITE view (=rowsCollection View)
             new InfiniteApp.Views.Infinite({
-                el: this.infinite.find('table.themosis-infinite>tbody')
+                el: this.infinite.find('table.themosis-infinite>tbody'),
+                rows: this.rows
             });
         }
 
@@ -298,11 +280,12 @@
     // Single row view
     InfiniteApp.Views.Row = Backbone.View.extend({
 
-        initialize: function(){
+        initialize: function(options){
+            // Retrieve passed parameters
+            this.options = options;
 
             _.bindAll(this, 'placeButton');
             $(window).on('resize', this.placeButton);
-
         },
 
         events: {
@@ -315,14 +298,14 @@
          * Triggered when click on the row 'add' button.
          */
         insert: function(){
-            vent.trigger('row:insert', this);
+            this.options.parent.insert(this);
         },
 
         /**
          * Triggered when 'delete' button is clicked.
          */
         remove: function(){
-            vent.trigger('row:delete', this);
+            this.options.parent.remove(this);
         },
 
         /**
@@ -486,6 +469,10 @@
     // Main ADD button view
     InfiniteApp.Views.Add = Backbone.View.extend({
 
+        initialize: function(options){
+            this.options = options;
+        },
+
         events: {
             'click button#themosis-infinite-main-add': 'addRow'
         },
@@ -494,7 +481,8 @@
          * Send an event to add a new row.
          */
         addRow: function(){
-            vent.trigger('row:add');
+            // Calls the infinite parent view method.
+            this.options.parent.add();
         }
 
     });
@@ -502,21 +490,52 @@
     // Infinite view - All rows view
     InfiniteApp.Views.Infinite = Backbone.View.extend({
 
-        initialize: function(){
+        initialize: function(options){
+
+            // Retrieve passed parameters.
+            this.options = options;
+
             // Number of rows.
             this.updateCount();
 
             // Set the limit.
             this.limit();
 
+            // Attach the main "add" button to the view.
+            this.addButton = new InfiniteApp.Views.Add({
+                el: this.$el.closest('.themosis-infinite-container').find('div.themosis-infinite-add-field-container'),
+                parent: this
+            });
+
+            // Create inner rows view and pass them their parent infinite view.
+            this.setRows();
+
             // Global events.
-            vent.on('row:add', this.add, this);
-            vent.on('row:insert', this.insert, this);
-            vent.on('row:delete', this.remove, this);
             vent.on('row:sort', this.update, this);
 
             // Make it sortable.
             this.sort();
+        },
+
+        /**
+         * Create inner rows views.
+         */
+        setRows: function(){
+
+            _.each(this.options.rows, function(elem){
+
+                // DOM elements.
+                var row = $(elem);
+
+                // Backbone elements.
+                // Setup row views.
+                new InfiniteApp.Views.Row({
+                    el: row,
+                    parent: this
+                });
+
+            }, this);
+
         },
 
         /**
@@ -550,7 +569,8 @@
 
             var row = this.$el.find('tr.themosis-infinite-row').first().clone(),
                 rowView = new InfiniteApp.Views.Row({
-                    el: row
+                    el: row,
+                    parent: this
                 });
 
             return rowView.reset();
