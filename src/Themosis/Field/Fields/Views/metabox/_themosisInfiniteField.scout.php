@@ -62,6 +62,6 @@
     </div>
     @endif
     <div class="themosis-infinite-add-field-container">
-        <button type="button" id="themosis-infinite-main-add" class="button-primary">{{ __('Add Row', THEMOSIS_FRAMEWORK_TEXTDOMAIN) }}</button>
+        <button type="button" id="themosis-infinite-main-add" class="button-primary">{{ __('Add') }}</button>
     </div>
 </div>

@@ -114,7 +114,7 @@ add_filter('themosisAdminGlobalObject', function($paths){
 Themosis\Facades\Asset::add('themosis-core-styles', 'css/_themosis-core.css')->to('admin');
 
 // Themosis scripts
-Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosis-core.js', array('jquery', 'jquery-ui-sortable', 'underscore', 'backbone'), false, true)->to('admin');
+Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosis-core.js', array('jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view'), false, true)->to('admin');
 
 /*----------------------------------------------------*/
 // Bootstrap application.

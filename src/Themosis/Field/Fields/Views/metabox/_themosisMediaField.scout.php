@@ -25,12 +25,12 @@
         <td class="themosis-media-details">
             <div class="themosis-media-inner">
                 <div class="themosis-media-infos <?php if(empty($field['value'])){ echo('themosis-media--hidden'); } ?>">
-                    <h4><?php _e('Attachment ID', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?>:</h4>
+                    <h4><?php _e('Attachment ID'); ?>:</h4>
                     <p class="themosis-media__path">{{ $field['value'] }}</p>
                 </div>
                 <div class="themosis-media__buttons">
-                    <button id="themosis-media-add" type="button" class="button button-primary <?php if(!empty($field['value'])){ echo('themosis-media--hidden'); } ?>"><?php _e('Add', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
-                    <button id="themosis-media-delete" type="button" class="button <?php if(empty($field['value'])){ echo('themosis-media--hidden'); } ?>"><?php  _e('Delete', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
+                    <button id="themosis-media-add" type="button" class="button button-primary <?php if(!empty($field['value'])){ echo('themosis-media--hidden'); } ?>"><?php _e('Add'); ?></button>
+                    <button id="themosis-media-delete" type="button" class="button <?php if(empty($field['value'])){ echo('themosis-media--hidden'); } ?>"><?php  _e('Delete'); ?></button>
                 </div>
             </div>
         </td>

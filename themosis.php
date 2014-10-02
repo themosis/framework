@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Themosis framework
-Plugin URI: http://www.themosis.com/
+Plugin URI: http://framework.themosis.com/
 Description: A framework for WordPress developers.
-Version: 0.9
+Version: 1.0.0
 Author: Julien Lambé
-Author URI: http://jlambe.be/en/
+Author URI: http://www.themosis.com/
 License: GPLv2
 */
 
@@ -52,7 +52,7 @@ if (!class_exists('THFWK_Themosis'))
          *
          * @var float
          */
-        const VERSION = 0.9;
+        const VERSION = '1.0.0';
 
         /**
          * Plugin directory name.
