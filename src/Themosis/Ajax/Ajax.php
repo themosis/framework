@@ -44,26 +44,31 @@ class Ajax
      */
 	public static function run($action, $logged, callable $closure)
 	{
-		if (is_string($action) && is_callable($closure)) {
-
+		if (is_string($action) && is_callable($closure))
+        {
 			// Front-end ajax for non-logged users
 			// Set $logged to FALSE
-			if ($logged === 'no') {
+			if ($logged === 'no')
+            {
 				add_action('wp_ajax_nopriv_'.$action, $closure);
 			}
 
 			// Front-end and back-end for logged users
-			if ($logged === 'yes') {
+			if ($logged === 'yes')
+            {
 				add_action('wp_ajax_'.$action, $closure);
 			}
 
 			// Front-end and back-end for both logged in or out users
-			if ($logged === 'both') {
+			if ($logged === 'both')
+            {
 				add_action('wp_ajax_nopriv_'.$action, $closure);
 				add_action('wp_ajax_'.$action, $closure);
 			}
 
-		} else {
+		}
+        else
+        {
 			throw new AjaxException("Invalid parameters for the Ajax::run method.");
 		}
 	}

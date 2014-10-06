@@ -4,7 +4,7 @@
 * Helpers functions globally available
 */
 
-if (!function_exists('themosis_is_page'))
+if (!function_exists('themosis_is_subpage'))
 {
     /**
      * Define if the current page is a child page.

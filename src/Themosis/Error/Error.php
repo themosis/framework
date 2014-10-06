@@ -20,8 +20,8 @@ class Error extends Exception
 		// a simple error message and display it on the screen. We don't use a
 		// View in case the problem is in the View class.
         $display = defined('THEMOSIS_ERROR_DISPLAY') ? THEMOSIS_ERROR_DISPLAY : false;
-		if ($display) {
-
+		if ($display)
+        {
 			echo "<html><h2>Unhandled Exception</h2>
 				  <h3>Message:</h3>
 				  <pre>".$exception->getMessage()."</pre>
@@ -34,7 +34,9 @@ class Error extends Exception
 				  <h3>Stack Trace:</h3>
 				  <pre>".$exception->getTraceAsString()."</pre></html>";
 			}
-		} else {
+		}
+        else
+        {
 			// RETURN 500 Error
 		}
 
@@ -74,7 +76,8 @@ class Error extends Exception
 		// as it will not yet have been handled.
 		$error = error_get_last();
 
-		if (!is_null($error)) {
+		if (!is_null($error))
+        {
 			extract($error, EXTR_SKIP);
 
 			static::exception(new \ErrorException($message, $type, 0, $file, $line), false);

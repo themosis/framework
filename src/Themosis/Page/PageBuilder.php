@@ -19,7 +19,7 @@ class PageBuilder extends Wrapper {
     /**
      * The page view file.
      *
-     * @var \Themosis\Core\WrapperView
+     * @var \Themosis\View\IRenderable
      */
     private $view;
 
@@ -89,14 +89,17 @@ class PageBuilder extends Wrapper {
     {
         $params = compact('slug', 'title');
 
-        foreach($params as $name => $param){
-            if(!is_string($param)){
+        foreach ($params as $name => $param)
+        {
+            if (!is_string($param))
+            {
                 throw new PageException('Invalid page parameter "'.$name.'"');
             }
         }
 
         // Check the view file.
-        if(!is_null($view)){
+        if (!is_null($view))
+        {
             $this->view = $view;
         }
 
@@ -141,14 +144,13 @@ class PageBuilder extends Wrapper {
      */
     public function build()
     {
-        if(!is_null($this->datas['parent'])){
-
+        if (!is_null($this->datas['parent']))
+        {
             add_submenu_page($this->datas['parent'], $this->datas['title'], $this->datas['title'], $this->datas['args']['capability'], $this->datas['slug'], array($this, 'displayPage'));
-
-        } else {
-
+        }
+        else
+        {
             add_menu_page($this->datas['title'], $this->datas['title'], $this->datas['args']['capability'], $this->datas['slug'], array($this, 'displayPage'), $this->datas['args']['icon'], $this->datas['args']['position']);
-
         }
     }
 
@@ -244,16 +246,15 @@ class PageBuilder extends Wrapper {
         // The WordPress Settings API make
         // always use of sections and fields.
         // So let's set it up!
-        if($this->datas['args']['tabs']){
-
+        if ($this->datas['args']['tabs'])
+        {
             // A - With tabs
             $this->installWithTabs();
-
-        } else {
-
+        }
+        else
+        {
             // B - Without tabs
             $this->installWithoutTabs();
-
         }
     }
 
@@ -266,33 +267,33 @@ class PageBuilder extends Wrapper {
     private function installWithTabs()
     {
         // 1 - Prepare the DB table.
-        foreach($this->sections as $section){
-
+        foreach ($this->sections as $section)
+        {
             $section = $section->getData();
 
-            if(false === get_option($section['slug'])){
+            if (false === get_option($section['slug']))
+            {
                 add_option($section['slug']);
             }
         }
 
         // 2 - Display sections
-        foreach($this->sections as $section){
-
+        foreach ($this->sections as $section)
+        {
             $section = $section->getData();
 
             add_settings_section($section['slug'], $section['name'], array($this, 'displaySections'), $section['slug']);
-
         }
 
         // 3 - Display settings
-        foreach($this->settings as $section => $settings){
-            foreach($settings as $setting){
-
+        foreach ($this->settings as $section => $settings)
+        {
+            foreach ($settings as $setting)
+            {
                 // Add the section to the field.
                 $setting['section'] = $section;
 
                 add_settings_field($setting['id'], $setting['title'], array($this, 'displaySettings'), $section, $section, array($setting));
-
             }
         }
 
@@ -301,7 +302,8 @@ class PageBuilder extends Wrapper {
         // the wp_options table.
         // When you want to retrieve a setting use the option_group
         // name and the setting id.
-        foreach($this->sections as $section){
+        foreach ($this->sections as $section)
+        {
             $section = $section->getData();
 
             register_setting($section['slug'], $section['slug'], array($this, 'validateSettings'));
@@ -316,29 +318,29 @@ class PageBuilder extends Wrapper {
     private function installWithoutTabs()
     {
         // 1 - Prepare the DB table.
-        if(false === get_option($this->datas['slug'])){
+        if (false === get_option($this->datas['slug']))
+        {
             add_option($this->datas['slug']);
         }
 
         // 2 - Display sections
-        foreach($this->sections as $section){
-
+        foreach ($this->sections as $section)
+        {
             $section = $section->getData();
 
             add_settings_section($section['slug'], $section['name'], array($this, 'displaySections'), $this->datas['slug']);
-
         }
 
         // 3 - Display settings
-        foreach($this->settings as $section => $settings){
-            foreach($settings as $setting){
-
+        foreach ($this->settings as $section => $settings)
+        {
+            foreach ($settings as $setting)
+            {
                 // Add the section to the field - In this case,
                 // it is associated to the page slug.
                 $setting['section'] = $this->datas['slug'];
 
                 add_settings_field($setting['id'], $setting['title'], array($this, 'displaySettings'), $this->datas['slug'], $section, array($setting));
-
             }
         }
 
@@ -383,61 +385,62 @@ class PageBuilder extends Wrapper {
     /**
      * Validate the defined settings.
      *
-     * @param array $values
+     * @param mixed $values
      * @return array
      */
-    public function validateSettings(array $values)
+    public function validateSettings($values)
     {
-        if(!isset($this->datas['rules']) || !is_array($this->datas['rules'])) return $values;
+        // No validation rules
+        if (!isset($this->datas['rules']) || !is_array($this->datas['rules'])) return $values;
+
+        // Null given
+        if (is_null($values)) return array();
 
         $sanitized = array();
 
-        foreach($values as $setting => $value){
-
+        foreach ($values as $setting => $value)
+        {
             $rules = array_keys($this->datas['rules']);
 
             // 1 - Check if a rule exists
-            if(in_array($setting, $rules)){
-
+            if (in_array($setting, $rules))
+            {
                 // 1.1 - Check for infinite settings.
-                if(is_array($value) && $this->isInfinite($setting)){
-
-                    foreach($value as $index => $row){
-
-                        if($this->validator->isAssociative($row) && !empty($row)){
-
-                            foreach($row as $infiniteSetting => $infiniteValue){
-
+                if (is_array($value) && $this->isInfinite($setting))
+                {
+                    foreach ($value as $index => $row)
+                    {
+                        if ($this->validator->isAssociative($row) && !empty($row))
+                        {
+                            foreach ($row as $infiniteSetting => $infiniteValue)
+                            {
                                 // 1.1.1 - Check if a rule is defined for the infinite sub fields.
-                                if(isset($this->datas['rules'][$setting][$infiniteSetting])){
-
+                                if (isset($this->datas['rules'][$setting][$infiniteSetting]))
+                                {
                                     $rule = $this->datas['rules'][$setting][$infiniteSetting];
 
                                     $sanitized[$setting][$index][$infiniteSetting] = $this->validator->single($infiniteValue, $rule);
-
-                                } else {
-
+                                }
+                                else
+                                {
                                     $sanitized[$setting][$index][$infiniteSetting] = $infiniteValue;
-
                                 }
                             }
                         }
                     }
-
-                } else {
-
+                }
+                else
+                {
                     // 1.2 - Apply rule to other settings.
                     $sanitized[$setting] = $this->validator->single($value, $this->datas['rules'][$setting]);
-
                 }
 
-            } else {
-
+            }
+            else
+            {
                 // 2 - No rule, just set the default value.
                 $sanitized[$setting] = $value;
-
             }
-
         }
 
         return $sanitized;
@@ -464,11 +467,11 @@ class PageBuilder extends Wrapper {
      */
     private function isInfinite($name)
     {
-        foreach($this->settings as $settings){
-            foreach($settings as $setting){
-
+        foreach ($this->settings as $settings)
+        {
+            foreach ($settings as $setting)
+            {
                 if($name === $setting['name']) return true;
-
             }
         }
 
