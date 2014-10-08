@@ -103,7 +103,12 @@ class Route {
         {
             // The first element passed in the action is used
             // for the WordPress conditional function parameters.
-            $action['params'] = $action[0];
+            $param = array_first($action, function($key, $value)
+            {
+                return is_string($value);
+            });
+
+            $action['params'] = (false !== strrpos($param, '@')) ? null : $action[0];
         }
 
         return $action;
