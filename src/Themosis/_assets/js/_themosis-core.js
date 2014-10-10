@@ -123,7 +123,15 @@
 
                 // Check if the defined size is available.
                 var sizes = selection.get('sizes');
-                thumbUrl = sizes._themosis_media.url;
+                
+                if (undefined !== sizes._themosis_media)
+                {
+                    thumbUrl = sizes._themosis_media.url;
+                }
+                else
+                {
+                    thumbUrl = sizes.full.url;
+                }
             }
 
             // Update the model.
