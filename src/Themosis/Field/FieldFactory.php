@@ -49,6 +49,22 @@ class FieldFactory {
     }
 
     /**
+     * Return a PasswordField instance.
+     *
+     * @param string $name The name attribute of the password input.
+     * @param array $extras Extra field properties.
+     * @return \Themosis\Field\Fields\PasswordField
+     */
+    public function password($name, array $extras = array())
+    {
+        $properties = compact('name');
+
+        $properties = array_merge($extras, $properties);
+
+        return $this->make('Themosis\\Field\\Fields\\PasswordField', $properties);
+    }
+
+    /**
      * Return a TextareaField instance.
      *
      * @param string $name The name attribute of the textarea.

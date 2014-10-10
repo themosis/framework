@@ -118,12 +118,12 @@
 
                 thumbUrl = thfmk_themosis._themosisAssets + '/images/themosisFileIcon.png';
 
-                // Deal with an image.
+            // Deal with an image.
             } else if('image' === type){
 
                 // Check if the defined size is available.
                 var sizes = selection.get('sizes');
-                
+
                 if (undefined !== sizes._themosis_media)
                 {
                     thumbUrl = sizes._themosis_media.url;

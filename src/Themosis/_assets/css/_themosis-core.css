@@ -191,6 +191,8 @@
 .themosis-media-preview .themosis-media-preview-inner img{
     display: block;
     margin: auto;
+    width: 100px;
+    height: 100px;
 }
 
 .themosis-media-details{
