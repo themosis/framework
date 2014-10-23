@@ -32,7 +32,7 @@ class TaxonomyBuilder extends Wrapper {
 
     /**
      * @param string $slug The taxonomy slug name.
-     * @param string $postType The taxonomy object type slug: 'post', 'page', ...
+     * @param string|array $postType The taxonomy object type slug: 'post', 'page', ...
      * @param string $plural The taxonomy plural display name.
      * @param string $singular The taxonomy singular display name.
      * @throws TaxonomyException
@@ -44,14 +44,15 @@ class TaxonomyBuilder extends Wrapper {
 
         foreach($params as $name => $param)
         {
-            if(!is_string($param)){
+            if('postType' !== $name && !is_string($param))
+            {
                 throw new TaxonomyException('Invalid taxonomy parameter "'.$name.'"');
             }
         }
 
         // Store properties.
         $this->datas['slug'] = $slug;
-        $this->datas['postType'] = $postType;
+        $this->datas['postType'] = (array) $postType;
         $this->datas['args'] = $this->setDefaultArguments($plural, $singular);
 
         return $this;
@@ -96,7 +97,10 @@ class TaxonomyBuilder extends Wrapper {
      */
     public function bind()
     {
-        register_taxonomy_for_object_type($this->datas['slug'], $this->datas['postType']);
+        foreach ($this->datas['postType'] as $objectType)
+        {
+            register_taxonomy_for_object_type($this->datas['slug'], $objectType);
+        }
 
         return $this;
     }
