@@ -33,19 +33,28 @@ class AssetFactory {
      * @param string $version The version of your asset.
      * @param bool|string $mixed Boolean if javascript file | String if stylesheet file.
      * @throws AssetException
-     * @return \Themosis\Asset\Asset
+     * @return \Themosis\Asset\Asset|\WP_Error
      */
     public function add($handle, $path, array $deps = array(), $version = '1.0', $mixed = null)
     {
-        if(!is_string($handle) && !is_string($path)) throw new AssetException("Invalid parameters for [Asset::add] method.");
+        if (!is_string($handle) && !is_string($path)) throw new AssetException("Invalid parameters for [Asset::add] method.");
 
         $path = $this->finder->find($path);
         $args = compact('handle', 'path', 'deps', 'version', 'mixed');
 
-        // Check the type of the added asset.
-        $type = (pathinfo($path, PATHINFO_EXTENSION) == 'css') ? 'style' : 'script';
+        // Check if asset has an extension.
+        $ext = pathinfo($path, PATHINFO_EXTENSION);
 
-        return new Asset($type, $args);
+        // If extension.
+        if ($ext)
+        {
+            // Check the type of asset.
+            $type = ($ext === 'css') ? 'style' : 'script';
+            return new Asset($type, $args);
+        }
+
+        // No extension, isolated case. Return WP_Error object for info.
+        return new \WP_Error('asset', __('No file extension found. Perhaps paste your asset code in your &lt;head&gt; tag.', THEMOSIS_FRAMEWORK_TEXTDOMAIN));
     }
 
 } 
