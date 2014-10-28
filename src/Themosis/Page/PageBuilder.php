@@ -373,7 +373,7 @@ class PageBuilder extends Wrapper {
         // Check if a registered value exists.
         $setting = array_shift($setting);
         $value = get_option($setting['section']);
-        $setting['value'] = isset($value[$setting['name']]) ? $value[$setting['name']] : $this->parseValue($setting);
+        $setting['value'] = (isset($value[$setting['name']]) && !empty($value[$setting['name']])) ? $value[$setting['name']] : $this->parseValue($setting);
 
         // Set the name attribute.
         $setting['name'] = $setting['section'].'['.$setting['name'].']';

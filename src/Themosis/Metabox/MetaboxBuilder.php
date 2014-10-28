@@ -349,8 +349,37 @@ class MetaboxBuilder extends Wrapper {
     {
         foreach ($fields as $field)
         {
-            // Set the value property of the $field
-            $field['value'] = get_post_meta($post->ID, $field['name'], true);
+            // Check if saved value
+            $value = get_post_meta($post->ID, $field['name'], true);
+
+            // This is only for display when page is loading
+            // If a value exists, simply assign it.
+            // If no value exists, check the 'parseValue' method
+            // The parseValue method checks if a default value is set for the field
+            // If no default, set empty one.
+
+            // If empty and 'default' defined, grab the default.
+            // Value could be string or array.
+            /*if (is_array($value) && empty($value) && isset($field['default']))
+            {
+                if (is_array($field['default']))
+                {
+                    $value = $field['default'];
+                }
+                else
+                {
+                    $val = (string) $field['default'];
+                    $value = array($val);
+                }
+            }
+            else if(empty($value) && isset($field['default']))
+            {
+                $value = (string) $field['default'];
+            }*/
+
+            // If none of the above condition is matched
+            // simply assign the post meta default or saved value.
+            $field['value'] = $this->parseValue($field, $value);
         }
     }
 

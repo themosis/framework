@@ -8,19 +8,20 @@ abstract class Wrapper {
     /**
      * Set a default value for a given field.
      *
-     * @param FieldBuilder $field A field instance
+     * @param FieldBuilder $field A field instance.
+     * @param mixed $value A registered value.
      * @return mixed
      */
-    protected function parseValue(FieldBuilder $field)
+    protected function parseValue(FieldBuilder $field, $value = null)
     {
-        $value = null;
+        $parsedValue = null;
 
         // No data found, define a default by field type.
         switch($field->getFieldType()){
 
             case 'checkbox':
 
-                $value = 'off';
+                $parsedValue = 'off';
                 break;
 
             case 'checkboxes':
@@ -28,17 +29,34 @@ abstract class Wrapper {
             case 'select':
             case 'infinite':
 
-                $value = array();
+                // Check for the registered fields and their default value if one.
+                $parsedValue = array();
                 break;
 
+            // Text
+            // Textarea
+            // Password
+            // Media
+            // Editor
             default:
-
-                $value = '';
+                $parsedValue = $this->parseString($field, $value);
 
         }
 
-        return $value;
+        return $parsedValue;
 
+    }
+
+    /**
+     * Parse default value for fields with string values.
+     *
+     * @param FieldBuilder $field The custom field instance.
+     * @param string $value Value sent to the field.
+     * @return string The field value.
+     */
+    private function parseString(FieldBuilder $field, $value = '')
+    {
+        return (empty($value) && isset($field['default'])) ? $field['default'] : $value;
     }
 
 } 
