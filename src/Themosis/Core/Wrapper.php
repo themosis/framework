@@ -21,7 +21,8 @@ abstract class Wrapper {
 
             case 'checkbox':
 
-                $parsedValue = 'off';
+                $value = (string) $value;
+                $parsedValue = $this->parseCheckbox($field, $value);
                 break;
 
             case 'checkboxes':
@@ -57,6 +58,43 @@ abstract class Wrapper {
     private function parseString(FieldBuilder $field, $value = '')
     {
         return (empty($value) && isset($field['default'])) ? $field['default'] : $value;
+    }
+
+    /**
+     * Parse default value for checkbox field.
+     *
+     * @param FieldBuilder $field
+     * @param null $value
+     * @return null|string
+     */
+    private function parseCheckbox(FieldBuilder $field, $value = null)
+    {
+        $val = null;
+
+        // Check the defaults
+        if (isset($field['default']))
+        {
+            if ($field['default'])
+            {
+                $val = 'on';
+            }
+            else
+            {
+                $val = 'off';
+            }
+        }
+
+        // Check the given values
+        if (is_null($value) || empty($value))
+        {
+            $val = 'off';
+        }
+        elseif ('on' === $value)
+        {
+            $val = 'on';
+        }
+
+        return $val;
     }
 
 } 
