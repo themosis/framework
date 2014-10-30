@@ -27,13 +27,9 @@ abstract class Wrapper {
 
             case 'checkboxes':
             case 'radio':
-
-                $parsedValue = $this->parseCheckables($field, $value);
-                break;
-
             case 'select':
 
-                $parsedValue = $this->parseSelect($field, $value);
+                $parsedValue = $this->parseArrayable($field, $value);
                 break;
 
             case 'infinite':
@@ -106,34 +102,13 @@ abstract class Wrapper {
     }
 
     /**
-     * Parse default value for checkable fields.
-     * @param FieldBuilder $field
-     * @param array $value
-     * @return array
-     */
-    private function parseCheckables(FieldBuilder $field, $value = array())
-    {
-        if (empty($value) || is_null($value))
-        {
-            if (isset($field['default']))
-            {
-                return (array) $field['default'];
-            }
-
-            return array();
-        }
-
-        return (array) $value;
-    }
-
-    /**
-     * Parse default value for select fields.
+     * Parse default value for fields using array values.
      *
      * @param FieldBuilder $field
      * @param array $value
      * @return string|array
      */
-    private function parseSelect(FieldBuilder $field, $value = array())
+    private function parseArrayable(FieldBuilder $field, $value = array())
     {
         if (is_null($value) || empty($value))
         {
