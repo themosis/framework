@@ -1,0 +1,5 @@
+<?php 
+
+# Silence is Golden =)
+
+ ?>
