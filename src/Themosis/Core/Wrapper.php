@@ -35,7 +35,7 @@ abstract class Wrapper {
             case 'infinite':
 
                 // Check for the registered fields and their default value if one.
-                $parsedValue = array();
+                $parsedValue = $this->parseInfinite($field, $value);
                 break;
 
             // Text
@@ -69,7 +69,7 @@ abstract class Wrapper {
      *
      * @param FieldBuilder $field
      * @param null $value
-     * @return null|string
+     * @return string
      */
     private function parseCheckbox(FieldBuilder $field, $value = null)
     {
@@ -106,7 +106,7 @@ abstract class Wrapper {
      *
      * @param FieldBuilder $field
      * @param array $value
-     * @return string|array
+     * @return array
      */
     private function parseArrayable(FieldBuilder $field, $value = array())
     {
@@ -118,6 +118,46 @@ abstract class Wrapper {
             }
 
             return array();
+        }
+
+        return (array) $value;
+    }
+
+    /**
+     * @param FieldBuilder $field
+     * @param array $value
+     * @return array
+     */
+    private function parseInfinite(FieldBuilder $field, $value = array())
+    {
+        if (is_array($value) && !empty($value))
+        {
+            $wrapper = $this;
+
+            foreach ($value as $i => $row)
+            {
+                $value[$i] = function() use ($wrapper, $row, $field)
+                {
+                    $val = array();
+
+                    foreach ($row as $k => $v)
+                    {
+                        $f = array_filter($field['fields'], function($obj) use ($k)
+                        {
+                            if ($k === $obj['name']) return $obj;
+                        });
+
+                        $val[$k] = $wrapper->parseValue($f, $v);
+                    }
+
+                    return $val;
+                };
+            }
+        }
+
+        if (is_null($value) || empty($value))
+        {
+            // Loop through its
         }
 
         return (array) $value;
