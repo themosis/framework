@@ -32,6 +32,10 @@ abstract class Wrapper {
                 break;
 
             case 'select':
+
+                $parsedValue = $this->parseSelect($field, $value);
+                break;
+
             case 'infinite':
 
                 // Check for the registered fields and their default value if one.
@@ -120,6 +124,28 @@ abstract class Wrapper {
         }
 
         return (array) $value;
+    }
+
+    /**
+     * Parse default value for select fields.
+     *
+     * @param FieldBuilder $field
+     * @param array $value
+     * @return string|array
+     */
+    private function parseSelect(FieldBuilder $field, $value = array())
+    {
+        if (is_null($value) || empty($value))
+        {
+            if (isset($field['default']))
+            {
+                return (array) $field['default'];
+            }
+
+            return array();
+        }
+
+        return $value;
     }
 
 } 
