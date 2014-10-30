@@ -145,7 +145,7 @@ abstract class Wrapper {
             return array();
         }
 
-        return $value;
+        return (array) $value;
     }
 
 } 
