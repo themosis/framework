@@ -130,37 +130,56 @@ abstract class Wrapper {
      */
     private function parseInfinite(FieldBuilder $field, $value = array())
     {
-        if (is_array($value) && !empty($value))
+        $fields = $field['fields'];
+
+        // If null or empty, grab the only available array: the inner fields
+        if (is_null($value) || empty($value))
         {
-            $wrapper = $this;
+            // Set value as array.
+            $value = array();
 
-            foreach ($value as $i => $row)
+            foreach ($fields as $innerField)
             {
-                $value[$i] = function() use ($wrapper, $row, $field)
+                $value[1][$innerField['name']] = $this->parseValue($innerField);
+            }
+        }
+        else
+        {
+            $value = (array) $value;
+
+            // Parse the values. If empty and a default is defined, the default value is applied.
+            foreach ($value as $i => $rowValues)
+            {
+                foreach ($rowValues as $name => $val)
                 {
-                    $val = array();
+                    // Get the associate field.
+                    $f = $this->getInfiniteInnerField($fields, $name);
 
-                    foreach ($row as $k => $v)
-                    {
-                        $f = array_filter($field['fields'], function($obj) use ($k)
-                        {
-                            if ($k === $obj['name']) return $obj;
-                        });
-
-                        $val[$k] = $wrapper->parseValue($f, $v);
-                    }
-
-                    return $val;
-                };
+                    // Apply default value if empty and if default exists.
+                    $value[$i][$name] = $this->parseValue($f, $val);
+                }
             }
         }
 
-        if (is_null($value) || empty($value))
-        {
-            // Loop through its
-        }
-
         return (array) $value;
+    }
+
+    /**
+     * Grab the inner field of an Infinite field.
+     *
+     * @param array $fields List of inner fields.
+     * @param string $name Name of the inner field to fetch.
+     * @return mixed The Field instance
+     */
+    private function getInfiniteInnerField(array $fields, $name)
+    {
+        foreach ($fields as $field)
+        {
+            if ($name === $field['name'])
+            {
+                return $field;
+            }
+        }
     }
 
 } 
