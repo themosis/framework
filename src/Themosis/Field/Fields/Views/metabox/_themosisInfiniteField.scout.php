@@ -57,11 +57,11 @@
         </tbody>
     </table>
     @if(isset($field['info']))
-    <div class="themosis-field-info">
-        <p>{{ $field['info'] }}</p>
-    </div>
+        <div class="themosis-field-info">
+            <p>{{ $field['info'] }}</p>
+        </div>
     @endif
     <div class="themosis-infinite-add-field-container">
-        <button type="button" id="themosis-infinite-main-add" class="button-primary">{{ __('Add') }}</button>
+        <button type="button" id="themosis-infinite-main-add" class="button-primary"><?php _e('Add'); ?></button>
     </div>
 </div>

@@ -293,7 +293,7 @@ class PageBuilder extends Wrapper {
                 // Add the section to the field.
                 $setting['section'] = $section;
 
-                add_settings_field($setting['id'], $setting['title'], array($this, 'displaySettings'), $section, $section, array($setting));
+                add_settings_field($setting['name'], $setting['title'], array($this, 'displaySettings'), $section, $section, $setting);
             }
         }
 
@@ -340,7 +340,7 @@ class PageBuilder extends Wrapper {
                 // it is associated to the page slug.
                 $setting['section'] = $this->datas['slug'];
 
-                add_settings_field($setting['id'], $setting['title'], array($this, 'displaySettings'), $this->datas['slug'], $section, array($setting));
+                add_settings_field($setting['name'], $setting['title'], array($this, 'displaySettings'), $this->datas['slug'], $section, $setting);
             }
         }
 
@@ -365,13 +365,12 @@ class PageBuilder extends Wrapper {
     /**
      * Handle setting display of the Settings API.
      *
-     * @param array $setting
+     * @param mixed $setting
      * @return void
      */
-    public function displaySettings(array $setting)
+    public function displaySettings($setting)
     {
         // Check if a registered value exists.
-        $setting = array_shift($setting);
         $value = get_option($setting['section']);
         $val = isset($value[$setting['name']]) ? $value[$setting['name']] : null;
         $setting['value'] = (!is_null($val) || !empty($val)) ? $val : $this->parseValue($setting, $val);
