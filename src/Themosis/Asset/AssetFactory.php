@@ -29,13 +29,13 @@ class AssetFactory {
      *
      * @param string $handle The asset handle name.
      * @param string $path The URI to the asset or the absolute URL.
-     * @param array $deps An array with asset dependencies.
+     * @param array|boolean $deps An array with asset dependencies or false.
      * @param string $version The version of your asset.
      * @param bool|string $mixed Boolean if javascript file | String if stylesheet file.
      * @throws AssetException
      * @return \Themosis\Asset\Asset|\WP_Error
      */
-    public function add($handle, $path, array $deps = array(), $version = '1.0', $mixed = null)
+    public function add($handle, $path, $deps = array(), $version = '1.0', $mixed = null)
     {
         if (!is_string($handle) && !is_string($path)) throw new AssetException("Invalid parameters for [Asset::add] method.");
 
