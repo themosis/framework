@@ -14,6 +14,7 @@ class TextField extends FieldBuilder{
     {
         $this->properties = $properties;
         $this->setId();
+        $this->setClass();
         $this->setTitle();
         $this->fieldType();
     }
@@ -37,6 +38,16 @@ class TextField extends FieldBuilder{
     private function setId()
     {
         $this['id'] = isset($this['id']) ? $this['id'] : $this['name'].'-id';
+    }
+
+    /**
+     * Set a default class attribute if not defined.
+     *
+     * @return void
+     */
+    private function setClass()
+    {
+        $this['class'] = isset($this['class']) ? $this['class'] : 'large-text';
     }
 
     /**
