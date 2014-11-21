@@ -11,6 +11,13 @@ abstract class Facade {
     protected static $app;
 
     /**
+     * The resolved object instances.
+     *
+     * @var array
+     */
+    protected static $resolvedInstances;
+
+    /**
      * Each facade must define their igniter service
      * class key name.
      *
@@ -33,8 +40,26 @@ abstract class Facade {
          * Grab the igniter service class and get the instance
          * called by the service.
          */
-        return static::$app->fire(static::getFacadeKey());
+        return static::resolveFacadeInstance(static::getFacadeKey());
+    }
 
+    /**
+     * Return a facade instance if one already exists. If not, keep a copy
+     * of all instances and return the current called one.
+     *
+     * @param string $name
+     * @return mixed
+     */
+    private static function resolveFacadeInstance($name)
+    {
+        if (is_object($name)) return $name;
+
+        if (isset(static::$resolvedInstances[$name]))
+        {
+            return static::$resolvedInstances[$name];
+        }
+
+        return static::$resolvedInstances[$name] = static::$app->fire($name);
     }
 
     /**

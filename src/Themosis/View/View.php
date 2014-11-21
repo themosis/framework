@@ -118,8 +118,10 @@ class View implements ArrayAccess, IRenderable {
 
         // Check if one of the 'data' is a view instance.
         // If so, evaluate its content and save it as data.
-        foreach($data as $key => $value){
-            if($value instanceof IRenderable){
+        foreach ($data as $key => $value)
+        {
+            if ($value instanceof IRenderable)
+            {
                 $data[$key] = $value->render();
             }
         }

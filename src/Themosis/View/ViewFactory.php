@@ -116,7 +116,7 @@ class ViewFactory {
     {
         if(!is_array($key)){
 
-            $this->shared[$key] = $value;
+            return $this->shared[$key] = $value;
 
         } else {
 
