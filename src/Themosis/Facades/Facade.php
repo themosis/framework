@@ -59,7 +59,28 @@ abstract class Facade {
             return static::$resolvedInstances[$name];
         }
 
-        return static::$resolvedInstances[$name] = static::$app->fire($name);
+        return static::$resolvedInstances[$name] = static::$app[$name];
+    }
+
+    /**
+     * Clear a resolved facade instance.
+     *
+     * @param string $name
+     * @return void
+     */
+    public static function clearResolvedInstance($name)
+    {
+        unset(static::$resolvedInstances[$name]);
+    }
+
+    /**
+     * Clear all of the resolved instances.
+     *
+     * @return void
+     */
+    public static function clearResolvedInstances()
+    {
+        static::$resolvedInstances = array();
     }
 
     /**
@@ -88,7 +109,22 @@ abstract class Facade {
         /**
          * Call the instance and its method.
          */
-        return call_user_func_array(array($instance, $method), $args);
+        switch (count($args))
+        {
+            case 0:
+                return $instance->$method();
+            case 1:
+                return $instance->$method($args[0]);
+            case 2:
+                return $instance->$method($args[0], $args[1]);
+            case 3:
+                return $instance->$method($args[0], $args[1], $args[2]);
+            case 4:
+                return $instance->$method($args[0], $args[1], $args[2], $args[3]);
+            default:
+                return call_user_func_array(array($instance, $method), $args);
+        }
+        //return call_user_func_array(array($instance, $method), $args);
     }
 
 } 

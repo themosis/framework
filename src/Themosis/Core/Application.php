@@ -2,6 +2,7 @@
 namespace Themosis\Core;
 
 use Themosis\Action\Action;
+use Themosis\Facades\Facade;
 
 class Application extends Container {
 
@@ -119,7 +120,9 @@ class Application extends Container {
      */
     public function handle(Request $request)
     {
-        try{
+        try
+        {
+            $this->refreshRequest($request = Request::createFromBase($request));
 
             return $this->dispatch($request);
 
@@ -139,6 +142,19 @@ class Application extends Container {
     public function dispatch(Request $request)
     {
         return $this['router']->dispatch($request);
+    }
+
+    /**
+     * Refresh the bound request instance in the container.
+     *
+     * @param  \Themosis\Core\Request $request
+     * @return void
+     */
+    protected function refreshRequest(Request $request)
+    {
+        $this->instance('request', $request);
+
+        Facade::clearResolvedInstance('request');
     }
 
 } 

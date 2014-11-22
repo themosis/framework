@@ -120,4 +120,19 @@ class Request extends SymfonyRequest {
         }
     }
 
+    /**
+     * Create a new themosis Request from a request instance.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Themosis\Core\Request
+     */
+    public static function createFromBase(SymfonyRequest $request)
+    {
+        if ($request instanceof static) return $request;
+
+        $r = new static();
+
+        return $r->duplicate($request->query->all(), $request->request->all(), $request->attributes->all(), $request->cookies->all(), $request->files->all(), $request->server->all());
+    }
+
 } 

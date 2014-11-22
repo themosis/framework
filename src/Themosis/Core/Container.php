@@ -210,10 +210,9 @@ abstract class Container implements ArrayAccess{
     {
         // Check if $key is already registered in $instances
         // If not, create it.
-        if(!isset($this->instances[$key])){
-
+        if (!isset($this->instances[$key]))
+        {
             $this->instances[$key] = $this->fire($key);
-
         }
 
         // If $key is registered, return it.
@@ -230,9 +229,12 @@ abstract class Container implements ArrayAccess{
      */
     public function offsetSet($key, $value)
     {
-        if (is_null($key)) {
+        if (is_null($key))
+        {
             $this->instances[] = $value;
-        } else {
+        }
+        else
+        {
             $this->instances[$key] = $value;
         }
     }

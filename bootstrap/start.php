@@ -21,6 +21,7 @@ $app = new Themosis\Core\Application();
 /*----------------------------------------------------*/
 // Make application available to the facade.
 /*----------------------------------------------------*/
+Themosis\Facades\Facade::clearResolvedInstances();
 Themosis\Facades\Facade::setFacadeApplication($app);
 
 /*----------------------------------------------------*/
