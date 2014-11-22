@@ -9,11 +9,11 @@ use ReflectionParameter;
 abstract class Container implements ArrayAccess{
 
     /**
-     * Available igniters to the application.
+     * The container's bindings.
      *
      * @var array
      */
-    protected $igniters = array();
+    protected $bindings = array();
 
     /**
      * Loaded instances aka the builders. (FormBuilder,...)
@@ -32,18 +32,66 @@ abstract class Container implements ArrayAccess{
     /**
      * Register an existing instance as shared in the container.
      *
-     * @param string $abstract
+     * @param string|array $abstract The abstract class name (ex: request) or the class full name. This could be an array containing the class full name and its alias.
      * @param mixed $instance
      * @return void
      */
-    protected function instance($abstract, $instance)
+    public function instance($abstract, $instance)
     {
+        // First, we will extract the alias from the abstract if it is an array so we
+        // are using the correct name when binding the type. If we get an alias it
+        // will be registered with the container so we can resolve it out later.
+        if (is_array($abstract))
+        {
+            list($abstract, $alias) = $this->extractAlias($abstract);
+
+            $this->alias($abstract, $alias);
+        }
+
+        unset($this->aliases[$abstract]);
+
+        // We'll check to determine if this type has been bound before, and if it has
+        // we will fire the rebound callbacks registered with the container and it
+        // can be updated with consuming classes that have gotten resolved here.
+        $bound = $this->bound($abstract);
+
         $this->instances[$abstract] = $instance;
+
+        if ($bound)
+        {
+            $this->rebound($abstract);
+        }
+    }
+
+    /**
+     * Determine if the given abstract type has been bound.
+     *
+     * @param string $abstract
+     * @return bool
+     */
+    public function bound($abstract)
+    {
+        return isset($this->bindings[$abstract]) || isset($this->instances[$abstract]);
+    }
+
+    /**
+     * Fire the "rebound" callbacks for the given abstract type.
+     *
+     * @param string $abstract
+     * @return void
+     */
+    protected function rebound($abstract)
+    {
+        $instance = $this->make($abstract);
+
+        //foreach ($this->getReboundCallbacks($abstract) as $callback)
+        //{
+        //    call_user_func($callback, $this, $instance);
+        //}
     }
 
     /**
      * Resolve the given type from the container.
-     * At the moment, only triggered by Controller classes.
      *
      * @param string $abstract
      * @param array $parameters
@@ -61,6 +109,7 @@ abstract class Container implements ArrayAccess{
             return $this->instances[$abstract];
         }
 
+        // @TODO Complete make method...
         $concrete = $this->getConcrete($abstract);
 
         // We're ready to instantiate an instance of the concrete type registered for

@@ -3,6 +3,7 @@ namespace Themosis\Core;
 
 use Themosis\Action\Action;
 use Themosis\Facades\Facade;
+use Themosis\Core\Request;
 
 class Application extends Container {
 
@@ -16,11 +17,15 @@ class Application extends Container {
     /**
      * Build an Application instance.
      *
+     * @param \Themosis\Core\Request $request
      */
-    public function __construct()
+    public function __construct(Request $request = null)
     {
-        $this->registerBaseBindings($this->createNewRequest());
-        $this->registerCoreIgniters();
+        $this->registerBaseBindings($request ?: $this->createNewRequest());
+
+        //$this->registerBaseServiceProviders();
+
+        //$this->registerCoreIgniters();
 
         // Listen to front-end request.
         Action::listen('themosis_run', $this, 'run')->dispatch();
@@ -39,12 +44,13 @@ class Application extends Container {
     /**
      * Register base framework classes into the container.
      *
-     * @param Request $request
+     * @param \Themosis\Core\Request $request
      * @return void
      */
     protected function registerBaseBindings(Request $request)
     {
         $this->instance('request', $request);
+
         $this->instance('Themosis\Core\Container', $this);
     }
 
@@ -114,20 +120,6 @@ class Application extends Container {
     {
         return new $igniter($this);
     }
-
-    /**
-     * Add the instance to the application.
-     *
-     * @param string $key The facade key.
-     * @param callable $closure The function that call the needed instance.
-     * @return void
-     */
-   /* public function bind($key, Callable $closure)
-    {
-        // Send the application instance to the closure.
-        // Allows the container to call the dependencies.
-        $this->instances[$key] = $closure($this);
-    }*/
 
     /**
      * Run the front-end application and send the response.
