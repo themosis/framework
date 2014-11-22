@@ -12,7 +12,7 @@ class UserIgniterService extends IgniterService {
      */
     public function ignite()
     {
-        $this->app->bind('user', function($app){
+        $this->app->bindShared('user', function($app){
 
             $factory = new UserFactory;
 

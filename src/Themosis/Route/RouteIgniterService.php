@@ -12,7 +12,7 @@ class RouteIgniterService extends IgniterService {
      */
     public function ignite()
     {
-        $this->app->bind('router', function($app){
+        $this->app->bindShared('router', function($app){
 
             return new Router($app);
 

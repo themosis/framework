@@ -109,14 +109,13 @@ class Request extends SymfonyRequest {
      */
     protected function retrieveItem($source, $key, $default)
     {
-        if(is_null($key)){
-
+        if (is_null($key))
+        {
             return $this->$source->all();
-
-        } else {
-
+        }
+        else
+        {
             return $this->$source->get($key, $default, true);
-
         }
     }
 

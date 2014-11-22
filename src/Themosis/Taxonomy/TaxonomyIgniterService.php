@@ -12,7 +12,7 @@ class TaxonomyIgniterService extends IgniterService {
      */
     public function ignite()
     {
-        $this->app->bind('taxonomy', function($app){
+        $this->app->bindShared('taxonomy', function($app){
 
             $data = new TaxonomyData();
 

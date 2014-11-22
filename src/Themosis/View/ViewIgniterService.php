@@ -30,7 +30,7 @@ class ViewIgniterService extends IgniterService{
     {
         $igniterService = $this;
 
-        $this->app->bind('view.engine.resolver', function() use ($igniterService){
+        $this->app->bindShared('view.engine.resolver', function() use ($igniterService){
 
             $resolver = new EngineResolver();
 
@@ -73,7 +73,7 @@ class ViewIgniterService extends IgniterService{
 
         // Register a ScoutCompiler instance so we can
         // inject it into the ScoutEngine class.
-        $app->bind('scout.compiler', function(){
+        $app->bindShared('scout.compiler', function(){
 
             $storage = themosis_path('storage').'views'.DS;
 
@@ -93,7 +93,7 @@ class ViewIgniterService extends IgniterService{
      */
     private function igniteViewFinder()
     {
-        $this->app->bind('view.finder', function($app){
+        $this->app->bindShared('view.finder', function($app){
 
             // Paths to view directories.
             $paths = apply_filters('themosisViewPaths', array());
@@ -111,7 +111,7 @@ class ViewIgniterService extends IgniterService{
      */
     private function igniteViewFactory()
     {
-        $this->app->bind('view', function($app){
+        $this->app->bindShared('view', function($app){
 
             $viewEnv = new ViewFactory($app['view.engine.resolver'], $app['view.finder']);
 

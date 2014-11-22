@@ -12,7 +12,7 @@ class PostTypeIgniterService extends IgniterService{
      */
     public function ignite()
     {
-        $this->app->bind('posttype', function($app){
+        $this->app->bindShared('posttype', function($app){
 
             $data = new PostTypeData();
 

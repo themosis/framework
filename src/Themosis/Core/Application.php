@@ -15,6 +15,7 @@ class Application extends Container {
 
     /**
      * Build an Application instance.
+     *
      */
     public function __construct()
     {
@@ -72,15 +73,46 @@ class Application extends Container {
 
         );
 
-        foreach($services as $key => $value){
-
+        foreach ($services as $key => $value)
+        {
             /**
              * Register the instance name.
              * The facade call the appropriate igniterService.
              */
-            $this->igniters[$key] = $value;
-
+            $this->igniters[$key] = $this->register($value);
         }
+    }
+
+    /**
+     * Register all IgniterServices and set their instances.
+     *
+     * @param string $igniter The IgniterService class name.
+     * @return \Themosis\Core\IgniterService
+     */
+    protected function register($igniter)
+    {
+        // If the given "provider" is a string, we will resolve it, passing in the
+        // application instance automatically for the developer. This is simply
+        // a more convenient way of specifying your service provider classes.
+        if (is_string($igniter))
+        {
+            $igniter = $this->resolveIgniterClass($igniter);
+        }
+
+        $igniter->ignite();
+
+        return $igniter;
+    }
+
+    /**
+     * Create an IgniterService instance and pass it the Application instance.
+     *
+     * @param string $igniter The IgniterService class name.
+     * @return \Themosis\Core\IgniterService
+     */
+    protected function resolveIgniterClass($igniter)
+    {
+        return new $igniter($this);
     }
 
     /**
@@ -90,12 +122,12 @@ class Application extends Container {
      * @param callable $closure The function that call the needed instance.
      * @return void
      */
-    public function bind($key, Callable $closure)
+   /* public function bind($key, Callable $closure)
     {
         // Send the application instance to the closure.
         // Allows the container to call the dependencies.
         $this->instances[$key] = $closure($this);
-    }
+    }*/
 
     /**
      * Run the front-end application and send the response.

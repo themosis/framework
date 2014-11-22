@@ -25,7 +25,7 @@ class HtmlIgniterService extends IgniterService{
     {
         // The '$app' variable use the main Application instance
         // when the closure is called.
-        $this->app->bind('html', function($app){
+        $this->app->bindShared('html', function($app){
 
             /**
              * This creates a HtmlBuilder instance.

@@ -26,7 +26,7 @@ class FormIgniterService extends IgniterService{
     {
         // The '$app' variable use the main Application instance
         // when the closure is called.
-        $this->app->bind('form', function($app){
+        $this->app->bindShared('form', function($app){
 
             /**
              * This create a FormBuilder instance with its dependencies.
