@@ -11,7 +11,7 @@ defined('CONFIG_EXT') ? CONFIG_EXT : define('CONFIG_EXT', '.config.php');
 /*----------------------------------------------------*/
 // Include helper functions.
 /*----------------------------------------------------*/
-include_once(themosis_path('sys').'Helpers'.DS.'helpers.php');
+include_once(themosis_path('sys').DS.'Helpers'.DS.'helpers.php');
 
 /*----------------------------------------------------*/
 // Set the application instance.
@@ -45,6 +45,8 @@ Themosis\Facades\Facade::setFacadeApplication($app);
 /*----------------------------------------------------*/
 $app->registerCoreContainerAliases();
 
+$app->registerCoreIgniters();
+
 /*----------------------------------------------------*/
 // Set application configurations.
 /*----------------------------------------------------*/
@@ -55,10 +57,10 @@ do_action('themosis_configurations');
 /*----------------------------------------------------*/
 add_filter('themosisViewPaths', function($paths){
 
-    $paths[] = themosis_path('sys').'Metabox'.DS.'Views'.DS;
-    $paths[] = themosis_path('sys').'Page'.DS.'Views'.DS;
-    $paths[] = themosis_path('sys').'Field'.DS.'Fields'.DS.'Views'.DS;
-    $paths[] = themosis_path('sys').'Route'.DS.'Views'.DS;
+    $paths[] = themosis_path('sys').DS.'Metabox'.DS.'Views'.DS;
+    $paths[] = themosis_path('sys').DS.'Page'.DS.'Views'.DS;
+    $paths[] = themosis_path('sys').DS.'Field'.DS.'Fields'.DS.'Views'.DS;
+    $paths[] = themosis_path('sys').DS.'Route'.DS.'Views'.DS;
 
     return $paths;
 
@@ -70,7 +72,7 @@ add_filter('themosisViewPaths', function($paths){
 add_filter('themosisAssetPaths', function($paths){
 
     $coreUrl = themosis_plugin_url().'/src/Themosis/_assets';
-    $paths[$coreUrl] = themosis_path('sys').'_assets';
+    $paths[$coreUrl] = themosis_path('sys').DS.'_assets';
 
     return $paths;
 
@@ -134,10 +136,10 @@ add_filter('themosisAdminGlobalObject', function($paths){
 // Enqueue frameworks assets.
 /*----------------------------------------------------*/
 // Themosis styles
-//Themosis\Facades\Asset::add('themosis-core-styles', 'css/_themosis-core.css')->to('admin');
+Themosis\Facades\Asset::add('themosis-core-styles', 'css/_themosis-core.css')->to('admin');
 
 // Themosis scripts
-//Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosis-core.js', array('jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view'), false, true)->to('admin');
+Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosis-core.js', array('jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view'), false, true)->to('admin');
 
 /*----------------------------------------------------*/
 // Bootstrap application.

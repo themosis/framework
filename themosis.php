@@ -102,8 +102,11 @@ if (!class_exists('THFWK_Themosis'))
         }
 
         /**
+         * Check if the plugin is inside the 'mu-plugins'
+         * or 'plugin' directory.
+         *
          * @param string $path
-         * @return mixed
+         * @return string
          */
         private static function getParentDirectoryName($path)
         {
@@ -193,24 +196,24 @@ if (!class_exists('THFWK_Themosis'))
             $paths = apply_filters('themosis_framework_paths', array());
 
             // Plugin base path.
-            $paths['plugin'] = realpath(__DIR__).DS;
+            $paths['plugin'] = __DIR__.DS;
 
             // Framework base path.
-            $paths['sys'] = realpath(__DIR__).DS.'src'.DS.'Themosis'.DS;
+            $paths['sys'] = __DIR__.DS.'src'.DS.'Themosis'.DS;
 
             // Register globally the paths
             foreach ($paths as $name => $path)
             {
                if (!isset($GLOBALS['themosis_paths'][$name]))
                {
-                   $GLOBALS['themosis_paths'][$name] = $path;
+                   $GLOBALS['themosis_paths'][$name] = realpath($path);
                }
             }
 
             // Bootstrap the framework
             if (isset($GLOBALS['THFWK_Themosis']))
             {
-                require_once themosis_path('plugin').'bootstrap'.DS.'start.php';
+                require_once themosis_path('plugin').DS.'bootstrap'.DS.'start.php';
             }
         }
 

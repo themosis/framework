@@ -98,33 +98,33 @@ class Application extends Container {
      *
      * @return void
      */
-    protected function registerCoreIgniters()
+    public function registerCoreIgniters()
     {
         $services = array(
 
-            'asset'         => '\Themosis\Asset\AssetIgniterService',
-            'field'         => '\Themosis\Field\FieldIgniterService',
-            'form'          => '\Themosis\Html\FormIgniterService',
-            'html'          => '\Themosis\Html\HtmlIgniterService',
-            'metabox'       => '\Themosis\Metabox\MetaboxIgniterService',
-            'page'          => '\Themosis\Page\PageIgniterService',
-            'posttype'      => '\Themosis\PostType\PostTypeIgniterService',
-            'router'        => '\Themosis\Route\RouteIgniterService',
-            'sections'      => '\Themosis\Page\Sections\SectionIgniterService',
-            'taxonomy'      => '\Themosis\Taxonomy\TaxonomyIgniterService',
-            'user'          => '\Themosis\User\UserIgniterService',
-            'validation'    => '\Themosis\Validation\ValidationIgniterService',
-            'view'          => '\Themosis\View\ViewIgniterService'
+            '\Themosis\Asset\AssetIgniterService',
+            '\Themosis\Field\FieldIgniterService',
+            '\Themosis\Html\FormIgniterService',
+            '\Themosis\Html\HtmlIgniterService',
+            '\Themosis\Metabox\MetaboxIgniterService',
+            '\Themosis\Page\PageIgniterService',
+            '\Themosis\PostType\PostTypeIgniterService',
+            '\Themosis\Route\RouteIgniterService',
+            '\Themosis\Page\Sections\SectionIgniterService',
+            '\Themosis\Taxonomy\TaxonomyIgniterService',
+            '\Themosis\User\UserIgniterService',
+            '\Themosis\Validation\ValidationIgniterService',
+            '\Themosis\View\ViewIgniterService'
 
         );
 
-        foreach ($services as $key => $value)
+        foreach ($services as $service)
         {
             /**
              * Register the instance name.
              * The facade call the appropriate igniterService.
              */
-            $this->igniters[$key] = $this->register($value);
+            $this->register($service);
         }
     }
 
@@ -317,7 +317,7 @@ class Application extends Container {
             'taxonomy'          => 'Themosis\Taxonomy\TaxonomyBuilder',
             'user'              => 'Themosis\User\UserFactory',
             'validation'        => 'Themosis\Validation\ValidationBuilder',
-            'view'              => 'Themosis\View\ViewFactory',
+            'view'              => 'Themosis\View\ViewFactory'
         );
 
         foreach ($aliases as $key => $alias)

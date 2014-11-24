@@ -48,10 +48,9 @@ class ViewIgniterService extends IgniterService{
      * Register the PHP engine to the EngineResolver.
      *
      * @param string $engine Name of the engine.
-     * @param EngineResolver $resolver
+     * @param \Themosis\View\Engines\EngineResolver $resolver
      * @return void
      */
-    /** @noinspection PhpUnusedPrivateMethodInspection */
     private function registerPhpEngine($engine, EngineResolver $resolver)
     {
         $resolver->register($engine, function(){
@@ -63,19 +62,18 @@ class ViewIgniterService extends IgniterService{
      * Register the Scout engine to the EngineResolver.
      *
      * @param string $engine Name of the engine.
-     * @param EngineResolver $resolver
+     * @param \Themosis\View\Engines\EngineResolver $resolver
      * @return void
      */
-    /** @noinspection PhpUnusedPrivateMethodInspection */
     private function registerScoutEngine($engine, EngineResolver $resolver)
     {
         $app = $this->app;
 
         // Register a ScoutCompiler instance so we can
         // inject it into the ScoutEngine class.
-        $app->bindShared('scout.compiler', function(){
+        $app->bindShared('scout.compiler', function($app){
 
-            $storage = themosis_path('storage').'views'.DS;
+            $storage = $app['path.storage'].DS.'views'.DS;
 
             return new ScoutCompiler($storage);
 

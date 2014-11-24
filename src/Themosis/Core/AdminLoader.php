@@ -11,7 +11,7 @@ class AdminLoader extends Loader implements LoaderInterface
 	 */
 	public static function add()
 	{
-		$path = themosis_path('admin');
+		$path = themosis_path('admin').DS;
 		return static::append($path);
 	}
 
