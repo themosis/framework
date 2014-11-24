@@ -93,10 +93,28 @@ if (!class_exists('THFWK_Themosis'))
          */
         private static function setDirName($path)
         {
-            $dirName = explode('plugins', $path);
+            $parent = static::getParentDirectoryName(dirname($path));
+
+            $dirName = explode($parent, $path);
             $dirName = substr($dirName[1], 1);
 
             return $dirName;
+        }
+
+        /**
+         * @param string $path
+         * @return mixed
+         */
+        private static function getParentDirectoryName($path)
+        {
+            // Check if in the 'mu-plugins' directory.
+            if (WPMU_PLUGIN_DIR === $path)
+            {
+                return 'mu-plugins';
+            }
+
+            // Install as a classic plugin.
+            return 'plugins';
         }
 
         /**

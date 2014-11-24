@@ -106,7 +106,7 @@ if (!function_exists('themosis_plugin_directory_name'))
      */
     function themosis_plugin_directory_name()
     {
-        return class_exists('THFWK_Themosis') ? THFWK_Themosis::getDirName() : 'themosis';
+        return class_exists('THFWK_Themosis') ? THFWK_Themosis::getDirName() : 'themosis-framework';
     }
 }
 
