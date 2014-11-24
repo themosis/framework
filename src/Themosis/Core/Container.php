@@ -343,7 +343,7 @@ abstract class Container implements ArrayAccess{
             $concrete = $abstract;
         }
 
-        // If the factory is not a Closure, it means it is just a class name which is
+        // If the factory is not a Closure, it means it is just a class name which
         // is bound into this container to the abstract type and we will just wrap
         // it up inside a Closure to make things more convenient when extending.
         if ( ! $concrete instanceof Closure)
@@ -351,7 +351,15 @@ abstract class Container implements ArrayAccess{
             $concrete = $this->getClosure($abstract, $concrete);
         }
 
-        $this->igniters[$abstract] = compact('concrete', 'shared');
+        $this->bindings[$abstract] = compact('concrete', 'shared');
+
+        // If the abstract type was already resolved in this container we'll fire the
+        // rebound listener so that any objects which have already gotten resolved
+        // can have their copy of the object updated via the listener callbacks.
+        if ($this->resolved($abstract))
+        {
+            $this->rebound($abstract);
+        }
     }
 
     /**
@@ -436,6 +444,17 @@ abstract class Container implements ArrayAccess{
     protected function dropStaleInstances($abstract)
     {
         unset($this->instances[$abstract], $this->aliases[$abstract]);
+    }
+
+    /**
+     * Determine if the given abstract type has been resolved.
+     *
+     * @param string $abstract
+     * @return bool
+     */
+    public function resolved($abstract)
+    {
+        return isset($this->resolved[$abstract]) || isset($this->instances[$abstract]);
     }
 
     /**
@@ -613,7 +632,7 @@ abstract class Container implements ArrayAccess{
      */
     public function offsetExists($key)
     {
-        return isset($this->instances[$key]);
+        return isset($this->bindings[$key]);
     }
 
     /**
@@ -625,17 +644,7 @@ abstract class Container implements ArrayAccess{
      */
     public function offsetGet($key)
     {
-        // Check if $key is already registered in $instances
-        // If not, create it.
         return $this->make($key);
-
-        /*if (!isset($this->instances[$key]))
-        {
-            $this->instances[$key] = $this->fire($key);
-        }
-
-        // If $key is registered, return it.
-        return isset($this->instances[$key]) ? $this->instances[$key] : null;*/
     }
 
     /**
@@ -648,14 +657,18 @@ abstract class Container implements ArrayAccess{
      */
     public function offsetSet($key, $value)
     {
-        if (is_null($key))
+        // If the value is not a Closure, we will make it one. This simply gives
+        // more "drop-in" replacement functionality for the Pimple which this
+        // container's simplest functions are base modeled and built after.
+        if ( ! $value instanceof Closure)
         {
-            $this->instances[] = $value;
+            $value = function() use ($value)
+            {
+                return $value;
+            };
         }
-        else
-        {
-            $this->instances[$key] = $value;
-        }
+
+        $this->bind($key, $value);
     }
 
     /**
@@ -667,6 +680,6 @@ abstract class Container implements ArrayAccess{
      */
     public function offsetUnset($key)
     {
-        unset($this->igniters[$key], $this->instances[$key]);
+        unset($this->bindings[$key], $this->instances[$key]);
     }
 }
