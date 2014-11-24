@@ -293,4 +293,37 @@ class Application extends Container {
         $this->loadedIgniters[$class] = true;
     }
 
+    /**
+     * Register the core class aliases in the container.
+     *
+     * @return void
+     */
+    public function registerCoreContainerAliases()
+    {
+        $aliases = array(
+            'app'               => 'Themosis\Core\Application',
+            'asset'             => 'Themosis\Asset\AssetFactory',
+            'asset.finder'      => 'Themosis\Asset\AssetFinder',
+            'field'             => 'Themosis\Field\FieldFactory',
+            'scout.compiler'    => 'Themosis\View\Compilers\ScoutCompiler',
+            'form'              => 'Themosis\Html\FormBuilder',
+            'html'              => 'Themosis\Html\HtmlBuilder',
+            'metabox'           => 'Themosis\Metabox\MetaboxBuilder',
+            'page'              => 'Themosis\Page\PageBuilder',
+            'posttype'          => 'Themosis\PostType\PostTypeBuilder',
+            'request'           => 'Themosis\Core\Request',
+            'router'            => 'Themosis\Route\Router',
+            'sections'          => 'Themosis\Page\Sections\SectionBuilder',
+            'taxonomy'          => 'Themosis\Taxonomy\TaxonomyBuilder',
+            'user'              => 'Themosis\User\UserFactory',
+            'validation'        => 'Themosis\Validation\ValidationBuilder',
+            'view'              => 'Themosis\View\ViewFactory',
+        );
+
+        foreach ($aliases as $key => $alias)
+        {
+            $this->alias($key, $alias);
+        }
+    }
+
 } 
