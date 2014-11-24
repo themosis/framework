@@ -13,7 +13,7 @@ class PageIgniterService extends IgniterService {
      */
     public function ignite()
     {
-        $this->app->bindShared('page', function($app){
+        $this->app->bind('page', function($app){
 
             $data = new PageData();
             $view = View::make('pages._themosisCorePage');

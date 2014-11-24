@@ -13,7 +13,7 @@ class MetaboxIgniterService extends IgniterService {
      */
     public function ignite()
     {
-        $this->app->bindShared('metabox', function($app){
+        $this->app->bind('metabox', function($app){
 
             $data = new MetaboxData();
             $view = View::make('_themosisCoreMetabox');

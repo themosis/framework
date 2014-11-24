@@ -40,7 +40,7 @@ class AssetIgniterService extends IgniterService {
      */
     protected function registerAssetBuilder()
     {
-        $this->app->bindShared('asset', function($app){
+        $this->app->bind('asset', function($app){
 
             return new AssetFactory($app['asset.finder']);
 
