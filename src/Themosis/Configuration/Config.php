@@ -97,7 +97,7 @@ class Config
 	 */
 	private static function has($key, $configFile)
 	{
-		$path = themosis_path($key).DS.'config'.DS.$configFile.CONFIG_EXT;
+		$path = themosis_path($key).'config'.DS.$configFile.CONFIG_EXT;
 
 		if (file_exists($path))
         {

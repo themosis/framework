@@ -121,8 +121,8 @@ class Application extends Container {
         foreach ($services as $service)
         {
             /**
-             * Register the instance name.
-             * The facade call the appropriate igniterService.
+             * Register the igniterService instance.
+             * The facade will call the appropriate igniterService.
              */
             $this->register($service);
         }
@@ -253,7 +253,7 @@ class Application extends Container {
     {
         if (isset($paths['app']))
         {
-            $this->instance('path', realpath($paths['app']));
+            $this->instance('path', realpath($paths['app']).DS);
         }
 
         // Here we will bind the install paths into the container as strings that can be
@@ -261,7 +261,7 @@ class Application extends Container {
         // so that they have the consistent naming convention inside the container.
         foreach (array_except($paths, array('app')) as $key => $value)
         {
-            $this->instance("path.{$key}", realpath($value));
+            $this->instance("path.{$key}", realpath($value).DS);
         }
     }
 

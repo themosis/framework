@@ -41,7 +41,7 @@ class WidgetLoader extends Loader implements LoaderInterface
 	 */
 	public static function add()
 	{
-		static::$path = themosis_path('app').DS.'widgets'.DS;
+		static::$path = themosis_path('app').'widgets'.DS;
 		return static::append(static::$path);
 	}
 
@@ -52,15 +52,16 @@ class WidgetLoader extends Loader implements LoaderInterface
 	 */
 	public static function load()
 	{
-		foreach (static::$names as $name) {
-			if (!in_array($name, static::$excludedWidgets)) {
+		foreach (static::$names as $name)
+        {
+			if (!in_array($name, static::$excludedWidgets))
+            {
 				$name = $name.'_Widget';
 				static::$widgets[] = $name;
 			}
 		}
 
 		return new static();
-
 	}
 
 	/**
@@ -70,12 +71,16 @@ class WidgetLoader extends Loader implements LoaderInterface
 	 */
 	public static function install()
 	{
-		if (count(static::$widgets) > 0) {
-			foreach (static::$widgets as $widget) {
+		if (count(static::$widgets) > 0)
+        {
+			foreach (static::$widgets as $widget)
+            {
 				register_widget($widget);
 			}
+
 			return true;
 		}
+
 		return false;
 	}
 

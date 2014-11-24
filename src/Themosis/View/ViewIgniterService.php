@@ -73,7 +73,7 @@ class ViewIgniterService extends IgniterService{
         // inject it into the ScoutEngine class.
         $app->bindShared('scout.compiler', function($app){
 
-            $storage = $app['path.storage'].DS.'views'.DS;
+            $storage = $app['path.storage'].'views'.DS;
 
             return new ScoutCompiler($storage);
 
