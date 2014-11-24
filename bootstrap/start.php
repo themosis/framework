@@ -74,7 +74,7 @@ add_filter('themosisViewPaths', function($paths){
 /*----------------------------------------------------*/
 add_filter('themosisAssetPaths', function($paths){
 
-    $coreUrl = themosis_plugin_url().'/src/Themosis/_assets';
+    $coreUrl = themosis_plugin_url(dirname(__DIR__)).'/src/Themosis/_assets';
     $paths[$coreUrl] = themosis_path('sys').'_assets';
 
     return $paths;
@@ -129,7 +129,7 @@ add_action('admin_head', function(){
 /*----------------------------------------------------*/
 add_filter('themosisAdminGlobalObject', function($paths){
 
-    $paths['_themosisAssets'] = themosis_plugin_url().'/src/Themosis/_assets';
+    $paths['_themosisAssets'] = themosis_plugin_url(dirname(__DIR__)).'/src/Themosis/_assets';
 
     return $paths;
 

@@ -116,11 +116,12 @@ if (!function_exists('themosis_plugin_url'))
      * Return the core plugin directory name.
      * Default name if any luck.
      *
+     * @param string $file The relative path to the plugin file.
      * @return string
      */
-    function themosis_plugin_url()
+    function themosis_plugin_url($file = null)
     {
-        return plugins_url(themosis_plugin_directory_name());
+        return plugins_url(themosis_plugin_directory_name(), $file);
     }
 }
 
