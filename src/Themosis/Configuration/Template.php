@@ -18,7 +18,8 @@ class Template extends ConfigTemplate
 	*/
 	public static function init()
 	{
-		if (empty(static::$datas)) {
+		if (empty(static::$datas))
+        {
 			return;
 		}
 
@@ -40,7 +41,8 @@ class Template extends ConfigTemplate
 	{
 		$names = array();
 
-		foreach (static::$datas as $name) {
+		foreach (static::$datas as $name)
+        {
 			$names[$name] = str_replace(array('-', '_'), ' ', ucfirst(trim($name)));
 		}
 

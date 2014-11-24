@@ -45,20 +45,18 @@ class Sidebar implements ConfigInterface
 	 */
 	public function install()
 	{
-		if (is_array($this->datas) && !empty($this->datas)) {
-
-			foreach ($this->datas as $sidebar) {
-
+		if (is_array($this->datas) && !empty($this->datas))
+        {
+			foreach ($this->datas as $sidebar)
+            {
 				$sidebar['name'] = __($sidebar['name'], THEMOSIS_FRAMEWORK_TEXTDOMAIN);
 
-				if (isset($sidebar['description'])) {
-
+				if (isset($sidebar['description']))
+                {
     			    $sidebar['description'] = __($sidebar['description'], THEMOSIS_FRAMEWORK_TEXTDOMAIN);
-
 				}
 
 				register_sidebar($sidebar);
-
 			}
 		}
 

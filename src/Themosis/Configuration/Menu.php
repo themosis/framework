@@ -45,18 +45,16 @@ class Menu implements ConfigInterface
 	 */
 	public function install()
 	{
-		if (is_array($this->datas) && !empty($this->datas)) {
-
+		if (is_array($this->datas) && !empty($this->datas))
+        {
 			$locations = array();
 
-			foreach ($this->datas as $slug => $desc) {
-				
+			foreach ($this->datas as $slug => $desc)
+            {
 				$locations[$slug] = __($desc, THEMOSIS_FRAMEWORK_TEXTDOMAIN);
-
 			}
 
 			register_nav_menus($locations);
-
 		}
 
 	}

@@ -23,12 +23,11 @@ class Images extends ConfigTemplate {
      */
     private static function addImages()
     {
-        foreach(static::$datas as $slug => $properties){
-
+        foreach (static::$datas as $slug => $properties)
+        {
             list($width, $height, $crop) = $properties;
 
             add_image_size($slug, $width, $height, $crop);
-
         }
     }
 
@@ -42,17 +41,17 @@ class Images extends ConfigTemplate {
     {
         $new = array();
 
-        foreach(static::$datas as $slug => $properties){
-
+        foreach (static::$datas as $slug => $properties)
+        {
             // If no 4th option, stop the loop.
             if(4 !== count($properties)) break;
 
             $show = array_pop($properties);
 
-            if($show){
+            if ($show)
+            {
                 $new[$slug] = __(static::label($slug), THEMOSIS_FRAMEWORK_TEXTDOMAIN);
             }
-
         }
 
         return array_merge($sizes, $new);

@@ -44,21 +44,20 @@ class Support implements ConfigInterface
 	 */
 	public function install()
 	{
-		if (is_array($this->datas) && !empty($this->datas)) {
-
-			foreach ($this->datas as $feature => $value) {
-				if ($value === 'automatic-feed-links') {
-
+		if (is_array($this->datas) && !empty($this->datas))
+        {
+			foreach ($this->datas as $feature => $value)
+            {
+				if ($value === 'automatic-feed-links')
+                {
 					$feature = $value;
-					add_theme_support($feature);					
-
-				} else {
-
+					add_theme_support($feature);
+				}
+                else
+                {
 					add_theme_support($feature, $value);
-
 				}
 			}
 		}
-
 	}
 }

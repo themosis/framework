@@ -17,8 +17,8 @@ class FieldFactory {
      */
     public function make($class, array $fieldProperties)
     {
-        try{
-
+        try
+        {
             // Return the called class.
             $class =  new $class($fieldProperties);
 
@@ -144,7 +144,8 @@ class FieldFactory {
         $properties = compact('name', 'options');
 
         // Check the multiple attribute.
-        if(true == $multiple){
+        if (true == $multiple)
+        {
             $properties['multiple'] = 'multiple';
         }
 

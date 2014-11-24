@@ -44,10 +44,9 @@ class Request extends SymfonyRequest {
      */
     protected function getInputSource()
     {
-        if($this->isJson()){
-
+        if ($this->isJson())
+        {
             return $this->json();
-
         }
 
         return $this->getMethod() == 'GET' ? $this->query : $this->request;
@@ -72,16 +71,14 @@ class Request extends SymfonyRequest {
      */
     public function json($key = null, $default = null)
     {
-        if(!isset($this->json)){
-
+        if (!isset($this->json))
+        {
             $this->json = new ParameterBag((array) json_decode($this->getContent(), true));
-
         }
 
-        if(is_null($key)){
-
+        if (is_null($key))
+        {
             return $this->json;
-
         }
 
         return array_get($this->json->all(), $key, $default);
