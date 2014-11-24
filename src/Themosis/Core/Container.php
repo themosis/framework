@@ -9,6 +9,13 @@ use ReflectionParameter;
 abstract class Container implements ArrayAccess{
 
     /**
+     * An array of the types that have been resolved.
+     *
+     * @var array
+     */
+    protected $resolved = array();
+
+    /**
      * The container's bindings.
      *
      * @var array
@@ -28,6 +35,27 @@ abstract class Container implements ArrayAccess{
      * @var array
      */
     protected $aliases = array();
+
+    /**
+     * All of the registered rebound callbacks.
+     *
+     * @var array
+     */
+    protected $reboundCallbacks = array();
+
+    /**
+     * All of the registered resolving callbacks.
+     *
+     * @var array
+     */
+    protected $resolvingCallbacks = array();
+
+    /**
+     * All of the global resolving callbacks.
+     *
+     * @var array
+     */
+    protected $globalResolvingCallbacks = array();
 
     /**
      * Register an existing instance as shared in the container.
@@ -84,10 +112,26 @@ abstract class Container implements ArrayAccess{
     {
         $instance = $this->make($abstract);
 
-        //foreach ($this->getReboundCallbacks($abstract) as $callback)
-        //{
-        //    call_user_func($callback, $this, $instance);
-        //}
+        foreach ($this->getReboundCallbacks($abstract) as $callback)
+        {
+            call_user_func($callback, $this, $instance);
+        }
+    }
+
+    /**
+     * Get the rebound callbacks for a given type.
+     *
+     * @param string $abstract
+     * @return array
+     */
+    protected function getReboundCallbacks($abstract)
+    {
+        if (isset($this->reboundCallbacks[$abstract]))
+        {
+            return $this->reboundCallbacks[$abstract];
+        }
+
+        return array();
     }
 
     /**
@@ -109,23 +153,64 @@ abstract class Container implements ArrayAccess{
             return $this->instances[$abstract];
         }
 
-        // @TODO Complete make method...
         $concrete = $this->getConcrete($abstract);
 
         // We're ready to instantiate an instance of the concrete type registered for
         // the binding. This will instantiate the types, as well as resolve any of
         // its "nested" dependencies recursively until all have gotten resolved.
-        if($this->isBuildable($concrete, $abstract)){
-
+        if ($this->isBuildable($concrete, $abstract))
+        {
             $object = $this->build($concrete, $parameters);
-
-        } else {
-
+        }
+        else
+        {
             $object = $this->make($concrete, $parameters);
-
         }
 
+        // If the requested type is registered as a singleton we'll want to cache off
+        // the instances in "memory" so we can return it later without creating an
+        // entirely new instance of an object on each subsequent request for it.
+        if ($this->isShared($abstract))
+        {
+            $this->instances[$abstract] = $object;
+        }
+
+        $this->fireResolvingCallbacks($abstract, $object);
+
+        $this->resolved[$abstract] = true;
+
         return $object;
+    }
+
+    /**
+     * Fire all of the resolving callbacks.
+     *
+     * @param string $abstract
+     * @param mixed $object
+     * @return void
+     */
+    protected function fireResolvingCallbacks($abstract, $object)
+    {
+        if (isset($this->resolvingCallbacks[$abstract]))
+        {
+            $this->fireCallbackArray($object, $this->resolvingCallbacks[$abstract]);
+        }
+
+        $this->fireCallbackArray($object, $this->globalResolvingCallbacks);
+    }
+
+    /**
+     * Fire an array of callbacks with an object.
+     *
+     * @param mixed $object
+     * @param array $callbacks
+     */
+    protected function fireCallbackArray($object, array $callbacks)
+    {
+        foreach ($callbacks as $callback)
+        {
+            call_user_func($callback, $object, $this);
+        }
     }
 
     /**
@@ -139,19 +224,17 @@ abstract class Container implements ArrayAccess{
         // If we don't have a registered resolver or concrete for the type, we'll just
         // assume each type is a concrete name and will attempt to resolve it as is
         // since the container should be able to resolve concretes automatically.
-        if (!isset($this->igniters[$abstract]))
+        if ( !isset($this->bindings[$abstract]))
         {
-            if ($this->missingLeadingSlash($abstract) && isset($this->igniters['\\'.$abstract]))
+            if ($this->missingLeadingSlash($abstract) && isset($this->bindings['\\'.$abstract]))
             {
                 $abstract = '\\'.$abstract;
             }
 
             return $abstract;
         }
-        else
-        {
-            return $this->igniters[$abstract];//['concrete'];
-        }
+
+        return $this->bindings[$abstract]['concrete'];
     }
 
     /**
@@ -219,15 +302,15 @@ abstract class Container implements ArrayAccess{
 
         $dependencies = $constructor->getParameters();
 
+        // Once we have all the constructor's parameters we can create each of the
+        // dependency instances and then use the reflection instances to make a
+        // new instance of this class, injecting the created dependencies in.
         $parameters = $this->keyParametersByArgument($dependencies, $parameters);
 
         $instances = $this->getDependencies($dependencies, $parameters);
 
         // Return the class instance.
-        //return new $concrete;
-
-        //@TODO Allow called class to have dependencies...
-
+        return $reflector->newInstanceArgs($instances);
     }
 
     /**
@@ -305,6 +388,26 @@ abstract class Container implements ArrayAccess{
 
             return $object;
         };
+    }
+
+    /**
+     * Determine if a given type is shared.
+     *
+     * @param string $abstract
+     * @return bool
+     */
+    public function isShared($abstract)
+    {
+        if (isset($this->bindings[$abstract]['shared']))
+        {
+            $shared = $this->bindings[$abstract]['shared'];
+        }
+        else
+        {
+            $shared = false;
+        }
+
+        return isset($this->instances[$abstract]) || $shared === true;
     }
 
     /**
@@ -399,8 +502,8 @@ abstract class Container implements ArrayAccess{
     /**
      * If extra parameters are passed by numeric ID, rekey them by argument name.
      *
-     * @param  array  $dependencies
-     * @param  array  $parameters
+     * @param array $dependencies
+     * @param array $parameters
      * @return array
      */
     protected function keyParametersByArgument(array $dependencies, array $parameters)
@@ -420,8 +523,8 @@ abstract class Container implements ArrayAccess{
     /**
      * Resolve all of the dependencies from the ReflectionParameters.
      *
-     * @param  array  $parameters
-     * @param  array  $primitives
+     * @param array $parameters
+     * @param array $primitives
      * @return array
      */
     protected function getDependencies($parameters, array $primitives = array())
@@ -455,7 +558,7 @@ abstract class Container implements ArrayAccess{
     /**
      * Resolve a non-class hinted dependency.
      *
-     * @param  \ReflectionParameter  $parameter
+     * @param \ReflectionParameter  $parameter
      * @return mixed
      *
      * @throws \Exception
@@ -475,7 +578,7 @@ abstract class Container implements ArrayAccess{
     /**
      * Resolve a class based dependency from the container.
      *
-     * @param  \ReflectionParameter  $parameter
+     * @param \ReflectionParameter  $parameter
      * @return mixed
      *
      * @throws \Exception
@@ -487,9 +590,9 @@ abstract class Container implements ArrayAccess{
             return $this->make($parameter->getClass()->name);
         }
 
-            // If we can not resolve the class instance, we will check to see if the value
-            // is optional, and if it is we will return the optional parameter value as
-            // the value of the dependency, similarly to how we do this with scalars.
+        // If we can not resolve the class instance, we will check to see if the value
+        // is optional, and if it is we will return the optional parameter value as
+        // the value of the dependency, similarly to how we do this with scalars.
         catch (\Exception $e)
         {
             if ($parameter->isOptional())
