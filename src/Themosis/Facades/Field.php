@@ -10,7 +10,7 @@ class Field extends Facade {
      *
      * @return string
      */
-    protected static function getFacadeKey()
+    protected static function getFacadeAccessor()
     {
         return 'field';
     }

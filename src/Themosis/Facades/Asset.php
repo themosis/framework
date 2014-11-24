@@ -10,7 +10,7 @@ class Asset extends Facade{
      *
      * @return string
      */
-    protected static function getFacadeKey()
+    protected static function getFacadeAccessor()
     {
         return 'asset';
     }

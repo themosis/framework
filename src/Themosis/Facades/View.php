@@ -10,7 +10,7 @@ class View extends Facade {
      * @throws \RuntimeException
      * @return string
      */
-    protected static function getFacadeKey()
+    protected static function getFacadeAccessor()
     {
         return 'view';
     }

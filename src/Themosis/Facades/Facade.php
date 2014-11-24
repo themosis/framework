@@ -24,9 +24,9 @@ abstract class Facade {
      * @throws \RuntimeException
      * @return string
      */
-    protected static function getFacadeKey()
+    protected static function getFacadeAccessor()
     {
-        throw new \RuntimeException('Facade does not implement getInstanceKey method.');
+        throw new \RuntimeException('Facade does not implement getFacadeAccessor method.');
     }
 
     /**
@@ -34,13 +34,13 @@ abstract class Facade {
      *
      * @return mixed
      */
-    private static function getInstance()
+    public static function getFacadeRoot()
     {
         /**
          * Grab the igniter service class and get the instance
          * called by the service.
          */
-        return static::resolveFacadeInstance(static::getFacadeKey());
+        return static::resolveFacadeInstance(static::getFacadeAccessor());
     }
 
     /**
@@ -54,12 +54,7 @@ abstract class Facade {
     {
         if (is_object($name)) return $name;
 
-        if (isset(static::$resolvedInstances[$name]))
-        {
-            return static::$resolvedInstances[$name];
-        }
-
-        return static::$resolvedInstances[$name] = static::$app[$name];
+        return static::$app[$name];
     }
 
     /**
@@ -104,7 +99,7 @@ abstract class Facade {
      */
     public static function __callStatic($method, $args)
     {
-        $instance = static::getInstance();
+        $instance = static::getFacadeRoot();
 
         /**
          * Call the instance and its method.

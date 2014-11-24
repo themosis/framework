@@ -33,7 +33,7 @@ class Input extends Facade{
      *
      * @return string
      */
-    protected static function getFacadeKey()
+    protected static function getFacadeAccessor()
     {
         return 'request';
     }
