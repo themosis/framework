@@ -9,9 +9,9 @@
 defined('CONFIG_EXT') ? CONFIG_EXT : define('CONFIG_EXT', '.config.php');
 
 /*----------------------------------------------------*/
-// Set application configurations.
+// Include helper functions.
 /*----------------------------------------------------*/
-do_action('themosis_configurations');
+include_once(themosis_path('sys').'Helpers'.DS.'helpers.php');
 
 /*----------------------------------------------------*/
 // Set the application instance.
@@ -19,10 +19,31 @@ do_action('themosis_configurations');
 $app = new Themosis\Core\Application();
 
 /*----------------------------------------------------*/
-// Make application available to the facade.
+// Set the application paths.
 /*----------------------------------------------------*/
-//Themosis\Facades\Facade::clearResolvedInstances();
+$paths = apply_filters('themosis_application_paths', array(
+    'plugin'    => dirname(__DIR__),
+    'sys'       => dirname(__DIR__).DS.'src'.DS.'Themosis'.DS
+));
+
+$app->bindInstallPaths($paths);
+
+/*----------------------------------------------------*/
+// Bind the application in the container.
+/*----------------------------------------------------*/
+$app->instance('app', $app);
+
+/*----------------------------------------------------*/
+// Load the facades.
+/*----------------------------------------------------*/
+Themosis\Facades\Facade::clearResolvedInstances();
+
 //Themosis\Facades\Facade::setFacadeApplication($app);
+
+/*----------------------------------------------------*/
+// Set application configurations.
+/*----------------------------------------------------*/
+do_action('themosis_configurations');
 
 /*----------------------------------------------------*/
 // Register framework view paths.
@@ -50,10 +71,6 @@ $app = new Themosis\Core\Application();
 //
 //});
 
-/*----------------------------------------------------*/
-// Include helper functions.
-/*----------------------------------------------------*/
-//include_once(themosis_path('sys').'Helpers'.DS.'helpers.php');
 
 /*----------------------------------------------------*/
 // Register framework media image size.
