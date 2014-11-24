@@ -110,7 +110,7 @@ abstract class Wrapper {
      */
     private function parseArrayable(FieldBuilder $field, $value = array())
     {
-        if (is_null($value) || empty($value))
+        if (is_null($value) || ('0' !== $value && empty($value)))
         {
             if (isset($field['default']))
             {
