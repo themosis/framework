@@ -7,9 +7,8 @@ class SelectField extends FieldBuilder {
 
     public function __construct(array $properties)
     {
-        $this->properties = $properties;
-        $this->setId();
-        $this->setTitle();
+        parent::__construct($properties);
+
         $this->fieldType();
     }
 
@@ -22,26 +21,6 @@ class SelectField extends FieldBuilder {
     protected function fieldType()
     {
         $this->type = 'select';
-    }
-
-    /**
-     * Set a default ID attribute if not defined.
-     *
-     * @return void
-     */
-    protected function setId()
-    {
-        $this['id'] = isset($this['id']) ? $this['id'] : $this['name'].'-id';
-    }
-
-    /**
-     * Set a default label title, display text if not defined.
-     *
-     * @return void
-     */
-    protected function setTitle()
-    {
-        $this['title'] = isset($this['title']) ? ucfirst($this['title']) : ucfirst($this['name']);
     }
 
     /**
