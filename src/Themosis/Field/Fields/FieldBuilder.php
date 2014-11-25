@@ -50,7 +50,7 @@ abstract class FieldBuilder extends DataContainer{
      */
     protected function setClass()
     {
-        $this['class'] = isset($this['class']) ? $this['class'] : 'themosis-field-'.$this['name'];
+        $this['class'] = isset($this['class']) ? $this['class'] : 'field-'.$this['name'];
     }
 
     /**
