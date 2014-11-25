@@ -1,4 +1,4 @@
-{{ Themosis\Facades\Form::checkbox($field['name'], $field['value'], array('id' => $field['id'], 'data-field' => 'checkbox')) }}
+{{ Themosis\Facades\Form::checkbox($field['name'], $field['value'], array('id' => $field['id'], 'data-field' => 'checkbox', 'class' => $field['class'])) }}
 
 @if(isset($field['info']))
     <div class="themosis-field-info">
