@@ -1,4 +1,4 @@
-{{ Themosis\Facades\Form::input('password', $field['name'], $field['value'], array('id' => $field['id'], 'class' => 'large-text', 'data-field' => 'password')) }}
+{{ Themosis\Facades\Form::input('password', $field['name'], $field['value'], array('id' => $field['id'], 'class' => $field['class'], 'data-field' => 'password')) }}
 
 @if(isset($field['info']))
     <div class="themosis-field-info">
