@@ -1,7 +1,6 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\Form;
 use Themosis\Facades\View;
 
 class SelectField extends FieldBuilder {
@@ -30,7 +29,7 @@ class SelectField extends FieldBuilder {
      *
      * @return void
      */
-    private function setId()
+    protected function setId()
     {
         $this['id'] = isset($this['id']) ? $this['id'] : $this['name'].'-id';
     }
@@ -40,7 +39,7 @@ class SelectField extends FieldBuilder {
      *
      * @return void
      */
-    private function setTitle()
+    protected function setTitle()
     {
         $this['title'] = isset($this['title']) ? ucfirst($this['title']) : ucfirst($this['name']);
     }

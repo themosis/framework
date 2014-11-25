@@ -68,7 +68,7 @@ class MediaField extends FieldBuilder {
      *
      * @return void
      */
-    private function setTitle()
+    protected function setTitle()
     {
         $this['title'] = isset($this['title']) ? ucfirst($this['title']) : ucfirst($this['name']);
     }

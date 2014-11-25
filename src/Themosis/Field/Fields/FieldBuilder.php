@@ -20,6 +20,19 @@ abstract class FieldBuilder extends DataContainer{
     protected $type;
 
     /**
+     * FieldBuilder instance
+     *
+     * @param array $properties Field instance properties.
+     */
+    public function __construct(array $properties)
+    {
+        $this->properties = $properties;
+        $this->setId();
+        $this->setClass();
+        $this->setTitle();
+    }
+
+    /**
      * Method to override in the child class to define
      * its input type property.
      *
@@ -28,6 +41,36 @@ abstract class FieldBuilder extends DataContainer{
     protected function fieldType()
     {
         $this->type = '';
+    }
+
+    /**
+     * Set a default class attribute if not defined.
+     *
+     * @return void
+     */
+    protected function setClass()
+    {
+        $this['class'] = isset($this['class']) ? $this['class'] : 'themosis-field-'.$this['name'];
+    }
+
+    /**
+     * Set a default ID attribute if not defined.
+     *
+     * @return void
+     */
+    protected function setId()
+    {
+        $this['id'] = isset($this['id']) ? $this['id'] : $this['name'].'-id';
+    }
+
+    /**
+     * Set a default label title, display text if not defined.
+     *
+     * @return void
+     */
+    protected function setTitle()
+    {
+        $this['title'] = isset($this['title']) ? ucfirst($this['title']) : ucfirst($this['name']);
     }
 
     /**

@@ -43,7 +43,7 @@ class FieldFactory {
     {
         $properties = compact('name');
 
-        $properties = array_merge($extras, $properties);
+        $properties = array_merge(array('class' => 'large-text'), $extras, $properties);
 
         return $this->make('Themosis\\Field\\Fields\\TextField', $properties);
     }
