@@ -23,7 +23,7 @@
                 </div>
                 <div class="themosis-media__buttons">
                     <button id="themosis-media-add" type="button" class="button button-primary <?php if(!empty($field['value'])){ echo('themosis-media--hidden'); } ?>"><?php _e('Add'); ?></button>
-                    <button id="themosis-media-delete" type="button" class="button <?php if(empty($field['value'])){ echo('themosis-media--hidden'); } ?>"><?php  _e('Delete'); ?></button>
+                    <button id="themosis-media-delete" type="button" class="button themosis-button-remove <?php if(empty($field['value'])){ echo('themosis-media--hidden'); } ?>"><?php  _e('Delete'); ?></button>
                 </div>
             </div>
         </td>

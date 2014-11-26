@@ -207,4 +207,20 @@ class FieldFactory {
         return $this->make('Themosis\\Field\\Fields\\EditorField', $properties);
     }
 
+    /**
+     * Define a CollectionField instance.
+     *
+     * @param string $name The name attribute.
+     * @param array $extras
+     * @return \Themosis\Field\Fields\CollectionField
+     */
+    public function collection($name, array $extras = array())
+    {
+        $properties = compact('name');
+
+        $properties = array_merge($extras, $properties);
+
+        return $this->make('Themosis\\Field\\Fields\\CollectionField', $properties);
+    }
+
 } 

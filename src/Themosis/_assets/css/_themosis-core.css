@@ -248,3 +248,112 @@
 .themosis-core-page table.form-table tbody tr>td>label{
     display: block;
 }
+
+/*
+|
+| Collection field style
+|
+*/
+.themosis-collection-inputs{
+    display: none;
+}
+
+.themosis-collection-container{
+    max-width: 100%;
+    background-color: #f3f3f3;
+    border: 1px solid #dddddd;
+}
+
+.themosis-collection{
+    padding: 5px;
+}
+
+.themosis-collection-list{
+    margin: 0;
+    padding: 0;
+}
+
+.themosis-collection-list:before, .themosis-collection-list:after{
+    content: '';
+    display: table;
+}
+
+.themosis-collection-list:after{
+    clear: both;
+}
+
+.themosis-collection-list li{
+    float: left;
+    display: block;
+    margin: 0;
+    padding: 10px;
+}
+
+.themosis-collection__item{
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 0 0 1px #fff, 0 0 0 5px #d3d3d3;
+}
+
+.themosis-collection__item.selected, .themosis-collection__item:hover{
+    box-shadow: 0 0 0 1px #FFF, 0 0 0 5px #1E8CBE;
+}
+
+.themosis-collection__item.selected .check, .themosis-collection__item:hover .check{
+    display: block;
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    z-index: 25;
+    width: 24px;
+    height: 24px;
+    outline: 0 none;
+    background: #1E8CBE none repeat scroll 0 0;
+    box-shadow: 0 0 0 1px #FFF, 0 0 0 2px #1E8CBE;
+}
+
+.themosis-collection__item.selected .check div, .themosis-collection__item:hover .check div{
+    height: 15px;
+    width: 15px;
+    margin: 5px;
+    background-position: -21px 0;
+}
+
+.themosis-collection__item:hover .check:hover div{
+    height: 15px;
+    width: 15px;
+    margin: 5px;
+    background-position: -60px 0;
+}
+
+.themosis-collection__item img{
+    display: block;
+}
+
+.themosis-collection-buttons{
+    margin-top: 1em;
+}
+
+.wp-core-ui .themosis-button-remove{
+    background: none repeat scroll 0 0 #bc0b0b;
+    border-color: #a40a0a;
+    box-shadow: 0 1px 0 rgba(230, 13, 13, 1.0) inset, 0 1px 0 rgba(0, 0, 0, 0);
+    color: #FFF;
+    text-decoration: none;
+}
+
+.wp-core-ui .themosis-button-remove:hover{
+    background: none repeat scroll 0 0 #a40a0a;
+    border-color: #8a0808;
+    box-shadow: 0 1px 0 rgba(204, 12, 12, 1.0) inset, 0 1px 0 rgba(0, 0, 0, 0);
+    color: #FFF;
+    text-decoration: none;
+}
+
+.wp-core-ui .themosis-button-remove:active{
+    background: none repeat scroll 0 0 #930909;
+    border-color: #8a0808;
+    box-shadow: none;
+    color: #FFF;
+    text-decoration: none;
+}
