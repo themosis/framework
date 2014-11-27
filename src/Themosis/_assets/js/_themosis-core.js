@@ -5,6 +5,61 @@
 (function($){
 
     //------------------------------------------------
+    // COLLECTION - Custom field
+    //------------------------------------------------
+    var CollectionApp = {
+        Models: {},
+        Views: {},
+        Collections: {}
+    };
+
+    // Model pour chaque item.
+    // View pour chaque item.
+    // Collection de tous les item.
+    // View pour la collection des item.
+
+    // View - Buttons
+    CollectionApp.Views.Buttons = Backbone.View.extend({
+
+        initialize: function(options)
+        {
+            this.options = options;
+        },
+
+        events:{
+            'click button#themosis-collection-add': 'add',
+            'click button#themosis-collection-remove': 'remove'
+        },
+
+        /**
+         * Triggered when 'add' button is clicked. Tell the parent
+         * view/collection to add files to the current collection.
+         *
+         * @return void
+         */
+        add: function()
+        {
+            // Call parent view to trigger its method to add files to its collection.
+            console.log('Open Media Library and add some files.');
+        },
+
+        /**
+         * Triggered when 'remove' button is clicked. Tell the parent
+         * view/collection to remove files from the current collection.
+         *
+         * @return void
+         */
+        remove: function()
+        {
+            // Call parent view to trigger its method to remove files from its collection.
+            console.log('Remove files from the current collection.');
+        }
+
+    });
+
+    // Implementation
+
+    //------------------------------------------------
     // MEDIA - Custom field
     //------------------------------------------------
     var MediaApp = {
