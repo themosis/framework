@@ -346,12 +346,20 @@
     padding: 0;
 }
 
-.wp-core-ui .themosis-button-remove{
+.wp-core-ui .themosis-button-remove, .wp-core-ui .themosis-button-remove:link, .wp-core-ui .themosis-button-remove:visited{
     background: none repeat scroll 0 0 #bc0b0b;
     border-color: #a40a0a;
     box-shadow: 0 1px 0 rgba(230, 13, 13, 1.0) inset, 0 1px 0 rgba(0, 0, 0, 0);
     color: #FFF;
     text-decoration: none;
+}
+
+#themosis-collection-remove{
+    display: none;
+}
+
+#themosis-collection-remove.show{
+    display: inline-block;
 }
 
 .wp-core-ui .themosis-button-remove:hover{

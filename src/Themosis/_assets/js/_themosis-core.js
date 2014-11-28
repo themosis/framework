@@ -27,14 +27,9 @@
 
         template: _.template($('#themosis-collection-item-template').first().html()),
 
-        initialize: function()
-        {
-
-        },
-
         events: {
             'click img': 'select',
-            'click a.check' : 'remove'
+            'click a.check' : 'removeItem'
         },
 
         /**
@@ -70,11 +65,15 @@
          * @param {object} e The event object.
          * @return void
          */
-        remove: function(e)
+        removeItem: function(e)
         {
             e.preventDefault();
 
-            console.log('Remove the item from the current collection.');
+            // Remove the view item
+            this.remove();
+
+            // Remove from the collection
+            this.collection.remove(this.model);
         }
 
     });
@@ -98,7 +97,11 @@
          */
         onSelect: function()
         {
-            console.log('Collection: a model has change its selected value.');
+            // Check if there are selected items.
+            // If one or more items are selected, show the main remove button.
+            var selectedItems = this.where({'selected': true});
+
+            this.trigger('itemsSelected', selectedItems);
         }
 
     });
@@ -108,13 +111,37 @@
 
         initialize: function()
         {
+            // Bind to collection events
+            this.collection.bind('itemsSelected', this.toggleRemoveButton, this);
+
             // Init the sortable feature.
             this.sort();
         },
 
+        /**
+         * Handle the display of the main remove button.
+         *
+         * @return void
+         */
+        toggleRemoveButton: function(items)
+        {
+            var length = items.length ? true : false;
+
+            if (length)
+            {
+                // Show the main remove button.
+                this.$el.find('button#themosis-collection-remove').addClass('show');
+            }
+            else
+            {
+                // Hide the main remove button.
+                this.$el.find('button#themosis-collection-remove').removeClass('show');
+            }
+        },
+
         events:{
             'click button#themosis-collection-add': 'add',
-            'click button#themosis-collection-remove': 'remove'
+            'click button#themosis-collection-remove': 'removeSelectedItems'
         },
 
         /**
@@ -135,7 +162,7 @@
          *
          * @return void
          */
-        remove: function()
+        removeSelectedItems: function()
         {
             // Call parent view to trigger its method to remove files from its collection.
             console.log('Remove files from the current collection.');
@@ -177,10 +204,11 @@
         // the collection as a dependency.
         var collectionField = $(elem),
             list = collectionField.find('ul.themosis-collection-list'),
-            items = list.children(),
-            models = []; // Array of collection items models.
+            items = list.children();
 
-        // Collection contains items.
+        // Instantiate a collection.
+        var c = new CollectionApp.Collections.Collection();
+
         if (items.length)
         {
             _.each(items, function(el)
@@ -193,19 +221,17 @@
                     'src': item.find('img').attr('src')
                 });
 
-                // Add the model instance to the array which will be passed to the collection.
-                models.push(m);
+                // Add the model to the collection.
+                c.add(m);
 
                 // Create an item view instance.
                 new CollectionApp.Views.Item({
                     model: m,
-                    el: item
+                    el: item,
+                    collection: c
                 });
             });
         }
-
-        // Instantiate a collection.
-        var c = new CollectionApp.Collections.Collection(models);
 
         // Instantiate a collection view.
         new CollectionApp.Views.Collection({
