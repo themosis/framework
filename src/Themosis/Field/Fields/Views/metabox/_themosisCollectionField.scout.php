@@ -5,7 +5,7 @@
     </div>
     <script id="themosis-collection-item-template" type="text/template">
         <li>
-            {{ Themosis\Facades\Form::hidden($field['name'].'[]', '<%= value %>') }}
+            <input type="hidden" name="{{ $field['name'] }}[]" value="<%= value %>"/>
             <div class="themosis-collection__item">
                 <img src="<%= src %>" alt="Collection Item"/>
                 <a class="check" title="Remove" href="#">

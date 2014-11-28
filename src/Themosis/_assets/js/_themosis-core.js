@@ -32,6 +32,12 @@
             this.listenTo(this.collection, 'removeSelected', this.removeSelection);
         },
 
+        render: function()
+        {
+            this.$el.html(this.template(this.model.toJSON()));
+            return this;
+        },
+
         events: {
             'click img': 'select',
             'click a.check' : 'removeItem'
@@ -141,8 +147,105 @@
             // Bind to collection events
             this.collection.bind('itemsSelected', this.toggleRemoveButton, this);
 
+            // Init a WordPress media window.
+            this.frame = wp.media({
+                // Define behaviour of the media window.
+                // 'post' if related to a WordPress post.
+                // 'select' if use outside WordPress post.
+                frame: 'select',
+                // Allow or not multiple selection.
+                multiple: true,
+                // The displayed title.
+                title: 'Insert media',
+                // The button behaviour
+                button: {
+                    text: 'Insert',
+                    close: true
+                },
+                // Type of files shown in the library.
+                // 'image', 'application' (pdf, doc,...)
+                library:{
+                    type: 'image'
+                }
+            });
+
+            // Attach an event on select. Runs when "insert" button is clicked.
+            this.frame.on('select', _.bind(this.selectedItems, this));
+
             // Init the sortable feature.
             this.sort();
+        },
+
+        /**
+         * Listen to media frame select event and retrieve the selected files.
+         *
+         * @return void
+         */
+        selectedItems: function()
+        {
+            var selection = this.frame.state('library').get('selection');
+
+            selection.map(function(attachment)
+            {
+                this.insertItem(attachment);
+            }, this);
+
+        },
+
+        /**
+         * Insert selected items to the collection view and its collection,
+         *
+         * @param attachment The attachment model from the WordPress media API.
+         * @return void
+         */
+        insertItem: function(attachment)
+        {
+            // Build a specific model for this attachment.
+            var m = new CollectionApp.Models.Item({
+                'value': attachment.get('id'),
+                'src': this.getAttachmentThumbnail(attachment)
+            });
+
+            // Build a view for this attachment and pass it its model.
+            var itemView = new CollectionApp.Views.Item({
+                model: m,
+                collection: this.collection
+            });
+
+            // Add the model to the collection.
+            this.collection.add(m);
+
+            // Add the model to the DOM.
+            this.$el.find('ul.themosis-collection-list').append(itemView.render().el);
+        },
+
+        /**
+         * Get the attachment thumbnail URL and returns it.
+         *
+         * @param attachment The attachment model.
+         * @return string The attachment thumbnail URL.
+         */
+        getAttachmentThumbnail: function(attachment)
+        {
+            var type = attachment.get('type'),
+                url = thfmk_themosis._themosisAssets + '/images/themosisFileIcon.png';
+
+            if('image' === type){
+
+                // Check if the _themosis_media size is available.
+                var sizes = attachment.get('sizes');
+
+                if (undefined !== sizes._themosis_media)
+                {
+                    url = sizes._themosis_media.url;
+                }
+                else
+                {
+                    url = sizes.full.url;
+                }
+            }
+
+            return url;
         },
 
         /**
@@ -182,7 +285,7 @@
             // Call parent view to trigger its method to add files to its collection.
             console.log('Open Media Library and add some files.');
 
-            
+            this.frame.open();
         },
 
         /**
