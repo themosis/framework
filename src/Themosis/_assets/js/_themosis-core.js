@@ -27,6 +27,11 @@
 
         template: _.template($('#themosis-collection-item-template').first().html()),
 
+        initialize: function()
+        {
+            this.listenTo(this.collection, 'removeSelected', this.removeSelection);
+        },
+
         events: {
             'click img': 'select',
             'click a.check' : 'removeItem'
@@ -41,7 +46,6 @@
         select: function()
         {
             // Change the state of the item as selected
-            console.log('Item selection.');
             var item = this.$el.children('div.themosis-collection__item');
 
             if (item.hasClass('selected'))
@@ -56,6 +60,28 @@
                 item.addClass('selected');
                 this.model.set('selected', true);
             }
+        },
+
+        /**
+         * Remove the selected items/models from the collection.
+         * When an item is removed individually, an event is sent to
+         * the collection which will remove the model from its list.
+         *
+         * @param items The selected items to be removed.
+         * @return void
+         */
+        removeSelection: function(items)
+        {
+            _.each(items, function(elem)
+            {
+                // If this view model is equal to the passed model
+                // remove it.
+                if (this.model.cid === elem.cid)
+                {
+                    this.remove();
+                    this.collection.remove(this.model);
+                }
+            }, this);
         },
 
         /**
@@ -87,6 +113,7 @@
         {
             // Listen to events
             this.on('change:selected', this.onSelect);
+            this.on('remove', this.onSelect);
         },
 
         /**
@@ -154,6 +181,8 @@
         {
             // Call parent view to trigger its method to add files to its collection.
             console.log('Open Media Library and add some files.');
+
+            
         },
 
         /**
@@ -165,7 +194,9 @@
         removeSelectedItems: function()
         {
             // Call parent view to trigger its method to remove files from its collection.
-            console.log('Remove files from the current collection.');
+            var selectedItems = this.collection.where({'selected': true});
+
+            this.collection.trigger('removeSelected', selectedItems);
         },
 
         /**
@@ -184,10 +215,7 @@
                 },
                 forcePlaceholderSize : true,
                 placeholder : 'themosis-collection-ui-state-highlight',
-                handle : '.themosis-collection__item',
-                update : function(){
-                    //vent.trigger('row:sort');
-                }
+                handle : '.themosis-collection__item'
             });
         }
 
