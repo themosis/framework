@@ -299,8 +299,12 @@
     box-shadow: 0 0 0 1px #FFF, 0 0 0 5px #1E8CBE;
 }
 
-.themosis-collection__item.selected .check, .themosis-collection__item:hover .check{
-    display: block;
+.themosis-collection__item .check{
+    display: none;
+}
+
+.themosis-collection__item.selected .check {
+    display: block !important;
     position: absolute;
     top: -6px;
     right: -6px;
@@ -312,14 +316,14 @@
     box-shadow: 0 0 0 1px #FFF, 0 0 0 2px #1E8CBE;
 }
 
-.themosis-collection__item.selected .check div, .themosis-collection__item:hover .check div{
+.themosis-collection__item.selected .check div, .themosis-collection__item.selected:hover .check div{
     height: 15px;
     width: 15px;
     margin: 5px;
     background-position: -21px 0;
 }
 
-.themosis-collection__item:hover .check:hover div{
+.themosis-collection__item.selected:hover .check:hover div{
     height: 15px;
     width: 15px;
     margin: 5px;
@@ -332,6 +336,14 @@
 
 .themosis-collection-buttons{
     margin-top: 1em;
+}
+
+.themosis-collection-ui-state-highlight{
+    background-color: #ddd;
+    border: 3px dashed #aaa;
+    width: 94px;
+    height: 94px;
+    padding: 0;
 }
 
 .wp-core-ui .themosis-button-remove{

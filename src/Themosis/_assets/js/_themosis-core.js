@@ -13,17 +13,67 @@
         Collections: {}
     };
 
-    // Model pour chaque item.
-    // View pour chaque item.
-    // Collection de tous les item.
-    // View pour la collection des item.
+    // Model - Individual item
+    CollectionApp.Models.Item = Backbone.Model.extend({
+        defaults:{
+            'selected': false,
+            'value': '',  // The media file ID
+            'src': '' // The media file URL
+        }
+    });
 
-    // View - Buttons
-    CollectionApp.Views.Buttons = Backbone.View.extend({
+    // View - Individual item
+    CollectionApp.Views.Item = Backbone.View.extend({
+
+        template: _.template($('#themosis-collection-item-template').first().html()),
+
+        initialize: function()
+        {
+
+        },
+
+        events: {
+            'click img': 'select',
+            'click a.check' : 'remove'
+        },
+
+        /**
+         * Triggered when the item image is clicked. Set the state of
+         * the element as selected so the collection can perform action into it.
+         *
+         * @return void
+         */
+        select: function()
+        {
+            // Change the state of the item as selected
+            console.log('Item selection.');
+        },
+
+        /**
+         * Triggered when the '-' button is clicked. Remove the item
+         * from the current collection.
+         *
+         * @return void
+         */
+        remove: function()
+        {
+            console.log('Remove the item from the current collection.');
+        }
+
+    });
+
+    // Collection - Collection of items
+    CollectionApp.Collections.Collection = Backbone.Collection.extend({
+        model: CollectionApp.Models.Item
+    });
+
+    // View - Collection
+    CollectionApp.Views.Collection = Backbone.View.extend({
 
         initialize: function(options)
         {
-            this.options = options;
+            // Init the sortable feature.
+            this.sort();
         },
 
         events:{
@@ -32,8 +82,8 @@
         },
 
         /**
-         * Triggered when 'add' button is clicked. Tell the parent
-         * view/collection to add files to the current collection.
+         * Triggered when 'add' button is clicked. Tell the view/collection
+         * to add files to the current collection.
          *
          * @return void
          */
@@ -44,8 +94,8 @@
         },
 
         /**
-         * Triggered when 'remove' button is clicked. Tell the parent
-         * view/collection to remove files from the current collection.
+         * Triggered when 'remove' button is clicked. Tell view/collection
+         * to remove files from the current collection.
          *
          * @return void
          */
@@ -53,11 +103,82 @@
         {
             // Call parent view to trigger its method to remove files from its collection.
             console.log('Remove files from the current collection.');
+        },
+
+        /**
+         * Allow collection items to be sortable using drag&drop.
+         *
+         * @return void
+         */
+        sort: function()
+        {
+            this.$el.find('ul.themosis-collection-list').sortable({
+                helper : function(e, ui) {
+                    ui.children().each(function() {
+                        $(this).width($(this).width());
+                    });
+                    return ui;
+                },
+                forcePlaceholderSize : true,
+                placeholder : 'themosis-collection-ui-state-highlight',
+                handle : '.themosis-collection__item',
+                update : function(){
+                    //vent.trigger('row:sort');
+                }
+            });
         }
 
     });
 
     // Implementation
+    var collections = $('div.themosis-collection-wrapper');
+
+    _.each(collections, function(elem)
+    {
+        // Check if there are files in the rendered collection field.
+        // If not, create an empty collection to listen to and attach it to
+        // the collection field view. Also create a buttons view and pass it
+        // the collection as a dependency.
+        var collectionField = $(elem),
+            list = collectionField.find('ul.themosis-collection-list'),
+            items = list.children(),
+            models = []; // Array of collection items models.
+
+        // Collection contains items.
+        if (items.length)
+        {
+            _.each(items, function(el)
+            {
+                var item = $(el),
+                    input = item.find('input');
+
+                var m = new CollectionApp.Models.Item({
+                    'value': parseInt(input.val()),
+                    'src': item.find('img').attr('src')
+                });
+
+                // Add the model instance to the array which will be passed to the collection.
+                models.push(m);
+
+                // Create an item view instance.
+                new CollectionApp.Views.Item({
+                    model: m,
+                    el: item,
+                    template: _.template(collectionField.find('#themosis-collection-item-template').html())
+                });
+            });
+        }
+
+        // Instantiate a collection.
+        var c = new CollectionApp.Collections.Collection(models);
+
+        // Instantiate a collection view.
+        new CollectionApp.Views.Collection({
+            collection: c,
+            el: collectionField
+        });
+
+    });
 
     //------------------------------------------------
     // MEDIA - Custom field
