@@ -47,16 +47,33 @@
         {
             // Change the state of the item as selected
             console.log('Item selection.');
+            var item = this.$el.children('div.themosis-collection__item');
+
+            if (item.hasClass('selected'))
+            {
+                // Deselected
+                item.removeClass('selected');
+                this.model.set('selected', false);
+            }
+            else
+            {
+                // Selected
+                item.addClass('selected');
+                this.model.set('selected', true);
+            }
         },
 
         /**
          * Triggered when the '-' button is clicked. Remove the item
          * from the current collection.
          *
+         * @param {object} e The event object.
          * @return void
          */
-        remove: function()
+        remove: function(e)
         {
+            e.preventDefault();
+
             console.log('Remove the item from the current collection.');
         }
 
@@ -64,13 +81,32 @@
 
     // Collection - Collection of items
     CollectionApp.Collections.Collection = Backbone.Collection.extend({
-        model: CollectionApp.Models.Item
+
+        model: CollectionApp.Models.Item,
+
+        initialize: function()
+        {
+            // Listen to events
+            this.on('change:selected', this.onSelect);
+        },
+
+        /**
+         * Triggered when a model in the collection changes
+         * its 'selected' value.
+         *
+         * @return void
+         */
+        onSelect: function()
+        {
+            console.log('Collection: a model has change its selected value.');
+        }
+
     });
 
     // View - Collection
     CollectionApp.Views.Collection = Backbone.View.extend({
 
-        initialize: function(options)
+        initialize: function()
         {
             // Init the sortable feature.
             this.sort();
@@ -163,8 +199,7 @@
                 // Create an item view instance.
                 new CollectionApp.Views.Item({
                     model: m,
-                    el: item,
-                    template: _.template(collectionField.find('#themosis-collection-item-template').html())
+                    el: item
                 });
             });
         }

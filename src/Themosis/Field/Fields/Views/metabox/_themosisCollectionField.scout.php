@@ -29,7 +29,7 @@
                 </li>
                 <li>
                     {{ Themosis\Facades\Form::hidden($field['name'].'[]', 26) }}
-                    <div class="themosis-collection__item selected">
+                    <div class="themosis-collection__item">
                         <img src="{{ themosis_plugin_url(themosis_path('plugin')) }}/src/Themosis/_assets/images/themosisFileIcon.png" alt="Collection Item"/>
                         <a class="check" title="Remove" href="#">
                             <div class="media-modal-icon"></div>
