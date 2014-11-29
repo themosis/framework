@@ -28,6 +28,7 @@ abstract class Wrapper {
             case 'checkboxes':
             case 'radio':
             case 'select':
+            case 'collection':
 
                 $parsedValue = $this->parseArrayable($field, $value);
                 break;

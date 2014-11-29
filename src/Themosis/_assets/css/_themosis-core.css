@@ -254,14 +254,16 @@
 | Collection field style
 |
 */
-.themosis-collection-inputs{
-    display: none;
-}
-
 .themosis-collection-container{
+    display: none;
     max-width: 100%;
     background-color: #f3f3f3;
     border: 1px solid #dddddd;
+    margin-bottom: 1em;
+}
+
+.themosis-collection-container.show{
+    display: block;
 }
 
 .themosis-collection{
@@ -332,10 +334,6 @@
 
 .themosis-collection__item img{
     display: block;
-}
-
-.themosis-collection-buttons{
-    margin-top: 1em;
 }
 
 .themosis-collection-ui-state-highlight{

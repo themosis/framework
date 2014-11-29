@@ -25,6 +25,8 @@
     // View - Individual item
     CollectionApp.Views.Item = Backbone.View.extend({
 
+        tagName: 'li',
+
         template: _.template($('#themosis-collection-item-template').first().html()),
 
         initialize: function()
@@ -32,6 +34,11 @@
             this.listenTo(this.collection, 'removeSelected', this.removeSelection);
         },
 
+        /**
+         * Render the new added items.
+         *
+         * @returns {CollectionApp.Views.Item}
+         */
         render: function()
         {
             this.$el.html(this.template(this.model.toJSON()));
@@ -120,6 +127,7 @@
             // Listen to events
             this.on('change:selected', this.onSelect);
             this.on('remove', this.onSelect);
+            this.on('add', this.onAdd);
         },
 
         /**
@@ -135,6 +143,21 @@
             var selectedItems = this.where({'selected': true});
 
             this.trigger('itemsSelected', selectedItems);
+
+            // Trigger an event where we can check the length of the collection.
+            // Use to hide/show the collection container.
+            this.trigger('collectionToggle', this);
+        },
+
+        /**
+         * Triggered when a model is added in the collection.
+         *
+         * @return void
+         */
+        onAdd: function()
+        {
+            // Trigger an event in order to check the display of the collection container.
+            this.trigger('collectionToggle', this);
         }
 
     });
@@ -146,6 +169,7 @@
         {
             // Bind to collection events
             this.collection.bind('itemsSelected', this.toggleRemoveButton, this);
+            this.collection.bind('collectionToggle', this.toggleCollectionContainer, this);
 
             // Init a WordPress media window.
             this.frame = wp.media({
@@ -193,7 +217,7 @@
         },
 
         /**
-         * Insert selected items to the collection view and its collection,
+         * Insert selected items to the collection view and its collection.
          *
          * @param attachment The attachment model from the WordPress media API.
          * @return void
@@ -206,7 +230,7 @@
                 'src': this.getAttachmentThumbnail(attachment)
             });
 
-            // Build a view for this attachment and pass it its model.
+            // Build a view for this attachment and pass it its model and current collection.
             var itemView = new CollectionApp.Views.Item({
                 model: m,
                 collection: this.collection
@@ -269,22 +293,39 @@
             }
         },
 
+        /**
+         * Handle the display of the collection container.
+         *
+         * @return void
+         */
+        toggleCollectionContainer: function(collection)
+        {
+            var length = collection.length ? true : false;
+
+            if (length)
+            {
+                // Show the collection container.
+                this.$el.find('div.themosis-collection-container').addClass('show');
+            }
+            else
+            {
+                // Hide the collection container.
+                this.$el.find('div.themosis-collection-container').removeClass('show');
+            }
+        },
+
         events:{
             'click button#themosis-collection-add': 'add',
             'click button#themosis-collection-remove': 'removeSelectedItems'
         },
 
         /**
-         * Triggered when 'add' button is clicked. Tell the view/collection
-         * to add files to the current collection.
+         * Triggered when 'add' button is clicked. Open the media library.
          *
          * @return void
          */
         add: function()
         {
-            // Call parent view to trigger its method to add files to its collection.
-            console.log('Open Media Library and add some files.');
-
             this.frame.open();
         },
 

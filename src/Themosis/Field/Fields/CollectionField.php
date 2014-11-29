@@ -25,7 +25,7 @@ class CollectionField extends FieldBuilder {
      */
     protected function fieldType()
     {
-        $this->type = 'hidden';
+        $this->type = 'collection';
     }
 
     /**
