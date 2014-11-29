@@ -297,6 +297,10 @@
     box-shadow: 0 0 0 1px #fff, 0 0 0 5px #d3d3d3;
 }
 
+.themosis-collection__item:active{
+    cursor: move;
+}
+
 .themosis-collection__item.selected, .themosis-collection__item:hover{
     box-shadow: 0 0 0 1px #FFF, 0 0 0 5px #1E8CBE;
 }
@@ -334,6 +338,8 @@
 
 .themosis-collection__item img{
     display: block;
+    width: 100px;
+    height: 100px;
 }
 
 .themosis-collection-ui-state-highlight{

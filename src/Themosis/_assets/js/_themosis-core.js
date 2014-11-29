@@ -27,10 +27,11 @@
 
         tagName: 'li',
 
-        template: _.template($('#themosis-collection-item-template').first().html()),
+        template: '#themosis-collection-item-template',
 
-        initialize: function()
+        initialize: function(options)
         {
+            this.collectionView = options.collectionView;
             this.listenTo(this.collection, 'removeSelected', this.removeSelection);
         },
 
@@ -41,7 +42,8 @@
          */
         render: function()
         {
-            this.$el.html(this.template(this.model.toJSON()));
+            var template = _.template(this.collectionView.$el.find(this.template).html());
+            this.$el.html(template(this.model.toJSON()));
             return this;
         },
 
@@ -233,7 +235,8 @@
             // Build a view for this attachment and pass it its model and current collection.
             var itemView = new CollectionApp.Views.Item({
                 model: m,
-                collection: this.collection
+                collection: this.collection,
+                collectionView: this
             });
 
             // Add the model to the collection.
@@ -246,16 +249,16 @@
         /**
          * Get the attachment thumbnail URL and returns it.
          *
-         * @param attachment The attachment model.
-         * @return string The attachment thumbnail URL.
+         * @param {object} attachment The attachment model.
+         * @return {string} The attachment thumbnail URL.
          */
         getAttachmentThumbnail: function(attachment)
         {
             var type = attachment.get('type'),
                 url = thfmk_themosis._themosisAssets + '/images/themosisFileIcon.png';
 
-            if('image' === type){
-
+            if('image' === type)
+            {
                 // Check if the _themosis_media size is available.
                 var sizes = attachment.get('sizes');
 
@@ -381,6 +384,12 @@
         // Instantiate a collection.
         var c = new CollectionApp.Collections.Collection();
 
+        // Instantiate a collection view.
+        var cView = new CollectionApp.Views.Collection({
+            collection: c,
+            el: collectionField
+        });
+
         if (items.length)
         {
             _.each(items, function(el)
@@ -400,16 +409,13 @@
                 new CollectionApp.Views.Item({
                     model: m,
                     el: item,
-                    collection: c
+                    collection: c,
+                    collectionView: cView
                 });
             });
         }
 
-        // Instantiate a collection view.
-        new CollectionApp.Views.Collection({
-            collection: c,
-            el: collectionField
-        });
+
 
     });
 
