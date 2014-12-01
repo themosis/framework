@@ -1,7 +1,7 @@
 <!-- Collection field -->
-<div class="themosis-collection-wrapper" data-type="{{ $field['type'] }}" data-limit="{{ $field['limit'] }}">
+<div class="themosis-collection-wrapper" data-type="{{ $field['type'] }}" data-limit="{{ $field['limit'] }}" data-order="1" data-name="{{ $field['name'] }}[]" data-field="collection">
     <script id="themosis-collection-item-template" type="text/template">
-        <input type="hidden" name="{{ $field['name'] }}[]" value="<%= value %>"/>
+        <input type="hidden" name="{{ $field['name'] }}[]" value="<%= value %>" data-field="collection"/>
         <div class="themosis-collection__item">
             <img src="<%= src %>" alt="Collection Item"/>
             <div class="filename">
@@ -22,7 +22,7 @@
                 @if (!empty($field['value']) && is_array($field['value']))
                     @foreach($field['value'] as $i => $item)
                         <li>
-                            {{ Themosis\Facades\Form::hidden($field['name'].'[]', $item, array('id' => $field['id'].'-'.$i, 'data-field' => 'collection', 'data-limit' => 10)) }}
+                            {{ Themosis\Facades\Form::hidden($field['name'].'[]', $item, array('data-field' => 'collection', 'data-limit' => 10)) }}
                             <div class="themosis-collection__item">
                                 <?php
                                     $isFile = false;

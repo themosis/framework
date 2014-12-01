@@ -458,8 +458,8 @@
          * Start the media view.
          * Setup a new media window.
          */
-        initialize: function(){
-
+        initialize: function()
+        {
             // Init field properties.
             // The hidden input DOM element.
             this.input = this.$el.find('#themosis-media-input');
@@ -494,7 +494,6 @@
 
             // Attach an event on select. Runs when "insert" button is clicked.
             this.frame.on('select', _.bind(this.select, this));
-
         },
 
         /**
@@ -510,7 +509,8 @@
          *
          * @param {object} event
          */
-        addMedia: function(event){
+        addMedia: function(event)
+        {
             event.preventDefault();
 
             // Open the media window
@@ -522,7 +522,8 @@
          *
          * @returns void
          */
-        open: function(){
+        open: function()
+        {
             this.frame.open();
         },
 
@@ -532,8 +533,8 @@
          *
          * @returns void
          */
-        select: function(){
-
+        select: function()
+        {
             var selection = this.getItem(),
                 type = selection.get('type'),
                 val = selection.get('id'),
@@ -541,13 +542,13 @@
                 thumbUrl = '';
 
             // Deal with an application file type.
-            if('application' === type){
-
+            if ('application' === type)
+            {
                 thumbUrl = thfmk_themosis._themosisAssets + '/images/themosisFileIcon.png';
-
             // Deal with an image.
-            } else if('image' === type){
-
+            }
+            else if ('image' === type)
+            {
                 // Check if the defined size is available.
                 var sizes = selection.get('sizes');
 
@@ -574,7 +575,6 @@
             this.thumbnail.attr('src', thumbUrl);
 
             this.toggleButtons();
-
         },
 
         /**
@@ -582,12 +582,11 @@
          *
          * @returns {object} A backbone model object.
          */
-        getItem: function(){
-
+        getItem: function()
+        {
             var selection = this.frame.state().get('selection').first();
 
             return selection;
-
         },
 
         /**
@@ -595,7 +594,8 @@
          *
          * @param {object} event
          */
-        deleteMedia: function(event){
+        deleteMedia: function(event)
+        {
             event.preventDefault();
 
             // Reset input
@@ -610,11 +610,10 @@
          *
          * @returns void
          */
-        resetInput: function(){
-
+        resetInput: function()
+        {
             this.input.val('');
             this.model.set({value: ''});
-
         },
 
         /**
@@ -622,33 +621,31 @@
          *
          * @returns void
          */
-        toggleButtons: function(){
+        toggleButtons: function()
+        {
             var cells = this.$el.find('table.themosis-media .themosis-media-preview, table.themosis-media .themosis-media-infos, table.themosis-media button');
 
-            _.each(cells, function(elem){
-
+            _.each(cells, function(elem)
+            {
                 elem = $(elem);
 
-                if(elem.hasClass('themosis-media--hidden')){
-
+                if(elem.hasClass('themosis-media--hidden'))
+                {
                     elem.removeClass('themosis-media--hidden');
-
-                } else {
-
-                    elem.addClass('themosis-media--hidden');
-
                 }
-
+                else
+                {
+                    elem.addClass('themosis-media--hidden');
+                }
             });
         }
-
     });
 
     // Implementation
     var mediaFields = $('table.themosis-media').closest('tr');
 
-    _.each(mediaFields, function(elem){
-
+    _.each(mediaFields, function(elem)
+    {
         var input = $(elem).find('input#themosis-media-input');
 
         var data = new MediaApp.Models.Media({
@@ -661,7 +658,6 @@
             model:data,
             el: $(elem)
         });
-
     });
 
     //------------------------------------------------
@@ -681,7 +677,8 @@
         Collections: {},
 
         // Initialize the infinite fields.
-        init: function(elem){
+        init: function(elem)
+        {
             this.infinite = $(elem);
             this.rows = this.fetchRows();
             this.setupBackbone();
@@ -692,7 +689,8 @@
          *
          * @return {Array}
          */
-        fetchRows: function(){
+        fetchRows: function()
+        {
             return this.infinite.find('tr.themosis-infinite-row');
         },
 
@@ -701,7 +699,8 @@
          *
          * @return void
          */
-        setupBackbone: function(){
+        setupBackbone: function()
+        {
             // Setup the views.
             // Set the main INFINITE view (=rowsCollection View)
             new InfiniteApp.Views.Infinite({
@@ -715,7 +714,8 @@
     // Single row view
     InfiniteApp.Views.Row = Backbone.View.extend({
 
-        initialize: function(options){
+        initialize: function(options)
+        {
             // Retrieve passed parameters
             this.options = options;
 
@@ -732,21 +732,24 @@
         /**
          * Triggered when click on the row 'add' button.
          */
-        insert: function(){
+        insert: function()
+        {
             this.options.parent.insert(this);
         },
 
         /**
          * Triggered when 'delete' button is clicked.
          */
-        remove: function(){
+        remove: function()
+        {
             this.options.parent.remove(this);
         },
 
         /**
          * Place the row 'add' button.
          */
-        placeButton: function(){
+        placeButton: function()
+        {
             var plusButton = this.$el.find('.themosis-infinite-add'),
                 cellHeight = this.$el.find('td.themosis-infinite-options').height(),
                 cellWidth = this.$el.find('td.themosis-infinite-options').width();
@@ -760,12 +763,12 @@
          *
          * @return {Object} The view object.
          */
-        reset: function(){
+        reset: function()
+        {
+            var fields = this.$el.find('input, textarea, select, div.themosis-collection-wrapper');
 
-            var fields = this.$el.find('input, textarea, select');
-
-            _.each(fields, function(field){
-
+            _.each(fields, function(field)
+            {
                 var f = $(field),
                     type = f.data('field');
 
@@ -794,6 +797,12 @@
                         this.resetMedia(f);
                         break;
 
+                    case 'collection':
+                        // Reset collection field backbone objects.
+                        this.resetCollection(f);
+
+                        break;
+
                     default:
                         // Reset <input> tag.
                         this.resetInput(f);
@@ -811,7 +820,8 @@
          * @param {Object} field The input tag wrapped in jQuery object.
          * @return void
          */
-        resetInput: function(field){
+        resetInput: function(field)
+        {
             field.attr('value', '');
         },
 
@@ -821,7 +831,8 @@
          * @param {Object} field The input tag wrapped in jQuery object.
          * @return void
          */
-        resetCheckable: function(field){
+        resetCheckable: function(field)
+        {
             field.removeAttr('checked');
         },
 
@@ -831,7 +842,8 @@
          * @param {Object} field The <select> tag wrapped in Jquery object.
          * @return void
          */
-        resetSelect: function(field){
+        resetSelect: function(field)
+        {
             var options = field.find('option');
 
             options.each(function(i, option){
@@ -847,7 +859,8 @@
          * @param {Object} field The <textarea> tag wrapped in jQuery object.
          * @return void
          */
-        resetTextarea: function(field){
+        resetTextarea: function(field)
+        {
             field.val('');
         },
 
@@ -857,8 +870,8 @@
          * @param {Object} field The media hidden input tag wrapped in jQuery object.
          * @return void
          */
-        resetMedia: function(field){
-
+        resetMedia: function(field)
+        {
             var cells = field.closest('td').find('table.themosis-media>tbody>tr').find('.themosis-media-preview, .themosis-media-infos, button'),
                 addButton = field.closest('td').find('table.themosis-media>tbody>tr').find('#themosis-media-add'),
                 mediaField = field.closest('tr.themosis-field-container');
@@ -873,14 +886,13 @@
 
                     elem = $(elem);
 
-                    if(elem.hasClass('themosis-media--hidden')){
-
+                    if(elem.hasClass('themosis-media--hidden'))
+                    {
                         elem.removeClass('themosis-media--hidden');
-
-                    } else {
-
+                    }
+                    else
+                    {
                         elem.addClass('themosis-media--hidden');
-
                     }
 
                 });
@@ -897,6 +909,37 @@
                 model:data,
                 el:mediaField
             });
+        },
+
+        /**
+         * Reset the collection field.
+         *
+         * @param {object} f The collection field wrapped in jQuery.
+         * @return void
+         */
+        resetCollection: function(f)
+        {
+            var list = f.find('ul.themosis-collection-list'),
+                container = f.find('div.themosis-collection-container');
+
+            // Delete all items <li>
+            list.children('li').remove();
+
+            // Hide the collection container
+            if (container.hasClass('show'))
+            {
+                container.removeClass('show');
+            }
+
+            // Create new collection field instance - Implementation.
+            // Instantiate a collection.
+            var c = new CollectionApp.Collections.Collection();
+
+            // Instantiate a collection view.
+            new CollectionApp.Views.Collection({
+                collection: c,
+                el: f
+            });
         }
 
     });
@@ -904,7 +947,8 @@
     // Main ADD button view
     InfiniteApp.Views.Add = Backbone.View.extend({
 
-        initialize: function(options){
+        initialize: function(options)
+        {
             this.options = options;
         },
 
@@ -915,7 +959,8 @@
         /**
          * Send an event to add a new row.
          */
-        addRow: function(){
+        addRow: function()
+        {
             // Calls the infinite parent view method.
             this.options.parent.add();
         }
@@ -925,8 +970,8 @@
     // Infinite view - All rows view
     InfiniteApp.Views.Infinite = Backbone.View.extend({
 
-        initialize: function(options){
-
+        initialize: function(options)
+        {
             // Retrieve passed parameters.
             this.options = options;
 
@@ -937,7 +982,7 @@
             this.limit();
 
             // Attach the main "add" button to the view.
-            this.addButton = new InfiniteApp.Views.Add({
+            new InfiniteApp.Views.Add({
                 el: this.$el.closest('.themosis-infinite-container').find('div.themosis-infinite-add-field-container'),
                 parent: this
             });
@@ -955,8 +1000,8 @@
         /**
          * Create inner rows views.
          */
-        setRows: function(){
-
+        setRows: function()
+        {
             _.each(this.options.rows, function(elem){
 
                 // DOM elements.
@@ -970,14 +1015,13 @@
                 });
 
             }, this);
-
         },
 
         /**
          * Handle the sortable event/feature.
          */
-        sort: function(){
-
+        sort: function()
+        {
             this.$el.sortable({
                 helper : function(e, ui) {
                     ui.children().each(function() {
@@ -992,7 +1036,6 @@
                     vent.trigger('row:sort');
                 }
             });
-
         },
 
         /**
@@ -1000,8 +1043,8 @@
          *
          * @returns {Object} A row view object.
          */
-        getFirstRow: function(){
-
+        getFirstRow: function()
+        {
             var row = this.$el.find('tr.themosis-infinite-row').first().clone(),
                 rowView = new InfiniteApp.Views.Row({
                     el: row,
@@ -1009,13 +1052,13 @@
                 });
 
             return rowView.reset();
-
         },
 
         /**
          * Add a new row to the collection.
          */
-        add: function(){
+        add: function()
+        {
             // Check the limit.
             if(0 < this.limit && this.count+1 > this.limit) return;
 
@@ -1032,7 +1075,8 @@
          *
          * @param {Object} currentRow The current row view object.
          */
-        insert: function(currentRow){
+        insert: function(currentRow)
+        {
             // Check the limit.
             if(0 < this.limit && this.count+1 > this.limit) return;
 
@@ -1049,7 +1093,8 @@
          *
          * @param {Object} row The row view object.
          */
-        remove: function(row){
+        remove: function(row)
+        {
             // Keep at least one row.
             if(1 >= this.count) return;
 
@@ -1066,7 +1111,8 @@
          *
          * @return void
          */
-        update: function(){
+        update: function()
+        {
             // Update row count.
             this.updateCount();
 
@@ -1077,18 +1123,20 @@
         /**
          * Update the total number of rows.
          */
-        updateCount: function(){
+        updateCount: function()
+        {
             this.count = this.$el.find('tr.themosis-infinite-row').length;
         },
 
         /**
          * Rename all 'name', 'id' and 'for' attributes.
          */
-        rename: function(){
+        rename: function()
+        {
             var rows = this.$el.find('tr.themosis-infinite-row');
 
-            _.each(rows, function(row, index){
-
+            _.each(rows, function(row, index)
+            {
                 // Order is 1 based.
                 index = String(index + 1);
                 row = $(row);
@@ -1098,26 +1146,54 @@
                     order = row.children('td.themosis-infinite-order').children('span');
 
                 // Update the row inner fields.
-                _.each(fields, function(field){
-
+                _.each(fields, function(field)
+                {
                     // "Field" is the <tr> tag containing all the custom field html.
                     field = $(field);
 
                     var input = field.find('input, textarea, select'),
-                        label = field.find('th.themosis-label>label');
+                        label = field.find('th.themosis-label>label'),
+                        collectionField = field.find('.themosis-collection-wrapper'); // Check if there is a collection field.
 
-                    if(1 < input.length){
-                        // Contains more than one input.
-                        _.each(input, function(io){
+                    if (!collectionField.length)
+                    {
+                        if (1 < input.length)
+                        {
+                            // Contains more than one input.
+                            _.each(input, function(io){
 
-                            io = $(io);
-                            this.renameField(io, label, index);
+                                io = $(io);
+                                this.renameField(io, label, index);
 
-                        }, this);
+                            }, this);
 
-                    } else {
-                        // Only one input inside the field.
-                        this.renameField(input, label, index);
+                        }
+                        else
+                        {
+                            // Only one input inside the field.
+                            this.renameField(input, label, index);
+                        }
+                    }
+                    else
+                    {
+                        // Collection field - Set its index/order as data-order.
+                        // If there is collectionField - Update its order/index property.
+                        collectionField.attr('data-order', index);
+                        this.renameCollectionField(collectionField, index);
+
+                        // Check if there are items
+                        var items = collectionField.find('ul.themosis-collection-list input');
+
+                        if (items.length)
+                        {
+                            // If items input, rename their 'name' attribute.
+                            _.each(items, function(item)
+                            {
+                                var itemInput = $(item),
+                                    name = this.renameName(itemInput.attr('name'), index);
+                                itemInput.attr('name', name);
+                            }, this);
+                        }
                     }
 
                 }, this); // End inner fields.
@@ -1136,8 +1212,8 @@
          * @param {String} index The index used to rename the attributes.
          * @return void
          */
-        renameField: function(input, label, index){
-
+        renameField: function(input, label, index)
+        {
             var fieldId = input.attr('id'),
                 fieldName = input.attr('name'),
                 id = this.renameId(fieldId, index),
@@ -1161,8 +1237,8 @@
          * @param {String} index
          * @return {String}
          */
-        renameId: function(currentId, index){
-
+        renameId: function(currentId, index)
+        {
             var regex = new RegExp('([0-9])');
 
             return currentId.replace(regex, index);
@@ -1175,17 +1251,39 @@
          * @param {String} index
          * @return {String}
          */
-        renameName: function(currentName, index){
-
+        renameName: function(currentName, index)
+        {
             var regex = new RegExp('([0-9])');
 
             return currentName.replace(regex, index);
         },
 
         /**
+         * Rename collection field.
+         *
+         * @param {object} field Collection field wrapped in jQuery
+         * @param {int} index The row order/index
+         * @return void
+         */
+        renameCollectionField: function(field, index)
+        {
+            var regex = new RegExp('([0-9])'),
+                name = field.data('name'),
+                template = field.find('script#themosis-collection-item-template'),
+                templateContent = template.html();
+
+            // Update data-name attribute value.
+            field.attr('data-name', name.replace(regex, index));
+
+            // Update backbone template content.
+            template.html(templateContent.replace(regex, index));
+        },
+
+        /**
          * Define the limit of rows a user can add.
          */
-        limit: function(){
+        limit: function()
+        {
             this.limit = this.$el.data('limit');
         }
 
