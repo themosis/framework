@@ -3,7 +3,9 @@
     <script id="themosis-collection-item-template" type="text/template">
         <input type="hidden" name="{{ $field['name'] }}[]" value="<%= value %>" data-field="collection"/>
         <div class="themosis-collection__item">
-            <img src="<%= src %>" alt="Collection Item"/>
+            <div class="centered">
+                <img src="<%= src %>" alt="Collection Item"/>
+            </div>
             <div class="filename">
                 <div><%= title %></div>
             </div>
@@ -40,7 +42,9 @@
                                         $isFile = true;
                                     }
                                 ?>
-                                <img src="{{ $src }}" alt="Collection Item" <?php if ($isFile){ echo('class="icon"'); } ?>/>
+                                <div class="centered">
+                                    <img src="{{ $src }}" alt="Collection Item" <?php if ($isFile){ echo('class="icon"'); } ?>/>
+                                </div>
                                 <div class="filename <?php if ($isFile){ echo('show'); } ?>">
                                     <div>{{ get_the_title($item) }}</div>
                                 </div>

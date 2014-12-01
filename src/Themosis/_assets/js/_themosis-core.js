@@ -58,7 +58,7 @@
         },
 
         events: {
-            'click': 'select',
+            'click div.themosis-collection__item': 'select',
             'click a.check' : 'removeItem'
         },
 
