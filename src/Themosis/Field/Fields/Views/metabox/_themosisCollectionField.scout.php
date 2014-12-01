@@ -1,5 +1,5 @@
 <!-- Collection field -->
-<div class="themosis-collection-wrapper">
+<div class="themosis-collection-wrapper" data-type="{{ $field['type'] }}" data-limit="{{ $field['limit'] }}">
     <script id="themosis-collection-item-template" type="text/template">
         <input type="hidden" name="{{ $field['name'] }}[]" value="<%= value %>"/>
         <div class="themosis-collection__item">

@@ -14,7 +14,36 @@ class CollectionField extends FieldBuilder {
     {
         parent::__construct($properties);
 
+        $this->setType();
+        $this->setLimit();
         $this->fieldType();
+    }
+
+    /**
+     * Set the type data of the media to insert.
+     * If no type is defined, default to 'image'.
+     *
+     * @return void
+     */
+    private function setType()
+    {
+        $allowed = array('image', 'application', 'video', 'audio');
+
+        if(isset($this['type']) && !in_array($this['type'], $allowed)){
+            $this['type'] = 'image';
+        } elseif(!isset($this['type'])){
+            $this['type'] = 'image';
+        }
+    }
+
+    /**
+     * Define the limit of media files we can add.
+     *
+     * @return void
+     */
+    private function setLimit()
+    {
+        $this['limit'] = isset($this['limit']) ? (int)$this['limit'] : 0;
     }
 
     /**

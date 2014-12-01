@@ -191,7 +191,7 @@
                 // Type of files shown in the library.
                 // 'image', 'application' (pdf, doc,...)
                 library:{
-                    type: 'image'
+                    type: this.$el.data('type')
                 }
             });
 
@@ -414,9 +414,6 @@
                 });
             });
         }
-
-
-
     });
 
     //------------------------------------------------
