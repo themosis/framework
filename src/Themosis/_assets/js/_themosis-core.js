@@ -18,7 +18,9 @@
         defaults:{
             'selected': false,
             'value': '',  // The media file ID
-            'src': '' // The media file URL
+            'src': '',
+            'type': 'image', // The media file URL
+            'title': ''
         }
     });
 
@@ -44,11 +46,19 @@
         {
             var template = _.template(this.collectionView.$el.find(this.template).html());
             this.$el.html(template(this.model.toJSON()));
+
+            // Check model type property. If not an image, add the 'icon' class to the img tag.
+            if ('image' !== this.model.get('type'))
+            {
+                this.$el.find('img').addClass('icon');
+                this.$el.find('.filename').addClass('show');
+            }
+
             return this;
         },
 
         events: {
-            'click img': 'select',
+            'click': 'select',
             'click a.check' : 'removeItem'
         },
 
@@ -229,7 +239,9 @@
             // Build a specific model for this attachment.
             var m = new CollectionApp.Models.Item({
                 'value': attachment.get('id'),
-                'src': this.getAttachmentThumbnail(attachment)
+                'src': this.getAttachmentThumbnail(attachment),
+                'type': attachment.get('type'),
+                'title': attachment.get('title')
             });
 
             // Build a view for this attachment and pass it its model and current collection.
@@ -255,7 +267,7 @@
         getAttachmentThumbnail: function(attachment)
         {
             var type = attachment.get('type'),
-                url = thfmk_themosis._themosisAssets + '/images/themosisFileIcon.png';
+                url = attachment.get('icon');
 
             if('image' === type)
             {
@@ -268,6 +280,7 @@
                 }
                 else
                 {
+                    // Original image is less than 100px.
                     url = sizes.full.url;
                 }
             }
@@ -399,7 +412,9 @@
 
                 var m = new CollectionApp.Models.Item({
                     'value': parseInt(input.val()),
-                    'src': item.find('img').attr('src')
+                    'src': item.find('img').attr('src'),
+                    'type': collectionField.data('type'),
+                    'title': item.find('.filename').children().text()
                 });
 
                 // Add the model to the collection.

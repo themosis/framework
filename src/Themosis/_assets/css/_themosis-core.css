@@ -295,6 +295,9 @@
     position: relative;
     cursor: pointer;
     box-shadow: 0 0 0 1px #fff, 0 0 0 5px #d3d3d3;
+    width: 100px;
+    height: 100px;
+    background-color: #f3f3f3;
 }
 
 .themosis-collection__item:active{
@@ -338,8 +341,33 @@
 
 .themosis-collection__item img{
     display: block;
-    width: 100px;
-    height: 100px;
+    margin: 0 auto;
+}
+
+.themosis-collection__item img.icon{
+    padding-top: 20%;
+}
+
+.themosis-collection__item .filename{
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    max-height: 100%;
+    word-wrap: break-word;
+    text-align: center;
+    font-weight: 700;
+    background: rgba(255,255,255,.8);
+}
+
+.themosis-collection__item .filename div{
+    padding: 0.4em 0.8em;
+}
+
+.themosis-collection__item .filename.show{
+    display: block;
 }
 
 .themosis-collection-ui-state-highlight{
