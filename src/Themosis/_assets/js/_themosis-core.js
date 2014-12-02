@@ -446,8 +446,9 @@
             value : '', // Register the attachment ID
             type : 'image',
             size : 'full',
-            display : '',
-            thumbUrl : ''
+            display : '', // The text to display - Actually the attachment ID
+            thumbUrl : '', // The src url of the icon/image to use for thumbnail
+            title : ''
         }
     });
 
@@ -539,15 +540,11 @@
                 type = selection.get('type'),
                 val = selection.get('id'),
                 display = selection.get('id'),
-                thumbUrl = '';
+                thumbUrl = selection.get('icon'), // Default image url to icon.
+                title = selection.get('title');
 
-            // Deal with an application file type.
-            if ('application' === type)
-            {
-                thumbUrl = thfmk_themosis._themosisAssets + '/images/themosisFileIcon.png';
-            // Deal with an image.
-            }
-            else if ('image' === type)
+            // If image, get a thumbnail.
+            if ('image' === type)
             {
                 // Check if the defined size is available.
                 var sizes = selection.get('sizes');
@@ -566,13 +563,27 @@
             this.model.set({
                 value: val,
                 display: display,
-                thumbUrl: thumbUrl
+                thumbUrl: thumbUrl,
+                title: title
             });
 
             // Update the DOM elements.
             this.input.val(val);
             this.display.html(display);
             this.thumbnail.attr('src', thumbUrl);
+
+            // Update filename
+            // and show it if not an image.
+            var filename = this.$el.find('div.filename');
+            filename.find('div').html(title);
+
+            if ('image' !== type)
+            {
+                if (!filename.hasClass('show'))
+                {
+                    filename.addClass('show');
+                }
+            }
 
             this.toggleButtons();
         },

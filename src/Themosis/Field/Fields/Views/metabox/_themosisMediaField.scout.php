@@ -4,15 +4,31 @@
     <tr>
         <td class="themosis-media-preview <?php if(empty($field['value'])){ echo('themosis-media--hidden'); } ?>">
             <div class="themosis-media-preview-inner">
-            @if(!empty($field['value']) && is_numeric($field['value']))
-                @if(wp_attachment_is_image($field['value']))
-                    {{ wp_get_attachment_image($field['value'], '_themosis_media', false, array('class' => 'themosis-media-thumbnail', 'alt' => 'Media Thumbnail')) }}
-                @else
-                    <img class="themosis-media-thumbnail" alt="Media Icon" src="{{ themosis_plugin_url(themosis_path('plugin')) }}/src/Themosis/_assets/images/themosisFileIcon.png"/>
-                @endif
-            @else
-                <img class="themosis-media-thumbnail" alt="Media Icon" src="{{ themosis_plugin_url(themosis_path('plugin')) }}/src/Themosis/_assets/images/themosisFileIcon.png"/>
-            @endif
+                <?php
+                    $isFile = false;
+                    $src = '';
+
+                    if (!empty($field['value']) && is_numeric($field['value']))
+                    {
+                        if (wp_attachment_is_image($field['value']))
+                        {
+                            $src = wp_get_attachment_image_src($field['value'], '_themosis_media');
+                            $src = $src[0];
+                        }
+                        else
+                        {
+                            $src = wp_get_attachment_image_src($field['value'], '_themosis_media', true);
+                            $src = $src[0];
+                            $isFile = true;
+                        }
+                    }
+                ?>
+                <div class="centered">
+                    <img class="themosis-media-thumbnail <?php if ($isFile){ echo('icon'); } ?>" alt="Media Thumbnail" src="{{ $src }}"/>
+                </div>
+                <div class="filename <?php if ($isFile){ echo('show'); } ?>">
+                    <div><?php if(!empty($field['value']) && is_numeric($field['value'])){ echo(get_the_title($field['value'])); } ?></div>
+                </div>
             </div>
         </td>
         <td class="themosis-media-details">

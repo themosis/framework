@@ -183,16 +183,53 @@
 .themosis-media-preview .themosis-media-preview-inner{
     width: 100px;
     height: 100px;
-    padding: 1px;
-    background-color: #ffffff;
-    border: 4px solid #e1e1e1;
+    background-color: #f3f3f3;
+    position: relative;
+    box-shadow: 0 0 0 1px #fff, 0 0 0 5px #e1e1e1;
+    margin: 5px;
 }
 
-.themosis-media-preview .themosis-media-preview-inner img{
+.themosis-media-preview .themosis-media-preview-inner .centered{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-transform: translate(50%,50%);
+    -ms-transform: translate(50%,50%);
+    transform: translate(50%,50%);
+    pointer-events: none;
+}
+
+.themosis-media-preview .themosis-media-preview-inner .centered img{
+    position: absolute;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
     display: block;
-    margin: auto;
-    width: 100px;
-    height: 100px;
+    margin: 0 auto;
+}
+
+.themosis-media-preview .themosis-media-preview-inner .filename{
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    max-height: 100%;
+    word-wrap: break-word;
+    text-align: center;
+    font-weight: 700;
+    background: rgba(255,255,255,.8);
+}
+
+.themosis-media-preview .themosis-media-preview-inner .filename div{
+    padding: 0.4em 0.8em;
+}
+
+.themosis-media-preview .themosis-media-preview-inner .filename.show{
+    display: block;
 }
 
 .themosis-media-details{
