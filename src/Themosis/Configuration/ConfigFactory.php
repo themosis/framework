@@ -73,6 +73,11 @@ class ConfigFactory
 			   $template->set($this->path);
 			   break;
 
+            case 'loading':
+                $loading = new Loading();
+                $loading->set($this->path);
+                break;
+
             case 'models':
                 $models = new Models();
                 $models->set($this->path);

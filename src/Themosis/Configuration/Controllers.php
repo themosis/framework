@@ -3,7 +3,13 @@ namespace Themosis\Configuration;
 
 use Symfony\Component\ClassLoader\MapClassLoader;
 
-class Controllers {
+/**
+ * Class Controllers
+ * @package Themosis\Configuration
+ * @deprecated
+ */
+class Controllers
+{
 
     /**
      * Save the retrieved datas.

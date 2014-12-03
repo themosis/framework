@@ -3,6 +3,11 @@ namespace Themosis\Configuration;
 
 use Symfony\Component\ClassLoader\MapClassLoader;
 
+/**
+ * Class Models
+ * @package Themosis\Configuration
+ * @deprecated
+ */
 class Models {
 
     /**
