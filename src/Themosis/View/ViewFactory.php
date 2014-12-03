@@ -145,6 +145,24 @@ class ViewFactory {
     }
 
     /**
+     * Allows you to register multiple view composers at once.
+     *
+     * @param array $composers A list of view composers
+     * @return array
+     */
+    public function composers(array $composers)
+    {
+        $registered = array();
+
+        foreach ($composers as $callback => $views)
+        {
+            $registered += $this->composer($views, $callback);
+        }
+
+        return $registered;
+    }
+
+    /**
      * Register a view composer event.
      *
      * @param string|array $views The view(s) name
