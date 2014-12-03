@@ -63,6 +63,13 @@ class ViewFactory {
     protected $renderCount = 0;
 
     /**
+     * The view events.
+     *
+     * @var array
+     */
+    protected $events = array();
+
+    /**
      * Define a ViewFactory instance.
      *
      * @param Engines\EngineResolver $engines The available engines.
@@ -138,6 +145,70 @@ class ViewFactory {
     }
 
     /**
+     * Register a view composer event.
+     *
+     * @param string|array $views The view(s) name
+     * @param \Closure|string $callback The closure or class to register
+     * @return array
+     */
+    public function composer($views, $callback)
+    {
+        $composers = array();
+
+        foreach ((array) $views as $view)
+        {
+            $composers[] = $this->addViewEvent($view, $callback, 'composing: ');
+        }
+
+        return $composers;
+    }
+
+    /**
+     * Run the composer events for a specific view.
+     *
+     * @param View $view
+     * @return void
+     */
+    public function callComposer(View $view)
+    {
+        do_action('composing: '.$view->getName(), $view);
+    }
+
+    /**
+     * Add an event for a specific view.
+     *
+     * @param string $view The view name
+     * @param \Closure|string $callback The closure or class to register
+     * @param string $prefix The event prefix name
+     * @param int $priority The order of the event to trigger
+     * @return \Closure
+     */
+    protected function addViewEvent($view, $callback, $prefix = 'composing: ', $priority = 10)
+    {
+        // Check if $callback is a closure.
+        if ($callback instanceof \Closure)
+        {
+            $this->addEventListener($prefix.$view, $callback, $priority);
+
+            return $callback;
+        }
+        // If is a string, it's class based. Create the array($instance, 'method') to pass to add_action.
+    }
+
+    /**
+     * Add an action hook/event for this event.
+     *
+     * @param string $name The action hook name
+     * @param \Closure|array $callback The callback to run when the event is triggered
+     * @param int $priority
+     * @return void
+     */
+    protected function addEventListener($name, $callback, $priority = 10)
+    {
+        $this->events[$name] = add_action($name, $callback, $priority);
+    }
+
+    /**
      * Fetch the engine instance regarding the view path.
      *
      * @param string $path The view full path.
@@ -191,19 +262,26 @@ class ViewFactory {
         // If is actually data in the array, we will loop through the data and append
         // an instance of the partial view to the final result HTML passing in the
         // iterated value of this data array, allowing the views to access them.
-        if(count($data) > 0){
-            foreach($data as $key => $value){
+        if (count($data) > 0)
+        {
+            foreach ($data as $key => $value)
+            {
                 $data = array('key' => $key, $iterator => $value);
 
                 $result .= $this->make($view, $data)->render();
             }
-        } else {
+        }
+        else
+        {
             // If there is no data in the array, we will render the contents of the empty
             // view. Alternatively, the "empty view" could be a raw string that begins
             // with "raw|" for convenience and to let this know that it is a string.
-            if (starts_with($empty, 'raw|')) {
+            if (starts_with($empty, 'raw|'))
+            {
                 $result = substr($empty, 4);
-            } else {
+            }
+            else
+            {
                 $result = $this->make($empty)->render();
             }
         }
@@ -232,9 +310,12 @@ class ViewFactory {
      */
     public function startSection($section, $content = '')
     {
-        if($content === ''){
+        if ($content === '')
+        {
             ob_start() && array_push($this->sectionStack, $section);
-        } else {
+        }
+        else
+        {
             $this->extendSection($section, $content);
         }
     }
@@ -248,12 +329,13 @@ class ViewFactory {
      */
     protected function extendSection($section, $content)
     {
-        if(isset($this->sections[$section])){
-
+        if (isset($this->sections[$section]))
+        {
             $content = str_replace('@parent', $content, $this->sections[$section]);
-
             $this->sections[$section] = $content;
-        } else {
+        }
+        else
+        {
             $this->sections[$section] = $content;
         }
     }
@@ -268,9 +350,12 @@ class ViewFactory {
     {
         $last = array_pop($this->sectionStack);
 
-        if($overwrite){
+        if ($overwrite)
+        {
             $this->sections[$last] = ob_get_clean();
-        } else {
+        }
+        else
+        {
             $this->extendSection($last, ob_get_clean());
         }
 
@@ -294,7 +379,8 @@ class ViewFactory {
      */
     public function flushSectionsIfDoneRendering()
     {
-        if($this->doneRendering()){
+        if ($this->doneRendering())
+        {
             $this->flushSections();
         }
     }

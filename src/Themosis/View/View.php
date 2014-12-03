@@ -86,6 +86,9 @@ class View implements ArrayAccess, IRenderable {
         // clear out the sections for any separate views that may be rendered.
         $this->factory->incrementRender();
 
+        // Call the view composers
+        $this->factory->callComposer($this);
+
         $content = $this->getContent();
 
         // Once we've finished rendering the view, we'll decrement the render count
@@ -164,6 +167,16 @@ class View implements ArrayAccess, IRenderable {
     public function nest($key, $view, array $data = array())
     {
         return $this->with($key, $this->factory->make($view, $data));
+    }
+
+    /**
+     * Get the name of the view.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->view;
     }
 
     /**
