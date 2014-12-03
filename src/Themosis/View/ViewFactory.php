@@ -121,16 +121,16 @@ class ViewFactory {
      */
     public function share($key, $value = null)
     {
-        if(!is_array($key)){
-
+        if (!is_array($key))
+        {
             return $this->shared[$key] = $value;
-
-        } else {
-
-            foreach($key as $innerKey => $val){
+        }
+        else
+        {
+            foreach ($key as $innerKey => $val)
+            {
                 $this->share($innerKey, $val);
             }
-
         }
     }
 
@@ -171,7 +171,12 @@ class ViewFactory {
      */
     public function callComposer(View $view)
     {
-        do_action('composing: '.$view->getName(), $view);
+        $hook = 'composing: '.$view->getName();
+
+        if (array_key_exists($hook, $this->events))
+        {
+            do_action($hook, $view);
+        }
     }
 
     /**
@@ -181,7 +186,7 @@ class ViewFactory {
      * @param \Closure|string $callback The closure or class to register
      * @param string $prefix The event prefix name
      * @param int $priority The order of the event to trigger
-     * @return \Closure
+     * @return \Closure|array
      */
     protected function addViewEvent($view, $callback, $prefix = 'composing: ', $priority = 10)
     {
@@ -192,7 +197,67 @@ class ViewFactory {
 
             return $callback;
         }
-        // If is a string, it's class based. Create the array($instance, 'method') to pass to add_action.
+        elseif (is_string($callback))
+        {
+            // If is a string, it's class based.
+            return $this->addClassEvent($view, $callback, $prefix, $priority);
+        }
+    }
+
+    /**
+     * Prepare the action callback for use in a class method.
+     *
+     * @param string $view The view name
+     * @param string $class The class and its method
+     * @param string $prefix The action hook name prefix
+     * @param int $priority The order of the action to be triggered
+     * @return array
+     */
+    protected function addClassEvent($view, $class, $prefix, $priority = 10)
+    {
+        $name = $prefix.$view;
+
+        $callback = $this->buildClassEventCallback($class, $prefix);
+
+        $this->addEventListener($name, $callback, $priority);
+
+        return $callback;
+    }
+
+    /**
+     * Build the array in order to call a class based composer event.
+     *
+     * @param string $class The class name
+     * @param string $prefix The action hook prefix to add
+     * @return array
+     */
+    protected function buildClassEventCallback($class, $prefix)
+    {
+        list($class, $method) = $this->parseClassEvent($class, $prefix);
+
+        $instance = $this->container->make($class);
+
+        return array($instance, $method);
+    }
+
+    /**
+     * Parse a class name and returns its name and its method.
+     *
+     * @param string $class The class name and its method if defined
+     * @param string $prefix The composer action hook prefix
+     * @return array
+     */
+    protected function parseClassEvent($class, $prefix)
+    {
+        if (str_contains($class, '@'))
+        {
+            return explode('@', $class);
+        }
+
+        // Define the default 'compose' method if none defined
+        $method = str_contains($prefix, 'composing') ? 'compose' : 'create';
+
+        return array($class, $method);
     }
 
     /**
@@ -232,18 +297,15 @@ class ViewFactory {
         $extensions = array_keys($this->extensions);
         $ext = null;
 
-        foreach($extensions as $extension){
-
+        foreach ($extensions as $extension)
+        {
             $end = substr($path, -strlen($extension));
 
-            if($end === $extension){
-
+            if ($end === $extension)
+            {
                 return $extension;
-
             }
-
         }
-
     }
 
     /**
