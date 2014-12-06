@@ -204,10 +204,8 @@ class Application extends Container {
     public function run()
     {
         $request = $this['request'];
-
-        $response = with($this)->handle($request);
-
-        $response->send();
+        $response = $this->handle($request);
+        $response->sendContent();
     }
 
     /**
