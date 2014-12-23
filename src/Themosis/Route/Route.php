@@ -163,6 +163,14 @@ class Route {
         // Pass WordPress globals to closures or controller methods as parameters.
         $parameters = array_merge($this->parameters, array('post' => $post, 'query' => $wp_query));
 
+        // When no posts, $post is null.
+        // When is null, set the parameter value of $post to false.
+        // This avoid missing arguments in methods for routes or controllers.
+        if (is_null($parameters['post']))
+        {
+            $parameters['post'] = false;
+        }
+
         return array_map(function($value)
         {
             return is_string($value) ? rawurldecode($value) : $value;
