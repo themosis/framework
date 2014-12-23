@@ -44,18 +44,18 @@ class ScoutCompiler extends Compiler implements ICompiler {
         // Reset footer.
         $this->footer = array();
 
-        if($path){
+        if ($path)
+        {
             $this->setPath($path);
         }
 
         // Compile the view content.
         $content = $this->compileString($this->getViewContent($path));
 
-        if(!is_null($this->storage)){
-
+        if (!is_null($this->storage))
+        {
             // Store the compiled view.
             file_put_contents($this->getCompiledPath($this->getPath()), $content);
-
         }
     }
 
@@ -69,15 +69,15 @@ class ScoutCompiler extends Compiler implements ICompiler {
     {
         $result = '';
 
-        foreach(token_get_all($content) as $token){
-
+        foreach (token_get_all($content) as $token)
+        {
             $result .= is_array($token) ? $this->parseToken($token) : $token;
-
         }
 
         // Add extends lines at the end of compiled results
         // so we can inherit templates.
-        if(count($this->footer) > 0){
+        if (count($this->footer) > 0)
+        {
             $result = ltrim($result, PHP_EOL).PHP_EOL.implode(PHP_EOL, array_reverse($this->footer));
         }
 
@@ -114,15 +114,13 @@ class ScoutCompiler extends Compiler implements ICompiler {
     {
         list($id, $content) = $token;
 
-        if($id == T_INLINE_HTML){
-
+        if ($id == T_INLINE_HTML)
+        {
             // Keep 'Echos' as last compiler.
-            foreach(array('Statements', 'Comments', 'Echos') as $type){
-
+            foreach (array('Statements', 'Comments', 'Echos') as $type)
+            {
                 $content = $this->{"compile{$type}"}($content);
-
             }
-
         }
 
         return $content;
@@ -141,10 +139,9 @@ class ScoutCompiler extends Compiler implements ICompiler {
 
         $callback = function($match) use($compiler){
 
-            if(method_exists($compiler, $method = 'compile'.ucfirst($match[1]))){
-
+            if (method_exists($compiler, $method = 'compile'.ucfirst($match[1])))
+            {
                 $match[0] = $compiler->$method(array_get($match, 3));
-
             }
 
             return isset($match[3]) ? $match[0] : $match[0].$match[2];
@@ -176,7 +173,8 @@ class ScoutCompiler extends Compiler implements ICompiler {
     {
         $difference = strlen($this->echoTags[0]) - strlen($this->escapedTags[0]);
 
-        if($difference > 0){
+        if ($difference > 0)
+        {
             return $this->compileEscapedEchos($this->compileRegularEchos($content));
         }
 
@@ -191,7 +189,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      */
     protected function compileRegularEchos($content)
     {
-        $pattern = sprintf('/(@)?%s\s*(.+?)\s*%s/s', $this->echoTags[0], $this->echoTags[1]);
+        $pattern = sprintf('/(@)?%s\s*(.+?)\s*%s(\r?\n)?/s', $this->echoTags[0], $this->echoTags[1]);
 
         $compiler = $this;
 
@@ -210,7 +208,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      */
     protected function compileEscapedEchos($content)
     {
-        $pattern = sprintf('/%s\s*(.+?)\s*%s/s', $this->escapedTags[0], $this->escapedTags[1]);
+        $pattern = sprintf('/%s\s*(.+?)\s*%s(\r?\n)?/s', $this->escapedTags[0], $this->escapedTags[1]);
 
         $compiler = $this;
 
@@ -231,7 +229,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      */
     protected function compileEchoDefaults($content)
     {
-        return preg_replace('/^.*?([\'"])(?:(?!\1).)*or(?:(?!\1).)*\1.*?$(*SKIP)(*F)|^(\S+) or (.*)$/', 'isset($2) ? $2 : $3', $content);
+        return preg_replace('/^(?=\$)(.+?)(?:\s+or\s+)(.+?)$/s', 'isset($1) ? $1 : $2', $content);
     }
 
     /**
@@ -297,7 +295,8 @@ class ScoutCompiler extends Compiler implements ICompiler {
      */
     protected function compileInclude($expression)
     {
-        if(starts_with($expression, '(')){
+        if (starts_with($expression, '('))
+        {
             $expression = substr($expression, 1, -1);
         }
 
@@ -455,7 +454,8 @@ class ScoutCompiler extends Compiler implements ICompiler {
      */
     protected function compileExtends($expression)
     {
-        if(starts_with($expression, '(')){
+        if (starts_with($expression, '('))
+        {
             $expression = substr($expression, 1, -1);
         }
 
@@ -519,7 +519,8 @@ class ScoutCompiler extends Compiler implements ICompiler {
      */
     private function getViewContent($path)
     {
-        if(is_file($path)){
+        if (is_file($path))
+        {
             return file_get_contents($path);
         }
 
