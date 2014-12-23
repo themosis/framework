@@ -57,9 +57,25 @@ class FormBuilder {
         // IF 'POST' METHOD
         // HELP TO AVOID CSRF
         $append = '';
+        $nonceAction = Session::nonceAction;
+        $nonceName = Session::nonceName;
+
+        // Replace custom nonce action.
+        if (isset($attributes['nonce_action']))
+        {
+            $nonceAction = $attributes['nonce_action'];
+            unset($attributes['nonce_action']);
+        }
+
+        // Replace custom nonce name.
+        if (isset($attributes['nonce']))
+        {
+            $nonceName = $attributes['nonce'];
+            unset($attributes['nonce']);
+        }
 
         if ($attributes['method'] === 'POST') {
-            $append = wp_nonce_field(Session::nonceAction, Session::nonceName, true, false);
+            $append = wp_nonce_field($nonceAction, $nonceName, true, false);
         }
 
         return '<form'.$this->html->attributes($attributes).'>'.$append;
