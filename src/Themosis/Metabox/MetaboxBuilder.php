@@ -182,7 +182,7 @@ class MetaboxBuilder extends Wrapper {
             $this->setDefaultValue($post, $datas['args']);
         }
 
-        $this->render($datas['args']);
+        $this->render($datas['args'], $post);
 
     }
 
@@ -363,15 +363,16 @@ class MetaboxBuilder extends Wrapper {
      * Render the metabox.
      *
      * @param array $fields
+     * @param \WP_Post $post
      * @return void
      */
-    private function render(array $fields)
+    private function render(array $fields, $post)
     {
-        // Pass the fields to the main metabox view.
-        $this->view->with('__fields', $fields);
-
-        // Pass the MetaboxBuilder instance to the main view.
-        $this->view->with('__metabox', $this);
+        $this->view->with(array(
+            '__fields'          => $fields, // Pass the custom fields
+            '__metabox'         => $this, // Pass the metabox instance
+            '__post'            => $post // Pass the WP_Post instance
+        ));
 
         echo($this->view->render());
     }
