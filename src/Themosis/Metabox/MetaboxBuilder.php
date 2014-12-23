@@ -292,30 +292,10 @@ class MetaboxBuilder extends Wrapper {
      */
     private function parseOptions(array $options)
     {
-        // Default
-        if (empty($options))
-        {
-            return array(
-                'context'   => 'normal',
-                'priority'  => 'default'
-            );
-        }
-
-        // If options defined...
-        $newOptions = array();
-
-        $allowed = array('context', 'priority');
-
-        foreach ($options as $param => $value)
-        {
-            if (in_array($param, $allowed))
-            {
-                $newOptions[$param] = $value;
-            }
-        }
-
-        return $newOptions;
-
+        return wp_parse_args($options, array(
+            'context'   => 'normal',
+            'priority'  => 'default'
+        ));
     }
 
     /**
