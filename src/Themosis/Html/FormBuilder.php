@@ -49,7 +49,8 @@ class FormBuilder {
         // If a character encoding has not been specified in the attributes, we will
         // use the default encoding as specified in the application configuration
         // file for the "accept-charset" attribute.
-        if (!array_key_exists('accept-charset', $attributes)) {
+        if (!array_key_exists('accept-charset', $attributes))
+        {
             $attributes['accept-charset'] = Application::get('encoding');
         }
 
@@ -74,7 +75,8 @@ class FormBuilder {
             unset($attributes['nonce']);
         }
 
-        if ($attributes['method'] === 'POST') {
+        if ($attributes['method'] === 'POST')
+        {
             $append = wp_nonce_field($nonceAction, $nonceName, true, false);
         }
 
@@ -186,7 +188,8 @@ class FormBuilder {
      */
     public function email($name, $value = null, array $attributes = array())
     {
-        if(!isset($attributes['placeholder'])){
+        if (!isset($attributes['placeholder']))
+        {
             $attributes['placeholder'] = 'Please enter your email...';
         }
 
@@ -217,11 +220,12 @@ class FormBuilder {
     public function checkbox($name, $value = null, array $attributes = array())
     {
         // If checkbox value is 'on', show it checked.
-        if('on' === $value){
+        if ('on' === $value)
+        {
             $attributes['checked'] = 'checked';
         }
 
-        return $this->input('checkbox', $name, null, $attributes);
+        return $this->input('checkbox', $name, $value, $attributes);
     }
 
     /**
