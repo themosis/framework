@@ -266,11 +266,12 @@ class FormBuilder {
     {
         $field = '';
 
-        foreach($choices as $choice):
-
+        foreach($choices as $choice)
+        {
             // Check the value.
             // If checked, add the attribute.
-            if(in_array($choice, $value)){
+            if (in_array($choice, $value))
+            {
                 $attributes['checked'] = 'checked';
             }
 
@@ -279,8 +280,7 @@ class FormBuilder {
 
             // Reset 'checked' attributes.
             unset($attributes['checked']);
-
-        endforeach;
+        }
 
         return $field;
     }
@@ -319,9 +319,12 @@ class FormBuilder {
 
         // Check if multiple is defined.
         // If defined, change the name attribute.
-        if(isset($attributes['multiple']) && 'multiple' === $attributes['multiple']){
+        if (isset($attributes['multiple']) && 'multiple' === $attributes['multiple'])
+        {
             $attributes['name'] = $attributes['name'].'[]';
-        } else {
+        }
+        else
+        {
             unset($attributes['multiple']);
         }
 
@@ -345,21 +348,20 @@ class FormBuilder {
         $options = $this->parseSelectOptions($options);
 
         // Start looping through the options.
-        foreach($options as $key => $option):
-
+        foreach ($options as $key => $option)
+        {
             // Check the $key. If $key is a string, then we are dealing
             // with <optgroup> tags.
-            if(is_string($key)):
-
+            if (is_string($key))
+            {
                 $output.= $this->buildOptgroupTags($key, $option, $value);
-
-            else:
+            }
+            else
+            {
                 // No <optgroup> tags, $key is int.
                 $output.= $this->parseOptionTags($option, $value);
-
-            endif;
-
-        endforeach;
+            }
+        }
         // End options loop.
 
         return $output;
@@ -379,17 +381,16 @@ class FormBuilder {
         foreach($options as $key => $option)
         {
             // Check $option is array in order to continue.
-            if(!is_array($option)) throw new HtmlException("In order to build the select tag, the parameter must be an array of arrays.");
+            if (!is_array($option)) throw new HtmlException("In order to build the select tag, the parameter must be an array of arrays.");
 
             // Re-order <optgroup> options
-            if(is_string($key)){
-
+            if (is_string($key))
+            {
                 $parsedOptions[$key] = $this->organizeOptions($options, $option);
-
-            } else {
-
+            }
+            else
+            {
                 $parsedOptions[$key] = $option;
-
             }
         }
 
@@ -409,34 +410,31 @@ class FormBuilder {
         $convertedOptions = array();
 
         // Build the re-indexed options array.
-        foreach($options as $group){
-
-            foreach($group as $i => $value){
-
+        foreach ($options as $group)
+        {
+            foreach ($group as $i => $value)
+            {
                 // Custom values - No need to change something.
-                if(is_string($i)){
-
+                if (is_string($i))
+                {
                     $indexedOptions[$i] = $value;
-
-                } else {
-
+                }
+                else
+                {
                     // Int values - Reorder options so there are
                     // no duplicates.
                     array_push($indexedOptions, $value);
-
                 }
             }
         }
 
         // Grab the converted values and return them.
-        foreach($indexedOptions as $index => $option){
-
-            if(in_array($option, $subOptions)){
-
+        foreach ($indexedOptions as $index => $option)
+        {
+            if (in_array($option, $subOptions))
+            {
                 $convertedOptions[$index] = $option;
-
             }
-
         }
 
         return $convertedOptions;
@@ -468,13 +466,11 @@ class FormBuilder {
     {
         $output = '';
 
-        foreach($options as $key => $option):
-
+        foreach ($options as $key => $option)
+        {
             $selected = $this->setSelectable($key, $value);
-
             $output.= $this->makeOptionTag($key, $option, $selected);
-
-        endforeach;
+        }
 
         return $output;
     }
@@ -503,18 +499,16 @@ class FormBuilder {
     {
         $selected = 'selected="selected"';
         // Deal if multiple selection.
-        if(is_array($value) && in_array($key, $value)){
-
+        if (is_array($value) && in_array($key, $value))
+        {
             return $selected;
-
         }
 
         // Deal single selection.
         // $key might be an int or a string
-        if(is_string($value) && $key == $value){
-
+        if (is_string($value) && $key == $value)
+        {
             return $selected;
-
         }
 
         return '';
