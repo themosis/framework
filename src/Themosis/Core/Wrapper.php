@@ -20,12 +20,7 @@ abstract class Wrapper {
         switch($field->getFieldType()){
 
             case 'checkbox':
-
-                $value = (string) $value;
-                $parsedValue = $this->parseCheckbox($field, $value);
-                break;
-
-            case 'checkboxes':
+            case 'checkboxes': // @todo remove this checkboxes statement for next major update.
             case 'radio':
             case 'select':
             case 'collection':
@@ -63,43 +58,6 @@ abstract class Wrapper {
     private function parseString(FieldBuilder $field, $value = '')
     {
         return (empty($value) && isset($field['default'])) ? $field['default'] : $value;
-    }
-
-    /**
-     * Parse default value for checkbox field.
-     *
-     * @param FieldBuilder $field
-     * @param null $value
-     * @return string
-     */
-    private function parseCheckbox(FieldBuilder $field, $value = null)
-    {
-        $val = null;
-
-        // Check the defaults
-        if (isset($field['default']))
-        {
-            if ($field['default'])
-            {
-                $val = 'on';
-            }
-            else
-            {
-                $val = 'off';
-            }
-        }
-
-        // Check the given values
-        if (is_null($value) || empty($value))
-        {
-            $val = 'off';
-        }
-        elseif ('on' === $value)
-        {
-            $val = 'on';
-        }
-
-        return $val;
     }
 
     /**

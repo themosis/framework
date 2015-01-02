@@ -213,24 +213,20 @@ class FormBuilder {
      * Build a single checkbox input <input type="checkbox">
      *
      * @param string $name The input name attribute.
-     * @param string $value String value if single.
+     * @param string|array $choices The available choices/acceptable values.
+     * @param string|array $value String value if single, array value if multiple.
      * @param array $attributes Input extra attributes.
      * @return string
      */
-    public function checkbox($name, $value = null, array $attributes = array())
+    public function checkbox($name, $choices, $value = '', array $attributes = array())
     {
-        // If checkbox value is 'on', show it checked.
-        if ('on' === $value)
-        {
-            $attributes['checked'] = 'checked';
-        }
-
-        return $this->input('checkbox', $name, $value, $attributes);
+        return $this->makeGroupCheckableField('checkbox', $name, (array) $choices, (array) $value, $attributes);
     }
 
     /**
      * Build a group of checkbox.
      *
+     * @deprecated
      * @param string $name The group name attribute.
      * @param array $choices The available choices.
      * @param array $value The checked values.
@@ -246,14 +242,14 @@ class FormBuilder {
      * Build a group of radio input <input type="radio">
      *
      * @param string $name The input name attribute.
-     * @param array $choices The radio field options.
-     * @param array $value The input value. Muse be an array!
+     * @param string|array $choices The radio field options.
+     * @param string|array $value The input value. Muse be an array!
      * @param array $attributes
      * @return string
      */
-    public function radio($name, array $choices, array $value = array(), array $attributes = array())
+    public function radio($name, $choices, $value = '', array $attributes = array())
     {
-        return $this->makeGroupCheckableField('radio', $name, $choices, $value, $attributes);
+        return $this->makeGroupCheckableField('radio', $name, (array) $choices, (array) $value, $attributes);
     }
 
     /**

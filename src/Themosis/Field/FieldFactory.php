@@ -84,12 +84,13 @@ class FieldFactory {
      * Return a CheckboxField instance.
      *
      * @param string $name The name attribute of the checkbox input.
+     * @param string|array $options The checkbox options.
      * @param array $extras Extra field properties.
      * @return \Themosis\Field\Fields\CheckboxField
      */
-    public function checkbox($name, array $extras = array())
+    public function checkbox($name, $options, array $extras = array())
     {
-        $properties = compact('name');
+        $properties = compact('name', 'options');
 
         $properties = array_merge($extras, $properties);
 
@@ -99,6 +100,7 @@ class FieldFactory {
     /**
      * Return a CheckboxesField instance.
      *
+     * @deprecated
      * @param string $name The name attribute.
      * @param array $options The checkboxes options.
      * @param array $extras Extra field properties.

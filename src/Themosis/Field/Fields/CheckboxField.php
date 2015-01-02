@@ -29,6 +29,20 @@ class CheckboxField extends FieldBuilder{
     }
 
     /**
+     * Define a default value as array.
+     * Checkboxes field accept only array as value.
+     *
+     * @return void
+     */
+    private function defaultValue()
+    {
+        if (empty($this['value']) || is_string($this['value']))
+        {
+            $this['value'] = array();
+        }
+    }
+
+    /**
      * Method that handle the field HTML code for
      * metabox output.
      *
@@ -36,6 +50,10 @@ class CheckboxField extends FieldBuilder{
      */
     public function metabox()
     {
+        // If non existing values or if string sent,
+        // define the default value for the field.
+        $this->defaultValue();
+
         return View::make('metabox._themosisCheckboxField', array('field' => $this))->render();
     }
 
