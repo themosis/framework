@@ -8,7 +8,8 @@ class Loop
 	 * 
 	 * @return int The ID of the current post.
 	 */
-	public static function id(){
+	public function id()
+	{
 		return get_the_ID();
 	}
 
@@ -17,7 +18,8 @@ class Loop
 	 * 
 	 * @return string The title of the current post.
 	 */
-	public static function title(){
+	public function title()
+	{
 		return get_the_title();
 	}
 
@@ -26,12 +28,11 @@ class Loop
 	 *
 	 * @return string The content of the current post.
 	 */
-	public static function content(){
-
+	public function content()
+	{
 		$content = apply_filters('the_content', get_the_content());
 		$content = str_replace(']]>', ']]&gt;', $content);
 		return $content;
-		
 	}
 
 	/**
@@ -39,7 +40,8 @@ class Loop
 	 *
 	 * @return string The excerpt of the current post.
 	 */
-	public static function excerpt(){
+	public function excerpt()
+	{
 		return get_the_excerpt();
 	}
 
@@ -50,7 +52,8 @@ class Loop
 	 * @param string|array The attributes of the current post thumbnail.
 	 * @return string The thumbnail of the current post.
 	 */
-	public static function thumbnail($size = null, $attr = null){
+	public function thumbnail($size = null, $attr = null)
+	{
 		return get_the_post_thumbnail(static::id(), $size, $attr);
 	}
 
@@ -59,7 +62,8 @@ class Loop
 	 *
 	 * @return string The permalink of the current post.
 	 */
-	public static function link(){
+	public function link()
+	{
 		return get_permalink();
 	}
 
@@ -69,7 +73,8 @@ class Loop
 	 * @param int $id The post ID.
 	 * @return array The categories of the current post.
 	 */
-	public static function category($id = null){
+	public function category($id = null)
+	{
 		return get_the_category($id);
 	}
 
@@ -78,7 +83,8 @@ class Loop
 	 *
 	 * @return array The tags of the current post.
 	 */
-	public static function tags(){
+	public function tags()
+	{
 		return get_the_tags();
 	}
 
@@ -87,9 +93,22 @@ class Loop
 	 *
 	 * @param string $taxonomy The custom taxonomy slug.
      * @see https://codex.wordpress.org/Function_Reference/get_the_terms
-	 * @return array|false|WP_Error
+	 * @return array|false|\WP_Error
 	 */
-	public static function terms($taxonomy){
+	public function terms($taxonomy)
+	{
 		return get_the_terms(static::id(), $taxonomy);
+	}
+
+	/**
+	 * Add the classes for a given post.
+	 *
+	 * @param string|array $class One or more classes to add to the post class list.
+	 * @param int|\WP_Post $post_id The post ID or the post object.
+	 * @return string
+	 */
+	public function postClass($class = '', $post_id = null)
+	{
+		return 'class="'.join(' ', get_post_class($class, $post_id)).'"';
 	}
 }

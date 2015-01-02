@@ -19,6 +19,7 @@ class ViewIgniterService extends IgniterService{
         $this->igniteEngineResolver();
         $this->igniteViewFinder();
         $this->igniteViewFactory();
+        $this->igniteLoop();
     }
 
     /**
@@ -35,7 +36,8 @@ class ViewIgniterService extends IgniterService{
             $resolver = new EngineResolver();
 
             // Register the engines.
-            foreach(array('php', 'scout') as $engine){
+            foreach (array('php', 'scout') as $engine)
+            {
                 $igniterService->{'register'.ucfirst($engine).'Engine'}($engine, $resolver);
             }
 
@@ -120,6 +122,20 @@ class ViewIgniterService extends IgniterService{
             $viewEnv->share('__app', $app);
 
             return $viewEnv;
+
+        });
+    }
+
+    /**
+     * Register the loop helper class.
+     *
+     * @return void
+     */
+    private function igniteLoop()
+    {
+        $this->app->bindShared('loop', function($app){
+
+            return new Loop();
 
         });
     }
