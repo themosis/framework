@@ -103,6 +103,7 @@ class Loop
 	/**
 	 * Add the classes for a given post.
 	 *
+	 * @author Guriev Eugen
 	 * @param string|array $class One or more classes to add to the post class list.
 	 * @param int|\WP_Post $post_id The post ID or the post object.
 	 * @return string
