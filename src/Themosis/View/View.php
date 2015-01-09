@@ -68,6 +68,8 @@ class View implements ArrayAccess, IRenderable {
     {
         $content = $this->renderContent();
 
+        $content = do_shortcode($content); // wordpress global function
+
         // Flush all sections when the view is rendered.
         $this->factory->flushSectionsIfDoneRendering();
 
