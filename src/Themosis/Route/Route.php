@@ -105,10 +105,17 @@ class Route {
             // for the WordPress conditional function parameters.
             $param = array_first($action, function($key, $value)
             {
-                return is_string($value);
+                return is_string($value) || is_array($value);
             });
 
-            $action['params'] = (false !== strrpos($param, '@')) ? null : $action[0];
+            if (is_string($param))
+            {
+                $action['params'] = (false !== strrpos($param, '@')) ? null : $action[0];
+            }
+            else if (is_array($param))
+            {
+                $action['params'] = $param;
+            }
         }
 
         return $action;
