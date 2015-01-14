@@ -108,17 +108,28 @@ class Route {
                 return is_string($value) || is_array($value);
             });
 
-            if (is_string($param))
-            {
-                $action['params'] = (false !== strrpos($param, '@')) ? null : $action[0];
-            }
-            else if (is_array($param))
-            {
-                $action['params'] = $param;
-            }
+            $action['params'] = $this->parseParam($param, $action);
         }
 
         return $action;
+    }
+
+    /**
+     * Parse the action condition parameter value. This is the parameter
+     * given to WordPress conditional functions later.
+     *
+     * @param string|array $param The condition param value.
+     * @param array $action The route action params.
+     * @return mixed
+     */
+    protected function parseParam($param, $action)
+    {
+        if (is_string($param))
+        {
+            return (false !== strrpos($param, '@')) ? null : $action[0];
+        }
+
+        return $param;
     }
 
     /**
