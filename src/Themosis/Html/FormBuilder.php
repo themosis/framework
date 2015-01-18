@@ -105,15 +105,35 @@ class FormBuilder {
         $action = trim($action);
         $ssl = (bool) $ssl;
 
-        // Check the given path
-        // If none given, set to the current page url
+        // Check the given path.
+        // If none given, set to the current page url.
         $uri = ($action === null || empty($action)) ? $this->request->getPathInfo() : '/'.trim($action, '/').'/';
 
-        // Build the action url
-        // Check if we are using ssl or not and build the url.
-        $action = (is_ssl() || $ssl) ? 'https://'.$this->request->getHttpHost().$uri : 'http://'.$this->request->getHttpHost().$uri;
+        // Build the action url.
+        // The uri could be absolute or relative path.
+        $action = $this->parseAction($uri, $ssl);
 
         return $action;
+    }
+
+    /**
+     * Parse the action uri value.
+     *
+     * @param string $uri
+     * @param bool $ssl
+     * @return string
+     */
+    private function parseAction($uri, $ssl)
+    {
+        if (strpos(esc_url($uri), 'http'))
+        {
+            $uri = esc_url($uri, array('http', 'https'));
+            $uri = (starts_with($uri, '/')) ? substr($uri, 1) : $uri;
+
+            return (is_ssl() || $ssl) ? str_replace('http://', 'https://', $uri) : $uri;
+        }
+
+        return (is_ssl() || $ssl) ? 'https://'.$this->request->getHttpHost().$uri : 'http://'.$this->request->getHttpHost().$uri;
     }
 
     /**
