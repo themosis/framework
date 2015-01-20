@@ -42,9 +42,13 @@ class Template extends ConfigTemplate
 		$names = array();
 
 		foreach (static::$datas as $key => $value)
-+        	{
-+			$names[$key] = isset($value) ? $value : str_replace(array('-', '_'), ' ', ucfirst(trim($value)));
- 		}
+        	{
+	        	if(!is_int($key)){
+		        	$names[$key] = $value;
+	        	} else {
+		        	$names[$value] = str_replace(array('-', '_'), ' ', ucfirst(trim($value)));
+	        	}
+		}
 
 		return $names;
 
