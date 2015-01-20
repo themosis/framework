@@ -41,10 +41,10 @@ class Template extends ConfigTemplate
 	{
 		$names = array();
 
-		foreach (static::$datas as $name)
-        {
-			$names[$name] = str_replace(array('-', '_'), ' ', ucfirst(trim($name)));
-		}
+		foreach (static::$datas as $key => $value)
++        	{
++			$names[$key] = isset($value) ? $value : str_replace(array('-', '_'), ' ', ucfirst(trim($value)));
+ 		}
 
 		return $names;
 
