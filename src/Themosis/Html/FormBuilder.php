@@ -30,6 +30,7 @@ class FormBuilder {
     {
         $this->html = $html;
         $this->request = $request;
+        $this->values = null;
     }
 
     /**
@@ -81,6 +82,18 @@ class FormBuilder {
         }
 
         return '<form'.$this->html->attributes($attributes).'>'.$append;
+    }
+    
+    /**
+     * Set values for a form
+     *
+     * @param array $values name => value pairs of preset fields.
+     * @return FormBuilder this
+     */
+    public function setValues(array $values)
+    {
+        $this->values = $values;
+        return $this;
     }
 
     /**
@@ -177,6 +190,12 @@ class FormBuilder {
      */
     public function input($type, $name, $value = null, array $attributes = array())
     {
+        // check if value is set
+        if($this->values && isset($this->values[$name])) 
+        { 
+            $value = $this->values[$name];
+        }
+        
         $merge = compact('type', 'name', 'value');
 
         $attributes = array_merge($attributes, $merge);
