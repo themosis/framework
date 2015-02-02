@@ -197,6 +197,19 @@ class FormBuilder {
     {
         return $this->input('text', $name, $value, $attributes);
     }
+    
+    /**
+     * Build a password input <input type="password">
+     * Note: the input are for HTML5 < +
+     *
+     * @param string $name The name attribute.
+     * @param array $attributes The extras attributes to add.
+     * @return string
+     */
+    public function password($name, array $attributes = array())
+    {
+        return $this->input('password', $name, null, $attributes);
+    }
 
     /**
      * Build a single email input <input type="email">
