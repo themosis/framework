@@ -10,8 +10,7 @@
 			"homepage": "http://www.themosis.com/"
 		}
 	],
-    "type": "wordpress-plugin",
-	"require": {
+    "require": {
         "php": ">=5.4",
 		"symfony/http-foundation": "2.4.2",
         "symfony/class-loader": "v2.5.0",
