@@ -186,7 +186,6 @@ class FormBuilder {
 
     /**
      * Build a text input <input type="text">
-     * Note: the input are for HTML5 < +
      *
      * @param string $name The name attribute.
      * @param null $value The value to display.
@@ -203,19 +202,21 @@ class FormBuilder {
      * Note: the input are for HTML5 < +
      *
      * @param string $name The name attribute.
+     * @param string $value The value attribute.
      * @param array $attributes The extras attributes to add.
      * @return string
      */
-    public function password($name, array $attributes = array())
+    public function password($name, $value, array $attributes = array())
     {
-        return $this->input('password', $name, null, $attributes);
+        return $this->input('password', $name, $value, $attributes);
     }
 
     /**
      * Build a single email input <input type="email">
+     * Note: the input are for HTML5 < +
      *
      * @param string $name The name attribute.
-     * @param null $value The value attribute.
+     * @param string $value The value attribute.
      * @param array $attributes
      * @return string
      */
