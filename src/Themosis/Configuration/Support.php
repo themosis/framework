@@ -48,13 +48,14 @@ class Support implements ConfigInterface
         {
 			foreach ($this->datas as $feature => $value)
             {
-				if ($value === 'automatic-feed-links')
+                // Allow theme features without options.
+				if (is_int($feature))
                 {
-					$feature = $value;
-					add_theme_support($feature);
-				}
+                    add_theme_support($value);
+                }
                 else
                 {
+                    // Theme features with options.
 					add_theme_support($feature, $value);
 				}
 			}
