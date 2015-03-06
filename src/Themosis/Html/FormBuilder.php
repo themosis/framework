@@ -231,14 +231,27 @@ class FormBuilder {
     /**
      * Build a number input <input type="number" />
      *
-     * @param $name
-     * @param null $value
+     * @param string $name The name attribute.
+     * @param string $value The input value.
      * @param array $attributes
      * @return string
      */
     public function number($name, $value = null, array $attributes = array())
     {
         return $this->input('number', $name, $value, $attributes);
+    }
+
+    /**
+     * Build a date input <input type="date" />
+     *
+     * @param string $name The name attribute.
+     * @param string $value The input value.
+     * @param array $attributes
+     * @return string
+     */
+    public function date($name, $value = null, array $attributes = array())
+    {
+        return $this->input('date', $name, $value, $attributes);
     }
 
     /**

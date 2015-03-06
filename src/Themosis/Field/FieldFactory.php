@@ -81,6 +81,22 @@ class FieldFactory {
     }
 
     /**
+     * Return a DateField instance.
+     *
+     * @param string $name The name attribute of the date input.
+     * @param array $extras Extra field properties.
+     * @return \Themosis\Field\Fields\DateField
+     */
+    public function date($name, array $extras = array())
+    {
+        $properties = compact('name');
+
+        $properties = array_merge(array('class' => 'newtag'), $extras, $properties);
+
+        return $this->make('Themosis\\Field\\Fields\\DateField', $properties);
+    }
+
+    /**
      * Return a TextareaField instance.
      *
      * @param string $name The name attribute of the textarea.
