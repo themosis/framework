@@ -136,6 +136,18 @@ add_filter('themosisAdminGlobalObject', function($paths){
 });
 
 /*----------------------------------------------------*/
+// Load the WordPress Media API assets by default.
+// Pass a function name so developers can remove the
+// default action if necessary.
+/*----------------------------------------------------*/
+function themosisWpMediaAssets()
+{
+    wp_enqueue_media();
+}
+
+add_action('admin_enqueue_scripts', 'themosisWpMediaAssets');
+
+/*----------------------------------------------------*/
 // Enqueue frameworks assets.
 /*----------------------------------------------------*/
 // Themosis styles
