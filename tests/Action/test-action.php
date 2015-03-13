@@ -2,7 +2,7 @@
 
 use \Mockery as m;
 
-class ActionTest extends \PHPUnit_Framework_TestCase
+class ActionTest extends \WP_UnitTestCase
 {
     public function tearDown()
     {
@@ -17,12 +17,13 @@ class ActionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_a($action, '\Themosis\Action\Action'));
     }
 
-    public function testDispatchAction()
+    public function testDispatchActionOnCoreHook()
     {
         $instance = m::mock('AnotherClass');
         $instance->shouldReceive('myCustomMethod')->once();
 
         $action = \Themosis\Action\Action::listen('init', $instance, 'myCustomMethod');
+        $this->assertEquals(1, did_action('init'));
         $action->run();
     }
 }

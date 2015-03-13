@@ -1,6 +1,6 @@
 <?php
 
-class AssetTest extends \PHPUnit_Framework_TestCase
+class AssetTest extends \WP_UnitTestCase
 {
     public function testOne()
     {
