@@ -26,4 +26,15 @@ class ActionTest extends \WP_UnitTestCase
         $this->assertEquals(1, did_action('init'));
         $action->run();
     }
+
+    public function testDispatchActionOnCustomHook()
+    {
+        $i = m::mock('SuperClass');
+        $i->shouldReceive(array('anotherMethod' => true))->once();
+
+        $action = \Themosis\Action\Action::listen('custom', $i, 'anotherMethod');
+        do_action('custom');
+        $this->assertEquals(1, did_action('custom'));
+        $this->assertTrue($action->run());
+    }
 }

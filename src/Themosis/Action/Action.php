@@ -106,6 +106,6 @@ class Action extends ActionSubject
 	public function run()
 	{
 		$signature = $this->callback;
-		$this->object->$signature($this->params, $this->args);
+		return $this->object->$signature($this->params, $this->args);
 	}
 }
