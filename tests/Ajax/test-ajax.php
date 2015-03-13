@@ -1,6 +1,6 @@
 <?php
 
-class AjaxTest extends WP_UnitTestCase
+class AjaxTest extends \PHPUnit_Framework_TestCase
 {
     public function testOne()
     {
