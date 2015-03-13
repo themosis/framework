@@ -21,6 +21,12 @@
 		"php": ">=5.4",
 		"symfony/http-foundation": "2.4.2",
 		"symfony/class-loader": "v2.5.0",
+		"phpunit/phpunit": "4.5.0",
 		"mockery/mockery": "~0.9"
+	},
+	"autoload": {
+	  "psr-0": {
+		"Themosis\\": "src/"
+	  }
 	}
 }

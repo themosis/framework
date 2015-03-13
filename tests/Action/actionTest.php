@@ -2,7 +2,7 @@
 
 use \Mockery as m;
 
-class ActionTest extends \WP_UnitTestCase
+class ActionTest extends \PHPUnit_Framework_TestCase
 {
     public function tearDown()
     {
@@ -23,7 +23,6 @@ class ActionTest extends \WP_UnitTestCase
         $instance->shouldReceive('myCustomMethod')->once();
 
         $action = \Themosis\Action\Action::listen('init', $instance, 'myCustomMethod');
-        $this->assertEquals(1, did_action('init'));
         $action->run();
     }
 
@@ -33,8 +32,6 @@ class ActionTest extends \WP_UnitTestCase
         $i->shouldReceive(array('anotherMethod' => true))->once();
 
         $action = \Themosis\Action\Action::listen('custom', $i, 'anotherMethod');
-        do_action('custom');
-        $this->assertEquals(1, did_action('custom'));
         $this->assertTrue($action->run());
     }
 }

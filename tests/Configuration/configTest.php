@@ -1,6 +1,6 @@
 <?php
 
-class ConfigTest extends \WP_UnitTestCase
+class ConfigTest extends \PHPUnit_Framework_TestCase
 {
     public function testOne()
     {
