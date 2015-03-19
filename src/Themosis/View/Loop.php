@@ -99,6 +99,17 @@ class Loop
 	{
 		return get_the_terms(static::id(), $taxonomy);
 	}
+	
+	/**
+	 * Get the date of the current post.
+	 *
+	 * @param string $d
+	 * @return string The date of the current post.
+	 */
+	public function date($d = '')
+	{
+		return get_the_date($d);
+	}
 
 	/**
 	 * Add the classes for a given post.
