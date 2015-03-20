@@ -316,6 +316,10 @@ class FormBuilder {
         $i = 0;
         foreach($choices as $choice)
         {
+            if($this->values && isset($this->values[$name])) 
+            { 
+                $value = $this->values[$name];
+            }   
             // Check the value.
             // If checked, add the attribute.
             if (in_array($choice, $value))
@@ -352,8 +356,13 @@ class FormBuilder {
     public function textarea($name, $value = null, array $attributes = array())
     {
         $merge = compact('name');
-
+        
         $attributes = array_merge($attributes, $merge);
+        
+        if($this->values && isset($this->values[$name])) 
+        { 
+            $value = $this->values[$name];
+        }
 
         return '<textarea name="'.$name.'" '.$this->html->attributes($attributes).'>'.$value.'</textarea>';
     }
@@ -382,6 +391,12 @@ class FormBuilder {
         else
         {
             unset($attributes['multiple']);
+        }
+        
+        // check if value is set
+        if($this->values && isset($this->values[$name])) 
+        { 
+            $value = $this->values[$name];
         }
 
         // Build the options of the select tag.
