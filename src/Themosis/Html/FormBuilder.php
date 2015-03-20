@@ -204,8 +204,7 @@ class FormBuilder {
     }
 
     /**
-     * Build a text input <input type="text">
-     * Note: the input are for HTML5 < +
+     * Build a text input <input type="text" />
      *
      * @param string $name The name attribute.
      * @param null $value The value to display.
@@ -216,12 +215,25 @@ class FormBuilder {
     {
         return $this->input('text', $name, $value, $attributes);
     }
-
+    
     /**
-     * Build a single email input <input type="email">
+     * Build a password input <input type="password" />
      *
      * @param string $name The name attribute.
-     * @param null $value The value attribute.
+     * @param string $value The value attribute.
+     * @param array $attributes The extras attributes to add.
+     * @return string
+     */
+    public function password($name, $value = null, array $attributes = array())
+    {
+        return $this->input('password', $name, $value, $attributes);
+    }
+
+    /**
+     * Build a single email input <input type="email" />
+     *
+     * @param string $name The name attribute.
+     * @param string $value The value attribute.
      * @param array $attributes
      * @return string
      */
@@ -229,14 +241,40 @@ class FormBuilder {
     {
         if (!isset($attributes['placeholder']))
         {
-            $attributes['placeholder'] = 'Please enter your email...';
+            $attributes['placeholder'] = __('Please enter your email...', THEMOSIS_FRAMEWORK_TEXTDOMAIN);
         }
 
         return $this->input('email', $name, $value, $attributes);
     }
 
     /**
-     * Build a single hidden input <input type="hidden">
+     * Build a number input <input type="number" />
+     *
+     * @param string $name The name attribute.
+     * @param string $value The input value.
+     * @param array $attributes
+     * @return string
+     */
+    public function number($name, $value = null, array $attributes = array())
+    {
+        return $this->input('number', $name, $value, $attributes);
+    }
+
+    /**
+     * Build a date input <input type="date" />
+     *
+     * @param string $name The name attribute.
+     * @param string $value The input value.
+     * @param array $attributes
+     * @return string
+     */
+    public function date($name, $value = null, array $attributes = array())
+    {
+        return $this->input('date', $name, $value, $attributes);
+    }
+
+    /**
+     * Build a single hidden input <input type="hidden" />
      *
      * @param string $name The name attribute.
      * @param null $value The value attribute.
@@ -249,7 +287,7 @@ class FormBuilder {
     }
 
     /**
-     * Build a single checkbox input <input type="checkbox">
+     * Build a single or multiple checkbox input <input type="checkbox" />
      *
      * @param string $name The input name attribute.
      * @param string|array $choices The available choices/acceptable values.

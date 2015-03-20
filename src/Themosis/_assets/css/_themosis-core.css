@@ -208,6 +208,7 @@
     transform: translate(-50%,-50%);
     display: block;
     margin: 0 auto;
+    max-width:100px;
 }
 
 .themosis-media-preview .themosis-media-preview-inner .filename{

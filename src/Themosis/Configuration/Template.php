@@ -13,13 +13,13 @@ class Template extends ConfigTemplate
 
 	/**
 	 * Init the page template module.
-     *
-     * @return void
+	 *
+	 * @return void
 	*/
 	public static function init()
 	{
 		if (empty(static::$datas))
-        {
+		{
 			return;
 		}
 
@@ -28,8 +28,8 @@ class Template extends ConfigTemplate
 
 		// Build a select field
 		Metabox::make('Themosis Page Template', 'page', array('context' => 'side', 'priority' => 'core'))->set(array(
-            Field::select('_themosisPageTemplate', array($templateNames), false, array('title' => __('Template', THEMOSIS_FRAMEWORK_TEXTDOMAIN)))
-        ));
+			Field::select('_themosisPageTemplate', array($templateNames), false, array('title' => __('Template', THEMOSIS_FRAMEWORK_TEXTDOMAIN)))
+		));
 	}
 
 	/**
@@ -41,13 +41,19 @@ class Template extends ConfigTemplate
 	{
 		$names = array();
 
-		foreach (static::$datas as $name)
-        {
-			$names[$name] = str_replace(array('-', '_'), ' ', ucfirst(trim($name)));
+		foreach (static::$datas as $key => $value)
+		{
+			if (is_int($key))
+			{
+                $names[$value] = str_replace(array('-', '_'), ' ', ucfirst(trim($value)));
+			}
+			else
+			{
+                $names[$key] = $value;
+			}
 		}
 
 		return $names;
-
 	}
 
 }
