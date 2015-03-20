@@ -12,7 +12,7 @@ abstract class Wrapper {
      * @param mixed $value A registered value.
      * @return mixed
      */
-    protected function parseValue(FieldBuilder $field, $value = null)
+    protected function parseValue(FieldBuilder $field = null, $value = null)
     {
         $parsedValue = null;
         
