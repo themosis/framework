@@ -30,6 +30,7 @@ abstract class FieldBuilder extends DataContainer{
         $this->setId();
         $this->setClass();
         $this->setTitle();
+        $this->setAttributes();
     }
 
     /**
@@ -71,6 +72,16 @@ abstract class FieldBuilder extends DataContainer{
     protected function setTitle()
     {
         $this['title'] = isset($this['title']) ? ucfirst($this['title']) : ucfirst($this['name']);
+    }
+
+    /**
+     * Set default html attributes if not defined.
+     *
+     * @return void
+     */
+    protected function setAttributes()
+    {
+        $this['attributes'] = isset($this['attributes']) ? $this['attributes'] : array();
     }
 
     /**
