@@ -3,8 +3,8 @@ namespace Themosis\Html;
 
 use Themosis\Core\IgniterService;
 
-class FormIgniterService extends IgniterService{
-
+class FormIgniterService extends IgniterService
+{
     /**
      * Make available the FormBuilder class
      * to the global class.
