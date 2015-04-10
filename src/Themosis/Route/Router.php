@@ -263,6 +263,8 @@ class Router {
     {
         $route = $this->findRoute($request);
 
+        //@todo implement route before actions
+
         // Check if a route exists for the request.
         if(!is_null($route)){
 
