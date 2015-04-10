@@ -59,6 +59,22 @@ class ActionBuilder implements IAction
     }
 
     /**
+     * Check if a registered action exists.
+     *
+     * @param string $hook
+     * @return boolean
+     */
+    public function exists($hook)
+    {
+        if (array_key_exists($hook, $this->events))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Add an event for the specified hook.
      *
      * @param string $hook
@@ -144,7 +160,7 @@ class ActionBuilder implements IAction
      */
     protected function addEventListener($name, $callback, $priority = 10)
     {
-        //@todo Implement the "accepted_args" parameter.
+        //@todo Do we implement the "accepted_args" parameter
         $this->events[$name] = add_action($name, $callback, $priority);
     }
 }

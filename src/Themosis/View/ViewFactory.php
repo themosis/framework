@@ -1,6 +1,7 @@
 <?php
 namespace Themosis\View;
 
+use Themosis\Action\IAction;
 use Themosis\Core\Container;
 use Themosis\View\Engines\EngineResolver;
 
@@ -63,22 +64,24 @@ class ViewFactory {
     protected $renderCount = 0;
 
     /**
-     * The view events.
+     * The action/event handler.
      *
-     * @var array
+     * @var \Themosis\Action\IAction
      */
-    protected $events = array();
+    protected $action;
 
     /**
      * Define a ViewFactory instance.
      *
      * @param Engines\EngineResolver $engines The available engines.
      * @param ViewFinder $finder
+     * @param \Themosis\Action\IAction $action
      */
-    public function __construct(EngineResolver $engines, ViewFinder $finder)
+    public function __construct(EngineResolver $engines, ViewFinder $finder, IAction $action)
     {
         $this->engines = $engines;
         $this->finder = $finder;
+        $this->action = $action;
 
         // Share the factory to all views.
         $this->share('__env', $this);
@@ -175,7 +178,8 @@ class ViewFactory {
 
         foreach ((array) $views as $view)
         {
-            $composers[] = $this->addViewEvent($view, $callback, 'composing: ');
+            $hook = 'composing: '.$view;
+            $composers[] = $this->action->add($hook, $callback);
         }
 
         return $composers;
@@ -191,104 +195,10 @@ class ViewFactory {
     {
         $hook = 'composing: '.$view->getName();
 
-        if (array_key_exists($hook, $this->events))
+        if ($this->action->exists($hook))
         {
             do_action($hook, $view);
         }
-    }
-
-    /**
-     * Add an event for a specific view.
-     *
-     * @param string $view The view name
-     * @param \Closure|string $callback The closure or class to register
-     * @param string $prefix The event prefix name
-     * @param int $priority The order of the event to trigger
-     * @return \Closure|array
-     */
-    protected function addViewEvent($view, $callback, $prefix = 'composing: ', $priority = 10)
-    {
-        // Check if $callback is a closure.
-        if ($callback instanceof \Closure)
-        {
-            $this->addEventListener($prefix.$view, $callback, $priority);
-
-            return $callback;
-        }
-        elseif (is_string($callback))
-        {
-            // If is a string, it's class based.
-            return $this->addClassEvent($view, $callback, $prefix, $priority);
-        }
-    }
-
-    /**
-     * Prepare the action callback for use in a class method.
-     *
-     * @param string $view The view name
-     * @param string $class The class and its method
-     * @param string $prefix The action hook name prefix
-     * @param int $priority The order of the action to be triggered
-     * @return array
-     */
-    protected function addClassEvent($view, $class, $prefix, $priority = 10)
-    {
-        $name = $prefix.$view;
-
-        $callback = $this->buildClassEventCallback($class, $prefix);
-
-        $this->addEventListener($name, $callback, $priority);
-
-        return $callback;
-    }
-
-    /**
-     * Build the array in order to call a class based composer event.
-     *
-     * @param string $class The class name
-     * @param string $prefix The action hook prefix to add
-     * @return array
-     */
-    protected function buildClassEventCallback($class, $prefix)
-    {
-        list($class, $method) = $this->parseClassEvent($class, $prefix);
-
-        $instance = $this->container->make($class);
-
-        return array($instance, $method);
-    }
-
-    /**
-     * Parse a class name and returns its name and its method.
-     *
-     * @param string $class The class name and its method if defined
-     * @param string $prefix The composer action hook prefix
-     * @return array
-     */
-    protected function parseClassEvent($class, $prefix)
-    {
-        if (str_contains($class, '@'))
-        {
-            return explode('@', $class);
-        }
-
-        // Define the default 'compose' method if none defined
-        $method = str_contains($prefix, 'composing') ? 'compose' : 'create';
-
-        return array($class, $method);
-    }
-
-    /**
-     * Add an action hook/event for this event.
-     *
-     * @param string $name The action hook name
-     * @param \Closure|array $callback The callback to run when the event is triggered
-     * @param int $priority
-     * @return void
-     */
-    protected function addEventListener($name, $callback, $priority = 10)
-    {
-        $this->events[$name] = add_action($name, $callback, $priority);
     }
 
     /**

@@ -21,4 +21,12 @@ interface IAction
      * @return mixed
      */
     public function run($hook, $args = null);
+
+    /**
+     * Check if a registered action exists.
+     *
+     * @param string $hook
+     * @return boolean
+     */
+    public function exists($hook);
 }

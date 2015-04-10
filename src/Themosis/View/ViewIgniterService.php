@@ -113,7 +113,7 @@ class ViewIgniterService extends IgniterService{
     {
         $this->app->bindShared('view', function($app){
 
-            $viewEnv = new ViewFactory($app['view.engine.resolver'], $app['view.finder']);
+            $viewEnv = new ViewFactory($app['view.engine.resolver'], $app['view.finder'], $app['action']);
 
             // Set the IoC container.
             $viewEnv->setContainer($app);
