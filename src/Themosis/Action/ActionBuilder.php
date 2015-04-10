@@ -1,14 +1,28 @@
 <?php
 namespace Themosis\Action;
 
-class ActionBuilder
+use Themosis\Core\Container;
+
+class ActionBuilder implements IAction
 {
     /**
-     * List of called actions.
+     * The IoC container.
+     *
+     * @var \Themosis\Core\Container
+     */
+    protected $container;
+
+    /**
+     * List of registered actions.
      *
      * @var array
      */
     protected $events = array();
+
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
 
     /**
      * Wrapper of the "add_action" function. Allows
@@ -21,6 +35,25 @@ class ActionBuilder
     public function add($hook, $callback)
     {
         $this->addActionEvent($hook, $callback);
+
+        return $this;
+    }
+
+    /**
+     * Run all actions/events registered by the hook.
+     *
+     * @param string $hook The action hook  name.
+     * @param mixed $args
+     * @return mixed
+     */
+    public function run($hook, $args = null)
+    {
+        if (is_array($args))
+        {
+            do_action_ref_array($hook, $args);
+        }
+
+        do_action($hook, $args);
 
         return $this;
     }
@@ -60,6 +93,8 @@ class ActionBuilder
     {
         $callback = $this->buildClassEventCallback($class, $hook);
 
+        $this->addEventListener($hook, $callback, $priority);
+
         return $callback;
     }
 
@@ -74,7 +109,9 @@ class ActionBuilder
     {
         list($class, $method) = $this->parseClassEvent($class, $hook);
 
-        //@todo need a container instance to make it work to its best...
+        $instance = $this->container->make($class);
+
+        return array($instance, $method);
     }
 
     /**

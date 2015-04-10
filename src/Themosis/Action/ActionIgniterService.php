@@ -27,7 +27,7 @@ class ActionIgniterService extends IgniterService
             /**
              * This creates an ActionBuilder instance with its dependencies.
              */
-            return new ActionBuilder();
+            return new ActionBuilder($app);
         });
     }
 }
