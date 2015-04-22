@@ -361,7 +361,7 @@ class FormBuilder {
             }
 
             // Build html output
-            $field.= '<label '. $this->html->attributes($label_attributes) .'>'.$this->input($type, $name, $choice_value, $attributes).$label.'</label>';
+            $field.= '<label '. $this->html->attributes($label_attributes) .'>'.$this->input($type, $input_name, $choice_value, $attributes).$label.'</label>';
 
             // Reset 'checked' attributes.
             unset($attributes['checked']);
