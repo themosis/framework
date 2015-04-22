@@ -349,8 +349,10 @@ class FormBuilder {
                 $label = $labels[$choice];
             }
 
-            if (in_array($type, ['radio'])) {
-                $name = $name.'[]';
+            if (!in_array($type, ['radio'])) {
+                $input_name = $name.'[]';
+            } else {
+                $input_name = $name;
             }
 
             $choice_value = $choice;
