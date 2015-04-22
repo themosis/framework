@@ -324,17 +324,28 @@ class FormBuilder {
     {
         $field = '';
 
-        foreach($choices as $choice)
+        foreach($choices as $choice_k => $choice)
         {
             // Check the value.
             // If checked, add the attribute.
-            if (in_array($choice, $value))
+            if (in_array($choice, $value) || in_array($choice_k, $value))
             {
                 $attributes['checked'] = 'checked';
             }
 
+            if (!in_array($type, ['radio'])) {
+              $input_name = $name.'[]';
+            } else {
+              $input_name = $name;
+            }
+
+            $choice_value = $choice;
+            if (!is_numeric($choice_k)) {
+                $choice_value = $choice_k;
+            }
+
             // Build html output
-            $field.= '<label>'.$this->input($type, $name.'[]', $choice, $attributes).ucfirst($choice).'</label>';
+            $field.= '<label>'.$this->input($type, $input_name, $choice_value, $attributes).ucfirst($choice).'</label>';
 
             // Reset 'checked' attributes.
             unset($attributes['checked']);
