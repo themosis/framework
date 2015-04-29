@@ -5,5 +5,4 @@ Thumbs.db
 
 # Framework
 vendor/
-phpunit-bootstrap.php
 composer.lock
