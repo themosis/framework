@@ -4,7 +4,7 @@ namespace Themosis\PostType;
 use Themosis\Action\Action;
 use Themosis\Core\DataContainer;
 
-class PostTypeBuilder {
+class PostTypeBuilder implements IPostType {
 
     /**
      * PostTypeData instance.
@@ -39,24 +39,26 @@ class PostTypeBuilder {
     /**
      * Define a new custom post type.
      *
-     * @param string $slug The post type slug name.
+     * @param string $name The post type slug name.
      * @param string $plural The post type plural name for display.
      * @param string $singular The post type singular name for display.
      * @throws PostTypeException
      * @return \Themosis\PostType\PostTypeBuilder
      */
-    public function make($slug, $plural, $singular)
+    public function make($name, $plural, $singular)
     {
-        $params = compact('slug', 'plural', 'singular');
+        $params = compact('name', 'plural', 'singular');
 
-        foreach($params as $name => $param){
-            if(!is_string($param)){
-                throw new PostTypeException('Invalid custom post type parameter "'.$name.'". Accepts string only.');
+        foreach ($params as $key => $param)
+        {
+            if (!is_string($param))
+            {
+                throw new PostTypeException('Invalid custom post type parameter "'.$key.'". Accepts string only.');
             }
         }
 
         // Set main properties.
-        $this->datas['slug'] = $slug;
+        $this->datas['name'] = $name;
         $this->datas['args'] = $this->setDefaultArguments($plural, $singular);
 
         return $this;
@@ -89,17 +91,46 @@ class PostTypeBuilder {
      */
     public function register()
     {
-        $this->postType = register_post_type($this->datas['slug'], $this->datas['args']);
+        $this->postType = register_post_type($this->datas['name'], $this->datas['args']);
     }
 
     /**
      * Returns the custom post type slug name.
      *
+     * @deprecated
      * @return string
      */
     public function getSlug()
     {
-        return $this->datas['slug'];
+        return $this->datas['name'];
+    }
+
+    /**
+     * @param null $property
+     * @return array
+     * @throws PostTypeException
+     */
+    public function get($property = null)
+    {
+        $name = array(
+            'name'  => $this->datas['name']
+        );
+
+        $properties = array_merge($name, $this->datas['args']);
+
+        // If no property asked, return all defined properties.
+        if (is_null($property) || empty($property))
+        {
+            return $properties;
+        }
+
+        // If property exists, return it.
+        if (isset($properties[$property]))
+        {
+            return $properties[$property];
+        }
+
+        throw new PostTypeException("Property '{$property}' does not exist on the '{$properties['name']}' custom post type.");
     }
 
     /**
@@ -110,18 +141,18 @@ class PostTypeBuilder {
      */
     public function setTitle($title)
     {
-        $slug = $this->getSlug();
+        $name = $this->getSlug();
 
-        add_filter('enter_title_here', function($default) use($slug, $title){
-
+        add_filter('enter_title_here', function($default) use($name, $title)
+        {
             $screen = get_current_screen();
 
-            if($slug == $screen->post_type){
+            if ($name == $screen->post_type)
+            {
                 $default = $title;
             }
 
             return $default;
-
         });
 
         return $this;
