@@ -12,9 +12,13 @@ abstract class Wrapper {
      * @param mixed $value A registered value.
      * @return mixed
      */
-    protected function parseValue(FieldBuilder $field, $value = null)
+    protected function parseValue(FieldBuilder $field = null, $value = null)
     {
         $parsedValue = null;
+        
+        if (is_null($field)) {
+            return $parsedValue;
+        }
 
         // No data found, define a default by field type.
         switch($field->getFieldType()){

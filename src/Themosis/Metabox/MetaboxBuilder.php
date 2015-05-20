@@ -205,6 +205,11 @@ class MetaboxBuilder extends Wrapper {
             if (!$this->user->can($this->capability)) return;
         }
 
+        if ($this->datas['postType'] !== get_post_type($postId))
+        {
+            return;
+        }
+
         $fields = array();
 
         // Loop through the registered fields.
