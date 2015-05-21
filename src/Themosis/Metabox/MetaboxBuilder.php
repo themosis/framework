@@ -9,59 +9,59 @@ use Themosis\User\User;
 use Themosis\Validation\ValidationBuilder;
 use Themosis\View\IRenderable;
 
-class MetaboxBuilder extends Wrapper {
+class MetaboxBuilder extends Wrapper implements IMetabox {
 
     /**
      * Metabox instance datas.
      *
      * @var \Themosis\Core\DataContainer
      */
-    private $datas;
+    protected $datas;
 
     /**
      * The metabox view.
      *
      * @var \Themosis\View\View
      */
-    private $view;
+    protected $view;
 
     /**
      * The metabox view sections.
      *
      * @var array
      */
-    private $sections = array();
+    protected $sections = array();
 
     /**
      * A validator instance.
      */
-    private $validator;
+    protected $validator;
 
     /**
      * The display/install event to listen to.
      */
-    private $installEvent;
+    protected $installEvent;
 
     /**
      * The current user instance.
      *
      * @var \Themosis\User\User
      */
-    private $user;
+    protected $user;
 
     /**
      * Whether or not check for user capability.
      *
      * @var bool
      */
-    private $check = false;
+    protected $check = false;
 
     /**
      * The capability to check.
      *
      * @var string
      */
-    private $capability;
+    protected $capability;
 
     /**
      * Build a metabox instance.
@@ -126,12 +126,13 @@ class MetaboxBuilder extends Wrapper {
      * Restrict access to a specific user capability.
      *
      * @param string $capability
-     * @return void
+     * @return \Themosis\Metabox\MetaboxBuilder
      */
     public function can($capability)
     {
         $this->capability = $capability;
         $this->check = true;
+        return $this;
     }
 
     /**
@@ -143,10 +144,8 @@ class MetaboxBuilder extends Wrapper {
     {
         if($this->check && !$this->user->can($this->capability)) return;
 
-        $id = md5($this->datas['title']);
-
         // Fields are passed to the metabox $args parameter.
-        add_meta_box($id, $this->datas['title'], array($this, 'build'), $this->datas['postType'], $this->datas['options']['context'], $this->datas['options']['priority'], $this->datas['fields']);
+        add_meta_box($this->datas['options']['id'], $this->datas['title'], array($this, 'build'), $this->datas['postType'], $this->datas['options']['context'], $this->datas['options']['priority'], $this->datas['fields']);
     }
 
     /**
@@ -245,7 +244,7 @@ class MetaboxBuilder extends Wrapper {
      * @param array $fields
      * @return void
      */
-    private function register($postId, array $fields)
+    protected function register($postId, array $fields)
     {
         foreach($fields as $field)
         {
@@ -290,11 +289,12 @@ class MetaboxBuilder extends Wrapper {
      * @param array $options The metabox options.
      * @return array
      */
-    private function parseOptions(array $options)
+    protected function parseOptions(array $options)
     {
         return wp_parse_args($options, array(
             'context'   => 'normal',
-            'priority'  => 'default'
+            'priority'  => 'default',
+            'id'        => md5($this->datas['title'])
         ));
     }
 
@@ -304,7 +304,7 @@ class MetaboxBuilder extends Wrapper {
      * @param array $fields
      * @return array
      */
-    private function getSections(array $fields)
+    protected function getSections(array $fields)
     {
         $sections = array();
 
@@ -326,7 +326,7 @@ class MetaboxBuilder extends Wrapper {
      * @param array $fields
      * @return void
      */
-    private function setDefaultValue(\WP_Post $post, array $fields)
+    protected function setDefaultValue(\WP_Post $post, array $fields)
     {
         foreach ($fields as $field)
         {
@@ -346,7 +346,7 @@ class MetaboxBuilder extends Wrapper {
      * @param \WP_Post $post
      * @return void
      */
-    private function render(array $fields, $post)
+    protected function render(array $fields, $post)
     {
         $this->view->with(array(
             '__fields'          => $fields, // Pass the custom fields

@@ -55,7 +55,7 @@ abstract class Wrapper {
      * @param string $value Value sent to the field.
      * @return string The field value.
      */
-    private function parseString(FieldBuilder $field, $value = '')
+    protected function parseString(FieldBuilder $field, $value = '')
     {
         return (empty($value) && isset($field['default'])) ? $field['default'] : $value;
     }
@@ -67,7 +67,7 @@ abstract class Wrapper {
      * @param array $value
      * @return array
      */
-    private function parseArrayable(FieldBuilder $field, $value = array())
+    protected function parseArrayable(FieldBuilder $field, $value = array())
     {
         if (is_null($value) || ('0' !== $value && empty($value)))
         {
@@ -87,7 +87,7 @@ abstract class Wrapper {
      * @param array $value
      * @return array
      */
-    private function parseInfinite(FieldBuilder $field, $value = array())
+    protected function parseInfinite(FieldBuilder $field, $value = array())
     {
         $fields = $field['fields'];
 
@@ -130,7 +130,7 @@ abstract class Wrapper {
      * @param string $name Name of the inner field to fetch.
      * @return mixed The Field instance
      */
-    private function getInfiniteInnerField(array $fields, $name)
+    protected function getInfiniteInnerField(array $fields, $name)
     {
         foreach ($fields as $field)
         {
