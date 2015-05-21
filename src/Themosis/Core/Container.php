@@ -6,7 +6,7 @@ use ArrayAccess;
 use ReflectionClass;
 use ReflectionParameter;
 
-abstract class Container implements ArrayAccess{
+class Container implements ArrayAccess{
 
     /**
      * An array of the types that have been resolved.

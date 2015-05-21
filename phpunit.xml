@@ -1,14 +1,12 @@
-<phpunit
-    bootstrap="phpunit-bootstrap.php"
-    backupGlobals="false"
-    colors="true"
-    convertErrorsToExceptions="true"
-    convertNoticesToExceptions="true"
-    convertWarningsToExceptions="true"
-    >
+<phpunit bootstrap="tests/bootstrap.php"
+        colors="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        verbose="true">
     <testsuites>
         <testsuite name="themosis">
-            <directory suffix=".php">./tests</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>
