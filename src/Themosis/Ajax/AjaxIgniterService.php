@@ -27,7 +27,7 @@ class AjaxIgniterService extends IgniterService
             /**
              * Create an AjaxBuilder instance.
              */
-            return new AjaxBuilder();
+            return new AjaxBuilder($app['action']);
         });
     }
 }

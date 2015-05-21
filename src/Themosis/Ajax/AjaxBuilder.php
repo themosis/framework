@@ -1,41 +1,48 @@
 <?php
 namespace Themosis\Ajax;
 
+use Themosis\Action\IAction;
+
 class AjaxBuilder implements IAjax
 {
-    public function __construct()
+    /**
+     * Action instance.
+     */
+    protected $action;
+
+    public function __construct(IAction $action)
     {
-        
+        $this->action = $action;
     }
 
     /**
      * Listen to AJAX API calls.
      *
-     * @param string $action The AJAX action name.
+     * @param string $name The AJAX action name.
      * @param string|boolean $logged true, false or 'both' type of users.
      * @param \Closure|string $callback
      * @return \Themosis\Ajax\IAjax
      */
-    public function run($action, $logged, $callback)
+    public function run($name, $logged, $callback)
     {
         // Front-end ajax for non-logged users
-        // Set $logged to FALSE
+        // Set $logged to false
         if ($logged === false || $logged === 'no')
         {
-            add_action('wp_ajax_nopriv_'.$action, $callback);
+            add_action('wp_ajax_nopriv_'.$name, $callback);
         }
 
-        // Front-end and back-end for logged users
+        // Front-end and back-end ajax for logged users
         if ($logged === true || $logged === 'yes')
         {
-            add_action('wp_ajax_'.$action, $callback);
+            add_action('wp_ajax_'.$name, $callback);
         }
 
         // Front-end and back-end for both logged in or out users
         if ($logged === 'both')
         {
-            add_action('wp_ajax_nopriv_'.$action, $callback);
-            add_action('wp_ajax_'.$action, $callback);
+            add_action('wp_ajax_nopriv_'.$name, $callback);
+            add_action('wp_ajax_'.$name, $callback);
         }
 
         return $this;
