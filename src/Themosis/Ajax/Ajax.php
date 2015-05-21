@@ -9,12 +9,12 @@ class Ajax
 	/**
 	 * JS namespace
 	*/
-	private static $namespace;
+	protected static $namespace;
 
 	/**
 	 * Ajax url js property
 	*/
-	private static $url;
+	protected static $url;
 
     /**
      * The Ajax constructor.
@@ -38,7 +38,7 @@ class Ajax
      * or both.
      *
      * @param string $action Your ajax 'action' name
-     * @param string $logged Accepted values are 'no', 'yes', 'both'
+     * @param bool|string $logged Accepted values are false|'no', true|'yes', 'both'
      * @param callable $closure The function to run when ajax action is called
      * @throws AjaxException
      */

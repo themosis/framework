@@ -102,6 +102,7 @@ class Application extends Container {
     {
         $services = array(
             '\Themosis\Action\ActionIgniterService',
+            '\Themosis\Ajax\AjaxIgniterService',
             '\Themosis\Asset\AssetIgniterService',
             '\Themosis\Field\FieldIgniterService',
             '\Themosis\Html\FormIgniterService',
@@ -299,6 +300,7 @@ class Application extends Container {
 	{
 		$aliases = array(
             'action'            => 'Themosis\Action\ActionBuilder',
+            'ajax'              => 'Themosis\Ajax\AjaxBuilder',
 			'app'               => 'Themosis\Core\Application',
 			'asset'             => 'Themosis\Asset\AssetFactory',
 			'asset.finder'      => 'Themosis\Asset\AssetFinder',
