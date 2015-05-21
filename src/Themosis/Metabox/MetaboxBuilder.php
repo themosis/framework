@@ -198,11 +198,17 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
         $nonceName = (isset($_POST[Session::nonceName])) ? $_POST[Session::nonceName] : Session::nonceName;
         if (!wp_verify_nonce($nonceName, Session::nonceAction)) return;
 
+        // Grab current custom post type name.
+        $postType = get_post_type($postId);
+
         // Check user capability.
-        if ($this->check && $this->datas['postType'] === $_POST['post_type'])
+        if ($this->check && $this->datas['postType'] === $postType)
         {
             if (!$this->user->can($this->capability)) return;
         }
+
+        // Check current post type...avoid to register fields for all registered post type.
+        if ($postType !== $this->datas['postType']) return;
 
         $fields = array();
 
