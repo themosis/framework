@@ -29,20 +29,20 @@ class AjaxBuilder implements IAjax
         // Set $logged to false
         if ($logged === false || $logged === 'no')
         {
-            add_action('wp_ajax_nopriv_'.$name, $callback);
+            $this->action->add('wp_ajax_nopriv_'.$name, $callback);
         }
 
         // Front-end and back-end ajax for logged users
         if ($logged === true || $logged === 'yes')
         {
-            add_action('wp_ajax_'.$name, $callback);
+            $this->action->add('wp_ajax_'.$name, $callback);
         }
 
         // Front-end and back-end for both logged in or out users
         if ($logged === 'both')
         {
-            add_action('wp_ajax_nopriv_'.$name, $callback);
-            add_action('wp_ajax_'.$name, $callback);
+            $this->action->add('wp_ajax_nopriv_'.$name, $callback);
+            $this->action->add('wp_ajax_'.$name, $callback);
         }
 
         return $this;
