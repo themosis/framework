@@ -46,7 +46,7 @@ class Config
 	{
 		foreach (static::$configs as $config)
         {
-			$factory = new ConfigFactory($config);
+			$factory = new ConfigurationFactory($config);
 			$factory->dispatch();
 		}
 	}

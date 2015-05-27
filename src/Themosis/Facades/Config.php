@@ -1,10 +1,10 @@
 <?php
 namespace Themosis\Facades;
 
-class Asset extends Facade
+class Config extends Facade
 {
     /**
-     * Return the igniter service key responsible for the asset class.
+     * Return the igniter service key responsible for the config class.
      * The key must be the same as the one used in the assigned
      * igniter service.
      *
@@ -12,7 +12,6 @@ class Asset extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'asset';
+        return 'config';
     }
-
-} 
+}

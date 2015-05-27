@@ -74,7 +74,7 @@ class Asset {
      */
     protected function registerInstance()
     {
-        if(isset(static::$instances[$this->area][$this->key])) return;
+        if (isset(static::$instances[$this->area][$this->key])) return;
 
         static::$instances[$this->area][$this->key] = $this;
     }
@@ -89,11 +89,10 @@ class Asset {
      */
     public function to($area)
     {
-        if(is_string($area) && in_array($area, $this->allowedAreas)) {
-
+        if (is_string($area) && in_array($area, $this->allowedAreas))
+        {
             $this->area = $area;
             $this->orderInstances();
-
         }
     }
 
@@ -105,13 +104,11 @@ class Asset {
      */
     protected function orderInstances()
     {
-        if (array_key_exists($this->key, static::$instances['front'])) {
-
+        if (array_key_exists($this->key, static::$instances['front']))
+        {
             $instance = static::$instances['front'][$this->key];
             unset(static::$instances['front'][$this->key]);
-
             static::$instances[$this->area][$instance->key] = $instance;
-
         }
     }
 
@@ -124,19 +121,17 @@ class Asset {
     {
         $from = current_filter();
 
-        switch($from){
-
+        switch ($from)
+        {
             // Front-end assets.
             case 'wp_enqueue_scripts':
 
-                if(isset(static::$instances['front']) && !empty(static::$instances['front'])){
-
-                    foreach(static::$instances['front'] as $asset){
-
+                if (isset(static::$instances['front']) && !empty(static::$instances['front']))
+                {
+                    foreach (static::$instances['front'] as $asset)
+                    {
                         $this->register($asset);
-
                     }
-
                 }
 
                 break;
@@ -144,14 +139,12 @@ class Asset {
             // WordPress admin assets.
             case 'admin_enqueue_scripts':
 
-                if(isset(static::$instances['admin']) && !empty(static::$instances['admin'])){
-
-                    foreach(static::$instances['admin'] as $asset){
-
+                if (isset(static::$instances['admin']) && !empty(static::$instances['admin']))
+                {
+                    foreach (static::$instances['admin'] as $asset)
+                    {
                         $this->register($asset);
-
                     }
-
                 }
 
                 break;
@@ -159,14 +152,12 @@ class Asset {
             // Login assets.
             case 'login_enqueue_scripts':
 
-                if(isset(static::$instances['login']) && !empty(static::$instances['login'])){
-
-                    foreach(static::$instances['login'] as $asset){
-
+                if (isset(static::$instances['login']) && !empty(static::$instances['login']))
+                {
+                    foreach (static::$instances['login'] as $asset)
+                    {
                         $this->register($asset);
-
                     }
-
                 }
 
                 break;
@@ -182,14 +173,13 @@ class Asset {
      */
     protected function register(Asset $asset)
     {
-        if($asset->getType() === 'script'){
-
+        if ($asset->getType() === 'script')
+        {
             $this->registerScript($asset);
-
-        } else {
-
+        }
+        else
+        {
             $this->registerStyle($asset);
-
         }
     }
 

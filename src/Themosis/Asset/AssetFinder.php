@@ -45,10 +45,10 @@ class AssetFinder {
     public function find($path)
     {
         // Check if asset is external.
-        if($this->isExternal($path)) return $this->assets[$path] = $path;
+        if ($this->isExternal($path)) return $this->assets[$path] = $path;
 
         // Check if asset is already registered.
-        if(isset($this->assets[$path])) return $this->assets[$path];
+        if (isset($this->assets[$path])) return $this->assets[$path];
 
         // Find and register the asset.
         return $this->assets[$path] = $this->findInPaths($path, $this->paths);
@@ -66,13 +66,12 @@ class AssetFinder {
     {
         $path = $this->parsePath($path);
 
-        foreach($dirs as $dirUrl => $dirPath){
-
-            if(file_exists($dirPath.$path)){
-
+        foreach ($dirs as $dirUrl => $dirPath)
+        {
+            if (file_exists($dirPath.$path))
+            {
                 // Return the full URL.
                 return $dirUrl.$path;
-
             }
         }
 
@@ -87,14 +86,12 @@ class AssetFinder {
      */
     protected function isExternal($path)
     {
-        foreach($this->schemes as $scheme){
-
-            if(strpos($path, $scheme) !== false){
-
+        foreach ($this->schemes as $scheme)
+        {
+            if (strpos($path, $scheme) !== false)
+            {
                 return true;
-
             }
-
         }
 
         return false;
@@ -109,10 +106,9 @@ class AssetFinder {
      */
     protected function parsePath($path)
     {
-        if(substr($path, 0, 1) !== '/' && substr($path, 0, 4) !== 'http'){
-
+        if (substr($path, 0, 1) !== '/' && substr($path, 0, 4) !== 'http')
+        {
             return '/'.$path;
-
         }
 
         return $path;

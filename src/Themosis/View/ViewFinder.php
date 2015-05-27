@@ -44,7 +44,7 @@ class ViewFinder {
      */
     public function find($name)
     {
-        if(isset($this->views[$name])) return $this->views[$name];
+        if (isset($this->views[$name])) return $this->views[$name];
 
         return $this->views[$name] = $this->findInPaths($name, $this->paths);
     }
@@ -57,13 +57,14 @@ class ViewFinder {
      * @throws ViewException
      * @return string
      */
-    private function findInPaths($name, array $paths)
+    protected function findInPaths($name, array $paths)
     {
-        foreach($paths as $path){
-
-            foreach($this->getPossibleViewFiles($name) as $file){
-
-                if (file_exists($viewPath = $path.$file)){
+        foreach ($paths as $path)
+        {
+            foreach ($this->getPossibleViewFiles($name) as $file)
+            {
+                if (file_exists($viewPath = $path.$file))
+                {
                     return $viewPath;
                 }
             }
@@ -79,7 +80,7 @@ class ViewFinder {
      * @param string $name
      * @return array
      */
-    private function getPossibleViewFiles($name)
+    protected function getPossibleViewFiles($name)
     {
         return array_map(function($extension) use($name) {
 
