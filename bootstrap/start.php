@@ -21,10 +21,10 @@ $app = new Themosis\Core\Application();
 /*----------------------------------------------------*/
 // Set the application paths.
 /*----------------------------------------------------*/
-$paths = apply_filters('themosis_application_paths', array(
+$paths = apply_filters('themosis_application_paths', [
     'plugin'    => dirname(__DIR__),
     'sys'       => dirname(__DIR__).DS.'src'.DS.'Themosis'.DS
-));
+]);
 
 $app->bindInstallPaths($paths);
 
@@ -53,7 +53,7 @@ $app->registerCoreIgniters();
 /*----------------------------------------------------*/
 // Set application configurations.
 /*----------------------------------------------------*/
-do_action('themosis_configurations');
+do_action('themosis_configuration');
 
 /*----------------------------------------------------*/
 // Register framework view paths.
@@ -100,7 +100,7 @@ add_filter('image_size_names_choose', function($sizes){
 /*----------------------------------------------------*/
 add_action('admin_head', function(){
 
-    $datas = apply_filters('themosisAdminGlobalObject', array());
+    $datas = apply_filters('themosisAdminGlobalObject', []);
 
     $output = "<script type=\"text/javascript\">\n\r";
     $output.= "//<![CDATA[\n\r";
@@ -154,7 +154,7 @@ add_action('admin_enqueue_scripts', 'themosisWpMediaAssets');
 Themosis\Facades\Asset::add('themosis-core-styles', 'css/_themosis-core.css')->to('admin');
 
 // Themosis scripts
-Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosis-core.js', array('jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view'), false, true)->to('admin');
+Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosis-core.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view'], false, true)->to('admin');
 
 /*----------------------------------------------------*/
 // Bootstrap application.

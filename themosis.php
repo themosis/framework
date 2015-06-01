@@ -45,7 +45,7 @@ if (!class_exists('THFWK_Themosis'))
          *
          * @var \THFWK_Themosis
          */
-        private static $instance = null;
+        protected static $instance = null;
 
         /**
          * Framework version.
@@ -59,9 +59,9 @@ if (!class_exists('THFWK_Themosis'))
          *
          * @var string
          */
-        private static $dirName = '';
+        protected static $dirName = '';
 
-        private function __construct()
+        protected function __construct()
         {
             static::$dirName = static::setDirName(__DIR__);
 
@@ -91,7 +91,7 @@ if (!class_exists('THFWK_Themosis'))
          * @param string
          * @return string
          */
-        private static function setDirName($path)
+        protected static function setDirName($path)
         {
             $parent = static::getParentDirectoryName(dirname($path));
 
@@ -108,7 +108,7 @@ if (!class_exists('THFWK_Themosis'))
          * @param string $path
          * @return string
          */
-        private static function getParentDirectoryName($path)
+        protected static function getParentDirectoryName($path)
         {
             // Check if in the 'mu-plugins' directory.
             if (WPMU_PLUGIN_DIR === $path)
@@ -139,7 +139,7 @@ if (!class_exists('THFWK_Themosis'))
          *
          * @return void
          */
-        private function load()
+        protected function load()
         {
             // Default path to Composer autoload file.
             $autoload = __DIR__.DS.'vendor'.DS.'autoload.php';
@@ -170,13 +170,13 @@ if (!class_exists('THFWK_Themosis'))
             // This mechanism allows a developer to use dependencies inside the plugin
             // or to use them at the root of the WordPress project.
             $loader = new \Symfony\Component\ClassLoader\ClassLoader();
-            $loader->addPrefixes(array(
+            $loader->addPrefixes([
                 'Themosis' => __DIR__.DS.'src'.DS
-            ));
+            ]);
             $loader->register();
 
             // Set the framework paths and starts the framework.
-            add_action('after_setup_theme', array($this, 'bootstrap'));
+            add_action('after_setup_theme', [$this, 'bootstrap']);
         }
 
         /**
@@ -193,7 +193,7 @@ if (!class_exists('THFWK_Themosis'))
              * filters.
              */
             // Framework paths.
-            $paths = apply_filters('themosis_framework_paths', array());
+            $paths = apply_filters('themosis_framework_paths', []);
 
             // Plugin base path.
             $paths['plugin'] = __DIR__.DS;
