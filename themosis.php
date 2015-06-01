@@ -121,20 +121,6 @@ if (!class_exists('THFWK_Themosis'))
         }
 
         /**
-         * Display a notice in the administration.
-         *
-         * @return void
-         */
-       /* public function displayMessage()
-        {
-        ?>
-            <div id="message" class="error">
-                <p><?php _e(sprintf('<b>Themosis plugin:</b> %s', "Symfony Class Loader component not found. Make sure to include it before proceeding."), THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></p>
-            </div>
-        <?php
-        }*/
-
-        /**
          * Load the framework classes.
          *
          * @return void
@@ -143,38 +129,12 @@ if (!class_exists('THFWK_Themosis'))
         {
             // Default path to Composer autoload file.
             $autoload = __DIR__.DS.'vendor'.DS.'autoload.php';
-            require($autoload);
 
-            /*if (defined('THEMOSIS_AUTOLOAD'))
+            // Check for autoload file in dev mode (vendor loaded into the plugin)
+            if (file_exists($autoload))
             {
-                if (!THEMOSIS_AUTOLOAD && file_exists($autoload))
-                {
-                    require_once($autoload);
-                }
+                require($autoload);
             }
-            elseif (!defined('THEMOSIS_AUTOLOAD'))
-            {
-                if (file_exists($autoload))
-                {
-                    require_once($autoload);
-                }
-            }*/
-
-            /*if (!class_exists('Symfony\Component\ClassLoader\ClassLoader'))
-            {
-                add_action('admin_notices', array($this, 'displayMessage'));
-                return;
-            }*/
-
-            // Autoload PSR-0 classes.
-            // The autoloading process is not handled by Composer...
-            // This mechanism allows a developer to use dependencies inside the plugin
-            // or to use them at the root of the WordPress project.
-            /*$loader = new \Symfony\Component\ClassLoader\ClassLoader();
-            $loader->addPrefixes([
-                'Themosis' => __DIR__.DS.'src'.DS
-            ]);
-            $loader->register();*/
 
             // Set the framework paths and starts the framework.
             add_action('after_setup_theme', [$this, 'bootstrap']);

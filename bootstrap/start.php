@@ -4,11 +4,6 @@
  * Bootstrap Themosis framework.
  */
 /*----------------------------------------------------*/
-// Config extension.
-/*----------------------------------------------------*/
-defined('CONFIG_EXT') ? CONFIG_EXT : define('CONFIG_EXT', '.config.php');
-
-/*----------------------------------------------------*/
 // Include helper functions.
 /*----------------------------------------------------*/
 include_once(themosis_path('sys').'Helpers'.DS.'helpers.php');
@@ -16,6 +11,28 @@ include_once(themosis_path('sys').'Helpers'.DS.'helpers.php');
 /*----------------------------------------------------*/
 // Set the application instance.
 /*----------------------------------------------------*/
+if (!class_exists('Themosis\Core\Application'))
+{
+    // Message for the back-end
+    add_action('admin_notices', function()
+    {
+        ?>
+            <div id="message" class="error">
+                <p><?php _e(sprintf('<b>Themosis framework:</b> %s', "The autoload.php file is missing or there is a namespace error inside your composer.json file."), THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></p>
+            </div>
+        <?php
+    });
+
+    // Message for the front-end
+    if (!is_admin())
+    {
+        wp_die(__("The <strong>Themosis framework</strong> is not loaded properly. Please check your <strong>composer.json</strong> file configuration.", THEMOSIS_FRAMEWORK_TEXTDOMAIN));
+    }
+
+    return;
+}
+
+// Start the project...
 $app = new Themosis\Core\Application();
 
 /*----------------------------------------------------*/
