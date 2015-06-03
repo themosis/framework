@@ -174,6 +174,74 @@ Themosis\Facades\Asset::add('themosis-core-styles', 'css/_themosis-core.css')->t
 Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosis-core.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view'], false, true)->to('admin');
 
 /*----------------------------------------------------*/
+// Handle errors, warnings, exceptions.
+/*----------------------------------------------------*/
+set_exception_handler(function($e)
+{
+    Themosis\Error\Error::exception($e);
+});
+
+set_error_handler(function($code, $error, $file, $line)
+{
+    // Check if the class exists
+    // Otherwise WP can't find it when
+    // constructing its "Menus" page
+    // under appearance in administration.
+    if (class_exists('Themosis\Error\Error'))
+    {
+        Themosis\Error\Error::native($code, $error, $file, $line);
+    }
+});
+
+if (defined('THEMOSIS_ERROR_SHUTDOWN') && THEMOSIS_ERROR_SHUTDOWN)
+{
+    register_shutdown_function(function()
+    {
+        Themosis\Error\Error::shutdown();
+    });
+}
+
+// Passing in the value -1 will show every errors.
+$report = defined('THEMOSIS_ERROR_REPORT') ? THEMOSIS_ERROR_REPORT : 0;
+error_reporting($report);
+
+/*----------------------------------------------------*/
+// Set class aliases.
+/*----------------------------------------------------*/
+$aliases = apply_filters('themosisClassAliases', [
+    'Themosis\\Facades\\Action'                 => 'Action',
+    'Themosis\\Facades\\Ajax'					=> 'Ajax',
+    'Themosis\\Facades\\Asset'					=> 'Asset',
+    'Themosis\\Configuration\\Application'		=> 'Application',
+    'Themosis\\Facades\\Config'                 => 'Config',
+    'Themosis\\Route\\Controller'               => 'Controller',
+    'Themosis\\Facades\\Field'					=> 'Field',
+    'Themosis\\Facades\\Form'					=> 'Form',
+    'Themosis\\Facades\\Html'                   => 'Html',
+    'Themosis\\Facades\\Input'                  => 'Input',
+    'Themosis\\Metabox\\Meta'					=> 'Meta',
+    'Themosis\\Facades\\Metabox'				=> 'Metabox',
+    'Themosis\\Page\\Option'					=> 'Option',
+    'Themosis\\Facades\\Page'					=> 'Page',
+    'Themosis\\Facades\\PostType'				=> 'PostType',
+    'Themosis\\Facades\\Route'					=> 'Route',
+    'Themosis\\Facades\\Section'                => 'Section',
+    'Themosis\\Session\\Session'				=> 'Session',
+    'Themosis\\Taxonomy\\TaxField'              => 'TaxField',
+    'Themosis\\Taxonomy\\TaxMeta'               => 'TaxMeta',
+    'Themosis\\Facades\\Taxonomy'				=> 'Taxonomy',
+    'Themosis\\Facades\\User'					=> 'User',
+    'Themosis\\Facades\\Validator'              => 'Validator',
+    'Themosis\\Facades\\Loop'					=> 'Loop',
+    'Themosis\\Facades\\View'					=> 'View'
+]);
+
+foreach ($aliases as $namespace => $className)
+{
+    class_alias($namespace, $className);
+}
+
+/*----------------------------------------------------*/
 // Bootstrap application.
 /*----------------------------------------------------*/
 do_action('themosis_bootstrap');
