@@ -5,8 +5,10 @@ class Constant
 {	
 	/**
 	 * Save the retrieved datas
+     *
+     * @var array
 	*/
-	protected $data = array();
+	protected $data = [];
 
     public function __construct(array $data)
     {
