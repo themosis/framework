@@ -104,13 +104,6 @@ add_filter('themosisAssetPaths', function($paths){
 /*----------------------------------------------------*/
 add_image_size('_themosis_media', 100, 100, true);
 
-add_filter('image_size_names_choose', function($sizes){
-
-    $sizes['_themosis_media'] = __('Themosis Media Thumbnail', THEMOSIS_FRAMEWORK_TEXTDOMAIN);
-
-    return $sizes;
-});
-
 /*----------------------------------------------------*/
 // Allow developers to add parameters to
 // the admin global JS object.

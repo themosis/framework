@@ -1,19 +1,34 @@
 <?php
 namespace Themosis\Configuration;
 
-class Images extends ConfigTemplate {
+class Images
+{
+    /**
+     * The image sizes.
+     *
+     * @var array
+     */
+    protected $data = [];
+
+    public function __construct(array $data)
+    {
+        $this->data = $data;
+    }
 
     /**
-     * Depending of the child class, will install the given
-     * config properties.
+     * Add custom image sizes.
+     *
+     * @return \Themosis\Configuration\Images
      */
-    public static function install()
+    public function make()
     {
         // Add registered image sizes.
-        static::addImages();
+        $this->addImages();
 
         // Add sizes to the media attachment settings dropdown list.
-        add_filter('image_size_names_choose', array('\Themosis\Configuration\Images', 'addImagesToDropDownList'));
+        add_filter('image_size_names_choose', [$this, 'addImagesToDropDownList']);
+
+        return $this;
     }
 
     /**
@@ -21,12 +36,11 @@ class Images extends ConfigTemplate {
      *
      * @return void
      */
-    private static function addImages()
+    protected function addImages()
     {
-        foreach (static::$datas as $slug => $properties)
+        foreach ($this->data as $slug => $properties)
         {
             list($width, $height, $crop) = $properties;
-
             add_image_size($slug, $width, $height, $crop);
         }
     }
@@ -37,20 +51,30 @@ class Images extends ConfigTemplate {
      * @param array $sizes The existing sizes.
      * @return array
      */
-    public static function addImagesToDropDownList(array $sizes)
+    public function addImagesToDropDownList(array $sizes)
     {
-        $new = array();
+        $new = [];
 
-        foreach (static::$datas as $slug => $properties)
+        foreach ($this->data as $slug => $properties)
         {
             // If no 4th option, stop the loop.
             if(4 !== count($properties)) break;
 
+            // Grab last property
             $show = array_pop($properties);
 
+            // Allow true or string value.
+            // If string, use it as display name.
             if ($show)
             {
-                $new[$slug] = __(static::label($slug), THEMOSIS_FRAMEWORK_TEXTDOMAIN);
+                if (is_string($show))
+                {
+                    $new[$slug] = __($show, THEMOSIS_FRAMEWORK_TEXTDOMAIN);
+                }
+                else
+                {
+                    $new[$slug] = __($this->label($slug), THEMOSIS_FRAMEWORK_TEXTDOMAIN);
+                }
             }
         }
 
@@ -64,8 +88,8 @@ class Images extends ConfigTemplate {
      * @param string $text The text to clean.
      * @return string
      */
-    private static function label($text)
+    protected function label($text)
     {
-        return ucwords(str_replace(array('-', '_'), ' ', $text));
+        return ucwords(str_replace(['-', '_'], ' ', $text));
     }
 }

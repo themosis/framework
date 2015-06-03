@@ -36,6 +36,8 @@ class Template
         ])->set([
 			Field::select('_themosisPageTemplate', [$templateNames], false, ['title' => __('Name', THEMOSIS_FRAMEWORK_TEXTDOMAIN)])
 		]);
+
+        return $this;
 	}
 
 	/**
