@@ -1,28 +1,35 @@
 <?php
 namespace Themosis\Configuration;
 
-class Constant extends ConfigTemplate
+class Constant
 {	
 	/**
 	 * Save the retrieved datas
 	*/
-	protected static $datas = array();
+	protected $data = array();
+
+    public function __construct(array $data)
+    {
+        $this->data = $data;
+    }
 
 	/**
-	 * Load all plugin's constants
+	 * Load a list of constant variables
      *
-     * @return void
+     * @return \Themosis\Configuration\Constant
 	*/
-	public static function load()
+	public function make()
 	{
-		if (isset(static::$datas) && !empty(static::$datas))
+		if (!empty($this->data))
         {
-			foreach (static::$datas as $name => $value)
+			foreach ($this->data as $name => $value)
             {
 				$name = strtoupper($name);
 				defined($name) ? $name : define($name, $value);
 			}
 		}
+
+        return $this;
 	}
 
 }
