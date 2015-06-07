@@ -56,6 +56,21 @@ class Loop
 	{
 		return get_the_post_thumbnail(static::id(), $size, $attr);
 	}
+	
+	/**
+	 * Get thumbnail url of current post.
+	 *
+	 * @param string|array $size The size of the current post thumbnail.
+	 * @param bool $icon
+	 *
+	 * @return null|string
+	 */
+	public function thumbnailUrl($size = null, $icon = false)
+	{
+		$data = wp_get_attachment_image_src(get_post_thumbnail_id(static::id()), $size, $icon);
+
+		return (empty($data)) ? null : $data[0];
+	}
 
 	/**
 	 * Get the permalink of the current post.
