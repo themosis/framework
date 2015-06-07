@@ -491,12 +491,12 @@ class ScoutCompiler extends Compiler implements ICompiler {
     /**
      * Compile the query statement into valid PHP.
      *
-     * @param string $expression
+     * @param string|WP_Query $expression
      * @return string
      */
     protected function compileQuery($expression)
     {
-        return '<?php $themosisQuery = new WP_Query('.$expression.'); if($themosisQuery->have_posts()){ while($themosisQuery->have_posts()){ $themosisQuery->the_post(); ?>';
+        return '<?php $themosisQuery = (is_array('.$expression.')) ? new WP_Query('.$expression.') : '.$expression.'; if($themosisQuery->have_posts()){ while($themosisQuery->have_posts()){ $themosisQuery->the_post(); ?>';
     }
 
     /**
