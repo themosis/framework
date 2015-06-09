@@ -1,8 +1,6 @@
 <?php
 namespace Themosis\Html;
 
-use Themosis\Configuration\Application;
-
 class HtmlBuilder
 {
 	/**
@@ -13,7 +11,7 @@ class HtmlBuilder
 	 */
 	public function attributes(array $attributes)
 	{
-		$html = array();
+		$html = [];
 
 		foreach ((array) $attributes as $key => $value)
 		{
@@ -39,7 +37,7 @@ class HtmlBuilder
 	 * @return string The encoded character.
 	 */
 	public function entities($value)
-	{
-		return htmlentities($value, ENT_QUOTES, Application::get('encoding'), false);
+    {
+		return htmlentities($value, ENT_QUOTES, 'UTF-8', false);
 	}
 }

@@ -10,7 +10,7 @@ abstract class Loader
 	/**
 	 * Keep a copy of file names.
 	*/
-	protected static $names = array();
+	protected $names = [];
 
 	/**
 	 * Scan the directory at the given path and include
@@ -19,7 +19,7 @@ abstract class Loader
 	 * @param string $path The directory/file path.
 	 * @return bool True. False if not appended.
 	 */
-	protected static function append($path)
+	protected function append($path)
     {
 		if (is_dir($path))
         {
@@ -33,7 +33,7 @@ abstract class Loader
 
 					if ($file_extension === 'php')
                     {
-						static::$names[] = $file->getBasename('.php');
+						$this->names[] = $file->getBasename('.php');
 						include_once $file->getPath().DS.$file->getBasename();
 					}
 				}

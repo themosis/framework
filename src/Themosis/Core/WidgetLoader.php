@@ -3,85 +3,69 @@ namespace Themosis\Core;
 
 use Themosis\Action\Action;
 
-class WidgetLoader extends Loader implements LoaderInterface
+class WidgetLoader extends Loader
 {
-	/**
-	 * Widget directory path
-	*/
-	private static $path;
-
 	/**
 	 * Exclude widgets names
 	*/
-	private static $excludedWidgets = array('index', 'Index', 'widget', 'Widget');
+	protected $excludedWidgets = ['index', 'Index', 'widget', 'Widget'];
 
 	/**
 	 * Widgets
 	*/
-	private static $widgets = array();
-
-	/**
-	 * List of file names
-	*/
-	protected static $names = array();
+	protected $widgets = [];
 
     /**
-     * The WidgetLoader constructor.
-    */
-	public function __construct()
-	{
-		Action::listen('widgets_init', $this, 'install')->dispatch();
-	}
+     * The 'widgets_init' event.
+     *
+     * @var
+     */
+    protected $event;
 
-	/**
-	 * Build the path where the class has to scan
-	 * the files for adding the WIDGETS.
-	 * 
-	 * @return bool True. False if not able to add the widget.
-	 */
-	public static function add()
+	public function __construct($path)
 	{
-		static::$path = themosis_path('theme').'widgets'.DS;
-		return static::append(static::$path);
+        $this->append($path);
+
+        // Prepare the event.
+        $this->event = Action::listen('widgets_init', $this, 'install');
+
+        // Check for valid widgets and load them.
+        $this->load();
 	}
 
 	/**
 	 * Load custom widgets.
 	 * 
-	 * @return \Themosis\Core\WidgetLoader
+	 * @return void
 	 */
-	public static function load()
+	protected function load()
 	{
-		foreach (static::$names as $name)
+		foreach ($this->names as $name)
         {
-			if (!in_array($name, static::$excludedWidgets))
+			if (!in_array($name, $this->excludedWidgets))
             {
 				$name = $name.'_Widget';
-				static::$widgets[] = $name;
+				$this->widgets[] = $name;
 			}
 		}
 
-		return new static();
+        $this->event->dispatch();
 	}
 
 	/**
 	 * Install the widgets.
 	 * 
-	 * @return bool True. False if not installed.
+	 * @return void
 	 */
-	public static function install()
+	public function install()
 	{
-		if (count(static::$widgets) > 0)
+		if (count($this->widgets) > 0)
         {
-			foreach (static::$widgets as $widget)
+			foreach ($this->widgets as $widget)
             {
 				register_widget($widget);
 			}
-
-			return true;
 		}
-
-		return false;
 	}
 
 }

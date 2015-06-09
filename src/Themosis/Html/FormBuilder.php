@@ -2,7 +2,6 @@
 namespace Themosis\Html;
 
 use Themosis\Core\Request;
-use Themosis\Configuration\Application;
 use Themosis\Session\Session;
 
 class FormBuilder {
@@ -11,14 +10,14 @@ class FormBuilder {
      * An HtmlBuilder instance.
      * @var HtmlBuilder
      */
-    private $html;
+    protected $html;
 
     /**
      * The request instance.
      *
      * @var \Themosis\Core\Request
      */
-    private $request;
+    protected $request;
 
     /**
      * Define a FormBuilder instance.
@@ -51,7 +50,7 @@ class FormBuilder {
         // file for the "accept-charset" attribute.
         if (!array_key_exists('accept-charset', $attributes))
         {
-            $attributes['accept-charset'] = Application::get('encoding');
+            $attributes['accept-charset'] = 'UTF-8';
         }
 
         // ADD NONCE FIELDS
@@ -100,7 +99,7 @@ class FormBuilder {
      * @param bool $ssl Tell to set the URL to https or not.
      * @return string The converted action attribute value.
      */
-    private function action($action, $ssl)
+    protected function action($action, $ssl)
     {
         $action = trim($action);
         $ssl = (bool) $ssl;
@@ -123,7 +122,7 @@ class FormBuilder {
      * @param bool $ssl
      * @return string
      */
-    private function parseAction($uri, $ssl)
+    protected function parseAction($uri, $ssl)
     {
         if (strpos(esc_url($uri), 'http'))
         {
@@ -142,7 +141,7 @@ class FormBuilder {
      * @param string $method The request method.
      * @return string The sanitized request method.
      */
-    private function method($method)
+    protected function method($method)
     {
         $method = strtoupper($method);
 

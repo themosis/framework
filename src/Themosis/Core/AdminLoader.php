@@ -1,18 +1,10 @@
 <?php
 namespace Themosis\Core;
 
-class AdminLoader extends Loader implements LoaderInterface
+class AdminLoader extends Loader
 {
-	/**
-	 * Build the path where the class has to scan
-	 * the files for the ADMIN.
-	 * 
-	 * @return bool True. False if not appended.
-	 */
-	public static function add()
+	public function __construct($path)
 	{
-		$path = themosis_path('admin');
-		return static::append($path);
+        $this->append($path);
 	}
-
 }
