@@ -3,59 +3,39 @@ namespace Themosis\Configuration;
 
 use Themosis\Action\Action;
 
-class Menu implements ConfigInterface
+class Menu
 {
 	/**
-	 * Save the retrieved datas
-	*/
-	private $datas;
-
-	/**
-	 * The event to dispatch
-	*/
-	private $event;
-
-    /**
-     * The Menu constructor.
-     */
-	public function __construct()
-	{
-		$this->event = Action::listen('init', $this, 'install');
-	}
-
-    /**
-     * Retrieve and set the datas returned
-     * by the include function using
-     * the given path.
+	 * Save the menus list
      *
-     * @param string $path The config file path.
-     * @return void
-     */
-	public function set($path)
+     * @var array
+	*/
+	protected $data = [];
+
+	public function __construct(array $data)
 	{
-		$this->datas = include($path);
-		$this->event->dispatch();
+        $this->data = $data;
+		Action::listen('init', $this, 'install')->dispatch();
 	}
 
 	/**
 	 * Run by the 'init' hook.
-	 * Execute the "register_nav_menus" function from WP
+	 * Execute the "register_nav_menus" function from WordPress
      *
      * @return void
 	 */
 	public function install()
 	{
-		if (is_array($this->datas) && !empty($this->datas))
+		if (is_array($this->data) && !empty($this->data))
         {
-			$locations = array();
+			$locations = [];
 
-			foreach ($this->datas as $slug => $desc)
+			foreach ($this->data as $slug => $desc)
             {
-				$locations[$slug] = __($desc, THEMOSIS_FRAMEWORK_TEXTDOMAIN);
+				$locations[$slug] = $desc;
 			}
 
 			register_nav_menus($locations);
 		}
-
 	}
 }
