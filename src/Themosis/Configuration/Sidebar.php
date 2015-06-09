@@ -3,62 +3,33 @@ namespace Themosis\Configuration;
 
 use Themosis\Action\Action;
 
-class Sidebar implements ConfigInterface
+class Sidebar
 {
 	/**
-	 * Save the retrieved datas
+	 * Save list of sidebars
 	*/
-	private $datas;
+	protected $data = [];
 
-	/**
-	 * The event to dispatch
-	*/
-	private $event;
-
-    /**
-     * The Sidebar constructor.
-     */
-	public function __construct()
+	public function __construct(array $data)
 	{
-		$this->event = Action::listen('init', $this, 'install');
+        $this->data = $data;
+	    Action::listen('init', $this, 'install')->dispatch();
 	}
 
 	/**
-	 * Retrieve and set the datas returned
-	 * by the include function using
-	 * the given path.
-	 *
-	 * @param string $path The configuration file path.
-     * @return void
-	 */
-	public function set($path)
-	{
-		$this->datas = include($path);
-		$this->event->dispatch();
-	}
-
-	/**
-	 * Run by the 'after_setup_theme' hook.
-	 * Execute the "register_sidebar" function from WP.
+	 * Run by the 'init' hook.
+	 * Execute the "register_sidebar" function from WordPress.
      *
      * @return void
 	 */
 	public function install()
 	{
-		if (is_array($this->datas) && !empty($this->datas))
+		if (is_array($this->data) && !empty($this->data))
         {
-			foreach ($this->datas as $sidebar)
+			foreach ($this->data as $sidebar)
             {
-				$sidebar['name'] = __($sidebar['name'], THEMOSIS_FRAMEWORK_TEXTDOMAIN);
-
-				if (isset($sidebar['description']))
-                {
-    			    $sidebar['description'] = __($sidebar['description'], THEMOSIS_FRAMEWORK_TEXTDOMAIN);
-				}
-
 				register_sidebar($sidebar);
 			}
 		}
-
 	}
 }
