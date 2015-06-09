@@ -205,7 +205,6 @@ $aliases = apply_filters('themosisClassAliases', [
     'Themosis\\Facades\\Action'                 => 'Action',
     'Themosis\\Facades\\Ajax'					=> 'Ajax',
     'Themosis\\Facades\\Asset'					=> 'Asset',
-    'Themosis\\Configuration\\Application'		=> 'Application',
     'Themosis\\Facades\\Config'                 => 'Config',
     'Themosis\\Route\\Controller'               => 'Controller',
     'Themosis\\Facades\\Field'					=> 'Field',
