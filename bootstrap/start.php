@@ -234,6 +234,11 @@ foreach ($aliases as $namespace => $className)
 }
 
 /*----------------------------------------------------*/
-// Bootstrap application.
+// Bootstrap plugins.
 /*----------------------------------------------------*/
-do_action('themosis_bootstrap');
+do_action('themosis_bootstrap_plugins', $app);
+
+/*----------------------------------------------------*/
+// Bootstrap theme.
+/*----------------------------------------------------*/
+do_action('themosis_bootstrap_theme', $app);
