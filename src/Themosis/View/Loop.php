@@ -117,7 +117,7 @@ class Loop
 	/**
 	 * Get the date of the current post.
 	 *
-	 * @param string $d
+	 * @param string $d Date format.
 	 * @return string The date of the current post.
 	 */
 	public function date($d = '')
