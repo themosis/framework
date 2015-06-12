@@ -11,19 +11,19 @@ class PostTypeBuilder implements IPostType {
      *
      * @var \Themosis\Core\DataContainer
      */
-    private $datas;
+    protected $datas;
 
     /**
      * Event object.
      */
-    private $event;
+    protected $event;
 
     /**
      * The registered custom post type.
      *
      * @var Object|\WP_Error
      */
-    private $postType;
+    protected $postType;
 
     /**
      * Build a custom post type.
@@ -72,7 +72,7 @@ class PostTypeBuilder implements IPostType {
      * @param array $params The custom post type arguments.
      * @return \Themosis\PostType\PostTypeBuilder
      */
-    public function set(array $params = array())
+    public function set(array $params = [])
     {
         // Override custom post type arguments if given.
         $this->datas['args'] = array_merge($this->datas['args'], $params);
@@ -112,9 +112,9 @@ class PostTypeBuilder implements IPostType {
      */
     public function get($property = null)
     {
-        $name = array(
+        $name = [
             'name'  => $this->datas['name']
-        );
+        ];
 
         $properties = array_merge($name, $this->datas['args']);
 
@@ -141,7 +141,7 @@ class PostTypeBuilder implements IPostType {
      */
     public function setTitle($title)
     {
-        $name = $this->getSlug();
+        $name = $this->datas['name'];
 
         add_filter('enter_title_here', function($default) use($name, $title)
         {
@@ -165,32 +165,32 @@ class PostTypeBuilder implements IPostType {
      * @param string $singular The post type singular display name.
      * @return array
      */
-    private function setDefaultArguments($plural, $singular)
+    protected function setDefaultArguments($plural, $singular)
     {
-        $labels = array(
-            'name' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'singular_name' => __($singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'add_new' => __('Add New', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'add_new_item' => __('Add New '. $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'edit_item' => __('Edit '. $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'new_item' => __('New ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'all_items' => __('All ' . $plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'view_item' => __('View ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'search_items' => __('Search ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'not_found' =>  __('No '. $singular .' found', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'not_found_in_trash' => __('No '. $singular .' found in Trash', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'parent_item_colon' => '',
-            'menu_name' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN)
-        );
+        $labels = [
+            'name'                  => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'singular_name'         => __($singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'add_new'               => __('Add New', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'add_new_item'          => __('Add New '. $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'edit_item'             => __('Edit '. $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'new_item'              => __('New ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'all_items'             => __('All ' . $plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'view_item'             => __('View ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'search_items'          => __('Search ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'not_found'             =>  __('No '. $singular .' found', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'not_found_in_trash'    => __('No '. $singular .' found in Trash', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'parent_item_colon'     => '',
+            'menu_name'             => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN)
+        ];
 
-        $defaults = array(
+        $defaults = [
             'label' 		=> __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
             'labels' 		=> $labels,
             'description'	=> '',
             'public'		=> true,
             'menu_position'	=> 20,
             'has_archive'	=> true
-        );
+        ];
 
         return $defaults;
     }

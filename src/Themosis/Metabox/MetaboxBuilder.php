@@ -30,7 +30,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      *
      * @var array
      */
-    protected $sections = array();
+    protected $sections = [];
 
     /**
      * A validator instance.
@@ -90,7 +90,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      * @param \Themosis\View\IRenderable $view The metabox view.
      * @return object
      */
-    public function make($title, $postType, array $options = array(), IRenderable $view = null)
+    public function make($title, $postType, array $options = [], IRenderable $view = null)
     {
         $this->datas['title'] = $title;
         $this->datas['postType'] = $postType;
@@ -110,7 +110,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      * @param array $fields A list of fields to display.
      * @return \Themosis\Metabox\MetaboxBuilder
      */
-    public function set(array $fields = array())
+    public function set(array $fields = [])
     {
         // Check if sections are defined.
         $this->sections = $this->getSections($fields);
@@ -145,7 +145,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
         if($this->check && !$this->user->can($this->capability)) return;
 
         // Fields are passed to the metabox $args parameter.
-        add_meta_box($this->datas['options']['id'], $this->datas['title'], array($this, 'build'), $this->datas['postType'], $this->datas['options']['context'], $this->datas['options']['priority'], $this->datas['fields']);
+        add_meta_box($this->datas['options']['id'], $this->datas['title'], [$this, 'build'], $this->datas['postType'], $this->datas['options']['context'], $this->datas['options']['priority'], $this->datas['fields']);
     }
 
     /**
@@ -210,7 +210,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
         // Check current post type...avoid to register fields for all registered post type.
         if ($postType !== $this->datas['postType']) return;
 
-        $fields = array();
+        $fields = [];
 
         // Loop through the registered fields.
         // With sections.
@@ -226,7 +226,14 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
             $fields = $this->datas['fields'];
         }
 
+        // Hook before registering post type data.
+        do_action('themosis_'.$this->datas['postType'].'_BeforeSave', $postId, $this->datas['postType'], $fields);
+
+        // Register post meta.
         $this->register($postId, $fields);
+
+        // Hook after registering post type data.
+        do_action('themosis_'.$this->datas['postType'].'_AfterSave', $postId, $this->datas['postType'], $fields);
 
     }
 
@@ -236,7 +243,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      * @param array $rules A list of field names and their associated validation rule.
      * @return \Themosis\Metabox\MetaboxBuilder
      */
-    public function validate(array $rules = array())
+    public function validate(array $rules = [])
     {
         $this->datas['rules'] = $rules;
 
@@ -276,7 +283,6 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
                             }
                         }
                     }
-
                 }
                 else
                 {
@@ -297,11 +303,11 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      */
     protected function parseOptions(array $options)
     {
-        return wp_parse_args($options, array(
+        return wp_parse_args($options, [
             'context'   => 'normal',
             'priority'  => 'default',
             'id'        => md5($this->datas['title'])
-        ));
+        ]);
     }
 
     /**
@@ -312,7 +318,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      */
     protected function getSections(array $fields)
     {
-        $sections = array();
+        $sections = [];
 
         foreach ($fields as $section => $subFields)
         {
@@ -354,11 +360,11 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      */
     protected function render(array $fields, $post)
     {
-        $this->view->with(array(
+        $this->view->with([
             '__fields'          => $fields, // Pass the custom fields
             '__metabox'         => $this, // Pass the metabox instance
             '__post'            => $post // Pass the WP_Post instance
-        ));
+        ]);
 
         echo($this->view->render());
     }

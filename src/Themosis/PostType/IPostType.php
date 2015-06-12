@@ -30,4 +30,12 @@ interface IPostType {
      */
     public function get($property = null);
 
+    /**
+     * Allow a user to change the title placeholder text.
+     *
+     * @param $title
+     * @return \Themosis\PostType\IPostType
+     */
+    public function setTitle($title);
+
 }

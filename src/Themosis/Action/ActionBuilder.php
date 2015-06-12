@@ -17,7 +17,7 @@ class ActionBuilder implements IAction
      *
      * @var array
      */
-    protected $events = array();
+    protected $events = [];
 
     public function __construct(Container $container)
     {
