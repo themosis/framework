@@ -129,10 +129,12 @@ class PostTypeBuilder implements IPostType
 
             // Build custom publish metabox
             $this->metabox->make(__('Publish'), $this->datas['name'], [
-                'id'        => 'submitdiv_'.$this->datas['name'],
+                'id'        => 'themosisSubmitdiv',
                 'context'   => 'side',
-                'priority'  => 'high'
-            ], $this->view)->set();
+                'priority'  => 'core'
+            ], $this->view)->set()->with([
+                'statuses' => $this->status
+            ]);
         }
     }
 
@@ -223,6 +225,8 @@ class PostTypeBuilder implements IPostType
                     $this->status($key, $params);
                 }
             }
+
+            return;
         }
 
         // Set default arguments

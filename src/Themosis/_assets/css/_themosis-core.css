@@ -459,3 +459,14 @@
     color: #FFF;
     text-decoration: none;
 }
+
+/*
+|
+| Themosis custom submitdiv
+|
+*/
+#poststuff #themosisSubmitdiv .inside
+{
+    margin: 0;
+    padding: 0;
+}
