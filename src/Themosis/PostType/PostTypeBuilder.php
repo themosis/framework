@@ -3,9 +3,11 @@ namespace Themosis\PostType;
 
 use Themosis\Action\Action;
 use Themosis\Core\DataContainer;
+use Themosis\Metabox\IMetabox;
+use Themosis\View\IRenderable;
 
-class PostTypeBuilder implements IPostType {
-
+class PostTypeBuilder implements IPostType
+{
     /**
      * PostTypeData instance.
      *
@@ -26,13 +28,37 @@ class PostTypeBuilder implements IPostType {
     protected $postType;
 
     /**
+     * The custom statuses.
+     *
+     * @var array
+     */
+    protected $status = [];
+
+    /**
+     * The custom publish metabox.
+     *
+     * @var IMetabox
+     */
+    protected $metabox;
+
+    /**
+     * The custom view used for publish metabox.
+     * @var IRenderable
+     */
+    protected $view;
+
+    /**
      * Build a custom post type.
      *
      * @param DataContainer $datas The post type properties.
+     * @param IMetabox $metabox The custom metabox for custom publish metabox
+     * @param IRenderable $view The view that handles custom publish metabox
      */
-    public function __construct(DataContainer $datas)
+    public function __construct(DataContainer $datas, IMetabox $metabox, IRenderable $view)
     {
         $this->datas = $datas;
+        $this->metabox = $metabox;
+        $this->view = $view;
         $this->event = Action::listen('init', $this, 'register');
     }
 
@@ -92,6 +118,22 @@ class PostTypeBuilder implements IPostType {
     public function register()
     {
         $this->postType = register_post_type($this->datas['name'], $this->datas['args']);
+
+        // Register the status.
+        if (!empty($this->status))
+        {
+            foreach ($this->status as $key => $args)
+            {
+                register_post_status($key, $args);
+            }
+
+            // Build custom publish metabox
+            $this->metabox->make(__('Publish'), $this->datas['name'], [
+                'id'        => 'submitdiv_'.$this->datas['name'],
+                'context'   => 'side',
+                'priority'  => 'high'
+            ], $this->view)->set();
+        }
     }
 
     /**
@@ -156,6 +198,57 @@ class PostTypeBuilder implements IPostType {
         });
 
         return $this;
+    }
+
+    /**
+     * Add custom post type status.
+     *
+     * @param array|string $status The status key name.
+     * @param array $args The status arguments.
+     * @return \Themosis\PostType\PostTypeBuilder
+     */
+    public function status($status, array $args = [])
+    {
+        // Allow multiple statuses...
+        if (is_array($status))
+        {
+            foreach ($status as $key => $params)
+            {
+                if (is_int($key))
+                {
+                    $this->status($params);
+                }
+                elseif (is_string($key) && is_array($params))
+                {
+                    $this->status($key, $params);
+                }
+            }
+        }
+
+        // Set default arguments
+        $defaultName = ucfirst($status);
+        $args = wp_parse_args($args, [
+            'label'                     => $defaultName,
+            'public'                    => true,
+            'exclude_from_search'       => false,
+            'show_in_admin_all_list'    => true,
+            'show_in_admin_status_list' => true,
+            'label_count'               => _n_noop($defaultName.' <span class="count">(%s)</span>', $defaultName.' <span class="count">(%s)</span>' )
+        ]);
+
+        // Register the status
+        $this->status[$status] = $args;
+
+        // Remove default publish box
+        add_action('add_meta_boxes', [$this, 'removeDefaultPublishBox']);
+
+        return $this;
+    }
+
+    public function removeDefaultPublishBox()
+    {
+        // Remove current publish box
+        remove_meta_box('submitdiv', $this->datas['name'], 'side');
     }
 
     /**

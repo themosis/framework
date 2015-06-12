@@ -38,4 +38,13 @@ interface IPostType {
      */
     public function setTitle($title);
 
+    /**
+     * Allow user to register custom post type statuses.
+     *
+     * @param array|string $status The status key name.
+     * @param array $args The status arguments.
+     * @return \Themosis\PostType\IPostType
+     */
+    public function status($status, array $args = []);
+
 }

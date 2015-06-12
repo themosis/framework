@@ -1,0 +1,1 @@
+<h1>Custom publish box</h1>

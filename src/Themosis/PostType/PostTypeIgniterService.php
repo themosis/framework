@@ -2,6 +2,7 @@
 namespace Themosis\PostType;
 
 use Themosis\Core\IgniterService;
+use Themosis\Facades\View;
 
 class PostTypeIgniterService extends IgniterService{
 
@@ -12,12 +13,11 @@ class PostTypeIgniterService extends IgniterService{
      */
     public function ignite()
     {
-        $this->app->bind('posttype', function($app){
-
+        $this->app->bind('posttype', function($app)
+        {
             $data = new PostTypeData();
-
-            return new PostTypeBuilder($data);
-
+            $view = View::make('_themosisCorePublishBox');
+            return new PostTypeBuilder($data, $app['metabox'], $view);
         });
     }
 }
