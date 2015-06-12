@@ -62,12 +62,11 @@ class Loop
 	 *
 	 * @param string|array $size The size of the current post thumbnail.
 	 * @param bool $icon
-	 *
 	 * @return null|string
 	 */
 	public function thumbnailUrl($size = null, $icon = false)
 	{
-		$data = wp_get_attachment_image_src(get_post_thumbnail_id(static::id()), $size, $icon);
+		$data = wp_get_attachment_image_src(get_post_thumbnail_id($this->id()), $size, $icon);
 
 		return (empty($data)) ? null : $data[0];
 	}
