@@ -54,7 +54,7 @@ class Loop
 	 */
 	public function thumbnail($size = null, $attr = null)
 	{
-		return get_the_post_thumbnail(static::id(), $size, $attr);
+		return get_the_post_thumbnail($this->id(), $size, $attr);
 	}
 
 	/**
@@ -97,7 +97,7 @@ class Loop
 	 */
 	public function terms($taxonomy)
 	{
-		return get_the_terms(static::id(), $taxonomy);
+		return get_the_terms($this->id(), $taxonomy);
 	}
 
 	/**
