@@ -30,11 +30,13 @@ class ActionBuilder implements IAction
      *
      * @param string $hook The action hook name
      * @param \Closure|string $callback The closure or class to use
+     * @param int $priority The priority order for this action
+     * @param int $accepted_args Default number of accepted arguments
      * @return \Themosis\Action\ActionBuilder
      */
-    public function add($hook, $callback)
+    public function add($hook, $callback, $priority = 10, $accepted_args = 3)
     {
-        $this->addActionEvent($hook, $callback);
+        $this->addActionEvent($hook, $callback, $priority, $accepted_args);
 
         return $this;
     }
@@ -79,21 +81,22 @@ class ActionBuilder implements IAction
      *
      * @param string $hook
      * @param \Closure|string $callback If string use this syntax "Class@method"
-     * @param int $priority
+     * @param int $priority The priority order
+     * @param int $accepted_args The default number of accepted arguments
      * @return \Closure|array
      */
-    protected function addActionEvent($hook, $callback, $priority = 10)
+    protected function addActionEvent($hook, $callback, $priority, $accepted_args)
     {
         // Check if $callback is a closure.
         if ($callback instanceof \Closure)
         {
-            $this->addEventListener($hook, $callback, $priority);
+            $this->addEventListener($hook, $callback, $priority, $accepted_args);
             return $callback;
         }
         elseif (is_string($callback))
         {
             // Return the class responsible to handle the action.
-            return $this->addClassEvent($hook, $callback, $priority);
+            return $this->addClassEvent($hook, $callback, $priority, $accepted_args);
         }
     }
 
@@ -103,13 +106,14 @@ class ActionBuilder implements IAction
      * @param string $hook
      * @param string $class
      * @param int $priority
+     * @param int $accepted_args
      * @return array
      */
-    protected function addClassEvent($hook, $class, $priority)
+    protected function addClassEvent($hook, $class, $priority, $accepted_args)
     {
         $callback = $this->buildClassEventCallback($class, $hook);
 
-        $this->addEventListener($hook, $callback, $priority);
+        $this->addEventListener($hook, $callback, $priority, $accepted_args);
 
         return $callback;
     }
@@ -156,11 +160,11 @@ class ActionBuilder implements IAction
      * @param string $name
      * @param \Closure|string $callback
      * @param int $priority
+     * @param int $accepted_args
      * @return void
      */
-    protected function addEventListener($name, $callback, $priority = 10)
+    protected function addEventListener($name, $callback, $priority, $accepted_args)
     {
-        //@todo Do we implement the "accepted_args" parameter
-        $this->events[$name] = add_action($name, $callback, $priority);
+        $this->events[$name] = add_action($name, $callback, $priority, $accepted_args);
     }
 }
