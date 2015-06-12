@@ -1,96 +1,8 @@
-<?php // Hidden submit button early on so that the browser chooses the right button when form is submitted with Return key ?>
-<div style="display:none;">
-    <?php submit_button( __('Save'), 'button', 'save'); ?>
-</div>
-<div id="minor-publishing-actions">
-    <div id="save-action">
-        <?php if ( 'publish' != $post->post_status && 'future' != $post->post_status && 'pending' != $post->post_status ) { ?>
-            <input <?php if ( 'private' == $post->post_status ) { ?>style="display:none"<?php } ?> type="submit" name="save" id="save-post" value="<?php esc_attr_e('Save Draft'); ?>" class="button" />
-        <?php } elseif ( 'pending' == $post->post_status && $can_publish ) { ?>
-            <input type="submit" name="save" id="save-post" value="<?php esc_attr_e('Save as Pending'); ?>" class="button" />
-        <?php } ?>
-        <span class="spinner"></span>
-    </div>
-    <?php if ( $post_type_object->public ) : ?>
-        <div id="preview-action">
-            <?php
-            if ( 'publish' == $post->post_status ) {
-                $preview_link = esc_url( get_permalink( $post->ID ) );
-                $preview_button = __( 'Preview Changes' );
-            } else {
-                $preview_link = set_url_scheme( get_permalink( $post->ID ) );
 
-                /**
-                 * Filter the URI of a post preview in the post submit box.
-                 *
-                 * @since 2.0.5
-                 * @since 4.0.0 $post parameter was added.
-                 *
-                 * @param string  $preview_link URI the user will be directed to for a post preview.
-                 * @param WP_Post $post         Post object.
-                 */
-                $preview_link = esc_url( apply_filters( 'preview_post_link', add_query_arg( 'preview', 'true', $preview_link ), $post ) );
-                $preview_button = __( 'Preview' );
-            }
-            ?>
-            <a class="preview button" href="<?php echo $preview_link; ?>" target="wp-preview-<?php echo (int) $post->ID; ?>" id="post-preview"><?php echo $preview_button; ?></a>
-            <input type="hidden" name="wp-preview" id="wp-preview" value="" />
-        </div>
-    <?php endif; // public post type ?>
-    <div class="clear"></div>
-</div><!-- #minor-publishing-actions -->
 
-<div id="misc-publishing-actions">
 
-    <div class="misc-pub-section misc-pub-post-status"><label for="post_status"><?php _e('Status:') ?></label>
-<span id="post-status-display">
-<?php
-switch ( $post->post_status ) {
-    case 'private':
-        _e('Privately Published');
-        break;
-    case 'publish':
-        _e('Published');
-        break;
-    case 'future':
-        _e('Scheduled');
-        break;
-    case 'pending':
-        _e('Pending Review');
-        break;
-    case 'draft':
-    case 'auto-draft':
-        _e('Draft');
-        break;
-}
-?>
-</span>
-        <?php if ( 'publish' == $post->post_status || 'private' == $post->post_status || $can_publish ) { ?>
-            <a href="#post_status" <?php if ( 'private' == $post->post_status ) { ?>style="display:none;" <?php } ?>class="edit-post-status hide-if-no-js"><span aria-hidden="true"><?php _e( 'Edit' ); ?></span> <span class="screen-reader-text"><?php _e( 'Edit status' ); ?></span></a>
 
-            <div id="post-status-select" class="hide-if-js">
-                <input type="hidden" name="hidden_post_status" id="hidden_post_status" value="<?php echo esc_attr( ('auto-draft' == $post->post_status ) ? 'draft' : $post->post_status); ?>" />
-                <select name='post_status' id='post_status'>
-                    <?php if ( 'publish' == $post->post_status ) : ?>
-                        <option<?php selected( $post->post_status, 'publish' ); ?> value='publish'><?php _e('Published') ?></option>
-                    <?php elseif ( 'private' == $post->post_status ) : ?>
-                        <option<?php selected( $post->post_status, 'private' ); ?> value='publish'><?php _e('Privately Published') ?></option>
-                    <?php elseif ( 'future' == $post->post_status ) : ?>
-                        <option<?php selected( $post->post_status, 'future' ); ?> value='future'><?php _e('Scheduled') ?></option>
-                    <?php endif; ?>
-                    <option<?php selected( $post->post_status, 'pending' ); ?> value='pending'><?php _e('Pending Review') ?></option>
-                    <?php if ( 'auto-draft' == $post->post_status ) : ?>
-                        <option<?php selected( $post->post_status, 'auto-draft' ); ?> value='draft'><?php _e('Draft') ?></option>
-                    <?php else : ?>
-                        <option<?php selected( $post->post_status, 'draft' ); ?> value='draft'><?php _e('Draft') ?></option>
-                    <?php endif; ?>
-                </select>
-                <a href="#post_status" class="save-post-status hide-if-no-js button"><?php _e('OK'); ?></a>
-                <a href="#post_status" class="cancel-post-status hide-if-no-js button-cancel"><?php _e('Cancel'); ?></a>
-            </div>
 
-        <?php } ?>
-    </div><!-- .misc-pub-section -->
 
     <div class="misc-pub-section misc-pub-visibility" id="visibility">
         <?php _e('Visibility:'); ?> <span id="post-visibility-display"><?php
@@ -185,13 +97,3 @@ switch ( $post->post_status ) {
         </div><?php // /misc-pub-section ?>
     <?php endif; ?>
 
-    <?php
-    /**
-     * Fires after the post time/date setting in the Publish meta box.
-     *
-     * @since 2.9.0
-     */
-    do_action( 'post_submitbox_misc_actions' );
-    ?>
-</div>
-<div class="clear"></div>

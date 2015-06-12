@@ -1310,5 +1310,42 @@
 
     });
 
+    //------------------------------------------------
+    // Custom publish metabox.
+    //------------------------------------------------
+    // Handle the custom statuses.
+    // Edit button
+    var editButton = $('#themosisSubmitdiv .edit-post-status').on('click', function(e)
+    {
+        e.preventDefault();
+
+        // Show the select option list.
+        $(this).hide();
+        $('#themosisSubmitdiv #post-status-select').slideDown(200);
+    });
+
+    // Cancel button or OK buttons
+    $('#themosisSubmitdiv .save-post-status, #themosisSubmitdiv .cancel-post-status').on('click', function(e)
+    {
+        e.preventDefault();
+
+        var button = $(this);
+
+        // If 'save' button, update label span with status label.
+        if (button.hasClass('save-post-status'))
+        {
+            // Grab selected label.
+            var label = $('#themosisSubmitdiv #post_status :selected').text();
+            // Update label text.
+            $('#themosisSubmitdiv #post-status-display').text(label);
+        }
+
+        // Show back edit button.
+        editButton.show();
+
+        // Close select statuses.
+        $('#themosisSubmitdiv #post-status-select').slideUp(200);
+    });
+
 
 })(jQuery);
