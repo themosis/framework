@@ -323,6 +323,17 @@ class FormBuilder {
     {
         $field = '';
 
+        $labels = [];
+        if (isset($attributes['labels'])) {
+            $labels = $attributes['labels'];
+            unset($attributes['labels']);
+        }
+        $label_attributes = [];
+        if (isset($attributes['label_attributes'])) {
+            $label_attributes = $attributes['label_attributes'];
+            unset($attributes['label_attributes']);
+        }
+
         foreach($choices as $choice)
         {
             // Check the value.
@@ -332,8 +343,13 @@ class FormBuilder {
                 $attributes['checked'] = 'checked';
             }
 
+            $label = ucfirst($choice);
+            if (count($labels) and isset($labels[$choice])) {
+                $label = $labels[$choice];
+            }
+
             // Build html output
-            $field.= '<label>'.$this->input($type, $name.'[]', $choice, $attributes).ucfirst($choice).'</label>';
+            $field.= '<label '. $this->html->attributes($label_attributes) .'>'.$this->input($type, $name.'[]', $choice, $attributes).$label.'</label>';
 
             // Reset 'checked' attributes.
             unset($attributes['checked']);
