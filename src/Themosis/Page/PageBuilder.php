@@ -81,11 +81,11 @@ class PageBuilder extends Wrapper {
      * @param string $slug The page slug name.
      * @param string $title The page display title.
      * @param string $parent The parent's page slug if a subpage.
-     * @param IRenderable $view The page main view file.
+     * @param IRenderable|string $view The page main view object or string in the form of controller|action.
      * @throws PageException
      * @return \Themosis\Page\PageBuilder
      */
-    public function make($slug, $title, $parent = null, IRenderable $view = null)
+    public function make($slug, $title, $parent = null, $view = null)
     {
         $params = compact('slug', 'title');
 
@@ -161,10 +161,19 @@ class PageBuilder extends Wrapper {
      */
     public function displayPage()
     {
-        // Share the page instance to the view.
-        $this->with('__page', $this);
+        if(is_string($this->view))
+        {   $parts = explode('@',$this->view);
+            $controller = new $parts[0];
+            $controller->__page = $this;
+            $view = $controller->$parts[1]();
+            echo $view->render();
+        }
+        else
+        {   // Share the page instance to the view.
+            $this->with('__page', $this);
 
-        echo($this->view->render());
+            echo($this->view->render());
+        }
     }
 
     /**

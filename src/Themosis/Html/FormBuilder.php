@@ -29,6 +29,7 @@ class FormBuilder {
     {
         $this->html = $html;
         $this->request = $request;
+        $this->values = null;
     }
 
     /**
@@ -80,6 +81,18 @@ class FormBuilder {
         }
 
         return '<form'.$this->html->attributes($attributes).'>'.$append;
+    }
+    
+    /**
+     * Set values for a form
+     *
+     * @param array $values name => value pairs of preset fields.
+     * @return FormBuilder this
+     */
+    public function setValues(array $values)
+    {
+        $this->values = $values;
+        return $this;
     }
 
     /**
@@ -176,6 +189,12 @@ class FormBuilder {
      */
     public function input($type, $name, $value = null, array $attributes = array())
     {
+        // check if value is set
+        if($this->values && isset($this->values[$name])) 
+        { 
+            $value = $this->values[$name];
+        }
+        
         $merge = compact('type', 'name', 'value');
 
         $attributes = array_merge($attributes, $merge);
@@ -322,9 +341,22 @@ class FormBuilder {
     private function makeGroupCheckableField($type, $name, array $choices, array $value, array $attributes)
     {
         $field = '';
+        $labels = null;
 
+        // Prepare array of labels
+        if(isset($attributes['label']))
+        {
+            $labels = (array) $attributes['label'];
+            unset($attributes['label']);
+        }
+        
+        $i = 0;
         foreach($choices as $choice)
         {
+            if($this->values && isset($this->values[$name])) 
+            { 
+                $value = $this->values[$name];
+            }   
             // Check the value.
             // If checked, add the attribute.
             if (in_array($choice, $value))
@@ -332,11 +364,19 @@ class FormBuilder {
                 $attributes['checked'] = 'checked';
             }
 
+            // Check for explicit label, or use $choice name as label
+            if (!$labels || !isset($labels[$i]))
+            {   
+                $label = ucfirst($choice);
+            } else {
+                $label = $labels[$i];
+            }
             // Build html output
-            $field.= '<label>'.$this->input($type, $name.'[]', $choice, $attributes).ucfirst($choice).'</label>';
+            $field.= '<label>'.$this->input($type, $name.'[]', $choice, $attributes).$label.'</label>';
 
             // Reset 'checked' attributes.
             unset($attributes['checked']);
+            $i++;
         }
 
         return $field;
@@ -353,8 +393,13 @@ class FormBuilder {
     public function textarea($name, $value = null, array $attributes = array())
     {
         $merge = compact('name');
-
+        
         $attributes = array_merge($attributes, $merge);
+        
+        if($this->values && isset($this->values[$name])) 
+        { 
+            $value = $this->values[$name];
+        }
 
         return '<textarea name="'.$name.'" '.$this->html->attributes($attributes).'>'.$value.'</textarea>';
     }
@@ -383,6 +428,12 @@ class FormBuilder {
         else
         {
             unset($attributes['multiple']);
+        }
+        
+        // check if value is set
+        if($this->values && isset($this->values[$name])) 
+        { 
+            $value = $this->values[$name];
         }
 
         // Build the options of the select tag.
