@@ -262,14 +262,21 @@ class PostTypeBuilder implements IPostType
     /**
      * Apply the selected status to the post on save.
      *
-     * @param $value The translated value by WordPress (is always "publish" for some reasons.)
+     * @param string $value The translated value by WordPress (is always "publish" for some reasons.)
      * @return mixed
      */
     public function applyStatus($value)
     {
         //@TODO Check the post_type name before applying the post_status property
-        if (isset($_REQUEST['post_status']) && !empty($_REQUEST['post_status']))
+        if ((isset($_POST['post_status']) && 'publish' === $_POST['post_status']) && (isset($_REQUEST['post_status']) && 'draft' === $_REQUEST['post_status']))
         {
+            // New post with draft as default and "publish" button is clicked. Set to 1st registered post status.
+            $statuses = array_keys($this->status);
+            return $statuses[0];
+        }
+        elseif (isset($_REQUEST['post_status']) && !empty($_REQUEST['post_status']))
+        {
+            // Else simply apply the selected custom status.
             return $_REQUEST['post_status'];
         }
 
