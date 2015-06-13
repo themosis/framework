@@ -267,17 +267,20 @@ class PostTypeBuilder implements IPostType
      */
     public function applyStatus($value)
     {
-        //@TODO Check the post_type name before applying the post_status property
-        if ((isset($_POST['post_status']) && 'publish' === $_POST['post_status']) && (isset($_REQUEST['post_status']) && 'draft' === $_REQUEST['post_status']))
+        // Check post_type and look if there are any custom statuses defined.
+        if (isset($_POST['post_type']) && $this->datas['name'] === $_POST['post_type'] && !empty($this->status))
         {
-            // New post with draft as default and "publish" button is clicked. Set to 1st registered post status.
-            $statuses = array_keys($this->status);
-            return $statuses[0];
-        }
-        elseif (isset($_REQUEST['post_status']) && !empty($_REQUEST['post_status']))
-        {
-            // Else simply apply the selected custom status.
-            return $_REQUEST['post_status'];
+            if ((isset($_POST['post_status']) && 'publish' === $_POST['post_status']) && (isset($_REQUEST['post_status']) && 'draft' === $_REQUEST['post_status']))
+            {
+                // New post with draft as default and "publish" button is clicked. Set to 1st registered post status.
+                $statuses = array_keys($this->status);
+                return $statuses[0];
+            }
+            elseif (isset($_REQUEST['post_status']) && !empty($_REQUEST['post_status']))
+            {
+                // Else simply apply the selected custom status.
+                return $_REQUEST['post_status'];
+            }
         }
 
         return $value;
