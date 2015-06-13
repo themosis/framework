@@ -116,7 +116,7 @@ $status_keys = array_keys($statuses);
                 ?>
                     <a href="#post_status" <?php if ('private' == $__post->post_status) { ?>style="display:none;" <?php } ?>class="edit-post-status hide-if-no-js"><span aria-hidden="true"><?php _e('Edit'); ?></span> <span class="screen-reader-text"><?php _e('Edit status'); ?></span></a>
 
-                    <div id="post-status-select" class="hide-if-js">
+                    <div id="post-status-select" class="hide-if-js" style="display: block;">
                         <input type="hidden" name="hidden_post_status" id="hidden_post_status" value="<?php echo esc_attr( ('auto-draft' == $__post->post_status ) ? 'draft' : $__post->post_status); ?>" />
                         <?php
                             $choices = [

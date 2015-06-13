@@ -246,6 +246,10 @@ class PostTypeBuilder implements IPostType
         // Remove default publish box
         add_action('add_meta_boxes', [$this, 'removeDefaultPublishBox']);
 
+        // Apply selected status on save.
+        add_filter('pre_post_status', [$this, 'applyStatus']);
+        add_filter('status_save_pre', [$this, 'applyStatus']);
+
         return $this;
     }
 
@@ -253,6 +257,23 @@ class PostTypeBuilder implements IPostType
     {
         // Remove current publish box
         remove_meta_box('submitdiv', $this->datas['name'], 'side');
+    }
+
+    /**
+     * Apply the selected status to the post on save.
+     *
+     * @param $value The translated value by WordPress (is always "publish" for some reasons.)
+     * @return mixed
+     */
+    public function applyStatus($value)
+    {
+        //@TODO Check the post_type name before applying the post_status property
+        if (isset($_REQUEST['post_status']) && !empty($_REQUEST['post_status']))
+        {
+            return $_REQUEST['post_status'];
+        }
+
+        return $value;
     }
 
     /**
