@@ -60,8 +60,10 @@ if (!function_exists('td'))
      */
     function td($value)
     {
+        $attributes = func_get_args();
+        if(count($attributes) == 1) $attributes = $attributes[0];
         echo '<pre>';
-        print_r($value);
+        print_r($attributes);
         echo '</pre>';
         wp_die();
     }
@@ -77,8 +79,10 @@ if (!function_exists('tp'))
      */
     function tp($value)
     {
+        $attributes = func_get_args();
+        if(count($attributes) == 1) $attributes = $attributes[0];
         echo '<pre>';
-        print_r($value);
+        print_r($attributes);
         echo '</pre>';
     }
 }
