@@ -1314,18 +1314,25 @@
     // Custom publish metabox.
     //------------------------------------------------
     // Handle the custom statuses.
+    var submitdiv = $('#themosisSubmitdiv'),
+        editButton = submitdiv.find('.edit-post-status'),
+        selectDiv = submitdiv.find('#post-status-select'),
+        selectTag = submitdiv.find('#post_status'),
+        statusLabel = submitdiv.find('#post-status-display'),
+        statusButtons = submitdiv.find('.save-post-status, .cancel-post-status');
+
     // Edit button
-    var editButton = $('#themosisSubmitdiv .edit-post-status').on('click', function(e)
+    editButton.on('click', function(e)
     {
         e.preventDefault();
 
         // Show the select option list.
         $(this).hide();
-        $('#themosisSubmitdiv #post-status-select').slideDown(200);
+        selectDiv.slideDown(200);
     });
 
     // Cancel button or OK buttons
-    $('#themosisSubmitdiv .save-post-status, #themosisSubmitdiv .cancel-post-status').on('click', function(e)
+    statusButtons.on('click', function(e)
     {
         e.preventDefault();
 
@@ -1335,16 +1342,16 @@
         if (button.hasClass('save-post-status'))
         {
             // Grab selected label.
-            var label = $('#themosisSubmitdiv #post_status :selected').text();
+            var label = selectTag.find(':selected').text();
             // Update label text.
-            $('#themosisSubmitdiv #post-status-display').text(label);
+            statusLabel.text(label);
         }
 
         // Show back edit button.
         editButton.show();
 
         // Close select statuses.
-        $('#themosisSubmitdiv #post-status-select').slideUp(200);
+        selectDiv.slideUp(200);
     });
 
 

@@ -237,7 +237,8 @@ class PostTypeBuilder implements IPostType
             'exclude_from_search'       => false,
             'show_in_admin_all_list'    => true,
             'show_in_admin_status_list' => true,
-            'label_count'               => _n_noop($defaultName.' <span class="count">(%s)</span>', $defaultName.' <span class="count">(%s)</span>' )
+            'label_count'               => _n_noop($defaultName.' <span class="count">(%s)</span>', $defaultName.' <span class="count">(%s)</span>' ),
+            'publish_text'              => 'Publish'
         ]);
 
         // Register the status
@@ -274,16 +275,16 @@ class PostTypeBuilder implements IPostType
             {
                 // New post with draft as default and "publish" button is clicked. Set to 1st registered post status.
                 $statuses = array_keys($this->status);
-                return $statuses[0];
+                return esc_attr($statuses[0]);
             }
             elseif (isset($_REQUEST['post_status']) && !empty($_REQUEST['post_status']))
             {
                 // Else simply apply the selected custom status.
-                return $_REQUEST['post_status'];
+                return esc_attr($_REQUEST['post_status']);
             }
         }
 
-        return $value;
+        return esc_attr($value);
     }
 
     /**
