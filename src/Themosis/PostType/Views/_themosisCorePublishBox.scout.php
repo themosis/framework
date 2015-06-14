@@ -120,11 +120,17 @@ $status_keys = array_keys($statuses);
                         <input type="hidden" name="hidden_post_status" id="hidden_post_status" value="<?php echo esc_attr( ('auto-draft' == $__post->post_status ) ? 'draft' : $__post->post_status); ?>" />
                         <?php
                             $choices = [
-                                'draft' => __('Draft')
+                                'draft' => [
+                                    'text'  => __('Draft'),
+                                    'atts'  => ['data-publish' => __('Save Draft')]
+                                ]
                             ];
                             foreach ($statuses as $key => $status)
                             {
-                                $choices[$key] = $status['label'];
+                                $choices[$key] = [
+                                    'text'  => $status['label'],
+                                    'atts'  => ['data-publish' => $status['publish_text']]
+                                ];
                             }
                         ?>
                         {{ \Themosis\Facades\Form::select('post_status', [$choices], $__post->post_status, ['id' => 'post_status']) }}
