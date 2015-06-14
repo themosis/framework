@@ -319,7 +319,7 @@ class FormBuilder {
      * @param array $attributes
      * @return string
      */
-    private function makeGroupCheckableField($type, $name, array $choices, array $value, array $attributes)
+    protected function makeGroupCheckableField($type, $name, array $choices, array $value, array $attributes)
     {
         $field = '';
 
@@ -398,7 +398,7 @@ class FormBuilder {
      * @param mixed $value Array if multiple, string if single.
      * @return string
      */
-    private function makeOptionTags(array $options, $value)
+    protected function makeOptionTags(array $options, $value)
     {
         $output = '';
 
@@ -431,7 +431,7 @@ class FormBuilder {
      * @throws HtmlException
      * @return array The parsed options.
      */
-    private function parseSelectOptions(array $options)
+    protected function parseSelectOptions(array $options)
     {
         $parsedOptions = [];
 
@@ -461,7 +461,7 @@ class FormBuilder {
      * @param array $subOptions The optgroup options.
      * @return array
      */
-    private function organizeOptions(array $options, array $subOptions)
+    protected function organizeOptions(array $options, array $subOptions)
     {
         $indexedOptions = [];
         $convertedOptions = [];
@@ -505,7 +505,7 @@ class FormBuilder {
      * @param mixed $value See makeOptionTags method.
      * @return string
      */
-    private function buildOptgroupTags($label, array $options, $value)
+    protected function buildOptgroupTags($label, array $options, $value)
     {
         $options = $this->parseOptionTags($options, $value);
 
@@ -519,14 +519,24 @@ class FormBuilder {
      * @param mixed $value Array if multiple, string if single.
      * @return string
      */
-    private function parseOptionTags(array $options, $value)
+    protected function parseOptionTags(array $options, $value)
     {
         $output = '';
 
         foreach ($options as $key => $option)
         {
+            $attributes = [];
             $selected = $this->setSelectable($key, $value);
-            $output.= $this->makeOptionTag($key, $option, $selected);
+
+            // Check if option tag has attributes defined.
+            if (is_array($option))
+            {
+                $attributes = isset($option['atts']) ? $option['atts'] : [];
+                $option = isset($option['text']) ? $option['text'] : '';
+            }
+
+            // Build the option tag.
+            $output.= $this->makeOptionTag($key, $option, $selected, $attributes);
         }
 
         return $output;
@@ -541,7 +551,7 @@ class FormBuilder {
      * @param array $attributes The custom attributes for the option tag.
      * @return string
      */
-    private function makeOptionTag($key, $option, $selected = null, array $attributes = [])
+    protected function makeOptionTag($key, $option, $selected = null, array $attributes = [])
     {
         // Do not allow to modify the value attribute through the $attributes array.
         if (isset($attributes['value'])) unset($attributes['value']);
@@ -559,7 +569,7 @@ class FormBuilder {
      * @param mixed $value The retrieved value. Array if multiple, string if single.
      * @return string
      */
-    private function setSelectable($key, $value)
+    protected function setSelectable($key, $value)
     {
         $selected = 'selected="selected"';
         // Deal if multiple selection.
