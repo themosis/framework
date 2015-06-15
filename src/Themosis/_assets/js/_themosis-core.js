@@ -1319,7 +1319,9 @@
         selectDiv = submitdiv.find('#post-status-select'),
         selectTag = submitdiv.find('#post_status'),
         statusLabel = submitdiv.find('#post-status-display'),
-        statusButtons = submitdiv.find('.save-post-status, .cancel-post-status');
+        statusButtons = submitdiv.find('.save-post-status, .cancel-post-status'),
+        originalPublish = submitdiv.find('input#original_publish'),
+        publishButton = submitdiv.find('input#publish');
 
     // Edit button
     editButton.on('click', function(e)
@@ -1342,9 +1344,25 @@
         if (button.hasClass('save-post-status'))
         {
             // Grab selected label.
-            var label = selectTag.find(':selected').text();
+            var selected = selectTag.find(':selected'),
+                label = selected.text(),
+                publishText = selected.data('publish');
+
             // Update label text.
             statusLabel.text(label);
+
+            // Update publish button.
+            // Check if 'draft'
+            if ('draft' === selected.val())
+            {
+                // Change value of the "original_publish" input.
+                originalPublish.val('auto-draft');
+                // Change publish button name attribute.
+                publishButton.attr('name', 'save');
+            }
+
+            // Change publish button text.
+            publishButton.val(publishText);
         }
 
         // Show back edit button.

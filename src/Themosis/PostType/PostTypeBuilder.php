@@ -237,8 +237,8 @@ class PostTypeBuilder implements IPostType
             'exclude_from_search'       => false,
             'show_in_admin_all_list'    => true,
             'show_in_admin_status_list' => true,
-            'label_count'               => _n_noop($defaultName.' <span class="count">(%s)</span>', $defaultName.' <span class="count">(%s)</span>' ),
-            'publish_text'              => __('Publish')
+            'label_count'               => _n_noop($defaultName.' <span class="count">(%s)</span>', $defaultName.' <span class="count">(%s)</span>'),
+            'publish_text'              => __('Apply Changes')
         ]);
 
         // Register the status
