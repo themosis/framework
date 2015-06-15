@@ -226,15 +226,8 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
             $fields = $this->datas['fields'];
         }
 
-        // Hook before registering post type data.
-        do_action('themosis_'.$this->datas['postType'].'_BeforeSave', $postId, $this->datas['postType'], $fields);
-
         // Register post meta.
         $this->register($postId, $fields);
-
-        // Hook after registering post type data.
-        do_action('themosis_'.$this->datas['postType'].'_AfterSave', $postId, $this->datas['postType'], $fields);
-
     }
 
     /**
