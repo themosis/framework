@@ -1340,7 +1340,7 @@
 
         var button = $(this);
 
-        // If 'save' button, update label span with status label.
+        // If 'ok' button, update label span with status label.
         if (button.hasClass('save-post-status'))
         {
             // Grab selected label.
@@ -1363,6 +1363,13 @@
 
             // Change publish button text.
             publishButton.val(publishText);
+        }
+
+        // If 'cancel' button, make sure to reset the select tag value.
+        if (button.hasClass('cancel-post-status'))
+        {
+            var selected = selectTag.find('option[selected="selected"]');
+            selectTag.val(selected.val());
         }
 
         // Show back edit button.

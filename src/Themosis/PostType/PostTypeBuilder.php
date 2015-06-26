@@ -226,7 +226,7 @@ class PostTypeBuilder implements IPostType
                 }
             }
 
-            return;
+            return $this;
         }
 
         // Set default arguments
