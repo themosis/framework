@@ -1,7 +1,8 @@
 <?php
 namespace Themosis\User;
 
-use Themosis\Action\Action;
+use Themosis\Facades\Action;
+use Themosis\Action\Action as OldAction;
 
 class UserFactory
 {
@@ -10,15 +11,24 @@ class UserFactory
      *
      * @var array
      */
-    protected static $instances;
+    protected static $instances = [];
 
     /**
      * Build a UserFactory instance.
      */
     public function __construct()
     {
-        // User Events.
-        Action::listen('user_register', $this, 'userRegister')->dispatch();
+        // User "display" events.
+        // When adding/creating a new user.
+        Action::add('user_new_form', [$this, 'display']);
+        // When editing another user profile.
+        Action::add('edit_user_profile', [$this, 'display']);
+        // When editing its own profile.
+        Action::add('show_user_profile', [$this, 'display']);
+
+        // User "save" events.
+        Action::add('user_register', [$this, 'userRegister']);
+        Action::add('profile_update', [$this, 'userRegister']);
     }
 
     /**
@@ -82,7 +92,7 @@ class UserFactory
      */
     protected function createUser($id)
     {
-        if(isset(static::$instances[$id])) return static::$instances[$id];
+        if (isset(static::$instances[$id])) return static::$instances[$id];
 
         return static::$instances[$id] = new User((int)$id);
     }
@@ -131,7 +141,7 @@ class UserFactory
     {
         $user = get_userdata((int)$id);
 
-        if(false !== $user)
+        if (false !== $user)
         {
             return $this->createUser($user->ID);
         }
@@ -144,11 +154,20 @@ class UserFactory
      * Add a new registered user to the UserFactory list at runtime.
      *
      * @param int $id
+     * @param
      * @return void
      */
     public function userRegister($id)
     {
+        // Keep the list of users up-to-date when new users are inserted from the wp-admin.
         $this->createUser($id);
+    }
+
+    public function display()
+    {
+        ?>
+        <h3>Extra profile information</h3>
+        <?php
     }
 
 } 

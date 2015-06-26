@@ -88,7 +88,7 @@ class ActionBuilder implements IAction
     protected function addActionEvent($hook, $callback, $priority, $accepted_args)
     {
         // Check if $callback is a closure.
-        if ($callback instanceof \Closure)
+        if ($callback instanceof \Closure || is_array($callback))
         {
             $this->addEventListener($hook, $callback, $priority, $accepted_args);
             return $callback;
