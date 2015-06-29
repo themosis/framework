@@ -3,8 +3,8 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class SelectField extends FieldBuilder {
-
+class SelectField extends FieldBuilder
+{
     public function __construct(array $properties)
     {
         parent::__construct($properties);
@@ -31,7 +31,7 @@ class SelectField extends FieldBuilder {
      */
     public function metabox()
     {
-        return View::make('metabox._themosisSelectField', array('field' => $this))->render();
+        return View::make('metabox._themosisSelectField', ['field' => $this])->render();
     }
 
     /**

@@ -3,8 +3,8 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Core\DataContainer;
 
-abstract class FieldBuilder extends DataContainer{
-
+abstract class FieldBuilder extends DataContainer
+{
     /**
      * The field properties.
      *
@@ -82,21 +82,5 @@ abstract class FieldBuilder extends DataContainer{
     {
         return $this->type;
     }
-
-    /**
-     * Method that handle the field HTML code for
-     * metabox output.
-     *
-     * @return string
-     */
-    abstract public function metabox();
-
-    /**
-     * Method that handle the field HTML code for
-     * page settings output.
-     *
-     * @return string
-     */
-    abstract public function page();
 
 } 

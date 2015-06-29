@@ -3,8 +3,8 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class InfiniteField extends FieldBuilder {
-
+class InfiniteField extends FieldBuilder
+{
     /**
      * Number of registered rows.
      *
@@ -87,7 +87,7 @@ class InfiniteField extends FieldBuilder {
         // Check rows number.
         $this->setRows();
 
-        return View::make('metabox._themosisInfiniteField', array('field' => $this))->render();
+        return View::make('metabox._themosisInfiniteField', ['field' => $this])->render();
     }
 
     /**

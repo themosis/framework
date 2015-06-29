@@ -3,8 +3,8 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class TextareaField extends FieldBuilder {
-
+class TextareaField extends FieldBuilder
+{
     /**
      * Define a core TextField.
      *
@@ -36,7 +36,7 @@ class TextareaField extends FieldBuilder {
      */
     public function metabox()
     {
-        return View::make('metabox._themosisTextareaField', array('field' => $this))->render();
+        return View::make('metabox._themosisTextareaField', ['field' => $this])->render();
     }
 
     /**

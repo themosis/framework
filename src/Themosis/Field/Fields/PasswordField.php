@@ -3,8 +3,8 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class PasswordField extends FieldBuilder{
-
+class PasswordField extends FieldBuilder
+{
     /**
      * Define a core TextField.
      *
@@ -35,7 +35,7 @@ class PasswordField extends FieldBuilder{
      */
     public function metabox()
     {
-        return View::make('metabox._themosisPasswordField', array('field' => $this))->render();
+        return View::make('metabox._themosisPasswordField', ['field' => $this])->render();
     }
 
     /**

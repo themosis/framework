@@ -3,8 +3,8 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class EditorField extends FieldBuilder{
-
+class EditorField extends FieldBuilder
+{
     /**
      * Build an EditorField instance.
      *
@@ -45,9 +45,9 @@ class EditorField extends FieldBuilder{
      */
     private function setSettings()
     {
-        $settings = array(
+        $settings = [
             'textarea_name' => $this['name']
-        );
+        ];
 
         $this['settings'] = isset($this['settings']) ? array_merge($settings, $this['settings']) : $settings;
     }
@@ -72,7 +72,7 @@ class EditorField extends FieldBuilder{
     {
         $this->setSettings();
 
-        return View::make('metabox._themosisEditorField', array('field' => $this))->render();
+        return View::make('metabox._themosisEditorField', ['field' => $this])->render();
     }
 
     /**

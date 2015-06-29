@@ -3,8 +3,8 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class MediaField extends FieldBuilder {
-
+class MediaField extends FieldBuilder
+{
     /**
      * Build a MediaField instance.
      *
@@ -27,7 +27,7 @@ class MediaField extends FieldBuilder {
      */
     private function setType()
     {
-        $allowed = array('image', 'application', 'video', 'audio');
+        $allowed = ['image', 'application', 'video', 'audio'];
 
         if(isset($this['type']) && !in_array($this['type'], $allowed)){
             $this['type'] = 'image';
@@ -81,7 +81,7 @@ class MediaField extends FieldBuilder {
      */
     public function metabox()
     {
-        return View::make('metabox._themosisMediaField', array('field' => $this))->render();
+        return View::make('metabox._themosisMediaField', ['field' => $this])->render();
     }
 
     /**

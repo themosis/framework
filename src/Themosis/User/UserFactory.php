@@ -172,10 +172,27 @@ class UserFactory implements IUser
      */
     public function displayFields($user)
     {
-        $this->view->with([
-            '__fields' => $this->fields
-        ]);
+        // User view data
+        $params = [
+            '__fields'      => $this->fields,
+            '__user'        => $user,
+            '__userContext' => null
+        ];
 
+        // Check if $user is a string context
+        if (is_string($user))
+        {
+            // Set to null __user
+            $params['__user'] = null;
+
+            // Set the context
+            $params['__userContext'] = $user;
+        }
+
+        // Pass data to user view.
+        $this->view->with($params);
+
+        // Render the fields.
         echo($this->view->render());
     }
 

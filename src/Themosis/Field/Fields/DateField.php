@@ -3,8 +3,8 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class DateField extends FieldBuilder{
-
+class DateField extends FieldBuilder
+{
     /**
      * Define a core TextField.
      *
@@ -35,7 +35,7 @@ class DateField extends FieldBuilder{
      */
     public function metabox()
     {
-        return View::make('metabox._themosisDateField', array('field' => $this))->render();
+        return View::make('metabox._themosisDateField', ['field' => $this])->render();
     }
 
     /**

@@ -3,8 +3,8 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class CheckboxField extends FieldBuilder{
-
+class CheckboxField extends FieldBuilder
+{
     /**
      * Define a core CheckboxField.
      *
@@ -38,7 +38,7 @@ class CheckboxField extends FieldBuilder{
     {
         if (empty($this['value']) || is_string($this['value']))
         {
-            $this['value'] = array();
+            $this['value'] = [];
         }
     }
 
@@ -54,7 +54,7 @@ class CheckboxField extends FieldBuilder{
         // define the default value for the field.
         $this->defaultValue();
 
-        return View::make('metabox._themosisCheckboxField', array('field' => $this))->render();
+        return View::make('metabox._themosisCheckboxField', ['field' => $this])->render();
     }
 
     /**

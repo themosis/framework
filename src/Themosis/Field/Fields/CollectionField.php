@@ -3,8 +3,8 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class CollectionField extends FieldBuilder {
-
+class CollectionField extends FieldBuilder
+{
     /**
      * Define a collection field instance.
      *
@@ -27,7 +27,7 @@ class CollectionField extends FieldBuilder {
      */
     private function setType()
     {
-        $allowed = array('image', 'application', 'video', 'audio');
+        $allowed = ['image', 'application', 'video', 'audio'];
 
         if(isset($this['type']) && !in_array($this['type'], $allowed)){
             $this['type'] = 'image';
@@ -65,7 +65,7 @@ class CollectionField extends FieldBuilder {
      */
     public function metabox()
     {
-        return View::make('metabox._themosisCollectionField', array('field' => $this))->render();
+        return View::make('metabox._themosisCollectionField', ['field' => $this])->render();
     }
 
     /**

@@ -39,11 +39,11 @@ class FieldFactory {
      * @param array $extras Extra field properties.
      * @return \Themosis\Field\Fields\TextField
      */
-    public function text($name, array $extras = array())
+    public function text($name, array $extras = [])
     {
         $properties = compact('name');
 
-        $properties = array_merge(array('class' => 'large-text'), $extras, $properties);
+        $properties = array_merge(['class' => 'large-text'], $extras, $properties);
 
         return $this->make('Themosis\\Field\\Fields\\TextField', $properties);
     }
@@ -55,11 +55,11 @@ class FieldFactory {
      * @param array $extras Extra field properties.
      * @return \Themosis\Field\Fields\PasswordField
      */
-    public function password($name, array $extras = array())
+    public function password($name, array $extras = [])
     {
         $properties = compact('name');
 
-        $properties = array_merge(array('class' => 'large-text'), $extras, $properties);
+        $properties = array_merge(['class' => 'large-text'], $extras, $properties);
 
         return $this->make('Themosis\\Field\\Fields\\PasswordField', $properties);
     }
@@ -71,11 +71,11 @@ class FieldFactory {
      * @param array $extras Extra field properties.
      * @return \Themosis\Field\Fields\NumberField
      */
-    public function number($name, array $extras = array())
+    public function number($name, array $extras = [])
     {
         $properties = compact('name');
 
-        $properties = array_merge(array('class' => 'small-text'), $extras, $properties);
+        $properties = array_merge(['class' => 'small-text'], $extras, $properties);
 
         return $this->make('Themosis\\Field\\Fields\\NumberField', $properties);
     }
@@ -87,11 +87,11 @@ class FieldFactory {
      * @param array $extras Extra field properties.
      * @return \Themosis\Field\Fields\DateField
      */
-    public function date($name, array $extras = array())
+    public function date($name, array $extras = [])
     {
         $properties = compact('name');
 
-        $properties = array_merge(array('class' => 'newtag'), $extras, $properties);
+        $properties = array_merge(['class' => 'newtag'], $extras, $properties);
 
         return $this->make('Themosis\\Field\\Fields\\DateField', $properties);
     }
@@ -103,11 +103,11 @@ class FieldFactory {
      * @param array $extras Extra field properties.
      * @return \Themosis\Field\Fields\TextareaField
      */
-    public function textarea($name, array $extras = array())
+    public function textarea($name, array $extras = [])
     {
         $properties = compact('name');
 
-        $properties = array_merge(array('class' => 'large-text'), $extras, $properties);
+        $properties = array_merge(['class' => 'large-text'], $extras, $properties);
 
         return $this->make('Themosis\\Field\\Fields\\TextareaField', $properties);
     }
@@ -120,7 +120,7 @@ class FieldFactory {
      * @param array $extras Extra field properties.
      * @return \Themosis\Field\Fields\CheckboxField
      */
-    public function checkbox($name, $options, array $extras = array())
+    public function checkbox($name, $options, array $extras = [])
     {
         $properties = compact('name', 'options');
 
@@ -138,7 +138,7 @@ class FieldFactory {
      * @param array $extras Extra field properties.
      * @return \Themosis\Field\Fields\CheckboxesField
      */
-    public function checkboxes($name, array $options, array $extras = array())
+    public function checkboxes($name, array $options, array $extras = [])
     {
         $properties = compact('name', 'options');
 
@@ -155,7 +155,7 @@ class FieldFactory {
      * @param array $extras Extra field properties.
      * @return \Themosis\Field\Fields\RadioField
      */
-    public function radio($name, array $options, array $extras = array())
+    public function radio($name, array $options, array $extras = [])
     {
         $properties = compact('name', 'options');
 
@@ -173,7 +173,7 @@ class FieldFactory {
      * @param array $extras
      * @return \Themosis\Field\Fields\SelectField
      */
-    public function select($name, array $options, $multiple = false, array $extras = array())
+    public function select($name, array $options, $multiple = false, array $extras = [])
     {
         $properties = compact('name', 'options');
 
@@ -195,7 +195,7 @@ class FieldFactory {
      * @param array $extras Extra field properties.
      * @return \Themosis\Field\Fields\MediaField
      */
-    public function media($name, array $extras = array())
+    public function media($name, array $extras = [])
     {
         $properties = compact('name');
 
@@ -212,7 +212,7 @@ class FieldFactory {
      * @param array $extras
      * @return \Themosis\Field\Fields\InfiniteField
      */
-    public function infinite($name, array $fields, array $extras = array())
+    public function infinite($name, array $fields, array $extras = [])
     {
         $properties = compact('name', 'fields');
 
@@ -230,7 +230,7 @@ class FieldFactory {
      * @param array $extras
      * @return \Themosis\Field\Fields\EditorField
      */
-    public function editor($name, array $settings = array(), array $extras = array())
+    public function editor($name, array $settings = [], array $extras = [])
     {
         // $name may only contain lower-case characters.
         $name = strtolower($name);
@@ -248,7 +248,7 @@ class FieldFactory {
      * @param array $extras
      * @return \Themosis\Field\Fields\CollectionField
      */
-    public function collection($name, array $extras = array())
+    public function collection($name, array $extras = [])
     {
         $properties = compact('name');
 

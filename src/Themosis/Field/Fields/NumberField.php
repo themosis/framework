@@ -3,8 +3,8 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class NumberField extends FieldBuilder{
-
+class NumberField extends FieldBuilder
+{
     /**
      * Define a core TextField.
      *
@@ -35,7 +35,7 @@ class NumberField extends FieldBuilder{
      */
     public function metabox()
     {
-        return View::make('metabox._themosisNumberField', array('field' => $this))->render();
+        return View::make('metabox._themosisNumberField', ['field' => $this])->render();
     }
 
     /**
