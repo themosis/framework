@@ -3,8 +3,8 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class TextField extends FieldBuilder{
-
+class TextField extends FieldBuilder
+{
     /**
      * Define a core TextField.
      *
@@ -44,6 +44,16 @@ class TextField extends FieldBuilder{
      * @return string
      */
     public function page()
+    {
+        return $this->metabox();
+    }
+
+    /**
+     * Handle the field HTML code for the user fields output.
+     *
+     * @return string
+     */
+    public function user()
     {
         return $this->metabox();
     }

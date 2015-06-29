@@ -2,33 +2,32 @@
 namespace Themosis\User;
 
 use Themosis\Facades\Action;
-use Themosis\Action\Action as OldAction;
+use Themosis\View\IRenderable;
 
-class UserFactory
+class UserFactory implements IUser
 {
     /**
-     * A list of user instances.
+     * The user custom fields.
      *
      * @var array
      */
-    protected static $instances = [];
+    protected $fields = [];
+
+    /**
+     * The user core/container view.
+     *
+     * @var IRenderable
+     */
+    protected $view;
 
     /**
      * Build a UserFactory instance.
+     *
+     * @param IRenderable $view The user core view.
      */
-    public function __construct()
+    public function __construct(IRenderable $view)
     {
-        // User "display" events.
-        // When adding/creating a new user.
-        Action::add('user_new_form', [$this, 'display']);
-        // When editing another user profile.
-        Action::add('edit_user_profile', [$this, 'display']);
-        // When editing its own profile.
-        Action::add('show_user_profile', [$this, 'display']);
-
-        // User "save" events.
-        Action::add('user_register', [$this, 'userRegister']);
-        Action::add('profile_update', [$this, 'userRegister']);
+        $this->view = $view;
     }
 
     /**
@@ -68,7 +67,7 @@ class UserFactory
             }
         }
 
-        // Error.
+        // WP_Error.
         return $user_id;
     }
 
@@ -80,7 +79,6 @@ class UserFactory
     public function current()
     {
         $user = wp_get_current_user();
-
         return $this->createUser($user->ID);
     }
 
@@ -92,9 +90,7 @@ class UserFactory
      */
     protected function createUser($id)
     {
-        if (isset(static::$instances[$id])) return static::$instances[$id];
-
-        return static::$instances[$id] = new User((int)$id);
+        return new User((int)$id);
     }
 
     /**
@@ -121,53 +117,80 @@ class UserFactory
     }
 
     /**
-     * Return a User instance from the registered list using its ID.
+     * Return a User instance using its ID.
      *
      * @param int $id
      * @return \Themosis\User\User
      */
     public function get($id)
     {
-        return $this->add($id);
+        return $this->createUser($id);
     }
 
     /**
-     * Add a registered user to the UserFactory list.
+     * Register sections for user custom fields.
      *
-     * @param null $id
-     * @return \Themosis\User\User|bool
+     * @param array $sections A list of sections to register.
+     * @return \Themosis\User\IUser
      */
-    public function add($id)
+    public function addSections(array $sections)
     {
-        $user = get_userdata((int)$id);
+        // TODO: Implement addSections() method.
+    }
 
-        if (false !== $user)
-        {
-            return $this->createUser($user->ID);
-        }
 
-        return $user;
+    /**
+     * Register custom fields for users.
+     *
+     * @param array $fields The user custom fields. By sections or not.
+     * @return \Themosis\User\IUser
+     */
+    public function addFields(array $fields)
+    {
+        $this->fields = $fields;
+
+        // User "display" events.
+        // When adding/creating a new user.
+        Action::add('user_new_form', [$this, 'displayFields']);
+        // When editing another user profile.
+        Action::add('edit_user_profile', [$this, 'displayFields']);
+        // When editing its own profile.
+        Action::add('show_user_profile', [$this, 'displayFields']);
+
+        // User "save" events.
+        Action::add('user_register', [$this, 'saveFields']);
+        Action::add('profile_update', [$this, 'saveFields']);
+
+        return $this;
     }
 
     /**
-     * Triggered by the 'user_register' hook.
-     * Add a new registered user to the UserFactory list at runtime.
+     * Render the user fields.
      *
-     * @param int $id
-     * @param
+     * @param \WP_User|string If adding a user, $user is the context (string): 'add-existing-user' for multisite, 'add.new-user' for single. Else is a \WP_User instance.
      * @return void
      */
-    public function userRegister($id)
+    public function displayFields($user)
     {
-        // Keep the list of users up-to-date when new users are inserted from the wp-admin.
-        $this->createUser($id);
+        $this->view->with([
+            '__fields' => $this->fields
+        ]);
+
+        echo($this->view->render());
     }
 
-    public function display()
+    /**
+     * Triggered by the 'user_register' && 'profile_update' hooks.
+     * Used in order to save custom fields for the users.
+     *
+     * @param int $id The user ID.
+     * @param null|array $oldData Null by default. If user update, contains an array of previous user data.
+     * @return void
+     */
+    public function saveFields($id, $oldData)
     {
-        ?>
-        <h3>Extra profile information</h3>
-        <?php
+
     }
+
 
 } 
