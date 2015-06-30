@@ -40,8 +40,9 @@ interface IUser {
      * Register custom fields for users.
      *
      * @param array $fields The user custom fields. By sections or not.
+     * @param string $capability The minimum capability in order to save custom fields data.
      * @return \Themosis\User\IUser
      */
-    public function addFields(array $fields);
+    public function addFields(array $fields, $capability = 'edit_users');
 
 }

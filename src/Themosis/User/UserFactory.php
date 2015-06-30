@@ -1,10 +1,13 @@
 <?php
 namespace Themosis\User;
 
+use Themosis\Core\Wrapper;
 use Themosis\Facades\Action;
+use Themosis\Field\FieldException;
+use Themosis\Session\Session;
 use Themosis\View\IRenderable;
 
-class UserFactory implements IUser
+class UserFactory extends Wrapper implements IUser
 {
     /**
      * The user custom fields.
@@ -19,6 +22,20 @@ class UserFactory implements IUser
      * @var IRenderable
      */
     protected $view;
+
+    /**
+     * The capability in order to save custom data.
+     *
+     * @var string
+     */
+    protected $capability = 'edit_users';
+
+    /**
+     * Globally check if nonce inputs are inserted.
+     *
+     * @var bool
+     */
+    protected static $hasNonce = false;
 
     /**
      * Build a UserFactory instance.
@@ -143,11 +160,13 @@ class UserFactory implements IUser
      * Register custom fields for users.
      *
      * @param array $fields The user custom fields. By sections or not.
+     * @param string $capability The minimum capability required to save user custom fields data.
      * @return \Themosis\User\IUser
      */
-    public function addFields(array $fields)
+    public function addFields(array $fields, $capability = 'edit_users')
     {
         $this->fields = $fields;
+        $this->capability = $capability;
 
         // User "display" events.
         // When adding/creating a new user.
@@ -192,6 +211,13 @@ class UserFactory implements IUser
         // Pass data to user view.
         $this->view->with($params);
 
+        // Add nonce fields
+        if (!static::$hasNonce)
+        {
+            wp_nonce_field(Session::nonceAction, Session::nonceName);
+            static::$hasNonce = true;
+        }
+
         // Render the fields.
         echo($this->view->render());
     }
@@ -202,11 +228,59 @@ class UserFactory implements IUser
      *
      * @param int $id The user ID.
      * @param null|array $oldData Null by default. If user update, contains an array of previous user data.
+     * @throws FieldException
      * @return void
      */
     public function saveFields($id, $oldData)
     {
+        // Check capability
+        if (!current_user_can($this->capability)) return;
 
+        // Check nonces
+        $nonceName = (isset($_POST[Session::nonceName])) ? $_POST[Session::nonceName] : Session::nonceName;
+        if (!wp_verify_nonce($nonceName, Session::nonceAction)) return;
+
+        // Loop through the fields...
+        $fields = [];
+        foreach ($this->fields as $section => $fs)
+        {
+            // Sections defined.
+            if (!is_numeric($section))
+            {
+                foreach ($fs as $f)
+                {
+                    if (!is_a($f, '\Themosis\Field\Fields\IField')) throw new FieldException('An IField instance is necessary in order to save custom user data.');
+                    $fields[] = $f;
+                }
+            }
+            else
+            {
+                $fields[] = $fs;
+            }
+        }
+
+        // Register user meta.
+        $this->register($id, $fields);
+    }
+
+    /**
+     * Register custom user meta.
+     *
+     * @param int $id The user_ID
+     * @param array $fields The custom fields to register.
+     * @return void
+     */
+    protected function register($id, $fields)
+    {
+        foreach ($fields as $field)
+        {
+            $value = isset($_POST[$field['name']]) ? $_POST[$field['name']] : $this->parseValue($field);
+
+            // Validation code...
+
+            // Register the user meta data.
+            update_user_meta($id, $field['name'], $value);
+        }
     }
 
 
