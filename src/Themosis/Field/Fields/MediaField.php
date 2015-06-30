@@ -3,7 +3,7 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class MediaField extends FieldBuilder
+class MediaField extends FieldBuilder implements IField
 {
     /**
      * Build a MediaField instance.
@@ -25,13 +25,16 @@ class MediaField extends FieldBuilder
      *
      * @return void
      */
-    private function setType()
+    protected function setType()
     {
         $allowed = ['image', 'application', 'video', 'audio'];
 
-        if(isset($this['type']) && !in_array($this['type'], $allowed)){
+        if (isset($this['type']) && !in_array($this['type'], $allowed))
+        {
             $this['type'] = 'image';
-        } elseif(!isset($this['type'])){
+        }
+        elseif (!isset($this['type']))
+        {
             $this['type'] = 'image';
         }
     }
@@ -42,13 +45,16 @@ class MediaField extends FieldBuilder
      *
      * @return void
      */
-    private function setSize()
+    protected function setSize()
     {
         $sizes = get_intermediate_image_sizes();
 
-        if(isset($this['size']) && !in_array($this['size'], $sizes)){
+        if (isset($this['size']) && !in_array($this['size'], $sizes))
+        {
             $this['size'] = 'full';
-        } elseif(!isset($this['size'])){
+        }
+        elseif (!isset($this['size']))
+        {
             $this['size'] = 'full';
         }
     }
@@ -94,4 +100,16 @@ class MediaField extends FieldBuilder
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the HTML code for user output.
+     *
+     * @return string
+     */
+    public function user()
+    {
+        return $this->metabox();
+    }
+
+
 }

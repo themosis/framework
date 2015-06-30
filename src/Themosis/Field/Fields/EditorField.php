@@ -3,7 +3,7 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class EditorField extends FieldBuilder
+class EditorField extends FieldBuilder implements IField
 {
     /**
      * Build an EditorField instance.
@@ -43,7 +43,7 @@ class EditorField extends FieldBuilder
      *
      * @return void
      */
-    private function setSettings()
+    protected function setSettings()
     {
         $settings = [
             'textarea_name' => $this['name']
@@ -85,4 +85,16 @@ class EditorField extends FieldBuilder
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the HTML code for user output.
+     *
+     * @return string
+     */
+    public function user()
+    {
+        return $this->metabox();
+    }
+
+
 }

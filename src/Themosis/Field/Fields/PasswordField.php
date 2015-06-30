@@ -3,7 +3,7 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class PasswordField extends FieldBuilder
+class PasswordField extends FieldBuilder implements IField
 {
     /**
      * Define a core TextField.
@@ -47,5 +47,16 @@ class PasswordField extends FieldBuilder
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the HTML code for user output.
+     *
+     * @return string
+     */
+    public function user()
+    {
+        return $this->metabox();
+    }
+
 
 }

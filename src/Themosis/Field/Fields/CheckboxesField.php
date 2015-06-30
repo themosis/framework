@@ -3,7 +3,7 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class CheckboxesField extends FieldBuilder
+class CheckboxesField extends FieldBuilder implements IField
 {
     /**
      * Define a core CheckboxesField.
@@ -34,7 +34,7 @@ class CheckboxesField extends FieldBuilder
      *
      * @return void
      */
-    private function defaultValue()
+    protected function defaultValue()
     {
         if(empty($this['value']) || is_string($this['value'])){
             $this['value'] = [];
@@ -66,5 +66,16 @@ class CheckboxesField extends FieldBuilder
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the HTML code for user output.
+     *
+     * @return string
+     */
+    public function user()
+    {
+        return $this->metabox();
+    }
+
 
 }

@@ -3,7 +3,7 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class RadioField extends FieldBuilder
+class RadioField extends FieldBuilder implements IField
 {
     /**
      * Define a core CheckboxesField.
@@ -34,9 +34,10 @@ class RadioField extends FieldBuilder
      *
      * @return void
      */
-    private function defaultValue()
+    protected function defaultValue()
     {
-        if(empty($this['value']) || is_string($this['value'])){
+        if (empty($this['value']) || is_string($this['value']))
+        {
             $this['value'] = [];
         }
     }
@@ -66,5 +67,16 @@ class RadioField extends FieldBuilder
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the HTML code for user output.
+     *
+     * @return string
+     */
+    public function user()
+    {
+        return $this->metabox();
+    }
+
 
 } 

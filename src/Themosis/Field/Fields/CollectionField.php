@@ -3,7 +3,7 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class CollectionField extends FieldBuilder
+class CollectionField extends FieldBuilder implements IField
 {
     /**
      * Define a collection field instance.
@@ -25,7 +25,7 @@ class CollectionField extends FieldBuilder
      *
      * @return void
      */
-    private function setType()
+    protected function setType()
     {
         $allowed = ['image', 'application', 'video', 'audio'];
 
@@ -41,7 +41,7 @@ class CollectionField extends FieldBuilder
      *
      * @return void
      */
-    private function setLimit()
+    protected function setLimit()
     {
         $this['limit'] = isset($this['limit']) ? (int)$this['limit'] : 0;
     }
@@ -78,4 +78,16 @@ class CollectionField extends FieldBuilder
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the HTML code for user output.
+     *
+     * @return string
+     */
+    public function user()
+    {
+        return $this->metabox();
+    }
+
+
 }

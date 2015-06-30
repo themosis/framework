@@ -3,7 +3,7 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class TextareaField extends FieldBuilder
+class TextareaField extends FieldBuilder implements IField
 {
     /**
      * Define a core TextField.
@@ -48,4 +48,16 @@ class TextareaField extends FieldBuilder
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the HTML code for user output.
+     *
+     * @return string
+     */
+    public function user()
+    {
+        return $this->metabox();
+    }
+
+
 }

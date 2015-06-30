@@ -3,7 +3,7 @@ namespace Themosis\Field\Fields;
 
 use Themosis\Facades\View;
 
-class SelectField extends FieldBuilder
+class SelectField extends FieldBuilder implements IField
 {
     public function __construct(array $properties)
     {
@@ -44,4 +44,16 @@ class SelectField extends FieldBuilder
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the HTML code for user output.
+     *
+     * @return string
+     */
+    public function user()
+    {
+        return $this->metabox();
+    }
+
+
 }
