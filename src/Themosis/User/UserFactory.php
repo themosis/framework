@@ -191,9 +191,22 @@ class UserFactory extends Wrapper implements IUser
      */
     public function displayFields($user)
     {
+        // Add nonce fields for safety.
+        if (!static::$hasNonce)
+        {
+            wp_nonce_field(Session::nonceAction, Session::nonceName);
+            static::$hasNonce = true;
+        }
+
+        // Set the default value for all fields.
+        // Get a proper list of fields (without their sections).
+        $fields = $this->parseTheFields($this->fields);
+        // Set the value attribute for each field.
+        $fields = $this->setDefaultValue($user, $fields);
+
         // User view data
         $params = [
-            '__fields'      => $this->fields,
+            '__fields'      => $fields,
             '__user'        => $user,
             '__userContext' => null
         ];
@@ -211,15 +224,34 @@ class UserFactory extends Wrapper implements IUser
         // Pass data to user view.
         $this->view->with($params);
 
-        // Add nonce fields
-        if (!static::$hasNonce)
-        {
-            wp_nonce_field(Session::nonceAction, Session::nonceName);
-            static::$hasNonce = true;
-        }
-
         // Render the fields.
         echo($this->view->render());
+    }
+
+    /**
+     * Set the default 'value' property for all fields.
+     *
+     * @param \WP_User|string $user
+     * @param array $fields
+     * @return array
+     */
+    protected function setDefaultValue($user, $fields)
+    {
+        $theFields = [];
+
+        foreach ($fields as $field)
+        {
+            // Check if saved value.
+            // If Add User screen, set the ID to 0, so the value is empty.
+            $id = (is_a($user, 'WP_User')) ? $user->ID : 0;
+            $value = get_user_meta($id, $field['name'], true);
+
+            $field['value'] = $this->parseValue($field, $value);
+
+            $theFields[] = $field;
+        }
+
+        return $theFields;
     }
 
     /**
@@ -241,23 +273,7 @@ class UserFactory extends Wrapper implements IUser
         if (!wp_verify_nonce($nonceName, Session::nonceAction)) return;
 
         // Loop through the fields...
-        $fields = [];
-        foreach ($this->fields as $section => $fs)
-        {
-            // Sections defined.
-            if (!is_numeric($section))
-            {
-                foreach ($fs as $f)
-                {
-                    if (!is_a($f, '\Themosis\Field\Fields\IField')) throw new FieldException('An IField instance is necessary in order to save custom user data.');
-                    $fields[] = $f;
-                }
-            }
-            else
-            {
-                $fields[] = $fs;
-            }
-        }
+        $fields = $this->parseTheFields($this->fields);
 
         // Register user meta.
         $this->register($id, $fields);
@@ -283,5 +299,35 @@ class UserFactory extends Wrapper implements IUser
         }
     }
 
+    /**
+     * Parse the list of registered fields. Remove the sections if defined.
+     *
+     * @param array $fields The fields.
+     * @return array A clean list of fields.
+     * @throws FieldException
+     */
+    protected function parseTheFields(array $fields)
+    {
+        $theFields = [];
+
+        foreach ($fields as $section => $fs)
+        {
+            // Sections defined.
+            if (!is_numeric($section))
+            {
+                foreach ($fs as $f)
+                {
+                    if (!is_a($f, '\Themosis\Field\Fields\IField')) throw new FieldException('An IField instance is necessary in order to save custom user data.');
+                    $theFields[] = $f;
+                }
+            }
+            else
+            {
+                $theFields[] = $fs;
+            }
+        }
+
+        return $theFields;
+    }
 
 } 
