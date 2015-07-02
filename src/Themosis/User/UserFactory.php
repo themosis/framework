@@ -10,6 +10,13 @@ use Themosis\View\IRenderable;
 class UserFactory extends Wrapper implements IUser
 {
     /**
+     * The user sections.
+     *
+     * @var array
+     */
+    protected $sections = [];
+
+    /**
      * The user custom fields.
      *
      * @var array
@@ -152,9 +159,20 @@ class UserFactory extends Wrapper implements IUser
      */
     public function addSections(array $sections)
     {
-        // TODO: Implement addSections() method.
+        $this->sections = $sections;
+
+        return $this;
     }
 
+    /**
+     * Check if there are any sections defined.
+     *
+     * @return bool
+     */
+    public function hasSections()
+    {
+        return count($this->sections) ? true : false;
+    }
 
     /**
      * Register custom fields for users.
@@ -167,6 +185,9 @@ class UserFactory extends Wrapper implements IUser
     {
         $this->fields = $fields;
         $this->capability = $capability;
+
+        // Check if there are sections before going further.
+        $this->isUsingSections($fields);
 
         // User "display" events.
         // When adding/creating a new user.
@@ -184,6 +205,28 @@ class UserFactory extends Wrapper implements IUser
     }
 
     /**
+     * Check if the defined fields are using the sections defined or not.
+     * If there are sections and the fields are not set to use a section,
+     * trigger an error.
+     *
+     * @param array $fields
+     * @throws \Themosis\User\UserException
+     */
+    protected function isUsingSections(array $fields)
+    {
+        if ($this->hasSections())
+        {
+            foreach ($this->sections as $section)
+            {
+                $section = $section->getData();
+
+                // Check if fields are defined per section.
+                if (!isset($fields[$section['slug']])) throw new UserException("There are no user custom fields defined for the section: {$section['slug']}.");
+            }
+        }
+    }
+
+    /**
      * Render the user fields.
      *
      * @param \WP_User|string If adding a user, $user is the context (string): 'add-existing-user' for multisite, 'add.new-user' for single. Else is a \WP_User instance.
@@ -198,15 +241,14 @@ class UserFactory extends Wrapper implements IUser
             static::$hasNonce = true;
         }
 
-        // Set the default value for all fields.
-        // Get a proper list of fields (without their sections).
-        $fields = $this->parseTheFields($this->fields);
         // Set the value attribute for each field.
-        $fields = $this->setDefaultValue($user, $fields);
+        $fields = $this->setDefaultValue($user, $this->fields);
 
         // User view data
         $params = [
+            '__factory'     => $this,
             '__fields'      => $fields,
+            '__sections'    => $this->sections,
             '__user'        => $user,
             '__userContext' => null
         ];
@@ -239,16 +281,28 @@ class UserFactory extends Wrapper implements IUser
     {
         $theFields = [];
 
-        foreach ($fields as $field)
+        foreach ($fields as $section => $fs)
         {
-            // Check if saved value.
             // If Add User screen, set the ID to 0, so the value is empty.
             $id = (is_a($user, 'WP_User')) ? $user->ID : 0;
-            $value = get_user_meta($id, $field['name'], true);
 
-            $field['value'] = $this->parseValue($field, $value);
-
-            $theFields[] = $field;
+            // It's a section...
+            if (!is_numeric($section))
+            {
+                foreach ($fs as $f)
+                {
+                    $value = get_user_meta($id, $f['name'], true);
+                    $f['value'] = $this->parseValue($f, $value);
+                    $theFields[$section][] = $f;
+                }
+            }
+            else
+            {
+                // Simple fields
+                $value = get_user_meta($id, $fs['name'], true);
+                $fs['value'] = $this->parseValue($fs, $value);
+                $theFields[] = $fs;
+            }
         }
 
         return $theFields;
@@ -323,6 +377,7 @@ class UserFactory extends Wrapper implements IUser
             }
             else
             {
+                if (!is_a($fs, '\Themosis\Field\Fields\IField')) throw new FieldException('An IField instance is necessary in order to save custom user data.');
                 $theFields[] = $fs;
             }
         }

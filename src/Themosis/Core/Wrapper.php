@@ -20,7 +20,6 @@ abstract class Wrapper
         switch($field->getFieldType()){
 
             case 'checkbox':
-            case 'checkboxes': // @todo remove this checkboxes statement for next major update.
             case 'radio':
             case 'select':
             case 'collection':

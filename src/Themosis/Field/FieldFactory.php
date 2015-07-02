@@ -130,24 +130,6 @@ class FieldFactory
     }
 
     /**
-     * Return a CheckboxesField instance.
-     *
-     * @deprecated
-     * @param string $name The name attribute.
-     * @param array $options The checkboxes options.
-     * @param array $extras Extra field properties.
-     * @return \Themosis\Field\Fields\CheckboxesField
-     */
-    public function checkboxes($name, array $options, array $extras = [])
-    {
-        $properties = compact('name', 'options');
-
-        $properties = array_merge($extras, $properties);
-
-        return $this->make('Themosis\\Field\\Fields\\CheckboxesField', $properties);
-    }
-
-    /**
      * Return a RadioField instance.
      *
      * @param string $name The name attribute.
