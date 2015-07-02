@@ -103,7 +103,10 @@ add_filter('themosisAssetPaths', function($paths){
 /*----------------------------------------------------*/
 // Register framework media image size.
 /*----------------------------------------------------*/
-add_image_size('_themosis_media', 100, 100, true);
+$images = new Themosis\Configuration\Images([
+    '_themosis_media' => [100, 100, true, __('Mini')]
+]);
+$images->make();
 
 /*----------------------------------------------------*/
 // Allow developers to add parameters to
