@@ -45,4 +45,12 @@ interface IUser {
      */
     public function addFields(array $fields, $capability = 'edit_users');
 
+    /**
+     * Register validation rules for user custom fields.
+     *
+     * @param array $rules
+     * @return \Themosis\User\IUser
+     */
+    public function validate(array $rules = []);
+
 }

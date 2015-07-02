@@ -18,7 +18,7 @@ class UserIgniterService extends IgniterService {
             $view = $app['view'];
             $view = $view->make('_themosisUserCore');
 
-            $factory = new UserFactory($view);
+            $factory = new UserFactory($view, $app['validation']);
             return $factory;
 
         });

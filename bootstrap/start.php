@@ -100,7 +100,6 @@ add_filter('themosisAssetPaths', function($paths){
 
 });
 
-
 /*----------------------------------------------------*/
 // Register framework media image size.
 /*----------------------------------------------------*/

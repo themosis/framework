@@ -5,6 +5,7 @@ use Themosis\Core\Wrapper;
 use Themosis\Facades\Action;
 use Themosis\Field\FieldException;
 use Themosis\Session\Session;
+use Themosis\Validation\IValidate;
 use Themosis\View\IRenderable;
 
 class UserFactory extends Wrapper implements IUser
@@ -22,6 +23,20 @@ class UserFactory extends Wrapper implements IUser
      * @var array
      */
     protected $fields = [];
+
+    /**
+     * Validator instance.
+     *
+     * @var IValidate
+     */
+    protected $validator;
+
+    /**
+     * Validation rules for custom fields.
+     *
+     * @var array
+     */
+    protected $rules = [];
 
     /**
      * The user core/container view.
@@ -48,10 +63,12 @@ class UserFactory extends Wrapper implements IUser
      * Build a UserFactory instance.
      *
      * @param IRenderable $view The user core view.
+     * @param IValidate $validator Validator instance.
      */
-    public function __construct(IRenderable $view)
+    public function __construct(IRenderable $view, IValidate $validator)
     {
         $this->view = $view;
+        $this->validator = $validator;
     }
 
     /**
@@ -227,6 +244,20 @@ class UserFactory extends Wrapper implements IUser
     }
 
     /**
+     * Register validation rules for user custom fields.
+     *
+     * @param array $rules
+     * @return \Themosis\User\IUser
+     */
+    public function validate(array $rules = [])
+    {
+        $this->rules = $rules;
+
+        return $this;
+    }
+
+
+    /**
      * Render the user fields.
      *
      * @param \WP_User|string If adding a user, $user is the context (string): 'add-existing-user' for multisite, 'add.new-user' for single. Else is a \WP_User instance.
@@ -313,11 +344,11 @@ class UserFactory extends Wrapper implements IUser
      * Used in order to save custom fields for the users.
      *
      * @param int $id The user ID.
-     * @param null|array $oldData Null by default. If user update, contains an array of previous user data.
+     * @param array $oldData Null by default. If user update, contains an array of previous user data.
      * @throws FieldException
      * @return void
      */
-    public function saveFields($id, $oldData)
+    public function saveFields($id, $oldData = [])
     {
         // Check capability
         if (!current_user_can($this->capability)) return;
@@ -347,6 +378,30 @@ class UserFactory extends Wrapper implements IUser
             $value = isset($_POST[$field['name']]) ? $_POST[$field['name']] : $this->parseValue($field);
 
             // Validation code...
+            if (isset($this->rules[$field['name']]))
+            {
+                $rules = $this->rules[$field['name']];
+
+                // Check for infinite field (if $rules is an associative array).
+                if ($this->validator->isAssociative($rules) && 'infinite' == $field->getFieldType())
+                {
+                    // Check infinite fields validation.
+                    foreach ($value as $row => $rowValues)
+                    {
+                        foreach ($rowValues as $name => $val)
+                        {
+                            if (isset($rules[$name]))
+                            {
+                                $value[$row][$name] = $this->validator->single($val, $rules[$name]);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    $value = $this->validator->single($value, $this->rules[$field['name']]);
+                }
+            }
 
             // Register the user meta data.
             update_user_meta($id, $field['name'], $value);
