@@ -35,12 +35,24 @@ class AssetFactory {
      * @throws AssetException
      * @return \Themosis\Asset\Asset|\WP_Error
      */
-    public function add($handle, $path, $deps = array(), $version = '1.0', $mixed = null)
+    public function add($handle, $path, $deps = array(), $version = '1.0', $mixed = null, $type = '')
     {
         if (!is_string($handle) && !is_string($path)) throw new AssetException("Invalid parameters for [Asset::add] method.");
 
         $path = $this->finder->find($path);
         $args = compact('handle', 'path', 'deps', 'version', 'mixed');
+
+        // ==============================================================
+        // Fix load external css like Google fonts
+        // ==============================================================
+        if(in_array($type, array('style', 'script')))
+        {
+            return new Asset($type, $args);
+        }
+        else
+        {
+            $type = '';
+        }
 
         // Check if asset has an extension.
         $ext = pathinfo($path, PATHINFO_EXTENSION);
@@ -57,4 +69,4 @@ class AssetFactory {
         return new \WP_Error('asset', __('No file extension found. Perhaps paste your asset code in your &lt;head&gt; tag.', THEMOSIS_FRAMEWORK_TEXTDOMAIN));
     }
 
-} 
+}
