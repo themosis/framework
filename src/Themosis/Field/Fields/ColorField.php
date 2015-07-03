@@ -32,7 +32,7 @@ class ColorField extends FieldBuilder implements IField
      */
     public function metabox()
     {
-        return View::make()
+        return $this->view->make('metabox._themosisColorField', ['field' => $this])->render();
     }
 
     /**
@@ -42,7 +42,7 @@ class ColorField extends FieldBuilder implements IField
      */
     public function page()
     {
-        // TODO: Implement page() method.
+        return $this->metabox();
     }
 
     /**
@@ -52,6 +52,6 @@ class ColorField extends FieldBuilder implements IField
      */
     public function user()
     {
-        // TODO: Implement user() method.
+        return $this->metabox();
     }
 }

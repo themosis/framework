@@ -268,7 +268,7 @@ class FieldFactory
     public function color($name, array $extras = [])
     {
         $properties = compact('name');
-        $properties = array_merge($extras, $properties);
+        $properties = array_merge(['class' => 'themosis-color-field'], $extras, $properties);
         return $this->make('Themosis\\Field\\Fields\\ColorField', $properties);
     }
 
