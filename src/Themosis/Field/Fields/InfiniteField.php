@@ -1,25 +1,27 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\View;
+use Themosis\View\ViewFactory;
 
-class InfiniteField extends FieldBuilder {
-
+class InfiniteField extends FieldBuilder implements IField
+{
     /**
      * Number of registered rows.
      *
      * @var int
      */
-    private $rows = 1;
+    protected $rows = 1;
 
     /**
      * Build an InfiniteField instance.
      *
      * @param array $properties
+     * @param ViewFactory $view
      */
-    public function __construct(array $properties)
+    public function __construct(array $properties, ViewFactory $view)
     {
         $this->properties = $properties;
+        $this->view = $view;
         $this->setTitle();
         $this->setRows();
         $this->setLimit();
@@ -31,7 +33,7 @@ class InfiniteField extends FieldBuilder {
      *
      * @return void
      */
-    private function setLimit()
+    protected function setLimit()
     {
         $this['limit'] = isset($this['limit']) ? (int)$this['limit'] : 0;
     }
@@ -51,7 +53,7 @@ class InfiniteField extends FieldBuilder {
      *
      * @return int
      */
-    private function setRows()
+    protected function setRows()
     {
         $this->rows = (is_array($this['value']) && !empty($this['value'])) ? count($this['value']) : 1;
     }
@@ -87,7 +89,7 @@ class InfiniteField extends FieldBuilder {
         // Check rows number.
         $this->setRows();
 
-        return View::make('metabox._themosisInfiniteField', array('field' => $this))->render();
+        return $this->view->make('metabox._themosisInfiniteField', ['field' => $this])->render();
     }
 
     /**
@@ -100,4 +102,15 @@ class InfiniteField extends FieldBuilder {
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the HTML code for user output.
+     *
+     * @return string
+     */
+    public function user()
+    {
+        return $this->metabox();
+    }
+
 }

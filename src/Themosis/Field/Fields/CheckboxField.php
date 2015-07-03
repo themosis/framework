@@ -1,19 +1,19 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\View;
+use Themosis\View\ViewFactory;
 
-class CheckboxField extends FieldBuilder{
-
+class CheckboxField extends FieldBuilder implements IField
+{
     /**
      * Define a core CheckboxField.
      *
      * @param array $properties The checkbox field properties.
+     * @param ViewFactory $view
      */
-    public function __construct(array $properties)
+    public function __construct(array $properties, ViewFactory $view)
     {
-        parent::__construct($properties);
-
+        parent::__construct($properties, $view);
         $this->fieldType();
     }
 
@@ -34,11 +34,11 @@ class CheckboxField extends FieldBuilder{
      *
      * @return void
      */
-    private function defaultValue()
+    protected function defaultValue()
     {
         if (empty($this['value']) || is_string($this['value']))
         {
-            $this['value'] = array();
+            $this['value'] = [];
         }
     }
 
@@ -54,7 +54,7 @@ class CheckboxField extends FieldBuilder{
         // define the default value for the field.
         $this->defaultValue();
 
-        return View::make('metabox._themosisCheckboxField', array('field' => $this))->render();
+        return $this->view->make('metabox._themosisCheckboxField', ['field' => $this])->render();
     }
 
     /**
@@ -67,4 +67,16 @@ class CheckboxField extends FieldBuilder{
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the HTML code for user output.
+     *
+     * @return string
+     */
+    public function user()
+    {
+        return $this->metabox();
+    }
+
+
 }

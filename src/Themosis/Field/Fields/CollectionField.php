@@ -1,19 +1,19 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\View;
+use Themosis\View\ViewFactory;
 
-class CollectionField extends FieldBuilder {
-
+class CollectionField extends FieldBuilder implements IField
+{
     /**
      * Define a collection field instance.
      *
      * @param array $properties
+     * @param ViewFactory $view
      */
-    public function __construct(array $properties)
+    public function __construct(array $properties, ViewFactory $view)
     {
-        parent::__construct($properties);
-
+        parent::__construct($properties, $view);
         $this->setType();
         $this->setLimit();
         $this->fieldType();
@@ -25,9 +25,9 @@ class CollectionField extends FieldBuilder {
      *
      * @return void
      */
-    private function setType()
+    protected function setType()
     {
-        $allowed = array('image', 'application', 'video', 'audio');
+        $allowed = ['image', 'application', 'video', 'audio'];
 
         if(isset($this['type']) && !in_array($this['type'], $allowed)){
             $this['type'] = 'image';
@@ -41,7 +41,7 @@ class CollectionField extends FieldBuilder {
      *
      * @return void
      */
-    private function setLimit()
+    protected function setLimit()
     {
         $this['limit'] = isset($this['limit']) ? (int)$this['limit'] : 0;
     }
@@ -65,7 +65,7 @@ class CollectionField extends FieldBuilder {
      */
     public function metabox()
     {
-        return View::make('metabox._themosisCollectionField', array('field' => $this))->render();
+        return $this->view->make('metabox._themosisCollectionField', ['field' => $this])->render();
     }
 
     /**
@@ -78,4 +78,16 @@ class CollectionField extends FieldBuilder {
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the HTML code for user output.
+     *
+     * @return string
+     */
+    public function user()
+    {
+        return $this->metabox();
+    }
+
+
 }

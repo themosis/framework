@@ -1,18 +1,18 @@
 <?php
 namespace Themosis\Core;
 
-use Themosis\Field\Fields\FieldBuilder;
+use Themosis\Field\Fields\IField;
 
-abstract class Wrapper {
-
+abstract class Wrapper
+{
     /**
      * Set a default value for a given field.
      *
-     * @param FieldBuilder $field A field instance.
+     * @param IField $field A field instance.
      * @param mixed $value A registered value.
      * @return mixed
      */
-    protected function parseValue(FieldBuilder $field, $value = null)
+    protected function parseValue(IField $field, $value = null)
     {
         $parsedValue = null;
 
@@ -20,7 +20,6 @@ abstract class Wrapper {
         switch($field->getFieldType()){
 
             case 'checkbox':
-            case 'checkboxes': // @todo remove this checkboxes statement for next major update.
             case 'radio':
             case 'select':
             case 'collection':
@@ -51,11 +50,11 @@ abstract class Wrapper {
     /**
      * Parse default value for fields with string values.
      *
-     * @param FieldBuilder $field The custom field instance.
+     * @param IField $field The custom field instance.
      * @param string $value Value sent to the field.
      * @return string The field value.
      */
-    protected function parseString(FieldBuilder $field, $value = '')
+    protected function parseString(IField $field, $value = '')
     {
         return (empty($value) && isset($field['default'])) ? $field['default'] : $value;
     }
@@ -63,11 +62,11 @@ abstract class Wrapper {
     /**
      * Parse default value for fields using array values.
      *
-     * @param FieldBuilder $field
+     * @param IField $field
      * @param array $value
      * @return array
      */
-    protected function parseArrayable(FieldBuilder $field, $value = array())
+    protected function parseArrayable(IField $field, $value = [])
     {
         if (is_null($value) || ('0' !== $value && empty($value)))
         {
@@ -76,18 +75,18 @@ abstract class Wrapper {
                 return (array) $field['default'];
             }
 
-            return array();
+            return [];
         }
 
         return (array) $value;
     }
 
     /**
-     * @param FieldBuilder $field
+     * @param IField $field
      * @param array $value
      * @return array
      */
-    protected function parseInfinite(FieldBuilder $field, $value = array())
+    protected function parseInfinite(IField $field, $value = [])
     {
         $fields = $field['fields'];
 
@@ -95,7 +94,7 @@ abstract class Wrapper {
         if (is_null($value) || empty($value))
         {
             // Set value as array.
-            $value = array();
+            $value = [];
 
             foreach ($fields as $innerField)
             {

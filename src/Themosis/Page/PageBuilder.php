@@ -7,56 +7,56 @@ use Themosis\Core\Wrapper;
 use Themosis\Validation\ValidationBuilder;
 use Themosis\View\IRenderable;
 
-class PageBuilder extends Wrapper {
-
+class PageBuilder extends Wrapper
+{
     /**
      * The page properties.
      *
      * @var DataContainer
      */
-    private $datas;
+    protected $datas;
 
     /**
      * The page view file.
      *
      * @var \Themosis\View\IRenderable
      */
-    private $view;
+    protected $view;
 
     /**
      * The page validator object.
      *
      * @var \Themosis\Validation\ValidationBuilder
      */
-    private $validator;
+    protected $validator;
 
     /**
      * The page install action.
      *
      * @var static
      */
-    private $pageEvent;
+    protected $pageEvent;
 
     /**
      * The page sections.
      *
      * @var array
      */
-    private $sections;
+    protected $sections;
 
     /**
      * The settings install action.
      *
      * @var static
      */
-    private $settingsEvent;
+    protected $settingsEvent;
 
     /**
      * The page settings.
      *
      * @var array
      */
-    private $settings;
+    protected $settings;
 
     /**
      * Build a Page instance.
@@ -264,7 +264,7 @@ class PageBuilder extends Wrapper {
      *
      * @return void
      */
-    private function installWithTabs()
+    protected function installWithTabs()
     {
         // 1 - Prepare the DB table.
         foreach ($this->sections as $section)
@@ -315,7 +315,7 @@ class PageBuilder extends Wrapper {
      *
      * @return void
      */
-    private function installWithoutTabs()
+    protected function installWithoutTabs()
     {
         // 1 - Prepare the DB table.
         if (false === get_option($this->datas['slug']))
@@ -465,7 +465,7 @@ class PageBuilder extends Wrapper {
      * @param string $name The name of the field/setting.
      * @return bool
      */
-    private function isInfinite($name)
+    protected function isInfinite($name)
     {
         foreach ($this->settings as $settings)
         {
@@ -483,7 +483,7 @@ class PageBuilder extends Wrapper {
      *
      * @return string
      */
-    private function getActiveTab()
+    protected function getActiveTab()
     {
         $firstSection = $this->sections[0]->getData();
         return isset($_GET['tab']) ? $_GET['tab'] : $firstSection['slug'];

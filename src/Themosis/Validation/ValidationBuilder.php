@@ -3,8 +3,8 @@ namespace Themosis\Validation;
 
 use Countable;
 
-class ValidationBuilder {
-
+class ValidationBuilder implements IValidate
+{
 	/**
 	 * Runs a validation rule on a single passed data.
 	 *
@@ -54,7 +54,7 @@ class ValidationBuilder {
 	 */
 	public function multiple(array $data, array $rules)
 	{
-		$validates = array();
+		$validates = [];
 
 		foreach ($rules as $field => $fieldRules)
 		{
@@ -74,10 +74,10 @@ class ValidationBuilder {
 	 */
 	protected function parseRule($rule)
 	{
-		$properties = array(
+		$properties = [
 			'rule'          => '',
-			'attributes'    => array()
-		);
+			'attributes'    => []
+        ];
 
 		// Check if attributes are defined...
 		if (0 < strpos($rule, ':'))
@@ -121,7 +121,7 @@ class ValidationBuilder {
 		else
 		{
 			// No comma, only one attribute
-			$attributes = array(trim($attributes));
+			$attributes = [trim($attributes)];
 		}
 
 		return $attributes;
@@ -145,7 +145,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_alpha($data, array $attributes = array())
+	protected function validate_alpha($data, array $attributes = [])
 	{
 		return ctype_alpha($data) ? $data : '';
 	}
@@ -157,7 +157,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_num($data, array $attributes = array())
+	protected function validate_num($data, array $attributes = [])
 	{
 		return ctype_digit($data) ? $data : '';
 	}
@@ -169,7 +169,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_negnum($data, array $attributes = array())
+	protected function validate_negnum($data, array $attributes = [])
 	{
 		$data = (int)$data;
 
@@ -183,7 +183,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_alnum($data, array $attributes = array())
+	protected function validate_alnum($data, array $attributes = [])
 	{
 		return ctype_alnum($data) ? $data : '';
 	}
@@ -195,7 +195,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_textfield($data, array $attributes = array())
+	protected function validate_textfield($data, array $attributes = [])
 	{
 		return sanitize_text_field($data);
 	}
@@ -207,7 +207,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_textarea($data, array $attributes = array())
+	protected function validate_textarea($data, array $attributes = [])
 	{
 		return esc_textarea($data);
 	}
@@ -219,7 +219,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_html($data, array $attributes = array())
+	protected function validate_html($data, array $attributes = [])
 	{
 		return esc_html($data);
 	}
@@ -231,7 +231,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_email($data, array $attributes = array())
+	protected function validate_email($data, array $attributes = [])
 	{
 		$email = sanitize_email($data);
 
@@ -245,7 +245,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_url($data, array $attributes = array())
+	protected function validate_url($data, array $attributes = [])
 	{
 		if (!empty($attributes))
 		{
@@ -262,7 +262,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_min($data, array $attributes = array())
+	protected function validate_min($data, array $attributes = [])
 	{
 		// If no length defined, return empty string.
 		// @TODO Log the lack of a length...
@@ -286,7 +286,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_max($data, array $attributes = array())
+	protected function validate_max($data, array $attributes = [])
 	{
 		// If no length defined, return empty string.
 		// @TODO Log the lack of a length...
@@ -311,9 +311,9 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_bool($data, array $attributes = array())
+	protected function validate_bool($data, array $attributes = [])
 	{
-		return filter_var($data, FILTER_VALIDATE_BOOLEAN, array('flags' => FILTER_NULL_ON_FAILURE)) ? $data : '';
+		return filter_var($data, FILTER_VALIDATE_BOOLEAN, ['flags' => FILTER_NULL_ON_FAILURE]) ? $data : '';
 	}
 
 	/**
@@ -323,7 +323,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_kses($data, array $attributes = array())
+	protected function validate_kses($data, array $attributes = [])
 	{
 		if(empty($attributes)) return '';
 
@@ -340,7 +340,7 @@ class ValidationBuilder {
 	 */
 	protected function ksesAllowedHtml(array $attributes)
 	{
-		$params = array();
+		$params = [];
 
 		foreach ($attributes as $atts)
 		{
@@ -348,14 +348,14 @@ class ValidationBuilder {
 
 			// Set the HTML tag.
 			$key = array_shift($atts);
-			$params[$key] = array();
+			$params[$key] = [];
 
 			// Add tag attributes.
 			if (!empty($atts))
 			{
 				foreach ($atts as $attribute)
 				{
-					$params[$key][$attribute] = array();
+					$params[$key][$attribute] = [];
 				}
 			}
 		}
@@ -370,7 +370,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_hex($data, array $attributes = array())
+	protected function validate_hex($data, array $attributes = [])
 	{
 		return ctype_xdigit($data) ? $data : '';
 	}
@@ -382,7 +382,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_color($data, array $attributes = array())
+	protected function validate_color($data, array $attributes = [])
 	{
 		return preg_match('/#([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?\b/', $data) ? $data : '';
 	}
@@ -394,7 +394,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_file($data, array $attributes = array())
+	protected function validate_file($data, array $attributes = [])
 	{
 		$ext = pathinfo($data, PATHINFO_EXTENSION);
 
@@ -408,7 +408,7 @@ class ValidationBuilder {
 	 * @param array $attributes
 	 * @return string|array
 	 */
-	protected function validate_required($data, array $attributes = array())
+	protected function validate_required($data, array $attributes = [])
 	{
 		if (is_null($data))
 		{
@@ -420,7 +420,7 @@ class ValidationBuilder {
 		}
 		elseif ((is_array($data) || $data instanceof Countable) && count($data) < 1)
 		{
-			return array();
+			return [];
 		}
 		return $data;
 	}

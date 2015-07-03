@@ -120,11 +120,17 @@ $status_keys = array_keys($statuses);
                         <input type="hidden" name="hidden_post_status" id="hidden_post_status" value="<?php echo esc_attr( ('auto-draft' == $__post->post_status ) ? 'draft' : $__post->post_status); ?>" />
                         <?php
                             $choices = [
-                                'draft' => __('Draft')
+                                'draft' => [
+                                    'text'  => __('Draft'),
+                                    'atts'  => ['data-publish' => __('Save Draft')]
+                                ]
                             ];
                             foreach ($statuses as $key => $status)
                             {
-                                $choices[$key] = $status['label'];
+                                $choices[$key] = [
+                                    'text'  => $status['label'],
+                                    'atts'  => ['data-publish' => $status['publish_text']]
+                                ];
                             }
                         ?>
                         {{ \Themosis\Facades\Form::select('post_status', [$choices], $__post->post_status, ['id' => 'post_status']) }}
@@ -196,10 +202,12 @@ $status_keys = array_keys($statuses);
                     }
                     else
                     {
-                    // The user can publish the post.
+                        // The user can publish the post.
+                        // This case mean the post is a new one with default status of draft.
+                        // By default, use the "publish_text" property of the first registered custom status.
                 ?>
-                        <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e('Publish') ?>"/>
-                        <?php submit_button(__('Publish'), 'primary button-large', 'publish', false, ['accesskey' => 'p']); ?>
+                        <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e($statuses[$status_keys[0]]['publish_text']); ?>"/>
+                        <?php submit_button($statuses[$status_keys[0]]['publish_text'], 'primary button-large', 'publish', false, ['accesskey' => 'p']); ?>
                 <?php
                     }
                 }

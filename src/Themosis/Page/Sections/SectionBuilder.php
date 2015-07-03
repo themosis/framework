@@ -4,28 +4,28 @@ namespace Themosis\Page\Sections;
 use Themosis\Core\DataContainer;
 use Themosis\View\IRenderable;
 
-class SectionBuilder {
-
+class SectionBuilder
+{
     /**
      * Section data.
      *
      * @var \Themosis\Core\DataContainer
      */
-    private $data;
+    protected $data;
 
     /**
      * Section view.
      *
      * @var IRenderable
      */
-    private $view;
+    protected $view;
 
     /**
      * Section custom datas.
      *
      * @var array
      */
-    private $shared = array();
+    protected $shared = [];
 
     public function __construct(DataContainer $data)
     {
@@ -42,12 +42,14 @@ class SectionBuilder {
      * @throws \Exception
      * @return \Themosis\Page\Sections\SectionBuilder
      */
-    public function make($slug, $name, array $data = array(), IRenderable $view = null)
+    public function make($slug, $name, array $data = [], IRenderable $view = null)
     {
         $params = compact('slug', 'name');
 
-        foreach($params as $var => $param){
-            if(!is_string($param)){
+        foreach ($params as $var => $param)
+        {
+            if (!is_string($param))
+            {
                 throw new \Exception('Invalid section parameter "'.$var.'"');
             }
         }
@@ -56,7 +58,8 @@ class SectionBuilder {
         $this->data['name'] = $name;
         $this->data['args'] = $data;
 
-        if(!is_null($view)){
+        if (!is_null($view))
+        {
             $this->view = $view;
         }
 
@@ -72,14 +75,13 @@ class SectionBuilder {
      */
     public function with($key, $value = null)
     {
-        if(is_array($key)){
-
+        if (is_array($key))
+        {
             $this->shared = array_merge($this->shared, $key);
-
-        } else {
-
+        }
+        else
+        {
             $this->shared[$key] = $value;
-
         }
 
         return $this;

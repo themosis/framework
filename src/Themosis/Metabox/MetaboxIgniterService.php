@@ -2,7 +2,6 @@
 namespace Themosis\Metabox;
 
 use Themosis\Core\IgniterService;
-use Themosis\Facades\View;
 
 class MetaboxIgniterService extends IgniterService {
 
@@ -16,7 +15,8 @@ class MetaboxIgniterService extends IgniterService {
         $this->app->bind('metabox', function($app){
 
             $data = new MetaboxData();
-            $view = View::make('_themosisCoreMetabox');
+            $view = $app['view'];
+            $view = $view->make('_themosisCoreMetabox');
 
             $userFactory = $app['user'];
             $user = $userFactory->current();

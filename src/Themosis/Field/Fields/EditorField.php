@@ -1,18 +1,20 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\View;
+use Themosis\View\ViewFactory;
 
-class EditorField extends FieldBuilder{
-
+class EditorField extends FieldBuilder implements IField
+{
     /**
      * Build an EditorField instance.
      *
      * @param array $properties
+     * @param ViewFactory $view
      */
-    public function __construct(array $properties)
+    public function __construct(array $properties, ViewFactory $view)
     {
         $this->properties = $properties;
+        $this->view = $view;
         $this->fieldType();
         $this->setId();
         $this->setTitle();
@@ -43,11 +45,11 @@ class EditorField extends FieldBuilder{
      *
      * @return void
      */
-    private function setSettings()
+    protected function setSettings()
     {
-        $settings = array(
+        $settings = [
             'textarea_name' => $this['name']
-        );
+        ];
 
         $this['settings'] = isset($this['settings']) ? array_merge($settings, $this['settings']) : $settings;
     }
@@ -72,7 +74,7 @@ class EditorField extends FieldBuilder{
     {
         $this->setSettings();
 
-        return View::make('metabox._themosisEditorField', array('field' => $this))->render();
+        return $this->view->make('metabox._themosisEditorField', ['field' => $this])->render();
     }
 
     /**
@@ -85,4 +87,16 @@ class EditorField extends FieldBuilder{
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the HTML code for user output.
+     *
+     * @return string
+     */
+    public function user()
+    {
+        return $this->metabox();
+    }
+
+
 }

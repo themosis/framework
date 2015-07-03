@@ -1,18 +1,20 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\View;
+use Themosis\View\ViewFactory;
 
-class MediaField extends FieldBuilder {
-
+class MediaField extends FieldBuilder implements IField
+{
     /**
      * Build a MediaField instance.
      *
      * @param array $properties
+     * @param ViewFactory $view
      */
-    public function __construct(array $properties)
+    public function __construct(array $properties, ViewFactory $view)
     {
         $this->properties = $properties;
+        $this->view = $view;
         $this->setTitle();
         $this->setType();
         $this->setSize();
@@ -25,13 +27,16 @@ class MediaField extends FieldBuilder {
      *
      * @return void
      */
-    private function setType()
+    protected function setType()
     {
-        $allowed = array('image', 'application', 'video', 'audio');
+        $allowed = ['image', 'application', 'video', 'audio'];
 
-        if(isset($this['type']) && !in_array($this['type'], $allowed)){
+        if (isset($this['type']) && !in_array($this['type'], $allowed))
+        {
             $this['type'] = 'image';
-        } elseif(!isset($this['type'])){
+        }
+        elseif (!isset($this['type']))
+        {
             $this['type'] = 'image';
         }
     }
@@ -42,13 +47,16 @@ class MediaField extends FieldBuilder {
      *
      * @return void
      */
-    private function setSize()
+    protected function setSize()
     {
         $sizes = get_intermediate_image_sizes();
 
-        if(isset($this['size']) && !in_array($this['size'], $sizes)){
+        if (isset($this['size']) && !in_array($this['size'], $sizes))
+        {
             $this['size'] = 'full';
-        } elseif(!isset($this['size'])){
+        }
+        elseif (!isset($this['size']))
+        {
             $this['size'] = 'full';
         }
     }
@@ -81,7 +89,7 @@ class MediaField extends FieldBuilder {
      */
     public function metabox()
     {
-        return View::make('metabox._themosisMediaField', array('field' => $this))->render();
+        return $this->view->make('metabox._themosisMediaField', ['field' => $this])->render();
     }
 
     /**
@@ -94,4 +102,16 @@ class MediaField extends FieldBuilder {
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the HTML code for user output.
+     *
+     * @return string
+     */
+    public function user()
+    {
+        return $this->metabox();
+    }
+
+
 }

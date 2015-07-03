@@ -82,6 +82,7 @@ add_filter('themosisViewPaths', function($paths){
     $paths[] = themosis_path('sys').'PostType'.DS.'Views'.DS;
     $paths[] = themosis_path('sys').'Field'.DS.'Fields'.DS.'Views'.DS;
     $paths[] = themosis_path('sys').'Route'.DS.'Views'.DS;
+    $paths[] = themosis_path('sys').'User'.DS.'Views'.DS;
 
     return $paths;
 
@@ -99,11 +100,13 @@ add_filter('themosisAssetPaths', function($paths){
 
 });
 
-
 /*----------------------------------------------------*/
 // Register framework media image size.
 /*----------------------------------------------------*/
-add_image_size('_themosis_media', 100, 100, true);
+$images = new Themosis\Configuration\Images([
+    '_themosis_media' => [100, 100, true, __('Mini')]
+]);
+$images->make();
 
 /*----------------------------------------------------*/
 // Allow developers to add parameters to
@@ -162,10 +165,10 @@ add_action('admin_enqueue_scripts', 'themosisWpMediaAssets');
 // Enqueue frameworks assets.
 /*----------------------------------------------------*/
 // Themosis styles
-Themosis\Facades\Asset::add('themosis-core-styles', 'css/_themosis-core.css')->to('admin');
+Themosis\Facades\Asset::add('themosis-core-styles', 'css/_themosis-core.css', ['wp-color-picker'])->to('admin');
 
 // Themosis scripts
-Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosis-core.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view'], false, true)->to('admin');
+Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosis-core.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view', 'wp-color-picker'], false, true)->to('admin');
 
 /*----------------------------------------------------*/
 // Handle errors, warnings, exceptions.

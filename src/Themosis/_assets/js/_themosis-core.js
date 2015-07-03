@@ -5,6 +5,11 @@
 (function($){
 
     //------------------------------------------------
+    // COLOR - Custom field
+    //------------------------------------------------
+    $('.themosis-color-field').wpColorPicker();
+
+    //------------------------------------------------
     // COLLECTION - Custom field
     //------------------------------------------------
     var CollectionApp = {
@@ -1314,37 +1319,69 @@
     // Custom publish metabox.
     //------------------------------------------------
     // Handle the custom statuses.
+    var submitdiv = $('#themosisSubmitdiv'),
+        editButton = submitdiv.find('.edit-post-status'),
+        selectDiv = submitdiv.find('#post-status-select'),
+        selectTag = submitdiv.find('#post_status'),
+        statusLabel = submitdiv.find('#post-status-display'),
+        statusButtons = submitdiv.find('.save-post-status, .cancel-post-status'),
+        originalPublish = submitdiv.find('input#original_publish'),
+        publishButton = submitdiv.find('input#publish');
+
     // Edit button
-    var editButton = $('#themosisSubmitdiv .edit-post-status').on('click', function(e)
+    editButton.on('click', function(e)
     {
         e.preventDefault();
 
         // Show the select option list.
         $(this).hide();
-        $('#themosisSubmitdiv #post-status-select').slideDown(200);
+        selectDiv.slideDown(200);
     });
 
     // Cancel button or OK buttons
-    $('#themosisSubmitdiv .save-post-status, #themosisSubmitdiv .cancel-post-status').on('click', function(e)
+    statusButtons.on('click', function(e)
     {
         e.preventDefault();
 
         var button = $(this);
 
-        // If 'save' button, update label span with status label.
+        // If 'ok' button, update label span with status label.
         if (button.hasClass('save-post-status'))
         {
             // Grab selected label.
-            var label = $('#themosisSubmitdiv #post_status :selected').text();
+            var selected = selectTag.find(':selected'),
+                label = selected.text(),
+                publishText = selected.data('publish');
+
             // Update label text.
-            $('#themosisSubmitdiv #post-status-display').text(label);
+            statusLabel.text(label);
+
+            // Update publish button.
+            // Check if 'draft'
+            if ('draft' === selected.val())
+            {
+                // Change value of the "original_publish" input.
+                originalPublish.val('auto-draft');
+                // Change publish button name attribute.
+                publishButton.attr('name', 'save');
+            }
+
+            // Change publish button text.
+            publishButton.val(publishText);
+        }
+
+        // If 'cancel' button, make sure to reset the select tag value.
+        if (button.hasClass('cancel-post-status'))
+        {
+            var selected = selectTag.find('option[selected="selected"]');
+            selectTag.val(selected.val());
         }
 
         // Show back edit button.
         editButton.show();
 
         // Close select statuses.
-        $('#themosisSubmitdiv #post-status-select').slideUp(200);
+        selectDiv.slideUp(200);
     });
 
 

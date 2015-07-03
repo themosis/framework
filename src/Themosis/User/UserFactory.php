@@ -1,24 +1,74 @@
 <?php
 namespace Themosis\User;
 
-use Themosis\Action\Action;
+use Themosis\Core\Wrapper;
+use Themosis\Facades\Action;
+use Themosis\Field\FieldException;
+use Themosis\Session\Session;
+use Themosis\Validation\IValidate;
+use Themosis\View\IRenderable;
 
-class UserFactory
+class UserFactory extends Wrapper implements IUser
 {
     /**
-     * A list of user instances.
+     * The user sections.
      *
      * @var array
      */
-    protected static $instances;
+    protected $sections = [];
+
+    /**
+     * The user custom fields.
+     *
+     * @var array
+     */
+    protected $fields = [];
+
+    /**
+     * Validator instance.
+     *
+     * @var IValidate
+     */
+    protected $validator;
+
+    /**
+     * Validation rules for custom fields.
+     *
+     * @var array
+     */
+    protected $rules = [];
+
+    /**
+     * The user core/container view.
+     *
+     * @var IRenderable
+     */
+    protected $view;
+
+    /**
+     * The capability in order to save custom data.
+     *
+     * @var string
+     */
+    protected $capability = 'edit_users';
+
+    /**
+     * Globally check if nonce inputs are inserted.
+     *
+     * @var bool
+     */
+    protected static $hasNonce = false;
 
     /**
      * Build a UserFactory instance.
+     *
+     * @param IRenderable $view The user core view.
+     * @param IValidate $validator Validator instance.
      */
-    public function __construct()
+    public function __construct(IRenderable $view, IValidate $validator)
     {
-        // User Events.
-        Action::listen('user_register', $this, 'userRegister')->dispatch();
+        $this->view = $view;
+        $this->validator = $validator;
     }
 
     /**
@@ -58,7 +108,7 @@ class UserFactory
             }
         }
 
-        // Error.
+        // WP_Error.
         return $user_id;
     }
 
@@ -70,7 +120,6 @@ class UserFactory
     public function current()
     {
         $user = wp_get_current_user();
-
         return $this->createUser($user->ID);
     }
 
@@ -82,9 +131,7 @@ class UserFactory
      */
     protected function createUser($id)
     {
-        if(isset(static::$instances[$id])) return static::$instances[$id];
-
-        return static::$instances[$id] = new User((int)$id);
+        return new User((int)$id);
     }
 
     /**
@@ -111,44 +158,286 @@ class UserFactory
     }
 
     /**
-     * Return a User instance from the registered list using its ID.
+     * Return a User instance using its ID.
      *
      * @param int $id
      * @return \Themosis\User\User
      */
     public function get($id)
     {
-        return $this->add($id);
+        return $this->createUser($id);
     }
 
     /**
-     * Add a registered user to the UserFactory list.
+     * Register sections for user custom fields.
      *
-     * @param null $id
-     * @return \Themosis\User\User|bool
+     * @param array $sections A list of sections to register.
+     * @return \Themosis\User\IUser
      */
-    public function add($id)
+    public function addSections(array $sections)
     {
-        $user = get_userdata((int)$id);
+        $this->sections = $sections;
 
-        if(false !== $user)
-        {
-            return $this->createUser($user->ID);
-        }
-
-        return $user;
+        return $this;
     }
 
     /**
-     * Triggered by the 'user_register' hook.
-     * Add a new registered user to the UserFactory list at runtime.
+     * Check if there are any sections defined.
      *
-     * @param int $id
+     * @return bool
+     */
+    public function hasSections()
+    {
+        return count($this->sections) ? true : false;
+    }
+
+    /**
+     * Register custom fields for users.
+     *
+     * @param array $fields The user custom fields. By sections or not.
+     * @param string $capability The minimum capability required to save user custom fields data.
+     * @return \Themosis\User\IUser
+     */
+    public function addFields(array $fields, $capability = 'edit_users')
+    {
+        $this->fields = $fields;
+        $this->capability = $capability;
+
+        // Check if there are sections before going further.
+        $this->isUsingSections($fields);
+
+        // User "display" events.
+        // When adding/creating a new user.
+        Action::add('user_new_form', [$this, 'displayFields']);
+        // When editing another user profile.
+        Action::add('edit_user_profile', [$this, 'displayFields']);
+        // When editing its own profile.
+        Action::add('show_user_profile', [$this, 'displayFields']);
+
+        // User "save" events.
+        Action::add('user_register', [$this, 'saveFields']);
+        Action::add('profile_update', [$this, 'saveFields']);
+
+        return $this;
+    }
+
+    /**
+     * Check if the defined fields are using the sections defined or not.
+     * If there are sections and the fields are not set to use a section,
+     * trigger an error.
+     *
+     * @param array $fields
+     * @throws \Themosis\User\UserException
+     */
+    protected function isUsingSections(array $fields)
+    {
+        if ($this->hasSections())
+        {
+            foreach ($this->sections as $section)
+            {
+                $section = $section->getData();
+
+                // Check if fields are defined per section.
+                if (!isset($fields[$section['slug']])) throw new UserException("There are no user custom fields defined for the section: {$section['slug']}.");
+            }
+        }
+    }
+
+    /**
+     * Register validation rules for user custom fields.
+     *
+     * @param array $rules
+     * @return \Themosis\User\IUser
+     */
+    public function validate(array $rules = [])
+    {
+        $this->rules = $rules;
+
+        return $this;
+    }
+
+
+    /**
+     * Render the user fields.
+     *
+     * @param \WP_User|string If adding a user, $user is the context (string): 'add-existing-user' for multisite, 'add.new-user' for single. Else is a \WP_User instance.
      * @return void
      */
-    public function userRegister($id)
+    public function displayFields($user)
     {
-        $this->createUser($id);
+        // Add nonce fields for safety.
+        if (!static::$hasNonce)
+        {
+            wp_nonce_field(Session::nonceAction, Session::nonceName);
+            static::$hasNonce = true;
+        }
+
+        // Set the value attribute for each field.
+        $fields = $this->setDefaultValue($user, $this->fields);
+
+        // User view data
+        $params = [
+            '__factory'     => $this,
+            '__fields'      => $fields,
+            '__sections'    => $this->sections,
+            '__user'        => $user,
+            '__userContext' => null
+        ];
+
+        // Check if $user is a string context
+        if (is_string($user))
+        {
+            // Set to null __user
+            $params['__user'] = null;
+
+            // Set the context
+            $params['__userContext'] = $user;
+        }
+
+        // Pass data to user view.
+        $this->view->with($params);
+
+        // Render the fields.
+        echo($this->view->render());
+    }
+
+    /**
+     * Set the default 'value' property for all fields.
+     *
+     * @param \WP_User|string $user
+     * @param array $fields
+     * @return array
+     */
+    protected function setDefaultValue($user, $fields)
+    {
+        $theFields = [];
+
+        foreach ($fields as $section => $fs)
+        {
+            // If Add User screen, set the ID to 0, so the value is empty.
+            $id = (is_a($user, 'WP_User')) ? $user->ID : 0;
+
+            // It's a section...
+            if (!is_numeric($section))
+            {
+                foreach ($fs as $f)
+                {
+                    $value = get_user_meta($id, $f['name'], true);
+                    $f['value'] = $this->parseValue($f, $value);
+                    $theFields[$section][] = $f;
+                }
+            }
+            else
+            {
+                // Simple fields
+                $value = get_user_meta($id, $fs['name'], true);
+                $fs['value'] = $this->parseValue($fs, $value);
+                $theFields[] = $fs;
+            }
+        }
+
+        return $theFields;
+    }
+
+    /**
+     * Triggered by the 'user_register' && 'profile_update' hooks.
+     * Used in order to save custom fields for the users.
+     *
+     * @param int $id The user ID.
+     * @param array $oldData Null by default. If user update, contains an array of previous user data.
+     * @throws FieldException
+     * @return void
+     */
+    public function saveFields($id, $oldData = [])
+    {
+        // Check capability
+        if (!current_user_can($this->capability)) return;
+
+        // Check nonces
+        $nonceName = (isset($_POST[Session::nonceName])) ? $_POST[Session::nonceName] : Session::nonceName;
+        if (!wp_verify_nonce($nonceName, Session::nonceAction)) return;
+
+        // Loop through the fields...
+        $fields = $this->parseTheFields($this->fields);
+
+        // Register user meta.
+        $this->register($id, $fields);
+    }
+
+    /**
+     * Register custom user meta.
+     *
+     * @param int $id The user_ID
+     * @param array $fields The custom fields to register.
+     * @return void
+     */
+    protected function register($id, $fields)
+    {
+        foreach ($fields as $field)
+        {
+            $value = isset($_POST[$field['name']]) ? $_POST[$field['name']] : $this->parseValue($field);
+
+            // Validation code...
+            if (isset($this->rules[$field['name']]))
+            {
+                $rules = $this->rules[$field['name']];
+
+                // Check for infinite field (if $rules is an associative array).
+                if ($this->validator->isAssociative($rules) && 'infinite' == $field->getFieldType())
+                {
+                    // Check infinite fields validation.
+                    foreach ($value as $row => $rowValues)
+                    {
+                        foreach ($rowValues as $name => $val)
+                        {
+                            if (isset($rules[$name]))
+                            {
+                                $value[$row][$name] = $this->validator->single($val, $rules[$name]);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    $value = $this->validator->single($value, $this->rules[$field['name']]);
+                }
+            }
+
+            // Register the user meta data.
+            update_user_meta($id, $field['name'], $value);
+        }
+    }
+
+    /**
+     * Parse the list of registered fields. Remove the sections if defined.
+     *
+     * @param array $fields The fields.
+     * @return array A clean list of fields.
+     * @throws FieldException
+     */
+    protected function parseTheFields(array $fields)
+    {
+        $theFields = [];
+
+        foreach ($fields as $section => $fs)
+        {
+            // Sections defined.
+            if (!is_numeric($section))
+            {
+                foreach ($fs as $f)
+                {
+                    if (!is_a($f, '\Themosis\Field\Fields\IField')) throw new FieldException('An IField instance is necessary in order to save custom user data.');
+                    $theFields[] = $f;
+                }
+            }
+            else
+            {
+                if (!is_a($fs, '\Themosis\Field\Fields\IField')) throw new FieldException('An IField instance is necessary in order to save custom user data.');
+                $theFields[] = $fs;
+            }
+        }
+
+        return $theFields;
     }
 
 } 

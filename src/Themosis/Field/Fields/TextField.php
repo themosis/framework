@@ -1,19 +1,19 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\View;
+use Themosis\View\ViewFactory;
 
-class TextField extends FieldBuilder{
-
+class TextField extends FieldBuilder implements IField
+{
     /**
      * Define a core TextField.
      *
      * @param array $properties The text field properties.
+     * @param ViewFactory $view
      */
-    public function __construct(array $properties)
+    public function __construct(array $properties, ViewFactory $view)
     {
-        parent::__construct($properties);
-
+        parent::__construct($properties, $view);
         $this->fieldType();
     }
 
@@ -35,7 +35,7 @@ class TextField extends FieldBuilder{
      */
     public function metabox()
     {
-        return View::make('metabox._themosisTextField', array('field' => $this))->render();
+        return $this->view->make('metabox._themosisTextField', ['field' => $this])->render();
     }
 
     /**
@@ -44,6 +44,16 @@ class TextField extends FieldBuilder{
      * @return string
      */
     public function page()
+    {
+        return $this->metabox();
+    }
+
+    /**
+     * Handle the field HTML code for the user fields output.
+     *
+     * @return string
+     */
+    public function user()
     {
         return $this->metabox();
     }
