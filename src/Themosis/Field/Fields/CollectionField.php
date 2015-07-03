@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\View;
+use Themosis\View\ViewFactory;
 
 class CollectionField extends FieldBuilder implements IField
 {
@@ -9,11 +9,11 @@ class CollectionField extends FieldBuilder implements IField
      * Define a collection field instance.
      *
      * @param array $properties
+     * @param ViewFactory $view
      */
-    public function __construct(array $properties)
+    public function __construct(array $properties, ViewFactory $view)
     {
-        parent::__construct($properties);
-
+        parent::__construct($properties, $view);
         $this->setType();
         $this->setLimit();
         $this->fieldType();
@@ -65,7 +65,7 @@ class CollectionField extends FieldBuilder implements IField
      */
     public function metabox()
     {
-        return View::make('metabox._themosisCollectionField', ['field' => $this])->render();
+        return $this->view->make('metabox._themosisCollectionField', ['field' => $this])->render();
     }
 
     /**

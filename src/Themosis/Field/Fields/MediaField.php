@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\View;
+use Themosis\View\ViewFactory;
 
 class MediaField extends FieldBuilder implements IField
 {
@@ -9,10 +9,12 @@ class MediaField extends FieldBuilder implements IField
      * Build a MediaField instance.
      *
      * @param array $properties
+     * @param ViewFactory $view
      */
-    public function __construct(array $properties)
+    public function __construct(array $properties, ViewFactory $view)
     {
         $this->properties = $properties;
+        $this->view = $view;
         $this->setTitle();
         $this->setType();
         $this->setSize();
@@ -87,7 +89,7 @@ class MediaField extends FieldBuilder implements IField
      */
     public function metabox()
     {
-        return View::make('metabox._themosisMediaField', ['field' => $this])->render();
+        return $this->view->make('metabox._themosisMediaField', ['field' => $this])->render();
     }
 
     /**

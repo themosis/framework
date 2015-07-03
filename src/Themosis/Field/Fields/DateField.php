@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\View;
+use Themosis\View\ViewFactory;
 
 class DateField extends FieldBuilder implements IField
 {
@@ -9,11 +9,11 @@ class DateField extends FieldBuilder implements IField
      * Define a core TextField.
      *
      * @param array $properties The text field properties.
+     * @param ViewFactory $view
      */
-    public function __construct(array $properties)
+    public function __construct(array $properties, ViewFactory $view)
     {
-        parent::__construct($properties);
-
+        parent::__construct($properties, $view);
         $this->fieldType();
     }
 
@@ -35,7 +35,7 @@ class DateField extends FieldBuilder implements IField
      */
     public function metabox()
     {
-        return View::make('metabox._themosisDateField', ['field' => $this])->render();
+        return $this->view->make('metabox._themosisDateField', ['field' => $this])->render();
     }
 
     /**

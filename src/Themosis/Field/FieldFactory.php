@@ -1,12 +1,31 @@
 <?php
 namespace Themosis\Field;
 
+use Themosis\View\ViewFactory;
+
 /**
  * Field factory.
  * @package Themosis\Field
  */
 class FieldFactory
 {
+    /**
+     * A view instance.
+     *
+     * @var ViewFactory
+     */
+    protected $view;
+
+    /**
+     * Define a FieldFactory instance.
+     *
+     * @param ViewFactory $view A view instance.
+     */
+    public function __construct(ViewFactory $view)
+    {
+        $this->view = $view;
+    }
+
     /**
      * Call the appropriate field class.
      *
@@ -20,7 +39,7 @@ class FieldFactory
         try
         {
             // Return the called class.
-            $class =  new $class($fieldProperties);
+            $class =  new $class($fieldProperties, $this->view);
 
         } catch (\Exception $e){
 
@@ -237,6 +256,20 @@ class FieldFactory
         $properties = array_merge($extras, $properties);
 
         return $this->make('Themosis\\Field\\Fields\\CollectionField', $properties);
+    }
+
+    /**
+     * Define a ColorField instance.
+     *
+     * @param string $name The name attribute.
+     * @param array $extras
+     * @return \Themosis\Field\Fields\ColorField
+     */
+    public function color($name, array $extras = [])
+    {
+        $properties = compact('name');
+        $properties = array_merge($extras, $properties);
+        return $this->make('Themosis\\Field\\Fields\\ColorField', $properties);
     }
 
 } 

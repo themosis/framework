@@ -14,7 +14,7 @@ class FieldIgniterService extends IgniterService {
     {
         $this->app->bindShared('field', function($app){
 
-            return new FieldFactory();
+            return new FieldFactory($app['view']);
 
         });
     }

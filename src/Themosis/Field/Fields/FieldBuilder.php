@@ -2,6 +2,7 @@
 namespace Themosis\Field\Fields;
 
 use Themosis\Core\DataContainer;
+use Themosis\View\ViewFactory;
 
 abstract class FieldBuilder extends DataContainer
 {
@@ -20,13 +21,21 @@ abstract class FieldBuilder extends DataContainer
     protected $type;
 
     /**
+     * A view instance
+     * @var ViewFactory
+     */
+    protected $view;
+
+    /**
      * FieldBuilder instance
      *
      * @param array $properties Field instance properties.
+     * @param ViewFactory $view
      */
-    public function __construct(array $properties)
+    public function __construct(array $properties, ViewFactory $view)
     {
         $this->properties = $properties;
+        $this->view = $view;
         $this->setId();
         $this->setClass();
         $this->setTitle();

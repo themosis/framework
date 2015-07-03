@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Facades\View;
+use Themosis\View\ViewFactory;
 
 class InfiniteField extends FieldBuilder implements IField
 {
@@ -16,10 +16,12 @@ class InfiniteField extends FieldBuilder implements IField
      * Build an InfiniteField instance.
      *
      * @param array $properties
+     * @param ViewFactory $view
      */
-    public function __construct(array $properties)
+    public function __construct(array $properties, ViewFactory $view)
     {
         $this->properties = $properties;
+        $this->view = $view;
         $this->setTitle();
         $this->setRows();
         $this->setLimit();
@@ -87,7 +89,7 @@ class InfiniteField extends FieldBuilder implements IField
         // Check rows number.
         $this->setRows();
 
-        return View::make('metabox._themosisInfiniteField', ['field' => $this])->render();
+        return $this->view->make('metabox._themosisInfiniteField', ['field' => $this])->render();
     }
 
     /**
@@ -110,6 +112,5 @@ class InfiniteField extends FieldBuilder implements IField
     {
         return $this->metabox();
     }
-
 
 }
