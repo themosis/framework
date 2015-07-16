@@ -66,7 +66,7 @@ class Meta
 
 		} else {
 
-			if (0 === strpos($value, 'http')) {
+			if (0 === strpos($value, 'http') && 0 !== strpos($value, 'https')) {
 
 				if (static::isFromDomain($value)) {
 					
