@@ -24,6 +24,16 @@ class Loop
 	}
 
 	/**
+	* Get the author of the current post.
+	*
+	* @return string The author of the current post.
+	*/
+	public function author()
+	{
+		return get_the_author();
+	}
+
+	/**
 	 * Get the content of the current post.
 	 *
 	 * @return string The content of the current post.
