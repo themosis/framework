@@ -12,16 +12,18 @@ class Option
      * @throws OptionException
      * @return mixed The option value.
      */
-    public static function get($optionGroup, $name)
+    public static function get($optionGroup, $name = null)
     {
         $option = get_option($optionGroup);
 
         if (!empty($option))
         {
-            if (isset($option[$name]))
+            if (!is_null($name))
             {
                 return $option[$name];
             }
+
+            return $option;
         }
 
         return '';
