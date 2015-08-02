@@ -344,11 +344,10 @@ class UserFactory extends Wrapper implements IUser
      * Used in order to save custom fields for the users.
      *
      * @param int $id The user ID.
-     * @param array $oldData Null by default. If user update, contains an array of previous user data.
      * @throws FieldException
      * @return void
      */
-    public function saveFields($id, $oldData = [])
+    public function saveFields($id)
     {
         // Check capability
         if (!current_user_can($this->capability)) return;
