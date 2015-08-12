@@ -96,7 +96,7 @@ if (!function_exists('themosis_assets'))
      */
     function themosis_assets()
     {
-        return get_template_directory_uri().'/app/assets';
+        return get_template_directory_uri().'/resources/assets';
     }
 }
 
