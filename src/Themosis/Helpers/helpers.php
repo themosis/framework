@@ -96,6 +96,13 @@ if (!function_exists('themosis_assets'))
      */
     function themosis_assets()
     {
+        // Check if the theme helper function exists.
+        // Only if a themosis-theme is used.
+        if (function_exists('themosis_theme_assets'))
+        {
+            return themosis_theme_assets();
+        }
+
         return get_template_directory_uri().'/resources/assets';
     }
 }
