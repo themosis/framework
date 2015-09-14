@@ -1286,7 +1286,7 @@
          */
         renameId: function(currentId, index)
         {
-            var regex = new RegExp('-([0-9])-');
+            var regex = new RegExp('-([0-9]+)-');
 
             return currentId.replace(regex, '-' + index + '-');
         },
@@ -1300,7 +1300,7 @@
          */
         renameName: function(currentName, index)
         {
-            var regex = new RegExp("([0-9])\]");
+            var regex = new RegExp("([0-9]+)\]");
 
             return currentName.replace(regex, index + ']');
         },
@@ -1314,7 +1314,7 @@
          */
         renameCollectionField: function(field, index)
         {
-            var regex = new RegExp("([0-9])\]"),
+            var regex = new RegExp("([0-9]+)\]"),
                 name = field.data('name'),
                 template = field.find('script#themosis-collection-item-template'),
                 templateContent = template.html();
