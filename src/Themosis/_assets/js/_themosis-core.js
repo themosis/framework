@@ -213,6 +213,9 @@
             // Attach an event on select. Runs when "insert" button is clicked.
             this.frame.on('select', _.bind(this.selectedItems, this));
 
+            // Grab the limit.
+            this.limit = parseInt(this.$el.data('limit'));
+
             // Init the sortable feature.
             this.sort();
         },
@@ -225,6 +228,13 @@
         selectedItems: function()
         {
             var selection = this.frame.state('library').get('selection');
+
+            // Check if a limit is defined. Only filter the selection if selection is larger than the limit.
+            if (this.limit)
+            {
+                var realLimit = ((this.limit - this.collection.length) < 0) ? 0 : this.limit - this.collection.length;
+                selection = selection.slice(0, realLimit);
+            }
 
             selection.map(function(attachment)
             {
@@ -321,17 +331,31 @@
          */
         toggleCollectionContainer: function(collection)
         {
-            var length = collection.length ? true : false;
+            var length = collection.length,
+                addButton = this.$el.find('button#themosis-collection-add'),
+                container = this.$el.find('div.themosis-collection-container');
 
+            // Check the number of collection items.
+            // If total is larger or equal to length, disable the add button.
+            if (this.limit && this.limit <= length)
+            {
+                addButton.addClass('disabled');
+            }
+            else
+            {
+                // Re-activate the ADD button if there are less items than the limit.
+                addButton.removeClass('disabled');
+            }
+
+            // Show the collection container if there are items in collection.
             if (length)
             {
-                // Show the collection container.
-                this.$el.find('div.themosis-collection-container').addClass('show');
+                container.addClass('show');
             }
             else
             {
                 // Hide the collection container.
-                this.$el.find('div.themosis-collection-container').removeClass('show');
+                container.removeClass('show');
             }
         },
 
@@ -343,10 +367,17 @@
         /**
          * Triggered when 'add' button is clicked. Open the media library.
          *
+         * @param e The event object
          * @return void
          */
-        add: function()
+        add: function(e)
         {
+            // Check the Add button.
+            var addButton = $(e.currentTarget);
+
+            // If button is disabled, return.
+            if (addButton.hasClass('disabled')) return;
+
             this.frame.open();
         },
 

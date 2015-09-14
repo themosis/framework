@@ -60,7 +60,7 @@
         <!-- End collection -->
     </div>
     <div class="themosis-collection-buttons">
-        <button id="themosis-collection-add" type="button" class="button button-primary"><?php _e('Add'); ?></button>
+        <button id="themosis-collection-add" type="button" class="button button-primary <?php if ($field['limit'] && !empty($field['value']) && is_array($field['value']) && $field['limit'] <= count($field['value'])) { echo('disabled'); } ?>"><?php _e('Add'); ?></button>
         <button id="themosis-collection-remove" type="button" class="button button-primary themosis-button-remove"><?php _e('Remove'); ?></button>
     </div>
     @if(isset($field['info']))
