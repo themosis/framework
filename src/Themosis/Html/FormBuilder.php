@@ -323,17 +323,29 @@ class FormBuilder {
     {
         $field = '';
 
-        foreach ($choices as $choice)
+        foreach ($choices as $choiceVal => $choice)
         {
             // Check the value.
             // If checked, add the attribute.
-            if (in_array($choice, $value))
+            if (in_array($choiceVal, $value))
             {
                 $attributes['checked'] = 'checked';
             }
 
+            // Set the name attribute.
+            // Check if there are multiple options. Radio input are always single as there is only one value selected.
+            // But checkbox could be one or multiple. Only specify the name attribute as array if there more than one choice.
+            if (count($choices) > 1 && 'radio' !== $type)
+            {
+                $n = $name.'[]';
+            }
+            else
+            {
+                $n = $name;
+            }
+
             // Build html output
-            $field.= '<label>'.$this->input($type, $name.'[]', $choice, $attributes).ucfirst($choice).'</label>';
+            $field.= '<label>'.$this->input($type, $n, $choiceVal, $attributes).ucfirst($choice).'</label>';
 
             // Reset 'checked' attributes.
             unset($attributes['checked']);

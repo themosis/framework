@@ -152,11 +152,11 @@ class FieldFactory
      * Return a RadioField instance.
      *
      * @param string $name The name attribute.
-     * @param array $options The radio options.
+     * @param string|array $options The radio options.
      * @param array $extras Extra field properties.
      * @return \Themosis\Field\Fields\RadioField
      */
-    public function radio($name, array $options, array $extras = [])
+    public function radio($name, $options, array $extras = [])
     {
         $properties = compact('name', 'options');
 
