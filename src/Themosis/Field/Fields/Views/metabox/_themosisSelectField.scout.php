@@ -1,7 +1,7 @@
-{{ Themosis\Facades\Form::select($field['name'], $field['options'], $field['value'], array('multiple' => $field['multiple'], 'data-field' => 'select', 'id' => $field['id'], 'class' => $field['class'])) }}
+{{ Themosis\Facades\Form::select($field['name'], $field['options'], $field['value'], $field['atts']) }}
 
-@if(isset($field['info']))
+@if(isset($field['features']['info']))
     <div class="themosis-field-info">
-        <p>{{ $field['info'] }}</p>
+        <p>{{ $field['features']['info'] }}</p>
     </div>
 @endif

@@ -392,7 +392,7 @@ class FormBuilder {
 
         // Check if multiple is defined.
         // If defined, change the name attribute.
-        if (isset($attributes['multiple']) && 'multiple' === $attributes['multiple'])
+        if (in_array('multiple', $attributes) || (isset($attributes['multiple']) && 'multiple' === $attributes['multiple']))
         {
             $attributes['name'] = $attributes['name'].'[]';
         }

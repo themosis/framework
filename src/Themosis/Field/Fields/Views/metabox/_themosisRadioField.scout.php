@@ -1,7 +1,7 @@
-{{ Themosis\Facades\Form::radio($field['name'], $field['options'], $field['value'], array('data-field' => 'radio', 'id' => $field['name'].'-id', 'class' => $field['class'])) }}
+{{ Themosis\Facades\Form::radio($field['name'], $field['options'], $field['value'], $field['atts']) }}
 
-@if(isset($field['info']))
+@if(isset($field['features']['info']))
     <div class="themosis-field-info">
-        <p>{{ $field['info'] }}</p>
+        <p>{{ $field['features']['info'] }}</p>
     </div>
 @endif

@@ -150,14 +150,18 @@ class FieldFactory
      *
      * @param string $name The name attribute of the checkbox input.
      * @param string|array $options The checkbox options.
-     * @param array $extras Extra field properties.
+     * @param array $features Custom field features - title, info.
+     * @param array $attributes Input html attributes.
      * @return \Themosis\Field\Fields\CheckboxField
      */
-    public function checkbox($name, $options, array $extras = [])
+    public function checkbox($name, $options, array $features = [], array $attributes = [])
     {
-        $properties = compact('name', 'options');
-
-        $properties = array_merge($extras, $properties);
+        $properties = [
+            'features'  => $features,
+            'atts'      => array_merge($attributes, ['data-field' => 'checkbox']),
+            'name'      => $name,
+            'options'   => $options
+        ];
 
         return $this->make('Themosis\\Field\\Fields\\CheckboxField', $properties);
     }
@@ -167,14 +171,18 @@ class FieldFactory
      *
      * @param string $name The name attribute.
      * @param string|array $options The radio options.
-     * @param array $extras Extra field properties.
+     * @param array $features Custom field features - title, info.
+     * @param array $attributes Input html attributes.
      * @return \Themosis\Field\Fields\RadioField
      */
-    public function radio($name, $options, array $extras = [])
+    public function radio($name, $options, array $features = [], array $attributes = [])
     {
-        $properties = compact('name', 'options');
-
-        $properties = array_merge($extras, $properties);
+        $properties = [
+            'features'  => $features,
+            'atts'      => array_merge($attributes, ['data-field' => 'radio']),
+            'name'      => $name,
+            'options'   => $options
+        ];
 
         return $this->make('Themosis\\Field\\Fields\\RadioField', $properties);
     }
@@ -184,21 +192,18 @@ class FieldFactory
      *
      * @param string $name The name attribute of the select custom field.
      * @param array $options The select options tag.
-     * @param bool $multiple
-     * @param array $extras
+     * @param array $features Custom field features - title, info.
+     * @param array $attributes Input html attributes.
      * @return \Themosis\Field\Fields\SelectField
      */
-    public function select($name, array $options, $multiple = false, array $extras = [])
+    public function select($name, array $options, array $features = [], array $attributes = [])
     {
-        $properties = compact('name', 'options');
-
-        // Check the multiple attribute.
-        if (true == $multiple)
-        {
-            $properties['multiple'] = 'multiple';
-        }
-
-        $properties = array_merge($extras, $properties);
+        $properties = [
+            'features'  => $features,
+            'atts'      => array_merge($attributes, ['data-field' => 'select']),
+            'name'      => $name,
+            'options'   => $options
+        ];
 
         return $this->make('Themosis\\Field\\Fields\\SelectField', $properties);
     }

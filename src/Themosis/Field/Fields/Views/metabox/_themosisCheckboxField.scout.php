@@ -1,7 +1,7 @@
-{{ Themosis\Facades\Form::checkbox($field['name'], $field['options'], $field['value'], array('id' => $field['id'], 'data-field' => 'checkbox', 'class' => $field['class'])) }}
+{{ Themosis\Facades\Form::checkbox($field['name'], $field['options'], $field['value'], $field['atts']) }}
 
-@if(isset($field['info']))
+@if(isset($field['features']['info']))
     <div class="themosis-field-info">
-        <p>{{ $field['info'] }}</p>
+        <p>{{ $field['features']['info'] }}</p>
     </div>
 @endif

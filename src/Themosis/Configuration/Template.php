@@ -34,7 +34,7 @@ class Template
             'priority'  => 'core',
             'id'        => 'themosisTemplate'
         ])->set([
-			Field::select('_themosisPageTemplate', [$templateNames], false, ['title' => __('Name', THEMOSIS_FRAMEWORK_TEXTDOMAIN)])
+			Field::select('_themosisPageTemplate', [$templateNames], ['title' => __('Name', THEMOSIS_FRAMEWORK_TEXTDOMAIN)])
 		]);
 
         return $this;
