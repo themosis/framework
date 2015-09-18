@@ -151,17 +151,12 @@ class FormBuilder {
     /**
      * Build a label tag <label></label>.
      *
-     * @param string $for The 'for' attribute.
      * @param string $display The text to display.
      * @param array $attributes Extra attributes.
      * @return string
      */
-    public function label($for, $display, array $attributes = [])
+    public function label($display, array $attributes = [])
     {
-        $merge = compact('for');
-
-        $attributes = array_merge($attributes, $merge);
-
         return '<label'.$this->html->attributes($attributes).'>'.$display.'</label>';
     }
 
@@ -345,7 +340,8 @@ class FormBuilder {
             }
 
             // Build html output
-            $field.= '<label>'.$this->input($type, $n, $choiceVal, $attributes).ucfirst($choice).'</label>';
+            $input = $this->input($type, $n, $choiceVal, $attributes).ucfirst($choice);
+            $field.= $this->label($input);
 
             // Reset 'checked' attributes.
             unset($attributes['checked']);
