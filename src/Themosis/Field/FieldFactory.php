@@ -41,10 +41,9 @@ class FieldFactory
             // Return the called class.
             $class =  new $class($fieldProperties, $this->view);
 
-        } catch (\Exception $e){
-
+        } catch (\Exception $e)
+        {
             //@TODO Implement log if class is not found
-
         }
 
         return $class;
@@ -55,14 +54,17 @@ class FieldFactory
      * Return a TextField instance.
      *
      * @param string $name The name attribute of the text input.
-     * @param array $extras Extra field properties.
+     * @param array $features Custom field features - title, info.
+     * @param array $attributes Input html attributes.
      * @return \Themosis\Field\Fields\TextField
      */
-    public function text($name, array $extras = [])
+    public function text($name, array $features = [], array $attributes = [])
     {
-        $properties = compact('name');
-
-        $properties = array_merge(['class' => 'large-text'], $extras, $properties);
+        $properties = [
+            'features'  => $features,
+            'atts'      => array_merge(['class' => 'large-text'], $attributes, ['data-field' => 'text']),
+            'name'      => $name
+        ];
 
         return $this->make('Themosis\\Field\\Fields\\TextField', $properties);
     }
@@ -71,14 +73,17 @@ class FieldFactory
      * Return a PasswordField instance.
      *
      * @param string $name The name attribute of the password input.
-     * @param array $extras Extra field properties.
+     * @param array $features Custom field features - title, info.
+     * @param array $attributes Input html attributes.
      * @return \Themosis\Field\Fields\PasswordField
      */
-    public function password($name, array $extras = [])
+    public function password($name, array $features = [], array $attributes = [])
     {
-        $properties = compact('name');
-
-        $properties = array_merge(['class' => 'large-text'], $extras, $properties);
+        $properties = [
+            'features'  => $features,
+            'atts'      => array_merge(['class' => 'large-text'], $attributes, ['data-field' => 'password']),
+            'name'      => $name
+        ];
 
         return $this->make('Themosis\\Field\\Fields\\PasswordField', $properties);
     }
@@ -87,14 +92,17 @@ class FieldFactory
      * Return a NumberField instance.
      *
      * @param string $name The name attribute of the number input.
-     * @param array $extras Extra field properties.
+     * @param array $features Custom field features - title, info.
+     * @param array $attributes Input html attributes.
      * @return \Themosis\Field\Fields\NumberField
      */
-    public function number($name, array $extras = [])
+    public function number($name, array $features = [], array $attributes = [])
     {
-        $properties = compact('name');
-
-        $properties = array_merge(['class' => 'small-text'], $extras, $properties);
+        $properties = [
+            'features'  => $features,
+            'atts'      => array_merge(['class' => 'small-text'], $attributes, ['data-field' => 'number']),
+            'name'      => $name
+        ];
 
         return $this->make('Themosis\\Field\\Fields\\NumberField', $properties);
     }
@@ -103,14 +111,17 @@ class FieldFactory
      * Return a DateField instance.
      *
      * @param string $name The name attribute of the date input.
-     * @param array $extras Extra field properties.
+     * @param array $features Custom field features - title, info.
+     * @param array $attributes Input html attributes.
      * @return \Themosis\Field\Fields\DateField
      */
-    public function date($name, array $extras = [])
+    public function date($name, array $features = [], array $attributes = [])
     {
-        $properties = compact('name');
-
-        $properties = array_merge(['class' => 'newtag'], $extras, $properties);
+        $properties = [
+            'features'  => $features,
+            'atts'      => array_merge(['class' => 'newtag'], $attributes, ['data-field' => 'date']),
+            'name'      => $name
+        ];
 
         return $this->make('Themosis\\Field\\Fields\\DateField', $properties);
     }
@@ -119,14 +130,17 @@ class FieldFactory
      * Return a TextareaField instance.
      *
      * @param string $name The name attribute of the textarea.
-     * @param array $extras Extra field properties.
+     * @param array $features Custom field features - title, info.
+     * @param array $attributes Input html attributes.
      * @return \Themosis\Field\Fields\TextareaField
      */
-    public function textarea($name, array $extras = [])
+    public function textarea($name, array $features = [], array $attributes = [])
     {
-        $properties = compact('name');
-
-        $properties = array_merge(['class' => 'large-text'], $extras, $properties);
+        $properties = [
+            'features'  => $features,
+            'atts'      => array_merge(['class' => 'large-text', 'rows' => 5], $attributes, ['data-field' => 'textarea']),
+            'name'      => $name
+        ];
 
         return $this->make('Themosis\\Field\\Fields\\TextareaField', $properties);
     }

@@ -36,9 +36,8 @@ abstract class FieldBuilder extends DataContainer
     {
         $this->properties = $properties;
         $this->view = $view;
-        $this->setId();
-        $this->setClass();
-        $this->setTitle();
+        $this['features'] = $this->parseFeatures();
+        $this['atts'] = $this->parseAttributes();
     }
 
     /**
@@ -53,33 +52,43 @@ abstract class FieldBuilder extends DataContainer
     }
 
     /**
-     * Set a default class attribute if not defined.
+     * Parse and prepare field feature properties.
      *
-     * @return void
+     * @return array
      */
-    protected function setClass()
+    protected function parseFeatures()
     {
-        $this['class'] = isset($this['class']) ? $this['class'] : 'field-'.$this['name'];
+        $f = $this['features'];
+
+        // Check the title extra property.
+        $f['title'] = isset($f['title']) ? ucfirst($f['title']) : ucfirst($this['name']);
+
+        return $f;
     }
 
     /**
-     * Set a default ID attribute if not defined.
+     * Parse and prepare the field tag attributes.
      *
-     * @return void
+     * @return array The parsed attributes.
      */
-    protected function setId()
+    protected function parseAttributes()
     {
-        $this['id'] = isset($this['id']) ? $this['id'] : $this['name'].'-id';
-    }
+        $atts = $this['atts'];
 
-    /**
-     * Set a default label title, display text if not defined.
-     *
-     * @return void
-     */
-    protected function setTitle()
-    {
-        $this['title'] = isset($this['title']) ? ucfirst($this['title']) : ucfirst($this['name']);
+        // Check if developer has defined a custom name attribute.
+        // If so, remove it.
+        if (isset($atts['name']))
+        {
+            unset($atts['name']);
+        }
+
+        // Set the 'id' attribute.
+        $atts['id'] = isset($atts['id']) ? $atts['id'] : $this['name'].'-id';
+
+        // Set the 'class' attribute.
+        $atts['class'] = isset($atts['class']) ? $atts['class'] : 'field-'.$this['name'];
+
+        return $atts;
     }
 
     /**

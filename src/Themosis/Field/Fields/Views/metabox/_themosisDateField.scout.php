@@ -1,7 +1,7 @@
-{{ Themosis\Facades\Form::date($field['name'], $field['value'], array('id' => $field['id'], 'class' => $field['class'], 'data-field' => 'date')) }}
+{{ Themosis\Facades\Form::date($field['name'], $field['value'], $field['atts']) }}
 
-@if(isset($field['info']))
+@if(isset($field['features']['info']))
     <div class="themosis-field-info">
-        <p>{{ $field['info'] }}</p>
+        <p>{{ $field['features']['info'] }}</p>
     </div>
 @endif
