@@ -317,6 +317,7 @@ class FormBuilder {
     protected function makeGroupCheckableField($type, $name, array $choices, array $value, array $attributes)
     {
         $field = '';
+        $labelAttributes = [];
 
         foreach ($choices as $choiceVal => $choice)
         {
@@ -325,6 +326,13 @@ class FormBuilder {
             if (in_array($choiceVal, $value))
             {
                 $attributes['checked'] = 'checked';
+            }
+
+            // Check if there are label attributes defined.
+            if (isset($attributes['label']))
+            {
+                $labelAttributes = (array) $attributes['label'];
+                unset($attributes['label']);
             }
 
             // Set the name attribute.
@@ -341,7 +349,7 @@ class FormBuilder {
 
             // Build html output
             $input = $this->input($type, $n, $choiceVal, $attributes).ucfirst($choice);
-            $field.= $this->label($input);
+            $field.= $this->label($input, $labelAttributes);
 
             // Reset 'checked' attributes.
             unset($attributes['checked']);
