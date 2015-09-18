@@ -212,14 +212,16 @@ class FieldFactory
      * Return a MediaField instance.
      *
      * @param string $name The name attribute of the hidden input.
-     * @param array $extras Extra field properties.
+     * @param array $features Custom field features - title, info, type (image, application, audio, video)
      * @return \Themosis\Field\Fields\MediaField
      */
-    public function media($name, array $extras = [])
+    public function media($name, array $features = [])
     {
-        $properties = compact('name');
-
-        $properties = array_merge($extras, $properties);
+        $properties = [
+            'features'  => $features,
+            'atts'      => ['id' => 'themosis-media-input', 'data-field' => 'media'],
+            'name'      => $name
+        ];
 
         return $this->make('Themosis\\Field\\Fields\\MediaField', $properties);
     }

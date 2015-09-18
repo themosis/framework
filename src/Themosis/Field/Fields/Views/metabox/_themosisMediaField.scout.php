@@ -1,4 +1,4 @@
-{{ Themosis\Facades\Form::hidden($field['name'], $field['value'], array('id' => 'themosis-media-input', 'data-type' => $field['type'], 'data-size' => $field['size'], 'data-field' => 'media')) }}
+{{ Themosis\Facades\Form::hidden($field['name'], $field['value'], $field['atts']) }}
 
 <table class="themosis-media">
     <tr>
@@ -46,8 +46,8 @@
     </tr>
 </table>
 
-@if(isset($field['info']))
+@if(isset($field['features']['info']))
     <div class="themosis-field-info">
-        <p>{{ $field['info'] }}</p>
+        <p>{{ $field['features']['info'] }}</p>
     </div>
 @endif

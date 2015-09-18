@@ -13,12 +13,9 @@ class MediaField extends FieldBuilder implements IField
      */
     public function __construct(array $properties, ViewFactory $view)
     {
-        $this->properties = $properties;
-        $this->view = $view;
-        $this->setTitle();
-        $this->setType();
-        $this->setSize();
+        parent::__construct($properties, $view);
         $this->fieldType();
+        $this->setType();
     }
 
     /**
@@ -30,35 +27,24 @@ class MediaField extends FieldBuilder implements IField
     protected function setType()
     {
         $allowed = ['image', 'application', 'video', 'audio'];
+        $features = $this['features'];
 
-        if (isset($this['type']) && !in_array($this['type'], $allowed))
+        if (isset($features['type']) && !in_array($features['type'], $allowed))
         {
-            $this['type'] = 'image';
+            $features['type'] = 'image';
         }
-        elseif (!isset($this['type']))
+        elseif (!isset($features['type']))
         {
-            $this['type'] = 'image';
+            $features['type'] = 'image';
         }
-    }
 
-    /**
-     * Set the size data of the media to insert.
-     * If no size is defined, default to 'full'.
-     *
-     * @return void
-     */
-    protected function setSize()
-    {
-        $sizes = get_intermediate_image_sizes();
+        // Set the features back.
+        $this['features'] = $features;
 
-        if (isset($this['size']) && !in_array($this['size'], $sizes))
-        {
-            $this['size'] = 'full';
-        }
-        elseif (!isset($this['size']))
-        {
-            $this['size'] = 'full';
-        }
+        // Set the data-type attribute.
+        $atts = $this['atts'];
+        $atts['data-type'] = $this['features']['type'];
+        $this['atts'] = $atts;
     }
 
     /**
