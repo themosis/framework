@@ -13,31 +13,8 @@ class EditorField extends FieldBuilder implements IField
      */
     public function __construct(array $properties, ViewFactory $view)
     {
-        $this->properties = $properties;
-        $this->view = $view;
+        parent::__construct($properties, $view);
         $this->fieldType();
-        $this->setId();
-        $this->setTitle();
-    }
-
-    /**
-     * Set a default ID attribute if not defined.
-     *
-     * @return void
-     */
-    protected function setId()
-    {
-        $this['id'] = isset($this['id']) ? $this['id'] : $this['name'].'-id';
-    }
-
-    /**
-     * Set a default label title, display text if not defined.
-     *
-     * @return void
-     */
-    protected function setTitle()
-    {
-        $this['title'] = isset($this['title']) ? ucfirst($this['title']) : ucfirst($this['name']);
     }
 
     /**

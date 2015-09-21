@@ -248,17 +248,17 @@ class FieldFactory
      * @link http://codex.wordpress.org/Function_Reference/wp_editor
      *
      * @param string $name The name attribute if the editor field.
+     * @param array $features Custom field features - title, info.
      * @param array $settings The 'wp_editor' settings.
-     * @param array $extras
      * @return \Themosis\Field\Fields\EditorField
      */
-    public function editor($name, array $settings = [], array $extras = [])
+    public function editor($name, array $features = [], array $settings = [])
     {
-        // $name may only contain lower-case characters.
-        $name = strtolower($name);
-
-        $properties = compact('name', 'settings');
-        $properties = array_merge($extras, $properties);
+        $properties = [
+            'features'  => $features,
+            'settings'  => $settings,
+            'name'      => strtolower($name) // $name may only contain lower-case characters.
+        ];
 
         return $this->make('Themosis\\Field\\Fields\\EditorField', $properties);
     }

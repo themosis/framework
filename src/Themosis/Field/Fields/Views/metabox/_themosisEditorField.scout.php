@@ -1,7 +1,7 @@
-<?php wp_editor($field['value'], $field['id'], $field['settings']); ?>
+<?php wp_editor($field['value'], $field['atts']['id'], $field['settings']); ?>
 
-@if(isset($field['info']))
+@if(isset($field['features']['info']))
     <div class="themosis-field-info">
-        <p>{{ $field['info'] }}</p>
+        <p>{{ $field['features']['info'] }}</p>
     </div>
 @endif
