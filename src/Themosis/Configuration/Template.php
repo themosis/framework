@@ -26,7 +26,7 @@ class Template
 	public function make()
 	{
 		// Set an empty value for no templates.
-		$templateNames = array_merge(['none' => __('- None -', THEMOSIS_FRAMEWORK_TEXTDOMAIN)], $this->names());
+		$templateNames = array_merge(['none' => __('None')], $this->names());
 
 		// Build a select field
 		Metabox::make(__('Template'), 'page', [
@@ -34,7 +34,7 @@ class Template
             'priority'  => 'core',
             'id'        => 'themosisTemplate'
         ])->set([
-			Field::select('_themosisPageTemplate', [$templateNames], ['title' => __('Name', THEMOSIS_FRAMEWORK_TEXTDOMAIN)])
+			Field::select('_themosisPageTemplate', [$templateNames], ['title' => __('Name')])
 		]);
 
         return $this;
