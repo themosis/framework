@@ -267,14 +267,15 @@ class FieldFactory
      * Define a CollectionField instance.
      *
      * @param string $name The name attribute.
-     * @param array $extras
+     * @param array $features Custom field features - title, info, type, limit.
      * @return \Themosis\Field\Fields\CollectionField
      */
-    public function collection($name, array $extras = [])
+    public function collection($name, array $features = [])
     {
-        $properties = compact('name');
-
-        $properties = array_merge($extras, $properties);
+        $properties = [
+            'features'  => $features,
+            'name'      => $name
+        ];
 
         return $this->make('Themosis\\Field\\Fields\\CollectionField', $properties);
     }

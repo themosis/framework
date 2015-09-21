@@ -14,36 +14,9 @@ class CollectionField extends FieldBuilder implements IField
     public function __construct(array $properties, ViewFactory $view)
     {
         parent::__construct($properties, $view);
-        $this->setType();
-        $this->setLimit();
+        $this->setType(); // Set in parent class - setup the type of media to insert.
+        $this->setLimit(); // Set in parent class - setup the number of media files to insert.
         $this->fieldType();
-    }
-
-    /**
-     * Set the type data of the media to insert.
-     * If no type is defined, default to 'image'.
-     *
-     * @return void
-     */
-    protected function setType()
-    {
-        $allowed = ['image', 'application', 'video', 'audio'];
-
-        if(isset($this['type']) && !in_array($this['type'], $allowed)){
-            $this['type'] = 'image';
-        } elseif(!isset($this['type'])){
-            $this['type'] = 'image';
-        }
-    }
-
-    /**
-     * Define the limit of media files we can add.
-     *
-     * @return void
-     */
-    protected function setLimit()
-    {
-        $this['limit'] = isset($this['limit']) ? (int)$this['limit'] : 0;
     }
 
     /**

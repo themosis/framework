@@ -92,6 +92,48 @@ abstract class FieldBuilder extends DataContainer
     }
 
     /**
+     * Set the type data of the media to insert.
+     * If no type is defined, default to 'image'.
+     *
+     * @return void
+     */
+    protected function setType()
+    {
+        $allowed = ['image', 'application', 'video', 'audio'];
+        $features = $this['features'];
+
+        if (isset($features['type']) && !in_array($features['type'], $allowed))
+        {
+            $features['type'] = 'image';
+        }
+        elseif (!isset($features['type']))
+        {
+            $features['type'] = 'image';
+        }
+
+        // Set the features back.
+        $this['features'] = $features;
+
+        // Set the data-type attribute.
+        $atts = $this['atts'];
+        $atts['data-type'] = $this['features']['type'];
+        $this['atts'] = $atts;
+    }
+
+    /**
+     * Define the limit of media files or rows we can add.
+     *
+     * @return void
+     */
+    protected function setLimit()
+    {
+        $features = $this['features'];
+        $limit = isset($features['limit']) ? (int) $features['limit'] : 0;
+        $features['limit'] = $limit;
+        $this['features'] = $features;
+    }
+
+    /**
      * Method that return the field input type.
      *
      * @return string

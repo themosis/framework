@@ -1,5 +1,5 @@
 <!-- Collection field -->
-<div class="themosis-collection-wrapper" data-type="{{ $field['type'] }}" data-limit="{{ $field['limit'] }}" data-order="1" data-name="{{ $field['name'] }}[]" data-field="collection">
+<div class="themosis-collection-wrapper" data-type="{{ $field['features']['type'] }}" data-limit="{{ $field['features']['limit'] }}" data-order="1" data-name="{{ $field['name'] }}[]" data-field="collection">
     <script id="themosis-collection-item-template" type="text/template">
         <input type="hidden" name="{{ $field['name'] }}[]" value="<%= value %>" data-field="collection"/>
         <div class="themosis-collection__item">
@@ -24,7 +24,7 @@
                 @if (!empty($field['value']) && is_array($field['value']))
                     @foreach($field['value'] as $i => $item)
                         <li>
-                            {{ Themosis\Facades\Form::hidden($field['name'].'[]', $item, array('data-field' => 'collection', 'data-limit' => 10)) }}
+                            {{ Themosis\Facades\Form::hidden($field['name'].'[]', $item, ['data-field' => 'collection']) }}
                             <div class="themosis-collection__item">
                                 <?php
                                     $isFile = false;
@@ -60,12 +60,12 @@
         <!-- End collection -->
     </div>
     <div class="themosis-collection-buttons">
-        <button id="themosis-collection-add" type="button" class="button button-primary <?php if ($field['limit'] && !empty($field['value']) && is_array($field['value']) && $field['limit'] <= count($field['value'])) { echo('disabled'); } ?>"><?php _e('Add'); ?></button>
+        <button id="themosis-collection-add" type="button" class="button button-primary <?php if ($field['features']['limit'] && !empty($field['value']) && is_array($field['value']) && $field['features']['limit'] <= count($field['value'])) { echo('disabled'); } ?>"><?php _e('Add'); ?></button>
         <button id="themosis-collection-remove" type="button" class="button button-primary themosis-button-remove"><?php _e('Remove'); ?></button>
     </div>
-    @if(isset($field['info']))
+    @if(isset($field['features']['info']))
         <div class="themosis-field-info">
-            <p>{{ $field['info'] }}</p>
+            <p>{{ $field['features']['info'] }}</p>
         </div>
     @endif
 </div>

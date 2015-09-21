@@ -15,36 +15,7 @@ class MediaField extends FieldBuilder implements IField
     {
         parent::__construct($properties, $view);
         $this->fieldType();
-        $this->setType();
-    }
-
-    /**
-     * Set the type data of the media to insert.
-     * If no type is defined, default to 'image'.
-     *
-     * @return void
-     */
-    protected function setType()
-    {
-        $allowed = ['image', 'application', 'video', 'audio'];
-        $features = $this['features'];
-
-        if (isset($features['type']) && !in_array($features['type'], $allowed))
-        {
-            $features['type'] = 'image';
-        }
-        elseif (!isset($features['type']))
-        {
-            $features['type'] = 'image';
-        }
-
-        // Set the features back.
-        $this['features'] = $features;
-
-        // Set the data-type attribute.
-        $atts = $this['atts'];
-        $atts['data-type'] = $this['features']['type'];
-        $this['atts'] = $atts;
+        $this->setType(); // Set in parent class - setup the type of media to insert.
     }
 
     /**
@@ -55,16 +26,6 @@ class MediaField extends FieldBuilder implements IField
     protected function fieldType()
     {
         $this->type = 'hidden';
-    }
-
-    /**
-     * Set a default label title, display text if not defined.
-     *
-     * @return void
-     */
-    protected function setTitle()
-    {
-        $this['title'] = isset($this['title']) ? ucfirst($this['title']) : ucfirst($this['name']);
     }
 
     /**
