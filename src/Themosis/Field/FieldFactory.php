@@ -231,14 +231,16 @@ class FieldFactory
      *
      * @param string $name The name attribute of the infinite inner inputs.
      * @param array $fields The fields to repeat.
-     * @param array $extras
+     * @param array $features Custom field features - title, info, limit.
      * @return \Themosis\Field\Fields\InfiniteField
      */
-    public function infinite($name, array $fields, array $extras = [])
+    public function infinite($name, array $fields, array $features = [])
     {
-        $properties = compact('name', 'fields');
-
-        $properties = array_merge($extras, $properties);
+        $properties = [
+            'features'  => $features,
+            'fields'    => $fields,
+            'name'      => $name
+        ];
 
         return $this->make('Themosis\\Field\\Fields\\InfiniteField', $properties);
     }

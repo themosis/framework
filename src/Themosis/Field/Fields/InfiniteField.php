@@ -20,32 +20,10 @@ class InfiniteField extends FieldBuilder implements IField
      */
     public function __construct(array $properties, ViewFactory $view)
     {
-        $this->properties = $properties;
-        $this->view = $view;
-        $this->setTitle();
+        parent::__construct($properties, $view);
         $this->setRows();
         $this->setLimit();
         $this->fieldType();
-    }
-
-    /**
-     * Define the limit of rows we can add.
-     *
-     * @return void
-     */
-    protected function setLimit()
-    {
-        $this['limit'] = isset($this['limit']) ? (int)$this['limit'] : 0;
-    }
-
-    /**
-     * Set a default label title, display text if not defined.
-     *
-     * @return void
-     */
-    protected function setTitle()
-    {
-        $this['title'] = isset($this['title']) ? ucfirst($this['title']) : ucfirst($this['name']);
     }
 
     /**
