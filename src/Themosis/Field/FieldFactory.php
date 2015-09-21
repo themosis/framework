@@ -284,13 +284,18 @@ class FieldFactory
      * Define a ColorField instance.
      *
      * @param string $name The name attribute.
-     * @param array $extras
+     * @param array $features Custom field features - title, info.
+     * @param array $attributes Input html attributes.
      * @return \Themosis\Field\Fields\ColorField
      */
-    public function color($name, array $extras = [])
+    public function color($name, array $features = [], array $attributes = [])
     {
-        $properties = compact('name');
-        $properties = array_merge(['class' => 'themosis-color-field'], $extras, $properties);
+        $properties = [
+            'features'  => $features,
+            'atts'      => array_merge($attributes, ['class' => 'themosis-color-field', 'data-field' => 'text']),
+            'name'      => $name
+        ];
+
         return $this->make('Themosis\\Field\\Fields\\ColorField', $properties);
     }
 
