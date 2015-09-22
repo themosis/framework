@@ -17,10 +17,10 @@
                         <?php
                         foreach($field['fields'] as $f):
                             // Set the id attribute.
-                            $f_atts = $f['atts'];
-                            $defaultId = $f_atts['id'];
-                            $f_atts['id'] = $field['name'].'-'.$i.'-'.$f['name'].'-id';
-                            $f['atts'] = $f_atts;
+                            $f_atts = $f['atts']; // Grab ALL attributes of the field.
+                            $defaultId = $f_atts['id']; // Keep a copy of the field id attribute.
+                            $f_atts['id'] = $field['name'].'-'.$i.'-'.$f['name'].'-id'; // Update the id attribute of the field.
+                            $f['atts'] = $f_atts; // Update ALL attributes of the field. Contains its new id value.
 
                             // Grab the value if it exists.
                             if(isset($field['value'][$i][$f['name']])){
@@ -37,9 +37,9 @@
                             echo(Themosis\Facades\View::make('_themosisMetaboxRow', ['field' => $f])->render());
 
                             // Reset Id, name and value.
-                            $f_atts['id'] = $defaultId;
-                            $f['atts'] = $f_atts;
-                            $f['name'] = $defaultName;
+                            $f_atts['id'] = $defaultId; // Reset field id attribute to its original value.
+                            $f['atts'] = $f_atts; // Update ALL attributes of the field. Contains its original id value.
+                            $f['name'] = $defaultName; // Reset name value with its original name.
                             unset($f['value']);
                         endforeach;
                         ?>

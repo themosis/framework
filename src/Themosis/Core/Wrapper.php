@@ -17,8 +17,8 @@ abstract class Wrapper
         $parsedValue = null;
 
         // No data found, define a default by field type.
-        switch($field->getFieldType()){
-
+        switch($field->getFieldType())
+        {
             case 'checkbox':
             case 'radio':
             case 'select':
@@ -56,7 +56,8 @@ abstract class Wrapper
      */
     protected function parseString(IField $field, $value = '')
     {
-        return (empty($value) && isset($field['default'])) ? $field['default'] : $value;
+        $features = $field['features'];
+        return (empty($value) && isset($features['default'])) ? $features['default'] : $value;
     }
 
     /**
@@ -68,11 +69,13 @@ abstract class Wrapper
      */
     protected function parseArrayable(IField $field, $value = [])
     {
+        $features = $field['features'];
+
         if (is_null($value) || ('0' !== $value && empty($value)))
         {
-            if (isset($field['default']))
+            if (isset($features['default']))
             {
-                return (array) $field['default'];
+                return (array) $features['default'];
             }
 
             return [];
