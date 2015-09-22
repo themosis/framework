@@ -219,7 +219,7 @@ class FieldFactory
     {
         $properties = [
             'features'  => $features,
-            'atts'      => ['id' => 'themosis-media-input', 'data-field' => 'media'],
+            'atts'      => ['class' => 'themosis-media-input', 'data-field' => 'media'],
             'name'      => $name
         ];
 

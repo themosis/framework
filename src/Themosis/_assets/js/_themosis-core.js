@@ -499,7 +499,7 @@
         {
             // Init field properties.
             // The hidden input DOM element.
-            this.input = this.$el.find('#themosis-media-input');
+            this.input = this.$el.find('.themosis-media-input');
 
             // The <p> DOM element.
             this.display = this.$el.find('p.themosis-media__path');
@@ -693,7 +693,7 @@
 
     _.each(mediaFields, function(elem)
     {
-        var input = $(elem).find('input#themosis-media-input');
+        var input = $(elem).find('input.themosis-media-input');
 
         var data = new MediaApp.Models.Media({
             value: input.val(),
