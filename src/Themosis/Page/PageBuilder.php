@@ -293,7 +293,7 @@ class PageBuilder extends Wrapper
                 // Add the section to the field.
                 $setting['section'] = $section;
 
-                add_settings_field($setting['name'], $setting['title'], array($this, 'displaySettings'), $section, $section, $setting);
+                add_settings_field($setting['name'], $setting['features']['title'], array($this, 'displaySettings'), $section, $section, $setting);
             }
         }
 
@@ -340,7 +340,7 @@ class PageBuilder extends Wrapper
                 // it is associated to the page slug.
                 $setting['section'] = $this->datas['slug'];
 
-                add_settings_field($setting['name'], $setting['title'], array($this, 'displaySettings'), $this->datas['slug'], $section, $setting);
+                add_settings_field($setting['name'], $setting['features']['title'], array($this, 'displaySettings'), $this->datas['slug'], $section, $setting);
             }
         }
 
