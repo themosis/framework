@@ -136,7 +136,7 @@ class TaxField
             // Register the delete hook in order to remove the custom fields
             // from the options table.
             /*-----------------------------------------------------------------------*/
-            add_action('delete_term', array($this,'delete'), 10,2);
+            add_action('delete_term', array($this,'delete'));
             
             return $this;
         	
@@ -227,7 +227,7 @@ class TaxField
      * @return void
      * @ignore
      */
-    public function delete(\stdClass $term, $term_id)
+    public function delete($term_id)
     {
         $key = $this->slug.'_'.$term_id;
         
