@@ -43,7 +43,7 @@ $paths = apply_filters('themosis_application_paths', [
     'sys'       => dirname(__DIR__).DS.'src'.DS.'Themosis'.DS
 ]);
 
-$app->bindInstallPaths($paths);
+$app->bindInstallPaths($GLOBALS['themosis_paths']);
 
 /*----------------------------------------------------*/
 // Bind the application in the container.

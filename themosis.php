@@ -20,6 +20,26 @@ defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
 defined('THEMOSIS_FRAMEWORK_TEXTDOMAIN') ? THEMOSIS_FRAMEWORK_TEXTDOMAIN : define('THEMOSIS_FRAMEWORK_TEXTDOMAIN', 'themosis-framework');
 
 /**
+ * Helper function to set the paths.
+ *
+ * @param array
+ * @return void
+ */
+if (!function_exists('themosis_set_paths'))
+{
+    function themosis_set_paths(array $paths)
+    {
+        foreach ($paths as $name => $path)
+        {
+            if (!isset($GLOBALS['themosis_paths'][$name]))
+            {
+                $GLOBALS['themosis_paths'][$name] = realpath($path).DS;
+            }
+        }
+    }
+}
+
+/**
  * Helper function to retrieve the path.
  *
  * @param string
@@ -137,7 +157,8 @@ if (!class_exists('THFWK_Themosis'))
             }
 
             // Set the framework paths and starts the framework.
-            add_action('after_setup_theme', [$this, 'bootstrap']);
+            //add_action('after_setup_theme', [$this, 'bootstrap']);
+            $this->bootstrap();
         }
 
         /**
@@ -162,20 +183,16 @@ if (!class_exists('THFWK_Themosis'))
             // Framework base path.
             $paths['sys'] = __DIR__.DS.'src'.DS.'Themosis'.DS;
 
+            $paths['storage'] = '/Users/julienlambe/Sites/themosis-classic/wp-content/storage/';
+
             // Register globally the paths
-            foreach ($paths as $name => $path)
-            {
-               if (!isset($GLOBALS['themosis_paths'][$name]))
-               {
-                   $GLOBALS['themosis_paths'][$name] = realpath($path).DS;
-               }
-            }
+            themosis_set_paths($paths);
 
             // Bootstrap the framework
-            if (isset($GLOBALS['THFWK_Themosis']))
-            {
+            //if (isset($GLOBALS['THFWK_Themosis']))
+            //{
                 require_once themosis_path('plugin').'bootstrap'.DS.'start.php';
-            }
+            //}
         }
 
         /**
@@ -194,8 +211,4 @@ if (!class_exists('THFWK_Themosis'))
  * Load the main class.
  *
  */
-add_action('plugins_loaded', function(){
-
-	$GLOBALS['THFWK_Themosis'] = THFWK_Themosis::getInstance();
-
-});
+$GLOBALS['THFWK_Themosis'] = THFWK_Themosis::getInstance();
