@@ -76,7 +76,6 @@ class ViewIgniterService extends IgniterService{
         $app->bindShared('scout.compiler', function($app){
 
             $storage = $app['path.storage'].'views'.DS;
-            //$storage = null;
 
             return new ScoutCompiler($storage);
 
@@ -97,7 +96,7 @@ class ViewIgniterService extends IgniterService{
         $this->app->bindShared('view.finder', function($app){
 
             // Paths to view directories.
-            $paths = apply_filters('themosisViewPaths', array());
+            $paths = apply_filters('themosisViewPaths', []);
 
             return new ViewFinder($paths);
 

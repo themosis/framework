@@ -38,11 +38,6 @@ $app = new Themosis\Core\Application();
 /*----------------------------------------------------*/
 // Set the application paths.
 /*----------------------------------------------------*/
-$paths = apply_filters('themosis_application_paths', [
-    'plugin'    => dirname(__DIR__),
-    'sys'       => dirname(__DIR__).DS.'src'.DS.'Themosis'.DS
-]);
-
 $app->bindInstallPaths($GLOBALS['themosis_paths']);
 
 /*----------------------------------------------------*/
@@ -68,11 +63,6 @@ $app->registerCoreContainerAliases();
 $app->registerCoreIgniters();
 
 /*----------------------------------------------------*/
-// Set application configurations.
-/*----------------------------------------------------*/
-do_action('themosis_configuration');
-
-/*----------------------------------------------------*/
 // Register framework view paths.
 /*----------------------------------------------------*/
 add_filter('themosisViewPaths', function($paths){
@@ -91,13 +81,12 @@ add_filter('themosisViewPaths', function($paths){
 /*----------------------------------------------------*/
 // Register framework asset paths.
 /*----------------------------------------------------*/
-add_filter('themosisAssetPaths', function($paths){
-
+add_filter('themosisAssetPaths', function($paths)
+{
     $coreUrl = themosis_plugin_url(dirname(__DIR__)).'/src/Themosis/_assets';
     $paths[$coreUrl] = themosis_path('sys').'_assets';
 
     return $paths;
-
 });
 
 /*----------------------------------------------------*/

@@ -23,10 +23,10 @@ class AssetIgniterService extends IgniterService {
      */
     protected function registerAssetFinder()
     {
-        $this->app->bindShared('asset.finder', function($app){
+        $this->app->bind('asset.finder', function($app){
 
             // Paths to asset directories.
-            $paths = apply_filters('themosisAssetPaths', array());
+            $paths = apply_filters('themosisAssetPaths', []);
 
             return new AssetFinder($paths);
 
