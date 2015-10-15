@@ -19,6 +19,11 @@ defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
 /*----------------------------------------------------*/
 defined('THEMOSIS_FRAMEWORK_TEXTDOMAIN') ? THEMOSIS_FRAMEWORK_TEXTDOMAIN : define('THEMOSIS_FRAMEWORK_TEXTDOMAIN', 'themosis-framework');
 
+/*----------------------------------------------------*/
+// Storage path.
+/*----------------------------------------------------*/
+defined('THEMOSIS_STORAGE') ? THEMOSIS_STORAGE : define('THEMOSIS_STORAGE', WP_CONTENT_DIR.DS.'storage');
+
 /**
  * Helper function to set the paths.
  *
@@ -183,7 +188,8 @@ if (!class_exists('THFWK_Themosis'))
             // Framework base path.
             $paths['sys'] = __DIR__.DS.'src'.DS.'Themosis'.DS;
 
-            $paths['storage'] = '/Users/julienlambe/Sites/themosis-classic/wp-content/storage/';
+            // Storage path.
+            $paths['storage'] = THEMOSIS_STORAGE;
 
             // Register globally the paths
             themosis_set_paths($paths);
