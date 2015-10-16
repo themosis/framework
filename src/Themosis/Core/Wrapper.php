@@ -116,6 +116,10 @@ abstract class Wrapper
                     // Get the associate field.
                     $f = $this->getInfiniteInnerField($fields, $name);
 
+                    // Check if the field still exists...
+                    // A value might still exists in database while the field might not.
+                    if ($name !== $f['name']) return;
+
                     // Apply default value if empty and if default exists.
                     $value[$i][$name] = $this->parseValue($f, $val);
                 }
