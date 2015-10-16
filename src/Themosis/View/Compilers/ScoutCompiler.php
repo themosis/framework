@@ -17,14 +17,14 @@ class ScoutCompiler extends Compiler implements ICompiler {
      *
      * @var array
      */
-    protected $echoTags = array('{{', '}}');
+    protected $echoTags = array('{{{', '}}}');
 
     /**
      * Opening and closing escaped tags.
      *
      * @var array
      */
-    protected $escapedTags = array('{{{', '}}}');
+    protected $escapedTags = array('{{', '}}');
 
     /**
      * List of lines to add to templates.
