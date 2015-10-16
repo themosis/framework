@@ -47,6 +47,8 @@ class Asset {
      */
     protected static $instances;
 
+    protected static $instantiated;
+
     /**
      * Build an Asset instance.
      *
@@ -85,7 +87,7 @@ class Asset {
      * values are used, simply keep the default front-end area.
      *
      * @param string $area Specify where to load the asset: 'admin' or 'login'.
-     * @return void
+     * @return Asset
      */
     public function to($area)
     {
@@ -94,6 +96,26 @@ class Asset {
             $this->area = $area;
             $this->orderInstances();
         }
+
+        return $this;
+    }
+
+    /**
+     * Localize data for the linked asset.
+     * Output JS object right before the script output.
+     *
+     * @param string $objectName The name of the JS variable that will hold the data.
+     * @param mixed $data Any data to attach to the JS variable: string, boolean, object, array, ...
+     * @return Asset
+     */
+    public function localize($objectName, $data)
+    {
+        if ('script' === $this->type)
+        {
+            $this->args['localize'][$objectName] = $data;
+        }
+
+        return $this;
     }
 
     /**
@@ -106,9 +128,8 @@ class Asset {
     {
         if (array_key_exists($this->key, static::$instances['front']))
         {
-            $instance = static::$instances['front'][$this->key];
             unset(static::$instances['front'][$this->key]);
-            static::$instances[$this->area][$instance->key] = $instance;
+            static::$instances[$this->area][$this->key] = $this;
         }
     }
 
@@ -130,6 +151,9 @@ class Asset {
                 {
                     foreach (static::$instances['front'] as $asset)
                     {
+                        // Check if asset has not yet been called...
+                        if (isset(static::$instantiated['front'][$asset->getKey()])) return;
+
                         $this->register($asset);
                     }
                 }
@@ -143,6 +167,9 @@ class Asset {
                 {
                     foreach (static::$instances['admin'] as $asset)
                     {
+                        // Check if asset has not yet been called...
+                        if (isset(static::$instantiated['admin'][$asset->getKey()])) return;
+
                         $this->register($asset);
                     }
                 }
@@ -156,6 +183,9 @@ class Asset {
                 {
                     foreach (static::$instances['login'] as $asset)
                     {
+                        // Check if asset has not yet been called...
+                        if (isset(static::$instantiated['login'][$asset->getKey()])) return;
+
                         $this->register($asset);
                     }
                 }
@@ -173,6 +203,9 @@ class Asset {
      */
     protected function register(Asset $asset)
     {
+        // Avoid duplicate calls to each instance.
+        if ($this->getArea() !== $asset->getArea()) return;
+
         if ($asset->getType() === 'script')
         {
             $this->registerScript($asset);
@@ -181,6 +214,9 @@ class Asset {
         {
             $this->registerStyle($asset);
         }
+
+        // Add asset to list of called instances.
+        static::$instantiated[$this->getArea()][$this->getKey()] = $this;
     }
 
     /**
@@ -197,6 +233,15 @@ class Asset {
         $version = (is_string($args['version'])) ? $args['version'] : false;
 
         wp_enqueue_script($args['handle'], $args['path'], $args['deps'], $version, $footer);
+
+        // Add localized data for scripts.
+        if (isset($args['localize']) && !empty($args['localize']))
+        {
+            foreach ($args['localize'] as $objectName => $data)
+            {
+                wp_localize_script($args['handle'], $objectName, $data);
+            }
+        }
     }
 
     /**
@@ -233,6 +278,26 @@ class Asset {
     public function getArgs()
     {
         return $this->args;
+    }
+
+    /**
+     * Return the asset area.
+     *
+     * @return string
+     */
+    public function getArea()
+    {
+        return $this->area;
+    }
+
+    /**
+     * Return the asset key.
+     *
+     * @return string
+     */
+    public function getKey()
+    {
+        return $this->key;
     }
 
 } 
