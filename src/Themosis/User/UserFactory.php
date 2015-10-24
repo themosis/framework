@@ -351,7 +351,8 @@ class UserFactory extends Wrapper implements IUser
     public function saveFields($id, $oldData = [])
     {
         // Check capability
-        if (!current_user_can($this->capability)) return;
+        $user = new \WP_User($id);
+        if (!in_array($this->capability, $user->allcaps)) return;
 
         // Check nonces
         $nonceName = (isset($_POST[Session::nonceName])) ? $_POST[Session::nonceName] : Session::nonceName;
