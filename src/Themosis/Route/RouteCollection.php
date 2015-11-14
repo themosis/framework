@@ -14,28 +14,28 @@ class RouteCollection implements Countable {
      *
      * @var array
      */
-    protected static $routes = array();
+    protected static $routes = [];
 
     /**
      * All routes flattened in the collection.
      * 'GET'.$condition' => $routeInstance
      * @var array
      */
-    protected static $allRoutes = array();
+    protected static $allRoutes = [];
 
     /**
      * A look-up table of routes by their names.
      *
      * @var array
      */
-    protected static $nameList = array();
+    protected static $nameList = [];
 
     /**
      * A look-up table of routes by controller action.
      *
      * @var array
      */
-    protected static $actionList = array();
+    protected static $actionList = [];
 
     /**
      * Add a Route instance to the collection.
@@ -79,19 +79,17 @@ class RouteCollection implements Countable {
         // to iterate through every route every time we need to perform a look-up.
         $action = $route->getAction();
 
-        if(isset($action['as'])){
-
+        if(isset($action['as']))
+        {
             static::$nameList[$action['as']] = $route;
-
         }
 
         // When the route is routing to a controller we will also store the action that
         // is used by the route. This will let us reverse route to controllers while
         // processing a request and easily generate URLs to the given controllers.
-        if(isset($action['controller'])){
-
+        if(isset($action['controller']))
+        {
             $this->addToActionList($action, $route);
-
         }
     }
 
@@ -104,10 +102,9 @@ class RouteCollection implements Countable {
      */
     protected function addToActionList(array $action, $route)
     {
-        if(!isset(static::$actionList[$action['controller']])){
-
+        if(!isset(static::$actionList[$action['controller']]))
+        {
             static::$actionList[$action['controller']] = $route;
-
         }
     }
 
@@ -135,39 +132,39 @@ class RouteCollection implements Countable {
      */
     protected function check(array $routesByCondition, Request $request)
     {
-        foreach($routesByCondition as $routes){
-
-            foreach($routes as $route){
-
-                if(call_user_func($route->condition(), $route->getParams())){
-
+        foreach($routesByCondition as $routes)
+        {
+            foreach($routes as $route)
+            {
+                if(call_user_func($route->condition(), $route->getParams()))
+                {
                     // Check if a template is associated and compare it to current route condition.
                     if($this->hasTemplate() && 'themosis_is_template' !== $route->condition()) continue;
 
                     // Check if http only.
-                    if($route->httpOnly()){
-                        if($request->isSecure()){
+                    if($route->httpOnly())
+                    {
+                        if($request->isSecure())
+                        {
                             continue;
                         }
                     }
 
                     // Check if https only.
-                    if($route->httpsOnly()){
-                        if(!$request->isSecure()){
+                    if($route->httpsOnly())
+                    {
+                        if(!$request->isSecure())
+                        {
                             continue;
                         }
                     }
 
                     return $route;
-
                 }
-
             }
-
         }
 
         return null;
-
     }
 
     /**
@@ -179,20 +176,17 @@ class RouteCollection implements Countable {
     {
         $qo = get_queried_object();
 
-        if(is_a($qo, 'WP_Post') && 'page' === $qo->post_type){
-
+        if(is_a($qo, 'WP_Post') && 'page' === $qo->post_type)
+        {
             $template = Meta::get($qo->ID, '_themosisPageTemplate');
 
-            if('none' !== $template && !empty($template)){
-
+            if('none' !== $template && !empty($template))
+            {
                 return true;
-
             }
-
         }
 
         return false;
-
     }
 
     /**
@@ -205,7 +199,7 @@ class RouteCollection implements Countable {
     {
         if(is_null($method)) return $this->getRoutes();
 
-        return array_get(static::$routes, $method, array());
+        return array_get(static::$routes, $method, []);
     }
 
     /**

@@ -10,7 +10,7 @@ abstract class DataContainer implements ArrayAccess{
      *
      * @var array
      */
-    protected $properties = array();
+    protected $properties = [];
 
     /**
      * Check if a property exists.

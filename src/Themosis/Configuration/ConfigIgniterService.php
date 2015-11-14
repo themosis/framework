@@ -27,7 +27,6 @@ class ConfigIgniterService extends IgniterService
         {
             // Paths to config directories.
             $paths = apply_filters('themosisConfigPaths', []);
-
             return new ConfigFinder($paths);
         });
     }

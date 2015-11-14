@@ -8,21 +8,21 @@ class ConfigFinder
      *
      * @var array
      */
-    protected $paths = array();
+    protected $paths = [];
 
     /**
      * The list of found configuration files.
      *
      * @var array
      */
-    protected $files = array();
+    protected $files = [];
 
     /**
      * The file extensions.
      *
      * @var array
      */
-    protected $extensions = array('config.php', 'php');
+    protected $extensions = ['config.php', 'php'];
 
     public function __construct(array $paths)
     {
@@ -74,10 +74,9 @@ class ConfigFinder
      */
     protected function getPossibleFiles($name)
     {
-        return array_map(function($extension) use($name) {
-
+        return array_map(function($extension) use($name)
+        {
             return str_replace('.', DS, $name).'.'.$extension;
-
         }, $this->extensions);
     }
 }

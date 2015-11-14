@@ -17,14 +17,14 @@ class ViewFinder {
      *
      * @var array
      */
-    protected $views = array();
+    protected $views = [];
 
     /**
      * The view file extensions.
      *
      * @var array
      */
-    protected $extensions = array('scout.php', 'php');
+    protected $extensions = ['scout.php', 'php'];
 
     /**
      * Build a ViewFinder instance.
@@ -82,10 +82,9 @@ class ViewFinder {
      */
     protected function getPossibleViewFiles($name)
     {
-        return array_map(function($extension) use($name) {
-
+        return array_map(function($extension) use($name)
+        {
             return str_replace('.', DS, $name).'.'.$extension;
-
         }, $this->extensions);
     }
 

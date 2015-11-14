@@ -65,8 +65,8 @@ $app->registerCoreIgniters();
 /*----------------------------------------------------*/
 // Register framework view paths.
 /*----------------------------------------------------*/
-add_filter('themosisViewPaths', function($paths){
-
+add_filter('themosisViewPaths', function($paths)
+{
     $paths[] = themosis_path('sys').'Metabox'.DS.'Views'.DS;
     $paths[] = themosis_path('sys').'Page'.DS.'Views'.DS;
     $paths[] = themosis_path('sys').'PostType'.DS.'Views'.DS;
@@ -75,7 +75,6 @@ add_filter('themosisViewPaths', function($paths){
     $paths[] = themosis_path('sys').'User'.DS.'Views'.DS;
 
     return $paths;
-
 });
 
 /*----------------------------------------------------*/
@@ -101,8 +100,8 @@ $images->make();
 // Allow developers to add parameters to
 // the admin global JS object.
 /*----------------------------------------------------*/
-add_action('admin_head', function(){
-
+add_action('admin_head', function()
+{
     $datas = apply_filters('themosisAdminGlobalObject', []);
 
     $output = "<script type=\"text/javascript\">\n\r";
@@ -130,12 +129,10 @@ add_action('admin_head', function(){
 // Register framework core assets URL to
 // admin global object.
 /*----------------------------------------------------*/
-add_filter('themosisAdminGlobalObject', function($paths){
-
+add_filter('themosisAdminGlobalObject', function($paths)
+{
     $paths['_themosisAssets'] = themosis_plugin_url(dirname(__DIR__)).'/src/Themosis/_assets';
-
     return $paths;
-
 });
 
 /*----------------------------------------------------*/

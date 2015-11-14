@@ -63,7 +63,7 @@ class Router {
      */
     public function get($condition, $action)
     {
-        return $this->addRoute(array('GET', 'HEAD'), $condition, $action);
+        return $this->addRoute(['GET', 'HEAD'], $condition, $action);
     }
 
     /**
@@ -87,8 +87,7 @@ class Router {
      */
     public function any($condition, $action)
     {
-        $verbs = array('GET', 'HEAD', 'POST');
-
+        $verbs = ['GET', 'HEAD', 'POST'];
         return $this->addRoute($verbs, $condition, $action);
     }
 
@@ -130,11 +129,9 @@ class Router {
     {
         // Check if we're using a controller and defined its
         // $action closure.
-        if($this->routingToController($action)){
-
-            // $action = array('uses' => $closure, 'controller' => 'SomeController@oneMethod')
+        if($this->routingToController($action))
+        {
             $action = $this->getControllerAction($action);
-
         }
 
         return new Route($methods, $condition, $action);
@@ -161,10 +158,9 @@ class Router {
      */
     protected function getControllerAction($action)
     {
-        if(is_string($action)){
-
-            $action = array('uses' => $action);
-
+        if(is_string($action))
+        {
+            $action = ['uses' => $action];
         }
 
         $action['controller'] = $action['uses'];
@@ -184,8 +180,8 @@ class Router {
     {
         $d = $this->getControllerDispatcher();
 
-        return function() use($d, $controller){
-
+        return function() use($d, $controller)
+        {
             $ioc = $d->getContainer();
             $router = $ioc['router'];
             $route = $router->current();
@@ -207,10 +203,9 @@ class Router {
      */
     public function getControllerDispatcher()
     {
-        if(is_null($this->controllerDispatcher)){
-
+        if(is_null($this->controllerDispatcher))
+        {
             $this->controllerDispatcher = new ControllerDispatcher($this, $this->container);
-
         }
 
         return $this->controllerDispatcher;
@@ -245,11 +240,8 @@ class Router {
     public function dispatch(Request $request)
     {
         $this->currentRequest = $request;
-
         $response = $this->dispatchToRoute($request);
-
         $response = $this->prepareResponse($request, $response);
-
         return $response;
     }
 
@@ -266,15 +258,14 @@ class Router {
         //@todo implement route before actions
 
         // Check if a route exists for the request.
-        if(!is_null($route)){
-
+        if(!is_null($route))
+        {
             $response = $route->run();
-
-        } else {
-
+        }
+        else
+        {
             $view = $this->container['view'];
             $response = $view->make('_themosisNoRoute');
-
         }
 
         $response = $this->prepareResponse($request, $response);
@@ -291,7 +282,6 @@ class Router {
     protected function findRoute($request)
     {
         $this->current = $route = $this->routes->match($request);
-
         return $route;
     }
 
@@ -304,13 +294,11 @@ class Router {
      */
     protected function prepareResponse($request, $response)
     {
-        if(!$response instanceof SymfonyResponse){
-
+        if(!$response instanceof SymfonyResponse)
+        {
             $response = new SymfonyResponse($response);
-
         }
 
         return $response->prepare($request);
     }
-
 } 

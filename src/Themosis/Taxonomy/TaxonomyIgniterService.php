@@ -12,12 +12,10 @@ class TaxonomyIgniterService extends IgniterService {
      */
     public function ignite()
     {
-        $this->app->bind('taxonomy', function($app){
-
+        $this->app->bind('taxonomy', function($app)
+        {
             $data = new TaxonomyData();
-
             return new TaxonomyBuilder($data);
-
         });
     }
 }

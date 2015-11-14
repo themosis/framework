@@ -13,49 +13,49 @@ class Container implements ArrayAccess{
      *
      * @var array
      */
-    protected $resolved = array();
+    protected $resolved = [];
 
     /**
      * The container's bindings.
      *
      * @var array
      */
-    protected $bindings = array();
+    protected $bindings = [];
 
     /**
      * Loaded instances aka the builders. (FormBuilder,...)
      *
      * @var array
      */
-    protected $instances = array();
+    protected $instances = [];
 
     /**
      * The registered type aliases.
      *
      * @var array
      */
-    protected $aliases = array();
+    protected $aliases = [];
 
     /**
      * All of the registered rebound callbacks.
      *
      * @var array
      */
-    protected $reboundCallbacks = array();
+    protected $reboundCallbacks = [];
 
     /**
      * All of the registered resolving callbacks.
      *
      * @var array
      */
-    protected $resolvingCallbacks = array();
+    protected $resolvingCallbacks = [];
 
     /**
      * All of the global resolving callbacks.
      *
      * @var array
      */
-    protected $globalResolvingCallbacks = array();
+    protected $globalResolvingCallbacks = [];
 
     /**
      * Register an existing instance as shared in the container.
@@ -72,7 +72,6 @@ class Container implements ArrayAccess{
         if (is_array($abstract))
         {
             list($abstract, $alias) = $this->extractAlias($abstract);
-
             $this->alias($abstract, $alias);
         }
 
@@ -131,7 +130,7 @@ class Container implements ArrayAccess{
             return $this->reboundCallbacks[$abstract];
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -141,7 +140,7 @@ class Container implements ArrayAccess{
      * @param array $parameters
      * @return mixed
      */
-    public function make($abstract, $parameters = array())
+    public function make($abstract, $parameters = [])
     {
         $abstract = $this->getAlias($abstract);
 
@@ -269,7 +268,7 @@ class Container implements ArrayAccess{
      * @return mixed
      * @throws \Exception
      */
-    public function build($concrete, $parameters = array())
+    public function build($concrete, $parameters = [])
     {
         // If the concrete type is actually a Closure, we will just execute it and
         // hand back the results of the functions, which allows functions to be
@@ -329,7 +328,6 @@ class Container implements ArrayAccess{
         if (is_array($abstract))
         {
             list($abstract, $alias) = $this->extractAlias($abstract);
-
             $this->alias($abstract, $alias);
         }
 
@@ -427,10 +425,9 @@ class Container implements ArrayAccess{
      */
     protected function getClosure($abstract, $concrete)
     {
-        return function($c, $parameters = array()) use ($abstract, $concrete)
+        return function($c, $parameters = []) use ($abstract, $concrete)
         {
             $method = ($abstract == $concrete) ? 'build' : 'make';
-
             return $c->$method($concrete, $parameters);
         };
     }
@@ -548,7 +545,7 @@ class Container implements ArrayAccess{
      */
     protected function getDependencies($parameters, array $primitives = array())
     {
-        $dependencies = array();
+        $dependencies = [];
 
         foreach ($parameters as $parameter)
         {
@@ -660,7 +657,7 @@ class Container implements ArrayAccess{
         // If the value is not a Closure, we will make it one. This simply gives
         // more "drop-in" replacement functionality for the Pimple which this
         // container's simplest functions are base modeled and built after.
-        if ( ! $value instanceof Closure)
+        if (!$value instanceof Closure)
         {
             $value = function() use ($value)
             {

@@ -29,14 +29,14 @@ class Route {
      *
      * @var array
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * WordPress conditional tags.
      *
      * @var array
      */
-    protected $conditions = array(
+    protected $conditions = [
         '404'			       => 'is_404',
         'archive'		       => 'is_archive',
         'attachment'	       => 'is_attachment',
@@ -60,7 +60,7 @@ class Route {
         'template'             => 'themosis_is_template',
         'time'			       => 'is_time',
         'year'			       => 'is_year'
-    );
+    ];
 
     /**
      * Build a Route instance.
@@ -89,7 +89,7 @@ class Route {
         // it is available. Otherwise we will need to find it in the action list.
         if (is_callable($action))
         {
-            return array('uses' => $action);
+            return ['uses' => $action];
         }
         elseif (!isset($action['uses']))
         {
@@ -142,7 +142,7 @@ class Route {
     protected function parseCondition($condition)
     {
         // Allow developers to define non-core conditions by providing a key/value property.
-        $conditions = apply_filters('themosisRouteConditions', array());
+        $conditions = apply_filters('themosisRouteConditions', []);
         $conditions = $this->conditions + $conditions;
 
         if (isset($conditions[$condition]))
@@ -161,10 +161,9 @@ class Route {
      */
     protected function findClosure(array $action)
     {
-        return array_first($action, function($key, $value){
-
+        return array_first($action, function($key, $value)
+        {
             return is_callable($value);
-
         });
     }
 
@@ -179,7 +178,7 @@ class Route {
         global $post, $wp_query;
 
         // Pass WordPress globals to closures or controller methods as parameters.
-        $parameters = array_merge($this->parameters, array('post' => $post, 'query' => $wp_query));
+        $parameters = array_merge($this->parameters, ['post' => $post, 'query' => $wp_query]);
 
         // When no posts, $post is null.
         // When is null, set the parameter value of $post to false.
@@ -279,7 +278,7 @@ class Route {
      */
     public function getParams()
     {
-        return isset($this->action['params']) ? (array) $this->action['params'] : array();
+        return isset($this->action['params']) ? (array) $this->action['params'] : [];
     }
 
 } 

@@ -50,7 +50,7 @@ class View implements ArrayAccess, IRenderable {
      * @param string $path The view real path.
      * @param array $data The passed data to the view.
      */
-    public function __construct(ViewFactory $factory, IEngine $engine, $view, $path, $data = array())
+    public function __construct(ViewFactory $factory, IEngine $engine, $view, $path, $data = [])
     {
         $this->factory = $factory;
         $this->engine = $engine;
@@ -163,7 +163,7 @@ class View implements ArrayAccess, IRenderable {
      * @param array $data
      * @return \Themosis\View\View
      */
-    public function nest($key, $view, array $data = array())
+    public function nest($key, $view, array $data = [])
     {
         return $this->with($key, $this->factory->make($view, $data));
     }

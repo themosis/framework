@@ -75,7 +75,7 @@ abstract class Facade {
      */
     public static function clearResolvedInstances()
     {
-        static::$resolvedInstances = array();
+        static::$resolvedInstances = [];
     }
 
     /**
@@ -104,7 +104,7 @@ abstract class Facade {
         /**
          * Call the instance and its method.
          */
-        return call_user_func_array(array($instance, $method), $args);
+        return call_user_func_array([$instance, $method], $args);
     }
 
 } 

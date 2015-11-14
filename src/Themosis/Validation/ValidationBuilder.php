@@ -234,7 +234,6 @@ class ValidationBuilder implements IValidate
 	protected function validate_email($data, array $attributes = [])
 	{
 		$email = sanitize_email($data);
-
 		return is_email($email) ? $email : '';
 	}
 
@@ -397,7 +396,6 @@ class ValidationBuilder implements IValidate
 	protected function validate_file($data, array $attributes = [])
 	{
 		$ext = pathinfo($data, PATHINFO_EXTENSION);
-
 		return (in_array($ext, $attributes)) ? $data : '';
 	}
 

@@ -303,7 +303,7 @@ if (!function_exists('themosis_is_template'))
      * @param array $name Template properties.
      * @return boolean True: use of a template. False: no template.
      */
-    function themosis_is_template(array $name = array())
+    function themosis_is_template(array $name = [])
     {
         $queriedObject = get_queried_object();
 
@@ -423,7 +423,7 @@ if (!function_exists('array_set'))
             // values at the correct depth. Then we'll keep digging into the array.
             if ( ! isset($array[$key]) || ! is_array($array[$key]))
             {
-                $array[$key] = array();
+                $array[$key] = [];
             }
 
             $array =& $array[$key];

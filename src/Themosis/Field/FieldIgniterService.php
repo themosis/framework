@@ -12,10 +12,9 @@ class FieldIgniterService extends IgniterService {
      */
     public function ignite()
     {
-        $this->app->bindShared('field', function($app){
-
+        $this->app->bindShared('field', function($app)
+        {
             return new FieldFactory($app['view']);
-
         });
     }
 }
