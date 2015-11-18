@@ -1,6 +1,6 @@
 <!-- Default Themosis page view -->
 <div class="wrap">
-    <h2>{{ $__page->get('title') }}</h2>
+    <h1>{{ $__page->get('title') }}</h1>
 
     <?php
     settings_errors();
