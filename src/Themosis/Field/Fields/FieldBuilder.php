@@ -134,6 +134,21 @@ abstract class FieldBuilder extends DataContainer
     }
 
     /**
+     * Define a default value as array for checkable fields.
+     *
+     * @return void
+     */
+    protected function defaultCheckableValue()
+    {
+        if ('0' === $this['value']) return;
+
+        if (empty($this['value']))
+        {
+            $this['value'] = [];
+        }
+    }
+
+    /**
      * Method that return the field input type.
      *
      * @return string
