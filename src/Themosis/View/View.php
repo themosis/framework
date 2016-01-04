@@ -179,6 +179,16 @@ class View implements ArrayAccess, IRenderable {
     }
 
     /**
+     * Return array data - List of variables passed to the view.
+     *
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
      * Check if a view data exists.
      *
      * @param string $key The data key name.
