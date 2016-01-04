@@ -1,0 +1,472 @@
+/*
+|
+| Options input styles
+|
+*/
+.themosis-regular-text
+{
+	width: 299px;
+	padding: 3px;
+	border: 1px solid #dfdfdf;
+	margin: 1px;
+	height: 158px;
+}
+/*
+|
+| End Options input styles
+|
+*/
+
+/*
+|
+| Themosis custom field styles.
+|
+*/
+.themosis-field-container>td>label {
+    display: block;
+}
+
+/*
+|
+| Themosis Radio custom field.
+|
+*/
+.themosis-radio label{
+    display: block;
+}
+
+/*
+|
+| Metabox Infinite style
+|
+*/
+.themosis-infinite{
+	border-collapse: collapse;
+	width: 100%;
+	clear: both;
+	border-spacing: 0px;
+	background-color: #cbcbcb;
+}
+
+.themosis-infinite td{
+	margin: 0px;
+	padding: 0px;
+}
+
+/*--- INFINITE ROW ---*/
+.themosis-infinite-row{
+	background-color: #e1e1e1;
+	border: 1px solid #d0d0d0;
+}
+
+/*--- INFINITE ORDER CELL ---*/
+.themosis-infinite-order{
+	width: 31px;
+	text-align: center;
+	border-right: 1px solid #d0d0d0;
+	cursor: move;
+    min-width: 31px;
+    min-height: 31px;
+    vertical-align: middle;
+}
+
+.themosis-infinite-order span{
+	font-weight: 700;
+	color: #8d8d8d;
+	text-shadow: 0 1px 0 #fff;
+    display: inline-block;
+    padding: 13px 0;
+}
+
+/*--- INNER TABLE ---*/
+.themosis-infinite-inner{
+	padding: 1.5em 5px !important;
+	background-color: #f9f9f9;
+	box-shadow: inset 0 1px 0 #ffffff;
+	-webkit-box-shadow: inset 0 1px 0 #ffffff;
+    -moz-box-shadow: inset 0 1px 0 #ffffff;
+}
+
+.themosis-infinite-inner>table{
+	width: 100%;
+}
+
+/*--- INFINITE LABEL ---*/
+.themosis-infinite-label{
+	padding: 0 10px 0 10px !important;
+}
+
+/*--- INFINITE INPUT ---*/
+.themosis-infinite-input{
+	width: 80%;
+}
+
+/*--- INFINITE OPTIONS ---*/
+.themosis-infinite-options{
+	width: 31px;
+	text-align: center;
+	height: 100%;
+	border-left: 1px solid #d0d0d0;
+	position: relative;
+    min-width: 31px;
+    min-height: 31px;
+}
+
+/* ADD ROW BUTTON */
+.themosis-infinite-options:hover .themosis-infinite-add{
+	visibility: visible;
+}
+
+.themosis-infinite-add{
+	display: block;
+	width:18px;
+	height: 18px;
+	background: url('../images/infinite_sprite_001.png') 0 0 no-repeat;
+	margin-left: 7px;
+	cursor: pointer;
+	visibility: hidden;
+	position: absolute;
+}
+
+.themosis-infinite-add:hover{
+	background-position: -18px 0;
+}
+
+/* REMOVE ROW BUTTON */
+.themosis-infinite-remove{
+	display: inline-block;
+	width:18px;
+	height: 18px;
+	background: url('../images/infinite_sprite_001.png') 0 -18px no-repeat;
+    margin: 13px auto 9px;
+	cursor: pointer;
+}
+
+.themosis-infinite-remove:hover{
+	background-position: -18px -18px;
+}
+
+/*--- ADD FIELD ---*/
+.themosis-infinite-add-field-container{
+	padding: 10px 0;
+}
+
+/*--- PLACEHOLDER STYLE ---*/
+.themosis-ui-state-highlight{
+	display: block;
+}
+/*
+|
+| END Metabox Infinite style
+|
+*/
+
+/*
+|
+| Metabox Media style
+|
+*/
+.themosis-media{
+	border-collapse: collapse;
+	width: 100%;
+	clear: both;
+	border-spacing: 0px;
+}
+
+.themosis-media-preview{
+    margin: 0 !important;
+    padding: 0 10px 0 0 !important;
+    width: 100px !important;
+    vertical-align: top !important;
+}
+
+.themosis-media-preview .themosis-media-preview-inner{
+    width: 100px;
+    height: 100px;
+    background-color: #f3f3f3;
+    position: relative;
+    box-shadow: 0 0 0 1px #fff, 0 0 0 5px #e1e1e1;
+    margin: 5px;
+}
+
+.themosis-media-preview .themosis-media-preview-inner .centered{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-transform: translate(50%,50%);
+    -ms-transform: translate(50%,50%);
+    transform: translate(50%,50%);
+    pointer-events: none;
+}
+
+.themosis-media-preview .themosis-media-preview-inner .centered img{
+    position: absolute;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    display: block;
+    margin: 0 auto;
+    max-width:100px;
+}
+
+.themosis-media-preview .themosis-media-preview-inner .filename{
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    max-height: 100%;
+    word-wrap: break-word;
+    text-align: center;
+    font-weight: 700;
+    background: rgba(255,255,255,.8);
+}
+
+.themosis-media-preview .themosis-media-preview-inner .filename div{
+    padding: 0.4em 0.8em;
+}
+
+.themosis-media-preview .themosis-media-preview-inner .filename.show{
+    display: block;
+}
+
+.themosis-media-details{
+    vertical-align: top !important;
+    padding: 0 !important;
+}
+
+.themosis-media-inner{
+    padding: 5px 0 0 0;
+}
+
+.themosis-media-inner .themosis-media-infos{
+    padding-bottom: 7px;
+}
+
+.themosis-media-inner .themosis-media-infos h4{
+    padding: 0;
+    margin: 0 0 5px 0 !important;
+}
+
+.themosis-media-inner .themosis-media-infos .themosis-media__path{
+    background-color: #f0f0f0;
+    padding: 2px 5px 3px 5px;
+    margin-top: 0;
+    border: 1px solid #dddddd;
+    color: #888888;
+}
+
+.themosis-media-inner .themosis-media__buttons{
+    width: 100px;
+}
+
+.themosis-media--hidden{
+    display: none !important;
+}
+
+/*
+|
+| END Metabox Media style
+|
+*/
+
+/**
+ * Metabox Editor style
+*/
+.themosis-wp-editor .wp-editor-container{
+
+    background-color: #ffffff;
+
+}
+
+/*** Page API ***/
+.themosis-core-page table.form-table tbody tr>td>label{
+    display: block;
+}
+
+/*
+|
+| Collection field style
+|
+*/
+.themosis-collection-container{
+    display: none;
+    max-width: 100%;
+    background-color: #f3f3f3;
+    border: 1px solid #dddddd;
+    margin-bottom: 1em;
+}
+
+.themosis-collection-container.show{
+    display: block;
+}
+
+.themosis-collection{
+    padding: 5px;
+}
+
+.themosis-collection-list{
+    margin: 0;
+    padding: 0;
+}
+
+.themosis-collection-list:before, .themosis-collection-list:after{
+    content: '';
+    display: table;
+}
+
+.themosis-collection-list:after{
+    clear: both;
+}
+
+.themosis-collection-list li{
+    float: left;
+    display: block;
+    margin: 0;
+    padding: 10px;
+}
+
+.themosis-collection__item{
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 0 0 1px #fff, 0 0 0 5px #d3d3d3;
+    width: 100px;
+    height: 100px;
+    background-color: #f3f3f3;
+}
+
+.themosis-collection__item:active{
+    cursor: move;
+}
+
+.themosis-collection__item.selected, .themosis-collection__item:hover{
+    box-shadow: 0 0 0 1px #FFF, 0 0 0 5px #1E8CBE;
+}
+
+.themosis-collection__item .check{
+    display: none;
+}
+
+.themosis-collection__item.selected .check {
+    display: block !important;
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    z-index: 25;
+    width: 24px;
+    height: 24px;
+    outline: 0 none;
+    background: #1E8CBE none repeat scroll 0 0;
+    box-shadow: 0 0 0 1px #FFF, 0 0 0 2px #1E8CBE;
+}
+
+.themosis-collection__item.selected .check div, .themosis-collection__item.selected:hover .check div{
+    height: 15px;
+    width: 15px;
+    margin: 5px;
+    background-position: -21px 0;
+}
+
+.themosis-collection__item.selected:hover .check:hover div{
+    height: 15px;
+    width: 15px;
+    margin: 5px;
+    background-position: -60px 0;
+}
+
+.themosis-collection__item .centered{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-transform: translate(50%,50%);
+    -ms-transform: translate(50%,50%);
+    transform: translate(50%,50%);
+    pointer-events: none;
+}
+
+.themosis-collection__item img{
+    position: absolute;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    display: block;
+    margin: 0 auto;
+}
+
+.themosis-collection__item .filename{
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    max-height: 100%;
+    word-wrap: break-word;
+    text-align: center;
+    font-weight: 700;
+    background: rgba(255,255,255,.8);
+}
+
+.themosis-collection__item .filename div{
+    padding: 0.4em 0.8em;
+}
+
+.themosis-collection__item .filename.show{
+    display: block;
+}
+
+.themosis-collection-ui-state-highlight{
+    background-color: #ddd;
+    border: 3px dashed #aaa;
+    width: 94px;
+    height: 94px;
+    padding: 0;
+}
+
+.wp-core-ui .themosis-button-remove, .wp-core-ui .themosis-button-remove:link, .wp-core-ui .themosis-button-remove:visited{
+    background: none repeat scroll 0 0 #bc0b0b;
+    border-color: #a40a0a;
+    box-shadow: 0 1px 0 rgba(230, 13, 13, 1.0) inset, 0 1px 0 rgba(0, 0, 0, 0);
+    color: #FFF;
+    text-decoration: none;
+}
+
+#themosis-collection-remove{
+    display: none;
+}
+
+#themosis-collection-remove.show{
+    display: inline-block;
+}
+
+.wp-core-ui .themosis-button-remove:hover{
+    background: none repeat scroll 0 0 #a40a0a;
+    border-color: #8a0808;
+    box-shadow: 0 1px 0 rgba(204, 12, 12, 1.0) inset, 0 1px 0 rgba(0, 0, 0, 0);
+    color: #FFF;
+    text-decoration: none;
+}
+
+.wp-core-ui .themosis-button-remove:active{
+    background: none repeat scroll 0 0 #930909;
+    border-color: #8a0808;
+    box-shadow: none;
+    color: #FFF;
+    text-decoration: none;
+}
+
+/*
+|
+| Themosis custom submitdiv
+|
+*/
+#poststuff #themosisSubmitdiv .inside
+{
+    margin: 0;
+    padding: 0;
+}
