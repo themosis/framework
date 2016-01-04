@@ -72,7 +72,19 @@ class TaxonomyBuilder extends Wrapper {
         $this->datas['args'] = array_merge($this->datas['args'], $params);
 
         // Trigger the 'init' event in order to register the custom taxonomy.
-        $this->event->dispatch();
+        // Check if we are not already called by a method attached to the `init` hook.
+        $current = current_filter();
+
+        if ('init' === $current)
+        {
+            // If inside an `init` action, simply call the register method.
+            $this->register();
+        }
+        else
+        {
+            // Out of an `init` action, call the hook.
+            $this->event->dispatch();
+        }
 
         return $this;
     }
