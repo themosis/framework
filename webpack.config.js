@@ -36,9 +36,12 @@ module.exports = {
     },
     postcss: function()
     {
+        // Function called by the `postcss-loader`.
+        // Apply autoprefixr to css output.
         return [autoprefixer, precss];
     },
     plugins: [
+        // Extract CSS chunks to an external file.
         new ExtractTextPlugin('../css/[name].css', {allChunks: true}),
         new webpack.NoErrorsPlugin()
     ]
