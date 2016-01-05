@@ -7,7 +7,7 @@
   },
   "scripts": {
     "watch": "webpack --watch --progress --profile --colors",
-    "build": "webpack -p --progress --profile --colors",
+    "build": "webpack --progress --profile --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,6 +26,8 @@
   },
   "homepage": "https://github.com/themosis/framework",
   "devDependencies": {
+    "babel-core": "^6.3.26",
+    "babel-loader": "^6.2.1",
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.0",
     "git-branch": "^0.3.0",

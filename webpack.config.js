@@ -22,6 +22,11 @@ module.exports = {
     },
     module: {
       loaders: [
+          {
+              test: /\.js$/,
+              exclude: /node_modules/,
+              loader: 'babel-loader?cacheDirectory,presets[]=es2015',
+          },
           // Extract CSS files
           {
               test: /\.css$/,
@@ -44,5 +49,10 @@ module.exports = {
         // Extract CSS chunks to an external file.
         new ExtractTextPlugin('../css/[name].css', {allChunks: true}),
         new webpack.NoErrorsPlugin()
-    ]
+    ],
+    externals: {
+        jquery: 'jQuery',
+        backbone: 'Backbone',
+        underscore: '_'
+    }
 };
