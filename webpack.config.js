@@ -10,10 +10,10 @@ module.exports = {
     target: 'web',
     cache: true,
     entry: {
-        '_themosis-core': path.join(srcPath, 'stylus/screen.styl')
+        '_themosisCore': path.join(srcPath, 'components/components.js')
     },
     output: {
-        path: srcPath,
+        path: path.join(srcPath, 'js'),
         publicPath: '',
         filename: '[name].js'
     },
@@ -39,7 +39,7 @@ module.exports = {
         return [autoprefixer, precss];
     },
     plugins: [
-        new ExtractTextPlugin('./css/[name].css', {allChunks: true}),
+        new ExtractTextPlugin('../css/[name].css', {allChunks: true}),
         new webpack.NoErrorsPlugin()
     ]
 };
