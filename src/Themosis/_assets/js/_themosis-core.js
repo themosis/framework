@@ -418,7 +418,7 @@
     });
 
     // Implementation
-    var collections = $('div.themosis-collection-wrapper');
+    /*var collections = $('div.themosis-collection-wrapper');
 
     _.each(collections, function(elem)
     {
@@ -466,6 +466,7 @@
             });
         }
     });
+    */
 
     //------------------------------------------------
     // MEDIA - Custom field

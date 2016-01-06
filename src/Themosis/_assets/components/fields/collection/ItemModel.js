@@ -2,9 +2,9 @@ import Backbone from 'backbone';
 
 class ItemModel extends Backbone.Model
 {
-    constructor()
+    constructor(options)
     {
-        super();
+        super(options);
         this.defaults = {
             'selected': false,
             'value': '',  // The media file ID
