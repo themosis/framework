@@ -4,17 +4,26 @@ import Backbone from 'backbone';
 
 class ItemView extends Backbone.View
 {
-    constructor(options)
+    get tagName()
     {
-        super(options);
+        return 'li';
+    }
 
-        this.tagName = 'li';
-        this.template = '#themosis-collection-item-template';
-        this.events = {
+    get template()
+    {
+        return '#themosis-collection-item-template';
+    }
+
+    get events()
+    {
+        return {
             'click div.themosis-collection__item': 'select',
             'click a.check': 'removeItem'
         };
+    }
 
+    initialize(options)
+    {
         this.collectionView = options.collectionView;
         this.listenTo(this.collection, 'removeSelected', this.removeSelection);
     }

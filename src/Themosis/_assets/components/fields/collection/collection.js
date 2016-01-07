@@ -28,8 +28,6 @@ _.each(collections, elem =>
         el: collectionField
     });
 
-    console.log(c, cView);
-
     if (items.length)
     {
         _.each(items, el =>

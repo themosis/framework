@@ -14,10 +14,8 @@ class ItemsView extends Backbone.View
         };
     }
 
-    constructor(options)
+    initialize()
     {
-        super(options);
-
         // Bind to collection events
         this.collection.bind('itemsSelected', this.toggleRemoveButton, this);
         this.collection.bind('collectionToggle', this.toggleCollectionContainer, this);
@@ -201,8 +199,6 @@ class ItemsView extends Backbone.View
      */
     add(e)
     {
-        console.log('Add', e, this);
-
         // Check the Add button.
         let addButton = $(e.currentTarget);
 

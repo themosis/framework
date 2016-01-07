@@ -88,11 +88,11 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _underscore = __webpack_require__(6);
+	var _underscore = __webpack_require__(5);
 
 	var _underscore2 = _interopRequireDefault(_underscore);
 
-	var _backbone = __webpack_require__(5);
+	var _backbone = __webpack_require__(6);
 
 	var _backbone2 = _interopRequireDefault(_backbone);
 
@@ -135,8 +135,6 @@
 	        el: collectionField
 	    });
 
-	    console.log(c, cView);
-
 	    if (items.length) {
 	        _underscore2.default.each(items, function (el) {
 	            var item = (0, _jquery2.default)(el),
@@ -167,13 +165,13 @@
 /* 5 */
 /***/ function(module, exports) {
 
-	module.exports = Backbone;
+	module.exports = _;
 
 /***/ },
 /* 6 */
 /***/ function(module, exports) {
 
-	module.exports = _;
+	module.exports = Backbone;
 
 /***/ },
 /* 7 */
@@ -185,7 +183,7 @@
 	    value: true
 	});
 
-	var _backbone = __webpack_require__(5);
+	var _backbone = __webpack_require__(6);
 
 	var _backbone2 = _interopRequireDefault(_backbone);
 
@@ -236,11 +234,11 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _underscore = __webpack_require__(6);
+	var _underscore = __webpack_require__(5);
 
 	var _underscore2 = _interopRequireDefault(_underscore);
 
-	var _backbone = __webpack_require__(5);
+	var _backbone = __webpack_require__(6);
 
 	var _backbone2 = _interopRequireDefault(_backbone);
 
@@ -255,30 +253,26 @@
 	var ItemView = (function (_Backbone$View) {
 	    _inherits(ItemView, _Backbone$View);
 
-	    function ItemView(options) {
+	    function ItemView() {
 	        _classCallCheck(this, ItemView);
 
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ItemView).call(this, options));
-
-	        _this.tagName = 'li';
-	        _this.template = '#themosis-collection-item-template';
-	        _this.events = {
-	            'click div.themosis-collection__item': 'select',
-	            'click a.check': 'removeItem'
-	        };
-
-	        _this.collectionView = options.collectionView;
-	        _this.listenTo(_this.collection, 'removeSelected', _this.removeSelection);
-	        return _this;
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemView).apply(this, arguments));
 	    }
 
-	    /**
-	     * Render the collection item.
-	     *
-	     * @returns {ItemView}
-	     */
-
 	    _createClass(ItemView, [{
+	        key: 'initialize',
+	        value: function initialize(options) {
+	            this.collectionView = options.collectionView;
+	            this.listenTo(this.collection, 'removeSelected', this.removeSelection);
+	        }
+
+	        /**
+	         * Render the collection item.
+	         *
+	         * @returns {ItemView}
+	         */
+
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var template = _underscore2.default.template(this.collectionView.$el.find(this.template).html());
@@ -358,6 +352,24 @@
 	            // Remove from the collection
 	            this.collection.remove(this.model);
 	        }
+	    }, {
+	        key: 'tagName',
+	        get: function get() {
+	            return 'li';
+	        }
+	    }, {
+	        key: 'template',
+	        get: function get() {
+	            return '#themosis-collection-item-template';
+	        }
+	    }, {
+	        key: 'events',
+	        get: function get() {
+	            return {
+	                'click div.themosis-collection__item': 'select',
+	                'click a.check': 'removeItem'
+	            };
+	        }
 	    }]);
 
 	    return ItemView;
@@ -381,11 +393,11 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _underscore = __webpack_require__(6);
+	var _underscore = __webpack_require__(5);
 
 	var _underscore2 = _interopRequireDefault(_underscore);
 
-	var _backbone = __webpack_require__(5);
+	var _backbone = __webpack_require__(6);
 
 	var _backbone2 = _interopRequireDefault(_backbone);
 
@@ -404,28 +416,29 @@
 	var ItemsCollection = (function (_Backbone$Collection) {
 	    _inherits(ItemsCollection, _Backbone$Collection);
 
-	    function ItemsCollection(options) {
+	    function ItemsCollection() {
 	        _classCallCheck(this, ItemsCollection);
 
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ItemsCollection).call(this, options));
-
-	        _this.model = _ItemModel2.default;
-
-	        // Events
-	        _this.on('change:selected', _this.onSelect);
-	        _this.on('remove', _this.onSelect);
-	        _this.on('add', _this.onAdd);
-	        return _this;
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemsCollection).apply(this, arguments));
 	    }
 
-	    /**
-	     * Triggered when a model in the collection changes
-	     * its 'selected' value.
-	     *
-	     * @return void
-	     */
-
 	    _createClass(ItemsCollection, [{
+	        key: 'initialize',
+	        value: function initialize() {
+	            // Events
+	            this.on('change:selected', this.onSelect);
+	            this.on('remove', this.onSelect);
+	            this.on('add', this.onAdd);
+	        }
+
+	        /**
+	         * Triggered when a model in the collection changes
+	         * its 'selected' value.
+	         *
+	         * @return void
+	         */
+
+	    }, {
 	        key: 'onSelect',
 	        value: function onSelect() {
 	            // Check if there are selected items.
@@ -451,6 +464,11 @@
 	            // Trigger an event in order to check the display of the collection container.
 	            this.trigger('collectionToggle', this);
 	        }
+	    }, {
+	        key: 'model',
+	        get: function get() {
+	            return _ItemModel2.default;
+	        }
 	    }]);
 
 	    return ItemsCollection;
@@ -474,11 +492,11 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _underscore = __webpack_require__(6);
+	var _underscore = __webpack_require__(5);
 
 	var _underscore2 = _interopRequireDefault(_underscore);
 
-	var _backbone = __webpack_require__(5);
+	var _backbone = __webpack_require__(6);
 
 	var _backbone2 = _interopRequireDefault(_backbone);
 
@@ -501,66 +519,58 @@
 	var ItemsView = (function (_Backbone$View) {
 	    _inherits(ItemsView, _Backbone$View);
 
-	    _createClass(ItemsView, [{
-	        key: 'events',
-	        get: function get() {
-	            return {
-	                'click button#themosis-collection-add': 'add',
-	                'click button#themosis-collection-remove': 'removeSelectedItems'
-	            };
-	        }
-	    }]);
-
-	    function ItemsView(options) {
+	    function ItemsView() {
 	        _classCallCheck(this, ItemsView);
 
-	        // Bind to collection events
-
-	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ItemsView).call(this, options));
-
-	        _this.collection.bind('itemsSelected', _this.toggleRemoveButton, _this);
-	        _this.collection.bind('collectionToggle', _this.toggleCollectionContainer, _this);
-
-	        // Init a WordPress media window.
-	        _this.frame = wp.media({
-	            // Define behaviour of the media window.
-	            // 'post' if related to a WordPress post.
-	            // 'select' if use outside WordPress post.
-	            frame: 'select',
-	            // Allow or not multiple selection.
-	            multiple: true,
-	            // The displayed title.
-	            title: 'Insert media',
-	            // The button behaviour
-	            button: {
-	                text: 'Insert',
-	                close: true
-	            },
-	            // Type of files shown in the library.
-	            // 'image', 'application' (pdf, doc,...)
-	            library: {
-	                type: _this.$el.data('type')
-	            }
-	        });
-
-	        // Attach an event on select. Runs when "insert" button is clicked.
-	        _this.frame.on('select', _underscore2.default.bind(_this.selectedItems, _this));
-
-	        // Grab the limit.
-	        _this.limit = parseInt(_this.$el.data('limit'));
-
-	        // Init the sortable feature.
-	        _this.sort();
-	        return _this;
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemsView).apply(this, arguments));
 	    }
 
-	    /**
-	     * Listen to media frame select event and retrieve the selected files.
-	     *
-	     * @return void
-	     */
-
 	    _createClass(ItemsView, [{
+	        key: 'initialize',
+	        value: function initialize() {
+	            // Bind to collection events
+	            this.collection.bind('itemsSelected', this.toggleRemoveButton, this);
+	            this.collection.bind('collectionToggle', this.toggleCollectionContainer, this);
+
+	            // Init a WordPress media window.
+	            this.frame = wp.media({
+	                // Define behaviour of the media window.
+	                // 'post' if related to a WordPress post.
+	                // 'select' if use outside WordPress post.
+	                frame: 'select',
+	                // Allow or not multiple selection.
+	                multiple: true,
+	                // The displayed title.
+	                title: 'Insert media',
+	                // The button behaviour
+	                button: {
+	                    text: 'Insert',
+	                    close: true
+	                },
+	                // Type of files shown in the library.
+	                // 'image', 'application' (pdf, doc,...)
+	                library: {
+	                    type: this.$el.data('type')
+	                }
+	            });
+
+	            // Attach an event on select. Runs when "insert" button is clicked.
+	            this.frame.on('select', _underscore2.default.bind(this.selectedItems, this));
+
+	            // Grab the limit.
+	            this.limit = parseInt(this.$el.data('limit'));
+
+	            // Init the sortable feature.
+	            this.sort();
+	        }
+
+	        /**
+	         * Listen to media frame select event and retrieve the selected files.
+	         *
+	         * @return void
+	         */
+
+	    }, {
 	        key: 'selectedItems',
 	        value: function selectedItems() {
 	            var selection = this.frame.state('library').get('selection');
@@ -697,8 +707,6 @@
 	    }, {
 	        key: 'add',
 	        value: function add(e) {
-	            console.log('Add', e, this);
-
 	            // Check the Add button.
 	            var addButton = (0, _jquery2.default)(e.currentTarget);
 
@@ -744,6 +752,14 @@
 	                placeholder: 'themosis-collection-ui-state-highlight',
 	                handle: '.themosis-collection__item'
 	            });
+	        }
+	    }, {
+	        key: 'events',
+	        get: function get() {
+	            return {
+	                'click button#themosis-collection-add': 'add',
+	                'click button#themosis-collection-remove': 'removeSelectedItems'
+	            };
 	        }
 	    }]);
 

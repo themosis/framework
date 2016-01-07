@@ -5,12 +5,13 @@ import ItemModel from './ItemModel';
 
 class ItemsCollection extends Backbone.Collection
 {
-    constructor(options)
+    get model()
     {
-        super(options);
+        return ItemModel;
+    }
 
-        this.model = ItemModel;
-
+    initialize()
+    {
         // Events
         this.on('change:selected', this.onSelect);
         this.on('remove', this.onSelect);
