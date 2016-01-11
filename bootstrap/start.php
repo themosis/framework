@@ -189,41 +189,6 @@ $report = defined('THEMOSIS_ERROR_REPORT') ? THEMOSIS_ERROR_REPORT : 0;
 error_reporting($report);
 
 /*----------------------------------------------------*/
-// Set class aliases.
-/*----------------------------------------------------*/
-$aliases = apply_filters('themosisClassAliases', [
-    'Themosis\\Facades\\Action'                 => 'Action',
-    'Themosis\\Facades\\Ajax'					=> 'Ajax',
-    'Themosis\\Facades\\Asset'					=> 'Asset',
-    'Themosis\\Facades\\Config'                 => 'Config',
-    'Themosis\\Route\\Controller'               => 'Controller',
-    'Themosis\\Facades\\Field'					=> 'Field',
-    'Themosis\\Facades\\Form'					=> 'Form',
-    'Themosis\\Facades\\Html'                   => 'Html',
-    'Themosis\\Facades\\Input'                  => 'Input',
-    'Themosis\\Metabox\\Meta'					=> 'Meta',
-    'Themosis\\Facades\\Metabox'				=> 'Metabox',
-    'Themosis\\Page\\Option'					=> 'Option',
-    'Themosis\\Facades\\Page'					=> 'Page',
-    'Themosis\\Facades\\PostType'				=> 'PostType',
-    'Themosis\\Facades\\Route'					=> 'Route',
-    'Themosis\\Facades\\Section'                => 'Section',
-    'Themosis\\Session\\Session'				=> 'Session',
-    'Themosis\\Taxonomy\\TaxField'              => 'TaxField',
-    'Themosis\\Taxonomy\\TaxMeta'               => 'TaxMeta',
-    'Themosis\\Facades\\Taxonomy'				=> 'Taxonomy',
-    'Themosis\\Facades\\User'					=> 'User',
-    'Themosis\\Facades\\Validator'              => 'Validator',
-    'Themosis\\Facades\\Loop'					=> 'Loop',
-    'Themosis\\Facades\\View'					=> 'View'
-]);
-
-foreach ($aliases as $namespace => $className)
-{
-    class_alias($namespace, $className);
-}
-
-/*----------------------------------------------------*/
 // Bootstrap plugins.
 /*----------------------------------------------------*/
 do_action('themosis_bootstrap_plugins', $app);
