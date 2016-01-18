@@ -52,6 +52,8 @@
 
 	__webpack_require__(4);
 
+	__webpack_require__(11);
+
 /***/ },
 /* 1 */
 /***/ function(module, exports) {
@@ -767,6 +769,350 @@
 	})(_backbone2.default.View);
 
 	exports.default = ItemsView;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(5);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(6);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	var _MediaModel = __webpack_require__(12);
+
+	var _MediaModel2 = _interopRequireDefault(_MediaModel);
+
+	var _MediaView = __webpack_require__(13);
+
+	var _MediaView2 = _interopRequireDefault(_MediaView);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * Implementation.
+	 */
+	var mediaFields = (0, _jquery2.default)('table.themosis-media').closest('tr');
+
+	_underscore2.default.each(mediaFields, function (elem) {
+	    var input = (0, _jquery2.default)(elem).find('input.themosis-media-input');
+
+	    var data = new _MediaModel2.default({
+	        value: input.val(),
+	        type: input.data('type'),
+	        size: input.data('size')
+	    });
+
+	    new _MediaView2.default({
+	        model: data,
+	        el: (0, _jquery2.default)(elem)
+	    });
+	});
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _backbone = __webpack_require__(6);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MediaModel = (function (_Backbone$Model) {
+	    _inherits(MediaModel, _Backbone$Model);
+
+	    function MediaModel(options) {
+	        _classCallCheck(this, MediaModel);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MediaModel).call(this, options));
+
+	        _this.defaults = {
+	            value: '', // Register the attachment ID
+	            type: 'image',
+	            size: 'full',
+	            display: '', // The text to display - Actually the attachment ID
+	            thumbUrl: '', // The src url of the icon/image to use for thumbnail
+	            title: ''
+	        };
+	        return _this;
+	    }
+
+	    return MediaModel;
+	})(_backbone2.default.Model);
+
+	exports.default = MediaModel;
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(5);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(6);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MediaView = (function (_Backbone$View) {
+	    _inherits(MediaView, _Backbone$View);
+
+	    function MediaView() {
+	        _classCallCheck(this, MediaView);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(MediaView).apply(this, arguments));
+	    }
+
+	    _createClass(MediaView, [{
+	        key: 'initialize',
+	        value: function initialize() {
+	            // Init field properties.
+	            // The hidden input DOM element.
+	            this.input = this.$el.find('.themosis-media-input');
+
+	            // The <p> DOM element.
+	            this.display = this.$el.find('p.themosis-media__path');
+
+	            // The img thumbnail DOM element.
+	            this.thumbnail = this.$el.find('img.themosis-media-thumbnail');
+
+	            // Init a WordPress media window.
+	            this.frame = wp.media({
+	                // Define behaviour of the media window.
+	                // 'post' if related to a WordPress post.
+	                // 'select' if use outside WordPress post.
+	                frame: 'select',
+	                // Allow or not multiple selection.
+	                multiple: false,
+	                // The displayed title.
+	                title: 'Insert media',
+	                // The button behaviour
+	                button: {
+	                    text: 'Insert',
+	                    close: true
+	                },
+	                // Type of files shown in the library.
+	                // 'image', 'application' (pdf, doc,...)
+	                library: {
+	                    type: this.model.get('type')
+	                }
+	            });
+
+	            // Attach an event on select. Runs when "insert" button is clicked.
+	            this.frame.on('select', _underscore2.default.bind(this.select, this));
+	        }
+
+	        /**
+	         * Handle event when add button is clicked.
+	         *
+	         * @param {object} event
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'addMedia',
+	        value: function addMedia(event) {
+	            event.preventDefault();
+
+	            // Open the media window
+	            this.open();
+	        }
+
+	        /**
+	         * Open the media library window and display it.
+	         *
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'open',
+	        value: function open() {
+	            this.frame.open();
+	        }
+
+	        /**
+	         * Run when an item is selected in the media library.
+	         * The event is fired when the "insert" button is clicked.
+	         *
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'select',
+	        value: function select() {
+	            var selection = this.getItem(),
+	                type = selection.get('type'),
+	                val = selection.get('id'),
+	                display = selection.get('id'),
+	                thumbUrl = selection.get('icon'),
+	                // Default image url to icon.
+	            title = selection.get('title');
+
+	            // If image, get a thumbnail.
+	            if ('image' === type) {
+	                // Check if the defined size is available.
+	                var sizes = selection.get('sizes');
+
+	                if (undefined !== sizes._themosis_media) {
+	                    thumbUrl = sizes._themosis_media.url;
+	                } else {
+	                    thumbUrl = sizes.full.url;
+	                }
+	            }
+
+	            // Update the model.
+	            this.model.set({
+	                value: val,
+	                display: display,
+	                thumbUrl: thumbUrl,
+	                title: title
+	            });
+
+	            // Update the DOM elements.
+	            this.input.val(val);
+	            this.display.html(display);
+	            this.thumbnail.attr('src', thumbUrl);
+
+	            // Update filename
+	            // and show it if not an image.
+	            var filename = this.$el.find('div.filename');
+	            filename.find('div').html(title);
+
+	            if ('image' !== type) {
+	                if (!filename.hasClass('show')) {
+	                    filename.addClass('show');
+	                }
+	            }
+
+	            this.toggleButtons();
+	        }
+
+	        /**
+	         * Get the selected item from the library.
+	         *
+	         * @returns {object} A backbone model object.
+	         */
+
+	    }, {
+	        key: 'getItem',
+	        value: function getItem() {
+	            return this.frame.state().get('selection').first();
+	        }
+
+	        /**
+	         * Handle event when delete button is clicked.
+	         *
+	         * @param {object} event
+	         */
+
+	    }, {
+	        key: 'deleteMedia',
+	        value: function deleteMedia(event) {
+	            event.preventDefault();
+
+	            // Reset input
+	            this.resetInput();
+
+	            // Toggle buttons
+	            this.toggleButtons();
+	        }
+
+	        /**
+	         * Reset the hidden input value and the model.
+	         *
+	         * @returns void
+	         */
+
+	    }, {
+	        key: 'resetInput',
+	        value: function resetInput() {
+	            this.input.val('');
+	            this.model.set({ value: '' });
+	        }
+
+	        /**
+	         * Toggle buttons display.
+	         *
+	         * @returns void
+	         */
+
+	    }, {
+	        key: 'toggleButtons',
+	        value: function toggleButtons() {
+	            var cells = this.$el.find('table.themosis-media .themosis-media-preview, table.themosis-media .themosis-media-infos, table.themosis-media button');
+
+	            _underscore2.default.each(cells, function (elem) {
+	                elem = (0, _jquery2.default)(elem);
+
+	                if (elem.hasClass('themosis-media--hidden')) {
+	                    elem.removeClass('themosis-media--hidden');
+	                } else {
+	                    elem.addClass('themosis-media--hidden');
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'events',
+
+	        /**
+	         * View events.
+	         *
+	         * @returns {{click #themosis-media-add: string, click #themosis-media-delete: string}}
+	         */
+	        get: function get() {
+	            return {
+	                'click #themosis-media-add': 'addMedia',
+	                'click #themosis-media-delete': 'deleteMedia'
+	            };
+	        }
+	    }]);
+
+	    return MediaView;
+	})(_backbone2.default.View);
+
+	exports.default = MediaView;
 
 /***/ }
 /******/ ]);
