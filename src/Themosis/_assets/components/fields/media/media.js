@@ -3,6 +3,7 @@ import _ from 'underscore';
 import Backbone from 'backbone';
 import MediaModel from './MediaModel';
 import MediaView from './MediaView';
+import './media.styl';
 
 /**
  * Implementation.

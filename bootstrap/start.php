@@ -152,6 +152,7 @@ add_action('admin_enqueue_scripts', 'themosisWpMediaAssets');
 /*----------------------------------------------------*/
 // Themosis styles
 Themosis\Facades\Asset::add('themosis-core-styles', 'css/_themosis-core.css', ['wp-color-picker'])->to('admin');
+Themosis\Facades\Asset::add('themosis-comps-styles', 'css/_themosisCore.css', ['wp-color-picker'])->to('admin');
 
 // Themosis scripts
 Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosis-core.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view', 'wp-color-picker'], false, true)->to('admin');
