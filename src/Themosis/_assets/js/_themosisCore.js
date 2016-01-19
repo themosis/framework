@@ -114,6 +114,8 @@
 
 	var _ItemsView2 = _interopRequireDefault(_ItemsView);
 
+	__webpack_require__(15);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// Implementation
@@ -1118,6 +1120,12 @@
 
 /***/ },
 /* 14 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 15 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin

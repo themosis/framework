@@ -5,6 +5,7 @@ import ItemModel from './ItemModel';
 import ItemView from './ItemView';
 import ItemsCollection from './ItemsCollection';
 import ItemsView from './ItemsView';
+import './collection.styl';
 
 // Implementation
 let collections = $('div.themosis-collection-wrapper');
