@@ -123,26 +123,3 @@
 | END Metabox Infinite style
 |
 */
-
-/**
- * Metabox Editor style
-*/
-.themosis-wp-editor .wp-editor-container{
-    background-color: #ffffff;
-}
-
-/*** Page API ***/
-.themosis-core-page table.form-table tbody tr>td>label{
-    display: block;
-}
-
-/*
-|
-| Themosis custom submitdiv
-|
-*/
-#poststuff #themosisSubmitdiv .inside
-{
-    margin: 0;
-    padding: 0;
-}
