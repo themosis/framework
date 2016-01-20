@@ -1375,12 +1375,10 @@
 	    }, {
 	        key: 'sort',
 	        value: function sort() {
-	            var _this3 = this;
-
 	            this.$el.sortable({
 	                helper: function helper(e, ui) {
 	                    ui.children().each(function () {
-	                        (0, _jquery2.default)(_this3).width((0, _jquery2.default)(_this3).width());
+	                        (0, _jquery2.default)(this).width((0, _jquery2.default)(this).width());
 	                    });
 	                    return ui;
 	                },
@@ -1502,7 +1500,7 @@
 	    }, {
 	        key: 'rename',
 	        value: function rename() {
-	            var _this4 = this;
+	            var _this3 = this;
 
 	            var rows = this.$el.find('tr.themosis-infinite-row');
 
@@ -1529,17 +1527,17 @@
 	                            // Contains more than one input.
 	                            _underscore2.default.each(input, function (io) {
 	                                io = (0, _jquery2.default)(io);
-	                                _this4.renameField(io, label, index);
-	                            }, _this4);
+	                                _this3.renameField(io, label, index);
+	                            }, _this3);
 	                        } else {
 	                            // Only one input inside the field.
-	                            _this4.renameField(input, label, index);
+	                            _this3.renameField(input, label, index);
 	                        }
 	                    } else {
 	                        // Collection field - Set its index/order as data-order.
 	                        // If there is collectionField - Update its order/index property.
 	                        collectionField.attr('data-order', index);
-	                        _this4.renameCollectionField(collectionField, index);
+	                        _this3.renameCollectionField(collectionField, index);
 
 	                        // Check if there are items
 	                        var items = collectionField.find('ul.themosis-collection-list input');
@@ -1548,12 +1546,12 @@
 	                            // If items input, rename their 'name' attribute.
 	                            _underscore2.default.each(items, function (item) {
 	                                var itemInput = (0, _jquery2.default)(item),
-	                                    name = _this4.renameName(itemInput.attr('name'), index);
+	                                    name = _this3.renameName(itemInput.attr('name'), index);
 	                                itemInput.attr('name', name);
-	                            }, _this4);
+	                            }, _this3);
 	                        }
 	                    }
-	                }, _this4); // End inner fields.
+	                }, _this3); // End inner fields.
 
 	                // Update order display.
 	                order.html(index);

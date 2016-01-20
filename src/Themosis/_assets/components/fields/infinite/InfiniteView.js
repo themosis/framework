@@ -66,9 +66,9 @@ class InfiniteView extends Backbone.View
     sort()
     {
         this.$el.sortable({
-            helper: (e, ui) =>
+            helper: function(e, ui)
             {
-                ui.children().each(() =>
+                ui.children().each(function()
                 {
                     $(this).width($(this).width());
                 });
@@ -77,7 +77,7 @@ class InfiniteView extends Backbone.View
             forcePlaceholderSize: true,
             placeholder: 'themosis-ui-state-highlight',
             handle: '.themosis-infinite-order',
-            update: () =>
+            update: function()
             {
                 vent.trigger('row:sort');
             }
