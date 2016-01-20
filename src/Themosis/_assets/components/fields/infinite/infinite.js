@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import _ from 'underscore';
 import InfiniteView from './InfiniteView';
+import './infinite.styl';
 
 // Implementation.
 // List all infinite fields.

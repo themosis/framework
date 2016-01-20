@@ -1244,6 +1244,8 @@
 
 	var _InfiniteView2 = _interopRequireDefault(_InfiniteView);
 
+	__webpack_require__(23);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// Implementation.
@@ -2029,6 +2031,12 @@
 	})(_backbone2.default.View);
 
 	exports.default = RowView;
+
+/***/ },
+/* 23 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);
