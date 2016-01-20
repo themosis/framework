@@ -52,11 +52,13 @@
 
 	__webpack_require__(4);
 
-	__webpack_require__(11);
+	__webpack_require__(12);
 
 	__webpack_require__(16);
 
 	__webpack_require__(17);
+
+	__webpack_require__(18);
 
 /***/ },
 /* 1 */
@@ -118,7 +120,7 @@
 
 	var _ItemsView2 = _interopRequireDefault(_ItemsView);
 
-	__webpack_require__(15);
+	__webpack_require__(11);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -778,6 +780,12 @@
 
 /***/ },
 /* 11 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -794,15 +802,15 @@
 
 	var _backbone2 = _interopRequireDefault(_backbone);
 
-	var _MediaModel = __webpack_require__(12);
+	var _MediaModel = __webpack_require__(13);
 
 	var _MediaModel2 = _interopRequireDefault(_MediaModel);
 
-	var _MediaView = __webpack_require__(13);
+	var _MediaView = __webpack_require__(14);
 
 	var _MediaView2 = _interopRequireDefault(_MediaView);
 
-	__webpack_require__(14);
+	__webpack_require__(15);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -827,7 +835,7 @@
 	});
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -873,7 +881,7 @@
 	exports.default = MediaModel;
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1123,12 +1131,6 @@
 	exports.default = MediaView;
 
 /***/ },
-/* 14 */
-/***/ function(module, exports) {
-
-	// removed by extract-text-webpack-plugin
-
-/***/ },
 /* 15 */
 /***/ function(module, exports) {
 
@@ -1145,6 +1147,82 @@
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	//------------------------------------------------
+	// Custom publish metabox.
+	//------------------------------------------------
+	// Handle the custom statuses.
+	var submitdiv = (0, _jquery2.default)('#themosisSubmitdiv'),
+	    editButton = submitdiv.find('.edit-post-status'),
+	    selectDiv = submitdiv.find('#post-status-select'),
+	    selectTag = submitdiv.find('#post_status'),
+	    statusLabel = submitdiv.find('#post-status-display'),
+	    statusButtons = submitdiv.find('.save-post-status, .cancel-post-status'),
+	    originalPublish = submitdiv.find('input#original_publish'),
+	    publishButton = submitdiv.find('input#publish');
+
+	// Edit button
+	editButton.on('click', function (e) {
+	    e.preventDefault();
+
+	    // Show the select option list.
+	    (0, _jquery2.default)(undefined).hide();
+	    selectDiv.slideDown(200);
+	});
+
+	// Cancel button or OK buttons
+	statusButtons.on('click', function (e) {
+	    e.preventDefault();
+
+	    var button = (0, _jquery2.default)(this);
+
+	    // If 'ok' button, update label span with status label.
+	    if (button.hasClass('save-post-status')) {
+	        // Grab selected label.
+	        var selected = selectTag.find(':selected'),
+	            label = selected.text(),
+	            publishText = selected.data('publish');
+
+	        // Update label text.
+	        statusLabel.text(label);
+
+	        // Update publish button.
+	        // Check if 'draft'
+	        if ('draft' === selected.val()) {
+	            // Change value of the "original_publish" input.
+	            originalPublish.val('auto-draft');
+	            // Change publish button name attribute.
+	            publishButton.attr('name', 'save');
+	        }
+
+	        // Change publish button text.
+	        publishButton.val(publishText);
+	    }
+
+	    // If 'cancel' button, make sure to reset the select tag value.
+	    if (button.hasClass('cancel-post-status')) {
+	        var selected = selectTag.find('option[selected="selected"]');
+	        selectTag.val(selected.val());
+	    }
+
+	    // Show back edit button.
+	    editButton.show();
+
+	    // Close select statuses.
+	    selectDiv.slideUp(200);
+	});
 
 /***/ }
 /******/ ]);
