@@ -68,7 +68,7 @@
   display block
   width 18px
   height 18px
-  background url('../images/infinite_sprite_001.png') 0 0 no-repeat
+  background url('../../../images/infinite_sprite_001.png') 0 0 no-repeat
   margin-left 7px
   cursor pointer
   visibility hidden
@@ -82,6 +82,17 @@
   display inline-block
   width 18px
   height 18px
-  background url('../images/infinite_sprite_001.png') 0 -18px no-repeat
+  background url('../../../images/infinite_sprite_001.png') 0 -18px no-repeat
   margin 13px auto 9px
   cursor pointer
+
+  &:hover
+    background-position -18px -18px
+
+/* Main Add button */
+.themosis-infinite-add-field-container
+  padding 10px 0
+
+/* Placeholder style */
+.themosis-ui-state-highlight
+  display block

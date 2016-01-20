@@ -36,6 +36,11 @@ module.exports = {
           {
               test: /\.styl$/,
               loader: ExtractTextPlugin.extract('stylus', 'css-loader?minimize!postcss-loader!stylus-loader')
+          },
+          {
+              // Put CSS images as inline images (base64)
+              test: /\.(png|jpg)$/,
+              loader: 'url?limit=25000'
           }
       ]
     },
