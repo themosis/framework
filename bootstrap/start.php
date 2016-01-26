@@ -193,36 +193,39 @@ error_reporting($report);
 /*----------------------------------------------------*/
 add_action('after_setup_theme', function()
 {
-    $aliases = apply_filters('themosisClassAliases', [
-        'Themosis\\Facades\\Action'                 => 'Action',
-        'Themosis\\Facades\\Ajax'					=> 'Ajax',
-        'Themosis\\Facades\\Asset'					=> 'Asset',
-        'Themosis\\Facades\\Config'                 => 'Config',
-        'Themosis\\Route\\Controller'               => 'Controller',
-        'Themosis\\Facades\\Field'					=> 'Field',
-        'Themosis\\Facades\\Form'					=> 'Form',
-        'Themosis\\Facades\\Html'                   => 'Html',
-        'Themosis\\Facades\\Input'                  => 'Input',
-        'Themosis\\Metabox\\Meta'					=> 'Meta',
-        'Themosis\\Facades\\Metabox'				=> 'Metabox',
-        'Themosis\\Page\\Option'					=> 'Option',
-        'Themosis\\Facades\\Page'					=> 'Page',
-        'Themosis\\Facades\\PostType'				=> 'PostType',
-        'Themosis\\Facades\\Route'					=> 'Route',
-        'Themosis\\Facades\\Section'                => 'Section',
-        'Themosis\\Session\\Session'				=> 'Session',
-        'Themosis\\Taxonomy\\TaxField'              => 'TaxField',
-        'Themosis\\Taxonomy\\TaxMeta'               => 'TaxMeta',
-        'Themosis\\Facades\\Taxonomy'				=> 'Taxonomy',
-        'Themosis\\Facades\\User'					=> 'User',
-        'Themosis\\Facades\\Validator'              => 'Validator',
-        'Themosis\\Facades\\Loop'					=> 'Loop',
-        'Themosis\\Facades\\View'					=> 'View'
-    ]);
+    $coreAliases = [
+        'Action'        => 'Themosis\\Facades\\Action',
+        'Ajax'          => 'Themosis\\Facades\\Ajax',
+        'Asset'         => 'Themosis\\Facades\\Asset',
+        'Config'        => 'Themosis\\Facades\\Config',
+        'Controller'    => 'Themosis\\Route\\Controller',
+        'Field'         => 'Themosis\\Facades\\Field',
+        'Form'          => 'Themosis\\Facades\\Form',
+        'Html'          => 'Themosis\\Facades\\Html',
+        'Input'         => 'Themosis\\Facades\\Input',
+        'Meta'          => 'Themosis\\Metabox\\Meta',
+        'Metabox'       => 'Themosis\\Facades\\Metabox',
+        'Option'        => 'Themosis\\Page\\Option',
+        'Page'          => 'Themosis\\Facades\\Page',
+        'PostType'      => 'Themosis\\Facades\\PostType',
+        'Route'         => 'Themosis\\Facades\\Route',
+        'Section'       => 'Themosis\\Facades\\Section',
+        'Session'       => 'Themosis\\Session\\Session',
+        'TaxField'      => 'Themosis\\Taxonomy\\TaxField',
+        'TaxMeta'       => 'Themosis\\Taxonomy\\TaxMeta',
+        'Taxonomy'      => 'Themosis\\Facades\\Taxonomy',
+        'User'          => 'Themosis\\Facades\\User',
+        'Validator'     => 'Themosis\\Facades\\Validator',
+        'Loop'          => 'Themosis\\Facades\\Loop',
+        'View'          => 'Themosis\\Facades\\View'
+    ];
 
-    foreach ($aliases as $namespace => $className)
+    $overriden = apply_filters('themosisClassAliases', []);
+    $aliases = array_merge($coreAliases, $overriden);
+
+    foreach ($aliases as $alias => $fullname)
     {
-        class_alias($namespace, $className);
+        class_alias($fullname, $alias);
     }
 });
 
