@@ -263,13 +263,43 @@ class PostTypeBuilder implements IPostType
         add_filter('pre_post_status', [$this, 'applyStatus']);
         add_filter('status_save_pre', [$this, 'applyStatus']);
 
+        // Expose statuses to main JS object in wp-admin.
+        $this->exposeStatuses();
+
         return $this;
     }
 
+    /**
+     * Remove default publish metabox from the custom post type edit screen.
+     *
+     * @return void
+     */
     public function removeDefaultPublishBox()
     {
         // Remove current publish box
         remove_meta_box('submitdiv', $this->datas['name'], 'side');
+    }
+
+    /**
+     * Handle output of custom statuses to admin JS object.
+     *
+     * @return void
+     */
+    protected function exposeStatuses()
+    {
+        $self = $this;
+
+        add_filter('themosisAdminGlobalObject', function($data) use ($self)
+        {
+            $cpt = new \stdClass();
+
+            // Add the defined statuses.
+            $cpt->statuses = $self->status;
+
+            $data['_themosisPostTypes'][$self->get('name')] = $cpt;
+
+            return $data;
+        });
     }
 
     /**
