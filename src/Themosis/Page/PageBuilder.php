@@ -111,7 +111,8 @@ class PageBuilder extends Wrapper
             'capability'    => 'manage_options',
             'icon'          => '',
             'position'      => null,
-            'tabs'          => true
+            'tabs'          => true,
+            'menu'          => $title
         ];
         $this->datas['rules'] = [];
 
@@ -146,11 +147,11 @@ class PageBuilder extends Wrapper
     {
         if (!is_null($this->datas['parent']))
         {
-            add_submenu_page($this->datas['parent'], $this->datas['title'], $this->datas['title'], $this->datas['args']['capability'], $this->datas['slug'], [$this, 'displayPage']);
+            add_submenu_page($this->datas['parent'], $this->datas['title'], $this->datas['args']['menu'], $this->datas['args']['capability'], $this->datas['slug'], [$this, 'displayPage']);
         }
         else
         {
-            add_menu_page($this->datas['title'], $this->datas['title'], $this->datas['args']['capability'], $this->datas['slug'], [$this, 'displayPage'], $this->datas['args']['icon'], $this->datas['args']['position']);
+            add_menu_page($this->datas['title'], $this->datas['args']['menu'], $this->datas['args']['capability'], $this->datas['slug'], [$this, 'displayPage'], $this->datas['args']['icon'], $this->datas['args']['position']);
         }
     }
 
