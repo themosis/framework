@@ -41,7 +41,7 @@ class Loop
 	 */
 	public function authorMeta($field)
 	{
-		return get_the_author_meta($field)
+		return get_the_author_meta($field);
 	}
 
 	/**
