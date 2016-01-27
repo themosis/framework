@@ -34,6 +34,17 @@ class Loop
 	}
 
 	/**
+	 * Get author meta
+	 *
+	 * @param string $field
+	 * @return string
+	 */
+	public function authorMeta($field)
+	{
+		return get_the_author_meta($field)
+	}
+
+	/**
 	 * Get the content of the current post.
 	 *
 	 * @return string The content of the current post.
