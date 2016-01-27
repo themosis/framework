@@ -68,3 +68,8 @@ statusButtons.on('click', function(e)
     // Close select statuses.
     selectDiv.slideUp(200);
 });
+
+//------------------------------------------------
+// Quick edit select tag.
+//------------------------------------------------
+import './quickedit';
