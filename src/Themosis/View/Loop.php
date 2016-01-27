@@ -67,6 +67,18 @@ class Loop
 	}
 
 	/**
+	 * Get meta value of the current post
+	 *
+	 * @param string $key The meta key to retrieve. Returns all data by default
+	 * @param bool $single Whether to return a single value
+	 * @return mixed The meta value of the current post
+	 */
+	public function meta($key = '', $single = false)
+	{
+		return get_post_meta($this->id(), $key, $single);
+	}
+
+	/**
 	 * Get the post thumbnail of the current post.
 	 *
 	 * @param string|array The size of the current post thumbnail.
