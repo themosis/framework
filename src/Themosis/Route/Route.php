@@ -150,7 +150,7 @@ class Route {
             return $conditions[$condition];
         }
 
-        throw new RouteException('The route condition ['.$condition.'] is no found.');
+        throw new RouteException('The route condition ['.$condition.'] was not found.');
     }
 
     /**
