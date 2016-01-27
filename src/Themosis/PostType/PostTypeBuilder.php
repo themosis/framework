@@ -321,7 +321,17 @@ class PostTypeBuilder implements IPostType
             }
             elseif (isset($_REQUEST['post_status']) && !empty($_REQUEST['post_status']))
             {
+                /**
+                 * In case of a quickedit ajax save call, check the value of the _status select tag
+                 * before processing default post_status.
+                 */
+                if (isset($_POST['_status']) && !empty($_POST['_status']))
+                {
+                    return esc_attr($_POST['_status']);
+                }
+
                 // Else simply apply the selected custom status.
+                // Value return from the edit screen of the custom post type.
                 return esc_attr($_REQUEST['post_status']);
             }
         }

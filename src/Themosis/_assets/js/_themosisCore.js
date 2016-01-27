@@ -60,7 +60,7 @@
 
 	__webpack_require__(18);
 
-	__webpack_require__(19);
+	__webpack_require__(20);
 
 /***/ },
 /* 1 */
@@ -1160,6 +1160,8 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
+	__webpack_require__(19);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	//------------------------------------------------
@@ -1226,6 +1228,10 @@
 	    selectDiv.slideUp(200);
 	});
 
+	//------------------------------------------------
+	// Quick edit select tag.
+	//------------------------------------------------
+
 /***/ },
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
@@ -1240,11 +1246,53 @@
 
 	var _underscore2 = _interopRequireDefault(_underscore);
 
-	var _InfiniteView = __webpack_require__(20);
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * Handle quickedit status select tag.
+	 */
+	(function ($, _) {
+	    if (!thfmk_themosis._themosisPostTypes) return; // Check if global object is defined first.
+
+	    var cpts = thfmk_themosis._themosisPostTypes,
+	        cptInput = $('input.post_type_page'),
+	        cpt = cptInput.val(),
+	        select = $('.inline-edit-status select[name=_status]');
+
+	    // Check if current post type screen use custom statuses.
+	    var keys = _.keys(cpts); // Grab object keys first level down.
+
+	    if (!_.contains(keys, cpt)) return; // Return false if cpt is not found in the keys array. If so, stop and return.
+
+	    // Clean select tag
+	    // Keep Draft option only.
+	    select.find('option[value!="draft"]').remove();
+
+	    // Loop through the statuses
+	    _.each(cpts[cpt]['statuses'], function (obj, key) {
+	        select.append('<option value="' + key + '">' + obj.label + '</option>');
+	    });
+	})(_jquery2.default, _underscore2.default);
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(5);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _InfiniteView = __webpack_require__(21);
 
 	var _InfiniteView2 = _interopRequireDefault(_InfiniteView);
 
-	__webpack_require__(23);
+	__webpack_require__(24);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1264,7 +1312,7 @@
 	});
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1287,11 +1335,11 @@
 
 	var _backbone2 = _interopRequireDefault(_backbone);
 
-	var _AddView = __webpack_require__(21);
+	var _AddView = __webpack_require__(22);
 
 	var _AddView2 = _interopRequireDefault(_AddView);
 
-	var _RowView = __webpack_require__(22);
+	var _RowView = __webpack_require__(23);
 
 	var _RowView2 = _interopRequireDefault(_RowView);
 
@@ -1657,7 +1705,7 @@
 	exports.default = InfiniteView;
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1728,7 +1776,7 @@
 	exports.default = AddView;
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2033,7 +2081,7 @@
 	exports.default = RowView;
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
