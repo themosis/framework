@@ -263,13 +263,43 @@ class PostTypeBuilder implements IPostType
         add_filter('pre_post_status', [$this, 'applyStatus']);
         add_filter('status_save_pre', [$this, 'applyStatus']);
 
+        // Expose statuses to main JS object in wp-admin.
+        $this->exposeStatuses();
+
         return $this;
     }
 
+    /**
+     * Remove default publish metabox from the custom post type edit screen.
+     *
+     * @return void
+     */
     public function removeDefaultPublishBox()
     {
         // Remove current publish box
         remove_meta_box('submitdiv', $this->datas['name'], 'side');
+    }
+
+    /**
+     * Handle output of custom statuses to admin JS object.
+     *
+     * @return void
+     */
+    protected function exposeStatuses()
+    {
+        $self = $this;
+
+        add_filter('themosisAdminGlobalObject', function($data) use ($self)
+        {
+            $cpt = new \stdClass();
+
+            // Add the defined statuses.
+            $cpt->statuses = $self->status;
+
+            $data['_themosisPostTypes'][$self->get('name')] = $cpt;
+
+            return $data;
+        });
     }
 
     /**
@@ -291,7 +321,17 @@ class PostTypeBuilder implements IPostType
             }
             elseif (isset($_REQUEST['post_status']) && !empty($_REQUEST['post_status']))
             {
+                /**
+                 * In case of a quickedit ajax save call, check the value of the _status select tag
+                 * before processing default post_status.
+                 */
+                if (isset($_POST['_status']) && !empty($_POST['_status']))
+                {
+                    return esc_attr($_POST['_status']);
+                }
+
                 // Else simply apply the selected custom status.
+                // Value return from the edit screen of the custom post type.
                 return esc_attr($_REQUEST['post_status']);
             }
         }

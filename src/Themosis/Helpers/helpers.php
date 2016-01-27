@@ -191,6 +191,34 @@ if (!function_exists('themosis_add_filters'))
     }
 }
 
+if (!function_exists('themosis_get_post_id'))
+{
+    /**
+     * A function that retrieves the post ID during
+     * a wp-admin request on posts and custom post types.
+     *
+     * @return int|null
+     */
+    function themosis_get_post_id()
+    {
+        $id = null;
+
+        // When viewing the cpt (GET)
+        if (isset($_GET['post']))
+        {
+            $id = $_GET['post'];
+        }
+
+        // When saving the cpt (POST)
+        if (isset($_POST['post_ID']))
+        {
+            $id = $_POST['post_ID'];
+        }
+
+        return $id;
+    }
+}
+
 if (!function_exists('themosis_is_post'))
 {
     /**
@@ -208,19 +236,7 @@ if (!function_exists('themosis_is_post'))
      */
     function themosis_is_post($id)
     {
-        $postId = null;
-
-        // Get post ID WHEN EDITING THE PAGE
-        if (isset($_GET['post']))
-        {
-            $postId = $_GET['post'];
-        }
-
-        // WHEN SAVING THE PAGE
-        if (isset($_POST['post_ID']))
-        {
-            $postId = $_POST['post_ID'];
-        }
+        $postId = themosis_get_post_id();
 
         if (!is_null($postId) && is_numeric($id) && $id === (int) $postId)
         {

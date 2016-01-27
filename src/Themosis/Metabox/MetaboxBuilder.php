@@ -136,14 +136,56 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
     }
 
     /**
+     * Check if a template is defined within the metabox.
+     *
+     * @return bool
+     */
+    protected function hasTemplate()
+    {
+        if (isset($this->datas['options']['template']) && !empty($this->datas['options']['template'])) return true;
+        return false;
+    }
+
+    /**
      * The wrapper display method.
+     *
+     * @param string $postType The postType name.
+     * @return void
+     */
+    public function display($postType)
+    {
+        if ($this->check && !$this->user->can($this->capability)) return;
+
+        // Look if a template is defined.
+        // Display the metabox on pages/posts that have a template registered.
+        if ($this->hasTemplate() && $postType == $this->datas['postType'])
+        {
+            // Fetch current ID (for cpts only).
+            $postID = themosis_get_post_id();
+            $template = get_post_meta($postID, '_themosisPageTemplate', true);
+
+            // Check if a template is attached to the post/page.
+            if ($template == $this->datas['options']['template'])
+            {
+                // Add a metabox for post/pages with a registered template.
+                $this->addMetabox();
+            }
+        }
+        else
+        {
+            // Add a metabox for no templates cases.
+            $this->addMetabox();
+        }
+    }
+
+    /**
+     * Call the core function add_meta_box in order to output
+     * a metabox.
      *
      * @return void
      */
-    public function display()
+    protected function addMetabox()
     {
-        if($this->check && !$this->user->can($this->capability)) return;
-
         // Fields are passed to the metabox $args parameter.
         add_meta_box($this->datas['options']['id'], $this->datas['title'], [$this, 'build'], $this->datas['postType'], $this->datas['options']['context'], $this->datas['options']['priority'], $this->datas['fields']);
     }
@@ -299,7 +341,8 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
         return wp_parse_args($options, [
             'context'   => 'normal',
             'priority'  => 'default',
-            'id'        => md5($this->datas['title'])
+            'id'        => md5($this->datas['title']),
+            'template'  => ''
         ]);
     }
 
