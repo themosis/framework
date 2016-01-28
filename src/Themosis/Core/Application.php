@@ -302,6 +302,7 @@ class Application extends Container {
             'config'            => 'Themosis\Configuration\ConfigFactory',
             'config.finder'     => 'Themosis\Configuration\ConfigFinder',
 			'field'             => 'Themosis\Field\FieldFactory',
+            'filter'            => 'Themosis\Filter\FilterBuilder',
 			'scout.compiler'    => 'Themosis\View\Compilers\ScoutCompiler',
 			'form'              => 'Themosis\Html\FormBuilder',
 			'html'              => 'Themosis\Html\HtmlBuilder',
