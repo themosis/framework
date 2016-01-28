@@ -200,6 +200,7 @@ add_action('after_setup_theme', function()
         'Config'        => 'Themosis\\Facades\\Config',
         'Controller'    => 'Themosis\\Route\\Controller',
         'Field'         => 'Themosis\\Facades\\Field',
+        'Filter'        => 'Themosis\\Facades\\Filter',
         'Form'          => 'Themosis\\Facades\\Form',
         'Html'          => 'Themosis\\Facades\\Html',
         'Input'         => 'Themosis\\Facades\\Input',
