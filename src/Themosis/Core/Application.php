@@ -105,6 +105,7 @@ class Application extends Container {
             '\Themosis\Asset\AssetIgniterService',
             '\Themosis\Configuration\ConfigIgniterService',
             '\Themosis\Field\FieldIgniterService',
+            '\Themosis\Filter\FilterIgniterService',
             '\Themosis\Html\FormIgniterService',
             '\Themosis\Html\HtmlIgniterService',
             '\Themosis\Metabox\MetaboxIgniterService',
@@ -323,4 +324,4 @@ class Application extends Container {
 		}
 	}
 
-} 
+}
