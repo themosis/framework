@@ -105,6 +105,7 @@ class Application extends Container {
             '\Themosis\Asset\AssetIgniterService',
             '\Themosis\Configuration\ConfigIgniterService',
             '\Themosis\Field\FieldIgniterService',
+            '\Themosis\Filter\FilterIgniterService',
             '\Themosis\Html\FormIgniterService',
             '\Themosis\Html\HtmlIgniterService',
             '\Themosis\Metabox\MetaboxIgniterService',
@@ -301,6 +302,7 @@ class Application extends Container {
             'config'            => 'Themosis\Configuration\ConfigFactory',
             'config.finder'     => 'Themosis\Configuration\ConfigFinder',
 			'field'             => 'Themosis\Field\FieldFactory',
+            'filter'            => 'Themosis\Filter\FilterBuilder',
 			'scout.compiler'    => 'Themosis\View\Compilers\ScoutCompiler',
 			'form'              => 'Themosis\Html\FormBuilder',
 			'html'              => 'Themosis\Html\HtmlBuilder',
@@ -323,4 +325,4 @@ class Application extends Container {
 		}
 	}
 
-} 
+}
