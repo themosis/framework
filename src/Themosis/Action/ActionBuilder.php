@@ -54,8 +54,10 @@ class ActionBuilder implements IAction
         {
             do_action_ref_array($hook, $args);
         }
-
-        do_action($hook, $args);
+        else
+        {
+            do_action($hook, $args);
+        }
 
         return $this;
     }
