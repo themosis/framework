@@ -253,9 +253,15 @@ class Router {
      */
     public function dispatchToRoute(Request $request)
     {
-        $route = $this->findRoute($request);
+        // Allow developers to register routes from a plugin.
+        // Provides a solution for developers to define pre-defined
+        // routes and views for their plugin if the theme does not
+        // override them. If a similar route is defined inside the
+        // theme, the theme route has precedence over the one defined
+        // inside the plugin.
+        do_action('themosis_routing');
 
-        //@todo implement route before actions
+        $route = $this->findRoute($request);
 
         // Check if a route exists for the request.
         if(!is_null($route))
