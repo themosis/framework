@@ -28,14 +28,9 @@ class Template
 		// Set an empty value for no templates.
 		$templateNames = array_merge(['none' => __('None')], $this->names());
 
-		// Build a select field
-		Metabox::make(__('Template'), 'page', [
-            'context'   => 'side',
-            'priority'  => 'core',
-            'id'        => 'themosisTemplate'
-        ])->set([
-			Field::select('_themosisPageTemplate', [$templateNames], ['title' => __('Name')])
-		]);
+		add_filter('theme_page_templates', function($pageTemplates, $this, $post) use ($templateNames) {
+			return array_merge($pageTemplates, $templateNames);
+		}, 1, 3);
 
         return $this;
 	}
