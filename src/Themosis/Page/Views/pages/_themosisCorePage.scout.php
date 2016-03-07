@@ -3,7 +3,11 @@
     <h1>{{ $__page->get('title') }}</h1>
 
     <?php
-    settings_errors();
+    $parent = $__page->get('parent');
+    if (empty($parent) || 'options-general.php' !== $parent)
+    {
+        settings_errors();
+    }
 
     // Display, handle tab navigation.
     $__page->renderTabs();

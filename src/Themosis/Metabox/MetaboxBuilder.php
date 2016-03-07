@@ -296,7 +296,29 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
     {
         foreach($fields as $field)
         {
-            $value = isset($_POST[$field['name']]) ? $_POST[$field['name']] : $this->parseValue($field);
+            // Default value... (init var)
+            $value = '';
+
+            if (isset($_POST[$field['name']]))
+            {
+                // Check if a "save" method exists. The method will parse the $_POST value
+                // and transform it for DB save. Ex.: transform an array to string or int...
+                if (method_exists($field, 'save'))
+                {
+                    // The field save method
+                    $value = $field->save($_POST[$field['name']], $postId);
+                }
+                else
+                {
+                    // No "save" method, only fetch the $_POST value.
+                    $value = $_POST[$field['name']];
+                }
+            }
+            else
+            {
+                // If nothing...setup a default value...
+                $value = $this->parseValue($field);
+            }
 
             // Apply validation if defined.
             // Check if the rule exists for the field in order to validate.

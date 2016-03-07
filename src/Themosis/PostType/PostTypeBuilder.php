@@ -169,7 +169,8 @@ class PostTypeBuilder implements IPostType
     public function get($property = null)
     {
         $name = [
-            'name'  => $this->datas['name']
+            'name'      => $this->datas['name'],
+            'status'    => $this->status
         ];
 
         $properties = array_merge($name, $this->datas['args']);

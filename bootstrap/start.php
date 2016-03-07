@@ -26,7 +26,7 @@ if (!class_exists('Themosis\Core\Application'))
     // Message for the front-end
     if (!is_admin())
     {
-        wp_die(__("The <strong>Themosis framework</strong> is not loaded properly. Please check your <strong>composer.json</strong> file configuration.", THEMOSIS_FRAMEWORK_TEXTDOMAIN));
+        wp_die(__("The <strong>Themosis framework</strong> is not loaded properly. Please check your <strong>composer.json</strong> file configuration and the loaded dependencies.", THEMOSIS_FRAMEWORK_TEXTDOMAIN));
     }
 
     return;
