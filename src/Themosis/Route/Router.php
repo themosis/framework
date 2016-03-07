@@ -75,7 +75,7 @@ class Router {
      */
     public function post($condition, $action)
     {
-        return $this->addRoute('POST', $condition, $action);
+        return $this->addRoute(['POST'], $condition, $action);
     }
 
     /**
@@ -101,6 +101,7 @@ class Router {
      */
     public function match($methods, $condition, $action)
     {
+        $methods = (array) $methods;
         return $this->addRoute($methods, $condition, $action);
     }
 
@@ -114,6 +115,11 @@ class Router {
      */
     protected function addRoute($methods, $condition, $action)
     {
+        $methods = array_map(function($method)
+        {
+            return strtoupper($method);
+        }, $methods);
+
         return $this->routes->add($this->createRoute($methods, $condition, $action));
     }
 
