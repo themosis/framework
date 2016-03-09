@@ -1,1 +1,2116 @@
-!function(e){function t(n){if(i[n])return i[n].exports;var o=i[n]={exports:{},id:n,loaded:!1};return e[n].call(o.exports,o,o.exports,t),o.loaded=!0,o.exports}var i={};return t.m=e,t.c=i,t.p="",t(0)}([function(e,t,i){"use strict";i(20),i(11),i(10),i(16),i(23),i(24),i(17),i(15)},function(e,t){e.exports=jQuery},function(e,t){e.exports=Backbone},function(e,t){e.exports=_},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function r(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function a(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var l=i(2),s=n(l),u=function(e){function t(e){o(this,t);var i=r(this,Object.getPrototypeOf(t).call(this,e));return i.defaults={selected:!1,value:"",src:"",type:"image",title:""},i}return a(t,e),t}(s["default"].Model);t["default"]=u},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function r(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function a(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var l=function(){function e(e,t){for(var i=0;i<t.length;i++){var n=t[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,i,n){return i&&e(t.prototype,i),n&&e(t,n),t}}();Object.defineProperty(t,"__esModule",{value:!0});var s=i(1),u=(n(s),i(3)),c=n(u),f=i(2),d=n(f),h=function(e){function t(){return o(this,t),r(this,Object.getPrototypeOf(t).apply(this,arguments))}return a(t,e),l(t,[{key:"initialize",value:function(e){this.collectionView=e.collectionView,this.listenTo(this.collection,"removeSelected",this.removeSelection)}},{key:"render",value:function(){var e=c["default"].template(this.collectionView.$el.find(this.template).html());return this.$el.html(e(this.model.toJSON())),"image"!==this.model.get("type")&&(this.$el.find("img").addClass("icon"),this.$el.find(".filename").addClass("show")),this}},{key:"select",value:function(){var e=this.$el.children("div.themosis-collection__item");e.hasClass("selected")?(e.removeClass("selected"),this.model.set("selected",!1)):(e.addClass("selected"),this.model.set("selected",!0))}},{key:"removeSelection",value:function(e){var t=this;c["default"].each(e,function(e){t.model.cid===e.cid&&(t.remove(),t.collection.remove(t.model))},this)}},{key:"removeItem",value:function(e){e.preventDefault(),this.remove(),this.collection.remove(this.model)}},{key:"tagName",get:function(){return"li"}},{key:"template",get:function(){return"#themosis-collection-item-template"}},{key:"events",get:function(){return{"click div.themosis-collection__item":"select","click a.check":"removeItem"}}}]),t}(d["default"].View);t["default"]=h},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function r(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function a(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var l=function(){function e(e,t){for(var i=0;i<t.length;i++){var n=t[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,i,n){return i&&e(t.prototype,i),n&&e(t,n),t}}();Object.defineProperty(t,"__esModule",{value:!0});var s=i(1),u=(n(s),i(3)),c=(n(u),i(2)),f=n(c),d=i(4),h=n(d),p=function(e){function t(){return o(this,t),r(this,Object.getPrototypeOf(t).apply(this,arguments))}return a(t,e),l(t,[{key:"initialize",value:function(){this.on("change:selected",this.onSelect),this.on("remove",this.onSelect),this.on("add",this.onAdd)}},{key:"onSelect",value:function(){var e=this.where({selected:!0});this.trigger("itemsSelected",e),this.trigger("collectionToggle",this)}},{key:"onAdd",value:function(){this.trigger("collectionToggle",this)}},{key:"model",get:function(){return h["default"]}}]),t}(f["default"].Collection);t["default"]=p},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function r(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function a(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var l=function(){function e(e,t){for(var i=0;i<t.length;i++){var n=t[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,i,n){return i&&e(t.prototype,i),n&&e(t,n),t}}();Object.defineProperty(t,"__esModule",{value:!0});var s=i(1),u=n(s),c=i(3),f=n(c),d=i(2),h=n(d),p=i(4),m=n(p),v=i(5),y=n(v),b=function(e){function t(){return o(this,t),r(this,Object.getPrototypeOf(t).apply(this,arguments))}return a(t,e),l(t,[{key:"initialize",value:function(){this.collection.bind("itemsSelected",this.toggleRemoveButton,this),this.collection.bind("collectionToggle",this.toggleCollectionContainer,this),this.frame=wp.media({frame:"select",multiple:!0,title:"Insert media",button:{text:"Insert",close:!0},library:{type:this.$el.data("type")}}),this.frame.on("select",f["default"].bind(this.selectedItems,this)),this.limit=parseInt(this.$el.data("limit")),this.sort()}},{key:"selectedItems",value:function(){var e=this.frame.state("library").get("selection");if(this.limit){var t=this.limit-this.collection.length<0?0:this.limit-this.collection.length;e=e.slice(0,t)}e.map(function(e){this.insertItem(e)},this)}},{key:"insertItem",value:function(e){var t=new m["default"]({value:e.get("id"),src:this.getAttachmentThumbnail(e),type:e.get("type"),title:e.get("title")}),i=new y["default"]({model:t,collection:this.collection,collectionView:this});this.collection.add(t),this.$el.find("ul.themosis-collection-list").append(i.render().el)}},{key:"getAttachmentThumbnail",value:function(e){var t=e.get("type"),i=e.get("icon");if("image"===t){var n=e.get("sizes");i=void 0!==n._themosis_media?n._themosis_media.url:n.full.url}return i}},{key:"toggleRemoveButton",value:function(e){var t=e.length?!0:!1;t?this.$el.find("button#themosis-collection-remove").addClass("show"):this.$el.find("button#themosis-collection-remove").removeClass("show")}},{key:"toggleCollectionContainer",value:function(e){var t=e.length,i=this.$el.find("button#themosis-collection-add"),n=this.$el.find("div.themosis-collection-container");this.limit&&this.limit<=t?i.addClass("disabled"):i.removeClass("disabled"),t?n.addClass("show"):n.removeClass("show")}},{key:"add",value:function(e){var t=(0,u["default"])(e.currentTarget);t.hasClass("disabled")||this.frame.open()}},{key:"removeSelectedItems",value:function(){var e=this.collection.where({selected:!0});this.collection.trigger("removeSelected",e)}},{key:"sort",value:function(){this.$el.find("ul.themosis-collection-list").sortable({helper:function(e,t){return t.children().each(function(){(0,u["default"])(this).width((0,u["default"])(this).width())}),t},forcePlaceholderSize:!0,placeholder:"themosis-collection-ui-state-highlight",handle:".themosis-collection__item"})}},{key:"events",get:function(){return{"click button#themosis-collection-add":"add","click button#themosis-collection-remove":"removeSelectedItems"}}}]),t}(h["default"].View);t["default"]=b},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function r(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function a(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}Object.defineProperty(t,"__esModule",{value:!0});var l=i(2),s=n(l),u=function(e){function t(e){o(this,t);var i=r(this,Object.getPrototypeOf(t).call(this,e));return i.defaults={value:"",type:"image",size:"full",display:"",thumbUrl:"",title:""},i}return a(t,e),t}(s["default"].Model);t["default"]=u},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function r(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function a(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var l=function(){function e(e,t){for(var i=0;i<t.length;i++){var n=t[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,i,n){return i&&e(t.prototype,i),n&&e(t,n),t}}();Object.defineProperty(t,"__esModule",{value:!0});var s=i(1),u=n(s),c=i(3),f=n(c),d=i(2),h=n(d),p=function(e){function t(){return o(this,t),r(this,Object.getPrototypeOf(t).apply(this,arguments))}return a(t,e),l(t,[{key:"initialize",value:function(){this.input=this.$el.find(".themosis-media-input"),this.display=this.$el.find("p.themosis-media__path"),this.thumbnail=this.$el.find("img.themosis-media-thumbnail"),this.frame=wp.media({frame:"select",multiple:!1,title:"Insert media",button:{text:"Insert",close:!0},library:{type:this.model.get("type")}}),this.frame.on("select",f["default"].bind(this.select,this))}},{key:"addMedia",value:function(e){e.preventDefault(),this.open()}},{key:"open",value:function(){this.frame.open()}},{key:"select",value:function(){var e=this.getItem(),t=e.get("type"),i=e.get("id"),n=e.get("id"),o=e.get("icon"),r=e.get("title");if("image"===t){var a=e.get("sizes");o=void 0!==a._themosis_media?a._themosis_media.url:a.full.url}this.model.set({value:i,display:n,thumbUrl:o,title:r}),this.input.val(i),this.display.html(n),this.thumbnail.attr("src",o);var l=this.$el.find("div.filename");l.find("div").html(r),"image"!==t&&(l.hasClass("show")||l.addClass("show")),this.toggleButtons()}},{key:"getItem",value:function(){return this.frame.state().get("selection").first()}},{key:"deleteMedia",value:function(e){e.preventDefault(),this.resetInput(),this.toggleButtons()}},{key:"resetInput",value:function(){this.input.val(""),this.model.set({value:""})}},{key:"toggleButtons",value:function(){var e=this.$el.find("table.themosis-media .themosis-media-preview, table.themosis-media .themosis-media-infos, table.themosis-media button");f["default"].each(e,function(e){e=(0,u["default"])(e),e.hasClass("themosis-media--hidden")?e.removeClass("themosis-media--hidden"):e.addClass("themosis-media--hidden")})}},{key:"events",get:function(){return{"click #themosis-media-add":"addMedia","click #themosis-media-delete":"deleteMedia"}}}]),t}(h["default"].View);t["default"]=p},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}var o=i(1),r=n(o),a=i(3),l=n(a),s=i(2),u=(n(s),i(4)),c=n(u),f=i(5),d=n(f),h=i(6),p=n(h),m=i(7),v=n(m);i(19);var y=(0,r["default"])("div.themosis-collection-wrapper");l["default"].each(y,function(e){var t=(0,r["default"])(e),i=t.find("ul.themosis-collection-list"),n=i.children(),o=new p["default"],a=new v["default"]({collection:o,el:t});n.length&&l["default"].each(n,function(e){var i=(0,r["default"])(e),n=i.find("input"),l=new c["default"]({value:parseInt(n.val()),src:i.find("img").attr("src"),type:t.data("type"),title:i.find(".filename").children().text()});o.add(l),new d["default"]({model:l,el:i,collection:o,collectionView:a})})})},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}var o=i(1),r=n(o);(0,r["default"])(".themosis-color-field").wpColorPicker()},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function r(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function a(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var l=function(){function e(e,t){for(var i=0;i<t.length;i++){var n=t[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,i,n){return i&&e(t.prototype,i),n&&e(t,n),t}}();Object.defineProperty(t,"__esModule",{value:!0});var s=i(1),u=(n(s),i(3)),c=(n(u),i(2)),f=n(c),d=function(e){function t(){return o(this,t),r(this,Object.getPrototypeOf(t).apply(this,arguments))}return a(t,e),l(t,[{key:"initialize",value:function(e){this.options=e}},{key:"addRow",value:function(){this.options.parent.add()}},{key:"events",get:function(){return{"click button#themosis-infinite-main-add":"addRow"}}}]),t}(f["default"].View);t["default"]=d},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function r(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function a(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var l=function(){function e(e,t){for(var i=0;i<t.length;i++){var n=t[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,i,n){return i&&e(t.prototype,i),n&&e(t,n),t}}();Object.defineProperty(t,"__esModule",{value:!0});var s=i(1),u=n(s),c=i(3),f=n(c),d=i(2),h=n(d),p=i(12),m=n(p),v=i(14),y=n(v),b=f["default"].extend({},h["default"].Events),w=function(e){function t(){return o(this,t),r(this,Object.getPrototypeOf(t).apply(this,arguments))}return a(t,e),l(t,[{key:"initialize",value:function(e){this.options=e,this.updateCount(),this.limit(),new m["default"]({el:this.$el.closest(".themosis-infinite-container").find("div.themosis-infinite-add-field-container"),parent:this}),this.setRows(),b.on("row:sort",this.update,this),this.sort()}},{key:"setRows",value:function(){var e=this;f["default"].each(this.options.rows,function(t){var i=(0,u["default"])(t);new y["default"]({el:i,parent:e})},this)}},{key:"sort",value:function(){this.$el.sortable({helper:function(e,t){return t.children().each(function(){(0,u["default"])(this).width((0,u["default"])(this).width())}),t},forcePlaceholderSize:!0,placeholder:"themosis-ui-state-highlight",handle:".themosis-infinite-order",update:function(){b.trigger("row:sort")}})}},{key:"getFirstRow",value:function(){var e=this.$el.find("tr.themosis-infinite-row").first().clone(),t=new y["default"]({el:e,parent:this});return t.reset()}},{key:"add",value:function(){if(!(0<this.limit&&this.count+1>this.limit)){var e=this.getFirstRow();this.$el.append(e.el),this.update()}}},{key:"insert",value:function(e){if(!(0<this.limit&&this.count+1>this.limit)){var t=this.getFirstRow();e.$el.before(t.el),this.update()}}},{key:"remove",value:function(e){1>=this.count||(e.$el.remove(),this.update())}},{key:"update",value:function(){this.updateCount(),this.rename()}},{key:"updateCount",value:function(){this.count=this.$el.find("tr.themosis-infinite-row").length}},{key:"rename",value:function(){var e=this,t=this.$el.find("tr.themosis-infinite-row");f["default"].each(t,function(t,i){i=String(i+1),t=(0,u["default"])(t);var n=t.find("tr.themosis-field-container"),o=t.children("td.themosis-infinite-order").children("span");f["default"].each(n,function(t){t=(0,u["default"])(t);var n=t.find("input, textarea, select"),o=t.find("th.themosis-label>label"),r=t.find(".themosis-collection-wrapper");if(r.length){r.attr("data-order",i),e.renameCollectionField(r,i);var a=r.find("ul.themosis-collection-list input");a.length&&f["default"].each(a,function(t){var n=(0,u["default"])(t),o=e.renameName(n.attr("name"),i);n.attr("name",o)},e)}else 1<n.length?f["default"].each(n,function(t){t=(0,u["default"])(t),e.renameField(t,o,i)},e):e.renameField(n,o,i)},e),o.html(i)},this)}},{key:"renameField",value:function(e,t,i){var n=e.attr("id"),o=e.attr("name"),r=this.renameId(n,i),a=this.renameName(o,i);t.attr("for",r),e.attr("id",r),e.attr("name",a)}},{key:"renameId",value:function(e,t){var i=new RegExp("-([0-9]+)-");return e.replace(i,"-"+t+"-")}},{key:"renameName",value:function(e,t){var i=new RegExp("([0-9]+)]");return e.replace(i,t+"]")}},{key:"renameCollectionField",value:function(e,t){var i=new RegExp("([0-9]+)]"),n=e.data("name"),o=e.find("script#themosis-collection-item-template"),r=o.html();e.attr("data-name",n.replace(i,t+"]")),o.html(r.replace(i,t+"]"))}},{key:"limit",value:function(){this.limit=this.$el.data("limit")}}]),t}(h["default"].View);t["default"]=w},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function r(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return!t||"object"!=typeof t&&"function"!=typeof t?e:t}function a(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t);e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}var l=function(){function e(e,t){for(var i=0;i<t.length;i++){var n=t[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,i,n){return i&&e(t.prototype,i),n&&e(t,n),t}}();Object.defineProperty(t,"__esModule",{value:!0});var s=i(1),u=n(s),c=i(3),f=n(c),d=i(2),h=n(d),p=i(8),m=n(p),v=i(9),y=n(v),b=i(6),w=n(b),g=i(7),_=n(g),k=function(e){function t(){return o(this,t),r(this,Object.getPrototypeOf(t).apply(this,arguments))}return a(t,e),l(t,[{key:"initialize",value:function(e){this.options=e,f["default"].bindAll(this,"placeButton"),(0,u["default"])(window).on("resize",this.placeButton)}},{key:"insert",value:function(){this.options.parent.insert(this)}},{key:"remove",value:function(){this.options.parent.remove(this)}},{key:"placeButton",value:function(){var e=this.$el.find(".themosis-infinite-add"),t=this.$el.find("td.themosis-infinite-options").height(),i=this.$el.find("td.themosis-infinite-options").width();e.css("margin-top",-1*(t/2-13)),e.css("margin-left",i/2-9)}},{key:"reset",value:function(){var e=this,t=this.$el.find("input, textarea, select, div.themosis-collection-wrapper");return f["default"].each(t,function(t){var i=(0,u["default"])(t),n=i.data("field");switch(n){case"textarea":e.resetTextarea(i);break;case"checkbox":case"radio":e.resetCheckable(i);break;case"select":e.resetSelect(i);break;case"media":e.resetInput(i),e.resetMedia(i);break;case"collection":e.resetCollection(i);break;default:e.resetInput(i)}},this),this}},{key:"resetInput",value:function(e){e.attr("value","")}},{key:"resetCheckable",value:function(e){e.removeAttr("checked")}},{key:"resetSelect",value:function(e){var t=e.find("option");t.each(function(e,t){(0,u["default"])(t).removeAttr("selected")})}},{key:"resetTextarea",value:function(e){e.val("")}},{key:"resetMedia",value:function(e){var t=e.closest("td").find("table.themosis-media>tbody>tr").find(".themosis-media-preview, .themosis-media-infos, button"),i=e.closest("td").find("table.themosis-media>tbody>tr").find("#themosis-media-add"),n=e.closest("tr.themosis-field-container");e.closest("td").find("p.themosis-media__path").html(""),i.hasClass("themosis-media--hidden")&&f["default"].each(t,function(e){e=(0,u["default"])(e),e.hasClass("themosis-media--hidden")?e.removeClass("themosis-media--hidden"):e.addClass("themosis-media--hidden")});var o=new m["default"]({value:e.val(),type:e.data("type"),size:e.data("size")});new y["default"]({model:o,el:n})}},{key:"resetCollection",value:function(e){var t=e.find("ul.themosis-collection-list"),i=e.find("div.themosis-collection-container");t.children("li").remove(),i.hasClass("show")&&i.removeClass("show");var n=new w["default"];new _["default"]({collection:n,el:e})}},{key:"events",get:function(){return{"mouseenter .themosis-infinite-options":"placeButton","click span.themosis-infinite-add":"insert","click span.themosis-infinite-remove":"remove"}}}]),t}(h["default"].View);t["default"]=k},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}var o=i(1),r=n(o),a=i(3),l=n(a),s=i(13),u=n(s);i(21);var c=(0,r["default"])("div.themosis-infinite-container").closest("tr");l["default"].each(c,function(e){var t=(0,r["default"])(e),i=t.find("tr.themosis-infinite-row");new u["default"]({el:t.find("table.themosis-infinite>tbody"),rows:i})})},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}var o=i(1),r=n(o),a=i(3),l=n(a),s=i(2),u=(n(s),i(8)),c=n(u),f=i(9),d=n(f);i(22);var h=(0,r["default"])("table.themosis-media").closest("tr");l["default"].each(h,function(e){var t=(0,r["default"])(e).find("input.themosis-media-input"),i=new c["default"]({value:t.val(),type:t.data("type"),size:t.data("size")});new d["default"]({model:i,el:(0,r["default"])(e)})})},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}var o=i(1),r=n(o);i(18);var a=(0,r["default"])("#themosisSubmitdiv"),l=a.find(".edit-post-status"),s=a.find("#post-status-select"),u=a.find("#post_status"),c=a.find("#post-status-display"),f=a.find(".save-post-status, .cancel-post-status"),d=a.find("input#original_publish"),h=a.find("input#publish");l.on("click",function(e){e.preventDefault(),(0,r["default"])(void 0).hide(),s.slideDown(200)}),f.on("click",function(e){e.preventDefault();var t=(0,r["default"])(this);if(t.hasClass("save-post-status")){var i=u.find(":selected"),n=i.text(),o=i.data("publish");c.text(n),"draft"===i.val()&&(d.val("auto-draft"),h.attr("name","save")),h.val(o)}if(t.hasClass("cancel-post-status")){var i=u.find('option[selected="selected"]');u.val(i.val())}l.show(),s.slideUp(200)})},function(e,t,i){"use strict";function n(e){return e&&e.__esModule?e:{"default":e}}var o=i(1),r=n(o),a=i(3),l=n(a);!function(e,t){if(thfmk_themosis._themosisPostTypes){var i=thfmk_themosis._themosisPostTypes,n=e("input.post_type_page"),o=n.val(),r=e(".inline-edit-status select[name=_status]"),a=t.keys(i);t.contains(a,o)&&(r.find('option[value!="draft"]').remove(),t.each(i[o].statuses,function(e,t){r.append('<option value="'+t+'">'+e.label+"</option>")}))}}(r["default"],l["default"])},function(e,t){},function(e,t){},function(e,t){},function(e,t){},function(e,t){},function(e,t){}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	__webpack_require__(1);
+
+	__webpack_require__(2);
+
+	__webpack_require__(4);
+
+	__webpack_require__(12);
+
+	__webpack_require__(16);
+
+	__webpack_require__(17);
+
+	__webpack_require__(18);
+
+	__webpack_require__(20);
+
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(0, _jquery2.default)('.themosis-color-field').wpColorPicker();
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	module.exports = jQuery;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(5);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(6);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	var _ItemModel = __webpack_require__(7);
+
+	var _ItemModel2 = _interopRequireDefault(_ItemModel);
+
+	var _ItemView = __webpack_require__(8);
+
+	var _ItemView2 = _interopRequireDefault(_ItemView);
+
+	var _ItemsCollection = __webpack_require__(9);
+
+	var _ItemsCollection2 = _interopRequireDefault(_ItemsCollection);
+
+	var _ItemsView = __webpack_require__(10);
+
+	var _ItemsView2 = _interopRequireDefault(_ItemsView);
+
+	__webpack_require__(11);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// Implementation
+	var collections = (0, _jquery2.default)('div.themosis-collection-wrapper');
+
+	_underscore2.default.each(collections, function (elem) {
+	    // Check if there are files in the rendered collection field.
+	    // If not, create an empty collection to listen to and attach it to
+	    // the collection field view. Also create a buttons view and pass it
+	    // the collection as a dependency.
+	    var collectionField = (0, _jquery2.default)(elem),
+	        list = collectionField.find('ul.themosis-collection-list'),
+	        items = list.children();
+
+	    // Instantiate a collection.
+	    var c = new _ItemsCollection2.default();
+
+	    // Instantiate a collection view.
+	    var cView = new _ItemsView2.default({
+	        collection: c,
+	        el: collectionField
+	    });
+
+	    if (items.length) {
+	        _underscore2.default.each(items, function (el) {
+	            var item = (0, _jquery2.default)(el),
+	                input = item.find('input');
+
+	            var m = new _ItemModel2.default({
+	                'value': parseInt(input.val()),
+	                'src': item.find('img').attr('src'),
+	                'type': collectionField.data('type'),
+	                'title': item.find('.filename').children().text()
+	            });
+
+	            // Add the model to the collection.
+	            c.add(m);
+
+	            // Create an item view instance.
+	            new _ItemView2.default({
+	                model: m,
+	                el: item,
+	                collection: c,
+	                collectionView: cView
+	            });
+	        });
+	    }
+	});
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	module.exports = _;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	module.exports = Backbone;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _backbone = __webpack_require__(6);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ItemModel = (function (_Backbone$Model) {
+	    _inherits(ItemModel, _Backbone$Model);
+
+	    function ItemModel(options) {
+	        _classCallCheck(this, ItemModel);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ItemModel).call(this, options));
+
+	        _this.defaults = {
+	            'selected': false,
+	            'value': '', // The media file ID
+	            'src': '',
+	            'type': 'image', // The media file URL
+	            'title': ''
+	        };
+	        return _this;
+	    }
+
+	    return ItemModel;
+	})(_backbone2.default.Model);
+
+	exports.default = ItemModel;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(5);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(6);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ItemView = (function (_Backbone$View) {
+	    _inherits(ItemView, _Backbone$View);
+
+	    function ItemView() {
+	        _classCallCheck(this, ItemView);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemView).apply(this, arguments));
+	    }
+
+	    _createClass(ItemView, [{
+	        key: 'initialize',
+	        value: function initialize(options) {
+	            this.collectionView = options.collectionView;
+	            this.listenTo(this.collection, 'removeSelected', this.removeSelection);
+	        }
+
+	        /**
+	         * Render the collection item.
+	         *
+	         * @returns {ItemView}
+	         */
+
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var template = _underscore2.default.template(this.collectionView.$el.find(this.template).html());
+	            this.$el.html(template(this.model.toJSON()));
+
+	            if ('image' !== this.model.get('type')) {
+	                this.$el.find('img').addClass('icon');
+	                this.$el.find('.filename').addClass('show');
+	            }
+
+	            return this;
+	        }
+
+	        /**
+	         * Triggered when the item image is clicked. Set the state of
+	         * the element as selected so the collection can perform action into it.
+	         *
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'select',
+	        value: function select() {
+	            var item = this.$el.children('div.themosis-collection__item');
+
+	            if (item.hasClass('selected')) {
+	                // Deselected
+	                item.removeClass('selected');
+	                this.model.set('selected', false);
+	            } else {
+	                // Selected
+	                item.addClass('selected');
+	                this.model.set('selected', true);
+	            }
+	        }
+
+	        /**
+	         * Remove the selected items/models from the collection.
+	         * When an item is removed individually, an event is sent to
+	         * the collection which will remove the model from its list.
+	         *
+	         * @param items The selected items to be removed.
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'removeSelection',
+	        value: function removeSelection(items) {
+	            var _this2 = this;
+
+	            _underscore2.default.each(items, function (elem) {
+	                // If this view model is equal to the passed model
+	                // remove it.
+	                if (_this2.model.cid === elem.cid) {
+	                    _this2.remove();
+	                    _this2.collection.remove(_this2.model);
+	                }
+	            }, this);
+	        }
+
+	        /**
+	         * Triggered when the '-' button is clicked. Remove the item
+	         * from the current collection.
+	         *
+	         * @param {object} e The event object.
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'removeItem',
+	        value: function removeItem(e) {
+	            e.preventDefault();
+
+	            // Remove the view item
+	            this.remove();
+
+	            // Remove from the collection
+	            this.collection.remove(this.model);
+	        }
+	    }, {
+	        key: 'tagName',
+	        get: function get() {
+	            return 'li';
+	        }
+	    }, {
+	        key: 'template',
+	        get: function get() {
+	            return '#themosis-collection-item-template';
+	        }
+	    }, {
+	        key: 'events',
+	        get: function get() {
+	            return {
+	                'click div.themosis-collection__item': 'select',
+	                'click a.check': 'removeItem'
+	            };
+	        }
+	    }]);
+
+	    return ItemView;
+	})(_backbone2.default.View);
+
+	exports.default = ItemView;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(5);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(6);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	var _ItemModel = __webpack_require__(7);
+
+	var _ItemModel2 = _interopRequireDefault(_ItemModel);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ItemsCollection = (function (_Backbone$Collection) {
+	    _inherits(ItemsCollection, _Backbone$Collection);
+
+	    function ItemsCollection() {
+	        _classCallCheck(this, ItemsCollection);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemsCollection).apply(this, arguments));
+	    }
+
+	    _createClass(ItemsCollection, [{
+	        key: 'initialize',
+	        value: function initialize() {
+	            // Events
+	            this.on('change:selected', this.onSelect);
+	            this.on('remove', this.onSelect);
+	            this.on('add', this.onAdd);
+	        }
+
+	        /**
+	         * Triggered when a model in the collection changes
+	         * its 'selected' value.
+	         *
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'onSelect',
+	        value: function onSelect() {
+	            // Check if there are selected items.
+	            // If one or more items are selected, show the main remove button.
+	            var selectedItems = this.where({ 'selected': true });
+
+	            this.trigger('itemsSelected', selectedItems);
+
+	            // Trigger an event where we can check the length of the collection.
+	            // Use to hide/show the collection container.
+	            this.trigger('collectionToggle', this);
+	        }
+
+	        /**
+	         * Triggered when a model is added in the collection.
+	         *
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'onAdd',
+	        value: function onAdd() {
+	            // Trigger an event in order to check the display of the collection container.
+	            this.trigger('collectionToggle', this);
+	        }
+	    }, {
+	        key: 'model',
+	        get: function get() {
+	            return _ItemModel2.default;
+	        }
+	    }]);
+
+	    return ItemsCollection;
+	})(_backbone2.default.Collection);
+
+	exports.default = ItemsCollection;
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(5);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(6);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	var _ItemModel = __webpack_require__(7);
+
+	var _ItemModel2 = _interopRequireDefault(_ItemModel);
+
+	var _ItemView = __webpack_require__(8);
+
+	var _ItemView2 = _interopRequireDefault(_ItemView);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ItemsView = (function (_Backbone$View) {
+	    _inherits(ItemsView, _Backbone$View);
+
+	    function ItemsView() {
+	        _classCallCheck(this, ItemsView);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ItemsView).apply(this, arguments));
+	    }
+
+	    _createClass(ItemsView, [{
+	        key: 'initialize',
+	        value: function initialize() {
+	            // Bind to collection events
+	            this.collection.bind('itemsSelected', this.toggleRemoveButton, this);
+	            this.collection.bind('collectionToggle', this.toggleCollectionContainer, this);
+
+	            // Init a WordPress media window.
+	            this.frame = wp.media({
+	                // Define behaviour of the media window.
+	                // 'post' if related to a WordPress post.
+	                // 'select' if use outside WordPress post.
+	                frame: 'select',
+	                // Allow or not multiple selection.
+	                multiple: true,
+	                // The displayed title.
+	                title: 'Insert media',
+	                // The button behaviour
+	                button: {
+	                    text: 'Insert',
+	                    close: true
+	                },
+	                // Type of files shown in the library.
+	                // 'image', 'application' (pdf, doc,...)
+	                library: {
+	                    type: this.$el.data('type')
+	                }
+	            });
+
+	            // Attach an event on select. Runs when "insert" button is clicked.
+	            this.frame.on('select', _underscore2.default.bind(this.selectedItems, this));
+
+	            // Grab the limit.
+	            this.limit = parseInt(this.$el.data('limit'));
+
+	            // Init the sortable feature.
+	            this.sort();
+	        }
+
+	        /**
+	         * Listen to media frame select event and retrieve the selected files.
+	         *
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'selectedItems',
+	        value: function selectedItems() {
+	            var selection = this.frame.state('library').get('selection');
+
+	            // Check if a limit is defined. Only filter the selection if selection is larger than the limit.
+	            if (this.limit) {
+	                var realLimit = this.limit - this.collection.length < 0 ? 0 : this.limit - this.collection.length;
+	                selection = selection.slice(0, realLimit);
+	            }
+
+	            selection.map(function (attachment) {
+	                this.insertItem(attachment);
+	            }, this);
+	        }
+
+	        /**
+	         * Insert selected items to the collection view and its collection.
+	         *
+	         * @param attachment The attachment model from the WordPress media API.
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'insertItem',
+	        value: function insertItem(attachment) {
+	            // Build a specific model for this attachment.
+	            var m = new _ItemModel2.default({
+	                'value': attachment.get('id'),
+	                'src': this.getAttachmentThumbnail(attachment),
+	                'type': attachment.get('type'),
+	                'title': attachment.get('title')
+	            });
+
+	            // Build a view for this attachment and pass it its model and current collection.
+	            var itemView = new _ItemView2.default({
+	                model: m,
+	                collection: this.collection,
+	                collectionView: this
+	            });
+
+	            // Add the model to the collection.
+	            this.collection.add(m);
+
+	            // Add the model to the DOM.
+	            this.$el.find('ul.themosis-collection-list').append(itemView.render().el);
+	        }
+
+	        /**
+	         * Get the attachment thumbnail URL and returns it.
+	         *
+	         * @param {object} attachment The attachment model.
+	         * @return {string} The attachment thumbnail URL.
+	         */
+
+	    }, {
+	        key: 'getAttachmentThumbnail',
+	        value: function getAttachmentThumbnail(attachment) {
+	            var type = attachment.get('type'),
+	                url = attachment.get('icon');
+
+	            if ('image' === type) {
+	                // Check if the _themosis_media size is available.
+	                var sizes = attachment.get('sizes');
+
+	                if (undefined !== sizes._themosis_media) {
+	                    url = sizes._themosis_media.url;
+	                } else {
+	                    // Original image is less than 100px.
+	                    url = sizes.full.url;
+	                }
+	            }
+
+	            return url;
+	        }
+
+	        /**
+	         * Handle the display of the main remove button.
+	         *
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'toggleRemoveButton',
+	        value: function toggleRemoveButton(items) {
+	            var length = items.length ? true : false;
+
+	            if (length) {
+	                // Show the main remove button.
+	                this.$el.find('button#themosis-collection-remove').addClass('show');
+	            } else {
+	                // Hide the main remove button.
+	                this.$el.find('button#themosis-collection-remove').removeClass('show');
+	            }
+	        }
+
+	        /**
+	         * Handle the display of the collection container.
+	         *
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'toggleCollectionContainer',
+	        value: function toggleCollectionContainer(collection) {
+	            var length = collection.length,
+	                addButton = this.$el.find('button#themosis-collection-add'),
+	                container = this.$el.find('div.themosis-collection-container');
+
+	            // Check the number of collection items.
+	            // If total is larger or equal to length, disable the add button.
+	            if (this.limit && this.limit <= length) {
+	                addButton.addClass('disabled');
+	            } else {
+	                // Re-activate the ADD button if there are less items than the limit.
+	                addButton.removeClass('disabled');
+	            }
+
+	            // Show the collection container if there are items in collection.
+	            if (length) {
+	                container.addClass('show');
+	            } else {
+	                // Hide the collection container.
+	                container.removeClass('show');
+	            }
+	        }
+
+	        /**
+	         * Triggered when 'add' button is clicked. Open the media library.
+	         *
+	         * @param e The event object
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'add',
+	        value: function add(e) {
+	            // Check the Add button.
+	            var addButton = (0, _jquery2.default)(e.currentTarget);
+
+	            // If button is disabled, return.
+	            if (addButton.hasClass('disabled')) return;
+
+	            this.frame.open();
+	        }
+
+	        /**
+	         * Triggered when 'remove' button is clicked. Tell view/collection
+	         * to remove files from the current collection.
+	         *
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'removeSelectedItems',
+	        value: function removeSelectedItems() {
+	            // Call parent view to trigger its method to remove files from its collection.
+	            var selectedItems = this.collection.where({ 'selected': true });
+
+	            this.collection.trigger('removeSelected', selectedItems);
+	        }
+
+	        /**
+	         * Allow collection items to be sortable using drag&drop.
+	         *
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'sort',
+	        value: function sort() {
+	            this.$el.find('ul.themosis-collection-list').sortable({
+	                helper: function helper(e, ui) {
+	                    ui.children().each(function () {
+	                        (0, _jquery2.default)(this).width((0, _jquery2.default)(this).width());
+	                    });
+	                    return ui;
+	                },
+	                forcePlaceholderSize: true,
+	                placeholder: 'themosis-collection-ui-state-highlight',
+	                handle: '.themosis-collection__item'
+	            });
+	        }
+	    }, {
+	        key: 'events',
+	        get: function get() {
+	            return {
+	                'click button#themosis-collection-add': 'add',
+	                'click button#themosis-collection-remove': 'removeSelectedItems'
+	            };
+	        }
+	    }]);
+
+	    return ItemsView;
+	})(_backbone2.default.View);
+
+	exports.default = ItemsView;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(5);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(6);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	var _MediaModel = __webpack_require__(13);
+
+	var _MediaModel2 = _interopRequireDefault(_MediaModel);
+
+	var _MediaView = __webpack_require__(14);
+
+	var _MediaView2 = _interopRequireDefault(_MediaView);
+
+	__webpack_require__(15);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * Implementation.
+	 */
+	var mediaFields = (0, _jquery2.default)('table.themosis-media').closest('tr');
+
+	_underscore2.default.each(mediaFields, function (elem) {
+	    var input = (0, _jquery2.default)(elem).find('input.themosis-media-input');
+
+	    var data = new _MediaModel2.default({
+	        value: input.val(),
+	        type: input.data('type'),
+	        size: input.data('size')
+	    });
+
+	    new _MediaView2.default({
+	        model: data,
+	        el: (0, _jquery2.default)(elem)
+	    });
+	});
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _backbone = __webpack_require__(6);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MediaModel = (function (_Backbone$Model) {
+	    _inherits(MediaModel, _Backbone$Model);
+
+	    function MediaModel(options) {
+	        _classCallCheck(this, MediaModel);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MediaModel).call(this, options));
+
+	        _this.defaults = {
+	            value: '', // Register the attachment ID
+	            type: 'image',
+	            size: 'full',
+	            display: '', // The text to display - Actually the attachment ID
+	            thumbUrl: '', // The src url of the icon/image to use for thumbnail
+	            title: ''
+	        };
+	        return _this;
+	    }
+
+	    return MediaModel;
+	})(_backbone2.default.Model);
+
+	exports.default = MediaModel;
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(5);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(6);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var MediaView = (function (_Backbone$View) {
+	    _inherits(MediaView, _Backbone$View);
+
+	    function MediaView() {
+	        _classCallCheck(this, MediaView);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(MediaView).apply(this, arguments));
+	    }
+
+	    _createClass(MediaView, [{
+	        key: 'initialize',
+	        value: function initialize() {
+	            // Init field properties.
+	            // The hidden input DOM element.
+	            this.input = this.$el.find('.themosis-media-input');
+
+	            // The <p> DOM element.
+	            this.display = this.$el.find('p.themosis-media__path');
+
+	            // The img thumbnail DOM element.
+	            this.thumbnail = this.$el.find('img.themosis-media-thumbnail');
+
+	            // Init a WordPress media window.
+	            this.frame = wp.media({
+	                // Define behaviour of the media window.
+	                // 'post' if related to a WordPress post.
+	                // 'select' if use outside WordPress post.
+	                frame: 'select',
+	                // Allow or not multiple selection.
+	                multiple: false,
+	                // The displayed title.
+	                title: 'Insert media',
+	                // The button behaviour
+	                button: {
+	                    text: 'Insert',
+	                    close: true
+	                },
+	                // Type of files shown in the library.
+	                // 'image', 'application' (pdf, doc,...)
+	                library: {
+	                    type: this.model.get('type')
+	                }
+	            });
+
+	            // Attach an event on select. Runs when "insert" button is clicked.
+	            this.frame.on('select', _underscore2.default.bind(this.select, this));
+	        }
+
+	        /**
+	         * Handle event when add button is clicked.
+	         *
+	         * @param {object} event
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'addMedia',
+	        value: function addMedia(event) {
+	            event.preventDefault();
+
+	            // Open the media window
+	            this.open();
+	        }
+
+	        /**
+	         * Open the media library window and display it.
+	         *
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'open',
+	        value: function open() {
+	            this.frame.open();
+	        }
+
+	        /**
+	         * Run when an item is selected in the media library.
+	         * The event is fired when the "insert" button is clicked.
+	         *
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'select',
+	        value: function select() {
+	            var selection = this.getItem(),
+	                type = selection.get('type'),
+	                val = selection.get('id'),
+	                display = selection.get('id'),
+	                thumbUrl = selection.get('icon'),
+	                // Default image url to icon.
+	            title = selection.get('title');
+
+	            // If image, get a thumbnail.
+	            if ('image' === type) {
+	                // Check if the defined size is available.
+	                var sizes = selection.get('sizes');
+
+	                if (undefined !== sizes._themosis_media) {
+	                    thumbUrl = sizes._themosis_media.url;
+	                } else {
+	                    thumbUrl = sizes.full.url;
+	                }
+	            }
+
+	            // Update the model.
+	            this.model.set({
+	                value: val,
+	                display: display,
+	                thumbUrl: thumbUrl,
+	                title: title
+	            });
+
+	            // Update the DOM elements.
+	            this.input.val(val);
+	            this.display.html(display);
+	            this.thumbnail.attr('src', thumbUrl);
+
+	            // Update filename
+	            // and show it if not an image.
+	            var filename = this.$el.find('div.filename');
+	            filename.find('div').html(title);
+
+	            if ('image' !== type) {
+	                if (!filename.hasClass('show')) {
+	                    filename.addClass('show');
+	                }
+	            }
+
+	            this.toggleButtons();
+	        }
+
+	        /**
+	         * Get the selected item from the library.
+	         *
+	         * @returns {object} A backbone model object.
+	         */
+
+	    }, {
+	        key: 'getItem',
+	        value: function getItem() {
+	            return this.frame.state().get('selection').first();
+	        }
+
+	        /**
+	         * Handle event when delete button is clicked.
+	         *
+	         * @param {object} event
+	         */
+
+	    }, {
+	        key: 'deleteMedia',
+	        value: function deleteMedia(event) {
+	            event.preventDefault();
+
+	            // Reset input
+	            this.resetInput();
+
+	            // Toggle buttons
+	            this.toggleButtons();
+	        }
+
+	        /**
+	         * Reset the hidden input value and the model.
+	         *
+	         * @returns void
+	         */
+
+	    }, {
+	        key: 'resetInput',
+	        value: function resetInput() {
+	            this.input.val('');
+	            this.model.set({ value: '' });
+	        }
+
+	        /**
+	         * Toggle buttons display.
+	         *
+	         * @returns void
+	         */
+
+	    }, {
+	        key: 'toggleButtons',
+	        value: function toggleButtons() {
+	            var cells = this.$el.find('table.themosis-media .themosis-media-preview, table.themosis-media .themosis-media-infos, table.themosis-media button');
+
+	            _underscore2.default.each(cells, function (elem) {
+	                elem = (0, _jquery2.default)(elem);
+
+	                if (elem.hasClass('themosis-media--hidden')) {
+	                    elem.removeClass('themosis-media--hidden');
+	                } else {
+	                    elem.addClass('themosis-media--hidden');
+	                }
+	            });
+	        }
+	    }, {
+	        key: 'events',
+
+	        /**
+	         * View events.
+	         *
+	         * @returns {{click #themosis-media-add: string, click #themosis-media-delete: string}}
+	         */
+	        get: function get() {
+	            return {
+	                'click #themosis-media-add': 'addMedia',
+	                'click #themosis-media-delete': 'deleteMedia'
+	            };
+	        }
+	    }]);
+
+	    return MediaView;
+	})(_backbone2.default.View);
+
+	exports.default = MediaView;
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 17 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	__webpack_require__(19);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	//------------------------------------------------
+	// Custom publish metabox.
+	//------------------------------------------------
+	// Handle the custom statuses.
+	var submitdiv = (0, _jquery2.default)('#themosisSubmitdiv'),
+	    editButton = submitdiv.find('.edit-post-status'),
+	    selectDiv = submitdiv.find('#post-status-select'),
+	    selectTag = submitdiv.find('#post_status'),
+	    statusLabel = submitdiv.find('#post-status-display'),
+	    statusButtons = submitdiv.find('.save-post-status, .cancel-post-status'),
+	    originalPublish = submitdiv.find('input#original_publish'),
+	    publishButton = submitdiv.find('input#publish');
+
+	// Edit button
+	editButton.on('click', function (e) {
+	    e.preventDefault();
+
+	    // Show the select option list.
+	    (0, _jquery2.default)(undefined).hide();
+	    selectDiv.slideDown(200);
+	});
+
+	// Cancel button or OK buttons
+	statusButtons.on('click', function (e) {
+	    e.preventDefault();
+
+	    var button = (0, _jquery2.default)(this);
+
+	    // If 'ok' button, update label span with status label.
+	    if (button.hasClass('save-post-status')) {
+	        // Grab selected label.
+	        var selected = selectTag.find(':selected'),
+	            label = selected.text(),
+	            publishText = selected.data('publish');
+
+	        // Update label text.
+	        statusLabel.text(label);
+
+	        // Update publish button.
+	        // Check if 'draft'
+	        if ('draft' === selected.val()) {
+	            // Change value of the "original_publish" input.
+	            originalPublish.val('auto-draft');
+	            // Change publish button name attribute.
+	            publishButton.attr('name', 'save');
+	        }
+
+	        // Change publish button text.
+	        publishButton.val(publishText);
+	    }
+
+	    // If 'cancel' button, make sure to reset the select tag value.
+	    if (button.hasClass('cancel-post-status')) {
+	        var selected = selectTag.find('option[selected="selected"]');
+	        selectTag.val(selected.val());
+	    }
+
+	    // Show back edit button.
+	    editButton.show();
+
+	    // Close select statuses.
+	    selectDiv.slideUp(200);
+	});
+
+	//------------------------------------------------
+	// Quick edit select tag.
+	//------------------------------------------------
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(5);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * Handle quickedit status select tag.
+	 */
+	(function ($, _) {
+	    if (!thfmk_themosis._themosisPostTypes) return; // Check if global object is defined first.
+
+	    var cpts = thfmk_themosis._themosisPostTypes,
+	        cptInput = $('input.post_type_page'),
+	        cpt = cptInput.val(),
+	        select = $('.inline-edit-status select[name=_status]');
+
+	    // Check if current post type screen use custom statuses.
+	    var keys = _.keys(cpts); // Grab object keys first level down.
+
+	    if (!_.contains(keys, cpt)) return; // Return false if cpt is not found in the keys array. If so, stop and return.
+
+	    // Clean select tag
+	    // Keep Draft option only.
+	    select.find('option[value!="draft"]').remove();
+
+	    // Loop through the statuses
+	    _.each(cpts[cpt]['statuses'], function (obj, key) {
+	        select.append('<option value="' + key + '">' + obj.label + '</option>');
+	    });
+	})(_jquery2.default, _underscore2.default);
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(5);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _InfiniteView = __webpack_require__(21);
+
+	var _InfiniteView2 = _interopRequireDefault(_InfiniteView);
+
+	__webpack_require__(24);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// Implementation.
+	// List all infinite fields.
+	var infinites = (0, _jquery2.default)('div.themosis-infinite-container').closest('tr');
+
+	_underscore2.default.each(infinites, function (elem) {
+	    var infinite = (0, _jquery2.default)(elem),
+	        rows = infinite.find('tr.themosis-infinite-row');
+
+	    // Create an infiniteView instance for each infinite field.
+	    new _InfiniteView2.default({
+	        el: infinite.find('table.themosis-infinite>tbody'),
+	        rows: rows
+	    });
+	});
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(5);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(6);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	var _AddView = __webpack_require__(22);
+
+	var _AddView2 = _interopRequireDefault(_AddView);
+
+	var _RowView = __webpack_require__(23);
+
+	var _RowView2 = _interopRequireDefault(_RowView);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	/**
+	 * Global event object.
+	 * Used to make component talk to each other.
+	 *
+	 * @type {Object}
+	 */
+	var vent = _underscore2.default.extend({}, _backbone2.default.Events);
+
+	var InfiniteView = (function (_Backbone$View) {
+	    _inherits(InfiniteView, _Backbone$View);
+
+	    function InfiniteView() {
+	        _classCallCheck(this, InfiniteView);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(InfiniteView).apply(this, arguments));
+	    }
+
+	    _createClass(InfiniteView, [{
+	        key: 'initialize',
+	        value: function initialize(options) {
+	            // Retrieve passed parameters.
+	            this.options = options;
+
+	            // Number of rows.
+	            this.updateCount();
+
+	            // Set the limit.
+	            this.limit();
+
+	            // Attach the main "add" button to the view.
+	            new _AddView2.default({
+	                el: this.$el.closest('.themosis-infinite-container').find('div.themosis-infinite-add-field-container'),
+	                parent: this
+	            });
+
+	            // Create inner rows view and pass them their parent infinite view.
+	            this.setRows();
+
+	            // Global events.
+	            vent.on('row:sort', this.update, this);
+
+	            // Make it sortable.
+	            this.sort();
+	        }
+
+	        /**
+	         * Create inner rows views.
+	         */
+
+	    }, {
+	        key: 'setRows',
+	        value: function setRows() {
+	            var _this2 = this;
+
+	            _underscore2.default.each(this.options.rows, function (elem) {
+	                // DOM elements.
+	                var row = (0, _jquery2.default)(elem);
+
+	                // Backbone elements.
+	                // Setup row views.
+	                new _RowView2.default({
+	                    el: row,
+	                    parent: _this2
+	                });
+	            }, this);
+	        }
+
+	        /**
+	         * Handle the sortable event/feature.
+	         */
+
+	    }, {
+	        key: 'sort',
+	        value: function sort() {
+	            this.$el.sortable({
+	                helper: function helper(e, ui) {
+	                    ui.children().each(function () {
+	                        (0, _jquery2.default)(this).width((0, _jquery2.default)(this).width());
+	                    });
+	                    return ui;
+	                },
+	                forcePlaceholderSize: true,
+	                placeholder: 'themosis-ui-state-highlight',
+	                handle: '.themosis-infinite-order',
+	                update: function update() {
+	                    vent.trigger('row:sort');
+	                }
+	            });
+	        }
+
+	        /**
+	         * Grab the first row, reset its values and returns it.
+	         *
+	         * @returns {Object} A row view object.
+	         */
+
+	    }, {
+	        key: 'getFirstRow',
+	        value: function getFirstRow() {
+	            var row = this.$el.find('tr.themosis-infinite-row').first().clone(),
+	                rowView = new _RowView2.default({
+	                el: row,
+	                parent: this
+	            });
+
+	            return rowView.reset();
+	        }
+
+	        /**
+	         * Add a new row to the collection.
+	         */
+
+	    }, {
+	        key: 'add',
+	        value: function add() {
+	            // Check the limit.
+	            if (0 < this.limit && this.count + 1 > this.limit) return;
+
+	            var row = this.getFirstRow();
+
+	            // Add the new row to the DOM.
+	            this.$el.append(row.el);
+
+	            this.update();
+	        }
+
+	        /**
+	         * Insert a new row before the current one.
+	         *
+	         * @param {Object} currentRow The current row view object.
+	         */
+
+	    }, {
+	        key: 'insert',
+	        value: function insert(currentRow) {
+	            // Check the limit.
+	            if (0 < this.limit && this.count + 1 > this.limit) return;
+
+	            var row = this.getFirstRow();
+
+	            // Add the new row before the current one.
+	            currentRow.$el.before(row.el);
+
+	            this.update();
+	        }
+
+	        /**
+	         * Remove a row of the collection.
+	         *
+	         * @param {Object} row The row view object.
+	         */
+
+	    }, {
+	        key: 'remove',
+	        value: function remove(row) {
+	            // Keep at least one row.
+	            if (1 >= this.count) return;
+
+	            row.$el.remove();
+
+	            this.update();
+	        }
+
+	        /**
+	         * Update the Infinite custom fields values.
+	         * Update row count.
+	         * Update row order.
+	         * Update row inner fields attributes.
+	         *
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'update',
+	        value: function update() {
+	            // Update row count.
+	            this.updateCount();
+
+	            // Rename the fields
+	            this.rename();
+	        }
+
+	        /**
+	         * Update the total number of rows.
+	         */
+
+	    }, {
+	        key: 'updateCount',
+	        value: function updateCount() {
+	            this.count = this.$el.find('tr.themosis-infinite-row').length;
+	        }
+
+	        /**
+	         * Rename all 'name', 'id' and 'for' attributes.
+	         */
+
+	    }, {
+	        key: 'rename',
+	        value: function rename() {
+	            var _this3 = this;
+
+	            var rows = this.$el.find('tr.themosis-infinite-row');
+
+	            _underscore2.default.each(rows, function (row, index) {
+	                // Order is 1 based.
+	                index = String(index + 1);
+	                row = (0, _jquery2.default)(row);
+
+	                // Get row fields.
+	                var fields = row.find('tr.themosis-field-container'),
+	                    order = row.children('td.themosis-infinite-order').children('span');
+
+	                // Update the row inner fields.
+	                _underscore2.default.each(fields, function (field) {
+	                    // "Field" is the <tr> tag containing all the custom field html.
+	                    field = (0, _jquery2.default)(field);
+
+	                    var input = field.find('input, textarea, select'),
+	                        label = field.find('th.themosis-label>label'),
+	                        collectionField = field.find('.themosis-collection-wrapper'); // Check if there is a collection field.
+
+	                    if (!collectionField.length) {
+	                        if (1 < input.length) {
+	                            // Contains more than one input.
+	                            _underscore2.default.each(input, function (io) {
+	                                io = (0, _jquery2.default)(io);
+	                                _this3.renameField(io, label, index);
+	                            }, _this3);
+	                        } else {
+	                            // Only one input inside the field.
+	                            _this3.renameField(input, label, index);
+	                        }
+	                    } else {
+	                        // Collection field - Set its index/order as data-order.
+	                        // If there is collectionField - Update its order/index property.
+	                        collectionField.attr('data-order', index);
+	                        _this3.renameCollectionField(collectionField, index);
+
+	                        // Check if there are items
+	                        var items = collectionField.find('ul.themosis-collection-list input');
+
+	                        if (items.length) {
+	                            // If items input, rename their 'name' attribute.
+	                            _underscore2.default.each(items, function (item) {
+	                                var itemInput = (0, _jquery2.default)(item),
+	                                    name = _this3.renameName(itemInput.attr('name'), index);
+	                                itemInput.attr('name', name);
+	                            }, _this3);
+	                        }
+	                    }
+	                }, _this3); // End inner fields.
+
+	                // Update order display.
+	                order.html(index);
+	            }, this);
+	        }
+
+	        /**
+	         * Rename field input and label.
+	         *
+	         * @param {Object} input The field input wrapped in jQuery object.
+	         * @param {Object} label The field label wrapped in jQuery object.
+	         * @param {String} index The index used to rename the attributes.
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'renameField',
+	        value: function renameField(input, label, index) {
+	            if ('button' == input.attr('type')) {
+	                if (input.hasClass('wp-picker-clear')) return;
+	            }
+
+	            var fieldId = input.attr('id'),
+	                fieldName = input.attr('name'),
+	                id = this.renameId(fieldId, index),
+	                name = this.renameName(fieldName, index);
+
+	            // Update the label 'for' attribute.
+	            label.attr('for', id);
+
+	            // Update input 'id' attribute.
+	            input.attr('id', id);
+
+	            // Update input 'name' attribute.
+	            input.attr('name', name);
+	        }
+
+	        /**
+	         * Returns a new ID attribute value.
+	         *
+	         * @param {String} currentId
+	         * @param {String} index
+	         * @return {String}
+	         */
+
+	    }, {
+	        key: 'renameId',
+	        value: function renameId(currentId, index) {
+	            var regex = new RegExp('-([0-9]+)-');
+	            return currentId.replace(regex, '-' + index + '-');
+	        }
+
+	        /**
+	         * Returns a new name attribute value.
+	         *
+	         * @param {String} currentName
+	         * @param {String} index
+	         * @return {String}
+	         */
+
+	    }, {
+	        key: 'renameName',
+	        value: function renameName(currentName, index) {
+	            var regex = new RegExp("([0-9]+)\]");
+	            return currentName.replace(regex, index + ']');
+	        }
+
+	        /**
+	         * Rename collection field.
+	         *
+	         * @param {object} field Collection field wrapped in jQuery
+	         * @param {int} index The row order/index
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'renameCollectionField',
+	        value: function renameCollectionField(field, index) {
+	            var regex = new RegExp("([0-9]+)\]"),
+	                name = field.data('name'),
+	                template = field.find('script#themosis-collection-item-template'),
+	                templateContent = template.html();
+
+	            // Update data-name attribute value.
+	            field.attr('data-name', name.replace(regex, index + ']'));
+
+	            // Update backbone template content.
+	            template.html(templateContent.replace(regex, index + ']'));
+	        }
+
+	        /**
+	         * Define the limit of rows a user can add.
+	         */
+
+	    }, {
+	        key: 'limit',
+	        value: function limit() {
+	            this.limit = this.$el.data('limit');
+	        }
+	    }]);
+
+	    return InfiniteView;
+	})(_backbone2.default.View);
+
+	exports.default = InfiniteView;
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(5);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(6);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AddView = (function (_Backbone$View) {
+	    _inherits(AddView, _Backbone$View);
+
+	    function AddView() {
+	        _classCallCheck(this, AddView);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(AddView).apply(this, arguments));
+	    }
+
+	    _createClass(AddView, [{
+	        key: 'initialize',
+	        value: function initialize(options) {
+	            this.options = options;
+	        }
+
+	        /**
+	         * Send an event to add a new row.
+	         */
+
+	    }, {
+	        key: 'addRow',
+	        value: function addRow() {
+	            // Calls the infinite parent view method.
+	            this.options.parent.add();
+	        }
+	    }, {
+	        key: 'events',
+	        get: function get() {
+	            return {
+	                'click button#themosis-infinite-main-add': 'addRow'
+	            };
+	        }
+	    }]);
+
+	    return AddView;
+	})(_backbone2.default.View);
+
+	exports.default = AddView;
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _jquery = __webpack_require__(3);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var _underscore = __webpack_require__(5);
+
+	var _underscore2 = _interopRequireDefault(_underscore);
+
+	var _backbone = __webpack_require__(6);
+
+	var _backbone2 = _interopRequireDefault(_backbone);
+
+	var _MediaModel = __webpack_require__(13);
+
+	var _MediaModel2 = _interopRequireDefault(_MediaModel);
+
+	var _MediaView = __webpack_require__(14);
+
+	var _MediaView2 = _interopRequireDefault(_MediaView);
+
+	var _ItemsCollection = __webpack_require__(9);
+
+	var _ItemsCollection2 = _interopRequireDefault(_ItemsCollection);
+
+	var _ItemsView = __webpack_require__(10);
+
+	var _ItemsView2 = _interopRequireDefault(_ItemsView);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var RowView = (function (_Backbone$View) {
+	    _inherits(RowView, _Backbone$View);
+
+	    function RowView() {
+	        _classCallCheck(this, RowView);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(RowView).apply(this, arguments));
+	    }
+
+	    _createClass(RowView, [{
+	        key: 'initialize',
+	        value: function initialize(options) {
+	            // Retrieve passed parameters
+	            this.options = options;
+
+	            _underscore2.default.bindAll(this, 'placeButton');
+	            (0, _jquery2.default)(window).on('resize', this.placeButton);
+	        }
+
+	        /**
+	         * Triggered when click on the row 'add' button.
+	         */
+
+	    }, {
+	        key: 'insert',
+	        value: function insert() {
+	            this.options.parent.insert(this);
+	        }
+
+	        /**
+	         * Triggered when 'delete' button is clicked.
+	         */
+
+	    }, {
+	        key: 'remove',
+	        value: function remove() {
+	            this.options.parent.remove(this);
+	        }
+
+	        /**
+	         * Place the row 'add' button.
+	         */
+
+	    }, {
+	        key: 'placeButton',
+	        value: function placeButton() {
+	            var plusButton = this.$el.find('.themosis-infinite-add'),
+	                cellHeight = this.$el.find('td.themosis-infinite-options').height(),
+	                cellWidth = this.$el.find('td.themosis-infinite-options').width();
+
+	            plusButton.css('margin-top', (cellHeight / 2 - 13) * -1);
+	            plusButton.css('margin-left', cellWidth / 2 - 9);
+	        }
+
+	        /**
+	         * Reset all fields value.
+	         *
+	         * @return {Object} The view object.
+	         */
+
+	    }, {
+	        key: 'reset',
+	        value: function reset() {
+	            var _this2 = this;
+
+	            var fields = this.$el.find('input, textarea, select, div.themosis-collection-wrapper');
+
+	            _underscore2.default.each(fields, function (field) {
+	                var f = (0, _jquery2.default)(field),
+	                    type = f.data('field');
+
+	                switch (type) {
+
+	                    case 'textarea':
+	                        // Reset <textarea> input
+	                        _this2.resetTextarea(f);
+	                        break;
+
+	                    case 'checkbox':
+	                    case 'radio':
+	                        // Reset <input type="checkbox|radio">
+	                        _this2.resetCheckable(f);
+	                        break;
+
+	                    case 'select':
+	                        // Reset <select> tag.
+	                        _this2.resetSelect(f);
+	                        break;
+
+	                    case 'media':
+	                        // Reset <input type="hidden">
+	                        _this2.resetInput(f);
+	                        // Reset media value display and set a new backbone object media.
+	                        _this2.resetMedia(f);
+	                        break;
+
+	                    case 'collection':
+	                        // Reset collection field backbone objects.
+	                        _this2.resetCollection(f);
+
+	                        break;
+
+	                    case 'button':
+	                        if (f.hasClass('wp-picker-clear')) return;
+	                        break;
+
+	                    default:
+	                        // Reset <input> tag.
+	                        _this2.resetInput(f);
+	                }
+	            }, this);
+
+	            return this;
+	        }
+
+	        /**
+	         * Reset <input> value attribute.
+	         *
+	         * @param {Object} field The input tag wrapped in jQuery object.
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'resetInput',
+	        value: function resetInput(field) {
+	            field.attr('value', '');
+
+	            /**
+	             * Check if color field input.
+	             * If so, tell the script to create it.
+	             */
+	            if (field.hasClass('themosis-color-field')) {
+	                // 0 - Get a reference to parent container.
+	                var parent = field.closest('td.themosis-field');
+
+	                // 1 - Remove the old generated color picker from the DOM.
+	                parent.find('.wp-picker-container').remove();
+
+	                // 2 - Append the input only on DOM (inside parent).
+	                parent.append(field);
+
+	                // 3 - Create the color picker.
+	                field.wpColorPicker();
+	            }
+	        }
+
+	        /**
+	         * Reset <input type="checkbox"> and <input type="radio">.
+	         *
+	         * @param {Object} field The input tag wrapped in jQuery object.
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'resetCheckable',
+	        value: function resetCheckable(field) {
+	            field.removeAttr('checked');
+	        }
+
+	        /**
+	         * Reset <select> tag.
+	         *
+	         * @param {Object} field The <select> tag wrapped in Jquery object.
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'resetSelect',
+	        value: function resetSelect(field) {
+	            var options = field.find('option');
+
+	            options.each(function (i, option) {
+	                (0, _jquery2.default)(option).removeAttr('selected');
+	            });
+	        }
+
+	        /**
+	         * Reset <textarea> tag.
+	         *
+	         * @param {Object} field The <textarea> tag wrapped in jQuery object.
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'resetTextarea',
+	        value: function resetTextarea(field) {
+	            field.val('');
+	        }
+
+	        /**
+	         * Reset the custom media field display.
+	         *
+	         * @param {Object} field The media hidden input tag wrapped in jQuery object.
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'resetMedia',
+	        value: function resetMedia(field) {
+	            var cells = field.closest('td').find('table.themosis-media>tbody>tr').find('.themosis-media-preview, .themosis-media-infos, button'),
+	                addButton = field.closest('td').find('table.themosis-media>tbody>tr').find('#themosis-media-add'),
+	                mediaField = field.closest('tr.themosis-field-container');
+
+	            // Reset path content
+	            field.closest('td').find('p.themosis-media__path').html('');
+
+	            // Toggle media cells only if it's on "delete" state.
+	            if (addButton.hasClass('themosis-media--hidden')) {
+	                _underscore2.default.each(cells, function (elem) {
+	                    elem = (0, _jquery2.default)(elem);
+
+	                    if (elem.hasClass('themosis-media--hidden')) {
+	                        elem.removeClass('themosis-media--hidden');
+	                    } else {
+	                        elem.addClass('themosis-media--hidden');
+	                    }
+	                });
+	            }
+
+	            // Set a new backbone object for the media field.
+	            var data = new _MediaModel2.default({
+	                value: field.val(),
+	                type: field.data('type'),
+	                size: field.data('size')
+	            });
+
+	            new _MediaView2.default({
+	                model: data,
+	                el: mediaField
+	            });
+	        }
+
+	        /**
+	         * Reset the collection field.
+	         *
+	         * @param {object} f The collection field wrapped in jQuery.
+	         * @return void
+	         */
+
+	    }, {
+	        key: 'resetCollection',
+	        value: function resetCollection(f) {
+	            var list = f.find('ul.themosis-collection-list'),
+	                container = f.find('div.themosis-collection-container');
+
+	            // Delete all items <li>
+	            list.children('li').remove();
+
+	            // Hide the collection container
+	            if (container.hasClass('show')) {
+	                container.removeClass('show');
+	            }
+
+	            // Create new collection field instance - Implementation.
+	            // Instantiate a collection.
+	            var c = new _ItemsCollection2.default();
+
+	            // Instantiate a collection view.
+	            new _ItemsView2.default({
+	                collection: c,
+	                el: f
+	            });
+	        }
+	    }, {
+	        key: 'events',
+	        get: function get() {
+	            return {
+	                'mouseenter .themosis-infinite-options': 'placeButton',
+	                'click span.themosis-infinite-add': 'insert',
+	                'click span.themosis-infinite-remove': 'remove'
+	            };
+	        }
+	    }]);
+
+	    return RowView;
+	})(_backbone2.default.View);
+
+	exports.default = RowView;
+
+/***/ },
+/* 24 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
+
+/***/ }
+/******/ ]);

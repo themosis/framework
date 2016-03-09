@@ -100,6 +100,10 @@ class RowView extends Backbone.View
 
                     break;
 
+                case 'button':
+                    if (f.hasClass('wp-picker-clear')) return;
+                    break;
+
                 default:
                     // Reset <input> tag.
                     this.resetInput(f);
@@ -119,6 +123,25 @@ class RowView extends Backbone.View
     resetInput(field)
     {
         field.attr('value', '');
+
+        /**
+         * Check if color field input.
+         * If so, tell the script to create it.
+         */
+        if (field.hasClass('themosis-color-field'))
+        {
+            // 0 - Get a reference to parent container.
+            let parent = field.closest('td.themosis-field');
+
+            // 1 - Remove the old generated color picker from the DOM.
+            parent.find('.wp-picker-container').remove();
+
+            // 2 - Append the input only on DOM (inside parent).
+            parent.append(field);
+
+            // 3 - Create the color picker.
+            field.wpColorPicker();
+        }
     }
 
     /**

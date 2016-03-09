@@ -259,6 +259,11 @@ class InfiniteView extends Backbone.View
      */
     renameField(input, label, index)
     {
+        if ('button' == input.attr('type'))
+        {
+            if (input.hasClass('wp-picker-clear')) return;
+        }
+
         let fieldId = input.attr('id'),
             fieldName = input.attr('name'),
             id = this.renameId(fieldId, index),
