@@ -2,7 +2,7 @@
 
 use \Mockery as m;
 
-class ActionTest extends \PHPUnit_Framework_TestCase
+class ActionTest extends PHPUnit_Framework_TestCase
 {
     public function tearDown()
     {

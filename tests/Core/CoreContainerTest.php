@@ -1,6 +1,6 @@
 <?php
 
-class ContainerTest extends \PHPUnit_Framework_TestCase
+class CoreContainerTest extends PHPUnit_Framework_TestCase
 {
     public function testOne()
     {
