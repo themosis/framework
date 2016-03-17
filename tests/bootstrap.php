@@ -11,3 +11,4 @@ ini_set('display_startup_errors', '1');
  * Autoload the framework.
  */
 require_once(dirname(__DIR__) . '/vendor/autoload.php');
+require_once(dirname(__DIR__) . '/src/Themosis/Helpers/helpers.php');
