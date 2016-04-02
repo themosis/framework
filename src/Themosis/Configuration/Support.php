@@ -13,7 +13,7 @@ class Support
 	public function __construct(array $data)
 	{
         $this->data = $data;
-		Action::listen('init', $this, 'install')->dispatch();
+		Action::listen('after_setup_theme', $this, 'install')->dispatch();
 	}
 
 	/**
@@ -31,6 +31,7 @@ class Support
 				// Allow theme features without options.
 				if (is_int($feature))
 				{
+					if ('post-formats' === $value) return; // Avoid none defined array value
 					add_theme_support($value);
 				}
 				else

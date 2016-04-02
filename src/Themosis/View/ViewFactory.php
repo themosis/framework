@@ -33,28 +33,28 @@ class ViewFactory {
      *
      * @var array
      */
-    protected $shared = array();
+    protected $shared = [];
 
     /**
      * The view extensions.
      *
      * @var array
      */
-    protected $extensions = array('scout.php' => 'scout', 'php' => 'php');
+    protected $extensions = ['scout.php' => 'scout', 'php' => 'php'];
 
     /**
      * A list of captured sections.
      *
      * @var array
      */
-    protected $sections = array();
+    protected $sections = [];
 
     /**
      * A stack of in-progress sections.
      *
      * @var array
      */
-    protected $sectionStack = array();
+    protected $sectionStack = [];
 
     /**
      * The number of active rendering operations.
@@ -95,7 +95,7 @@ class ViewFactory {
      * @param array $datas Passed data to the view.
      * @return \Themosis\View\View
      */
-    public function make($view, array $datas = array())
+    public function make($view, array $datas = [])
     {
         $path = $this->finder->find($view);
 
@@ -155,7 +155,7 @@ class ViewFactory {
      */
     public function composers(array $composers)
     {
-        $registered = array();
+        $registered = [];
 
         foreach ($composers as $callback => $views)
         {
@@ -174,7 +174,7 @@ class ViewFactory {
      */
     public function composer($views, $callback)
     {
-        $composers = array();
+        $composers = [];
 
         foreach ((array) $views as $view)
         {
@@ -256,7 +256,7 @@ class ViewFactory {
         {
             foreach ($data as $key => $value)
             {
-                $data = array('key' => $key, $iterator => $value);
+                $data = ['key' => $key, $iterator => $value];
 
                 $result .= $this->make($view, $data)->render();
             }
@@ -392,8 +392,8 @@ class ViewFactory {
      */
     public function flushSections()
     {
-        $this->sections = array();
-        $this->sectionStack = array();
+        $this->sections = [];
+        $this->sectionStack = [];
     }
 
     /**

@@ -26,7 +26,7 @@ if (!class_exists('Themosis\Core\Application'))
     // Message for the front-end
     if (!is_admin())
     {
-        wp_die(__("The <strong>Themosis framework</strong> is not loaded properly. Please check your <strong>composer.json</strong> file configuration.", THEMOSIS_FRAMEWORK_TEXTDOMAIN));
+        wp_die(__("The <strong>Themosis framework</strong> is not loaded properly. Please check your <strong>composer.json</strong> file configuration and the loaded dependencies.", THEMOSIS_FRAMEWORK_TEXTDOMAIN));
     }
 
     return;
@@ -65,8 +65,8 @@ $app->registerCoreIgniters();
 /*----------------------------------------------------*/
 // Register framework view paths.
 /*----------------------------------------------------*/
-add_filter('themosisViewPaths', function($paths){
-
+add_filter('themosisViewPaths', function($paths)
+{
     $paths[] = themosis_path('sys').'Metabox'.DS.'Views'.DS;
     $paths[] = themosis_path('sys').'Page'.DS.'Views'.DS;
     $paths[] = themosis_path('sys').'PostType'.DS.'Views'.DS;
@@ -75,7 +75,6 @@ add_filter('themosisViewPaths', function($paths){
     $paths[] = themosis_path('sys').'User'.DS.'Views'.DS;
 
     return $paths;
-
 });
 
 /*----------------------------------------------------*/
@@ -101,8 +100,8 @@ $images->make();
 // Allow developers to add parameters to
 // the admin global JS object.
 /*----------------------------------------------------*/
-add_action('admin_head', function(){
-
+add_action('admin_head', function()
+{
     $datas = apply_filters('themosisAdminGlobalObject', []);
 
     $output = "<script type=\"text/javascript\">\n\r";
@@ -130,12 +129,10 @@ add_action('admin_head', function(){
 // Register framework core assets URL to
 // admin global object.
 /*----------------------------------------------------*/
-add_filter('themosisAdminGlobalObject', function($paths){
-
+add_filter('themosisAdminGlobalObject', function($paths)
+{
     $paths['_themosisAssets'] = themosis_plugin_url(dirname(__DIR__)).'/src/Themosis/_assets';
-
     return $paths;
-
 });
 
 /*----------------------------------------------------*/
@@ -154,10 +151,10 @@ add_action('admin_enqueue_scripts', 'themosisWpMediaAssets');
 // Enqueue frameworks assets.
 /*----------------------------------------------------*/
 // Themosis styles
-Themosis\Facades\Asset::add('themosis-core-styles', 'css/_themosis-core.css', ['wp-color-picker'])->to('admin');
+Themosis\Facades\Asset::add('themosis-core-styles', 'css/_themosisCore.css', ['wp-color-picker'])->to('admin');
 
 // Themosis scripts
-Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosis-core.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view', 'wp-color-picker'], false, true)->to('admin');
+Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosisCore.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view', 'wp-color-picker'], '1.0.0', true)->to('admin');
 
 /*----------------------------------------------------*/
 // Handle errors, warnings, exceptions.
@@ -190,41 +187,6 @@ if (defined('THEMOSIS_ERROR_SHUTDOWN') && THEMOSIS_ERROR_SHUTDOWN)
 // Passing in the value -1 will show every errors.
 $report = defined('THEMOSIS_ERROR_REPORT') ? THEMOSIS_ERROR_REPORT : 0;
 error_reporting($report);
-
-/*----------------------------------------------------*/
-// Set class aliases.
-/*----------------------------------------------------*/
-$aliases = apply_filters('themosisClassAliases', [
-    'Themosis\\Facades\\Action'                 => 'Action',
-    'Themosis\\Facades\\Ajax'					=> 'Ajax',
-    'Themosis\\Facades\\Asset'					=> 'Asset',
-    'Themosis\\Facades\\Config'                 => 'Config',
-    'Themosis\\Route\\Controller'               => 'Controller',
-    'Themosis\\Facades\\Field'					=> 'Field',
-    'Themosis\\Facades\\Form'					=> 'Form',
-    'Themosis\\Facades\\Html'                   => 'Html',
-    'Themosis\\Facades\\Input'                  => 'Input',
-    'Themosis\\Metabox\\Meta'					=> 'Meta',
-    'Themosis\\Facades\\Metabox'				=> 'Metabox',
-    'Themosis\\Page\\Option'					=> 'Option',
-    'Themosis\\Facades\\Page'					=> 'Page',
-    'Themosis\\Facades\\PostType'				=> 'PostType',
-    'Themosis\\Facades\\Route'					=> 'Route',
-    'Themosis\\Facades\\Section'                => 'Section',
-    'Themosis\\Session\\Session'				=> 'Session',
-    'Themosis\\Taxonomy\\TaxField'              => 'TaxField',
-    'Themosis\\Taxonomy\\TaxMeta'               => 'TaxMeta',
-    'Themosis\\Facades\\Taxonomy'				=> 'Taxonomy',
-    'Themosis\\Facades\\User'					=> 'User',
-    'Themosis\\Facades\\Validator'              => 'Validator',
-    'Themosis\\Facades\\Loop'					=> 'Loop',
-    'Themosis\\Facades\\View'					=> 'View'
-]);
-
-foreach ($aliases as $namespace => $className)
-{
-    class_alias($namespace, $className);
-}
 
 /*----------------------------------------------------*/
 // Bootstrap plugins.

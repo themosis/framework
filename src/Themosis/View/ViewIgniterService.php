@@ -31,18 +31,17 @@ class ViewIgniterService extends IgniterService{
     {
         $igniterService = $this;
 
-        $this->app->bindShared('view.engine.resolver', function() use ($igniterService){
-
+        $this->app->bindShared('view.engine.resolver', function() use ($igniterService)
+        {
             $resolver = new EngineResolver();
 
             // Register the engines.
-            foreach (array('php', 'scout') as $engine)
+            foreach (['php', 'scout'] as $engine)
             {
                 $igniterService->{'register'.ucfirst($engine).'Engine'}($engine, $resolver);
             }
 
             return $resolver;
-
         });
     }
 
@@ -55,7 +54,8 @@ class ViewIgniterService extends IgniterService{
      */
     protected function registerPhpEngine($engine, EngineResolver $resolver)
     {
-        $resolver->register($engine, function(){
+        $resolver->register($engine, function()
+        {
             return new PhpEngine();
         });
     }
@@ -73,15 +73,14 @@ class ViewIgniterService extends IgniterService{
 
         // Register a ScoutCompiler instance so we can
         // inject it into the ScoutEngine class.
-        $app->bindShared('scout.compiler', function($app){
-
+        $app->bindShared('scout.compiler', function($app)
+        {
             $storage = $app['path.storage'].'views'.DS;
-
             return new ScoutCompiler($storage);
-
         });
 
-        $resolver->register($engine, function() use ($app){
+        $resolver->register($engine, function() use ($app)
+        {
             return new ScoutEngine($app['scout.compiler']);
         });
     }
@@ -93,13 +92,11 @@ class ViewIgniterService extends IgniterService{
      */
     protected function igniteViewFinder()
     {
-        $this->app->bindShared('view.finder', function($app){
-
+        $this->app->bindShared('view.finder', function($app)
+        {
             // Paths to view directories.
             $paths = apply_filters('themosisViewPaths', []);
-
             return new ViewFinder($paths);
-
         });
     }
 
@@ -111,8 +108,8 @@ class ViewIgniterService extends IgniterService{
      */
     protected function igniteViewFactory()
     {
-        $this->app->bindShared('view', function($app){
-
+        $this->app->bindShared('view', function($app)
+        {
             $viewEnv = new ViewFactory($app['view.engine.resolver'], $app['view.finder'], $app['action']);
 
             // Set the IoC container.
@@ -122,7 +119,6 @@ class ViewIgniterService extends IgniterService{
             $viewEnv->share('__app', $app);
 
             return $viewEnv;
-
         });
     }
 
@@ -133,10 +129,9 @@ class ViewIgniterService extends IgniterService{
      */
     protected function igniteLoop()
     {
-        $this->app->bindShared('loop', function($app){
-
+        $this->app->bindShared('loop', function($app)
+        {
             return new Loop();
-
         });
     }
 }

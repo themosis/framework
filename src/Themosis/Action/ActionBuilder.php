@@ -131,7 +131,7 @@ class ActionBuilder implements IAction
 
         $instance = $this->container->make($class);
 
-        return array($instance, $method);
+        return [$instance, $method];
     }
 
     /**
@@ -151,7 +151,7 @@ class ActionBuilder implements IAction
         // If no method is defined, use the hook name as the method name.
         $method = str_contains($hook, '-') ? str_replace('-', '_', $hook) : $hook;
 
-        return array($class, $method);
+        return [$class, $method];
     }
 
     /**

@@ -177,7 +177,6 @@ class UserFactory extends Wrapper implements IUser
     public function addSections(array $sections)
     {
         $this->sections = $sections;
-
         return $this;
     }
 
@@ -252,7 +251,6 @@ class UserFactory extends Wrapper implements IUser
     public function validate(array $rules = [])
     {
         $this->rules = $rules;
-
         return $this;
     }
 

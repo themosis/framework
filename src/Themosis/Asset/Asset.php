@@ -17,7 +17,7 @@ class Asset {
      *
      * @var array
      */
-    protected $allowedAreas = array('admin', 'login');
+    protected $allowedAreas = ['admin', 'login'];
 
     /**
      * Type of the asset.

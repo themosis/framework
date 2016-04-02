@@ -25,7 +25,6 @@ class User extends WP_User
     public function setRole($role)
     {
         $this->set_role($role);
-
         return $this;
     }
 
@@ -48,7 +47,7 @@ class User extends WP_User
      */
     public function update(array $userdata)
     {
-        $userdata = array_merge($userdata, array('ID' => $this->ID));
+        $userdata = array_merge($userdata, ['ID' => $this->ID]);
 
         $user = wp_update_user($userdata);
 

@@ -47,7 +47,6 @@ class FieldFactory
         }
 
         return $class;
-
     }
 
     /**
