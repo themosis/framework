@@ -9,7 +9,8 @@ use Illuminate\Http\Request as IlluminateRequest;
 use Illuminate\Routing\Router as IlluminateRouter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class Router extends IlluminateRouter {
+class Router extends IlluminateRouter
+{
 
     public function __construct(IlluminateContainer $container)
     {
@@ -36,14 +37,14 @@ class Router extends IlluminateRouter {
     /**
      * Dispatch the request to the application.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function dispatch(IlluminateRequest $request)
     {
         try {
             return parent::dispatch($request);
-        } catch(NotFoundHttpException $exception) {
+        } catch (NotFoundHttpException $exception) {
             // If we can not find a route, use the default Themosis template as fallback
             $view = $this->container['view'];
             $response = $view->make('_themosisNoRoute');
