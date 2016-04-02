@@ -3,8 +3,9 @@ namespace Themosis\Core;
 
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Illuminate\Http\Request as IlluminateRequest;
 
-class Request extends SymfonyRequest {
+class Request extends IlluminateRequest {
 
     /**
      * JSON content.

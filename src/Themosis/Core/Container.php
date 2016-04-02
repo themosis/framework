@@ -5,8 +5,9 @@ use Closure;
 use ArrayAccess;
 use ReflectionClass;
 use ReflectionParameter;
+use Illuminate\Container\Container as IlluminateContainer;
 
-class Container implements ArrayAccess{
+class Container extends IlluminateContainer implements ArrayAccess {
 
     /**
      * An array of the types that have been resolved.

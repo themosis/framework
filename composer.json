@@ -1,31 +1,39 @@
 {
 	"name": "themosis/framework",
 	"description": "The Themosis framework.",
-	"keywords": ["themosis", "framework", "WordPress", "plugin"],
+	"keywords": [
+		"themosis",
+		"framework",
+		"WordPress",
+		"plugin"
+	],
 	"license": "GPL-2.0+",
-	"authors":[
+	"authors": [
 		{
 			"name": "Julien Lambé",
 			"email": "julien@themosis.com",
 			"homepage": "http://www.themosis.com/"
 		}
 	],
-    "autoload": {
-        "psr-4": {
-          "Themosis\\": "src/Themosis/"
-        }
-    },
+	"autoload": {
+		"psr-4": {
+			"Themosis\\": "src/Themosis/"
+		}
+	},
 	"type": "wordpress-plugin",
 	"require": {
 		"php": ">=5.4",
 		"symfony/http-foundation": "2.4.2",
-		"composer/installers" : "~1.0"
+		"composer/installers": "~1.0",
+		"illuminate/support": "4.*",
+		"illuminate/routing": "4.*",
+		"illuminate/events": "4.*"
 	},
 	"require-dev": {
 		"php": ">=5.4",
 		"symfony/http-foundation": "2.4.2",
 		"phpunit/phpunit": "4.5.0",
 		"mockery/mockery": "~0.9",
-        "10up/wp_mock": "dev-master"
+		"10up/wp_mock": "dev-master"
 	}
 }
