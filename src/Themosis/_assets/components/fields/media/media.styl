@@ -1,0 +1,99 @@
+/*
+* Themosis Media field
+*/
+.themosis-media
+  border-collapse collapse
+  width 100%
+  clear both
+  border-spacing 0px
+
+.themosis-media-preview
+  margin 0 !important
+  padding 0 10px 0 0 !important
+  width 100px !important
+  vertical-align top !important
+
+  .themosis-media-preview-inner
+    width 100px
+    height 100px
+    background-color #f3f3f3
+    position relative
+    box-shadow 0 0 0 1px #fff, 0 0 0 5px #e1e1e1
+    margin 5px
+
+    .centered
+      position absolute
+      top 0
+      left 0
+      width 100%
+      height 100%
+      transform translate(50%,50%)
+      pointer-events none
+
+      img
+        position absolute
+        transform translate(-50%,-50%)
+        display block
+        margin 0 auto
+        max-width 100px
+
+    .filename
+      display none
+      position absolute
+      left 0
+      right 0
+      bottom 0
+      overflow hidden
+      max-height 100%
+      word-wrap break-word
+      text-align center
+      font-weight 700
+      background rgba(255,255,255,.8)
+
+      div
+        padding 0.4em 0.8em
+
+    .filename.show
+      display block
+
+.themosis-media-details
+  vertical-align top !important
+  padding 0 !important
+
+.themosis-media-inner
+  padding 5px 0 0 0
+
+  .themosis-media-infos
+    padding-bottom 7px
+
+    h4
+      padding 0
+      margin 0 0 5px 0 !important
+      word-break break-all
+
+    .themosis-media__path
+      background-color #f0f0f0
+      padding 2px 5px 3px 5px
+      margin-top 0
+      border 1px solid #dddddd
+      color #888888
+
+  .themosis-media__buttons
+    width 100%
+
+.themosis-media--hidden
+  display none !important
+
+/* Styles for metabox with side context */
+#side-sortables
+  .themosis-media-preview
+    padding 0 !important
+    
+    .themosis-media-preview-inner
+      width 80px
+      height 80px
+
+      .centered
+        img
+          width 100%
+          height auto

@@ -12,11 +12,10 @@ class SectionIgniterService extends IgniterService{
      */
     public function ignite()
     {
-        $this->app->bind('sections', function($app){
-
+        $this->app->bind('sections', function($app)
+        {
             $data = new SectionData();
             return new SectionBuilder($data);
-
         });
     }
 }

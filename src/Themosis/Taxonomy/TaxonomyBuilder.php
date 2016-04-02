@@ -12,12 +12,12 @@ class TaxonomyBuilder extends Wrapper {
      *
      * @var DataContainer
      */
-    private $datas;
+    protected $datas;
 
     /**
      * The 'init' event.
      */
-    private $event;
+    protected $event;
 
     /**
      * Build a TaxonomyBuilder instance.
@@ -66,13 +66,25 @@ class TaxonomyBuilder extends Wrapper {
      * @param array $params Taxonomy arguments to override defaults.
      * @return \Themosis\Taxonomy\TaxonomyBuilder
      */
-    public function set(array $params = array())
+    public function set(array $params = [])
     {
         // Override custom taxonomy arguments if given.
         $this->datas['args'] = array_merge($this->datas['args'], $params);
 
         // Trigger the 'init' event in order to register the custom taxonomy.
-        $this->event->dispatch();
+        // Check if we are not already called by a method attached to the `init` hook.
+        $current = current_filter();
+
+        if ('init' === $current)
+        {
+            // If inside an `init` action, simply call the register method.
+            $this->register();
+        }
+        else
+        {
+            // Out of an `init` action, call the hook.
+            $this->event->dispatch();
+        }
 
         return $this;
     }
@@ -112,9 +124,9 @@ class TaxonomyBuilder extends Wrapper {
      * @param string $singular The singular display name.
      * @return array
      */
-    private function setDefaultArguments($plural, $singular)
+    protected function setDefaultArguments($plural, $singular)
     {
-        $labels = array(
+        $labels = [
             'name' => _x($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
             'singular_name' => _x($singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
             'search_items' =>  __( 'Search ' . $plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
@@ -126,14 +138,14 @@ class TaxonomyBuilder extends Wrapper {
             'add_new_item' => __( 'Add New ' . $singular,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
             'new_item_name' => __( 'New '. $singular .' Name' ,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
             'menu_name' => __($plural ,THEMOSIS_FRAMEWORK_TEXTDOMAIN)
-        );
+        ];
 
-        $defaults = array(
+        $defaults = [
             'label' 		=> __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
             'labels' 		=> $labels,
             'public'		=> true,
             'query_var'		=> true
-        );
+        ];
 
         return $defaults;
     }

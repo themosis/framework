@@ -1,0 +1,46 @@
+{
+  "name": "themosis-framework",
+  "version": "1.2.3",
+  "description": "A framework for WordPress developers",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "watch": "webpack --watch --progress --profile --colors",
+    "build": "webpack -p --progress --profile --colors",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/themosis/framework.git"
+  },
+  "keywords": [
+    "wordpress",
+    "framework",
+    "php"
+  ],
+  "author": "Julien Lambé",
+  "license": "GPLv2",
+  "bugs": {
+    "url": "https://github.com/themosis/framework/issues"
+  },
+  "homepage": "https://github.com/themosis/framework",
+  "devDependencies": {
+    "babel-core": "^6.3.26",
+    "babel-loader": "^6.2.1",
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.0",
+    "file-loader": "^0.8.5",
+    "git-branch": "^0.3.0",
+    "style-loader": "^0.13.0",
+    "stylus": "^0.53.0",
+    "stylus-loader": "^1.4.2",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.12.9",
+    "webpack-sources": "^0.1.0"
+  },
+  "dependencies": {
+    "autoprefixer": "^6.2.3",
+    "precss": "^1.4.0"
+  }
+}

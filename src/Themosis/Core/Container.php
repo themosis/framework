@@ -14,49 +14,49 @@ class Container extends IlluminateContainer implements ArrayAccess {
      *
      * @var array
      */
-    protected $resolved = [];
+    protected $resolved = array();
 
     /**
      * The container's bindings.
      *
      * @var array
      */
-    protected $bindings = [];
+    protected $bindings = array();
 
     /**
      * Loaded instances aka the builders. (FormBuilder,...)
      *
      * @var array
      */
-    protected $instances = [];
+    protected $instances = array();
 
     /**
      * The registered type aliases.
      *
      * @var array
      */
-    protected $aliases = [];
+    protected $aliases = array();
 
     /**
      * All of the registered rebound callbacks.
      *
      * @var array
      */
-    protected $reboundCallbacks = [];
+    protected $reboundCallbacks = array();
 
     /**
      * All of the registered resolving callbacks.
      *
      * @var array
      */
-    protected $resolvingCallbacks = [];
+    protected $resolvingCallbacks = array();
 
     /**
      * All of the global resolving callbacks.
      *
      * @var array
      */
-    protected $globalResolvingCallbacks = [];
+    protected $globalResolvingCallbacks = array();
 
     /**
      * Register an existing instance as shared in the container.
@@ -70,7 +70,8 @@ class Container extends IlluminateContainer implements ArrayAccess {
         // First, we will extract the alias from the abstract if it is an array so we
         // are using the correct name when binding the type. If we get an alias it
         // will be registered with the container so we can resolve it out later.
-        if (is_array($abstract)) {
+        if (is_array($abstract))
+        {
             list($abstract, $alias) = $this->extractAlias($abstract);
 
             $this->alias($abstract, $alias);
@@ -85,7 +86,8 @@ class Container extends IlluminateContainer implements ArrayAccess {
 
         $this->instances[$abstract] = $instance;
 
-        if ($bound) {
+        if ($bound)
+        {
             $this->rebound($abstract);
         }
     }
@@ -111,7 +113,8 @@ class Container extends IlluminateContainer implements ArrayAccess {
     {
         $instance = $this->make($abstract);
 
-        foreach ($this->getReboundCallbacks($abstract) as $callback) {
+        foreach ($this->getReboundCallbacks($abstract) as $callback)
+        {
             call_user_func($callback, $this, $instance);
         }
     }
@@ -124,11 +127,12 @@ class Container extends IlluminateContainer implements ArrayAccess {
      */
     protected function getReboundCallbacks($abstract)
     {
-        if (isset($this->reboundCallbacks[$abstract])) {
+        if (isset($this->reboundCallbacks[$abstract]))
+        {
             return $this->reboundCallbacks[$abstract];
         }
 
-        return [];
+        return array();
     }
 
     /**
@@ -138,14 +142,15 @@ class Container extends IlluminateContainer implements ArrayAccess {
      * @param array $parameters
      * @return mixed
      */
-    public function make($abstract, $parameters = [])
+    public function make($abstract, $parameters = array())
     {
         $abstract = $this->getAlias($abstract);
 
         // If an instance of the type is currently being managed as a singleton we'll
         // just return an existing instance instead of instantiating new instances
         // so the developer can keep using the same objects instance every time.
-        if (isset($this->instances[$abstract])) {
+        if (isset($this->instances[$abstract]))
+        {
             return $this->instances[$abstract];
         }
 
@@ -154,16 +159,20 @@ class Container extends IlluminateContainer implements ArrayAccess {
         // We're ready to instantiate an instance of the concrete type registered for
         // the binding. This will instantiate the types, as well as resolve any of
         // its "nested" dependencies recursively until all have gotten resolved.
-        if ($this->isBuildable($concrete, $abstract)) {
+        if ($this->isBuildable($concrete, $abstract))
+        {
             $object = $this->build($concrete, $parameters);
-        } else {
+        }
+        else
+        {
             $object = $this->make($concrete, $parameters);
         }
 
         // If the requested type is registered as a singleton we'll want to cache off
         // the instances in "memory" so we can return it later without creating an
         // entirely new instance of an object on each subsequent request for it.
-        if ($this->isShared($abstract)) {
+        if ($this->isShared($abstract))
+        {
             $this->instances[$abstract] = $object;
         }
 
@@ -183,7 +192,8 @@ class Container extends IlluminateContainer implements ArrayAccess {
      */
     protected function fireResolvingCallbacks($abstract, $object)
     {
-        if (isset($this->resolvingCallbacks[$abstract])) {
+        if (isset($this->resolvingCallbacks[$abstract]))
+        {
             $this->fireCallbackArray($object, $this->resolvingCallbacks[$abstract]);
         }
 
@@ -198,7 +208,8 @@ class Container extends IlluminateContainer implements ArrayAccess {
      */
     protected function fireCallbackArray($object, array $callbacks)
     {
-        foreach ($callbacks as $callback) {
+        foreach ($callbacks as $callback)
+        {
             call_user_func($callback, $object, $this);
         }
     }
@@ -214,9 +225,11 @@ class Container extends IlluminateContainer implements ArrayAccess {
         // If we don't have a registered resolver or concrete for the type, we'll just
         // assume each type is a concrete name and will attempt to resolve it as is
         // since the container should be able to resolve concretes automatically.
-        if (!isset($this->bindings[$abstract])) {
-            if ($this->missingLeadingSlash($abstract) && isset($this->bindings['\\' . $abstract])) {
-                $abstract = '\\' . $abstract;
+        if ( !isset($this->bindings[$abstract]))
+        {
+            if ($this->missingLeadingSlash($abstract) && isset($this->bindings['\\'.$abstract]))
+            {
+                $abstract = '\\'.$abstract;
             }
 
             return $abstract;
@@ -257,12 +270,13 @@ class Container extends IlluminateContainer implements ArrayAccess {
      * @return mixed
      * @throws \Exception
      */
-    public function build($concrete, $parameters = [])
+    public function build($concrete, $parameters = array())
     {
         // If the concrete type is actually a Closure, we will just execute it and
         // hand back the results of the functions, which allows functions to be
         // used as resolvers for more fine-tuned resolution of these objects.
-        if ($concrete instanceof Closure) {
+        if ($concrete instanceof Closure)
+        {
             return $concrete($this, $parameters);
         }
 
@@ -271,7 +285,8 @@ class Container extends IlluminateContainer implements ArrayAccess {
         // If the type is not instantiable, the developer is attempting to resolve
         // an abstract type such as an Interface of Abstract Class and there is
         // no binding registered for the abstractions so we need to bail out.
-        if (!$reflector->isInstantiable()) {
+        if (!$reflector->isInstantiable())
+        {
             $message = "Target [$concrete] is not instantiable.";
             throw new \Exception($message);
         }
@@ -281,7 +296,8 @@ class Container extends IlluminateContainer implements ArrayAccess {
         // If there are no constructors, that means there are no dependencies then
         // we can just resolve the instances of the objects right away, without
         // resolving any other types or dependencies out of these containers.
-        if (is_null($constructor)) {
+        if (is_null($constructor))
+        {
             return new $concrete;
         }
 
@@ -311,7 +327,8 @@ class Container extends IlluminateContainer implements ArrayAccess {
         // If the given types are actually an array, we will assume an alias is being
         // defined and will grab this "real" abstract class name and register this
         // alias with the container so that it can be used as a shortcut for it.
-        if (is_array($abstract)) {
+        if (is_array($abstract))
+        {
             list($abstract, $alias) = $this->extractAlias($abstract);
 
             $this->alias($abstract, $alias);
@@ -322,14 +339,16 @@ class Container extends IlluminateContainer implements ArrayAccess {
         // without being forced to state their classes in both of the parameter.
         $this->dropStaleInstances($abstract);
 
-        if (is_null($concrete)) {
+        if (is_null($concrete))
+        {
             $concrete = $abstract;
         }
 
         // If the factory is not a Closure, it means it is just a class name which
         // is bound into this container to the abstract type and we will just wrap
         // it up inside a Closure to make things more convenient when extending.
-        if (!$concrete instanceof Closure) {
+        if ( ! $concrete instanceof Closure)
+        {
             $concrete = $this->getClosure($abstract, $concrete);
         }
 
@@ -338,7 +357,8 @@ class Container extends IlluminateContainer implements ArrayAccess {
         // If the abstract type was already resolved in this container we'll fire the
         // rebound listener so that any objects which have already gotten resolved
         // can have their copy of the object updated via the listener callbacks.
-        if ($this->resolved($abstract)) {
+        if ($this->resolved($abstract))
+        {
             $this->rebound($abstract);
         }
     }
@@ -363,13 +383,15 @@ class Container extends IlluminateContainer implements ArrayAccess {
      */
     public function share(Closure $closure)
     {
-        return function ($container) use ($closure) {
+        return function($container) use ($closure)
+        {
             // We'll simply declare a static variable within the Closures and if it has
             // not been set we will execute the given Closures to resolve this value
             // and return it back to these consumers of the method as an instance.
             static $object;
 
-            if (is_null($object)) {
+            if (is_null($object))
+            {
                 $object = $closure($container);
             }
 
@@ -385,9 +407,12 @@ class Container extends IlluminateContainer implements ArrayAccess {
      */
     public function isShared($abstract)
     {
-        if (isset($this->bindings[$abstract]['shared'])) {
+        if (isset($this->bindings[$abstract]['shared']))
+        {
             $shared = $this->bindings[$abstract]['shared'];
-        } else {
+        }
+        else
+        {
             $shared = false;
         }
 
@@ -403,7 +428,8 @@ class Container extends IlluminateContainer implements ArrayAccess {
      */
     protected function getClosure($abstract, $concrete)
     {
-        return function ($c, $parameters = []) use ($abstract, $concrete) {
+        return function($c, $parameters = array()) use ($abstract, $concrete)
+        {
             $method = ($abstract == $concrete) ? 'build' : 'make';
 
             return $c->$method($concrete, $parameters);
@@ -452,7 +478,7 @@ class Container extends IlluminateContainer implements ArrayAccess {
      */
     protected function extractAlias(array $definition)
     {
-        return [key($definition), current($definition)];
+        return array(key($definition), current($definition));
     }
 
     /**
@@ -502,8 +528,10 @@ class Container extends IlluminateContainer implements ArrayAccess {
      */
     protected function keyParametersByArgument(array $dependencies, array $parameters)
     {
-        foreach ($parameters as $key => $value) {
-            if (is_numeric($key)) {
+        foreach ($parameters as $key => $value)
+        {
+            if (is_numeric($key))
+            {
                 unset($parameters[$key]);
                 $parameters[$dependencies[$key]->name] = $value;
             }
@@ -519,39 +547,46 @@ class Container extends IlluminateContainer implements ArrayAccess {
      * @param array $primitives
      * @return array
      */
-    protected function getDependencies($parameters, array $primitives = [])
+    protected function getDependencies($parameters, array $primitives = array())
     {
-        $dependencies = [];
+        $dependencies = array();
 
-        foreach ($parameters as $parameter) {
+        foreach ($parameters as $parameter)
+        {
             $dependency = $parameter->getClass();
 
             // If the class is null, it means the dependency is a string or some other
             // primitive type which we can not resolve since it is not a class and
             // we will just bomb out with an error since we have no-where to go.
-            if (array_key_exists($parameter->name, $primitives)) {
+            if (array_key_exists($parameter->name, $primitives))
+            {
                 $dependencies[] = $primitives[$parameter->name];
-            } elseif (is_null($dependency)) {
+            }
+            elseif (is_null($dependency))
+            {
                 $dependencies[] = $this->resolveNonClass($parameter);
-            } else {
+            }
+            else
+            {
                 $dependencies[] = $this->resolveClass($parameter);
             }
         }
 
-        return (array)$dependencies;
+        return (array) $dependencies;
     }
 
     /**
      * Resolve a non-class hinted dependency.
      *
-     * @param \ReflectionParameter $parameter
+     * @param \ReflectionParameter  $parameter
      * @return mixed
      *
      * @throws \Exception
      */
     protected function resolveNonClass(ReflectionParameter $parameter)
     {
-        if ($parameter->isDefaultValueAvailable()) {
+        if ($parameter->isDefaultValueAvailable())
+        {
             return $parameter->getDefaultValue();
         }
 
@@ -563,22 +598,25 @@ class Container extends IlluminateContainer implements ArrayAccess {
     /**
      * Resolve a class based dependency from the container.
      *
-     * @param \ReflectionParameter $parameter
+     * @param \ReflectionParameter  $parameter
      * @return mixed
      *
      * @throws \Exception
      */
     protected function resolveClass(ReflectionParameter $parameter)
     {
-        try {
+        try
+        {
             return $this->make($parameter->getClass()->name);
         }
 
-            // If we can not resolve the class instance, we will check to see if the value
-            // is optional, and if it is we will return the optional parameter value as
-            // the value of the dependency, similarly to how we do this with scalars.
-        catch (\Exception $e) {
-            if ($parameter->isOptional()) {
+        // If we can not resolve the class instance, we will check to see if the value
+        // is optional, and if it is we will return the optional parameter value as
+        // the value of the dependency, similarly to how we do this with scalars.
+        catch (\Exception $e)
+        {
+            if ($parameter->isOptional())
+            {
                 return $parameter->getDefaultValue();
             }
 
@@ -623,8 +661,10 @@ class Container extends IlluminateContainer implements ArrayAccess {
         // If the value is not a Closure, we will make it one. This simply gives
         // more "drop-in" replacement functionality for the Pimple which this
         // container's simplest functions are base modeled and built after.
-        if (!$value instanceof Closure) {
-            $value = function () use ($value) {
+        if ( ! $value instanceof Closure)
+        {
+            $value = function() use ($value)
+            {
                 return $value;
             };
         }
@@ -658,8 +698,8 @@ class Container extends IlluminateContainer implements ArrayAccess {
     /**
      * Dynamically set container services.
      *
-     * @param  string $key
-     * @param  mixed $value
+     * @param  string  $key
+     * @param  mixed   $value
      * @return void
      */
     public function __set($key, $value)

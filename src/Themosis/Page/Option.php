@@ -10,23 +10,26 @@ class Option
      * @param string $optionGroup The section name.
      * @param $name $name The option name.
      * @throws OptionException
-     * @return mixed The option value.
+     * @return string|array The option value as string or array of values
      */
     public static function get($optionGroup, $name = null)
     {
         $option = get_option($optionGroup);
 
-        if (!empty($option))
+        if (!empty($option) && !is_null($name))
         {
-            if (!is_null($name))
+            if (isset($option[$name]))
             {
                 return $option[$name];
             }
 
+            return '';
+        }
+        elseif (!empty($option))
+        {
             return $option;
         }
 
         return '';
-
     }
 }

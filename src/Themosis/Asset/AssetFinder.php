@@ -17,14 +17,14 @@ class AssetFinder {
      *
      * @var array
      */
-    protected $assets = array();
+    protected $assets = [];
 
     /**
      * List of URL schemes.
      *
      * @var array
      */
-    protected $schemes = array('//', 'http://', 'https://');
+    protected $schemes = ['//', 'http://', 'https://'];
 
     /**
      * Build a AssetFinder instance.

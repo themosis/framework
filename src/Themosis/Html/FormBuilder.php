@@ -106,7 +106,7 @@ class FormBuilder {
 
         // Check the given path.
         // If none given, set to the current page url.
-        $uri = ($action === null || empty($action)) ? $this->request->getPathInfo() : '/'.trim($action, '/').'/';
+        $uri = ($action === null || empty($action)) ? $this->request->getPathInfo() : '/'.trim($action, '/');
 
         // Build the action url.
         // The uri could be absolute or relative path.

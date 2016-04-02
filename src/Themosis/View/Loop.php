@@ -5,7 +5,7 @@ class Loop
 {
 	/**
 	 * Get the id of the current post.
-	 * 
+	 *
 	 * @return int The ID of the current post.
 	 */
 	public function id()
@@ -15,7 +15,7 @@ class Loop
 
 	/**
 	 * Get the title of the current post.
-	 * 
+	 *
 	 * @return string The title of the current post.
 	 */
 	public function title()
@@ -31,6 +31,17 @@ class Loop
 	public function author()
 	{
 		return get_the_author();
+	}
+
+	/**
+	 * Get author meta
+	 *
+	 * @param string $field
+	 * @return string
+	 */
+	public function authorMeta($field)
+	{
+		return get_the_author_meta($field);
 	}
 
 	/**
@@ -66,7 +77,7 @@ class Loop
 	{
 		return get_the_post_thumbnail($this->id(), $size, $attr);
 	}
-	
+
 	/**
 	 * Get thumbnail url of current post.
 	 *
@@ -109,7 +120,9 @@ class Loop
 	 */
 	public function tags()
 	{
-		return get_the_tags();
+		$tags = get_the_tags();
+
+		return $tags ? $tags : [];
 	}
 
 	/**
@@ -121,9 +134,11 @@ class Loop
 	 */
 	public function terms($taxonomy)
 	{
-		return get_the_terms($this->id(), $taxonomy);
+		$terms = get_the_terms($this->id(), $taxonomy);
+
+		return $terms ? $terms : [];
 	}
-	
+
 	/**
 	 * Get the date of the current post.
 	 *

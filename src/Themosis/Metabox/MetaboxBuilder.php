@@ -136,14 +136,56 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
     }
 
     /**
+     * Check if a template is defined within the metabox.
+     *
+     * @return bool
+     */
+    protected function hasTemplate()
+    {
+        if (isset($this->datas['options']['template']) && !empty($this->datas['options']['template'])) return true;
+        return false;
+    }
+
+    /**
      * The wrapper display method.
+     *
+     * @param string $postType The postType name.
+     * @return void
+     */
+    public function display($postType)
+    {
+        if ($this->check && !$this->user->can($this->capability)) return;
+
+        // Look if a template is defined.
+        // Display the metabox on pages/posts that have a template registered.
+        if ($this->hasTemplate() && $postType == $this->datas['postType'])
+        {
+            // Fetch current ID (for cpts only).
+            $postID = themosis_get_post_id();
+            $template = get_post_meta($postID, '_themosisPageTemplate', true);
+
+            // Check if a template is attached to the post/page.
+            if ($template == $this->datas['options']['template'])
+            {
+                // Add a metabox for post/pages with a registered template.
+                $this->addMetabox();
+            }
+        }
+        else
+        {
+            // Add a metabox for no templates cases.
+            $this->addMetabox();
+        }
+    }
+
+    /**
+     * Call the core function add_meta_box in order to output
+     * a metabox.
      *
      * @return void
      */
-    public function display()
+    protected function addMetabox()
     {
-        if($this->check && !$this->user->can($this->capability)) return;
-
         // Fields are passed to the metabox $args parameter.
         add_meta_box($this->datas['options']['id'], $this->datas['title'], [$this, 'build'], $this->datas['postType'], $this->datas['options']['context'], $this->datas['options']['priority'], $this->datas['fields']);
     }
@@ -254,7 +296,29 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
     {
         foreach($fields as $field)
         {
-            $value = isset($_POST[$field['name']]) ? $_POST[$field['name']] : $this->parseValue($field);
+            // Default value... (init var)
+            $value = '';
+
+            if (isset($_POST[$field['name']]))
+            {
+                // Check if a "save" method exists. The method will parse the $_POST value
+                // and transform it for DB save. Ex.: transform an array to string or int...
+                if (method_exists($field, 'save'))
+                {
+                    // The field save method
+                    $value = $field->save($_POST[$field['name']], $postId);
+                }
+                else
+                {
+                    // No "save" method, only fetch the $_POST value.
+                    $value = $_POST[$field['name']];
+                }
+            }
+            else
+            {
+                // If nothing...setup a default value...
+                $value = $this->parseValue($field);
+            }
 
             // Apply validation if defined.
             // Check if the rule exists for the field in order to validate.
@@ -299,7 +363,8 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
         return wp_parse_args($options, [
             'context'   => 'normal',
             'priority'  => 'default',
-            'id'        => md5($this->datas['title'])
+            'id'        => md5($this->datas['title']),
+            'template'  => ''
         ]);
     }
 

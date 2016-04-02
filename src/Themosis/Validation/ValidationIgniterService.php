@@ -12,10 +12,9 @@ class ValidationIgniterService extends IgniterService {
      */
     public function ignite()
     {
-        $this->app->bindShared('validation', function($app){
-
+        $this->app->bindShared('validation', function($app)
+        {
             return new ValidationBuilder();
-
         });
     }
 }
