@@ -202,6 +202,16 @@ class Route extends IlluminateRoute {
     }
 
     /**
+     * Compile the route into a Symfony CompiledRoute instance.
+     *
+     * @return void
+     */
+    public function compileRoute()
+    {
+        parent::compileRoute();
+    }
+
+    /**
      * Get the route WordPress validators for the instance.
      *
      * @return array
