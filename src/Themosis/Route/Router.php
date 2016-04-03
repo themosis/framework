@@ -20,7 +20,7 @@ class Router extends IlluminateRouter
 
         $this->routes = new RouteCollection;
 
-        Action::listen('themosis_routes_loaded', $this, 'addRewriteRules')->dispatch();
+        \Action::listen('themosis_routes_loaded', $this, 'addRewriteRules')->dispatch();
     }
 
     /**
