@@ -59,7 +59,7 @@ class Router extends IlluminateRouter
      * Registers rewrite rules for every non-WordPress conditional route.
      * This way force WordPress not to change the url to one WordPress knows
      */
-    protected function addRewriteRules()
+    public function addRewriteRules()
     {
         foreach ($this->routes as $route) {
             if ($route instanceof Route) {
