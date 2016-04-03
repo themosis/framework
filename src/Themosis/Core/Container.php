@@ -141,7 +141,7 @@ class Container extends IlluminateContainer implements ArrayAccess {
      * @param array $parameters
      * @return mixed
      */
-    public function make($abstract, $parameters = [])
+    public function make($abstract, array $parameters = [])
     {
         $abstract = $this->getAlias($abstract);
 
@@ -269,7 +269,7 @@ class Container extends IlluminateContainer implements ArrayAccess {
      * @return mixed
      * @throws \Exception
      */
-    public function build($concrete, $parameters = [])
+    public function build($concrete, array $parameters = [])
     {
         // If the concrete type is actually a Closure, we will just execute it and
         // hand back the results of the functions, which allows functions to be
@@ -544,7 +544,7 @@ class Container extends IlluminateContainer implements ArrayAccess {
      * @param array $primitives
      * @return array
      */
-    protected function getDependencies($parameters, array $primitives = array())
+    protected function getDependencies(array $parameters, array $primitives = array())
     {
         $dependencies = [];
 
