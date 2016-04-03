@@ -8,6 +8,7 @@ use Illuminate\Events\Dispatcher as IlluminateDispatcher;
 use Illuminate\Http\Request as IlluminateRequest;
 use Illuminate\Routing\Router as IlluminateRouter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Themosis\Action\Action;
 
 class Router extends IlluminateRouter
 {
@@ -20,7 +21,7 @@ class Router extends IlluminateRouter
 
         $this->routes = new RouteCollection;
 
-        \Action::listen('themosis_routes_loaded', $this, 'addRewriteRules')->dispatch();
+        Action::listen('themosis_routes_loaded', $this, 'addRewriteRules')->dispatch();
     }
 
     /**
