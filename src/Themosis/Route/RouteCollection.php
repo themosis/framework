@@ -13,18 +13,16 @@ class RouteCollection extends IlluminateRouteCollection {
      */
     protected function addToCollections($route)
     {
-        foreach ($route->methods() as $method) {
-            if ($route->condition() && $route->conditionalParameters()) {
-                $this->routes[$method][$route->domain() . $route->getUri() . serialize($route->conditionalParameters())] = $route;
-            } else {
-                $this->routes[$method][$route->domain() . $route->getUri()] = $route;
-            }
-        }
+        $domainAndUri = $route->domain().$route->getUri();
 
         if ($route->condition() && $route->conditionalParameters()) {
-            $this->allRoutes[$method . $route->domain() . $route->getUri() . serialize($route->conditionalParameters())] = $route;
-        } else {
-            $this->allRoutes[$method . $route->domain() . $route->getUri()] = $route;
+            $domainAndUri .= serialize($route->conditionalParameters());
         }
+
+        foreach ($route->methods() as $method) {
+            $this->routes[$method][$domainAndUri] = $route;
+        }
+
+        $this->allRoutes[$method.$domainAndUri] = $route;
     }
 }

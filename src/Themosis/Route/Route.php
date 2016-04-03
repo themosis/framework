@@ -56,6 +56,8 @@ class Route extends IlluminateRoute {
 
         $this->parameters = [];
         $this->condition = $this->parseCondition($uri);
+
+        $this->createRewriteRule();
     }
 
     protected function parseAction($action)
@@ -222,5 +224,29 @@ class Route extends IlluminateRoute {
         // validator implementations. We will spin through each one making sure it
         // passes and then we will know if the route as a whole matches request.
         return [new ConditionValidator, new TemplateValidator, new SchemeValidator];
+    }
+
+    /**
+     * Create a WordPress rewrite rule for the route if it the route is not using a WordPress conditional tag.
+     * By registering a rewrite rule using the route's regex we force WordPress not to change the url to one Wordpress knows.
+     */
+    public function createRewriteRule()
+    {
+        if (!$this->condition()) {
+            // Compile the route to get a Symfony compiled route
+            $this->compileRoute();
+            // Get the regex of the compiled route
+            $routeRegex = $this->getCompiled()->getRegex();
+            // Remove the first part (#^/) of the regex because WordPress adds this already by itself
+            $routeRegex = preg_replace('/^\#\^\//', '^', $routeRegex);
+            // Remove the last part (#s$) of the regex because WordPress adds this already by itself
+            $routeRegex = preg_replace('/\#[s]$/', '', $routeRegex);
+
+            // Add the rewrite rule to the top
+            add_action('init', function () use ($routeRegex) {
+                add_rewrite_rule($routeRegex, 'index.php', 'top');
+            });
+
+        }
     }
 }
