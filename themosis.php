@@ -77,7 +77,7 @@ if (!class_exists('THFWK_Themosis'))
          *
          * @var float
          */
-        const VERSION = '1.2.2';
+        const VERSION = '1.2.3';
 
         /**
          * Plugin directory name.
