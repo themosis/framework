@@ -1,14 +1,11 @@
 <?php
 
 /**
- * Perform any code before running the tests.
+ * Composer autoload.
  */
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
+require_once __DIR__.'../vendor/autoload.php';
 
 /**
- * Autoload the framework.
+ * Include helpers.
  */
-require_once(dirname(__DIR__) . '/vendor/autoload.php');
-require_once(dirname(__DIR__) . '/src/Themosis/Helpers/helpers.php');
+require_once __DIR__.'../src/Themosis/Helpers/helpers.php';

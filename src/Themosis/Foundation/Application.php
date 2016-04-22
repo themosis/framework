@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Themosis\Foundation;
-
 
 use Illuminate\Container\Container;
 
@@ -24,8 +22,6 @@ class Application extends Container
 
     /**
      * Register base dependencies into the container.
-     *
-     * @return void
      */
     protected function registerBaseBindings()
     {
@@ -40,21 +36,15 @@ class Application extends Container
 
     /**
      * Register base service providers if any.
-     *
-     * @return void
      */
     protected function registerBaseServiceProviders()
     {
-
     }
 
     /**
      * Register alias for framework services containers.
-     *
-     * @return void
      */
     protected function registerContainerAliases()
     {
-
     }
 }
