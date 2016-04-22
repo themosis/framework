@@ -14,10 +14,6 @@ class Application extends Container
     public function __construct($basePath = '')
     {
         $this->registerBaseBindings();
-
-        $this->registerBaseServiceProviders();
-
-        $this->registerContainerAliases();
     }
 
     /**
@@ -32,19 +28,5 @@ class Application extends Container
 
         // Add an extended illuminate container into itself.
         $this->instance('Themosis\Foundation\Application', $this);
-    }
-
-    /**
-     * Register base service providers if any.
-     */
-    protected function registerBaseServiceProviders()
-    {
-    }
-
-    /**
-     * Register alias for framework services containers.
-     */
-    protected function registerContainerAliases()
-    {
     }
 }

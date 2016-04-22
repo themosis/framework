@@ -3,9 +3,9 @@
 /**
  * Composer autoload.
  */
-require_once __DIR__.'../vendor/autoload.php';
+require_once dirname(__DIR__).'/vendor/autoload.php';
 
 /**
  * Include helpers.
  */
-require_once __DIR__.'../src/Themosis/Helpers/helpers.php';
+require_once dirname(__DIR__).'/src/Themosis/Helpers/helpers.php';
