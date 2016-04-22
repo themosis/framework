@@ -1,32 +1,47 @@
 <?php defined('DS') or die('No direct script access.');
 
+/*
+ * Define all framework paths
+ * These are real paths, not URLs to the framework files.
+ * These paths are extensible with the help of WordPress
+ * filters.
+ */
+// Plugin base path.
+$paths['plugin'] = __DIR__.DS;
+
+// Framework base path.
+$paths['sys'] = dirname(__DIR__).DS.'src'.DS.'Themosis'.DS;
+
+// Storage path.
+$paths['storage'] = THEMOSIS_STORAGE;
+
+// Register globally the paths
+themosis_set_paths($paths);
+
 /**
  * Bootstrap Themosis framework.
  */
 /*----------------------------------------------------*/
 // Include helper functions.
 /*----------------------------------------------------*/
-include_once(themosis_path('sys').'Helpers'.DS.'helpers.php');
+include_once themosis_path('sys').'Helpers'.DS.'helpers.php';
 
 /*----------------------------------------------------*/
 // Set the application instance.
 /*----------------------------------------------------*/
-if (!class_exists('Themosis\Core\Application'))
-{
+if (!class_exists('Themosis\Core\Application')) {
     // Message for the back-end
-    add_action('admin_notices', function()
-    {
+    add_action('admin_notices', function () {
         ?>
             <div id="message" class="error">
-                <p><?php _e(sprintf('<b>Themosis framework:</b> %s', "The autoload.php file is missing or there is a namespace error inside your composer.json file."), THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></p>
+                <p><?php _e(sprintf('<b>Themosis framework:</b> %s', 'The autoload.php file is missing or there is a namespace error inside your composer.json file.'), THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></p>
             </div>
         <?php
     });
 
     // Message for the front-end
-    if (!is_admin())
-    {
-        wp_die(__("The <strong>Themosis framework</strong> is not loaded properly. Please check your <strong>composer.json</strong> file configuration and the loaded dependencies.", THEMOSIS_FRAMEWORK_TEXTDOMAIN));
+    if (!is_admin()) {
+        wp_die(__('The <strong>Themosis framework</strong> is not loaded properly. Please check your <strong>composer.json</strong> file configuration and the loaded dependencies.', THEMOSIS_FRAMEWORK_TEXTDOMAIN));
     }
 
     return;
@@ -38,7 +53,7 @@ $app = new Themosis\Core\Application();
 /*----------------------------------------------------*/
 // Set the application paths.
 /*----------------------------------------------------*/
-$app->bindInstallPaths($GLOBALS['themosis_paths']);
+$app->bindInstallPaths($GLOBALS['themosis.paths']);
 
 /*----------------------------------------------------*/
 // Bind the application in the container.
@@ -65,8 +80,7 @@ $app->registerCoreIgniters();
 /*----------------------------------------------------*/
 // Register framework view paths.
 /*----------------------------------------------------*/
-add_filter('themosisViewPaths', function($paths)
-{
+add_filter('themosisViewPaths', function ($paths) {
     $paths[] = themosis_path('sys').'Metabox'.DS.'Views'.DS;
     $paths[] = themosis_path('sys').'Page'.DS.'Views'.DS;
     $paths[] = themosis_path('sys').'PostType'.DS.'Views'.DS;
@@ -80,8 +94,7 @@ add_filter('themosisViewPaths', function($paths)
 /*----------------------------------------------------*/
 // Register framework asset paths.
 /*----------------------------------------------------*/
-add_filter('themosisAssetPaths', function($paths)
-{
+add_filter('themosisAssetPaths', function ($paths) {
     $coreUrl = themosis_plugin_url(dirname(__DIR__)).'/src/Themosis/_assets';
     $paths[$coreUrl] = themosis_path('sys').'_assets';
 
@@ -92,7 +105,7 @@ add_filter('themosisAssetPaths', function($paths)
 // Register framework media image size.
 /*----------------------------------------------------*/
 $images = new Themosis\Configuration\Images([
-    '_themosis_media' => [100, 100, true, __('Mini')]
+    '_themosis_media' => [100, 100, true, __('Mini')],
 ]);
 $images->make();
 
@@ -100,28 +113,25 @@ $images->make();
 // Allow developers to add parameters to
 // the admin global JS object.
 /*----------------------------------------------------*/
-add_action('admin_head', function()
-{
+add_action('admin_head', function () {
     $datas = apply_filters('themosisAdminGlobalObject', []);
 
     $output = "<script type=\"text/javascript\">\n\r";
-    $output.= "//<![CDATA[\n\r";
-    $output.= "var thfmk_themosis = {\n\r";
+    $output .= "//<![CDATA[\n\r";
+    $output .= "var thfmk_themosis = {\n\r";
 
-    if (!empty($datas))
-    {
-        foreach ($datas as $key => $value)
-        {
-            $output.= $key.": ".json_encode($value).",\n\r";
+    if (!empty($datas)) {
+        foreach ($datas as $key => $value) {
+            $output .= $key.': '.json_encode($value).",\n\r";
         }
     }
 
-    $output.= "};\n\r";
-    $output.= "//]]>\n\r";
-    $output.= "</script>";
+    $output .= "};\n\r";
+    $output .= "//]]>\n\r";
+    $output .= '</script>';
 
     // Output the datas.
-    echo($output);
+    echo $output;
 
 });
 
@@ -129,9 +139,9 @@ add_action('admin_head', function()
 // Register framework core assets URL to
 // admin global object.
 /*----------------------------------------------------*/
-add_filter('themosisAdminGlobalObject', function($paths)
-{
+add_filter('themosisAdminGlobalObject', function ($paths) {
     $paths['_themosisAssets'] = themosis_plugin_url(dirname(__DIR__)).'/src/Themosis/_assets';
+
     return $paths;
 });
 
@@ -159,27 +169,22 @@ Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosisCore.js', ['jq
 /*----------------------------------------------------*/
 // Handle errors, warnings, exceptions.
 /*----------------------------------------------------*/
-set_exception_handler(function($e)
-{
+set_exception_handler(function ($e) {
     Themosis\Error\Error::exception($e);
 });
 
-set_error_handler(function($code, $error, $file, $line)
-{
+set_error_handler(function ($code, $error, $file, $line) {
     // Check if the class exists
     // Otherwise WP can't find it when
     // constructing its "Menus" page
     // under appearance in administration.
-    if (class_exists('Themosis\Error\Error'))
-    {
+    if (class_exists('Themosis\Error\Error')) {
         Themosis\Error\Error::native($code, $error, $file, $line);
     }
 });
 
-if (defined('THEMOSIS_ERROR_SHUTDOWN') && THEMOSIS_ERROR_SHUTDOWN)
-{
-    register_shutdown_function(function()
-    {
+if (defined('THEMOSIS_ERROR_SHUTDOWN') && THEMOSIS_ERROR_SHUTDOWN) {
+    register_shutdown_function(function () {
         Themosis\Error\Error::shutdown();
     });
 }
