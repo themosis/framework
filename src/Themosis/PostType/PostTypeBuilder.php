@@ -151,6 +151,16 @@ class PostTypeBuilder implements IPostType
     }
 
     /**
+     * Adds a new metabox to the custom post type
+     *
+     * @return \Themosis\Metabox\IMetabox
+     */
+    public function addMetaBox($title, $options = [], $view = null)
+    {
+        return $this->metabox->make($title, $this->datas['name'], $options = [], $view = null);
+    }
+
+    /**
      * Returns the custom post type slug name.
      *
      * @deprecated
