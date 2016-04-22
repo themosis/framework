@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * Require plugin bootstrap file.
+ */
+require_once dirname(__DIR__).'/themosis.php';
+
+/**
  * Composer autoload.
  */
 require_once dirname(__DIR__).'/vendor/autoload.php';
