@@ -1,7 +1,9 @@
 Themosis framework
 ==================
 
+[![Build Status](https://travis-ci.org/themosis/framework.svg?branch=master)](https://travis-ci.org/themosis/framework)
 [![Join the chat at https://gitter.im/themosis/framework](https://badges.gitter.im/themosis/framework.svg)](https://gitter.im/themosis/framework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Coverage Status](https://coveralls.io/repos/github/themosis/framework/badge.svg?branch=master)](https://coveralls.io/github/themosis/framework?branch=master)
 
 The Themosis framework is a tool aimed to WordPress developers of any levels. But the better WordPress and PHP knowledge you have the easier it is to work with.
 

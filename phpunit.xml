@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="tests/bootstrap.php"
         colors="true"
         convertErrorsToExceptions="true"
@@ -5,8 +6,8 @@
         convertWarningsToExceptions="true"
         verbose="true">
     <testsuites>
-        <testsuite name="themosis">
-            <directory>tests</directory>
+        <testsuite name="Themosis framework test suite">
+            <directory suffix="Test.php">tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>
