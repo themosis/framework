@@ -2,9 +2,10 @@
 
 namespace Themosis\Foundation;
 
+use ArrayAccess;
 use League\Container\Container;
 
-class Application extends Container
+class Application extends Container implements ArrayAccess
 {
     /**
      * Project paths.
@@ -52,14 +53,65 @@ class Application extends Container
     }
 
     /**
+     * Check if there is an instance registered into the container.
+     *
+     * @param string $name The instance alias.
+     *
+     * @return bool
+     */
+    public function offsetExists($name)
+    {
+        return $this->has($name);
+    }
+
+    /**
+     * Return a registered instance from the service container.
+     *
+     * @param string $name The instance alias.
+     *
+     * @return mixed|object
+     */
+    public function offsetGet($name)
+    {
+        return $this->get($name);
+    }
+
+    /**
+     * Add an instance to the service container.
+     * 
+     * @param string               $name   string The alias of the instance to register.
+     * @param string|Closure|mixed $value The instance to add to the service container.
+     */
+    public function offsetSet($name, $value)
+    {
+        $this->add($name, $value);
+    }
+
+    /**
+     * Remove an instance from the container.
+     *
+     * @param string $name The instance alias.
+     */
+    public function offsetUnset($name)
+    {
+        if (array_key_exists($name, $this->definitions)) {
+            unset($this->definitions[$name]);
+        }
+
+        if (array_key_exists($name, $this->shared)) {
+            unset($this->shared[$name]);
+        }
+    }
+
+    /**
      * Dynamically access registered instances from the container.
      *
-     * @param $name
+     * @param $name The instance alias used in the container.
      *
      * @return mixed|object
      */
     public function __get($name)
     {
-        return $this->get($name);
+        return $this[$name];
     }
 }

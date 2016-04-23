@@ -2,9 +2,9 @@
 
 namespace Themosis\Asset;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
+use Themosis\Foundation\ServiceProvider;
 
-class AssetServiceProvider extends AbstractServiceProvider
+class AssetServiceProvider extends ServiceProvider
 {
     protected $provides = [
         'asset.finder',

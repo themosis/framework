@@ -7,9 +7,32 @@ abstract class Facade
     /**
      * The Application instance.
      *
-     * @var \Themosis\Core\Application
+     * @var \Themosis\Foundation\Application
      */
     protected static $app;
+
+    /**
+     * Set the service container for the facades.
+     *
+     * @param \Themosis\Foundation\Application $app
+     */
+    public static function setFacadeApplication($app)
+    {
+        static::$app = $app;
+    }
+
+    /**
+     * Retrieve an instance from the container based on the
+     * alias defined in the facade.
+     *
+     * @return mixed
+     */
+    public static function getInstance()
+    {
+        $name = static::getFacadeAccessor();
+
+        return static::$app[$name];
+    }
 
     /**
      * Each facade must define their igniter service
@@ -25,49 +48,6 @@ abstract class Facade
     }
 
     /**
-     * Retrieve the instance called by the igniter service.
-     *
-     * @return mixed
-     */
-    public static function getFacadeRoot()
-    {
-        /*
-         * Grab the igniter service class and get the instance
-         * called by the service.
-         */
-        return static::resolveFacadeInstance(static::getFacadeAccessor());
-    }
-
-    /**
-     * Return a facade instance if one already exists. If not, keep a copy
-     * of all instances and return the current called one.
-     *
-     * @param string $name
-     *
-     * @return mixed
-     */
-    private static function resolveFacadeInstance($name)
-    {
-        if (is_object($name)) {
-            return $name;
-        }
-
-        $app = static::$app;
-
-        return $app->{$name};
-    }
-
-    /**
-     * Store the application instance.
-     *
-     * @param \Themosis\Foundation\Application $app
-     */
-    public static function setFacadeApplication($app)
-    {
-        static::$app = $app;
-    }
-
-    /**
      * Magic method. Use to dynamically call the registered
      * instance method.
      *
@@ -78,7 +58,7 @@ abstract class Facade
      */
     public static function __callStatic($method, $args)
     {
-        $instance = static::getFacadeRoot();
+        $instance = static::getInstance();
 
         /*
          * Call the instance and its method.

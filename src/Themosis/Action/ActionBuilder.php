@@ -1,7 +1,8 @@
 <?php
+
 namespace Themosis\Action;
 
-use Themosis\Core\Container;
+use Themosis\Foundation\Application;
 
 class ActionBuilder implements IAction
 {
@@ -19,7 +20,7 @@ class ActionBuilder implements IAction
      */
     protected $events = [];
 
-    public function __construct(Container $container)
+    public function __construct(Application $container)
     {
         $this->container = $container;
     }
@@ -28,10 +29,11 @@ class ActionBuilder implements IAction
      * Wrapper of the "add_action" function. Allows
      * a developer to specify a controller class or closure.
      *
-     * @param string $hook The action hook name
-     * @param \Closure|string $callback The closure or class to use
-     * @param int $priority The priority order for this action
-     * @param int $accepted_args Default number of accepted arguments
+     * @param string          $hook          The action hook name
+     * @param \Closure|string $callback      The closure or class to use
+     * @param int             $priority      The priority order for this action
+     * @param int             $accepted_args Default number of accepted arguments
+     *
      * @return \Themosis\Action\ActionBuilder
      */
     public function add($hook, $callback, $priority = 10, $accepted_args = 3)
@@ -45,13 +47,13 @@ class ActionBuilder implements IAction
      * Run all actions/events registered by the hook.
      *
      * @param string $hook The action hook  name.
-     * @param mixed $args
+     * @param mixed  $args
+     *
      * @return mixed
      */
     public function run($hook, $args = null)
     {
-        if (is_array($args))
-        {
+        if (is_array($args)) {
             do_action_ref_array($hook, $args);
         }
 
@@ -64,12 +66,12 @@ class ActionBuilder implements IAction
      * Check if a registered action exists.
      *
      * @param string $hook
-     * @return boolean
+     *
+     * @return bool
      */
     public function exists($hook)
     {
-        if (array_key_exists($hook, $this->events))
-        {
+        if (array_key_exists($hook, $this->events)) {
             return true;
         }
 
@@ -79,22 +81,21 @@ class ActionBuilder implements IAction
     /**
      * Add an event for the specified hook.
      *
-     * @param string $hook
-     * @param \Closure|string $callback If string use this syntax "Class@method"
-     * @param int $priority The priority order
-     * @param int $accepted_args The default number of accepted arguments
+     * @param string          $hook
+     * @param \Closure|string $callback      If string use this syntax "Class@method"
+     * @param int             $priority      The priority order
+     * @param int             $accepted_args The default number of accepted arguments
+     *
      * @return \Closure|array
      */
     protected function addActionEvent($hook, $callback, $priority, $accepted_args)
     {
         // Check if $callback is a closure.
-        if ($callback instanceof \Closure || is_array($callback))
-        {
+        if ($callback instanceof \Closure || is_array($callback)) {
             $this->addEventListener($hook, $callback, $priority, $accepted_args);
+
             return $callback;
-        }
-        elseif (is_string($callback))
-        {
+        } elseif (is_string($callback)) {
             // Return the class responsible to handle the action.
             return $this->addClassEvent($hook, $callback, $priority, $accepted_args);
         }
@@ -105,8 +106,9 @@ class ActionBuilder implements IAction
      *
      * @param string $hook
      * @param string $class
-     * @param int $priority
-     * @param int $accepted_args
+     * @param int    $priority
+     * @param int    $accepted_args
+     *
      * @return array
      */
     protected function addClassEvent($hook, $class, $priority, $accepted_args)
@@ -123,6 +125,7 @@ class ActionBuilder implements IAction
      *
      * @param string $class
      * @param string $hook
+     *
      * @return array
      */
     protected function buildClassEventCallback($class, $hook)
@@ -139,12 +142,12 @@ class ActionBuilder implements IAction
      *
      * @param string $class
      * @param string $hook
+     *
      * @return array
      */
     protected function parseClassEvent($class, $hook)
     {
-        if (str_contains($class, '@'))
-        {
+        if (str_contains($class, '@')) {
             return explode('@', $class);
         }
 
@@ -157,11 +160,10 @@ class ActionBuilder implements IAction
     /**
      * Add an action event for the specified hook.
      *
-     * @param string $name
+     * @param string          $name
      * @param \Closure|string $callback
-     * @param int $priority
-     * @param int $accepted_args
-     * @return void
+     * @param int             $priority
+     * @param int             $accepted_args
      */
     protected function addEventListener($name, $callback, $priority, $accepted_args)
     {

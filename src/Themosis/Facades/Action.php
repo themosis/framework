@@ -1,4 +1,5 @@
 <?php
+
 namespace Themosis\Facades;
 
 class Action extends Facade
