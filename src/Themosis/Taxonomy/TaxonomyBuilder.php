@@ -5,7 +5,8 @@ use Themosis\Action\Action;
 use Themosis\Core\DataContainer;
 use Themosis\Core\Wrapper;
 
-class TaxonomyBuilder extends Wrapper {
+class TaxonomyBuilder extends Wrapper
+{
 
     /**
      * Store the taxonomy data.
@@ -42,11 +43,9 @@ class TaxonomyBuilder extends Wrapper {
     {
         $params = compact('slug', 'postType', 'plural', 'singular');
 
-        foreach($params as $name => $param)
-        {
-            if('postType' !== $name && !is_string($param))
-            {
-                throw new TaxonomyException('Invalid taxonomy parameter "'.$name.'"');
+        foreach ($params as $name => $param) {
+            if ('postType' !== $name && !is_string($param)) {
+                throw new TaxonomyException('Invalid taxonomy parameter "' . $name . '"');
             }
         }
 
@@ -75,18 +74,40 @@ class TaxonomyBuilder extends Wrapper {
         // Check if we are not already called by a method attached to the `init` hook.
         $current = current_filter();
 
-        if ('init' === $current)
-        {
+        if ('init' === $current) {
             // If inside an `init` action, simply call the register method.
             $this->register();
-        }
-        else
-        {
+        } else {
             // Out of an `init` action, call the hook.
             $this->event->dispatch();
         }
 
         return $this;
+    }
+    /**
+     * @param null $property
+     * @return array
+     * @throws TaxonomyException
+     */
+    public function get($property = null)
+    {
+        $args = [
+            'slug' => $this->datas['slug'],
+            'post_type' => $this->datas['postType'],
+        ];
+        $properties = array_merge($args, $this->datas['args']);
+
+        // If no property asked, return all defined properties.
+        if (is_null($property) || empty($property)) {
+            return $properties;
+        }
+
+        // If property exists, return it.
+        if (isset($properties[$property])) {
+            return $properties[$property];
+        }
+
+        throw new TaxonomyException("Property '{$property}' does not exist on the '{$properties['label']}' taxonomy.");
     }
 
     /**
@@ -109,8 +130,7 @@ class TaxonomyBuilder extends Wrapper {
      */
     public function bind()
     {
-        foreach ($this->datas['postType'] as $objectType)
-        {
+        foreach ($this->datas['postType'] as $objectType) {
             register_taxonomy_for_object_type($this->datas['slug'], $objectType);
         }
 
@@ -129,25 +149,25 @@ class TaxonomyBuilder extends Wrapper {
         $labels = [
             'name' => _x($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
             'singular_name' => _x($singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'search_items' =>  __( 'Search ' . $plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'all_items' => __( 'All ' . $plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'parent_item' => __( 'Parent ' . $singular,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'parent_item_colon' => __( 'Parent ' . $singular . ': ' ,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'edit_item' => __( 'Edit ' . $singular,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'update_item' => __( 'Update ' . $singular,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'add_new_item' => __( 'Add New ' . $singular,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'new_item_name' => __( 'New '. $singular .' Name' ,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'menu_name' => __($plural ,THEMOSIS_FRAMEWORK_TEXTDOMAIN)
+            'search_items' => __('Search ' . $plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'all_items' => __('All ' . $plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'parent_item' => __('Parent ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'parent_item_colon' => __('Parent ' . $singular . ': ', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'edit_item' => __('Edit ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'update_item' => __('Update ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'add_new_item' => __('Add New ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'new_item_name' => __('New ' . $singular . ' Name', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'menu_name' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
         ];
 
         $defaults = [
-            'label' 		=> __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'labels' 		=> $labels,
-            'public'		=> true,
-            'query_var'		=> true
+            'label' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'labels' => $labels,
+            'public' => true,
+            'query_var' => true,
         ];
 
         return $defaults;
     }
 
-} 
+}
