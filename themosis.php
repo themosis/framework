@@ -87,7 +87,7 @@ if (!class_exists('Themosis')) {
          * 
          * @var \Themosis\Foundation\Application
          */
-        protected $app;
+        public $app;
 
         private function __construct()
         {
