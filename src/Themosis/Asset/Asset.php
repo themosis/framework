@@ -1,10 +1,11 @@
 <?php
+
 namespace Themosis\Asset;
 
 use Themosis\Action\Action;
 
-class Asset {
-
+class Asset
+{
     /**
      * The default area where to load assets.
      *
@@ -71,12 +72,12 @@ class Asset {
 
     /**
      * Register asset instances.
-     *
-     * @return void
      */
     protected function registerInstance()
     {
-        if (isset(static::$instances[$this->area][$this->key])) return;
+        if (isset(static::$instances[$this->area][$this->key])) {
+            return;
+        }
 
         static::$instances[$this->area][$this->key] = $this;
     }
@@ -87,12 +88,12 @@ class Asset {
      * values are used, simply keep the default front-end area.
      *
      * @param string $area Specify where to load the asset: 'admin' or 'login'.
+     *
      * @return Asset
      */
     public function to($area)
     {
-        if (is_string($area) && in_array($area, $this->allowedAreas))
-        {
+        if (is_string($area) && in_array($area, $this->allowedAreas)) {
             $this->area = $area;
             $this->orderInstances();
         }
@@ -105,13 +106,13 @@ class Asset {
      * Output JS object right before the script output.
      *
      * @param string $objectName The name of the JS variable that will hold the data.
-     * @param mixed $data Any data to attach to the JS variable: string, boolean, object, array, ...
+     * @param mixed  $data       Any data to attach to the JS variable: string, boolean, object, array, ...
+     *
      * @return Asset
      */
     public function localize($objectName, $data)
     {
-        if ('script' === $this->type)
-        {
+        if ('script' === $this->type) {
             $this->args['localize'][$objectName] = $data;
         }
 
@@ -121,13 +122,10 @@ class Asset {
     /**
      * Manipulate the static::$instances variable
      * in order to separate each asset in its area.
-     *
-     * @return void
      */
     protected function orderInstances()
     {
-        if (array_key_exists($this->key, static::$instances['front']))
-        {
+        if (array_key_exists($this->key, static::$instances['front'])) {
             unset(static::$instances['front'][$this->key]);
             static::$instances[$this->area][$this->key] = $this;
         }
@@ -135,24 +133,21 @@ class Asset {
 
     /**
      * Install the appropriate asset depending of its area.
-     *
-     * @return void
      */
     public function install()
     {
         $from = current_filter();
 
-        switch ($from)
-        {
+        switch ($from) {
             // Front-end assets.
             case 'wp_enqueue_scripts':
 
-                if (isset(static::$instances['front']) && !empty(static::$instances['front']))
-                {
-                    foreach (static::$instances['front'] as $asset)
-                    {
+                if (isset(static::$instances['front']) && !empty(static::$instances['front'])) {
+                    foreach (static::$instances['front'] as $asset) {
                         // Check if asset has not yet been called...
-                        if (isset(static::$instantiated['front'][$asset->getKey()])) return;
+                        if (isset(static::$instantiated['front'][$asset->getKey()])) {
+                            return;
+                        }
 
                         $this->register($asset);
                     }
@@ -163,12 +158,12 @@ class Asset {
             // WordPress admin assets.
             case 'admin_enqueue_scripts':
 
-                if (isset(static::$instances['admin']) && !empty(static::$instances['admin']))
-                {
-                    foreach (static::$instances['admin'] as $asset)
-                    {
+                if (isset(static::$instances['admin']) && !empty(static::$instances['admin'])) {
+                    foreach (static::$instances['admin'] as $asset) {
                         // Check if asset has not yet been called...
-                        if (isset(static::$instantiated['admin'][$asset->getKey()])) return;
+                        if (isset(static::$instantiated['admin'][$asset->getKey()])) {
+                            return;
+                        }
 
                         $this->register($asset);
                     }
@@ -179,12 +174,12 @@ class Asset {
             // Login assets.
             case 'login_enqueue_scripts':
 
-                if (isset(static::$instances['login']) && !empty(static::$instances['login']))
-                {
-                    foreach (static::$instances['login'] as $asset)
-                    {
+                if (isset(static::$instances['login']) && !empty(static::$instances['login'])) {
+                    foreach (static::$instances['login'] as $asset) {
                         // Check if asset has not yet been called...
-                        if (isset(static::$instantiated['login'][$asset->getKey()])) return;
+                        if (isset(static::$instantiated['login'][$asset->getKey()])) {
+                            return;
+                        }
 
                         $this->register($asset);
                     }
@@ -192,26 +187,23 @@ class Asset {
 
                 break;
         }
-
     }
 
     /**
      * Register the asset.
      *
      * @param Asset $asset
-     * @return void
      */
     protected function register(Asset $asset)
     {
         // Avoid duplicate calls to each instance.
-        if ($this->getArea() !== $asset->getArea()) return;
-
-        if ($asset->getType() === 'script')
-        {
-            $this->registerScript($asset);
+        if ($this->getArea() !== $asset->getArea()) {
+            return;
         }
-        else
-        {
+
+        if ($asset->getType() === 'script') {
+            $this->registerScript($asset);
+        } else {
             $this->registerStyle($asset);
         }
 
@@ -223,7 +215,6 @@ class Asset {
      * Register a 'script' asset.
      *
      * @param Asset $asset
-     * @return void
      */
     protected function registerScript(Asset $asset)
     {
@@ -235,10 +226,8 @@ class Asset {
         wp_enqueue_script($args['handle'], $args['path'], $args['deps'], $version, $footer);
 
         // Add localized data for scripts.
-        if (isset($args['localize']) && !empty($args['localize']))
-        {
-            foreach ($args['localize'] as $objectName => $data)
-            {
+        if (isset($args['localize']) && !empty($args['localize'])) {
+            foreach ($args['localize'] as $objectName => $data) {
                 wp_localize_script($args['handle'], $objectName, $data);
             }
         }
@@ -248,7 +237,6 @@ class Asset {
      * Register a 'style' asset.
      *
      * @param Asset $asset
-     * @return void
      */
     protected function registerStyle(Asset $asset)
     {
@@ -299,5 +287,4 @@ class Asset {
     {
         return $this->key;
     }
-
-} 
+}

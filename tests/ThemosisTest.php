@@ -1,7 +1,7 @@
 <?php
 
 
-class ThemosisTest extends WP_UnitTestCase
+class ThemosisTest extends PHPUnit_Framework_TestCase
 {
     public function testThemosisSetPathsAndThemosisPaths()
     {
@@ -12,5 +12,14 @@ class ThemosisTest extends WP_UnitTestCase
         // Checking using the function.
         $this->assertEquals(dirname(__DIR__).'/', themosis_path('core'));
         $this->assertEquals(dirname(__DIR__).'/src/Themosis/', themosis_path('sys'));
+    }
+
+    /**
+     * Test themosis_path() function is returning all registered
+     * paths if no parameter is given.
+     */
+    public function testThemosisGetAllPaths()
+    {
+        $this->assertTrue(count($GLOBALS['themosis.paths']) === count(themosis_path()));
     }
 }

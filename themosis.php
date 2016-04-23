@@ -48,13 +48,17 @@ if (!function_exists('themosis_path')) {
     /**
      * Helper function to retrieve a previously registered path.
      *
-     * @param string $name The path name/alias.
+     * @param string $name The path name/alias. If none is provided, returns all registered paths.
      *
-     * @return string
+     * @return string|array
      */
-    function themosis_path($name)
+    function themosis_path($name = '')
     {
-        return $GLOBALS['themosis.paths'][$name];
+        if (!empty($name)) {
+            return $GLOBALS['themosis.paths'][$name];
+        }
+
+        return $GLOBALS['themosis.paths'];
     }
 }
 
@@ -78,10 +82,16 @@ if (!class_exists('Themosis')) {
          */
         const VERSION = '1.2.3';
 
+        /**
+         * The service container.
+         * 
+         * @var \Themosis\Foundation\Application
+         */
+        protected $app;
+
         private function __construct()
         {
-            $this->initialize();
-            $this->setPaths();
+            $this->autoload();
             $this->bootstrap();
         }
 
@@ -100,22 +110,32 @@ if (!class_exists('Themosis')) {
         }
 
         /**
-         * Initialize the plugin.
+         * Check for the composer autoload file.
          */
-        protected function initialize()
+        protected function autoload()
         {
             // Check if there is a autoload.php file.
             // Meaning we're in development mode or
             // the plugin has been installed on a "classic" WordPress configuration.
             if (file_exists($autoload = __DIR__.DS.'vendor'.DS.'autoload.php')) {
                 require $autoload;
+
+                // Developers using the framework in a "classic" WordPress
+                // installation can activate this by defining
+                // a THEMOSIS_ERROR constant and set its value to true or false
+                // depending of their environment.
+                if (defined('THEMOSIS_ERROR') && THEMOSIS_ERROR) {
+                    $whoops = new \Whoops\Run();
+                    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+                    $whoops->register();
+                }
             }
         }
 
         /**
-         * Setup framework paths.
+         * Bootstrap the core plugin.
          */
-        protected function setPaths()
+        protected function bootstrap()
         {
             /*
              * Define core framework paths.
@@ -125,17 +145,53 @@ if (!class_exists('Themosis')) {
             $paths['sys'] = __DIR__.DS.'src'.DS.'Themosis'.DS;
             $paths['storage'] = THEMOSIS_STORAGE;
             themosis_set_paths($paths);
+
+            /*
+             * Instantiate the service container for the project.
+             */
+            $this->app = new \Themosis\Foundation\Application();
+
+            /**
+             * Setup the facade.
+             */
+            \Themosis\Facades\Facade::setFacadeApplication($this->app);
+
+            /*
+             * Project hooks.
+             */
+            add_action('plugins_loaded', [$this, 'pluginsLoaded'], 0);
+            add_action('init', [$this, 'init'], 0);
         }
 
         /**
-         * Bootstrap the core plugin.
+         * Used to register plugins configuration.
+         * Services providers, ...
          */
-        protected function bootstrap()
+        public function pluginsLoaded()
         {
-            // Start the framework.
-            if (file_exists($start = __DIR__.DS.'bootstrap'.DS.'start.php')) {
-                require $start;
+            /**
+             * Service providers.
+             */
+            $providers = apply_filters('themosis_service_providers', [
+                'Themosis\Asset\AssetServiceProvider'
+            ]);
+
+            foreach ($providers as $provider) {
+                $this->app->addServiceProvider($provider);
             }
+        }
+
+        /**
+         * Initialize the project.
+         */
+        public function init()
+        {
+            /*
+             * Register into the container, the registered paths.
+             * Normally at this stage, plugins and theme should have
+             * their paths registered into the $GLOBALS array.
+             */
+            $this->app->registerAllPaths(themosis_path());
         }
     }
 }
