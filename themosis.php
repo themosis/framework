@@ -16,6 +16,10 @@ defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
 
 /*----------------------------------------------------*/
 // Themosis framework textdomain.
+//
+// This constant is only used by the core plugin.
+// Developers should not try to use it into their
+// own projects.
 /*----------------------------------------------------*/
 defined('THEMOSIS_FRAMEWORK_TEXTDOMAIN') ? THEMOSIS_FRAMEWORK_TEXTDOMAIN : define('THEMOSIS_FRAMEWORK_TEXTDOMAIN', 'themosis-framework');
 
@@ -77,6 +81,7 @@ if (!class_exists('Themosis')) {
         private function __construct()
         {
             $this->initialize();
+            $this->setPaths();
             $this->bootstrap();
         }
 
@@ -105,6 +110,21 @@ if (!class_exists('Themosis')) {
             if (file_exists($autoload = __DIR__.DS.'vendor'.DS.'autoload.php')) {
                 require $autoload;
             }
+        }
+
+        /**
+         * Setup framework paths.
+         */
+        protected function setPaths()
+        {
+            /*
+             * Define core framework paths.
+             * These are real paths, not URLs to the framework files.
+             */
+            $paths['core'] = __DIR__.DS;
+            $paths['sys'] = __DIR__.DS.'src'.DS.'Themosis'.DS;
+            $paths['storage'] = THEMOSIS_STORAGE;
+            themosis_set_paths($paths);
         }
 
         /**

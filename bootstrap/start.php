@@ -1,23 +1,5 @@
 <?php defined('DS') or die('No direct script access.');
 
-/*
- * Define all framework paths
- * These are real paths, not URLs to the framework files.
- * These paths are extensible with the help of WordPress
- * filters.
- */
-// Plugin base path.
-$paths['plugin'] = __DIR__.DS;
-
-// Framework base path.
-$paths['sys'] = dirname(__DIR__).DS.'src'.DS.'Themosis'.DS;
-
-// Storage path.
-$paths['storage'] = THEMOSIS_STORAGE;
-
-// Register globally the paths
-themosis_set_paths($paths);
-
 /**
  * Bootstrap Themosis framework.
  */
@@ -165,33 +147,6 @@ Themosis\Facades\Asset::add('themosis-core-styles', 'css/_themosisCore.css', ['w
 
 // Themosis scripts
 Themosis\Facades\Asset::add('themosis-core-scripts', 'js/_themosisCore.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view', 'wp-color-picker'], '1.0.0', true)->to('admin');
-
-/*----------------------------------------------------*/
-// Handle errors, warnings, exceptions.
-/*----------------------------------------------------*/
-set_exception_handler(function ($e) {
-    Themosis\Error\Error::exception($e);
-});
-
-set_error_handler(function ($code, $error, $file, $line) {
-    // Check if the class exists
-    // Otherwise WP can't find it when
-    // constructing its "Menus" page
-    // under appearance in administration.
-    if (class_exists('Themosis\Error\Error')) {
-        Themosis\Error\Error::native($code, $error, $file, $line);
-    }
-});
-
-if (defined('THEMOSIS_ERROR_SHUTDOWN') && THEMOSIS_ERROR_SHUTDOWN) {
-    register_shutdown_function(function () {
-        Themosis\Error\Error::shutdown();
-    });
-}
-
-// Passing in the value -1 will show every errors.
-$report = defined('THEMOSIS_ERROR_REPORT') ? THEMOSIS_ERROR_REPORT : 0;
-error_reporting($report);
 
 /*----------------------------------------------------*/
 // Bootstrap plugins.

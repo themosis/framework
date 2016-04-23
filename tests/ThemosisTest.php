@@ -1,23 +1,16 @@
 <?php
 
 
-class ThemosisTest extends PHPUnit_Framework_TestCase
+class ThemosisTest extends WP_UnitTestCase
 {
     public function testThemosisSetPathsAndThemosisPaths()
     {
-        $paths = [
-            'core' => 'some/path/to/core/directory',
-            'sys' => 'a/path/to/sys/folder',
-        ];
-
-        themosis_set_paths($paths);
-
         // Checking the $GLOBALS.
-        $this->assertEquals('some/path/to/core/directory', $GLOBALS['themosis.paths']['core']);
-        $this->assertEquals('a/path/to/sys/folder', $GLOBALS['themosis.paths']['sys']);
+        $this->assertEquals(dirname(__DIR__).'/', $GLOBALS['themosis.paths']['core']);
+        $this->assertEquals(dirname(__DIR__).'/src/Themosis/', $GLOBALS['themosis.paths']['sys']);
 
         // Checking using the function.
-        $this->assertEquals('some/path/to/core/directory', themosis_path('core'));
-        $this->assertEquals('a/path/to/sys/folder', themosis_path('sys'));
+        $this->assertEquals(dirname(__DIR__).'/', themosis_path('core'));
+        $this->assertEquals(dirname(__DIR__).'/src/Themosis/', themosis_path('sys'));
     }
 }
