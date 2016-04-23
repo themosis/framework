@@ -1,5 +1,5 @@
 <?php
-namespace Themosis\Configuration;
+namespace Themosis\Config;
 
 class Images
 {

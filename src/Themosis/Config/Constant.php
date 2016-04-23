@@ -1,5 +1,5 @@
 <?php
-namespace Themosis\Configuration;
+namespace Themosis\Config;
 
 class Constant
 {	
@@ -18,7 +18,7 @@ class Constant
 	/**
 	 * Load a list of constant variables
      *
-     * @return \Themosis\Configuration\Constant
+     * @return \Themosis\Config\Constant
 	*/
 	public function make()
 	{

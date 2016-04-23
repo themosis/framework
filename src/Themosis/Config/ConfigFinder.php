@@ -1,5 +1,6 @@
 <?php
-namespace Themosis\Configuration;
+
+namespace Themosis\Config;
 
 class ConfigFinder
 {
@@ -33,11 +34,14 @@ class ConfigFinder
      * Return the full path to the given filename.
      *
      * @param string $name The file name without the php extension.
+     *
      * @return string
      */
     public function find($name)
     {
-        if (isset($this->files[$name])) return $this->files[$name];
+        if (isset($this->files[$name])) {
+            return $this->files[$name];
+        }
 
         return $this->files[$name] = $this->findInPaths($name, $this->paths);
     }
@@ -45,19 +49,18 @@ class ConfigFinder
     /**
      * Get the file path.
      *
-     * @param string $name The filename to look after.
-     * @param array $paths The registered paths to look at.
+     * @param string $name  The filename to look after.
+     * @param array  $paths The registered paths to look at.
+     *
      * @throws ConfigException
+     *
      * @return string
      */
     protected function findInPaths($name, array $paths)
     {
-        foreach ($paths as $path)
-        {
-            foreach ($this->getPossibleFiles($name) as $file)
-            {
-                if (file_exists($filePath = $path.$file))
-                {
+        foreach ($paths as $path) {
+            foreach ($this->getPossibleFiles($name) as $file) {
+                if (file_exists($filePath = $path.$file)) {
                     return $filePath;
                 }
             }
@@ -70,12 +73,12 @@ class ConfigFinder
      * Get a list of available files with given name.
      *
      * @param string $name
+     *
      * @return array
      */
     protected function getPossibleFiles($name)
     {
-        return array_map(function($extension) use($name)
-        {
+        return array_map(function ($extension) use ($name) {
             return str_replace('.', DS, $name).'.'.$extension;
         }, $this->extensions);
     }

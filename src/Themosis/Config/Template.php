@@ -1,5 +1,5 @@
 <?php
-namespace Themosis\Configuration;
+namespace Themosis\Config;
 
 use Themosis\Facades\Field;
 use Themosis\Facades\Metabox;
