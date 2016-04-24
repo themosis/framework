@@ -177,16 +177,16 @@ if (!class_exists('Themosis')) {
                 'Themosis\Ajax\AjaxServiceProvider',
                 'Themosis\Asset\AssetServiceProvider',
                 'Themosis\Config\ConfigServiceProvider',
-                /*'Themosis\Field\FieldServiceProvider',
-                'Themosis\Html\HtmlServiceProvider',
+                'Themosis\Field\FieldServiceProvider',
+                /*'Themosis\Html\HtmlServiceProvider',
                 'Themosis\Metabox\MetaboxServiceProvider',
                 'Themosis\Page\PageServiceProvider',
                 'Themosis\PostType\PostTypeServiceProvider',
                 'Themosis\Route\RouteServiceProvider',
                 'Themosis\Taxonomy\TaxonomyServiceProvider',
                 'Themosis\User\UserServiceProvider',
-                'Themosis\Validation\ValidationServiceProvider',
-                'Themosis\View\ViewServiceProvider'*/
+                'Themosis\Validation\ValidationServiceProvider',*/
+                'Themosis\View\ViewServiceProvider'
             ]);
 
             foreach ($providers as $provider) {

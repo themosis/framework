@@ -3,6 +3,7 @@ namespace Themosis\View;
 
 use Themosis\Action\IAction;
 use Themosis\Core\Container;
+use Themosis\Foundation\Application;
 use Themosis\View\Engines\EngineResolver;
 
 class ViewFactory {
@@ -107,10 +108,10 @@ class ViewFactory {
     /**
      * Set the container instance.
      *
-     * @param \Themosis\Core\Container $container
+     * @param \Themosis\Foundation\Application $container
      * @return void
      */
-    public function setContainer(Container $container)
+    public function setContainer(Application $container)
     {
         $this->container = $container;
     }
