@@ -4,6 +4,7 @@ namespace Themosis\Foundation;
 
 use ArrayAccess;
 use League\Container\Container;
+use League\Container\ReflectionContainer;
 
 class Application extends Container implements ArrayAccess
 {
@@ -30,6 +31,9 @@ class Application extends Container implements ArrayAccess
     {
         // Normally, only one instance is shared into the container.
         $this->add('app', $this);
+
+        // Register ReflectionContainer as shared into the container.
+        $this->add('app.reflection', new ReflectionContainer());
     }
 
     /**
@@ -50,6 +54,21 @@ class Application extends Container implements ArrayAccess
         }
 
         return $this;
+    }
+
+    /**
+     * Auto-wire a class. Register the class into the container
+     * and directly resolve it for use.
+     *
+     * @param string $concrete The full class name to auto register and resolve.
+     *
+     * @return mixed
+     */
+    public function make($concrete)
+    {
+        $this->delegate($this->get('app.reflection'));
+
+        return $this->get($concrete);
     }
 
     /**
@@ -79,7 +98,7 @@ class Application extends Container implements ArrayAccess
     /**
      * Add an instance to the service container.
      * 
-     * @param string               $name   string The alias of the instance to register.
+     * @param string               $name  string The alias of the instance to register.
      * @param string|Closure|mixed $value The instance to add to the service container.
      */
     public function offsetSet($name, $value)

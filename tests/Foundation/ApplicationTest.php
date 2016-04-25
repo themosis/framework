@@ -2,6 +2,8 @@
 
 use Themosis\Foundation\Application;
 
+include 'AppNoDependencies.php';
+
 class ApplicationTest extends PHPUnit_Framework_TestCase
 {
     public function testApplicationIsInTheContainer()
@@ -35,5 +37,12 @@ class ApplicationTest extends PHPUnit_Framework_TestCase
         // Unset
         unset($app['myclass']);
         $this->assertFalse($app->has('myclass'));
+    }
+
+    public function testAutoWireInstanceWithoutDependencies()
+    {
+        $app = new Application();
+
+        $this->assertInstanceOf('AppNoDependencies', $app->make('AppNoDependencies'));
     }
 }

@@ -7,7 +7,7 @@ use Themosis\Foundation\ServiceProvider;
 class ActionServiceProvider extends ServiceProvider
 {
     protected $provides = [
-        'action',
+        'action'
     ];
 
     public function register()

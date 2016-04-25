@@ -7,9 +7,9 @@ use Themosis\Foundation\Application;
 class ActionBuilder implements IAction
 {
     /**
-     * The IoC container.
+     * The service container.
      *
-     * @var \Themosis\Core\Container
+     * @var \Themosis\Foundation\Application
      */
     protected $container;
 
@@ -29,10 +29,10 @@ class ActionBuilder implements IAction
      * Wrapper of the "add_action" function. Allows
      * a developer to specify a controller class or closure.
      *
-     * @param string          $hook          The action hook name
-     * @param \Closure|string $callback      The closure or class to use
-     * @param int             $priority      The priority order for this action
-     * @param int             $accepted_args Default number of accepted arguments
+     * @param string          $hook          The action hook name.
+     * @param \Closure|string $callback      The closure, function name or class to use.
+     * @param int             $priority      The priority order for this action.
+     * @param int             $accepted_args Default number of accepted arguments.
      *
      * @return \Themosis\Action\ActionBuilder
      */
@@ -79,6 +79,22 @@ class ActionBuilder implements IAction
     }
 
     /**
+     * Return the callback registered with the action hook.
+     *
+     * @param string $hook The action hook.
+     *
+     * @return string|\Closure|bool
+     */
+    public function getCallback($hook)
+    {
+        if (array_key_exists($hook, $this->events)) {
+            return $this->events[$hook];
+        }
+
+        return false;
+    }
+
+    /**
      * Add an event for the specified hook.
      *
      * @param string          $hook
@@ -86,19 +102,24 @@ class ActionBuilder implements IAction
      * @param int             $priority      The priority order
      * @param int             $accepted_args The default number of accepted arguments
      *
-     * @return \Closure|array
+     * @return \Closure|array|string
      */
     protected function addActionEvent($hook, $callback, $priority, $accepted_args)
     {
         // Check if $callback is a closure.
         if ($callback instanceof \Closure || is_array($callback)) {
             $this->addEventListener($hook, $callback, $priority, $accepted_args);
-
-            return $callback;
         } elseif (is_string($callback)) {
-            // Return the class responsible to handle the action.
-            return $this->addClassEvent($hook, $callback, $priority, $accepted_args);
+            if (is_callable($callback)) {
+                // Used as a classic callback function.
+                $this->addEventListener($hook, $callback, $priority, $accepted_args);
+            } else {
+                // Return the class responsible to handle the action.
+                $callback = $this->addClassEvent($hook, $callback, $priority, $accepted_args);
+            }
         }
+
+        return $callback;
     }
 
     /**
@@ -167,6 +188,7 @@ class ActionBuilder implements IAction
      */
     protected function addEventListener($name, $callback, $priority, $accepted_args)
     {
-        $this->events[$name] = add_action($name, $callback, $priority, $accepted_args);
+        $this->events[$name] = [$callback, $priority, $accepted_args];
+        add_action($name, $callback, $priority, $accepted_args);
     }
 }
