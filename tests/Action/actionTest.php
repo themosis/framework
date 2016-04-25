@@ -1,7 +1,6 @@
 <?php
 
 include 'actionHelpers.php';
-include 'AnActionClassForTest.php';
 
 class ActionTest extends PHPUnit_Framework_TestCase
 {
