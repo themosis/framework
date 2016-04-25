@@ -3,7 +3,7 @@
 use Themosis\Html\FormBuilder as Form;
 use Themosis\Html\HtmlBuilder as Html;
 use Themosis\Session\Session;
-use Themosis\Core\Request;
+use Themosis\Foundation\Request;
 
 class FormTest extends WP_UnitTestCase
 {

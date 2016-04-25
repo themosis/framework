@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Html;
 
-use Themosis\Core\Request;
+use Themosis\Foundation\Request;
 use Themosis\Session\Session;
 
 class FormBuilder {
@@ -15,7 +15,7 @@ class FormBuilder {
     /**
      * The request instance.
      *
-     * @var \Themosis\Core\Request
+     * @var \Themosis\Foundation\Request
      */
     protected $request;
 
@@ -23,7 +23,7 @@ class FormBuilder {
      * Define a FormBuilder instance.
      *
      * @param HtmlBuilder $html
-     * @param \Themosis\Core\Request $request
+     * @param \Themosis\Foundation\Request $request
      */
     public function __construct(HtmlBuilder $html, Request $request)
     {
