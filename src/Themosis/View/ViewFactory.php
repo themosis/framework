@@ -2,7 +2,6 @@
 namespace Themosis\View;
 
 use Themosis\Action\IAction;
-use Themosis\Core\Container;
 use Themosis\Foundation\Application;
 use Themosis\View\Engines\EngineResolver;
 

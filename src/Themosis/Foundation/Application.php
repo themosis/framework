@@ -46,7 +46,7 @@ class Application extends Container implements ArrayAccess
         $this->paths = $paths;
 
         foreach ($paths as $key => $path) {
-            $this->add('path.'.$key, $path);
+            $this->share('path.'.$key, $path);
         }
 
         return $this;

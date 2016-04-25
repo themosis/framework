@@ -12,15 +12,6 @@ class FieldServiceProvider extends ServiceProvider
 
     public function register()
     {
-        
-    }
-    /**
-     * Ignite a service.
-     */
-    public function ignite()
-    {
-        $this->app->bindShared('field', function ($app) {
-            return new FieldFactory($app['view']);
-        });
+        $this->getContainer()->share('field', 'Themosis\Field\Factory')->withArgument('view');
     }
 }
