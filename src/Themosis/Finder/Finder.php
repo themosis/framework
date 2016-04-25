@@ -61,6 +61,16 @@ abstract class Finder implements IFinder
     }
 
     /**
+     * Return a list of registered paths.
+     * 
+     * @return array
+     */
+    public function getPaths()
+    {
+        return $this->paths;
+    }
+
+    /**
      * Returns the file path.
      *
      * @param string $name The file name or relative path.

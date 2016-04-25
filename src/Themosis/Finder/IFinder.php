@@ -21,4 +21,11 @@ interface IFinder
      * @return mixed
      */
     public function addPaths(array $paths);
+
+    /**
+     * Return a list of registered paths.
+     * 
+     * @return array
+     */
+    public function getPaths();
 }
