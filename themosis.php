@@ -182,6 +182,13 @@ if (!class_exists('Themosis')) {
         public function pluginsLoaded()
         {
             /*
+             * Register into the container, the registered paths.
+             * Normally at this stage, plugins should have
+             * their paths registered into the $GLOBALS array.
+             */
+            $this->app->registerAllPaths(themosis_path());
+
+            /*
              * Hook to setup paths configuration.
              */
             do_action('themosis_before_setup', $this->app);
@@ -226,6 +233,19 @@ if (!class_exists('Themosis')) {
          */
         public function themosisAfterSetup($app)
         {
+            /**
+             * Add view paths.
+             */
+            $viewFinder = $app->get('view.finder');
+            $viewFinder->addPaths([
+                themosis_path('sys').'Metabox'.DS.'Views'.DS,
+                themosis_path('sys').'Page'.DS.'Views'.DS,
+                themosis_path('sys').'PostType'.DS.'Views'.DS,
+                themosis_path('sys').'Field'.DS.'Fields'.DS.'Views'.DS,
+                themosis_path('sys').'Route'.DS.'Views'.DS,
+                themosis_path('sys').'User'.DS.'Views'.DS
+            ]);
+
             /*
              * Add paths to asset finder.
              */
@@ -249,13 +269,6 @@ if (!class_exists('Themosis')) {
          */
         public function init()
         {
-            /*
-             * Register into the container, the registered paths.
-             * Normally at this stage, plugins and theme should have
-             * their paths registered into the $GLOBALS array.
-             */
-            $this->app->registerAllPaths(themosis_path());
-
             /*
              * Register framework media image size.
              */

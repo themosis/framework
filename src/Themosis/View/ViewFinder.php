@@ -1,8 +1,9 @@
 <?php
+
 namespace Themosis\View;
 
-class ViewFinder {
-
+class ViewFinder
+{
     /**
      * View directories paths.
      *
@@ -31,20 +32,55 @@ class ViewFinder {
      *
      * @param array $paths List of view directories paths.
      */
-    public function __construct(array $paths)
+    public function __construct(array $paths = [])
     {
         $this->paths = $paths;
+    }
+
+    /**
+     * Add a view directory path.
+     *
+     * @param string $path View directory path.
+     *
+     * @return $this
+     */
+    public function addPath($path)
+    {
+        if (!in_array($path, $this->paths)) {
+            $this->paths[] = $path;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Register multiple view paths.
+     *
+     * @param array $paths A list of view directories paths.
+     *
+     * @return $this
+     */
+    public function addPaths(array $paths)
+    {
+        foreach ($paths as $path) {
+            $this->addPath($path);
+        }
+
+        return $this;
     }
 
     /**
      * Get the real path of a view.
      *
      * @param string $name
+     *
      * @return string
      */
     public function find($name)
     {
-        if (isset($this->views[$name])) return $this->views[$name];
+        if (isset($this->views[$name])) {
+            return $this->views[$name];
+        }
 
         return $this->views[$name] = $this->findInPaths($name, $this->paths);
     }
@@ -53,39 +89,36 @@ class ViewFinder {
      * Look for a view in all registered paths.
      *
      * @param string $name
-     * @param array $paths
+     * @param array  $paths
+     *
      * @throws ViewException
+     *
      * @return string
      */
     protected function findInPaths($name, array $paths)
     {
-        foreach ($paths as $path)
-        {
-            foreach ($this->getPossibleViewFiles($name) as $file)
-            {
-                if (file_exists($viewPath = $path.$file))
-                {
+        foreach ($paths as $path) {
+            foreach ($this->getPossibleViewFiles($name) as $file) {
+                if (file_exists($viewPath = $path.$file)) {
                     return $viewPath;
                 }
             }
         }
 
         throw new ViewException('View "'.$name.'" not found.');
-
     }
 
     /**
      * Give a list of possible view file names.
      *
      * @param string $name
+     *
      * @return array
      */
     protected function getPossibleViewFiles($name)
     {
-        return array_map(function($extension) use($name)
-        {
+        return array_map(function ($extension) use ($name) {
             return str_replace('.', DS, $name).'.'.$extension;
         }, $this->extensions);
     }
-
-} 
+}
