@@ -1,11 +1,12 @@
 <?php
-namespace Themosis\Core;
+
+namespace Themosis\Foundation;
 
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class Request extends SymfonyRequest {
-
+class Request extends SymfonyRequest
+{
     /**
      * JSON content.
      *
@@ -16,7 +17,7 @@ class Request extends SymfonyRequest {
     /**
      * Return the Request instance.
      *
-     * @return \Themosis\Core\Request
+     * @return \Themosis\Foundation\Request
      */
     public function instance()
     {
@@ -27,7 +28,8 @@ class Request extends SymfonyRequest {
      * Retrieve an input item from the request.
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public function input($key = null, $default = null)
@@ -44,8 +46,7 @@ class Request extends SymfonyRequest {
      */
     protected function getInputSource()
     {
-        if ($this->isJson())
-        {
+        if ($this->isJson()) {
             return $this->json();
         }
 
@@ -66,18 +67,17 @@ class Request extends SymfonyRequest {
      * Get the JSON payload for the request.
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     public function json($key = null, $default = null)
     {
-        if (!isset($this->json))
-        {
+        if (!isset($this->json)) {
             $this->json = new ParameterBag((array) json_decode($this->getContent(), true));
         }
 
-        if (is_null($key))
-        {
+        if (is_null($key)) {
             return $this->json;
         }
 
@@ -88,7 +88,8 @@ class Request extends SymfonyRequest {
      * Retrieve a header from the request.
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return string
      */
     public function header($key = null, $default = null)
@@ -101,17 +102,15 @@ class Request extends SymfonyRequest {
      *
      * @param string $source
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return string
      */
     protected function retrieveItem($source, $key, $default)
     {
-        if (is_null($key))
-        {
+        if (is_null($key)) {
             return $this->$source->all();
-        }
-        else
-        {
+        } else {
             return $this->$source->get($key, $default, true);
         }
     }
@@ -120,15 +119,17 @@ class Request extends SymfonyRequest {
      * Create a new themosis Request from a request instance.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @return \Themosis\Core\Request
+     *
+     * @return \Themosis\Foundation\Request
      */
     public static function createFromBase(SymfonyRequest $request)
     {
-        if ($request instanceof static) return $request;
+        if ($request instanceof static) {
+            return $request;
+        }
 
         $r = new static();
 
         return $r->duplicate($request->query->all(), $request->request->all(), $request->attributes->all(), $request->cookies->all(), $request->files->all(), $request->server->all());
     }
-
-} 
+}

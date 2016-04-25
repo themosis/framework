@@ -28,13 +28,42 @@ class AssetFinder
     protected $schemes = ['//', 'http://', 'https://'];
 
     /**
-     * Build a AssetFinder instance.
+     * Add a path to look for assets.
      *
-     * @param array $paths List of asset directories paths.
+     * @param string $url The folder URL.
+     * @param string $path The folder path.
+     *
+     * @return $this
      */
-    public function __construct(array $paths)
+    public function addPath($url, $path)
     {
-        $this->paths = $paths;
+        if (!isset($this->paths[$url])) {
+            $this->paths[$url] = $path;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add paths to look for assets.
+     *
+     * @param array $paths
+     *
+     * @throws AssetException
+     *
+     * @return $this
+     */
+    public function addPaths(array $paths)
+    {
+        foreach ($paths as $url => $path) {
+            if (!is_numeric($url)) {
+                $this->addPath($url, $path);
+            } else {
+                throw new AssetException('Please provide an URL as key and a PATH as value in order to find assets.');
+            }
+        }
+
+        return $this;
     }
 
     /**

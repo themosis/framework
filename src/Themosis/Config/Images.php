@@ -1,4 +1,5 @@
 <?php
+
 namespace Themosis\Config;
 
 class Images
@@ -18,7 +19,7 @@ class Images
     /**
      * Add custom image sizes.
      *
-     * @return \Themosis\Configuration\Images
+     * @return \Themosis\Config\Images
      */
     public function make()
     {
@@ -33,13 +34,10 @@ class Images
 
     /**
      * Loop through the registered image sizes and add them.
-     *
-     * @return void
      */
     protected function addImages()
     {
-        foreach ($this->data as $slug => $properties)
-        {
+        foreach ($this->data as $slug => $properties) {
             list($width, $height, $crop) = $properties;
             add_image_size($slug, $width, $height, $crop);
         }
@@ -49,30 +47,28 @@ class Images
      * Add image sizes to the media size dropdown list.
      *
      * @param array $sizes The existing sizes.
+     *
      * @return array
      */
     public function addImagesToDropDownList(array $sizes)
     {
         $new = [];
 
-        foreach ($this->data as $slug => $properties)
-        {
+        foreach ($this->data as $slug => $properties) {
             // If no 4th option, stop the loop.
-            if(4 !== count($properties)) break;
+            if (4 !== count($properties)) {
+                break;
+            }
 
             // Grab last property
             $show = array_pop($properties);
 
             // Allow true or string value.
             // If string, use it as display name.
-            if ($show)
-            {
-                if (is_string($show))
-                {
+            if ($show) {
+                if (is_string($show)) {
                     $new[$slug] = __($show, THEMOSIS_FRAMEWORK_TEXTDOMAIN);
-                }
-                else
-                {
+                } else {
                     $new[$slug] = __($this->label($slug), THEMOSIS_FRAMEWORK_TEXTDOMAIN);
                 }
             }
@@ -86,6 +82,7 @@ class Images
      * Remove '-', '_' and set first character to uppercase.
      *
      * @param string $text The text to clean.
+     *
      * @return string
      */
     protected function label($text)

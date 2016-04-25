@@ -13,9 +13,7 @@ class AssetServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $paths = apply_filters('themosis_assets', []);
-
-        $this->getContainer()->add('asset.finder', new AssetFinder($paths));
-        $this->getContainer()->add('asset', 'Themosis\Asset\AssetFactory')->withArgument('asset.finder');
+        $this->getContainer()->add('asset.finder', new AssetFinder());
+        $this->getContainer()->add('asset', 'Themosis\Asset\AssetFactory')->withArgument($this->getContainer()->get('asset.finder'));
     }
 }

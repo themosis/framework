@@ -5,7 +5,9 @@ namespace Themosis\Facades;
 class Action extends Facade
 {
     /**
-     * Return the igniter service key responsible for the action api classes.
+     * Return the service provider key responsible for the asset class.
+     * The key must be the same as the one used when registering
+     * the service provider.
      *
      * @return string
      */

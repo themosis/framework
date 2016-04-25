@@ -1,11 +1,13 @@
 <?php
+
 namespace Themosis\Facades;
 
-class Loop extends Facade {
-
+class Loop extends Facade
+{
     /**
-     * Return the facade key used by the view igniter service
-     * responsible to load the loop class.
+     * Return the service provider key responsible for the asset class.
+     * The key must be the same as the one used when registering
+     * the service provider.
      *
      * @return string
      */
@@ -13,5 +15,4 @@ class Loop extends Facade {
     {
         return 'loop';
     }
-
 }

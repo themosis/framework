@@ -1,17 +1,18 @@
 <?php
+
 namespace Themosis\Route;
 
 use Closure;
-use Themosis\Core\Container;
-use Themosis\Core\Request;
+use Themosis\Foundation\Request;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Themosis\Foundation\Application;
 
-class Router {
-
+class Router
+{
     /**
      * The framework IoC.
      *
-     * @var \Themosis\Core\Container
+     * @var \Themosis\Foundation\Application
      */
     protected $container;
 
@@ -32,7 +33,7 @@ class Router {
     /**
      * The current request instance.
      *
-     * @var \Themosis\Core\Request
+     * @var \Themosis\Foundation\Request
      */
     protected $currentRequest;
 
@@ -46,9 +47,9 @@ class Router {
     /**
      * Build a Router instance.
      *
-     * @param Container $container
+     * @param \Themosis\Foundation\Application $container
      */
-    public function __construct(Container $container)
+    public function __construct(Application $container)
     {
         $this->container = $container;
         $this->routes = new RouteCollection();
@@ -57,8 +58,9 @@ class Router {
     /**
      * Register a route listening to GET requests.
      *
-     * @param string $condition A WordPress conditional tag.
+     * @param string                $condition A WordPress conditional tag.
      * @param \Closure|array|string $action
+     *
      * @return \Themosis\Route\Route
      */
     public function get($condition, $action)
@@ -69,8 +71,9 @@ class Router {
     /**
      * Register a new POST route with the router.
      *
-     * @param string $condition A WordPress conditional tag.
+     * @param string                $condition A WordPress conditional tag.
      * @param \Closure|array|string $action
+     *
      * @return \Themosis\Route\Route
      */
     public function post($condition, $action)
@@ -81,42 +84,46 @@ class Router {
     /**
      * Register a new route responding to all verbs.
      *
-     * @param string $condition
+     * @param string                $condition
      * @param \Closure|array|string $action
+     *
      * @return \Themosis\Route\Route
      */
     public function any($condition, $action)
     {
         $verbs = ['GET', 'HEAD', 'POST'];
+
         return $this->addRoute($verbs, $condition, $action);
     }
 
     /**
      * Register a new route with the given verbs.
      *
-     * @param array|string $methods
-     * @param string $condition
-     * @param \Closure|array|string  $action
+     * @param array|string          $methods
+     * @param string                $condition
+     * @param \Closure|array|string $action
+     *
      * @return \Themosis\Route\Route
      */
     public function match($methods, $condition, $action)
     {
         $methods = (array) $methods;
+
         return $this->addRoute($methods, $condition, $action);
     }
 
     /**
      * Add a route to route collection.
      *
-     * @param array|string $methods Http methods.
-     * @param string $condition
+     * @param array|string          $methods   Http methods.
+     * @param string                $condition
      * @param \Closure|array|string $action
+     *
      * @return \Themosis\Route\Route
      */
     protected function addRoute($methods, $condition, $action)
     {
-        $methods = array_map(function($method)
-        {
+        $methods = array_map(function ($method) {
             return strtoupper($method);
         }, $methods);
 
@@ -127,16 +134,16 @@ class Router {
      * Create a new route instance.
      *
      * @param array|string $methods
-     * @param string $condition
-     * @param mixed $action
+     * @param string       $condition
+     * @param mixed        $action
+     *
      * @return \Themosis\Route\Route
      */
     protected function createRoute($methods, $condition, $action)
     {
         // Check if we're using a controller and defined its
         // $action closure.
-        if($this->routingToController($action))
-        {
+        if ($this->routingToController($action)) {
             $action = $this->getControllerAction($action);
         }
 
@@ -147,11 +154,14 @@ class Router {
      * Determine if the action is routing to a controller.
      *
      * @param array $action
+     *
      * @return bool
      */
     protected function routingToController($action)
     {
-        if($action instanceof Closure) return false;
+        if ($action instanceof Closure) {
+            return false;
+        }
 
         return is_string($action) || is_string(array_get($action, 'uses'));
     }
@@ -160,12 +170,12 @@ class Router {
      * Add a controller based route action to the action array.
      *
      * @param array|string $action
+     *
      * @return array
      */
     protected function getControllerAction($action)
     {
-        if(is_string($action))
-        {
+        if (is_string($action)) {
             $action = ['uses' => $action];
         }
 
@@ -180,14 +190,14 @@ class Router {
      * Get the Closure for a controller based action.
      *
      * @param string $controller
+     *
      * @return \Closure
      */
     protected function getClassClosure($controller)
     {
         $d = $this->getControllerDispatcher();
 
-        return function() use($d, $controller)
-        {
+        return function () use ($d, $controller) {
             $ioc = $d->getContainer();
             $router = $ioc['router'];
             $route = $router->current();
@@ -209,8 +219,7 @@ class Router {
      */
     public function getControllerDispatcher()
     {
-        if(is_null($this->controllerDispatcher))
-        {
+        if (is_null($this->controllerDispatcher)) {
             $this->controllerDispatcher = new ControllerDispatcher($this, $this->container);
         }
 
@@ -230,7 +239,7 @@ class Router {
     /**
      * Get the request currently being dispatched.
      *
-     * @return \Themosis\Core\Request
+     * @return \Themosis\Foundation\Request
      */
     public function getCurrentRequest()
     {
@@ -240,7 +249,8 @@ class Router {
     /**
      * Dispatch the request to the application.
      *
-     * @param \Themosis\Core\Request $request
+     * @param \Themosis\Foundation\Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function dispatch(Request $request)
@@ -248,13 +258,15 @@ class Router {
         $this->currentRequest = $request;
         $response = $this->dispatchToRoute($request);
         $response = $this->prepareResponse($request, $response);
+
         return $response;
     }
 
     /**
      * Dispatch the request to a route and return the response.
      *
-     * @param \Themosis\Core\Request $request
+     * @param \Themosis\Foundation\Request $request
+     *
      * @return mixed
      */
     public function dispatchToRoute(Request $request)
@@ -270,12 +282,9 @@ class Router {
         $route = $this->findRoute($request);
 
         // Check if a route exists for the request.
-        if(!is_null($route))
-        {
+        if (!is_null($route)) {
             $response = $route->run();
-        }
-        else
-        {
+        } else {
             $view = $this->container['view'];
             $response = $view->make('_themosisNoRoute');
         }
@@ -288,29 +297,31 @@ class Router {
     /**
      * Find the route matching a given request.
      *
-     * @param  \Themosis\Core\Request $request
+     * @param \Themosis\Foundation\Request $request
+     *
      * @return \Themosis\Route\Route
      */
     protected function findRoute($request)
     {
         $this->current = $route = $this->routes->match($request);
+
         return $route;
     }
 
     /**
      * Create a response instance from the given value.
      *
-     * @param \Themosis\Core\Request $request
-     * @param mixed $response
+     * @param \Themosis\Foundation\Request $request
+     * @param mixed                        $response
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function prepareResponse($request, $response)
     {
-        if(!$response instanceof SymfonyResponse)
-        {
+        if (!$response instanceof SymfonyResponse) {
             $response = new SymfonyResponse($response);
         }
 
         return $response->prepare($request);
     }
-} 
+}

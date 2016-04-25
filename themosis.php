@@ -66,7 +66,7 @@ if (!function_exists('themosis_path')) {
  * Main class that bootstraps the framework.
  */
 if (!class_exists('Themosis')) {
-    class themosis
+    class Themosis
     {
         /**
          * Themosis instance.
@@ -151,16 +151,28 @@ if (!class_exists('Themosis')) {
              */
             $this->app = new \Themosis\Foundation\Application();
 
-            /**
+            /*
+             * Create a new Request instance and register it.
+             * By providing an instance, the instance is shared.
+             */
+            $request = Symfony\Component\HttpFoundation\Request::createFromGlobals();
+            $request = \Themosis\Foundation\Request::createFromBase($request);
+            $this->app->add('request', $request);
+
+            /*
              * Setup the facade.
              */
             \Themosis\Facades\Facade::setFacadeApplication($this->app);
 
             /*
              * Project hooks.
+             * Added in their called order.
              */
             add_action('plugins_loaded', [$this, 'pluginsLoaded'], 0);
+            add_action('themosis_after_setup', [$this, 'themosisAfterSetup'], 0);
             add_action('init', [$this, 'init'], 0);
+            add_action('admin_enqueue_scripts', [$this, 'adminEnqueueScripts']);
+            add_action('admin_head', [$this, 'adminHead']);
         }
 
         /**
@@ -169,7 +181,12 @@ if (!class_exists('Themosis')) {
          */
         public function pluginsLoaded()
         {
-            /**
+            /*
+             * Hook to setup paths configuration.
+             */
+            do_action('themosis_before_setup', $this->app);
+
+            /*
              * Service providers.
              */
             $providers = apply_filters('themosis_service_providers', [
@@ -178,20 +195,53 @@ if (!class_exists('Themosis')) {
                 'Themosis\Asset\AssetServiceProvider',
                 'Themosis\Config\ConfigServiceProvider',
                 'Themosis\Field\FieldServiceProvider',
-                /*'Themosis\Html\HtmlServiceProvider',
+                'Themosis\Html\HtmlServiceProvider',
                 'Themosis\Metabox\MetaboxServiceProvider',
                 'Themosis\Page\PageServiceProvider',
+                'Themosis\Page\Sections\SectionServiceProvider',
                 'Themosis\PostType\PostTypeServiceProvider',
                 'Themosis\Route\RouteServiceProvider',
                 'Themosis\Taxonomy\TaxonomyServiceProvider',
                 'Themosis\User\UserServiceProvider',
-                'Themosis\Validation\ValidationServiceProvider',*/
-                'Themosis\View\ViewServiceProvider'
+                'Themosis\Validation\ValidationServiceProvider',
+                'Themosis\View\ViewServiceProvider',
             ]);
 
             foreach ($providers as $provider) {
                 $this->app->addServiceProvider($provider);
             }
+
+            /*
+             * Hook to setup framework and plugins.
+             */
+            do_action('themosis_after_setup', $this->app);
+        }
+
+        /**
+         * Setup core framework parameters.
+         * At this moment, all activated plugins have been loaded.
+         * Each plugin has its service providers registered.
+         *
+         * @param \Themosis\Foundation\Application $app
+         */
+        public function themosisAfterSetup($app)
+        {
+            /*
+             * Add paths to asset finder.
+             */
+            $url = plugins_url('src/Themosis/_assets', __FILE__);
+            $assetFinder = $app->get('asset.finder');
+            $assetFinder->addPath($url, themosis_path('sys').'_assets');
+
+            /*
+             * Add framework core assets URL to the global
+             * admin JS object.
+             */
+            add_filter('themosisAdminGlobalObject', function ($data) use ($url) {
+                $data['_themosisAssets'] = $url;
+
+                return $data;
+            });
         }
 
         /**
@@ -205,6 +255,57 @@ if (!class_exists('Themosis')) {
              * their paths registered into the $GLOBALS array.
              */
             $this->app->registerAllPaths(themosis_path());
+
+            /*
+             * Register framework media image size.
+             */
+            $images = new Themosis\Config\Images([
+                '_themosis_media' => [100, 100, true, __('Mini', THEMOSIS_FRAMEWORK_TEXTDOMAIN)],
+            ]);
+            $images->make();
+
+            /*
+             * Register framework assets.
+             */
+            $this->app->get('asset')->add('themosis-core-styles', 'css/_themosisCore.css', ['wp-color-picker'])->to('admin');
+            $this->app->get('asset')->add('themosis-core-scripts', 'js/_themosisCore.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view', 'wp-color-picker'], '1.3.0', true)->to('admin');
+        }
+
+        /**
+         * Enqueue Admin scripts.
+         */
+        public function adminEnqueueScripts()
+        {
+            /*
+             * Make sure the media scripts are always enqueued.
+             */
+            wp_enqueue_media();
+        }
+
+        /**
+         * Output a global JS object in the <head> tag for the admin.
+         * Allow developers to add JS data for their project in the admin area only.
+         */
+        public function adminHead()
+        {
+            $datas = apply_filters('themosisAdminGlobalObject', []);
+
+            $output = "<script type=\"text/javascript\">\n\r";
+            $output .= "//<![CDATA[\n\r";
+            $output .= "var themosisAdmin = {\n\r";
+
+            if (!empty($datas)) {
+                foreach ($datas as $key => $value) {
+                    $output .= $key.': '.json_encode($value).",\n\r";
+                }
+            }
+
+            $output .= "};\n\r";
+            $output .= "//]]>\n\r";
+            $output .= '</script>';
+
+            // Output the datas.
+            echo $output;
         }
     }
 }
