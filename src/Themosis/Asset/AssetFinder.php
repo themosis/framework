@@ -2,47 +2,16 @@
 
 namespace Themosis\Asset;
 
-class AssetFinder
+use Themosis\Finder\Finder;
+
+class AssetFinder extends Finder
 {
-    /**
-     * Asset directories paths & urls.
-     *
-     * @var array
-     */
-    protected $paths;
-
-    /**
-     * List of found assets.
-     * $key is the asset relative path.
-     * $value is the asset full URL.
-     *
-     * @var array
-     */
-    protected $assets = [];
-
     /**
      * List of URL schemes.
      *
      * @var array
      */
-    protected $schemes = ['//', 'http://', 'https://'];
-
-    /**
-     * Add a path to look for assets.
-     *
-     * @param string $url The folder URL.
-     * @param string $path The folder path.
-     *
-     * @return $this
-     */
-    public function addPath($url, $path)
-    {
-        if (!isset($this->paths[$url])) {
-            $this->paths[$url] = $path;
-        }
-
-        return $this;
-    }
+    protected $extensions = ['//', 'http://', 'https://'];
 
     /**
      * Add paths to look for assets.
@@ -77,16 +46,16 @@ class AssetFinder
     {
         // Check if asset is external.
         if ($this->isExternal($path)) {
-            return $this->assets[$path] = $path;
+            return $this->files[$path] = $path;
         }
 
         // Check if asset is already registered.
-        if (isset($this->assets[$path])) {
-            return $this->assets[$path];
+        if (isset($this->files[$path])) {
+            return $this->files[$path];
         }
 
         // Find and register the asset.
-        return $this->assets[$path] = $this->findInPaths($path, $this->paths);
+        return $this->files[$path] = $this->findInPaths($path, $this->paths);
     }
 
     /**
@@ -122,7 +91,7 @@ class AssetFinder
      */
     protected function isExternal($path)
     {
-        foreach ($this->schemes as $scheme) {
+        foreach ($this->extensions as $scheme) {
             if (strpos($path, $scheme) !== false) {
                 return true;
             }

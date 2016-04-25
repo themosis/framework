@@ -13,9 +13,7 @@ class ConfigServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $paths = apply_filters('themosis_config', []);
-
-        $this->getContainer()->add('config.finder', new ConfigFinder($paths));
+        $this->getContainer()->add('config.finder', new ConfigFinder());
         $this->getContainer()->add('config', 'Themosis\Config\ConfigFactory')->withArgument('config.finder');
     }
 }

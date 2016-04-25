@@ -251,7 +251,7 @@ if (!class_exists('Themosis')) {
              */
             $url = plugins_url('src/Themosis/_assets', __FILE__);
             $assetFinder = $app->get('asset.finder');
-            $assetFinder->addPath($url, themosis_path('sys').'_assets');
+            $assetFinder->addPaths([$url => themosis_path('sys').'_assets']);
 
             /*
              * Add framework core assets URL to the global
