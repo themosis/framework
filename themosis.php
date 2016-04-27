@@ -201,7 +201,7 @@ if (!class_exists('Themosis')) {
                 'Themosis\Asset\AssetServiceProvider',
                 'Themosis\Config\ConfigServiceProvider',
                 'Themosis\Field\FieldServiceProvider',
-                'Themosis\Hook\ActionServiceProvider',
+                'Themosis\Hook\HookServiceProvider',
                 'Themosis\Html\HtmlServiceProvider',
                 'Themosis\Metabox\MetaboxServiceProvider',
                 'Themosis\Page\PageServiceProvider',

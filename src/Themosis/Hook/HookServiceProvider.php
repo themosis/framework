@@ -4,15 +4,21 @@ namespace Themosis\Hook;
 
 use Themosis\Foundation\ServiceProvider;
 
-class ActionServiceProvider extends ServiceProvider
+class HookServiceProvider extends ServiceProvider
 {
     protected $provides = [
-        'action'
+        'action',
+        'filter'
     ];
 
     public function register()
     {
         $container = $this->getContainer();
+
+        // Register the action builder.
         $container->add('action', 'Themosis\Hook\ActionBuilder')->withArgument($container);
+
+        // Register the filter builder.
+        $container->add('filter', 'Themosis\Hook\FilterBuilder')->withArgument($container);
     }
 }
