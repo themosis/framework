@@ -1,10 +1,11 @@
 <?php
+
 namespace Themosis\View\Compilers;
 
-use \Exception;
+use Exception;
 
-class ScoutCompiler extends Compiler implements ICompiler {
-
+class ScoutCompiler extends Compiler implements ICompiler
+{
     /**
      * The original view path.
      *
@@ -37,23 +38,20 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the view at the given path.
      *
      * @param string $path
-     * @return void
      */
     public function compile($path)
     {
         // Reset footer.
         $this->footer = array();
 
-        if ($path)
-        {
+        if ($path) {
             $this->setPath($path);
         }
 
         // Compile the view content.
         $content = $this->compileString($this->getViewContent($path));
 
-        if (!is_null($this->storage))
-        {
+        if (!is_null($this->storage)) {
             // Store the compiled view.
             file_put_contents($this->getCompiledPath($this->getPath()), $content);
         }
@@ -63,21 +61,20 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the scout view file.
      *
      * @param string $content
+     *
      * @return string
      */
     public function compileString($content)
     {
         $result = '';
 
-        foreach (token_get_all($content) as $token)
-        {
+        foreach (token_get_all($content) as $token) {
             $result .= is_array($token) ? $this->parseToken($token) : $token;
         }
 
         // Add extends lines at the end of compiled results
         // so we can inherit templates.
-        if (count($this->footer) > 0)
-        {
+        if (count($this->footer) > 0) {
             $result = ltrim($result, PHP_EOL).PHP_EOL.implode(PHP_EOL, array_reverse($this->footer));
         }
 
@@ -108,17 +105,16 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Parse token from template.
      *
      * @param array $token
+     *
      * @return string
      */
     protected function parseToken(array $token)
     {
         list($id, $content) = $token;
 
-        if ($id == T_INLINE_HTML)
-        {
+        if ($id == T_INLINE_HTML) {
             // Keep 'Echos' as last compiler.
-            foreach (array('Statements', 'Comments', 'Echos') as $type)
-            {
+            foreach (array('Statements', 'Comments', 'Echos') as $type) {
                 $content = $this->{"compile{$type}"}($content);
             }
         }
@@ -131,16 +127,16 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * that start with '@'.
      *
      * @param string $content
+     *
      * @return string
      */
     protected function compileStatements($content)
     {
         $compiler = $this;
 
-        $callback = function($match) use($compiler){
+        $callback = function ($match) use ($compiler) {
 
-            if (method_exists($compiler, $method = 'compile'.ucfirst($match[1])))
-            {
+            if (method_exists($compiler, $method = 'compile'.ucfirst($match[1]))) {
                 $match[0] = $compiler->$method(array_get($match, 3));
             }
 
@@ -154,6 +150,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile to native PHP comments.
      *
      * @param string $content
+     *
      * @return string
      */
     protected function compileComments($content)
@@ -167,14 +164,14 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile to native PHP echos.
      *
      * @param string $content
+     *
      * @return string
      */
     protected function compileEchos($content)
     {
         $difference = strlen($this->echoTags[0]) - strlen($this->escapedTags[0]);
 
-        if ($difference > 0)
-        {
+        if ($difference > 0) {
             return $this->compileEscapedEchos($this->compileRegularEchos($content));
         }
 
@@ -185,6 +182,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile regular echos.
      *
      * @param string $content
+     *
      * @return string
      */
     protected function compileRegularEchos($content)
@@ -193,7 +191,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
 
         $compiler = $this;
 
-        $callback = function($matches) use($compiler){
+        $callback = function ($matches) use ($compiler) {
             return $matches[1] ? substr($matches[0], 1) : '<?php echo('.$compiler->compileEchoDefaults($matches[2]).'); ?>';
         };
 
@@ -204,6 +202,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile escape echos.
      *
      * @param string $content
+     *
      * @return string
      */
     protected function compileEscapedEchos($content)
@@ -212,7 +211,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
 
         $compiler = $this;
 
-        $callback = function($matches) use($compiler){
+        $callback = function ($matches) use ($compiler) {
             return '<?php echo e('.$compiler->compileEchoDefaults($matches[1]).'); ?>';
         };
 
@@ -225,6 +224,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * to define a default value.
      *
      * @param string $content
+     *
      * @return string
      */
     protected function compileEchoDefaults($content)
@@ -236,6 +236,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the yield statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileYield($expression)
@@ -247,6 +248,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the section statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileSection($expression)
@@ -258,45 +260,48 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the stop statements to valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileStop($expression)
     {
-        return "<?php \$__env->stopSection(); ?>";
+        return '<?php $__env->stopSection(); ?>';
     }
 
     /**
      * Compile the show statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileShow($expression)
     {
-        return "<?php echo \$__env->yieldSection(); ?>";
+        return '<?php echo $__env->yieldSection(); ?>';
     }
 
     /**
      * Compile the overwrite statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileOverwrite($expression)
     {
-        return "<?php \$__env->stopSection(true); ?>";
+        return '<?php $__env->stopSection(true); ?>';
     }
 
     /**
      * Compile include statements.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileInclude($expression)
     {
-        if (starts_with($expression, '('))
-        {
+        if (starts_with($expression, '(')) {
             $expression = substr($expression, 1, -1);
         }
 
@@ -307,6 +312,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the each statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileEach($expression)
@@ -318,6 +324,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the unless statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileUnless($expression)
@@ -329,28 +336,31 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the end unless statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileEndunless($expression)
     {
-        return "<?php endif; ?>";
+        return '<?php endif; ?>';
     }
 
     /**
      * Compile the else statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileElse($expression)
     {
-        return "<?php else: ?>";
+        return '<?php else: ?>';
     }
 
     /**
      * Compile the for statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileFor($expression)
@@ -362,6 +372,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the foreach statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileForeach($expression)
@@ -373,6 +384,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the if statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileIf($expression)
@@ -384,6 +396,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the else-if statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileElseif($expression)
@@ -395,6 +408,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the while statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileWhile($expression)
@@ -406,56 +420,60 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the end-while statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileEndwhile($expression)
     {
-        return "<?php endwhile; ?>";
+        return '<?php endwhile; ?>';
     }
 
     /**
      * Compile the end-for statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileEndfor($expression)
     {
-        return "<?php endfor; ?>";
+        return '<?php endfor; ?>';
     }
 
     /**
      * Compile the end-for-each statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileEndforeach($expression)
     {
-        return "<?php endforeach; ?>";
+        return '<?php endforeach; ?>';
     }
 
     /**
      * Compile the end-if statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileEndif($expression)
     {
-        return "<?php endif; ?>";
+        return '<?php endif; ?>';
     }
 
     /**
      * Compile the extends statements into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileExtends($expression)
     {
-        if (starts_with($expression, '('))
-        {
+        if (starts_with($expression, '(')) {
             $expression = substr($expression, 1, -1);
         }
 
@@ -470,6 +488,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the loop statement into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileLoop($expression)
@@ -481,6 +500,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the endloop statement into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileEndloop($expression)
@@ -492,6 +512,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the query statement into valid PHP.
      *
      * @param string|WP_Query $expression
+     *
      * @return string
      */
     protected function compileQuery($expression)
@@ -503,6 +524,7 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Compile the endquery statement into valid PHP.
      *
      * @param string $expression
+     *
      * @return string
      */
     protected function compileEndquery($expression)
@@ -514,17 +536,17 @@ class ScoutCompiler extends Compiler implements ICompiler {
      * Return the defined view content.
      *
      * @param string $path
+     *
      * @throws \Exception
+     *
      * @return string
      */
     private function getViewContent($path)
     {
-        if (is_file($path))
-        {
+        if (is_file($path)) {
             return file_get_contents($path);
         }
 
         throw new Exception('View file does not exists at this location: '.$path);
     }
-
 }

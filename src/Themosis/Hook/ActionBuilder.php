@@ -1,10 +1,10 @@
 <?php
 
-namespace Themosis\Action;
+namespace Themosis\Hook;
 
 use Themosis\Foundation\Application;
 
-class ActionBuilder implements IAction
+class ActionBuilder implements IHook
 {
     /**
      * The service container.
@@ -34,7 +34,7 @@ class ActionBuilder implements IAction
      * @param int             $priority      The priority order for this action.
      * @param int             $accepted_args Default number of accepted arguments.
      *
-     * @return \Themosis\Action\ActionBuilder
+     * @return \Themosis\Hook\ActionBuilder
      */
     public function add($hook, $callback, $priority = 10, $accepted_args = 3)
     {

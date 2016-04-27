@@ -1,7 +1,8 @@
 <?php
+
 namespace Themosis\PostType;
 
-use Themosis\Action\Action;
+use Themosis\Hook\Action;
 use Themosis\Core\DataContainer;
 use Themosis\Metabox\IMetabox;
 use Themosis\View\IRenderable;
@@ -23,7 +24,7 @@ class PostTypeBuilder implements IPostType
     /**
      * The registered custom post type.
      *
-     * @var Object|\WP_Error
+     * @var object|\WP_Error
      */
     protected $postType;
 
@@ -43,6 +44,7 @@ class PostTypeBuilder implements IPostType
 
     /**
      * The custom view used for publish metabox.
+     *
      * @var IRenderable
      */
     protected $view;
@@ -50,9 +52,9 @@ class PostTypeBuilder implements IPostType
     /**
      * Build a custom post type.
      *
-     * @param DataContainer $datas The post type properties.
-     * @param IMetabox $metabox The custom metabox for custom publish metabox
-     * @param IRenderable $view The view that handles custom publish metabox
+     * @param DataContainer $datas   The post type properties.
+     * @param IMetabox      $metabox The custom metabox for custom publish metabox
+     * @param IRenderable   $view    The view that handles custom publish metabox
      */
     public function __construct(DataContainer $datas, IMetabox $metabox, IRenderable $view)
     {
@@ -65,20 +67,20 @@ class PostTypeBuilder implements IPostType
     /**
      * Define a new custom post type.
      *
-     * @param string $name The post type slug name.
-     * @param string $plural The post type plural name for display.
+     * @param string $name     The post type slug name.
+     * @param string $plural   The post type plural name for display.
      * @param string $singular The post type singular name for display.
+     *
      * @throws PostTypeException
+     *
      * @return \Themosis\PostType\PostTypeBuilder
      */
     public function make($name, $plural, $singular)
     {
         $params = compact('name', 'plural', 'singular');
 
-        foreach ($params as $key => $param)
-        {
-            if (!is_string($param))
-            {
+        foreach ($params as $key => $param) {
+            if (!is_string($param)) {
                 throw new PostTypeException('Invalid custom post type parameter "'.$key.'". Accepts string only.');
             }
         }
@@ -95,7 +97,9 @@ class PostTypeBuilder implements IPostType
      * arguments by passing an array of custom post type arguments.
      *
      * @link http://codex.wordpress.org/Function_Reference/register_post_type
+     *
      * @param array $params The custom post type arguments.
+     *
      * @return \Themosis\PostType\PostTypeBuilder
      */
     public function set(array $params = [])
@@ -107,13 +111,10 @@ class PostTypeBuilder implements IPostType
         // Check if we are not already called by a method attached to the `init` hook.
         $current = current_filter();
 
-        if ('init' === $current)
-        {
+        if ('init' === $current) {
             // If inside an `init` action, simply call the register method.
             $this->register();
-        }
-        else
-        {
+        } else {
             // Out of an `init` action, call the hook.
             $this->event->dispatch();
         }
@@ -124,28 +125,24 @@ class PostTypeBuilder implements IPostType
     /**
      * Triggered by the 'init' action event.
      * Register a WordPress custom post type.
-     *
-     * @return void
      */
     public function register()
     {
         $this->postType = register_post_type($this->datas['name'], $this->datas['args']);
 
         // Register the status.
-        if (!empty($this->status))
-        {
-            foreach ($this->status as $key => $args)
-            {
+        if (!empty($this->status)) {
+            foreach ($this->status as $key => $args) {
                 register_post_status($key, $args);
             }
 
             // Build custom publish metabox
             $this->metabox->make(__('Publish'), $this->datas['name'], [
-                'id'        => 'themosisSubmitdiv',
-                'context'   => 'side',
-                'priority'  => 'core'
+                'id' => 'themosisSubmitdiv',
+                'context' => 'side',
+                'priority' => 'core',
             ], $this->view)->set()->with([
-                'statuses' => $this->status
+                'statuses' => $this->status,
             ]);
         }
     }
@@ -154,6 +151,7 @@ class PostTypeBuilder implements IPostType
      * Returns the custom post type slug name.
      *
      * @deprecated
+     *
      * @return string
      */
     public function getSlug()
@@ -163,27 +161,27 @@ class PostTypeBuilder implements IPostType
 
     /**
      * @param null $property
+     *
      * @return array
+     *
      * @throws PostTypeException
      */
     public function get($property = null)
     {
         $name = [
-            'name'      => $this->datas['name'],
-            'status'    => $this->status
+            'name' => $this->datas['name'],
+            'status' => $this->status,
         ];
 
         $properties = array_merge($name, $this->datas['args']);
 
         // If no property asked, return all defined properties.
-        if (is_null($property) || empty($property))
-        {
+        if (is_null($property) || empty($property)) {
             return $properties;
         }
 
         // If property exists, return it.
-        if (isset($properties[$property]))
-        {
+        if (isset($properties[$property])) {
             return $properties[$property];
         }
 
@@ -194,18 +192,17 @@ class PostTypeBuilder implements IPostType
      * Allow a user to change the title placeholder text.
      *
      * @param string $title The title placeholder text.
+     *
      * @return \Themosis\PostType\PostTypeBuilder
      */
     public function setTitle($title)
     {
         $name = $this->datas['name'];
 
-        add_filter('enter_title_here', function($default) use($name, $title)
-        {
+        add_filter('enter_title_here', function ($default) use ($name, $title) {
             $screen = get_current_screen();
 
-            if ($name == $screen->post_type)
-            {
+            if ($name == $screen->post_type) {
                 $default = $title;
             }
 
@@ -219,22 +216,18 @@ class PostTypeBuilder implements IPostType
      * Add custom post type status.
      *
      * @param array|string $status The status key name.
-     * @param array $args The status arguments.
+     * @param array        $args   The status arguments.
+     *
      * @return \Themosis\PostType\PostTypeBuilder
      */
     public function status($status, array $args = [])
     {
         // Allow multiple statuses...
-        if (is_array($status))
-        {
-            foreach ($status as $key => $params)
-            {
-                if (is_int($key))
-                {
+        if (is_array($status)) {
+            foreach ($status as $key => $params) {
+                if (is_int($key)) {
                     $this->status($params);
-                }
-                elseif (is_string($key) && is_array($params))
-                {
+                } elseif (is_string($key) && is_array($params)) {
                     $this->status($key, $params);
                 }
             }
@@ -245,13 +238,13 @@ class PostTypeBuilder implements IPostType
         // Set default arguments
         $defaultName = ucfirst($status);
         $args = wp_parse_args($args, [
-            'label'                     => $defaultName,
-            'public'                    => true,
-            'exclude_from_search'       => false,
-            'show_in_admin_all_list'    => true,
+            'label' => $defaultName,
+            'public' => true,
+            'exclude_from_search' => false,
+            'show_in_admin_all_list' => true,
             'show_in_admin_status_list' => true,
-            'label_count'               => _n_noop($defaultName.' <span class="count">(%s)</span>', $defaultName.' <span class="count">(%s)</span>'),
-            'publish_text'              => __('Apply Changes')
+            'label_count' => _n_noop($defaultName.' <span class="count">(%s)</span>', $defaultName.' <span class="count">(%s)</span>'),
+            'publish_text' => __('Apply Changes'),
         ]);
 
         // Register the status
@@ -272,8 +265,6 @@ class PostTypeBuilder implements IPostType
 
     /**
      * Remove default publish metabox from the custom post type edit screen.
-     *
-     * @return void
      */
     public function removeDefaultPublishBox()
     {
@@ -283,15 +274,12 @@ class PostTypeBuilder implements IPostType
 
     /**
      * Handle output of custom statuses to admin JS object.
-     *
-     * @return void
      */
     protected function exposeStatuses()
     {
         $self = $this;
 
-        add_filter('themosisAdminGlobalObject', function($data) use ($self)
-        {
+        add_filter('themosisAdminGlobalObject', function ($data) use ($self) {
             $cpt = new \stdClass();
 
             // Add the defined statuses.
@@ -307,27 +295,24 @@ class PostTypeBuilder implements IPostType
      * Apply the selected status to the post on save.
      *
      * @param string $value The translated value by WordPress (is always "publish" for some reasons.)
+     *
      * @return mixed
      */
     public function applyStatus($value)
     {
         // Check post_type and look if there are any custom statuses defined.
-        if (isset($_POST['post_type']) && $this->datas['name'] === $_POST['post_type'] && !empty($this->status))
-        {
-            if ((isset($_POST['post_status']) && 'publish' === $_POST['post_status']) && (isset($_REQUEST['post_status']) && 'draft' === $_REQUEST['post_status']))
-            {
+        if (isset($_POST['post_type']) && $this->datas['name'] === $_POST['post_type'] && !empty($this->status)) {
+            if ((isset($_POST['post_status']) && 'publish' === $_POST['post_status']) && (isset($_REQUEST['post_status']) && 'draft' === $_REQUEST['post_status'])) {
                 // New post with draft as default and "publish" button is clicked. Set to 1st registered post status.
                 $statuses = array_keys($this->status);
+
                 return esc_attr($statuses[0]);
-            }
-            elseif (isset($_REQUEST['post_status']) && !empty($_REQUEST['post_status']))
-            {
-                /**
+            } elseif (isset($_REQUEST['post_status']) && !empty($_REQUEST['post_status'])) {
+                /*
                  * In case of a quickedit ajax save call, check the value of the _status select tag
                  * before processing default post_status.
                  */
-                if (isset($_POST['_status']) && !empty($_POST['_status']))
-                {
+                if (isset($_POST['_status']) && !empty($_POST['_status'])) {
                     return esc_attr($_POST['_status']);
                 }
 
@@ -343,38 +328,38 @@ class PostTypeBuilder implements IPostType
     /**
      * Set the custom post type default arguments.
      *
-     * @param string $plural The post type plural display name.
+     * @param string $plural   The post type plural display name.
      * @param string $singular The post type singular display name.
+     *
      * @return array
      */
     protected function setDefaultArguments($plural, $singular)
     {
         $labels = [
-            'name'                  => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'singular_name'         => __($singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'add_new'               => __('Add New', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'add_new_item'          => __('Add New '. $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'edit_item'             => __('Edit '. $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'new_item'              => __('New ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'all_items'             => __('All ' . $plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'view_item'             => __('View ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'search_items'          => __('Search ' . $singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'not_found'             =>  __('No '. $singular .' found', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'not_found_in_trash'    => __('No '. $singular .' found in Trash', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'parent_item_colon'     => '',
-            'menu_name'             => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN)
+            'name' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'singular_name' => __($singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'add_new' => __('Add New', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'add_new_item' => __('Add New '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'edit_item' => __('Edit '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'new_item' => __('New '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'all_items' => __('All '.$plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'view_item' => __('View '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'search_items' => __('Search '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'not_found' => __('No '.$singular.' found', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'not_found_in_trash' => __('No '.$singular.' found in Trash', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'parent_item_colon' => '',
+            'menu_name' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
         ];
 
         $defaults = [
-            'label' 		=> __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'labels' 		=> $labels,
-            'description'	=> '',
-            'public'		=> true,
-            'menu_position'	=> 20,
-            'has_archive'	=> true
+            'label' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'labels' => $labels,
+            'description' => '',
+            'public' => true,
+            'menu_position' => 20,
+            'has_archive' => true,
         ];
 
         return $defaults;
     }
-
-} 
+}

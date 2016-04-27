@@ -1,11 +1,12 @@
 <?php
+
 namespace Themosis\View;
 
 use ArrayAccess;
 use Themosis\View\Engines\IEngine;
 
-class View implements ArrayAccess, IRenderable {
-
+class View implements ArrayAccess, IRenderable
+{
     /**
      * View environment.
      *
@@ -44,11 +45,11 @@ class View implements ArrayAccess, IRenderable {
     /**
      * Define a View instance.
      *
-     * @param ViewFactory $factory The view environment.
-     * @param Engines\IEngine $engine The view engine.
-     * @param string $view The view name.
-     * @param string $path The view real path.
-     * @param array $data The passed data to the view.
+     * @param ViewFactory     $factory The view environment.
+     * @param Engines\IEngine $engine  The view engine.
+     * @param string          $view    The view name.
+     * @param string          $path    The view real path.
+     * @param array           $data    The passed data to the view.
      */
     public function __construct(ViewFactory $factory, IEngine $engine, $view, $path, $data = [])
     {
@@ -121,10 +122,8 @@ class View implements ArrayAccess, IRenderable {
 
         // Check if one of the 'data' is a view instance.
         // If so, evaluate its content and save it as data.
-        foreach ($data as $key => $value)
-        {
-            if ($value instanceof IRenderable)
-            {
+        foreach ($data as $key => $value) {
+            if ($value instanceof IRenderable) {
                 $data[$key] = $value->render();
             }
         }
@@ -138,17 +137,15 @@ class View implements ArrayAccess, IRenderable {
      * its value.
      *
      * @param string|array $key
-     * @param mixed $value
+     * @param mixed        $value
+     *
      * @return \Themosis\View\View
      */
     public function with($key, $value = null)
     {
-        if (is_array($key))
-        {
+        if (is_array($key)) {
             $this->data = array_merge($this->data, $key);
-        }
-        else
-        {
+        } else {
             $this->data[$key] = $value;
         }
 
@@ -160,7 +157,8 @@ class View implements ArrayAccess, IRenderable {
      *
      * @param string $key
      * @param string $view
-     * @param array $data
+     * @param array  $data
+     *
      * @return \Themosis\View\View
      */
     public function nest($key, $view, array $data = [])
@@ -192,6 +190,7 @@ class View implements ArrayAccess, IRenderable {
      * Check if a view data exists.
      *
      * @param string $key The data key name.
+     *
      * @return bool
      */
     public function offsetExists($key)
@@ -203,6 +202,7 @@ class View implements ArrayAccess, IRenderable {
      * Return a view data value.
      *
      * @param string $key The data key name.
+     *
      * @return mixed
      */
     public function offsetGet($key)
@@ -213,9 +213,8 @@ class View implements ArrayAccess, IRenderable {
     /**
      * Set a view data.
      *
-     * @param string $key The data key name.
-     * @param mixed $value The data value.
-     * @return void
+     * @param string $key   The data key name.
+     * @param mixed  $value The data value.
      */
     public function offsetSet($key, $value)
     {
@@ -226,7 +225,6 @@ class View implements ArrayAccess, IRenderable {
      * Remove, unset a view data.
      *
      * @param string $key
-     * @return void
      */
     public function offsetUnset($key)
     {
@@ -237,6 +235,7 @@ class View implements ArrayAccess, IRenderable {
      * Get a piece of data from the view.
      *
      * @param string $key
+     *
      * @return mixed
      */
     public function &__get($key)
@@ -248,8 +247,7 @@ class View implements ArrayAccess, IRenderable {
      * Set a piece of data on the view.
      *
      * @param string $key
-     * @param mixed $value
-     * @return void
+     * @param mixed  $value
      */
     public function __set($key, $value)
     {
@@ -260,6 +258,7 @@ class View implements ArrayAccess, IRenderable {
      * Check if a piece of data is bound to the view.
      *
      * @param string $key
+     *
      * @return bool
      */
     public function __isset($key)
@@ -271,6 +270,7 @@ class View implements ArrayAccess, IRenderable {
      * Remove a piece of bound data from the view.
      *
      * @param string $key
+     *
      * @return bool
      */
     public function __unset($key)

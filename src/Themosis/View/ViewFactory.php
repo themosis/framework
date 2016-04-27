@@ -1,12 +1,13 @@
 <?php
+
 namespace Themosis\View;
 
-use Themosis\Action\IAction;
 use Themosis\Foundation\Application;
+use Themosis\Hook\IHook;
 use Themosis\View\Engines\EngineResolver;
 
-class ViewFactory {
-
+class ViewFactory
+{
     /**
      * The engines resolver instance.
      *
@@ -66,7 +67,7 @@ class ViewFactory {
     /**
      * The action/event handler.
      *
-     * @var \Themosis\Action\IAction
+     * @var \Themosis\Hook\IHook
      */
     protected $action;
 
@@ -74,10 +75,10 @@ class ViewFactory {
      * Define a ViewFactory instance.
      *
      * @param Engines\EngineResolver $engines The available engines.
-     * @param ViewFinder $finder
-     * @param \Themosis\Action\IAction $action
+     * @param ViewFinder             $finder
+     * @param \Themosis\Hook\IHook   $action
      */
-    public function __construct(EngineResolver $engines, ViewFinder $finder, IAction $action)
+    public function __construct(EngineResolver $engines, ViewFinder $finder, IHook $action)
     {
         $this->engines = $engines;
         $this->finder = $finder;
@@ -91,8 +92,9 @@ class ViewFactory {
      * Build a view instance. This is the 1st method called
      * when defining a View.
      *
-     * @param string $view The view name.
-     * @param array $datas Passed data to the view.
+     * @param string $view  The view name.
+     * @param array  $datas Passed data to the view.
+     *
      * @return \Themosis\View\View
      */
     public function make($view, array $datas = [])
@@ -108,7 +110,6 @@ class ViewFactory {
      * Set the container instance.
      *
      * @param \Themosis\Foundation\Application $container
-     * @return void
      */
     public function setContainer(Application $container)
     {
@@ -118,20 +119,17 @@ class ViewFactory {
     /**
      * Set the shared datas of all views.
      *
-     * @param string $key The shared data name.
-     * @param null $value The shared data value.
-     * @return void
+     * @param string $key   The shared data name.
+     * @param null   $value The shared data value.
+     *
+     * @return mixed
      */
     public function share($key, $value = null)
     {
-        if (!is_array($key))
-        {
+        if (!is_array($key)) {
             return $this->shared[$key] = $value;
-        }
-        else
-        {
-            foreach ($key as $innerKey => $val)
-            {
+        } else {
+            foreach ($key as $innerKey => $val) {
                 $this->share($innerKey, $val);
             }
         }
@@ -151,14 +149,14 @@ class ViewFactory {
      * Allows you to register multiple view composers at once.
      *
      * @param array $composers A list of view composers
+     *
      * @return array
      */
     public function composers(array $composers)
     {
         $registered = [];
 
-        foreach ($composers as $callback => $views)
-        {
+        foreach ($composers as $callback => $views) {
             $registered += $this->composer($views, $callback);
         }
 
@@ -168,16 +166,16 @@ class ViewFactory {
     /**
      * Register a view composer event.
      *
-     * @param string|array $views The view(s) name
+     * @param string|array    $views    The view(s) name
      * @param \Closure|string $callback The closure or class to register
+     *
      * @return array
      */
     public function composer($views, $callback)
     {
         $composers = [];
 
-        foreach ((array) $views as $view)
-        {
+        foreach ((array) $views as $view) {
             $hook = 'composing: '.$view;
             $composers[] = $this->action->add($hook, $callback);
         }
@@ -189,14 +187,12 @@ class ViewFactory {
      * Run the composer events for a specific view.
      *
      * @param View $view
-     * @return void
      */
     public function callComposer(View $view)
     {
         $hook = 'composing: '.$view->getName();
 
-        if ($this->action->exists($hook))
-        {
+        if ($this->action->exists($hook)) {
             do_action($hook, $view);
         }
     }
@@ -205,6 +201,7 @@ class ViewFactory {
      * Fetch the engine instance regarding the view path.
      *
      * @param string $path The view full path.
+     *
      * @return \Themosis\View\Engines\IEngine
      */
     private function getEngineFromPath($path)
@@ -215,9 +212,10 @@ class ViewFactory {
     }
 
     /**
-     * Return the view file extension: 'scout.php' | 'php'
+     * Return the view file extension: 'scout.php' | 'php'.
      *
      * @param string $path
+     *
      * @return string
      */
     private function getExtension($path)
@@ -225,12 +223,10 @@ class ViewFactory {
         $extensions = array_keys($this->extensions);
         $ext = null;
 
-        foreach ($extensions as $extension)
-        {
+        foreach ($extensions as $extension) {
             $end = substr($path, -strlen($extension));
 
-            if ($end === $extension)
-            {
+            if ($end === $extension) {
                 return $extension;
             }
         }
@@ -240,9 +236,10 @@ class ViewFactory {
      * Get the rendered contents of a partial from a loop.
      *
      * @param string $view
-     * @param array $data
+     * @param array  $data
      * @param string $iterator
      * @param string $empty
+     *
      * @return string
      */
     public function renderEach($view, $data, $iterator, $empty = 'raw|')
@@ -252,26 +249,19 @@ class ViewFactory {
         // If is actually data in the array, we will loop through the data and append
         // an instance of the partial view to the final result HTML passing in the
         // iterated value of this data array, allowing the views to access them.
-        if (count($data) > 0)
-        {
-            foreach ($data as $key => $value)
-            {
+        if (count($data) > 0) {
+            foreach ($data as $key => $value) {
                 $data = ['key' => $key, $iterator => $value];
 
                 $result .= $this->make($view, $data)->render();
             }
-        }
-        else
-        {
+        } else {
             // If there is no data in the array, we will render the contents of the empty
             // view. Alternatively, the "empty view" could be a raw string that begins
             // with "raw|" for convenience and to let this know that it is a string.
-            if (starts_with($empty, 'raw|'))
-            {
+            if (starts_with($empty, 'raw|')) {
                 $result = substr($empty, 4);
-            }
-            else
-            {
+            } else {
                 $result = $this->make($empty)->render();
             }
         }
@@ -284,6 +274,7 @@ class ViewFactory {
      *
      * @param string $section
      * @param string $default
+     *
      * @return string
      */
     public function yieldContent($section, $default = '')
@@ -296,16 +287,12 @@ class ViewFactory {
      *
      * @param string $section
      * @param string $content
-     * @return void
      */
     public function startSection($section, $content = '')
     {
-        if ($content === '')
-        {
+        if ($content === '') {
             ob_start() && array_push($this->sectionStack, $section);
-        }
-        else
-        {
+        } else {
             $this->extendSection($section, $content);
         }
     }
@@ -315,17 +302,13 @@ class ViewFactory {
      *
      * @param string $section
      * @param string $content
-     * @return void
      */
     protected function extendSection($section, $content)
     {
-        if (isset($this->sections[$section]))
-        {
+        if (isset($this->sections[$section])) {
             $content = str_replace('@parent', $content, $this->sections[$section]);
             $this->sections[$section] = $content;
-        }
-        else
-        {
+        } else {
             $this->sections[$section] = $content;
         }
     }
@@ -334,18 +317,16 @@ class ViewFactory {
      * Stop injecting content into a section.
      *
      * @param bool $overwrite
+     *
      * @return string
      */
     public function stopSection($overwrite = false)
     {
         $last = array_pop($this->sectionStack);
 
-        if ($overwrite)
-        {
+        if ($overwrite) {
             $this->sections[$last] = ob_get_clean();
-        }
-        else
-        {
+        } else {
             $this->extendSection($last, ob_get_clean());
         }
 
@@ -364,13 +345,10 @@ class ViewFactory {
 
     /**
      * Flush all of the section contents if done rendering.
-     *
-     * @return void
      */
     public function flushSectionsIfDoneRendering()
     {
-        if ($this->doneRendering())
-        {
+        if ($this->doneRendering()) {
             $this->flushSections();
         }
     }
@@ -387,8 +365,6 @@ class ViewFactory {
 
     /**
      * Flush all of the section contents.
-     *
-     * @return void
      */
     public function flushSections()
     {
@@ -398,22 +374,17 @@ class ViewFactory {
 
     /**
      * Increment the rendering counter.
-     *
-     * @return void
      */
     public function incrementRender()
     {
-        $this->renderCount++;
+        ++$this->renderCount;
     }
 
     /**
      * Decrement the rendering counter.
-     *
-     * @return void
      */
     public function decrementRender()
     {
-        $this->renderCount--;
+        --$this->renderCount;
     }
-
-} 
+}

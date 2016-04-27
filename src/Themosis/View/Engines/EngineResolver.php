@@ -1,10 +1,11 @@
 <?php
+
 namespace Themosis\View\Engines;
 
 use Closure;
 
-class EngineResolver {
-
+class EngineResolver
+{
     /**
      * List of engines.
      *
@@ -22,9 +23,8 @@ class EngineResolver {
     /**
      * Register an engine resolver.
      *
-     * @param string $engine The engine name.
+     * @param string   $engine   The engine name.
      * @param callable $resolver
-     * @return void
      */
     public function register($engine, Closure $resolver)
     {
@@ -35,15 +35,15 @@ class EngineResolver {
      * Fetch an engine instance by name.
      *
      * @param string $engine The engine name.
+     *
      * @return \Themosis\View\Engines\IEngine
      */
     public function resolve($engine)
     {
-        if(!isset($this->resolved[$engine])){
+        if (!isset($this->resolved[$engine])) {
             $this->resolved[$engine] = call_user_func($this->resolvers[$engine]);
         }
 
         return $this->resolved[$engine];
     }
-
-} 
+}

@@ -2,7 +2,7 @@
 
 namespace Themosis\Asset;
 
-use Themosis\Action\Action;
+use Themosis\Hook\Action;
 
 class Asset
 {

@@ -1,12 +1,12 @@
 <?php
+
 namespace Themosis\Route;
 
-use Themosis\Core\Container;
 use Themosis\Foundation\Request;
 use Themosis\Foundation\Application;
 
-class ControllerDispatcher {
-
+class ControllerDispatcher
+{
     /**
      * Route filterer...
      *
@@ -17,14 +17,14 @@ class ControllerDispatcher {
     /**
      * IoC container.
      *
-     * @var \Themosis\Core\Container
+     * @var \Themosis\Foundation\Application
      */
     protected $container;
 
     /**
      * Build a ControllerDispatcher instance.
      *
-     * @param Router $router
+     * @param Router                           $router
      * @param \Themosis\Foundation\Application $container
      */
     public function __construct(Router $router, Application $container)
@@ -36,10 +36,11 @@ class ControllerDispatcher {
     /**
      * Dispatch a request to a given controller and method.
      *
-     * @param \Themosis\Route\Route $route
+     * @param \Themosis\Route\Route        $route
      * @param \Themosis\Foundation\Request $request
-     * @param string $controller The controller class name.
-     * @param string $method The controller class method to call.
+     * @param string                       $controller The controller class name.
+     * @param string                       $method     The controller class method to call.
+     *
      * @return mixed
      */
     public function dispatch(Route $route, Request $request, $controller, $method)
@@ -56,6 +57,7 @@ class ControllerDispatcher {
      * Make a controller instance via the IoC container.
      *
      * @param string $controller The controller class name.
+     *
      * @return mixed
      */
     protected function makeController($controller)
@@ -66,9 +68,10 @@ class ControllerDispatcher {
     /**
      * Call the given controller instance method.
      *
-     * @param  \Themosis\Route\Controller $instance
-     * @param  \Themosis\Route\Route $route
-     * @param  string $method
+     * @param \Themosis\Route\Controller $instance
+     * @param \Themosis\Route\Route      $route
+     * @param string                     $method
+     *
      * @return mixed
      */
     protected function call($instance, $route, $method)
@@ -81,11 +84,10 @@ class ControllerDispatcher {
     /**
      * Return the IoC.
      *
-     * @return Container
+     * @return \Themosis\Foundation\Application
      */
     public function getContainer()
     {
         return $this->container;
     }
-
-} 
+}

@@ -1,7 +1,8 @@
 <?php
+
 namespace Themosis\Page;
 
-use Themosis\Action\Action;
+use Themosis\Hook\Action;
 use Themosis\Core\DataContainer;
 use Themosis\Core\Wrapper;
 use Themosis\Validation\ValidationBuilder;
@@ -61,8 +62,8 @@ class PageBuilder extends Wrapper
     /**
      * Build a Page instance.
      *
-     * @param DataContainer $datas The page properties.
-     * @param IRenderable $view The page view file.
+     * @param DataContainer     $datas     The page properties.
+     * @param IRenderable       $view      The page view file.
      * @param ValidationBuilder $validator The page validator.
      */
     public function __construct(DataContainer $datas, IRenderable $view, ValidationBuilder $validator)
@@ -78,28 +79,27 @@ class PageBuilder extends Wrapper
     }
 
     /**
-     * @param string $slug The page slug name.
-     * @param string $title The page display title.
-     * @param string $parent The parent's page slug if a subpage.
-     * @param IRenderable $view The page main view file.
+     * @param string      $slug   The page slug name.
+     * @param string      $title  The page display title.
+     * @param string      $parent The parent's page slug if a subpage.
+     * @param IRenderable $view   The page main view file.
+     *
      * @throws PageException
+     *
      * @return \Themosis\Page\PageBuilder
      */
     public function make($slug, $title, $parent = null, IRenderable $view = null)
     {
         $params = compact('slug', 'title');
 
-        foreach ($params as $name => $param)
-        {
-            if (!is_string($param))
-            {
+        foreach ($params as $name => $param) {
+            if (!is_string($param)) {
                 throw new PageException('Invalid page parameter "'.$name.'"');
             }
         }
 
         // Check the view file.
-        if (!is_null($view))
-        {
+        if (!is_null($view)) {
             $this->view = $view;
         }
 
@@ -108,11 +108,11 @@ class PageBuilder extends Wrapper
         $this->datas['title'] = $title;
         $this->datas['parent'] = $parent;
         $this->datas['args'] = [
-            'capability'    => 'manage_options',
-            'icon'          => '',
-            'position'      => null,
-            'tabs'          => true,
-            'menu'          => $title
+            'capability' => 'manage_options',
+            'icon' => '',
+            'position' => null,
+            'tabs' => true,
+            'menu' => $title,
         ];
         $this->datas['rules'] = [];
 
@@ -125,6 +125,7 @@ class PageBuilder extends Wrapper
      * properties.
      *
      * @param array $params
+     *
      * @return \Themosis\Page\PageBuilder
      */
     public function set(array $params = [])
@@ -140,43 +141,37 @@ class PageBuilder extends Wrapper
     /**
      * Triggered by the 'admin_menu' action event.
      * Register/display the custom page in the WordPress admin.
-     *
-     * @return void
      */
     public function build()
     {
-        if (!is_null($this->datas['parent']))
-        {
+        if (!is_null($this->datas['parent'])) {
             add_submenu_page($this->datas['parent'], $this->datas['title'], $this->datas['args']['menu'], $this->datas['args']['capability'], $this->datas['slug'], [$this, 'displayPage']);
-        }
-        else
-        {
+        } else {
             add_menu_page($this->datas['title'], $this->datas['args']['menu'], $this->datas['args']['capability'], $this->datas['slug'], [$this, 'displayPage'], $this->datas['args']['icon'], $this->datas['args']['position']);
         }
     }
 
     /**
      * Triggered by the 'add_menu_page' or 'add_submenu_page'.
-     *
-     * @return void
      */
     public function displayPage()
     {
         // Share the page instance to the view.
         $this->with('__page', $this);
 
-        echo($this->view->render());
+        echo $this->view->render();
     }
 
     /**
      * Return a page property value.
      *
      * @param string $property
+     *
      * @return mixed
      */
     public function get($property = null)
     {
-         return (isset($this->datas[$property])) ? $this->datas[$property] : '';
+        return (isset($this->datas[$property])) ? $this->datas[$property] : '';
     }
 
     /**
@@ -184,7 +179,8 @@ class PageBuilder extends Wrapper
      * the page view instance.
      *
      * @param string|array $key
-     * @param mixed $value
+     * @param mixed        $value
+     *
      * @return \Themosis\Page\PageBuilder
      */
     public function with($key, $value = null)
@@ -198,6 +194,7 @@ class PageBuilder extends Wrapper
      * Add custom sections for your settings.
      *
      * @param array $sections
+     *
      * @return \Themosis\Page\PageBuilder
      */
     public function addSections(array $sections = [])
@@ -224,6 +221,7 @@ class PageBuilder extends Wrapper
      * pass it an array of 'settings' fields.
      *
      * @param array $settings The page settings.
+     *
      * @return \Themosis\Page\PageBuilder
      */
     public function addSettings(array $settings = [])
@@ -239,21 +237,16 @@ class PageBuilder extends Wrapper
     /**
      * Triggered by the 'admin_init' action.
      * Perform the WordPress settings API.
-     *
-     * @return void
      */
     public function installSettings()
     {
         // The WordPress Settings API make
         // always use of sections and fields.
         // So let's set it up!
-        if ($this->datas['args']['tabs'])
-        {
+        if ($this->datas['args']['tabs']) {
             // A - With tabs
             $this->installWithTabs();
-        }
-        else
-        {
+        } else {
             // B - Without tabs
             $this->installWithoutTabs();
         }
@@ -262,35 +255,28 @@ class PageBuilder extends Wrapper
     /**
      * Register sections and settings in order
      * to work with tabs.
-     *
-     * @return void
      */
     protected function installWithTabs()
     {
         // 1 - Prepare the DB table.
-        foreach ($this->sections as $section)
-        {
+        foreach ($this->sections as $section) {
             $section = $section->getData();
 
-            if (false === get_option($section['slug']))
-            {
+            if (false === get_option($section['slug'])) {
                 add_option($section['slug']);
             }
         }
 
         // 2 - Display sections
-        foreach ($this->sections as $section)
-        {
+        foreach ($this->sections as $section) {
             $section = $section->getData();
 
             add_settings_section($section['slug'], $section['name'], [$this, 'displaySections'], $section['slug']);
         }
 
         // 3 - Display settings
-        foreach ($this->settings as $section => $settings)
-        {
-            foreach ($settings as $setting)
-            {
+        foreach ($this->settings as $section => $settings) {
+            foreach ($settings as $setting) {
                 // Add the section to the field.
                 $setting['section'] = $section;
 
@@ -303,8 +289,7 @@ class PageBuilder extends Wrapper
         // the wp_options table.
         // When you want to retrieve a setting use the option_group
         // name and the setting id.
-        foreach ($this->sections as $section)
-        {
+        foreach ($this->sections as $section) {
             $section = $section->getData();
 
             register_setting($section['slug'], $section['slug'], [$this, 'validateSettings']);
@@ -313,30 +298,24 @@ class PageBuilder extends Wrapper
 
     /**
      * Register sections and settings in a page.
-     *
-     * @return void
      */
     protected function installWithoutTabs()
     {
         // 1 - Prepare the DB table.
-        if (false === get_option($this->datas['slug']))
-        {
+        if (false === get_option($this->datas['slug'])) {
             add_option($this->datas['slug']);
         }
 
         // 2 - Display sections
-        foreach ($this->sections as $section)
-        {
+        foreach ($this->sections as $section) {
             $section = $section->getData();
 
             add_settings_section($section['slug'], $section['name'], [$this, 'displaySections'], $this->datas['slug']);
         }
 
         // 3 - Display settings
-        foreach ($this->settings as $section => $settings)
-        {
-            foreach ($settings as $setting)
-            {
+        foreach ($this->settings as $section => $settings) {
+            foreach ($settings as $setting) {
                 // Add the section to the field - In this case,
                 // it is associated to the page slug.
                 $setting['section'] = $this->datas['slug'];
@@ -357,7 +336,6 @@ class PageBuilder extends Wrapper
      * Handle section display of the Settings API.
      *
      * @param array $args
-     * @return void
      */
     public function displaySections(array $args)
     {
@@ -367,7 +345,6 @@ class PageBuilder extends Wrapper
      * Handle setting display of the Settings API.
      *
      * @param mixed $setting
-     * @return void
      */
     public function displaySettings($setting)
     {
@@ -380,65 +357,56 @@ class PageBuilder extends Wrapper
         $setting['name'] = $setting['section'].'['.$setting['name'].']';
 
         // Display the setting.
-        echo($setting->page());
+        echo $setting->page();
     }
 
     /**
      * Validate the defined settings.
      *
      * @param mixed $values
+     *
      * @return array
      */
     public function validateSettings($values)
     {
         // No validation rules
-        if (!isset($this->datas['rules']) || !is_array($this->datas['rules'])) return $values;
+        if (!isset($this->datas['rules']) || !is_array($this->datas['rules'])) {
+            return $values;
+        }
 
         // Null given
-        if (is_null($values)) return [];
+        if (is_null($values)) {
+            return [];
+        }
 
         $sanitized = [];
 
-        foreach ($values as $setting => $value)
-        {
+        foreach ($values as $setting => $value) {
             $rules = array_keys($this->datas['rules']);
 
             // 1 - Check if a rule exists
-            if (in_array($setting, $rules))
-            {
+            if (in_array($setting, $rules)) {
                 // 1.1 - Check for infinite settings.
-                if (is_array($value) && $this->isInfinite($setting))
-                {
-                    foreach ($value as $index => $row)
-                    {
-                        if ($this->validator->isAssociative($row) && !empty($row))
-                        {
-                            foreach ($row as $infiniteSetting => $infiniteValue)
-                            {
+                if (is_array($value) && $this->isInfinite($setting)) {
+                    foreach ($value as $index => $row) {
+                        if ($this->validator->isAssociative($row) && !empty($row)) {
+                            foreach ($row as $infiniteSetting => $infiniteValue) {
                                 // 1.1.1 - Check if a rule is defined for the infinite sub fields.
-                                if (isset($this->datas['rules'][$setting][$infiniteSetting]))
-                                {
+                                if (isset($this->datas['rules'][$setting][$infiniteSetting])) {
                                     $rule = $this->datas['rules'][$setting][$infiniteSetting];
 
                                     $sanitized[$setting][$index][$infiniteSetting] = $this->validator->single($infiniteValue, $rule);
-                                }
-                                else
-                                {
+                                } else {
                                     $sanitized[$setting][$index][$infiniteSetting] = $infiniteValue;
                                 }
                             }
                         }
                     }
-                }
-                else
-                {
+                } else {
                     // 1.2 - Apply rule to other settings.
                     $sanitized[$setting] = $this->validator->single($value, $this->datas['rules'][$setting]);
                 }
-
-            }
-            else
-            {
+            } else {
                 // 2 - No rule, just set the default value.
                 $sanitized[$setting] = $value;
             }
@@ -451,6 +419,7 @@ class PageBuilder extends Wrapper
      * Set validation rules to settings.
      *
      * @param array $rules
+     *
      * @return \Themosis\Page\PageBuilder
      */
     public function validate(array $rules = [])
@@ -464,15 +433,16 @@ class PageBuilder extends Wrapper
      * Check if a field/settings is of type 'infinite'.
      *
      * @param string $name The name of the field/setting.
+     *
      * @return bool
      */
     protected function isInfinite($name)
     {
-        foreach ($this->settings as $settings)
-        {
-            foreach ($settings as $setting)
-            {
-                if($name === $setting['name']) return true;
+        foreach ($this->settings as $settings) {
+            foreach ($settings as $setting) {
+                if ($name === $setting['name']) {
+                    return true;
+                }
             }
         }
 
@@ -487,6 +457,7 @@ class PageBuilder extends Wrapper
     protected function getActiveTab()
     {
         $firstSection = $this->sections[0]->getData();
+
         return isset($_GET['tab']) ? $_GET['tab'] : $firstSection['slug'];
     }
 
@@ -494,6 +465,7 @@ class PageBuilder extends Wrapper
      * Define the tab URI. Check for extra query parameters.
      *
      * @param string $default The default URI to check. Mainly look for query parameters.
+     *
      * @return string
      */
     protected function setTabUri($default)
@@ -501,8 +473,7 @@ class PageBuilder extends Wrapper
         // Get the query parameters from the slug if any...
         $params = parse_url($default, PHP_URL_QUERY);
 
-        if (!empty($params))
-        {
+        if (!empty($params)) {
             return '?'.$params.'&';
         }
 
@@ -512,53 +483,44 @@ class PageBuilder extends Wrapper
     /**
      * Helper method that output the tab navigation
      * if available.
-     *
-     * @return void
      */
     public function renderTabs()
     {
-        if ($this->hasSections() && $this->datas['args']['tabs'])
-        {
-            echo('<h2 class="nav-tab-wrapper">');
+        if ($this->hasSections() && $this->datas['args']['tabs']) {
+            echo '<h2 class="nav-tab-wrapper">';
 
-                foreach ($this->sections as $section)
-                {
-                    $section = $section->getData();
-                    $class = ($this->getActiveTab() === $section['slug']) ? 'nav-tab-active' : '';
+            foreach ($this->sections as $section) {
+                $section = $section->getData();
+                $class = ($this->getActiveTab() === $section['slug']) ? 'nav-tab-active' : '';
 
-                    printf('<a href="%spage=%s&tab=%s" class="nav-tab %s">%s</a>', $this->setTabUri($this->datas['parent']), $this->datas['slug'], $section['slug'], $class, $section['name']);
-                }
+                printf('<a href="%spage=%s&tab=%s" class="nav-tab %s">%s</a>', $this->setTabUri($this->datas['parent']), $this->datas['slug'], $section['slug'], $class, $section['name']);
+            }
 
-            echo('</h2>');
+            echo '</h2>';
         }
     }
 
     /**
      * Helper method that output the page settings.
-     *
-     * @return void
      */
     public function renderSettings()
     {
         // Check if there are sections before proceeding.
-        if (!$this->hasSections()) return;
+        if (!$this->hasSections()) {
+            return;
+        }
 
-        if ($this->datas['args']['tabs'])
-        {
-            foreach ($this->sections as $section)
-            {
+        if ($this->datas['args']['tabs']) {
+            foreach ($this->sections as $section) {
                 $section = $section->getData();
 
                 // Display settings regarding the active tab.
-                if ($this->getActiveTab() === $section['slug'])
-                {
+                if ($this->getActiveTab() === $section['slug']) {
                     settings_fields($section['slug']);
                     do_settings_sections($section['slug']);
                 }
             }
-        }
-        else
-        {
+        } else {
             // Do not use the tab navigation.
             // Display all sections in one page.
             settings_fields($this->datas['slug']);
@@ -569,16 +531,12 @@ class PageBuilder extends Wrapper
     /**
      * Enqueue the WordPress media scripts.
      * Make the 'wp' object available to javascript.
-     *
-     * @return void
      */
     public function enqueueMediaUploader()
     {
         // If WordPress version > 3.5
-        if (get_bloginfo('version') >= 3.5)
-        {
+        if (get_bloginfo('version') >= 3.5) {
             wp_enqueue_media();
         }
     }
-
-} 
+}

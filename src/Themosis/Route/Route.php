@@ -1,8 +1,9 @@
 <?php
+
 namespace Themosis\Route;
 
-class Route {
-
+class Route
+{
     /**
      * The WordPress template condition.
      *
@@ -11,7 +12,7 @@ class Route {
     protected $condition;
 
     /**
-     * HTTP methods
+     * HTTP methods.
      *
      * @var array
      */
@@ -37,37 +38,37 @@ class Route {
      * @var array
      */
     protected $conditions = [
-        '404'			       => 'is_404',
-        'archive'		       => 'is_archive',
-        'attachment'	       => 'is_attachment',
-        'author'		       => 'is_author',
-        'category'		       => 'is_category',
-        'date'			       => 'is_date',
-        'day'			       => 'is_day',
-        'front'			       => 'is_front_page',
-        'home'			       => 'is_home',
-        'month'			       => 'is_month',
-        'page'			       => 'is_page',
-        'paged'			       => 'is_paged',
-        'postTypeArchive'      => 'is_post_type_archive',
-        'search'		       => 'is_search',
-        'subpage'		       => 'themosis_is_subpage',
-        'single'		       => 'is_single',
-        'sticky'		       => 'is_sticky',
-        'singular'		       => 'is_singular',
-        'tag'			       => 'is_tag',
-        'tax'			       => 'is_tax',
-        'template'             => 'themosis_is_template',
-        'time'			       => 'is_time',
-        'year'			       => 'is_year'
+        '404' => 'is_404',
+        'archive' => 'is_archive',
+        'attachment' => 'is_attachment',
+        'author' => 'is_author',
+        'category' => 'is_category',
+        'date' => 'is_date',
+        'day' => 'is_day',
+        'front' => 'is_front_page',
+        'home' => 'is_home',
+        'month' => 'is_month',
+        'page' => 'is_page',
+        'paged' => 'is_paged',
+        'postTypeArchive' => 'is_post_type_archive',
+        'search' => 'is_search',
+        'subpage' => 'themosis_is_subpage',
+        'single' => 'is_single',
+        'sticky' => 'is_sticky',
+        'singular' => 'is_singular',
+        'tag' => 'is_tag',
+        'tax' => 'is_tax',
+        'template' => 'themosis_is_template',
+        'time' => 'is_time',
+        'year' => 'is_year',
     ];
 
     /**
      * Build a Route instance.
      *
      * @param array|string $methods
-     * @param string $condition
-     * @param mixed $action
+     * @param string       $condition
+     * @param mixed        $action
      */
     public function __construct($methods, $condition, $action)
     {
@@ -80,6 +81,7 @@ class Route {
      * Parse the route action into a standard array.
      *
      * @param \Closure|array $action
+     *
      * @return array
      */
     protected function parseAction($action)
@@ -87,24 +89,19 @@ class Route {
         // If the action is already a Closure instance, we will just set that instance
         // as the "uses" property, because there is nothing else we need to do when
         // it is available. Otherwise we will need to find it in the action list.
-        if (is_callable($action))
-        {
+        if (is_callable($action)) {
             return ['uses' => $action];
-        }
-        elseif (!isset($action['uses']))
-        {
+        } elseif (!isset($action['uses'])) {
             // If no "uses" property has been set, we will dig through the array to find a
             // Closure instance within this list. We will set the first Closure we come
             // across into the "uses" property that will get fired off by this route.
             $action['uses'] = $this->findClosure($action);
         }
 
-        if (!isset($action['params']))
-        {
+        if (!isset($action['params'])) {
             // The first element passed in the action is used
             // for the WordPress conditional function parameters.
-            $param = array_first($action, function($key, $value)
-            {
+            $param = array_first($action, function ($key, $value) {
                 return is_string($value) || is_array($value);
             });
 
@@ -118,14 +115,14 @@ class Route {
      * Parse the action condition parameter value. This is the parameter
      * given to WordPress conditional functions later.
      *
-     * @param string|array $param The condition param value.
-     * @param array $action The route action params.
+     * @param string|array $param  The condition param value.
+     * @param array        $action The route action params.
+     *
      * @return mixed
      */
     protected function parseParam($param, $action)
     {
-        if (is_string($param))
-        {
+        if (is_string($param)) {
             return (false !== strrpos($param, '@')) ? null : $action[0];
         }
 
@@ -136,7 +133,9 @@ class Route {
      * Return the real WordPress conditional tag.
      *
      * @param string $condition
+     *
      * @return string
+     *
      * @throws RouteException
      */
     protected function parseCondition($condition)
@@ -145,8 +144,7 @@ class Route {
         $conditions = apply_filters('themosisRouteConditions', []);
         $conditions = $this->conditions + $conditions;
 
-        if (isset($conditions[$condition]))
-        {
+        if (isset($conditions[$condition])) {
             return $conditions[$condition];
         }
 
@@ -157,12 +155,12 @@ class Route {
      * Find the Closure in an action array.
      *
      * @param array $action
+     *
      * @return \Closure
      */
     protected function findClosure(array $action)
     {
-        return array_first($action, function($key, $value)
-        {
+        return array_first($action, function ($key, $value) {
             return is_callable($value);
         });
     }
@@ -171,6 +169,7 @@ class Route {
      * Get the key / value list of parameters for the route callback/method.
      *
      * @return array
+     *
      * @throws \Exception
      */
     public function parameters()
@@ -183,16 +182,13 @@ class Route {
         // When no posts, $post is null.
         // When is null, set the parameter value of $post to false.
         // This avoid missing arguments in methods for routes or controllers.
-        if (is_null($parameters['post']))
-        {
+        if (is_null($parameters['post'])) {
             $parameters['post'] = false;
         }
 
-        return array_map(function($value)
-        {
+        return array_map(function ($value) {
             return is_string($value) ? rawurldecode($value) : $value;
         }, $parameters);
-
     }
 
     /**
@@ -202,8 +198,7 @@ class Route {
      */
     public function parametersWithoutNulls()
     {
-        return array_filter($this->parameters(), function($p)
-        {
+        return array_filter($this->parameters(), function ($p) {
             return !is_null($p);
         });
     }
@@ -216,7 +211,7 @@ class Route {
      */
     public function run()
     {
-        $parameters = array_filter($this->parameters(), function($p) { return isset($p); });
+        $parameters = array_filter($this->parameters(), function ($p) { return isset($p); });
 
         return call_user_func_array($this->action['uses'], $parameters);
     }
@@ -280,5 +275,4 @@ class Route {
     {
         return isset($this->action['params']) ? (array) $this->action['params'] : [];
     }
-
-} 
+}

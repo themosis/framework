@@ -1,7 +1,7 @@
 <?php
-namespace Themosis\Action;
+namespace Themosis\Hook;
 
-interface IAction
+interface IHook
 {
     /**
      * Register to an action event using the WordPress

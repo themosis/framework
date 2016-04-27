@@ -2,7 +2,7 @@
 
 namespace Themosis\Ajax;
 
-use Themosis\Action\IAction;
+use Themosis\Hook\IHook;
 
 class AjaxBuilder implements IAjax
 {
@@ -11,7 +11,7 @@ class AjaxBuilder implements IAjax
      */
     protected $action;
 
-    public function __construct(IAction $action)
+    public function __construct(IHook $action)
     {
         $this->action = $action;
     }

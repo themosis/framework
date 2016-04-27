@@ -1,5 +1,7 @@
 <?php
 
+use Themosis\Hook\ActionBuilder;
+
 include 'actionHelpers.php';
 
 class ActionTest extends PHPUnit_Framework_TestCase
@@ -18,7 +20,7 @@ class ActionTest extends PHPUnit_Framework_TestCase
 
     public function testActionWithClosure()
     {
-        $action = new \Themosis\Action\ActionBuilder($this->app);
+        $action = new ActionBuilder($this->app);
 
         $action->add('init_test', function () {});
 
@@ -37,7 +39,7 @@ class ActionTest extends PHPUnit_Framework_TestCase
 
     public function testActionWithClass()
     {
-        $action = new \Themosis\Action\ActionBuilder($this->app);
+        $action = new ActionBuilder($this->app);
 
         // Run the action
         $action->add('a_custom_action', 'AnActionClassForTest', 5, 4);
@@ -66,7 +68,7 @@ class ActionTest extends PHPUnit_Framework_TestCase
 
     public function testActionWithNamedCallback()
     {
-        $action = new \Themosis\Action\ActionBuilder($this->app);
+        $action = new ActionBuilder($this->app);
         
         $action->add('some_hook', 'actionHookCallback');
 
@@ -79,7 +81,7 @@ class ActionTest extends PHPUnit_Framework_TestCase
 
     public function testActionIsRanWithoutArguments()
     {
-        $action = new \Themosis\Action\ActionBuilder($this->app);
+        $action = new ActionBuilder($this->app);
 
         // Run action without arguments.
         $action->run('my-custom-hook');
@@ -97,7 +99,7 @@ class ActionTest extends PHPUnit_Framework_TestCase
 
     public function testActionIsRanWithMultipleArguments()
     {
-        $action = new \Themosis\Action\ActionBuilder($this->app);
+        $action = new ActionBuilder($this->app);
 
         // Run action with multiple arguments.
         $action->run('some-hook', ['value1', 'value2', 'value3']);

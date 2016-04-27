@@ -1,4 +1,5 @@
 <?php
+
 namespace Themosis\Route;
 
 abstract class Controller
@@ -12,16 +13,17 @@ abstract class Controller
 
     /**
      * Create the layout used by the controller.
-     *
-     * @return void
      */
-    protected function setupLayout() {}
+    protected function setupLayout()
+    {
+    }
 
     /**
      * Execute an action on the controller.
      *
      * @param string $method
-     * @param array $parameters
+     * @param array  $parameters
+     *
      * @return mixed isn't it a string ?
      */
     public function callAction($method, $parameters)
@@ -33,8 +35,7 @@ abstract class Controller
         // If no response is returned from the controller action and a layout is being
         // used we will assume we want to just return the layout view as any nested
         // views were probably bound on this view during this controller actions.
-        if(is_null($response) && !is_null($this->layout))
-        {
+        if (is_null($response) && !is_null($this->layout)) {
             $response = $this->layout;
         }
 

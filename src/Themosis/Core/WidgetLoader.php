@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Core;
 
-use Themosis\Action\Action;
+use Themosis\Hook\Action;
 
 class WidgetLoader extends Loader
 {

@@ -197,11 +197,11 @@ if (!class_exists('Themosis')) {
              * Service providers.
              */
             $providers = apply_filters('themosis_service_providers', [
-                'Themosis\Action\ActionServiceProvider',
                 'Themosis\Ajax\AjaxServiceProvider',
                 'Themosis\Asset\AssetServiceProvider',
                 'Themosis\Config\ConfigServiceProvider',
                 'Themosis\Field\FieldServiceProvider',
+                'Themosis\Hook\ActionServiceProvider',
                 'Themosis\Html\HtmlServiceProvider',
                 'Themosis\Metabox\MetaboxServiceProvider',
                 'Themosis\Page\PageServiceProvider',

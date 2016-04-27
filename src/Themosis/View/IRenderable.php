@@ -1,13 +1,13 @@
 <?php
+
 namespace Themosis\View;
 
-interface IRenderable {
-
+interface IRenderable
+{
     /**
      * Get the evaluated content of the object.
      *
      * @return string
      */
     public function render();
-
-} 
+}

@@ -1,8 +1,9 @@
 <?php
+
 namespace Themosis\View\Compilers;
 
-abstract class Compiler {
-
+abstract class Compiler
+{
     /**
      * View storage path.
      *
@@ -24,6 +25,7 @@ abstract class Compiler {
      * Check if a compiled view is expired or not.
      *
      * @param string $path
+     *
      * @return bool
      */
     public function isExpired($path)
@@ -31,7 +33,7 @@ abstract class Compiler {
         $compiled = $this->getCompiledPath($path);
 
         // If the compiled view doesn't exists, return.
-        if(!$this->storage || !file_exists($compiled)){
+        if (!$this->storage || !file_exists($compiled)) {
             return true;
         }
 
@@ -45,11 +47,11 @@ abstract class Compiler {
      * Return the compiled view path.
      *
      * @param string $path The original view path.
+     *
      * @return string
      */
     public function getCompiledPath($path)
     {
         return $this->storage.md5($path);
     }
-
-} 
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Themosis\Action;
+namespace Themosis\Hook;
 
 use Themosis\Foundation\ServiceProvider;
 
@@ -13,6 +13,6 @@ class ActionServiceProvider extends ServiceProvider
     public function register()
     {
         $container = $this->getContainer();
-        $container->add('action', 'Themosis\Action\ActionBuilder')->withArgument($container);
+        $container->add('action', 'Themosis\Hook\ActionBuilder')->withArgument($container);
     }
 }

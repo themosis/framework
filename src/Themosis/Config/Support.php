@@ -2,7 +2,7 @@
 
 namespace Themosis\Config;
 
-use Themosis\Action\Action;
+use Themosis\Hook\Action;
 
 class Support
 {

@@ -1,10 +1,11 @@
 <?php
+
 namespace Themosis\View\Engines;
 
 use Themosis\View\Compilers\ICompiler;
 
-class ScoutEngine extends PhpEngine {
-
+class ScoutEngine extends PhpEngine
+{
     /**
      * The Scout compiler instance.
      *
@@ -34,7 +35,8 @@ class ScoutEngine extends PhpEngine {
      * Get the evaluated content of the view.
      *
      * @param string $path
-     * @param array $data
+     * @param array  $data
+     *
      * @return string
      */
     public function get($path, array $data = array())
@@ -44,7 +46,7 @@ class ScoutEngine extends PhpEngine {
         $this->lastCompiled[] = $path;
 
         // Compile the view if it's expired or do not exists.
-        if($this->compiler->isExpired($path)){
+        if ($this->compiler->isExpired($path)) {
             $this->compiler->compile($path);
         }
 
@@ -64,20 +66,22 @@ class ScoutEngine extends PhpEngine {
      * Handle a view exception.
      *
      * @param \Exception $e
-     * @return void
+     *
      * @throws $e
      */
     protected function handleException($e)
     {
         $e = new \ErrorException($this->getMessage($e), 0, 1, $e->getFile(), $e->getLine(), $e);
 
-        ob_get_clean(); throw $e;
+        ob_get_clean();
+        throw $e;
     }
 
     /**
      * Get the exception message for an exception.
      *
      * @param \Exception $e
+     *
      * @return string
      */
     protected function getMessage($e)
@@ -94,5 +98,4 @@ class ScoutEngine extends PhpEngine {
     {
         return $this->compiler;
     }
-
-} 
+}

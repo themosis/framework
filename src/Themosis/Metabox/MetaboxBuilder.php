@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Metabox;
 
-use Themosis\Action\Action;
+use Themosis\Hook\Action;
 use Themosis\Core\DataContainer;
 use Themosis\Core\Wrapper;
 use Themosis\Session\Session;
