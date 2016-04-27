@@ -76,4 +76,38 @@ class ActionTest extends PHPUnit_Framework_TestCase
         // Check if callback is callable (function).
         $this->assertTrue(is_callable($action->getCallback('some_hook')[0]));
     }
+
+    public function testActionIsRanWithoutArguments()
+    {
+        $action = new \Themosis\Action\ActionBuilder($this->app);
+
+        // Run action without arguments.
+        $action->run('my-custom-hook');
+        $this->assertTrue(1 == did_action('my-custom-hook'));
+
+        // Check action is ran once.
+        $this->assertEquals(1, did_action('my-custom-hook'));
+
+        // Run action a second time...
+        $action->run('my-custom-hook');
+
+        // Check action is ran twice.
+        $this->assertEquals(2, did_action('my-custom-hook'));
+    }
+
+    public function testActionIsRanWithMultipleArguments()
+    {
+        $action = new \Themosis\Action\ActionBuilder($this->app);
+
+        // Run action with multiple arguments.
+        $action->run('some-hook', ['value1', 'value2', 'value3']);
+
+        // Check if this action has run once.
+        $this->assertEquals(1, did_action('some-hook'));
+
+        // Run action a second time...
+        $action->run('some-hook', ['value4', 'value5']);
+
+        $this->assertEquals(2, did_action('some-hook'));
+    }
 }
