@@ -2,7 +2,7 @@
 
 use Themosis\Hook\ActionBuilder;
 
-include 'actionHelpers.php';
+include 'hookHelpers.php';
 
 class ActionTest extends PHPUnit_Framework_TestCase
 {

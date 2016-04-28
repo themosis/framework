@@ -20,6 +20,11 @@ abstract class Hook implements IHook
      */
     protected $hooks = [];
 
+    /**
+     * Hook constructor.
+     *
+     * @param Application $container
+     */
     public function __construct(Application $container)
     {
         $this->container = $container;
@@ -60,11 +65,11 @@ abstract class Hook implements IHook
     }
 
     /**
-     * Return the callback registered with the action hook.
+     * Return the callback registered with the hook.
      *
-     * @param string $hook The action hook.
+     * @param string $hook The hook name.
      *
-     * @return string|\Closure|bool
+     * @return array|bool
      */
     public function getCallback($hook)
     {

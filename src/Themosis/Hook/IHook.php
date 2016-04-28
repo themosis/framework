@@ -32,4 +32,13 @@ interface IHook
      * @return bool
      */
     public function exists($hook);
+
+    /**
+     * Return the callback registered with the given hook.
+     *
+     * @param string $hook The hook name.
+     *
+     * @return array|bool
+     */
+    public function getCallback($hook);
 }
