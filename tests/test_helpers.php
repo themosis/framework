@@ -15,3 +15,11 @@ function callingForUncharted()
 {
     // Run some code...
 }
+
+/**
+ * Function used to test as a callback in AjaxTest class.
+ */
+function ajaxCallback()
+{
+    // Run some code...
+}

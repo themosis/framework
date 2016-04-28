@@ -2,8 +2,6 @@
 
 use Themosis\Hook\FilterBuilder;
 
-// Note: the helper file is already loaded from the ActionTest class...
-
 class FilterTest extends PHPUnit_Framework_TestCase
 {
     protected $app;

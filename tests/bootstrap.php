@@ -21,3 +21,6 @@ tests_add_filter('muplugins_loaded', '_manually_load_plugin');
 
 // Start up the WP testing environment.
 require $_tests_dir.'/includes/bootstrap.php';
+
+// Add test_helpers.php file.
+include 'test_helpers.php';

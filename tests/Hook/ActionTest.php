@@ -2,8 +2,6 @@
 
 use Themosis\Hook\ActionBuilder;
 
-include 'hookHelpers.php';
-
 class ActionTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -69,7 +67,7 @@ class ActionTest extends PHPUnit_Framework_TestCase
     public function testActionWithNamedCallback()
     {
         $action = new ActionBuilder($this->app);
-        
+
         $action->add('some_hook', 'actionHookCallback');
 
         // Check if this action is registered.

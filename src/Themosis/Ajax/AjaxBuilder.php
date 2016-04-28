@@ -20,12 +20,12 @@ class AjaxBuilder implements IAjax
      * Listen to AJAX API calls.
      *
      * @param string          $name     The AJAX action name.
+     * @param \Closure|string $callback A callback function name, a closure or a string defining a class and its method.
      * @param string|bool     $logged   true, false or 'both' type of users.
-     * @param \Closure|string $callback
      *
      * @return \Themosis\Ajax\IAjax
      */
-    public function run($name, $logged, $callback)
+    public function listen($name, $callback, $logged = 'both')
     {
         // Front-end ajax for non-logged users
         // Set $logged to false
@@ -45,5 +45,21 @@ class AjaxBuilder implements IAjax
         }
 
         return $this;
+    }
+
+    /**
+     * Function in place for backwards compatibility.
+     *
+     * @deprecated
+     *
+     * @param $name
+     * @param $logged
+     * @param $callback
+     *
+     * @return IAjax
+     */
+    public function run($name, $logged, $callback)
+    {
+        return $this->listen($name, $callback, $logged);
     }
 }
