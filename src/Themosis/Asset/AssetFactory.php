@@ -12,6 +12,13 @@ class AssetFactory
     protected $finder;
 
     /**
+     * A list of authorized assets to add.
+     *
+     * @var array
+     */
+    protected $allowedAssets = ['script', 'style', 'js', 'css'];
+
+    /**
      * Constructor.
      *
      * @param AssetFinder $finder
@@ -45,27 +52,33 @@ class AssetFactory
             throw new AssetException('Invalid parameters for [Asset::add] method.');
         }
 
+        // Init type.
         $t = '';
+
+        // Get full URL for the asset.
         $path = $this->finder->find($path);
+
+        // Group arguments.
         $args = compact('handle', 'path', 'deps', 'version', 'mixed');
 
-        // Check if asset has an extension.
+        // Get file extension.
         $ext = pathinfo($path, PATHINFO_EXTENSION);
 
-        // If extension.
-        if ($ext) {
-            // Check the type of asset.
-            $t = ($ext === 'css') ? 'style' : 'script';
-        } elseif (!empty($type) && in_array($type, ['style', 'script'])) {
+        // Define the asset type.
+        if (!empty($type) && in_array($type, $this->allowedAssets)) {
             $t = $type;
+        } elseif ($ext) {
+            $t = ($ext === 'css') ? 'style' : 'script';
         }
 
-        // Check the asset type.
+        /*
+         * Check the asset type is defined.
+         */
         if (empty($t)) {
-            return new \WP_Error('asset', __("Can't load your asset: {$handle}. If your asset has no file extension, please provide the type parameter.", THEMOSIS_FRAMEWORK_TEXTDOMAIN));
+            return new \WP_Error('asset', sprintf('%s: %s. %s', __("Can't load your asset", THEMOSIS_FRAMEWORK_TEXTDOMAIN), $handle, __('If your asset has no file extension, please provide the type parameter.', THEMOSIS_FRAMEWORK_TEXTDOMAIN)));
         }
 
-        // Return the asset instance.
+        // Return an asset instance.
         return new Asset($t, $args);
     }
 }

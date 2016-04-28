@@ -77,6 +77,11 @@ class Asset
          */
         $args['version'] = $this->parseVersion($args['version']);
 
+        /*
+         * Parse mixed.
+         */
+        $args['mixed'] = $this->parseMixed($args['mixed']);
+
         return $args;
     }
 
@@ -103,6 +108,24 @@ class Asset
 
         // Version can only be a string or null. If anything else, return false.
         return false;
+    }
+
+    /**
+     * Parse the mixed argument.
+     * 
+     * @param $mixed
+     *
+     * @return string|bool
+     */
+    protected function parseMixed($mixed)
+    {
+        if ('style' === $this->type) {
+            $mixed = (is_string($mixed) && !empty($mixed)) ? $mixed : 'all';
+        } elseif ('script' === $this->type) {
+            $mixed = is_bool($mixed) ? $mixed : false;
+        }
+
+        return $mixed;
     }
 
     /**
@@ -254,10 +277,7 @@ class Asset
     protected function registerScript(Asset $asset)
     {
         $args = $asset->getArgs();
-
-        $footer = (is_bool($args['mixed'])) ? $args['mixed'] : false;
-
-        wp_enqueue_script($args['handle'], $args['path'], $args['deps'], $args['version'], $footer);
+        wp_enqueue_script($args['handle'], $args['path'], $args['deps'], $args['version'], $args['mixed']);
 
         // Add localized data for scripts.
         if (isset($args['localize']) && !empty($args['localize'])) {
@@ -275,10 +295,7 @@ class Asset
     protected function registerStyle(Asset $asset)
     {
         $args = $asset->getArgs();
-
-        $media = (is_string($args['mixed'])) ? $args['mixed'] : 'all';
-
-        wp_enqueue_style($args['handle'], $args['path'], $args['deps'], $args['version'], $media);
+        wp_enqueue_style($args['handle'], $args['path'], $args['deps'], $args['version'], $args['mixed']);
     }
 
     /**
