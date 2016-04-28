@@ -12,7 +12,7 @@ class AssetFactory
     protected $finder;
 
     /**
-     * Build an AssetBuilder instance.
+     * Constructor.
      *
      * @param AssetFinder $finder
      */

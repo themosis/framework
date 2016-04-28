@@ -59,7 +59,7 @@ class Asset
     public function __construct($type, array $args)
     {
         $this->type = $type;
-        $this->args = $args;
+        $this->args = $this->parse($args);
         $this->key = strtolower(trim($args['handle']));
 
         $this->registerInstance();
@@ -68,6 +68,41 @@ class Asset
         Action::listen('wp_enqueue_scripts', $this, 'install')->dispatch();
         Action::listen('admin_enqueue_scripts', $this, 'install')->dispatch();
         Action::listen('login_enqueue_scripts', $this, 'install')->dispatch();
+    }
+
+    protected function parse($args)
+    {
+        /*
+         * Parse version.
+         */
+        $args['version'] = $this->parseVersion($args['version']);
+
+        return $args;
+    }
+
+    /**
+     * Parse the version number.
+     *
+     * @param string|bool|null $version
+     *
+     * @return mixed
+     */
+    protected function parseVersion($version)
+    {
+        if (is_string($version)) {
+            if (empty($version)) {
+                // Passing empty string is equivalent to set it to null.
+                return;
+            }
+            // Return the defined string version.
+            return $version;
+        } elseif (is_null($version)) {
+            // Return null.
+            return;
+        }
+
+        // Version can only be a string or null. If anything else, return false.
+        return false;
     }
 
     /**
@@ -221,9 +256,8 @@ class Asset
         $args = $asset->getArgs();
 
         $footer = (is_bool($args['mixed'])) ? $args['mixed'] : false;
-        $version = (is_string($args['version'])) ? $args['version'] : false;
 
-        wp_enqueue_script($args['handle'], $args['path'], $args['deps'], $version, $footer);
+        wp_enqueue_script($args['handle'], $args['path'], $args['deps'], $args['version'], $footer);
 
         // Add localized data for scripts.
         if (isset($args['localize']) && !empty($args['localize'])) {
@@ -243,9 +277,8 @@ class Asset
         $args = $asset->getArgs();
 
         $media = (is_string($args['mixed'])) ? $args['mixed'] : 'all';
-        $version = (is_string($args['version'])) ? $args['version'] : false;
 
-        wp_enqueue_style($args['handle'], $args['path'], $args['deps'], $version, $media);
+        wp_enqueue_style($args['handle'], $args['path'], $args['deps'], $args['version'], $media);
     }
 
     /**
@@ -259,12 +292,19 @@ class Asset
     }
 
     /**
-     * Return the asset properties.
+     * Return the asset properties. If $name isset, return its value.
+     * If nothing is defined, return all properties.
      *
-     * @return array
+     * @param string $name The argument name.
+     *
+     * @return array|string
      */
-    public function getArgs()
+    public function getArgs($name = '')
     {
+        if (!empty($name) && array_key_exists($name, $this->args)) {
+            return $this->args[$name];
+        }
+
         return $this->args;
     }
 
