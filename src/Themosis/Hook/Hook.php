@@ -34,10 +34,10 @@ abstract class Hook implements IHook
      * Wrapper of the "add_action" or "add_filter" functions. Allows
      * a developer to specify a controller class or closure.
      *
-     * @param string          $hook          The action hook name.
-     * @param \Closure|string $callback      The closure, function name or class to use.
-     * @param int             $priority      The priority order for this action.
-     * @param int             $accepted_args Default number of accepted arguments.
+     * @param string                $hook          The action hook name.
+     * @param \Closure|string|array $callback      The closure, function name or class to use, array containing an instance and its public method name.
+     * @param int                   $priority      The priority order for this action.
+     * @param int                   $accepted_args Default number of accepted arguments.
      *
      * @return \Themosis\Hook\ActionBuilder
      */
@@ -83,10 +83,10 @@ abstract class Hook implements IHook
     /**
      * Add an event for the specified hook.
      *
-     * @param string          $hook
-     * @param \Closure|string $callback      If string use the syntax "Class@method".
-     * @param int             $priority      The priority order.
-     * @param int             $accepted_args The default number of accepted arguments.
+     * @param string                $hook
+     * @param \Closure|string|array $callback      The closure, function name or class to use, array containing an instance and its public method name.
+     * @param int                   $priority      The priority order.
+     * @param int                   $accepted_args The default number of accepted arguments.
      *
      * @return \Closure|array|string
      */

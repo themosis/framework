@@ -77,6 +77,20 @@ class ActionTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_callable($action->getCallback('some_hook')[0]));
     }
 
+    public function testActionUsingCurrentInstance()
+    {
+        $action = new ActionBuilder($this->app);
+
+        $action->add('after-custom-setup', [$this, 'afterSetup']);
+
+        // Check if this action is registered.
+        $this->assertTrue($action->exists('after-custom-setup'));
+
+        // Check if callback is this instance.
+        $this->assertEquals([$this, 'afterSetup'], $action->getCallback('after-custom-setup')[0]);
+        $this->assertInstanceOf('ActionTest', $action->getCallback('after-custom-setup')[0][0]);
+    }
+
     public function testActionIsRanWithoutArguments()
     {
         $action = new ActionBuilder($this->app);
