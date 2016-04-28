@@ -14,15 +14,49 @@ abstract class Hook implements IHook
     protected $container;
 
     /**
-     * List of registered actions.
+     * List of registered hooks.
      *
      * @var array
      */
-    protected $events = [];
+    protected $hooks = [];
 
     public function __construct(Application $container)
     {
         $this->container = $container;
+    }
+
+    /**
+     * Wrapper of the "add_action" or "add_filter" functions. Allows
+     * a developer to specify a controller class or closure.
+     *
+     * @param string          $hook          The action hook name.
+     * @param \Closure|string $callback      The closure, function name or class to use.
+     * @param int             $priority      The priority order for this action.
+     * @param int             $accepted_args Default number of accepted arguments.
+     *
+     * @return \Themosis\Hook\ActionBuilder
+     */
+    public function add($hook, $callback, $priority = 10, $accepted_args = 3)
+    {
+        $this->addHookEvent($hook, $callback, $priority, $accepted_args);
+
+        return $this;
+    }
+
+    /**
+     * Check if a registered hook exists.
+     *
+     * @param string $hook
+     *
+     * @return bool
+     */
+    public function exists($hook)
+    {
+        if (array_key_exists($hook, $this->hooks)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -34,8 +68,8 @@ abstract class Hook implements IHook
      */
     public function getCallback($hook)
     {
-        if (array_key_exists($hook, $this->events)) {
-            return $this->events[$hook];
+        if (array_key_exists($hook, $this->hooks)) {
+            return $this->hooks[$hook];
         }
 
         return false;
@@ -45,13 +79,13 @@ abstract class Hook implements IHook
      * Add an event for the specified hook.
      *
      * @param string          $hook
-     * @param \Closure|string $callback      If string use this syntax "Class@method"
-     * @param int             $priority      The priority order
-     * @param int             $accepted_args The default number of accepted arguments
+     * @param \Closure|string $callback      If string use the syntax "Class@method".
+     * @param int             $priority      The priority order.
+     * @param int             $accepted_args The default number of accepted arguments.
      *
      * @return \Closure|array|string
      */
-    protected function addActionEvent($hook, $callback, $priority, $accepted_args)
+    protected function addHookEvent($hook, $callback, $priority, $accepted_args)
     {
         // Check if $callback is a closure.
         if ($callback instanceof \Closure || is_array($callback)) {
@@ -70,7 +104,7 @@ abstract class Hook implements IHook
     }
 
     /**
-     * Prepare the action callback for use in a class method.
+     * Prepare the hook callback for use in a class method.
      *
      * @param string $hook
      * @param string $class
@@ -126,16 +160,17 @@ abstract class Hook implements IHook
     }
 
     /**
-     * Add an action event for the specified hook.
+     * Add an event for the specified hook.
      *
      * @param string          $name
      * @param \Closure|string $callback
      * @param int             $priority
      * @param int             $accepted_args
+     *
+     * @throws HookException
      */
     protected function addEventListener($name, $callback, $priority, $accepted_args)
     {
-        $this->events[$name] = [$callback, $priority, $accepted_args];
-        add_action($name, $callback, $priority, $accepted_args);
+        throw new HookException('The "addEventListener" method must be overridden.');
     }
 }

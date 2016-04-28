@@ -5,27 +5,9 @@ namespace Themosis\Hook;
 class ActionBuilder extends Hook
 {
     /**
-     * Wrapper of the "add_action" function. Allows
-     * a developer to specify a controller class or closure.
+     * Run all actions registered with the hook.
      *
-     * @param string          $hook          The action hook name.
-     * @param \Closure|string $callback      The closure, function name or class to use.
-     * @param int             $priority      The priority order for this action.
-     * @param int             $accepted_args Default number of accepted arguments.
-     *
-     * @return \Themosis\Hook\ActionBuilder
-     */
-    public function add($hook, $callback, $priority = 10, $accepted_args = 3)
-    {
-        $this->addActionEvent($hook, $callback, $priority, $accepted_args);
-
-        return $this;
-    }
-
-    /**
-     * Run all actions/events registered by the hook.
-     *
-     * @param string $hook The action hook  name.
+     * @param string $hook The action hook name.
      * @param mixed  $args
      *
      * @return mixed
@@ -42,18 +24,16 @@ class ActionBuilder extends Hook
     }
 
     /**
-     * Check if a registered action exists.
+     * Add an action event for the specified hook.
      *
-     * @param string $hook
-     *
-     * @return bool
+     * @param string          $name
+     * @param \Closure|string $callback
+     * @param int             $priority
+     * @param int             $accepted_args
      */
-    public function exists($hook)
+    protected function addEventListener($name, $callback, $priority, $accepted_args)
     {
-        if (array_key_exists($hook, $this->events)) {
-            return true;
-        }
-
-        return false;
+        $this->hooks[$name] = [$callback, $priority, $accepted_args];
+        add_action($name, $callback, $priority, $accepted_args);
     }
 }

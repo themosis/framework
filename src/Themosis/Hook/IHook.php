@@ -1,32 +1,35 @@
 <?php
+
 namespace Themosis\Hook;
 
 interface IHook
 {
     /**
-     * Register to an action event using the WordPress
-     * hooks.
+     * Add event using the WordPress hooks.
      *
-     * @param string $hook The action hook name.
+     * @param string          $hook     The hook name.
      * @param \Closure|string $callback Using a class method like so "MyClass@method"
+     *
      * @return mixed
      */
     public function add($hook, $callback);
 
     /**
-     * Run all actions/events registered by the hook.
+     * Run all events registered with the hook.
      *
-     * @param string $hook The action hook  name.
-     * @param mixed $args
+     * @param string $hook The event hook name.
+     * @param mixed  $args
+     *
      * @return mixed
      */
     public function run($hook, $args = null);
 
     /**
-     * Check if a registered action exists.
+     * Check if a registered hook exists.
      *
      * @param string $hook
-     * @return boolean
+     *
+     * @return bool
      */
     public function exists($hook);
 }
