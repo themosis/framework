@@ -23,6 +23,7 @@ class AssetTest extends PHPUnit_Framework_TestCase
             plugins_url('themosis-framework/tests/_assets') => themosis_path('core').'tests/_assets',
         ]);
         $this->container = $container = new Application();
+        $this->container->add('action', 'Themosis\Hook\ActionBuilder')->withArgument($container);
         $this->factory = new AssetFactory($finder, $container);
     }
 
@@ -79,6 +80,18 @@ class AssetTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->container->hasShared('asset.some-js'));
     }
+    
+    public function testAssetIsRemoved()
+    {
+        $asset = $this->factory->add('ok-css', 'css/project-test.css');
+
+        $this->assertTrue($asset->isQueued());
+
+        // Remove the asset.
+        $asset->remove();
+
+        $this->assertFalse($asset->isQueued());
+    }
 
     /**
      * Note: the following tests do not check if the file exists as
@@ -93,7 +106,7 @@ class AssetTest extends PHPUnit_Framework_TestCase
             'version' => '1.2.3',
             'mixed' => 'screen',
         ];
-        $asset = new \Themosis\Asset\Asset('style', $args);
+        $asset = new \Themosis\Asset\Asset('style', $args, $this->container->get('action'));
 
         // Check get all arguments back.
         $this->assertEquals($args, $asset->getArgs());
@@ -122,7 +135,7 @@ class AssetTest extends PHPUnit_Framework_TestCase
             'deps' => false,
             'version' => null,
             'mixed' => 'all',
-        ]);
+        ], $this->container->get('action'));
 
         // Check version is null.
         $this->assertNull($asset->getArgs('version'));
@@ -133,7 +146,7 @@ class AssetTest extends PHPUnit_Framework_TestCase
             'deps' => false,
             'version' => '',
             'mixed' => 'all',
-        ]);
+        ], $this->container->get('action'));
 
         // Check version is null.
         $this->assertNull($asset->getArgs('version'));
@@ -144,7 +157,7 @@ class AssetTest extends PHPUnit_Framework_TestCase
             'deps' => false,
             'version' => false,
             'mixed' => 'all',
-        ]);
+        ], $this->container->get('action'));
 
         // Check version is false.
         $this->assertFalse($asset->getArgs('version'));

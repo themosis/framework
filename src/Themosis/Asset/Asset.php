@@ -2,7 +2,7 @@
 
 namespace Themosis\Asset;
 
-use Themosis\Hook\Action;
+use Themosis\Hook\IHook;
 
 class Asset
 {
@@ -48,26 +48,38 @@ class Asset
      */
     protected static $instances;
 
+    /**
+     * A list of enqueued assets.
+     *
+     * @var array
+     */
     protected static $instantiated;
+
+    /**
+     * @var \Themosis\Hook\IHook
+     */
+    protected $action;
 
     /**
      * Build an Asset instance.
      *
-     * @param $type
-     * @param array $args
+     * @param string               $type
+     * @param array                $args
+     * @param \Themosis\Hook\IHook $action
      */
-    public function __construct($type, array $args)
+    public function __construct($type, array $args, IHook $action)
     {
         $this->type = $type;
         $this->args = $this->parse($args);
         $this->key = strtolower(trim($args['handle']));
+        $this->action = $action;
 
         $this->registerInstance();
 
         // Listen to WordPress asset events.
-        Action::listen('wp_enqueue_scripts', $this, 'install')->dispatch();
-        Action::listen('admin_enqueue_scripts', $this, 'install')->dispatch();
-        Action::listen('login_enqueue_scripts', $this, 'install')->dispatch();
+        $action->add('wp_enqueue_scripts', [$this, 'install']);
+        $action->add('admin_enqueue_scripts', [$this, 'install']);
+        $action->add('login_enqueue_scripts', [$this, 'install']);
     }
 
     protected function parse($args)
@@ -112,7 +124,7 @@ class Asset
 
     /**
      * Parse the mixed argument.
-     * 
+     *
      * @param $mixed
      *
      * @return string|bool
@@ -175,6 +187,34 @@ class Asset
         }
 
         return $this;
+    }
+
+    /**
+     * Remove a declared asset.
+     *
+     * @return Asset
+     */
+    public function remove()
+    {
+        if ($this->isQueued()) {
+            unset(static::$instances[$this->area][$this->key]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Tells if an asset is queued or not.
+     *
+     * @return bool
+     */
+    public function isQueued()
+    {
+        if (isset(static::$instances[$this->area][$this->key])) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
