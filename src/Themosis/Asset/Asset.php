@@ -19,7 +19,7 @@ class Asset
      *
      * @var array
      */
-    protected $allowedAreas = ['admin', 'login'];
+    protected $allowedAreas = ['admin', 'login', 'customizer'];
 
     /**
      * Type of the asset.
@@ -95,6 +95,7 @@ class Asset
         $action->add('wp_enqueue_scripts', [$this, 'install']);
         $action->add('admin_enqueue_scripts', [$this, 'install']);
         $action->add('login_enqueue_scripts', [$this, 'install']);
+        $action->add('customize_preview_init', [$this, 'install']);
     }
 
     protected function parse($args)
@@ -242,6 +243,7 @@ class Asset
     public function addAttributes(array $atts)
     {
         $html = $this->html;
+        $key = $this->key;
 
         $replace = function ($tag, $atts, $append) use ($html) {
             if (false !== $pos = strrpos($tag, $append)) {
@@ -252,16 +254,26 @@ class Asset
         };
 
         if ('script' === $this->type) {
-            $append = '><script>';
-            $this->filter->add('script_loader_tag', function ($tag) use ($atts, $append, $replace) {
-                return $replace($tag, $atts, $append);
+            $append = '></script>';
+            $this->filter->add('script_loader_tag', function ($tag, $handle) use ($atts, $append, $replace, $key) {
+                // Check we're only filtering the current asset and not all.
+                if ($key === $handle) {
+                    return $replace($tag, $atts, $append);
+                }
+                
+                return $tag;
             });
         }
 
         if ('style' === $this->type) {
             $append = ' />';
-            $this->filter->add('style_loader_tag', function ($tag) use ($atts, $append, $replace) {
-                return $replace($tag, $atts, $append);
+            $this->filter->add('style_loader_tag', function ($tag, $handle) use ($atts, $append, $replace, $key) {
+                // Check we're only filtering the current asset and not all.
+                if ($key === $handle) {
+                    return $replace($tag, $atts, $append);
+                }
+
+                return $tag;
             }, 4);
         }
 
@@ -335,8 +347,25 @@ class Asset
                 }
 
                 break;
+
+            case 'customize_preview_init':
+
+                if (isset(static::$instances['customizer']) && !empty(static::$instances['customizer'])) {
+                    foreach (static::$instances['customizer'] as $asset) {
+                        // Check if asset has not yet been called...
+                        if (isset(static::$instantiated['customizer'][$asset->getKey()])) {
+                            return;
+                        }
+
+                        $this->register($asset);
+                    }
+                }
+
+                break;
         }
     }
+
+
 
     /**
      * Register the asset.
@@ -350,6 +379,7 @@ class Asset
             return;
         }
 
+        // Register asset.
         if ($asset->getType() === 'script') {
             $this->registerScript($asset);
         } else {

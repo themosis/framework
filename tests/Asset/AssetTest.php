@@ -120,6 +120,20 @@ class AssetTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('<script type="text/javascript" src="'.$assetUrl.'"></script>', $replace($originalTag, ['async', 'data-ready' => 'onReady()'], '><script>'));
     }
 
+    public function testAssetChangeArea()
+    {
+        $asset = $this->factory->add('media-css', 'css/project-test.css')->to('admin');
+
+        // Check asset is going to be loaded into the admin.
+        $this->assertEquals('admin', $asset->getArea());
+        $this->assertTrue($asset->isQueued());
+
+        $asset = $this->factory->add('live-preview', 'js/project-main.js')->to('customizer');
+        
+        $this->assertEquals('customizer', $asset->getArea());
+        $this->assertTrue($asset->isQueued());
+    }
+
     /**
      * Note: the following tests do not check if the file exists as
      * the asset class assume it is correctly defined in its path argument.
