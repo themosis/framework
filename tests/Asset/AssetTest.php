@@ -129,9 +129,18 @@ class AssetTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($asset->isQueued());
 
         $asset = $this->factory->add('live-preview', 'js/project-main.js')->to('customizer');
-        
+
         $this->assertEquals('customizer', $asset->getArea());
         $this->assertTrue($asset->isQueued());
+    }
+
+    public function testAssetLocalize()
+    {
+        $asset = $this->factory->add('the-script', 'js/project-main.js')->localize('my-object', ['some' => 'data']);
+
+        $localize = $asset->getArgs('localize');
+        $this->assertTrue(isset($localize['my-object']));
+        $this->assertEquals(['some' => 'data'], $localize['my-object']);
     }
 
     /**

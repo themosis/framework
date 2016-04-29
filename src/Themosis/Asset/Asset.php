@@ -5,7 +5,7 @@ namespace Themosis\Asset;
 use Themosis\Hook\IHook;
 use Themosis\Html\HtmlBuilder;
 
-class Asset
+class Asset implements IAsset
 {
     /**
      * The default area where to load assets.
@@ -98,7 +98,14 @@ class Asset
         $action->add('customize_preview_init', [$this, 'install']);
     }
 
-    protected function parse($args)
+    /**
+     * Parse defined asset properties.
+     * 
+     * @param array $args The asset properties.
+     *
+     * @return mixed
+     */
+    protected function parse(array $args)
     {
         /*
          * Parse version.
@@ -170,10 +177,10 @@ class Asset
 
     /**
      * Allow the developer to define where to load the asset.
-     * Only 'admin' or 'login' are accepted. If none of those
+     * Only 'admin', 'login' and 'customizer' are accepted. If none of those
      * values are used, simply keep the default front-end area.
      *
-     * @param string $area Specify where to load the asset: 'admin' or 'login'.
+     * @param string $area Specify where to load the asset: 'admin', 'login' or 'customizer'.
      *
      * @return Asset
      */
@@ -260,7 +267,7 @@ class Asset
                 if ($key === $handle) {
                     return $replace($tag, $atts, $append);
                 }
-                
+
                 return $tag;
             });
         }
@@ -364,8 +371,6 @@ class Asset
                 break;
         }
     }
-
-
 
     /**
      * Register the asset.
