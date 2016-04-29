@@ -138,9 +138,6 @@ class RouteCollection implements Countable {
             {
                 if(call_user_func($route->condition(), $route->getParams()))
                 {
-                    // Check if a template is associated and compare it to current route condition.
-                    if($this->hasTemplate() && 'themosis_is_template' !== $route->condition()) continue;
-
                     // Check if http only.
                     if($route->httpOnly())
                     {

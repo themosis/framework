@@ -57,7 +57,7 @@ class Route {
         'singular'		       => 'is_singular',
         'tag'			       => 'is_tag',
         'tax'			       => 'is_tax',
-        'template'             => 'themosis_is_template',
+        'template'             => 'is_page_template',
         'time'			       => 'is_time',
         'year'			       => 'is_year'
     ];
@@ -281,4 +281,4 @@ class Route {
         return isset($this->action['params']) ? (array) $this->action['params'] : [];
     }
 
-} 
+}
