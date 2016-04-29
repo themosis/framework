@@ -142,10 +142,9 @@ class ValidationBuilder implements IValidate
 	 * Validate a value with only alphabetic characters.
 	 *
 	 * @param string $data The data to validate.
-	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_alpha($data, array $attributes = [])
+	protected function validate_alpha($data)
 	{
 		return ctype_alpha($data) ? $data : '';
 	}
@@ -154,10 +153,9 @@ class ValidationBuilder implements IValidate
 	 * Validate a value with only numeric characters.
 	 *
 	 * @param string $data The data to validate.
-	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_num($data, array $attributes = [])
+	protected function validate_num($data)
 	{
 		return ctype_digit($data) ? $data : '';
 	}
@@ -166,10 +164,9 @@ class ValidationBuilder implements IValidate
 	 * Validate a negative full number.
 	 *
 	 * @param string $data
-	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_negnum($data, array $attributes = [])
+	protected function validate_negnum($data)
 	{
 		$data = (int)$data;
 
@@ -180,10 +177,9 @@ class ValidationBuilder implements IValidate
 	 * Validate a value with alphanumeric characters.
 	 *
 	 * @param string $data
-	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_alnum($data, array $attributes = [])
+	protected function validate_alnum($data)
 	{
 		return ctype_alnum($data) ? $data : '';
 	}
@@ -192,10 +188,9 @@ class ValidationBuilder implements IValidate
 	 * Validate a text field value.
 	 *
 	 * @param string $data The data to validate.
-	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_textfield($data, array $attributes = [])
+	protected function validate_textfield($data)
 	{
 		return sanitize_text_field($data);
 	}
@@ -204,10 +199,9 @@ class ValidationBuilder implements IValidate
 	 * Encode a textarea value.
 	 *
 	 * @param string $data
-	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_textarea($data, array $attributes = [])
+	protected function validate_textarea($data)
 	{
 		return esc_textarea($data);
 	}
@@ -219,7 +213,7 @@ class ValidationBuilder implements IValidate
 	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_html($data, array $attributes = [])
+	protected function validate_html($data)
 	{
 		return esc_html($data);
 	}
@@ -228,10 +222,9 @@ class ValidationBuilder implements IValidate
 	 * Validate an email value.
 	 *
 	 * @param string $data The data to validate.
-	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_email($data, array $attributes = [])
+	protected function validate_email($data)
 	{
 		$email = sanitize_email($data);
 		return is_email($email) ? $email : '';
@@ -307,10 +300,9 @@ class ValidationBuilder implements IValidate
 	 * Return TRUE for '1', 'on', 'yes', 'true'. Else FALSE.
 	 *
 	 * @param string $data
-	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_bool($data, array $attributes = [])
+	protected function validate_bool($data)
 	{
 		return filter_var($data, FILTER_VALIDATE_BOOLEAN, ['flags' => FILTER_NULL_ON_FAILURE]) ? $data : '';
 	}
@@ -366,10 +358,9 @@ class ValidationBuilder implements IValidate
 	 * Validate an hexadecimal value.
 	 *
 	 * @param string $data
-	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_hex($data, array $attributes = [])
+	protected function validate_hex($data)
 	{
 		return ctype_xdigit($data) ? $data : '';
 	}
@@ -378,10 +369,9 @@ class ValidationBuilder implements IValidate
 	 * Validate a color hexadecimal value.
 	 *
 	 * @param string $data
-	 * @param array $attributes
 	 * @return string
 	 */
-	protected function validate_color($data, array $attributes = [])
+	protected function validate_color($data)
 	{
 		return preg_match('/#([a-f]|[A-F]|[0-9]){3}(([a-f]|[A-F]|[0-9]){3})?\b/', $data) ? $data : '';
 	}
@@ -406,7 +396,7 @@ class ValidationBuilder implements IValidate
 	 * @param array $attributes
 	 * @return string|array
 	 */
-	protected function validate_required($data, array $attributes = [])
+	protected function validate_required($data)
 	{
 		if (is_null($data))
 		{
