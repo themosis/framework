@@ -170,7 +170,6 @@ if (!class_exists('Themosis')) {
              */
             add_action('plugins_loaded', [$this, 'pluginsLoaded'], 0);
             add_action('themosis_after_setup', [$this, 'themosisAfterSetup'], 0);
-            add_action('init', [$this, 'init'], 0);
             add_action('admin_enqueue_scripts', [$this, 'adminEnqueueScripts']);
             add_action('admin_head', [$this, 'adminHead']);
         }
@@ -233,7 +232,7 @@ if (!class_exists('Themosis')) {
          */
         public function themosisAfterSetup($app)
         {
-            /**
+            /*
              * Add view paths.
              */
             $viewFinder = $app->get('view.finder');
@@ -243,7 +242,7 @@ if (!class_exists('Themosis')) {
                 themosis_path('sys').'PostType'.DS.'Views'.DS,
                 themosis_path('sys').'Field'.DS.'Fields'.DS.'Views'.DS,
                 themosis_path('sys').'Route'.DS.'Views'.DS,
-                themosis_path('sys').'User'.DS.'Views'.DS
+                themosis_path('sys').'User'.DS.'Views'.DS,
             ]);
 
             /*
@@ -262,13 +261,7 @@ if (!class_exists('Themosis')) {
 
                 return $data;
             });
-        }
 
-        /**
-         * Initialize the project.
-         */
-        public function init()
-        {
             /*
              * Register framework media image size.
              */

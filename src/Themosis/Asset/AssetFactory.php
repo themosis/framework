@@ -2,6 +2,8 @@
 
 namespace Themosis\Asset;
 
+use Themosis\Foundation\Application;
+
 class AssetFactory
 {
     /**
@@ -10,6 +12,21 @@ class AssetFactory
      * @var AssetFinder
      */
     protected $finder;
+
+    /**
+     * The service container.
+     *
+     * @var \Themosis\Foundation\Application
+     */
+    protected $container;
+
+    /**
+     * Alias prefix in order to register
+     * assets into the service container.
+     *
+     * @var string
+     */
+    protected $aliasPrefix = 'asset';
 
     /**
      * A list of authorized assets to add.
@@ -21,11 +38,13 @@ class AssetFactory
     /**
      * Constructor.
      *
-     * @param AssetFinder $finder
+     * @param AssetFinder                      $finder
+     * @param \Themosis\Foundation\Application $container
      */
-    public function __construct(AssetFinder $finder)
+    public function __construct(AssetFinder $finder, Application $container)
     {
         $this->finder = $finder;
+        $this->container = $container;
     }
 
     /**
@@ -78,7 +97,14 @@ class AssetFactory
             return new \WP_Error('asset', sprintf('%s: %s. %s', __("Can't load your asset", THEMOSIS_FRAMEWORK_TEXTDOMAIN), $handle, __('If your asset has no file extension, please provide the type parameter.', THEMOSIS_FRAMEWORK_TEXTDOMAIN)));
         }
 
-        // Return an asset instance.
-        return new Asset($t, $args);
+        // Register the asset into the service container
+        // and return it for chaining.
+        // Assets are shared, so only one instance of each is available
+        // into the container.
+        // Assets are registered using the 'asset' prefix followed
+        // by their unique asset handle: 'asset.unique-handle'
+        $asset = new Asset($t, $args);
+        $this->container->add($this->aliasPrefix.'.'.$handle, $asset);
+        return $asset;
     }
 }

@@ -2,6 +2,7 @@
 
 use Themosis\Asset\AssetFinder;
 use Themosis\Asset\AssetFactory;
+use Themosis\Foundation\Application;
 
 class AssetTest extends PHPUnit_Framework_TestCase
 {
@@ -10,13 +11,19 @@ class AssetTest extends PHPUnit_Framework_TestCase
      */
     protected $factory;
 
+    /**
+     * @var \Themosis\Foundation\Application
+     */
+    protected $container;
+
     public function setUp()
     {
         $finder = new AssetFinder();
         $finder->addPaths([
             plugins_url('themosis-framework/tests/_assets') => themosis_path('core').'tests/_assets',
         ]);
-        $this->factory = new AssetFactory($finder);
+        $this->container = $container = new Application();
+        $this->factory = new AssetFactory($finder, $container);
     }
 
     public function testTypeDetection()
@@ -60,6 +67,17 @@ class AssetTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('script', $asset->getType());
         // Check asset is defined to be output in the <head> tag.
         $this->assertFalse($asset->getArgs('mixed'));
+    }
+
+    public function testAssetAreAddedToTheContainer()
+    {
+        $this->factory->add('some-css', 'css/project-test.css');
+
+        $this->assertTrue($this->container->hasShared('asset.some-css'));
+
+        $this->factory->add('some-js', 'js/project-main.js');
+
+        $this->assertTrue($this->container->hasShared('asset.some-js'));
     }
 
     /**
