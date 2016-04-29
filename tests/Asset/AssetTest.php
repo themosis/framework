@@ -24,6 +24,8 @@ class AssetTest extends PHPUnit_Framework_TestCase
         ]);
         $this->container = $container = new Application();
         $this->container->add('action', 'Themosis\Hook\ActionBuilder')->withArgument($container);
+        $this->container->add('filter', 'Themosis\Hook\FilterBuilder')->withArgument($container);
+        $this->container->add('html', 'Themosis\Html\HtmlBuilder');
         $this->factory = new AssetFactory($finder, $container);
     }
 
@@ -80,7 +82,7 @@ class AssetTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->container->hasShared('asset.some-js'));
     }
-    
+
     public function testAssetIsRemoved()
     {
         $asset = $this->factory->add('ok-css', 'css/project-test.css');
@@ -91,6 +93,31 @@ class AssetTest extends PHPUnit_Framework_TestCase
         $asset->remove();
 
         $this->assertFalse($asset->isQueued());
+    }
+
+    public function testAssetAddAttributes()
+    {
+        $html = $this->container->get('html');
+
+        $replace = function ($tag, $atts, $append) use ($html) {
+            if (false !== $pos = strrpos($tag, $append)) {
+                $tag = substr_replace($tag, $html->attributes($atts), $pos).' '.trim($append);
+            }
+
+            return $tag;
+        };
+
+        // CSS
+        $assetUrl = plugins_url('themosis-framework/tests/_assets').'/css/project-test.css?ver=1.0';
+        $originalTag = '<link rel="stylesheet" id="test-css-css" href="'.$assetUrl.'" type="text/css" media="all" />';
+
+        $this->assertEquals('<link rel="stylesheet" id="test-css-css" href="'.$assetUrl.'" type="text/css" media="all" data-loaded="loadTemplate" />', $replace($originalTag, ['data-loaded' => 'loadTemplate'], ' />'));
+
+        // JS
+        $assetUrl = plugins_url('themosis-framework/tests/_assets').'/js/project-main.js?ver=1.0';
+        $originalTag = '<script type="text/javascript" src="'.$assetUrl.'"></script>';
+
+        $this->assertEquals('<script type="text/javascript" src="'.$assetUrl.'"></script>', $replace($originalTag, ['async', 'data-ready' => 'onReady()'], '><script>'));
     }
 
     /**
@@ -106,7 +133,7 @@ class AssetTest extends PHPUnit_Framework_TestCase
             'version' => '1.2.3',
             'mixed' => 'screen',
         ];
-        $asset = new \Themosis\Asset\Asset('style', $args, $this->container->get('action'));
+        $asset = new \Themosis\Asset\Asset('style', $args, $this->container['action'], $this->container['html'], $this->container['filter']);
 
         // Check get all arguments back.
         $this->assertEquals($args, $asset->getArgs());
@@ -135,7 +162,7 @@ class AssetTest extends PHPUnit_Framework_TestCase
             'deps' => false,
             'version' => null,
             'mixed' => 'all',
-        ], $this->container->get('action'));
+        ], $this->container['action'], $this->container['html'], $this->container['filter']);
 
         // Check version is null.
         $this->assertNull($asset->getArgs('version'));
@@ -146,7 +173,7 @@ class AssetTest extends PHPUnit_Framework_TestCase
             'deps' => false,
             'version' => '',
             'mixed' => 'all',
-        ], $this->container->get('action'));
+        ], $this->container['action'], $this->container['html'], $this->container['filter']);
 
         // Check version is null.
         $this->assertNull($asset->getArgs('version'));
@@ -157,7 +184,7 @@ class AssetTest extends PHPUnit_Framework_TestCase
             'deps' => false,
             'version' => false,
             'mixed' => 'all',
-        ], $this->container->get('action'));
+        ], $this->container['action'], $this->container['html'], $this->container['filter']);
 
         // Check version is false.
         $this->assertFalse($asset->getArgs('version'));

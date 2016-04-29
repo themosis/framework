@@ -3,6 +3,7 @@
 namespace Themosis\Asset;
 
 use Themosis\Hook\IHook;
+use Themosis\Html\HtmlBuilder;
 
 class Asset
 {
@@ -56,23 +57,37 @@ class Asset
     protected static $instantiated;
 
     /**
-     * @var \Themosis\Hook\IHook
+     * @var \Themosis\Hook\ActionBuilder
      */
     protected $action;
 
     /**
+     * @var \Themosis\Html\HtmlBuilder
+     */
+    protected $html;
+
+    /**
+     * @var \Themosis\Hook\FilterBuilder
+     */
+    protected $filter;
+
+    /**
      * Build an Asset instance.
      *
-     * @param string               $type
-     * @param array                $args
-     * @param \Themosis\Hook\IHook $action
+     * @param string                     $type
+     * @param array                      $args
+     * @param \Themosis\Hook\IHook       $action
+     * @param \Themosis\Html\HtmlBuilder $html
+     * @param \Themosis\Hook\IHook       $filter
      */
-    public function __construct($type, array $args, IHook $action)
+    public function __construct($type, array $args, IHook $action, HtmlBuilder $html, IHook $filter)
     {
         $this->type = $type;
         $this->args = $this->parse($args);
         $this->key = strtolower(trim($args['handle']));
         $this->action = $action;
+        $this->html = $html;
+        $this->filter = $filter;
 
         $this->registerInstance();
 
@@ -215,6 +230,42 @@ class Asset
         }
 
         return false;
+    }
+
+    /**
+     * Add attributes to the asset opening tag.
+     *
+     * @param array $atts The asset attributes to add.
+     *
+     * @return Asset
+     */
+    public function addAttributes(array $atts)
+    {
+        $html = $this->html;
+
+        $replace = function ($tag, $atts, $append) use ($html) {
+            if (false !== $pos = strrpos($tag, $append)) {
+                $tag = substr_replace($tag, $html->attributes($atts), $pos).' '.trim($append);
+            }
+
+            return $tag;
+        };
+
+        if ('script' === $this->type) {
+            $append = '><script>';
+            $this->filter->add('script_loader_tag', function ($tag) use ($atts, $append, $replace) {
+                return $replace($tag, $atts, $append);
+            });
+        }
+
+        if ('style' === $this->type) {
+            $append = ' />';
+            $this->filter->add('style_loader_tag', function ($tag) use ($atts, $append, $replace) {
+                return $replace($tag, $atts, $append);
+            }, 4);
+        }
+
+        return $this;
     }
 
     /**

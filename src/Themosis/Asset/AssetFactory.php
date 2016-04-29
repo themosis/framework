@@ -103,7 +103,7 @@ class AssetFactory
         // into the container.
         // Assets are registered using the 'asset' prefix followed
         // by their unique asset handle: 'asset.unique-handle'
-        $asset = new Asset($t, $args, $this->container->get('action'));
+        $asset = new Asset($t, $args, $this->container['action'], $this->container['html'], $this->container['filter']);
         $this->container->add($this->aliasPrefix.'.'.$handle, $asset);
         return $asset;
     }
