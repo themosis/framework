@@ -2,8 +2,6 @@
 
 namespace Themosis\Config;
 
-use Themosis\Hook\Action;
-
 class Support
 {
     /**
@@ -14,28 +12,34 @@ class Support
     public function __construct(array $data)
     {
         $this->data = $data;
-        Action::listen('after_setup_theme', $this, 'install')->dispatch();
     }
 
     /**
-     * Run by the 'init' hook.
-     * Execute the "add_theme_support" function from WordPress.
+     * Add theme supports.
+     * Call this only into your theme functions.php file or files relative to it.
+     * If call outside of the theme, wrap this with `after_setup_theme` hook.
+     *
+     * @return \Themosis\Config\Support;
      */
-    public function install()
+    public function make()
     {
         if (is_array($this->data) && !empty($this->data)) {
             foreach ($this->data as $feature => $value) {
                 // Allow theme features without options.
                 if (is_int($feature)) {
-                    if ('post-formats' === $value) {
-                        return;
-                    } // Avoid none defined array value
-                    add_theme_support($value);
+                    // Post formats must be added with properties in order to work correctly.
+                    // Here we check if it has been defined without properties.
+                    // If there are no properties, it's not added.
+                    if ('post-formats' !== $value) {
+                        add_theme_support($value);
+                    }
                 } else {
                     // Theme features with options.
                     add_theme_support($feature, $value);
                 }
             }
         }
+
+        return $this;
     }
 }

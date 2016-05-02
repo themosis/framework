@@ -2,8 +2,6 @@
 
 namespace Themosis\Config;
 
-use Themosis\Hook\Action;
-
 class Sidebar
 {
     /**
@@ -14,19 +12,21 @@ class Sidebar
     public function __construct(array $data)
     {
         $this->data = $data;
-        Action::listen('init', $this, 'install')->dispatch();
     }
 
     /**
-     * Run by the 'init' hook.
-     * Execute the "register_sidebar" function from WordPress.
+     * Register the sidebars.
+     *
+     * @return \Themosis\Config\Sidebar
      */
-    public function install()
+    public function make()
     {
         if (is_array($this->data) && !empty($this->data)) {
             foreach ($this->data as $sidebar) {
                 register_sidebar($sidebar);
             }
         }
+
+        return $this;
     }
 }

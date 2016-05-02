@@ -18,6 +18,8 @@ class Menu
 
     /**
      * Register the menus.
+     *
+     * @return \Themosis\Config\Menu
      */
     public function make()
     {
