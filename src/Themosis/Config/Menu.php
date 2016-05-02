@@ -2,8 +2,6 @@
 
 namespace Themosis\Config;
 
-use Themosis\Hook\Action;
-
 class Menu
 {
     /**
@@ -16,14 +14,12 @@ class Menu
     public function __construct(array $data)
     {
         $this->data = $data;
-        Action::listen('init', $this, 'install')->dispatch();
     }
 
     /**
-     * Run by the 'init' hook.
-     * Execute the "register_nav_menus" function from WordPress.
+     * Register the menus.
      */
-    public function install()
+    public function make()
     {
         if (is_array($this->data) && !empty($this->data)) {
             $locations = [];
@@ -34,5 +30,7 @@ class Menu
 
             register_nav_menus($locations);
         }
+
+        return $this;
     }
 }
