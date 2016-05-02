@@ -1,8 +1,9 @@
 <?php
+
 namespace Themosis\Html;
 
 use Exception;
 
-class HtmlException extends Exception {
-
+class HtmlException extends Exception
+{
 }
