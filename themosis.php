@@ -202,6 +202,7 @@ if (!class_exists('Themosis')) {
                 'Themosis\Field\FieldServiceProvider',
                 'Themosis\Hook\HookServiceProvider',
                 'Themosis\Html\HtmlServiceProvider',
+                'Themosis\Load\LoaderServiceProvider',
                 'Themosis\Metabox\MetaboxServiceProvider',
                 'Themosis\Page\PageServiceProvider',
                 'Themosis\Page\Sections\SectionServiceProvider',
