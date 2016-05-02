@@ -133,10 +133,6 @@ class RouteCollection implements Countable
         foreach ($routesByCondition as $routes) {
             foreach ($routes as $route) {
                 if (call_user_func($route->condition(), $route->getParams())) {
-                    // Check if a template is associated and compare it to current route condition.
-                    if ($this->hasTemplate() && 'themosis_is_template' !== $route->condition()) {
-                        continue;
-                    }
 
                     // Check if http only.
                     if ($route->httpOnly()) {
@@ -158,26 +154,6 @@ class RouteCollection implements Countable
         }
 
         return;
-    }
-
-    /**
-     * Check if the current request is using a page template.
-     *
-     * @return bool
-     */
-    protected function hasTemplate()
-    {
-        $qo = get_queried_object();
-
-        if (is_a($qo, 'WP_Post') && 'page' === $qo->post_type) {
-            $template = Meta::get($qo->ID, '_themosisPageTemplate');
-
-            if ('none' !== $template && !empty($template)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**

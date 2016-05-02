@@ -16,9 +16,9 @@ class HookServiceProvider extends ServiceProvider
         $container = $this->getContainer();
 
         // Register the action builder.
-        $container->add('action', 'Themosis\Hook\ActionBuilder')->withArgument($container);
+        $container->share('action', 'Themosis\Hook\ActionBuilder')->withArgument($container);
 
         // Register the filter builder.
-        $container->add('filter', 'Themosis\Hook\FilterBuilder')->withArgument($container);
+        $container->share('filter', 'Themosis\Hook\FilterBuilder')->withArgument($container);
     }
 }

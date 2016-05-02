@@ -2,8 +2,7 @@
 
 namespace Themosis\Config;
 
-use Themosis\Facades\Field;
-use Themosis\Facades\Metabox;
+use Themosis\Hook\IHook;
 
 class Template
 {
@@ -14,9 +13,15 @@ class Template
      */
     protected $data = [];
 
-    public function __construct(array $data)
+    /**
+     * @var IHook
+     */
+    protected $filter;
+
+    public function __construct(array $data, IHook $filter)
     {
         $this->data = $data;
+        $this->filter = $filter;
     }
 
     /**
@@ -27,16 +32,12 @@ class Template
     public function make()
     {
         // Set an empty value for no templates.
-        $templateNames = array_merge(['none' => __('None')], $this->names());
+        $templates = $this->names();
 
-        // Build a select field
-        Metabox::make(__('Template'), 'page', [
-            'context' => 'side',
-            'priority' => 'core',
-            'id' => 'themosisTemplate',
-        ])->set([
-            Field::select('_themosisPageTemplate', [$templateNames], ['title' => __('Name')]),
-        ]);
+        $this->filter->add('theme_page_templates', function($registeredTemplates) use ($templates)
+        {
+            return array_merge($registeredTemplates, $templates);
+        });
 
         return $this;
     }
