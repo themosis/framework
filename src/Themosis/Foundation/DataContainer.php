@@ -1,10 +1,11 @@
 <?php
-namespace Themosis\Core;
+
+namespace Themosis\Foundation;
 
 use ArrayAccess;
 
-abstract class DataContainer implements ArrayAccess{
-
+abstract class DataContainer implements ArrayAccess
+{
     /**
      * Instance properties.
      *
@@ -16,6 +17,7 @@ abstract class DataContainer implements ArrayAccess{
      * Check if a property exists.
      *
      * @param string $offset The property key.
+     *
      * @return bool True on success, false on failure.
      */
     public function offsetExists($offset)
@@ -27,6 +29,7 @@ abstract class DataContainer implements ArrayAccess{
      * Property to fetch.
      *
      * @param string $offset The property key.
+     *
      * @return mixed
      */
     public function offsetGet($offset)
@@ -38,17 +41,13 @@ abstract class DataContainer implements ArrayAccess{
      * Set a new property.
      *
      * @param string $offset The property key.
-     * @param mixed $value The property value.
-     * @return void
+     * @param mixed  $value  The property value.
      */
     public function offsetSet($offset, $value)
     {
-        if (is_null($offset))
-        {
+        if (is_null($offset)) {
             $this->properties[] = $value;
-        }
-        else
-        {
+        } else {
             $this->properties[$offset] = $value;
         }
     }
@@ -57,7 +56,6 @@ abstract class DataContainer implements ArrayAccess{
      * Property to remove.
      *
      * @param string $offset The property key.
-     * @return void
      */
     public function offsetUnset($offset)
     {
