@@ -120,6 +120,6 @@ class FormTest extends PHPUnit_Framework_TestCase
 
     public function testCheckboxInput()
     {
-        $this->assertEquals('<input type="checkbox" name="activate">', $this->form->checkbox('activate', 'toggle', 'some'));
+        $this->assertEquals('<label><input type="checkbox" name="activate" value="toggle">Toggle</label>', $this->form->checkbox('activate', 'toggle', 'some'));
     }
 }

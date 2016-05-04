@@ -298,6 +298,8 @@ class FormBuilder
 
     /**
      * Helper method to build checkbox or radio tag.
+     * The value is used to tell if the field is checked or not.
+     * The true value attribute is defined by passed $choices.
      *
      * @param string $type       The type of the input.
      * @param string $name       Name of the group.
@@ -313,10 +315,14 @@ class FormBuilder
         $labelAttributes = [];
 
         foreach ($choices as $choiceVal => $choice) {
+
+            // The current choice that is parsed...
+            $c = is_numeric($choiceVal) ? $choice : $choiceVal;
+
             // Check the value.
             // If checked, add the attribute.
-            if (in_array($choiceVal, $value)) {
-                $attributes['checked'] = 'checked';
+            if (in_array($c, $value)) {
+                $attributes['checked'];
             }
 
             // Check if there are label attributes defined.
@@ -335,7 +341,7 @@ class FormBuilder
             }
 
             // Build html output
-            $input = $this->input($type, $n, $choiceVal, $attributes).ucfirst($choice);
+            $input = $this->input($type, $n, $c, $attributes).ucfirst($choice);
             $field .= $this->label($input, $labelAttributes);
 
             // Reset 'checked' attributes.
