@@ -2,6 +2,8 @@
 
 namespace Themosis\Config;
 
+use Themosis\Hook\IHook;
+
 class Images
 {
     /**
@@ -11,9 +13,15 @@ class Images
      */
     protected $data = [];
 
-    public function __construct(array $data)
+    /**
+     * @var IHook
+     */
+    protected $filter;
+
+    public function __construct(array $data, IHook $filter)
     {
         $this->data = $data;
+        $this->filter = $filter;
     }
 
     /**
@@ -27,7 +35,7 @@ class Images
         $this->addImages();
 
         // Add sizes to the media attachment settings dropdown list.
-        add_filter('image_size_names_choose', [$this, 'addImagesToDropDownList']);
+        $this->filter->add('image_size_names_choose', [$this, 'addImagesToDropDownList']);
 
         return $this;
     }

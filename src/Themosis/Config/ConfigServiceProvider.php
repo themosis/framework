@@ -14,6 +14,6 @@ class ConfigServiceProvider extends ServiceProvider
     public function register()
     {
         $this->getContainer()->add('config.finder', new ConfigFinder());
-        $this->getContainer()->add('config', 'Themosis\Config\ConfigFactory')->withArgument('config.finder');
+        $this->getContainer()->share('config', 'Themosis\Config\ConfigFactory')->withArgument('config.finder');
     }
 }

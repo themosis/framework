@@ -7,7 +7,7 @@ class ImageTest extends PHPUnit_Framework_TestCase
         $images = new \Themosis\Config\Images([
             'my-image-size' => [200, 400, true, true],
             'some-size' => [550, 250, false, 'Custom Name'],
-        ]);
+        ], new \Themosis\Hook\FilterBuilder(new \Themosis\Foundation\Application()));
 
         $images->make();
 

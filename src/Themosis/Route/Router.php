@@ -285,8 +285,8 @@ class Router
         if (!is_null($route)) {
             $response = $route->run();
         } else {
-            $view = $this->container['view'];
-            $response = $view->make('_themosisNoRoute');
+           // $view = $this->container['view'];
+            //$response = $view->make('_themosisNoRoute');
         }
 
         $response = $this->prepareResponse($request, $response);

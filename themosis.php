@@ -66,7 +66,7 @@ if (!function_exists('themosis_path')) {
  * Main class that bootstraps the framework.
  */
 if (!class_exists('Themosis')) {
-    class Themosis
+    class themosis
     {
         /**
          * Themosis instance.
@@ -172,6 +172,7 @@ if (!class_exists('Themosis')) {
             add_action('themosis_after_setup', [$this, 'themosisAfterSetup'], 0);
             add_action('admin_enqueue_scripts', [$this, 'adminEnqueueScripts']);
             add_action('admin_head', [$this, 'adminHead']);
+            add_action('template_redirect', [$this, 'setRouter'], 0);
         }
 
         /**
@@ -269,7 +270,7 @@ if (!class_exists('Themosis')) {
              */
             $images = new Themosis\Config\Images([
                 '_themosis_media' => [100, 100, true, __('Mini', THEMOSIS_FRAMEWORK_TEXTDOMAIN)],
-            ]);
+            ], $app['filter']);
             $images->make();
 
             /*
@@ -277,6 +278,21 @@ if (!class_exists('Themosis')) {
              */
             $this->app->get('asset')->add('themosis-core-styles', 'css/_themosisCore.css', ['wp-color-picker'])->to('admin');
             $this->app->get('asset')->add('themosis-core-scripts', 'js/_themosisCore.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view', 'wp-color-picker'], '1.3.0', true)->to('admin');
+        }
+
+        /**
+         * Hook into front-end routing.
+         * Setup the router API to be executed before
+         * theme default templates.
+         */
+        public function setRouter()
+        {
+            $request = $this->app['request'];
+            $request = $request::createFromBase($request);
+            $response = $this->app['router']->dispatch($request);
+            // We only send back the content because, headers are already defined
+            // by WordPress internals.
+            $response->sendContent();
         }
 
         /**
