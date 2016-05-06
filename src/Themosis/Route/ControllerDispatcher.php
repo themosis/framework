@@ -62,6 +62,8 @@ class ControllerDispatcher
      */
     protected function makeController($controller)
     {
+        $this->container->share($controller)->withArgument($this->container['view']);
+
         return $this->container->get($controller);
     }
 

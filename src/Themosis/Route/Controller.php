@@ -2,6 +2,8 @@
 
 namespace Themosis\Route;
 
+use Themosis\View\ViewFactory;
+
 abstract class Controller
 {
     /**
@@ -10,6 +12,16 @@ abstract class Controller
      * @var \Themosis\View\View
      */
     protected $layout;
+
+    /**
+     * @var ViewFactory
+     */
+    protected $view;
+
+    public function __construct(ViewFactory $view)
+    {
+        $this->view = $view;
+    }
 
     /**
      * Create the layout used by the controller.

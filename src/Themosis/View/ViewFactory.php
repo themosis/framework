@@ -2,6 +2,7 @@
 
 namespace Themosis\View;
 
+use League\Container\ContainerInterface;
 use Themosis\Foundation\Application;
 use Themosis\Hook\IHook;
 use Themosis\View\Engines\EngineResolver;
@@ -109,9 +110,9 @@ class ViewFactory
     /**
      * Set the container instance.
      *
-     * @param \Themosis\Foundation\Application $container
+     * @param \League\Container\ContainerInterface $container
      */
-    public function setContainer(Application $container)
+    public function setContainer(ContainerInterface $container)
     {
         $this->container = $container;
     }
