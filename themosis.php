@@ -201,6 +201,7 @@ if (!class_exists('Themosis')) {
                 'Themosis\Config\ConfigServiceProvider',
                 'Themosis\Field\FieldServiceProvider',
                 'Themosis\Hook\HookServiceProvider',
+                'Themosis\Html\FormServiceProvider',
                 'Themosis\Html\HtmlServiceProvider',
                 'Themosis\Load\LoaderServiceProvider',
                 'Themosis\Metabox\MetaboxServiceProvider',

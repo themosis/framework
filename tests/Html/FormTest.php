@@ -120,6 +120,31 @@ class FormTest extends PHPUnit_Framework_TestCase
 
     public function testCheckboxInput()
     {
+        // Single checkbox not checked
         $this->assertEquals('<label><input type="checkbox" name="activate" value="toggle">Toggle</label>', $this->form->checkbox('activate', 'toggle', 'some'));
+
+        // Single checkbox not checked with empty value.
+        $this->assertEquals('<label><input type="checkbox" name="activate" value="toggle">Toggle</label>', $this->form->checkbox('activate', 'toggle'));
+
+        // Single checkbox checked
+        $this->assertEquals('<label><input type="checkbox" name="feature" value="enable" checked>Enable</label>', $this->form->checkbox('feature', 'enable', 'enable'));
+
+        // Single checkbox not checked with custom label.
+        $this->assertEquals('<label><input type="checkbox" name="feature" value="enable">Enable or not the feature.</label>', $this->form->checkbox('feature', ['enable' => 'Enable or not the feature.']));
+
+        // Single checkbox checked with custom label.
+        $this->assertEquals('<label><input type="checkbox" name="feature" value="enable" class="custom-field" checked>Activate this feature?</label>', $this->form->checkbox('feature', ['enable' => 'Activate this feature?'], 'enable', ['class' => 'custom-field']));
+
+        // Multiple checkbox, none is checked.
+        $this->assertEquals('<label><input type="checkbox" name="colors[]" value="red">Red</label><label><input type="checkbox" name="colors[]" value="green">Green</label><label><input type="checkbox" name="colors[]" value="blue">Blue</label>', $this->form->checkbox('colors', ['red', 'green', 'blue']));
+
+        // Multiple checkbox, one value.
+        $this->assertEquals('<label><input type="checkbox" name="colors[]" value="red">Red</label><label><input type="checkbox" name="colors[]" value="green" checked>Green</label><label><input type="checkbox" name="colors[]" value="blue">Blue</label>', $this->form->checkbox('colors', ['red', 'green', 'blue'], 'green'));
+
+        // Multiple checkbox, multiple values.
+        $this->assertEquals('<label><input type="checkbox" name="colors[]" value="red" class="color-cb" checked>Red</label><label><input type="checkbox" name="colors[]" value="green" class="color-cb">Green</label><label><input type="checkbox" name="colors[]" value="blue" class="color-cb" checked>Blue</label>', $this->form->checkbox('colors', ['red', 'green', 'blue'], ['red', 'blue'], ['class' => 'color-cb']));
+
+        // Multiple checkbox, custom label and multiple values.
+        $this->assertEquals('<label><input type="checkbox" name="colors[]" value="red" checked>Rouge</label><label><input type="checkbox" name="colors[]" value="green" checked>Vert</label><label><input type="checkbox" name="colors[]" value="blue">Bleu</label>', $this->form->checkbox('colors', ['red' => 'Rouge', 'green' => 'Vert', 'blue' => 'Bleu'], ['red', 'green']));
     }
 }

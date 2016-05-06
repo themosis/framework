@@ -320,9 +320,10 @@ class FormBuilder
             $c = is_numeric($choiceVal) ? $choice : $choiceVal;
 
             // Check the value.
+            // If it corresponds to the choice, add the checked attribute.
             // If checked, add the attribute.
             if (in_array($c, $value)) {
-                $attributes['checked'];
+                array_push($attributes, 'checked');
             }
 
             // Check if there are label attributes defined.
@@ -345,7 +346,10 @@ class FormBuilder
             $field .= $this->label($input, $labelAttributes);
 
             // Reset 'checked' attributes.
-            unset($attributes['checked']);
+            $key = array_search('checked', $attributes);
+            if (false !== $key) {
+                unset($attributes[$key]);
+            }
         }
 
         return $field;
