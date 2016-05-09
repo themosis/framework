@@ -244,7 +244,6 @@ if (!class_exists('Themosis')) {
                 themosis_path('sys').'Page'.DS.'Views'.DS,
                 themosis_path('sys').'PostType'.DS.'Views'.DS,
                 themosis_path('sys').'Field'.DS.'Fields'.DS.'Views'.DS,
-                themosis_path('sys').'Route'.DS.'Views'.DS,
                 themosis_path('sys').'User'.DS.'Views'.DS,
             ]);
 

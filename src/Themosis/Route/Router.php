@@ -277,16 +277,14 @@ class Router
         // override them. If a similar route is defined inside the
         // theme, the theme route has precedence over the one defined
         // inside the plugin.
-        do_action('themosis_routing');
+        do_action('themosis_routing', $request);
 
+        $response = '';
         $route = $this->findRoute($request);
 
         // Check if a route exists for the request.
         if (!is_null($route)) {
             $response = $route->run();
-        } else {
-           // $view = $this->container['view'];
-            //$response = $view->make('_themosisNoRoute');
         }
 
         $response = $this->prepareResponse($request, $response);
