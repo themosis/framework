@@ -7,6 +7,9 @@ use Themosis\View\Compilers\ScoutCompiler;
 use Themosis\View\Engines\EngineResolver;
 use Themosis\View\Engines\PhpEngine;
 use Themosis\View\Engines\ScoutEngine;
+use Themosis\View\Engines\TwigEngine;
+use Twig_Environment;
+use Twig_Loader_Filesystem;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -18,12 +21,13 @@ class ViewServiceProvider extends ServiceProvider
         'view.finder',
         'view',
         'loop',
+        'twig'
     ];
 
     public function register()
     {
-        $this->registerEngineResolver();
         $this->registerViewFinder();
+        $this->registerEngineResolver();
         $this->registerViewFactory();
         $this->registerLoop();
     }
@@ -39,7 +43,7 @@ class ViewServiceProvider extends ServiceProvider
             $resolver = new EngineResolver();
 
             // Register the engines.
-            foreach (['php', 'scout'] as $engine) {
+            foreach (['php', 'scout', 'twig'] as $engine) {
                 $serviceProvider->{'register'.ucfirst($engine).'Engine'}($engine, $resolver);
             }
 
@@ -81,14 +85,35 @@ class ViewServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the Twig engine to the EngineResolver.
+     * 
+     * @param string         $engine
+     * @param EngineResolver $resolver
+     */
+    protected function registerTwigEngine($engine, EngineResolver $resolver)
+    {
+        $container = $this->getContainer();
+
+        $resolver->register($engine, function () use ($container) {
+
+            // Filesystem loader.
+            $loader = new Twig_Loader_Filesystem($container->get('view.finder')->getPaths());
+
+            // Register Twig environment.
+            $container->add('twig', new Twig_Environment($loader, [
+                'cache' => $container->get('path.storage').'/cache'
+            ]));
+
+            return new TwigEngine($container->get('twig'), $container->get('view.finder'));
+        });
+    }
+
+    /**
      * Register the ViewFinder instance.
      */
     protected function registerViewFinder()
     {
-        // Paths to view directories.
-        $paths = apply_filters('themosis_views', []);
-
-        $this->getContainer()->add('view.finder', new ViewFinder($paths));
+        $this->getContainer()->add('view.finder', new ViewFinder());
     }
 
     /**

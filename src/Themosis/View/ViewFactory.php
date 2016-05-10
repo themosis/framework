@@ -3,7 +3,6 @@
 namespace Themosis\View;
 
 use League\Container\ContainerInterface;
-use Themosis\Foundation\Application;
 use Themosis\Hook\IHook;
 use Themosis\View\Engines\EngineResolver;
 
@@ -26,7 +25,7 @@ class ViewFactory
     /**
      * The container instance.
      *
-     * @var \Themosis\Core\Container;
+     * @var \League\Container\ContainerInterface
      */
     protected $container;
 
@@ -42,7 +41,7 @@ class ViewFactory
      *
      * @var array
      */
-    protected $extensions = ['scout.php' => 'scout', 'php' => 'php'];
+    protected $extensions = ['scout.php' => 'scout', 'php' => 'php', 'twig' => 'twig'];
 
     /**
      * A list of captured sections.
@@ -213,7 +212,7 @@ class ViewFactory
     }
 
     /**
-     * Return the view file extension: 'scout.php' | 'php'.
+     * Return the view file extension: 'scout.php' | 'php' | 'twig'.
      *
      * @param string $path
      *

@@ -11,5 +11,5 @@ class ViewFinder extends Finder
      *
      * @var array
      */
-    protected $extensions = ['scout.php', 'php'];
+    protected $extensions = ['scout.php', 'php', 'twig'];
 }

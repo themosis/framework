@@ -11,20 +11,20 @@ class EngineResolver
      *
      * @var array
      */
-    protected $resolvers = array();
+    protected $resolvers = [];
 
     /**
      * List of engine instances.
      *
      * @var array
      */
-    protected $resolved = array();
+    protected $resolved = [];
 
     /**
      * Register an engine resolver.
      *
-     * @param string   $engine   The engine name.
-     * @param callable $resolver
+     * @param string  $engine   The engine name.
+     * @param Closure $resolver
      */
     public function register($engine, Closure $resolver)
     {

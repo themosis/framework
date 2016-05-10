@@ -28,4 +28,11 @@ interface IFinder
      * @return array
      */
     public function getPaths();
+
+    /**
+     * Return a list of found files.
+     *
+     * @return array
+     */
+    public function getFiles();
 }
