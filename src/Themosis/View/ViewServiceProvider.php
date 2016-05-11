@@ -8,6 +8,7 @@ use Themosis\View\Engines\EngineResolver;
 use Themosis\View\Engines\PhpEngine;
 use Themosis\View\Engines\ScoutEngine;
 use Themosis\View\Engines\TwigEngine;
+use Themosis\View\Extensions\ThemosisTwigExtension;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -118,6 +119,9 @@ class ViewServiceProvider extends ServiceProvider
             'auto_reload' => true,
             'cache' => $container['path.storage'].'twig'
         ]);
+
+        // Provides a global 'wp' object in order to call WordPress and core PHP functions.
+        $container['twig']->addGlobal('wp', new ThemosisTwigExtension());
     }
 
     /**
