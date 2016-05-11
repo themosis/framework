@@ -8,8 +8,8 @@ use Themosis\View\Engines\EngineResolver;
 use Themosis\View\Engines\PhpEngine;
 use Themosis\View\Engines\ScoutEngine;
 use Themosis\View\Engines\TwigEngine;
-use Twig_Environment;
 use Twig_Loader_Filesystem;
+use Twig_Environment;
 
 class ViewServiceProvider extends ServiceProvider
 {
@@ -21,12 +21,14 @@ class ViewServiceProvider extends ServiceProvider
         'view.finder',
         'view',
         'loop',
-        'twig'
+        'twig',
+        'twig.loader'
     ];
 
     public function register()
     {
         $this->registerViewFinder();
+        $this->registerTwigEnvironment();
         $this->registerEngineResolver();
         $this->registerViewFactory();
         $this->registerLoop();
@@ -95,18 +97,29 @@ class ViewServiceProvider extends ServiceProvider
         $container = $this->getContainer();
 
         $resolver->register($engine, function () use ($container) {
+            
+            // Set the loader main namespace (paths).
+            $container['twig.loader']->setPaths($container['view.finder']->getPaths());
 
-            // Filesystem loader.
-            $loader = new Twig_Loader_Filesystem($container->get('view.finder')->getPaths());
+            // Set the cache.
+            $container['twig']->setCache($container['path.storage'].'twig');
 
-            // Register Twig environment.
-            $container->add('twig', new Twig_Environment($loader, [
-                'cache' => $container->get('path.storage').'/twig',
-                'auto_reload' => true
-            ]));
+            // Enable auto_reload
+            $container['twig']->enableAutoReload();
 
-            return new TwigEngine($container->get('twig'), $container->get('view.finder'));
+            return new TwigEngine($container['twig'], $container['view.finder']);
         });
+    }
+
+    protected function registerTwigEnvironment()
+    {
+        $container = $this->getContainer();
+
+        // Twig Filesystem loader.
+        $container->share('twig.loader', 'Twig_Loader_Filesystem');
+
+        // Twig
+        $container->share('twig', 'Twig_Environment')->withArgument('twig.loader');
     }
 
     /**
