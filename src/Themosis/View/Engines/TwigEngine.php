@@ -40,6 +40,9 @@ class TwigEngine implements IEngine
     {
         $file = array_search($path, $this->finder->getFiles());
 
+        // Allow the use of a '.' notation.
+        $file = themosis_convert_path($file);
+
         $template = $this->environment->loadTemplate($file.$this->extension);
 
         return $template->render($data);
