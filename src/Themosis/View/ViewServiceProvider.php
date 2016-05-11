@@ -22,7 +22,7 @@ class ViewServiceProvider extends ServiceProvider
         'view',
         'loop',
         'twig',
-        'twig.loader'
+        'twig.loader',
     ];
 
     public function register()
@@ -97,20 +97,17 @@ class ViewServiceProvider extends ServiceProvider
         $container = $this->getContainer();
 
         $resolver->register($engine, function () use ($container) {
-            
+
             // Set the loader main namespace (paths).
             $container['twig.loader']->setPaths($container['view.finder']->getPaths());
-
-            // Set the cache.
-            $container['twig']->setCache($container['path.storage'].'twig');
-
-            // Enable auto_reload
-            $container['twig']->enableAutoReload();
 
             return new TwigEngine($container['twig'], $container['view.finder']);
         });
     }
 
+    /**
+     * Register Twig environment and its loader.
+     */
     protected function registerTwigEnvironment()
     {
         $container = $this->getContainer();
@@ -119,7 +116,10 @@ class ViewServiceProvider extends ServiceProvider
         $container->share('twig.loader', 'Twig_Loader_Filesystem');
 
         // Twig
-        $container->share('twig', 'Twig_Environment')->withArgument('twig.loader');
+        $container->share('twig', 'Twig_Environment')->withArgument('twig.loader')->withArgument([
+            'auto_reload' => true,
+            'cache' => $container['path.storage'].'twig'
+        ]);
     }
 
     /**
