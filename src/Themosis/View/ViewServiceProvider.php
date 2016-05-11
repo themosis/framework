@@ -8,8 +8,6 @@ use Themosis\View\Engines\EngineResolver;
 use Themosis\View\Engines\PhpEngine;
 use Themosis\View\Engines\ScoutEngine;
 use Themosis\View\Engines\TwigEngine;
-use Twig_Loader_Filesystem;
-use Twig_Environment;
 
 class ViewServiceProvider extends ServiceProvider
 {
