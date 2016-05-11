@@ -2,7 +2,7 @@
 
 namespace Themosis\Page;
 
-use Themosis\Core\DataContainer;
+use Themosis\Foundation\DataContainer;
 
 class PageData extends DataContainer
 {
