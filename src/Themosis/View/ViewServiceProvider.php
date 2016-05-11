@@ -101,7 +101,8 @@ class ViewServiceProvider extends ServiceProvider
 
             // Register Twig environment.
             $container->add('twig', new Twig_Environment($loader, [
-                'cache' => $container->get('path.storage').'/twig'
+                'cache' => $container->get('path.storage').'/twig',
+                'auto_reload' => true
             ]));
 
             return new TwigEngine($container->get('twig'), $container->get('view.finder'));
