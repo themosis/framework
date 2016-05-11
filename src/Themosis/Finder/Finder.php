@@ -72,7 +72,7 @@ abstract class Finder implements IFinder
 
     /**
      * Return a list of found files.
-     * 
+     *
      * @return array
      */
     public function getFiles()
@@ -85,7 +85,7 @@ abstract class Finder implements IFinder
      *
      * @param string $name The file name or relative path.
      *
-     * @return mixed|string
+     * @return string
      *
      * @throws FinderException
      */
@@ -106,7 +106,7 @@ abstract class Finder implements IFinder
      *
      * @throws FinderException
      *
-     * @return string
+     * @return array
      */
     protected function findInPaths($name, array $paths)
     {

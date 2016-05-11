@@ -204,7 +204,7 @@ class ViewFactory
      *
      * @return \Themosis\View\Engines\IEngine
      */
-    private function getEngineFromPath($path)
+    protected function getEngineFromPath($path)
     {
         $engine = $this->extensions[$this->getExtension($path)];
 
@@ -218,7 +218,7 @@ class ViewFactory
      *
      * @return string
      */
-    private function getExtension($path)
+    protected function getExtension($path)
     {
         $extensions = array_keys($this->extensions);
         $ext = null;
