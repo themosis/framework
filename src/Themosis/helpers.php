@@ -1,15 +1,14 @@
 <?php
 
 /**
-* Helpers functions globally available
-*/
-
-if (!function_exists('themosis_is_subpage'))
-{
+ * Helpers functions globally available.
+ */
+if (!function_exists('themosis_is_subpage')) {
     /**
      * Define if the current page is a child page.
      *
      * @param array $parent The parent page properties.
+     *
      * @return int|bool Parent page ID if subpage. False if not.
      */
     function themosis_is_subpage(array $parent)
@@ -18,8 +17,7 @@ if (!function_exists('themosis_is_subpage'))
 
         $parentPage = get_post($post->post_parent);
 
-        if (is_page() && $post->post_parent && $parentPage->post_name === $parent[0])
-        {
+        if (is_page() && $post->post_parent && $parentPage->post_name === $parent[0]) {
             return $post->post_parent;
         }
 
@@ -27,41 +25,38 @@ if (!function_exists('themosis_is_subpage'))
     }
 }
 
-if (!function_exists('themosis_convert_path'))
-{
+if (!function_exists('themosis_convert_path')) {
     /**
      * Convert '.' into '/' directory separators.
      *
      * @param string $path The initial path with '.'
+     *
      * @return string The converted path with '/'
      */
     function themosis_convert_path($path)
     {
-        if (strpos($path, '.') !== false)
-        {
+        if (strpos($path, '.') !== false) {
             $path = str_replace('.', DS, $path);
-        }
-        else
-        {
+        } else {
             $path = trim($path);
         }
 
-        return (string)$path;
+        return (string) $path;
     }
 }
 
-if (!function_exists('td'))
-{
+if (!function_exists('td')) {
     /**
      * Print and die a value - Used for debugging.
      *
      * @param mixed $value Any PHP value.
-     * @return void
      */
     function td($value)
     {
         $attributes = func_get_args();
-        if (count($attributes) == 1) $attributes = $attributes[0];
+        if (count($attributes) == 1) {
+            $attributes = $attributes[0];
+        }
         echo '<pre>';
         print_r($attributes);
         echo '</pre>';
@@ -69,26 +64,25 @@ if (!function_exists('td'))
     }
 }
 
-if (!function_exists('tp'))
-{
+if (!function_exists('tp')) {
     /**
      * Print a value.
      *
      * @param mixed $value Any PHP value
-     * @return void
      */
     function tp($value)
     {
         $attributes = func_get_args();
-        if (count($attributes) == 1) $attributes = $attributes[0];
+        if (count($attributes) == 1) {
+            $attributes = $attributes[0];
+        }
         echo '<pre>';
         print_r($attributes);
         echo '</pre>';
     }
 }
 
-if (!function_exists('themosis_assets'))
-{
+if (!function_exists('themosis_assets')) {
     /**
      * Return the application front-end assets directory URL.
      *
@@ -98,8 +92,7 @@ if (!function_exists('themosis_assets'))
     {
         // Check if the theme helper function exists.
         // Only if a themosis-theme is used.
-        if (function_exists('themosis_theme_assets'))
-        {
+        if (function_exists('themosis_theme_assets')) {
             return themosis_theme_assets();
         }
 
@@ -107,8 +100,7 @@ if (!function_exists('themosis_assets'))
     }
 }
 
-if (!function_exists('themosis_get_the_query'))
-{
+if (!function_exists('themosis_get_the_query')) {
     /**
      * Return the WP Query variable.
      *
@@ -122,8 +114,7 @@ if (!function_exists('themosis_get_the_query'))
     }
 }
 
-if (!function_exists('themosis_use_permalink'))
-{
+if (!function_exists('themosis_use_permalink')) {
     /**
      * Conditional function that checks if WP
      * is using a pretty permalink structure.
@@ -134,8 +125,7 @@ if (!function_exists('themosis_use_permalink'))
     {
         global $wp_rewrite;
 
-        if(!$wp_rewrite->permalink_structure == '')
-        {
+        if (!$wp_rewrite->permalink_structure == '') {
             return true;
         }
 
@@ -143,27 +133,23 @@ if (!function_exists('themosis_use_permalink'))
     }
 }
 
-if (!function_exists('themosis_add_filters'))
-{
+if (!function_exists('themosis_add_filters')) {
     /**
      * Helper that runs multiple add_filter
      * functions at once.
      *
-     * @param array $tags Filter tags.
+     * @param array  $tags     Filter tags.
      * @param string $function The name of the global function to call.
-     * @return void
      */
     function themosis_add_filters(array $tags, $function)
     {
-        foreach ($tags as $tag)
-        {
+        foreach ($tags as $tag) {
             add_filter($tag, $function);
         }
     }
 }
 
-if (!function_exists('themosis_get_post_id'))
-{
+if (!function_exists('themosis_get_post_id')) {
     /**
      * A function that retrieves the post ID during
      * a wp-admin request on posts and custom post types.
@@ -175,14 +161,12 @@ if (!function_exists('themosis_get_post_id'))
         $id = null;
 
         // When viewing the cpt (GET)
-        if (isset($_GET['post']))
-        {
+        if (isset($_GET['post'])) {
             $id = $_GET['post'];
         }
 
         // When saving the cpt (POST)
-        if (isset($_POST['post_ID']))
-        {
+        if (isset($_POST['post_ID'])) {
             $id = $_POST['post_ID'];
         }
 
@@ -190,8 +174,7 @@ if (!function_exists('themosis_get_post_id'))
     }
 }
 
-if (!function_exists('themosis_is_post'))
-{
+if (!function_exists('themosis_is_post')) {
     /**
      * A function that checks you're on a specified
      * admin page, post, or custom post type (edit) in order to display
@@ -203,14 +186,14 @@ if (!function_exists('themosis_is_post'))
      * Give the post ID. Visible in the admin uri in your browser.
      *
      * @param int $id A WP_Post ID
+     *
      * @return bool True. False if not a WordPress post type.
      */
     function themosis_is_post($id)
     {
         $postId = themosis_get_post_id();
 
-        if (!is_null($postId) && is_numeric($id) && $id === (int) $postId)
-        {
+        if (!is_null($postId) && is_numeric($id) && $id === (int) $postId) {
             return true;
         }
 
@@ -218,14 +201,14 @@ if (!function_exists('themosis_is_post'))
     }
 }
 
-if (!function_exists('themosis_attachment_id_from_url'))
-{
+if (!function_exists('themosis_attachment_id_from_url')) {
     /**
      * A function that returns the 'attachment_id' of a
      * media file by giving its URL.
      *
      * @param string $url The media/image URL - Works only for images uploaded from within WordPress.
-     * @return int|boolean The image/attachment_id if it exists, false if not.
+     *
+     * @return int|bool The image/attachment_id if it exists, false if not.
      */
     function themosis_attachment_id_from_url($url = null)
     {
@@ -242,7 +225,9 @@ if (!function_exists('themosis_attachment_id_from_url'))
         /*-----------------------------------------------------------------------*/
         // If there is no url, return.
         /*-----------------------------------------------------------------------*/
-        if (null === $url) return;
+        if (null === $url) {
+            return;
+        }
 
         /*-----------------------------------------------------------------------*/
         // Get the upload directory paths
@@ -253,18 +238,17 @@ if (!function_exists('themosis_attachment_id_from_url'))
         // Make sure the upload path base directory exists in the attachment URL,
         // to verify that we're working with a media library image
         /*-----------------------------------------------------------------------*/
-        if (false !== strpos($url, $upload_dir_paths['baseurl']))
-        {
+        if (false !== strpos($url, $upload_dir_paths['baseurl'])) {
             /*-----------------------------------------------------------------------*/
             // If this is the URL of an auto-generated thumbnail,
             // get the URL of the original image
             /*-----------------------------------------------------------------------*/
-            $url = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $url);
+            $url = preg_replace('/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $url);
 
             /*-----------------------------------------------------------------------*/
             // Remove the upload path base directory from the attachment URL
             /*-----------------------------------------------------------------------*/
-            $url = str_replace($upload_dir_paths['baseurl'] . '/', '', $url);
+            $url = str_replace($upload_dir_paths['baseurl'].'/', '', $url);
 
             /*-----------------------------------------------------------------------*/
             // Grab the database prefix
@@ -282,35 +266,34 @@ if (!function_exists('themosis_attachment_id_from_url'))
     }
 }
 
-if (!function_exists('themosis_is_template'))
-{
+if (!function_exists('themosis_is_template')) {
     /**
      * A function that checks if we are using a page template.
      *
      * @param array $name Template properties.
-     * @return boolean True: use of a template. False: no template.
+     *
+     * @return bool True: use of a template. False: no template.
      */
     function themosis_is_template(array $name = [])
     {
         $queriedObject = get_queried_object();
 
-        if (is_a($queriedObject, 'WP_Post') && 'page' === $queriedObject->post_type)
-        {
+        if (is_a($queriedObject, 'WP_Post') && 'page' === $queriedObject->post_type) {
             // Sanitized value
             $template = Meta::get($queriedObject->ID, '_themosisPageTemplate');
 
             // If no template selected, just return;
-            if ($template === 'none') return false;
+            if ($template === 'none') {
+                return false;
+            }
 
             // If template...
-            if (isset($template) && !empty($template))
-            {
+            if (isset($template) && !empty($template)) {
                 /*-----------------------------------------------------------------------*/
                 // If the page template name is defined within the routes array, handle
                 // the template
                 /*-----------------------------------------------------------------------*/
-                if (in_array($template, $name))
-                {
+                if (in_array($template, $name)) {
                     return true;
                 }
             }
@@ -320,12 +303,12 @@ if (!function_exists('themosis_is_template'))
     }
 }
 
-if (!function_exists('e'))
-{
+if (!function_exists('e')) {
     /**
      * Escape HTML entities in a string.
      *
      * @param string $value
+     *
      * @return string
      */
     function e($value)
@@ -334,86 +317,90 @@ if (!function_exists('e'))
     }
 }
 
-if (!function_exists('starts_with'))
-{
+if (!function_exists('starts_with')) {
     /**
      * Determine if a given string starts with a given substring.
      *
-     * @param string $haystack
+     * @param string       $haystack
      * @param string|array $needles
+     *
      * @return bool
      */
     function starts_with($haystack, $needles)
     {
-        foreach ((array) $needles as $needle)
-        {
-            if ($needle != '' && strpos($haystack, $needle) === 0) return true;
+        foreach ((array) $needles as $needle) {
+            if ($needle != '' && strpos($haystack, $needle) === 0) {
+                return true;
+            }
         }
 
         return false;
     }
 }
 
-if (!function_exists('array_get'))
-{
+if (!function_exists('array_get')) {
     /**
      * Get an item from an array using "dot" notation.
      *
-     * @param array $array
+     * @param array  $array
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
+     *
      * @return mixed
      */
     function array_get($array, $key, $default = null)
     {
-        if (is_null($key)) return $array;
+        if (is_null($key)) {
+            return $array;
+        }
 
-        if (isset($array[$key])) return $array[$key];
+        if (isset($array[$key])) {
+            return $array[$key];
+        }
 
-        foreach (explode('.', $key) as $segment)
-        {
-            if ( ! is_array($array) || ! array_key_exists($segment, $array))
-            {
+        foreach (explode('.', $key) as $segment) {
+            if (!is_array($array) || !array_key_exists($segment, $array)) {
                 return value($default);
             }
 
             $array = $array[$segment];
         }
+
         return $array;
     }
 }
 
-if (!function_exists('array_set'))
-{
+if (!function_exists('array_set')) {
     /**
      * Set an array item to a given value using "dot" notation.
      *
      * If no key is given to the method, the entire array will be replaced.
      *
-     * @param array $array
+     * @param array  $array
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @return array
      */
     function array_set(&$array, $key, $value)
     {
-        if (is_null($key)) return $array = $value;
+        if (is_null($key)) {
+            return $array = $value;
+        }
 
         $keys = explode('.', $key);
 
-        while (count($keys) > 1)
-        {
+        while (count($keys) > 1) {
             $key = array_shift($keys);
 
             // If the key doesn't exist at this depth, we will just create an empty array
             // to hold the next value, allowing us to create the arrays to hold final
             // values at the correct depth. Then we'll keep digging into the array.
-            if ( ! isset($array[$key]) || ! is_array($array[$key]))
-            {
+            if (!isset($array[$key]) || !is_array($array[$key])) {
                 $array[$key] = [];
             }
 
-            $array =& $array[$key];
+            $array = &$array[$key];
         }
 
         $array[array_shift($keys)] = $value;
@@ -422,13 +409,13 @@ if (!function_exists('array_set'))
     }
 }
 
-if (!function_exists('array_except'))
-{
+if (!function_exists('array_except')) {
     /**
      * Get all of the given array except for a specified array of items.
      *
      * @param array $array
      * @param array $keys
+     *
      * @return array
      */
     function array_except($array, $keys)
@@ -437,34 +424,34 @@ if (!function_exists('array_except'))
     }
 }
 
-if (!function_exists('array_first'))
-{
+if (!function_exists('array_first')) {
     /**
      * Return the first element in an array passing a given truth test.
      *
-     * @param array $array
+     * @param array   $array
      * @param Closure $callback
-     * @param mixed $default
+     * @param mixed   $default
+     *
      * @return mixed
      */
     function array_first($array, $callback, $default = null)
     {
-        foreach ($array as $key => $value){
-
-            if (call_user_func($callback, $key, $value)) return $value;
-
+        foreach ($array as $key => $value) {
+            if (call_user_func($callback, $key, $value)) {
+                return $value;
+            }
         }
 
         return value($default);
     }
 }
 
-if (!function_exists('value'))
-{
+if (!function_exists('value')) {
     /**
      * Return the default value of the given value.
      *
      * @param mixed $value
+     *
      * @return mixed
      */
     function value($value)
@@ -473,12 +460,12 @@ if (!function_exists('value'))
     }
 }
 
-if (!function_exists('with'))
-{
+if (!function_exists('with')) {
     /**
      * Return the given object. Useful for chaining.
      *
      * @param mixed $object
+     *
      * @return mixed
      */
     function with($object)
@@ -487,25 +474,39 @@ if (!function_exists('with'))
     }
 }
 
-if (!function_exists('str_contains'))
-{
+if (!function_exists('str_contains')) {
     /**
      * Determine if a given string contains a given substring.
      *
-     * @param string $haystack
+     * @param string       $haystack
      * @param string|array $needles
+     *
      * @return bool
      */
     function str_contains($haystack, $needles)
     {
-        foreach((array) $needles as $needle)
-        {
-            if ($needle != '' && strpos($haystack, $needle) !== false)
-            {
+        foreach ((array) $needles as $needle) {
+            if ($needle != '' && strpos($haystack, $needle) !== false) {
                 return true;
             }
         }
 
         return false;
+    }
+}
+
+if (!function_exists('view')) {
+    /**
+     * @param string $view The view relative path, name.
+     * @param array  $data Passed data.
+     *
+     * @return mixed
+     */
+    function view($view, array $data)
+    {
+        $themosis = $GLOBALS['themosis'];
+        $container = $themosis->app;
+
+        return $container['view']->make($view, $data)->render();
     }
 }
