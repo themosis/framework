@@ -65,6 +65,9 @@ class ThemosisTwigExtension extends Twig_Extension
 
                 return call_user_func_array($functionName, $args);
             }),
+            new Twig_SimpleFunction('meta', function ($id, $key = '', $context = 'post', $single = false) {
+                return get_metadata($context, $id, $key, $single);
+            }),
             /*
              * Gettext functions.
              */
