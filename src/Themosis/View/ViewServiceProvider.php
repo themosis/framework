@@ -117,8 +117,16 @@ class ViewServiceProvider extends ServiceProvider
         // Twig
         $container->share('twig', 'Twig_Environment')->withArgument('twig.loader')->withArgument([
             'auto_reload' => true,
-            'cache' => $container['path.storage'].'twig'
+            'cache' => $container['path.storage'].'twig',
         ]);
+
+        // Add the dump Twig extension.
+        $container['twig']->addExtension(new \Twig_Extension_Debug());
+
+        // Check if debug constant exists and set to true.
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            $container['twig']->enableDebug();
+        }
 
         // Provides a global 'wp' object in order to call WordPress and core PHP functions.
         $container['twig']->addExtension(new ThemosisTwigExtension());
