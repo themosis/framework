@@ -121,7 +121,7 @@ class ViewServiceProvider extends ServiceProvider
         ]);
 
         // Provides a global 'wp' object in order to call WordPress and core PHP functions.
-        $container['twig']->addGlobal('wp', new ThemosisTwigExtension());
+        $container['twig']->addExtension(new ThemosisTwigExtension());
     }
 
     /**
