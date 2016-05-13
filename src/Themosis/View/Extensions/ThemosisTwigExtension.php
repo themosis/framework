@@ -51,8 +51,29 @@ class ThemosisTwigExtension extends Twig_Extension
     public function getFunctions()
     {
         return [
+            /*
+             * WordPress theme functions.
+             */
             new Twig_SimpleFunction('wp_head', 'wp_head'),
             new Twig_SimpleFunction('wp_footer', 'wp_footer'),
+            new Twig_SimpleFunction('body_class', function ($class = '') {
+                return body_class($class);
+            }),
+            new Twig_SimpleFunction('post_class', function ($class = '', $id = null) {
+                return post_class($class, $id);
+            }),
+            /*
+             * WordPress formatting functions.
+             */
+            new Twig_SimpleFunction('wpautop', function ($text, $br = true) {
+                return wpautop($text, $br);
+            }),
+            new Twig_SimpleFunction('wp_trim_words', function ($text, $num_words = 55, $more = null) {
+                return wp_trim_words($text, $num_words, $more);
+            }),
+            /*
+             * Use this to call any core, WordPress or user defined functions.
+             */
             new Twig_SimpleFunction('fn', function ($functionName) {
                 $args = func_get_args();
                 // By default, the function name should always be the first argument.
@@ -65,6 +86,9 @@ class ThemosisTwigExtension extends Twig_Extension
 
                 return call_user_func_array($functionName, $args);
             }),
+            /*
+             * Retrieve any meta data from post, comment, user, ...
+             */
             new Twig_SimpleFunction('meta', function ($id, $key = '', $context = 'post', $single = false) {
                 return get_metadata($context, $id, $key, $single);
             }),
