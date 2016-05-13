@@ -87,7 +87,7 @@ if (!class_exists('Themosis')) {
          * 
          * @var \Themosis\Foundation\Application
          */
-        public $app;
+        public $container;
 
         private function __construct()
         {
@@ -149,7 +149,7 @@ if (!class_exists('Themosis')) {
             /*
              * Instantiate the service container for the project.
              */
-            $this->app = new \Themosis\Foundation\Application();
+            $this->container = new \Themosis\Foundation\Application();
 
             /*
              * Create a new Request instance and register it.
@@ -157,12 +157,12 @@ if (!class_exists('Themosis')) {
              */
             $request = Symfony\Component\HttpFoundation\Request::createFromGlobals();
             $request = \Themosis\Foundation\Request::createFromBase($request);
-            $this->app->add('request', $request);
+            $this->container->add('request', $request);
 
             /*
              * Setup the facade.
              */
-            \Themosis\Facades\Facade::setFacadeApplication($this->app);
+            \Themosis\Facades\Facade::setFacadeApplication($this->container);
 
             /*
              * Project hooks.
@@ -186,12 +186,12 @@ if (!class_exists('Themosis')) {
              * Normally at this stage, plugins should have
              * their paths registered into the $GLOBALS array.
              */
-            $this->app->registerAllPaths(themosis_path());
+            $this->container->registerAllPaths(themosis_path());
 
             /*
              * Hook to setup paths configuration.
              */
-            do_action('themosis_before_setup', $this->app);
+            do_action('themosis_before_setup', $this->container);
 
             /*
              * Service providers.
@@ -217,13 +217,13 @@ if (!class_exists('Themosis')) {
             ]);
 
             foreach ($providers as $provider) {
-                $this->app->addServiceProvider($provider);
+                $this->container->addServiceProvider($provider);
             }
 
             /*
              * Hook to setup framework and plugins.
              */
-            do_action('themosis_after_setup', $this->app);
+            do_action('themosis_after_setup', $this->container);
         }
 
         /**
@@ -275,8 +275,8 @@ if (!class_exists('Themosis')) {
             /*
              * Register framework assets.
              */
-            $this->app->get('asset')->add('themosis-core-styles', 'css/_themosisCore.css', ['wp-color-picker'])->to('admin');
-            $this->app->get('asset')->add('themosis-core-scripts', 'js/_themosisCore.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view', 'wp-color-picker'], '1.3.0', true)->to('admin');
+            $this->container->get('asset')->add('themosis-core-styles', 'css/_themosisCore.css', ['wp-color-picker'])->to('admin');
+            $this->container->get('asset')->add('themosis-core-scripts', 'js/_themosisCore.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view', 'wp-color-picker'], '1.3.0', true)->to('admin');
         }
 
         /**
@@ -286,9 +286,9 @@ if (!class_exists('Themosis')) {
          */
         public function setRouter()
         {
-            $request = $this->app['request'];
+            $request = $this->container['request'];
             $request = $request::createFromBase($request);
-            $response = $this->app['router']->dispatch($request);
+            $response = $this->container['router']->dispatch($request);
             // We only send back the content because, headers are already defined
             // by WordPress internals.
             $response->sendContent();

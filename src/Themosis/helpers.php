@@ -495,8 +495,28 @@ if (!function_exists('str_contains')) {
     }
 }
 
+if (!function_exists('container')) {
+    /**
+     * Helper function to retrieve the service container.
+     *
+     * @return \Themosis\Foundation\Application
+     */
+    function container()
+    {
+        if (!isset($GLOBALS['themosis'])) {
+            wp_die('The service container is not available. Please make sure the Themosis framework is installed.');
+        }
+
+        $themosis = $GLOBALS['themosis'];
+
+        return $themosis->container;
+    }
+}
+
 if (!function_exists('view')) {
     /**
+     * Helper function to build views.
+     *
      * @param string $view The view relative path, name.
      * @param array  $data Passed data.
      *
@@ -504,8 +524,7 @@ if (!function_exists('view')) {
      */
     function view($view, array $data)
     {
-        $themosis = $GLOBALS['themosis'];
-        $container = $themosis->app;
+        $container = container();
 
         return $container['view']->make($view, $data)->render();
     }
