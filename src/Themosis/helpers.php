@@ -522,7 +522,7 @@ if (!function_exists('view')) {
      *
      * @return mixed
      */
-    function view($view, array $data)
+    function view($view, array $data = [])
     {
         $container = container();
 
