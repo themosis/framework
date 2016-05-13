@@ -128,7 +128,7 @@ class ViewServiceProvider extends ServiceProvider
             $container['twig']->enableDebug();
         }
 
-        // Provides a global 'wp' object in order to call WordPress and core PHP functions.
+        // Provides WordPress functions and more to Twig templates.
         $container['twig']->addExtension(new ThemosisTwigExtension());
     }
 
