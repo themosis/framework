@@ -34,13 +34,15 @@ class ThemosisTwigExtension extends Twig_Extension
      * Allow developers to call core php and WordPress functions
      * using the `fn` namespace inside their templates.
      * Linked to the global call only...
-     * 
+     *
      * @param string $name
      * @param array  $arguments
+     *
+     * @return mixed
      */
     public function __call($name, array $arguments)
     {
-        call_user_func_array($name, $arguments);
+        return call_user_func_array($name, $arguments);
     }
 
     /**
