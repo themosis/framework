@@ -129,7 +129,7 @@ class ViewServiceProvider extends ServiceProvider
         }
 
         // Provides WordPress functions and more to Twig templates.
-        $container['twig']->addExtension(new ThemosisTwigExtension());
+        $container['twig']->addExtension(new ThemosisTwigExtension($container));
     }
 
     /**

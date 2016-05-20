@@ -2,11 +2,22 @@
 
 namespace Themosis\View\Extensions;
 
+use League\Container\ContainerInterface;
 use Twig_SimpleFunction;
 use Twig_Extension;
 
 class ThemosisTwigExtension extends Twig_Extension
 {
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * Define the extension name.
      *
@@ -27,6 +38,7 @@ class ThemosisTwigExtension extends Twig_Extension
     {
         return [
             'fn' => $this,
+            'Form' => $this->container['form'],
         ];
     }
 
