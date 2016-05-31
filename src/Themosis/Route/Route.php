@@ -2,7 +2,11 @@
 
 namespace Themosis\Route;
 
-class Route
+use Illuminate\Routing\Route as IlluminateRoute;
+use Illuminate\Http\Request;
+use Themosis\Route\Matching\ConditionMatching;
+
+class Route extends IlluminateRoute
 {
     /**
      * The WordPress template condition.
@@ -10,27 +14,6 @@ class Route
      * @var string
      */
     protected $condition;
-
-    /**
-     * HTTP methods.
-     *
-     * @var array
-     */
-    protected $methods;
-
-    /**
-     * Route actions.
-     *
-     * @var array
-     */
-    protected $action;
-
-    /**
-     * Parameters passed to the route callback or controller action method.
-     *
-     * @var array
-     */
-    protected $parameters = [];
 
     /**
      * WordPress conditional tags.
@@ -67,14 +50,16 @@ class Route
      * Build a Route instance.
      *
      * @param array|string $methods
-     * @param string       $condition
+     * @param string       $uri
      * @param mixed        $action
      */
-    public function __construct($methods, $condition, $action)
+    public function __construct($methods, $uri, $action)
     {
-        $this->methods = (array) $methods;
-        $this->condition = $this->parseCondition($condition);
-        $this->action = $this->parseAction($action);
+        parent::__construct($methods, $uri, $action);
+
+        $this->parameters = [];
+        $this->condition = $this->parseCondition($uri);
+        $this->createRewriteRule();
     }
 
     /**
@@ -86,26 +71,16 @@ class Route
      */
     protected function parseAction($action)
     {
-        // If the action is already a Closure instance, we will just set that instance
-        // as the "uses" property, because there is nothing else we need to do when
-        // it is available. Otherwise we will need to find it in the action list.
-        if (is_callable($action)) {
-            return ['uses' => $action];
-        } elseif (!isset($action['uses'])) {
-            // If no "uses" property has been set, we will dig through the array to find a
-            // Closure instance within this list. We will set the first Closure we come
-            // across into the "uses" property that will get fired off by this route.
-            $action['uses'] = $this->findClosure($action);
-        }
+        $action = parent::parseAction($action);
 
-        if (!isset($action['params'])) {
+        if (!isset($action['conditional_params'])) {
             // The first element passed in the action is used
             // for the WordPress conditional function parameters.
             $param = array_first($action, function ($key, $value) {
                 return is_string($value) || is_array($value);
             });
 
-            $action['params'] = $this->parseParam($param, $action);
+            $action['conditional_params'] = $this->parseConditionalParam($param, $action);
         }
 
         return $action;
@@ -120,7 +95,7 @@ class Route
      *
      * @return mixed
      */
-    protected function parseParam($param, $action)
+    protected function parseConditionalParam($param, $action)
     {
         if (is_string($param)) {
             return (false !== strrpos($param, '@')) ? null : $action[0];
@@ -132,118 +107,135 @@ class Route
     /**
      * Return the real WordPress conditional tag.
      *
-     * @param string $condition
+     * @param string $uri
      *
      * @return string
-     *
-     * @throws RouteException
      */
-    protected function parseCondition($condition)
+    protected function parseCondition($uri)
     {
-        // Allow developers to define non-core conditions by providing a key/value property.
-        $conditions = apply_filters('themosisRouteConditions', []);
-        $conditions = $this->conditions + $conditions;
+        // Retrieve all defined WordPress conditions.
+        $conditions = $this->getConditions();
 
-        if (isset($conditions[$condition])) {
-            return $conditions[$condition];
+        if (isset($conditions[$uri])) {
+            return $conditions[$uri];
         }
 
-        throw new RouteException('The route condition ['.$condition.'] was not found.');
+        return;
     }
 
     /**
-     * Find the Closure in an action array.
-     *
-     * @param array $action
-     *
-     * @return \Closure
-     */
-    protected function findClosure(array $action)
-    {
-        return array_first($action, function ($key, $value) {
-            return is_callable($value);
-        });
-    }
-
-    /**
-     * Get the key / value list of parameters for the route callback/method.
+     * Retrieve the list of registered WordPress conditions.
      *
      * @return array
+     */
+    protected function getConditions()
+    {
+        return $this->conditions;
+    }
+
+    /**
+     * Allow developers to add route WordPress conditions.
      *
-     * @throws \Exception
+     * @param array|string $conditions
+     */
+    public function addConditions(array $conditions)
+    {
+        $this->conditions = $this->conditions + $conditions;
+    }
+
+    /**
+     * Get the key / value list of parameters for the route.
+     *
+     * @return array
      */
     public function parameters()
     {
-        global $post, $wp_query;
+        if ($this->condition) {
+            global $post, $wp_query;
 
-        // Pass WordPress globals to closures or controller methods as parameters.
-        $parameters = array_merge($this->parameters, ['post' => $post, 'query' => $wp_query]);
+            // Pass WordPress globals to closures or controller methods as parameters.
+            $parameters = array_merge($this->parameters, ['post' => $post, 'query' => $wp_query]);
 
-        // When no posts, $post is null.
-        // When is null, set the parameter value of $post to false.
-        // This avoid missing arguments in methods for routes or controllers.
-        if (is_null($parameters['post'])) {
-            $parameters['post'] = false;
+            // When no posts, $post is null.
+            // When is null, set the parameter value of $post to false.
+            // This avoid missing arguments in methods for routes or controllers.
+            if (is_null($parameters['post'])) {
+                $parameters['post'] = false;
+            }
+
+            $this->parameters = $parameters;
+
+            return $parameters;
         }
 
-        return array_map(function ($value) {
-            return is_string($value) ? rawurldecode($value) : $value;
-        }, $parameters);
+        return parent::parameters();
     }
 
     /**
-     * Get the key / value list of parameters without null values.
+     * Determine if the route matches given request.
      *
-     * @return array
-     */
-    public function parametersWithoutNulls()
-    {
-        return array_filter($this->parameters(), function ($p) {
-            return !is_null($p);
-        });
-    }
-
-    /**
-     * Run the route action and return the response.
-     * A string or a View.
-     *
-     * @return mixed
-     */
-    public function run()
-    {
-        $parameters = array_filter($this->parameters(), function ($p) { return isset($p); });
-
-        return call_user_func_array($this->action['uses'], $parameters);
-    }
-
-    /**
-     * Determine if the route only responds to HTTP requests.
+     * @param \Illuminate\Http\Request $request
+     * @param bool                     $includingMethod
      *
      * @return bool
      */
-    public function httpOnly()
+    public function matches(Request $request, $includingMethod = true)
     {
-        return in_array('http', $this->action, true);
+        // If this route uses a WordPress conditional tag
+        if ($this->condition()) {
+            // Loop trough every validator and if the route passes every validator it passed return true
+            foreach ($this->getWpValidators() as $validator) {
+                if (!$validator->matches($this, $request)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // If no WordPress condition is found, use the normal way of getting a route
+        $matches = parent::matches($request, $includingMethod);
+
+        // If we can not find a route using the normal laravel router check if the route which is being checked has the uri "404". If so we return this route as the valid one.
+        return !$matches && $this->getUri() === '404' ? true : $matches;
     }
 
     /**
-     * Determine if the route only responds to HTTPS requests.
-     *
-     * @return bool
-     */
-    public function httpsOnly()
-    {
-        return in_array('https', $this->action, true);
-    }
-
-    /**
-     * Get the HTTP verbs the route responds to.
+     * Get matching validators.
      *
      * @return array
      */
-    public function methods()
+    public function getWpValidators()
     {
-        return $this->methods;
+        // To match the route, we will use a chain of responsibility pattern with the
+        // validator implementations. We will spin through each one making sure it
+        // passes and then we will know if the route as a whole matches request.
+        return [new ConditionMatching()];
+    }
+
+    /**
+     * Create a WordPress rewrite rule for the route if the route is not using a WordPress conditional tag.
+     * By registering a rewrite rule using the route's regex we force WordPress not to change the url to one Wordpress knows.
+     *
+     * @return array
+     */
+    public function createRewriteRule()
+    {
+        if (!$this->condition()) {
+            // Compile the route to get a Symfony compiled route
+            $this->compileRoute();
+            // Get the regex of the compiled route
+            $routeRegex = $this->getCompiled()->getRegex();
+            // Remove the first part (#^/) of the regex because WordPress adds this already by itself
+            $routeRegex = preg_replace('/^\#\^\//', '^', $routeRegex);
+            // Remove the last part (#s$) of the regex because WordPress adds this already by itself
+            $routeRegex = preg_replace('/\#[s]$/', '', $routeRegex);
+
+            // Add the rewrite rule to the top
+            add_action('init', function () use ($routeRegex) {
+                add_rewrite_rule($routeRegex, 'index.php', 'top');
+            });
+        }
     }
 
     /**
@@ -257,22 +249,12 @@ class Route
     }
 
     /**
-     * Get the action array for the route.
-     *
-     * @return array
-     */
-    public function getAction()
-    {
-        return $this->action;
-    }
-
-    /**
      * Return the 'params' value.
      *
      * @return array
      */
-    public function getParams()
+    public function conditionalParameters()
     {
-        return isset($this->action['params']) ? (array) $this->action['params'] : [];
+        return isset($this->action['conditional_params']) ? (array) $this->action['conditional_params'] : [];
     }
 }
