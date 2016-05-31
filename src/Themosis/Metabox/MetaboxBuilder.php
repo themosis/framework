@@ -2,8 +2,8 @@
 namespace Themosis\Metabox;
 
 use Themosis\Hook\Action;
-use Themosis\Core\DataContainer;
-use Themosis\Core\Wrapper;
+use Themosis\Foundation\DataContainer;
+use Themosis\Field\Wrapper;
 use Themosis\Session\Session;
 use Themosis\User\User;
 use Themosis\Validation\ValidationBuilder;
