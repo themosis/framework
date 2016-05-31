@@ -2,8 +2,8 @@
 namespace Themosis\Taxonomy;
 
 use Themosis\Action\Action;
-use Themosis\Core\DataContainer;
-use Themosis\Core\Wrapper;
+use Themosis\Foundation\DataContainer;
+use Themosis\Field\Wrapper;
 
 class TaxonomyBuilder extends Wrapper {
 
