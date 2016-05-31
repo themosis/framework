@@ -2,7 +2,7 @@
 
 namespace Themosis\User;
 
-use Themosis\Core\Wrapper;
+use Themosis\Field\Wrapper;
 use Themosis\Facades\Action;
 use Themosis\Field\FieldException;
 use Themosis\Session\Session;
