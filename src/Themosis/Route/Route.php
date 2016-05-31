@@ -243,7 +243,9 @@ class Route extends IlluminateRoute {
             $routeRegex = preg_replace('/\#[s]$/', '', $routeRegex);
 
             // Add the rewrite rule to the top
-            add_rewrite_rule($routeRegex, 'index.php', 'top');
+            add_action('init', function () use ($routeRegex) {
+                add_rewrite_rule($routeRegex, 'index.php', 'top');
+            });
 
         }
     }
