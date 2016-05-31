@@ -155,8 +155,7 @@ if (!class_exists('Themosis')) {
              * Create a new Request instance and register it.
              * By providing an instance, the instance is shared.
              */
-            $request = Symfony\Component\HttpFoundation\Request::createFromGlobals();
-            $request = \Themosis\Foundation\Request::createFromBase($request);
+            $request = \Themosis\Foundation\Request::capture();
             $this->container->instance('request', $request);
 
             /*
@@ -289,7 +288,6 @@ if (!class_exists('Themosis')) {
         public function setRouter()
         {
             $request = $this->container['request'];
-            $request = $request::createFromBase($request);
             $response = $this->container['router']->dispatch($request);
             // We only send back the content because, headers are already defined
             // by WordPress internals.
