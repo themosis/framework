@@ -23,9 +23,9 @@ class AssetTest extends PHPUnit_Framework_TestCase
             plugins_url('themosis-framework/tests/_assets') => themosis_path('core').'tests/_assets',
         ]);
         $this->container = $container = new Application();
-        $this->container->add('action', 'Themosis\Hook\ActionBuilder')->withArgument($container);
-        $this->container->add('filter', 'Themosis\Hook\FilterBuilder')->withArgument($container);
-        $this->container->add('html', 'Themosis\Html\HtmlBuilder');
+        $this->container->bind('action', 'Themosis\Hook\ActionBuilder');
+        $this->container->bind('filter', 'Themosis\Hook\FilterBuilder');
+        $this->container->bind('html', 'Themosis\Html\HtmlBuilder');
         $this->factory = new AssetFactory($finder, $container);
     }
 
@@ -76,11 +76,11 @@ class AssetTest extends PHPUnit_Framework_TestCase
     {
         $this->factory->add('some-css', 'css/project-test.css');
 
-        $this->assertTrue($this->container->hasShared('asset.some-css'));
+        $this->assertTrue($this->container['asset.some-css'] instanceof \Themosis\Asset\Asset);
 
         $this->factory->add('some-js', 'js/project-main.js');
 
-        $this->assertTrue($this->container->hasShared('asset.some-js'));
+        $this->assertTrue($this->container['asset.some-js'] instanceof \Themosis\Asset\Asset);
     }
 
     public function testAssetIsRemoved()
@@ -97,7 +97,7 @@ class AssetTest extends PHPUnit_Framework_TestCase
 
     public function testAssetAddAttributes()
     {
-        $html = $this->container->get('html');
+        $html = $this->container['html'];
 
         $replace = function ($tag, $atts, $append) use ($html) {
             if (false !== $pos = strrpos($tag, $append)) {
