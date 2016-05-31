@@ -1,7 +1,7 @@
 <?php
 namespace Themosis\Field\Fields;
 
-use Themosis\Core\DataContainer;
+use Themosis\Foundation\DataContainer;
 use Themosis\View\ViewFactory;
 
 abstract class FieldBuilder extends DataContainer
