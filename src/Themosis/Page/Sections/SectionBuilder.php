@@ -2,7 +2,7 @@
 
 namespace Themosis\Page\Sections;
 
-use Themosis\Core\DataContainer;
+use Themosis\Foundation\DataContainer;
 use Themosis\View\IRenderable;
 
 class SectionBuilder
