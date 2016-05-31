@@ -9,6 +9,9 @@ Author URI: http://www.themosis.com/
 License: GPLv2
 */
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
 /*----------------------------------------------------*/
 // The directory separator.
 /*----------------------------------------------------*/
@@ -155,9 +158,9 @@ if (!class_exists('Themosis')) {
              * Create a new Request instance and register it.
              * By providing an instance, the instance is shared.
              */
-            $request = Symfony\Component\HttpFoundation\Request::createFromGlobals();
+            /*$request = Symfony\Component\HttpFoundation\Request::createFromGlobals();
             $request = \Themosis\Foundation\Request::createFromBase($request);
-            $this->container->add('request', $request);
+            $this->container->add('request', $request);*/
 
             /*
              * Setup the facade.
@@ -172,7 +175,9 @@ if (!class_exists('Themosis')) {
             add_action('themosis_after_setup', [$this, 'themosisAfterSetup'], 0);
             add_action('admin_enqueue_scripts', [$this, 'adminEnqueueScripts']);
             add_action('admin_head', [$this, 'adminHead']);
-            add_action('template_redirect', [$this, 'setRouter'], 0);
+            add_action( 'template_redirect', 'redirect_canonical');
+            add_action('template_redirect', 'wp_redirect_admin_locations');
+            add_action('template_redirect', [$this, 'setRouter'], 15);
         }
 
         /**
@@ -204,6 +209,7 @@ if (!class_exists('Themosis')) {
                 'Themosis\Hook\HookServiceProvider',
                 'Themosis\Html\FormServiceProvider',
                 'Themosis\Html\HtmlServiceProvider',
+                'Themosis\Http\HttpServiceProvider',
                 'Themosis\Load\LoaderServiceProvider',
                 'Themosis\Metabox\MetaboxServiceProvider',
                 'Themosis\Page\PageServiceProvider',
@@ -286,12 +292,17 @@ if (!class_exists('Themosis')) {
          */
         public function setRouter()
         {
-            $request = $this->container['request'];
+            /*$request = $this->container['request'];
             $request = $request::createFromBase($request);
             $response = $this->container['router']->dispatch($request);
             // We only send back the content because, headers are already defined
             // by WordPress internals.
-            $response->sendContent();
+            $response->sendContent();*/
+            $route = $this->container->get('router');
+            
+            $response = $route->dispatch($this->container->get('request'), $this->container->get('response'));
+
+            $this->container->get('emitter')->emit($response);
         }
 
         /**
