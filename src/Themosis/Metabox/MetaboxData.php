@@ -2,7 +2,7 @@
 
 namespace Themosis\Metabox;
 
-use Themosis\Core\DataContainer;
+use Themosis\Foundation\DataContainer;
 
 class MetaboxData extends DataContainer
 {
