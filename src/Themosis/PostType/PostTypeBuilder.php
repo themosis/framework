@@ -3,7 +3,7 @@
 namespace Themosis\PostType;
 
 use Themosis\Hook\Action;
-use Themosis\Core\DataContainer;
+use Themosis\Foundation\DataContainer;
 use Themosis\Metabox\IMetabox;
 use Themosis\View\IRenderable;
 
