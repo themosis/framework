@@ -6,14 +6,13 @@ use Themosis\Foundation\ServiceProvider;
 
 class TaxonomyServiceProvider extends ServiceProvider
 {
-    protected $provides = [
-        'taxonomy'
-    ];
-
     public function register()
     {
-        $data = new TaxonomyData();
+        $this->app->bind('taxonomy', function () {
 
-        $this->getContainer()->add('taxonomy', 'Themosis\Taxonomy\TaxonomyBuilder')->withArgument($data);
+            $data = new TaxonomyData();
+
+            return new TaxonomyBuilder($data);
+        });
     }
 }

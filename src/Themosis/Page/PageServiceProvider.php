@@ -6,21 +6,16 @@ use Themosis\Foundation\ServiceProvider;
 
 class PageServiceProvider extends ServiceProvider
 {
-    protected $provides = [
-        'page'
-    ];
-
     public function register()
     {
-        $data = new PageData();
+        $this->app->bind('page', function ($container) {
 
-        $view = $this->getContainer()->get('view');
-        $view = $view->make('pages._themosisCorePage');
+            $data = new PageData();
 
-        $this->getContainer()->add('page', 'Themosis\Page\PageBuilder')->withArguments([
-            $data,
-            $view,
-            $this->getContainer()->get('validation')
-        ]);
+            $view = $container['view'];
+            $view = $view->make('pages._themosisCorePage');
+
+            return new PageBuilder($data, $view, $container['validation']);
+        });
     }
 }

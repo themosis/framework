@@ -6,25 +6,19 @@ use Themosis\Foundation\ServiceProvider;
 
 class MetaboxServiceProvider extends ServiceProvider
 {
-    protected $provides = [
-        'metabox'
-    ];
-
     public function register()
     {
-        $data = new MetaboxData();
+        $this->app->bind('metabox', function ($container) {
 
-        $view = $this->getContainer()->get('view');
-        $view = $view->make('_themosisCoreMetabox');
+            $data = new MetaboxData();
 
-        $user = $this->getContainer()->get('user');
-        $user = $user->current();
+            $view = $container['view'];
+            $view = $view->make('_themosisCoreMetabox');
 
-        $this->getContainer()->add('metabox', 'Themosis\Metabox\MetaboxBuilder')->withArguments([
-            $data,
-            $view,
-            $this->getContainer()->get('validation'),
-            $user
-        ]);
+            $user = $container['user'];
+            $user = $user->current();
+
+            return new MetaboxBuilder($data, $view, $container['validation'], $user);
+        });
     }
 }

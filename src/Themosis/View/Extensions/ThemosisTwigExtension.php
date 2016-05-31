@@ -2,18 +2,18 @@
 
 namespace Themosis\View\Extensions;
 
-use League\Container\ContainerInterface;
+use Themosis\Foundation\Application;
 use Twig_SimpleFunction;
 use Twig_Extension;
 
 class ThemosisTwigExtension extends Twig_Extension
 {
     /**
-     * @var ContainerInterface
+     * @var \Themosis\Foundation\Application
      */
     protected $container;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(Application $container)
     {
         $this->container = $container;
     }

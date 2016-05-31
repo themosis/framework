@@ -6,14 +6,13 @@ use Themosis\Foundation\ServiceProvider;
 
 class ConfigServiceProvider extends ServiceProvider
 {
-    protected $provides = [
-        'config.finder',
-        'config'
-    ];
-
     public function register()
     {
-        $this->getContainer()->add('config.finder', new ConfigFinder());
-        $this->getContainer()->share('config', 'Themosis\Config\ConfigFactory')->withArgument('config.finder');
+        $this->app->instance('config.finder', new ConfigFinder());
+
+        $this->app->singleton('config', function($container)
+        {
+            return new ConfigFactory($container['config.finder']);
+        });
     }
 }

@@ -26,7 +26,7 @@ class FormBuilder
      * @param HtmlBuilder                  $html
      * @param \Themosis\Foundation\Request $request
      */
-    public function __construct(HtmlBuilder $html, $request)
+    public function __construct(HtmlBuilder $html, Request $request)
     {
         $this->html = $html;
         $this->request = $request;

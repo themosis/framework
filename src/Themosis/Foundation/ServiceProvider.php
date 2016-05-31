@@ -2,8 +2,8 @@
 
 namespace Themosis\Foundation;
 
-use League\Container\ServiceProvider\AbstractServiceProvider;
+use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
-abstract class ServiceProvider extends AbstractServiceProvider
+abstract class ServiceProvider extends IlluminateServiceProvider
 {
 }

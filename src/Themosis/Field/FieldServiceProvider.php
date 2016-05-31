@@ -6,12 +6,10 @@ use Themosis\Foundation\ServiceProvider;
 
 class FieldServiceProvider extends ServiceProvider
 {
-    protected $provides = [
-        'field'
-    ];
-
     public function register()
     {
-        $this->getContainer()->share('field', 'Themosis\Field\Factory')->withArgument('view');
+        $this->app->singleton('field', function ($container) {
+            return new FieldFactory($container['view']);
+        });
     }
 }

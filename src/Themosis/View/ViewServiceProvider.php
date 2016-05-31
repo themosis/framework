@@ -12,18 +12,6 @@ use Themosis\View\Extensions\ThemosisTwigExtension;
 
 class ViewServiceProvider extends ServiceProvider
 {
-    protected $provides = [
-        'view.engine.resolver',
-        'php',
-        'scout',
-        'scout.compiler',
-        'view.finder',
-        'view',
-        'loop',
-        'twig',
-        'twig.loader',
-    ];
-
     public function register()
     {
         $this->registerViewFinder();
@@ -40,7 +28,7 @@ class ViewServiceProvider extends ServiceProvider
     {
         $serviceProvider = $this;
 
-        $this->getContainer()->add('view.engine.resolver', function () use ($serviceProvider) {
+        $this->app->singleton('view.engine.resolver', function () use ($serviceProvider) {
             $resolver = new EngineResolver();
 
             // Register the engines.
@@ -73,15 +61,15 @@ class ViewServiceProvider extends ServiceProvider
      */
     protected function registerScoutEngine($engine, EngineResolver $resolver)
     {
-        $container = $this->getContainer();
+        $container = $this->app;
 
         // Register a ScoutCompiler instance so we can
         // inject it into the ScoutEngine class.
-        $storage = $container->get('path.storage').'views'.DS;
-        $container->add('scout.compiler', new ScoutCompiler($storage));
+        $storage = $container['path.storage'].'views'.DS;
+        $container->singleton('scout.compiler', new ScoutCompiler($storage));
 
         $resolver->register($engine, function () use ($container) {
-            return new ScoutEngine($container->get('scout.compiler'));
+            return new ScoutEngine($container['scout.compiler']);
         });
     }
 
@@ -93,7 +81,7 @@ class ViewServiceProvider extends ServiceProvider
      */
     protected function registerTwigEngine($engine, EngineResolver $resolver)
     {
-        $container = $this->getContainer();
+        $container = $this->app;
 
         $resolver->register($engine, function () use ($container) {
 
@@ -109,16 +97,19 @@ class ViewServiceProvider extends ServiceProvider
      */
     protected function registerTwigEnvironment()
     {
-        $container = $this->getContainer();
+        $container = $this->app;
 
         // Twig Filesystem loader.
-        $container->share('twig.loader', 'Twig_Loader_Filesystem');
+        $container->singleton('twig.loader', 'Twig_Loader_Filesystem');
 
         // Twig
-        $container->share('twig', 'Twig_Environment')->withArgument('twig.loader')->withArgument([
-            'auto_reload' => true,
-            'cache' => $container['path.storage'].'twig',
-        ]);
+        $container->singleton('twig', function($container)
+        {
+            return new \Twig_Environment($container['twig.loader'], [
+                'auto_reload' => true,
+                'cache' => $container['path.storage'].'twig',
+            ]);
+        });
 
         // Add the dump Twig extension.
         $container['twig']->addExtension(new \Twig_Extension_Debug());
@@ -137,7 +128,7 @@ class ViewServiceProvider extends ServiceProvider
      */
     protected function registerViewFinder()
     {
-        $this->getContainer()->add('view.finder', new ViewFinder());
+        $this->app->instance('view.finder', new ViewFinder());
     }
 
     /**
@@ -146,13 +137,13 @@ class ViewServiceProvider extends ServiceProvider
      */
     protected function registerViewFactory()
     {
-        $container = $this->getContainer();
+        $container = $this->app;
 
-        $factory = new ViewFactory($container->get('view.engine.resolver'), $container->get('view.finder'), $container->get('action'));
+        $factory = new ViewFactory($container['view.engine.resolver'], $container['view.finder'], $container['action']);
         $factory->setContainer($container);
         $factory->share('__app', $container);
 
-        $container->add('view', $factory);
+        $container->instance('view', $factory);
     }
 
     /**
@@ -160,6 +151,6 @@ class ViewServiceProvider extends ServiceProvider
      */
     protected function registerLoop()
     {
-        $this->getContainer()->add('loop', new Loop());
+        $this->app->instance('loop', new Loop());
     }
 }

@@ -6,21 +6,16 @@ use Themosis\Foundation\ServiceProvider;
 
 class PostTypeServiceProvider extends ServiceProvider
 {
-    protected $provides = [
-        'posttype'
-    ];
-
     public function register()
     {
-        $data = new PostTypeData();
+        $this->app->bind('posttype', function ($container) {
 
-        $view = $this->getContainer()->get('view');
-        $view = $view->make('_themosisCorePublishBox');
+            $data = new PostTypeData();
 
-        $this->getContainer()->add('posttype', 'Themosis\PostType\PostTypeBuilder')->withArguments([
-            $data,
-            $this->getContainer()->get('metabox'),
-            $view
-        ]);
+            $view = $container['view'];
+            $view = $view->make('_themosisCorePublishBox');
+
+            return new PostTypeBuilder($data, $container['metabox'], $view);
+        });
     }
 }

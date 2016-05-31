@@ -3,8 +3,7 @@
 namespace Themosis\Foundation;
 
 use ArrayAccess;
-use League\Container\Container;
-use League\Container\ReflectionContainer;
+use Illuminate\Container\Container;
 
 class Application extends Container implements ArrayAccess
 {
@@ -16,10 +15,15 @@ class Application extends Container implements ArrayAccess
      */
     protected $paths = [];
 
+    /**
+     * The loaded service providers.
+     *
+     * @var array
+     */
+    protected $loadedProviders = [];
+
     public function __construct()
     {
-        parent::__construct();
-
         $this->registerApplication();
     }
 
@@ -30,10 +34,7 @@ class Application extends Container implements ArrayAccess
     public function registerApplication()
     {
         // Normally, only one instance is shared into the container.
-        $this->add('app', $this);
-
-        // Register ReflectionContainer as shared into the container.
-        $this->add('app.reflection', new ReflectionContainer());
+        $this->instance('app', $this);
     }
 
     /**
@@ -50,87 +51,31 @@ class Application extends Container implements ArrayAccess
         $this->paths = $paths;
 
         foreach ($paths as $key => $path) {
-            $this->share('path.'.$key, $path);
+            $this->instance('path.'.$key, $path);
         }
 
         return $this;
     }
 
     /**
-     * Auto-wire a class. Register the class into the container
-     * and directly resolve it for use.
+     * Register a service provider with the application.
      *
-     * @param string $concrete The full class name to auto register and resolve.
+     * @param \Themosis\Foundation\ServiceProvider|string $provider
+     * @param array                                       $options
+     * @param bool                                        $force
      *
-     * @return mixed
+     * @return \Themosis\Foundation\ServiceProvider
      */
-    public function make($concrete)
+    public function register($provider, array $options = [], $force = false)
     {
-        $this->delegate($this->get('app.reflection'));
-
-        return $this->get($concrete);
-    }
-
-    /**
-     * Check if there is an instance registered into the container.
-     *
-     * @param string $name The instance alias.
-     *
-     * @return bool
-     */
-    public function offsetExists($name)
-    {
-        return $this->has($name);
-    }
-
-    /**
-     * Return a registered instance from the service container.
-     *
-     * @param string $name The instance alias.
-     *
-     * @return mixed|object
-     */
-    public function offsetGet($name)
-    {
-        return $this->get($name);
-    }
-
-    /**
-     * Add an instance to the service container.
-     * 
-     * @param string               $name  string The alias of the instance to register.
-     * @param string|Closure|mixed $value The instance to add to the service container.
-     */
-    public function offsetSet($name, $value)
-    {
-        $this->add($name, $value);
-    }
-
-    /**
-     * Remove an instance from the container.
-     *
-     * @param string $name The instance alias.
-     */
-    public function offsetUnset($name)
-    {
-        if (array_key_exists($name, $this->definitions)) {
-            unset($this->definitions[$name]);
+        if (!$provider instanceof ServiceProvider) {
+            $provider = new $provider($this);
         }
-
-        if (array_key_exists($name, $this->shared)) {
-            unset($this->shared[$name]);
+        if (array_key_exists($providerName = get_class($provider), $this->loadedProviders)) {
+            return;
         }
-    }
-
-    /**
-     * Dynamically access registered instances from the container.
-     *
-     * @param $name The instance alias used in the container.
-     *
-     * @return mixed|object
-     */
-    public function __get($name)
-    {
-        return $this[$name];
+        $this->loadedProviders[$providerName] = true;
+        $provider->register();
+        $provider->boot();
     }
 }

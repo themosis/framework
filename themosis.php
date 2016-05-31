@@ -9,9 +9,6 @@ Author URI: http://www.themosis.com/
 License: GPLv2
 */
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-
 /*----------------------------------------------------*/
 // The directory separator.
 /*----------------------------------------------------*/
@@ -69,7 +66,7 @@ if (!function_exists('themosis_path')) {
  * Main class that bootstraps the framework.
  */
 if (!class_exists('Themosis')) {
-    class themosis
+    class Themosis
     {
         /**
          * Themosis instance.
@@ -158,9 +155,9 @@ if (!class_exists('Themosis')) {
              * Create a new Request instance and register it.
              * By providing an instance, the instance is shared.
              */
-            /*$request = Symfony\Component\HttpFoundation\Request::createFromGlobals();
+            $request = Symfony\Component\HttpFoundation\Request::createFromGlobals();
             $request = \Themosis\Foundation\Request::createFromBase($request);
-            $this->container->add('request', $request);*/
+            $this->container->instance('request', $request);
 
             /*
              * Setup the facade.
@@ -175,9 +172,9 @@ if (!class_exists('Themosis')) {
             add_action('themosis_after_setup', [$this, 'themosisAfterSetup'], 0);
             add_action('admin_enqueue_scripts', [$this, 'adminEnqueueScripts']);
             add_action('admin_head', [$this, 'adminHead']);
-            add_action( 'template_redirect', 'redirect_canonical');
+            add_action('template_redirect', 'redirect_canonical');
             add_action('template_redirect', 'wp_redirect_admin_locations');
-            add_action('template_redirect', [$this, 'setRouter'], 15);
+            add_action('template_redirect', [$this, 'setRouter'], 20);
         }
 
         /**
@@ -209,7 +206,6 @@ if (!class_exists('Themosis')) {
                 'Themosis\Hook\HookServiceProvider',
                 'Themosis\Html\FormServiceProvider',
                 'Themosis\Html\HtmlServiceProvider',
-                'Themosis\Http\HttpServiceProvider',
                 'Themosis\Load\LoaderServiceProvider',
                 'Themosis\Metabox\MetaboxServiceProvider',
                 'Themosis\Page\PageServiceProvider',
@@ -223,7 +219,7 @@ if (!class_exists('Themosis')) {
             ]);
 
             foreach ($providers as $provider) {
-                $this->container->addServiceProvider($provider);
+                $this->container->register($provider);
             }
 
             /*
@@ -244,7 +240,7 @@ if (!class_exists('Themosis')) {
             /*
              * Add view paths.
              */
-            $viewFinder = $app->get('view.finder');
+            $viewFinder = $app['view.finder'];
             $viewFinder->addPaths([
                 themosis_path('sys').'Metabox'.DS.'Views'.DS,
                 themosis_path('sys').'Page'.DS.'Views'.DS,
@@ -257,7 +253,7 @@ if (!class_exists('Themosis')) {
              * Add paths to asset finder.
              */
             $url = plugins_url('src/Themosis/_assets', __FILE__);
-            $assetFinder = $app->get('asset.finder');
+            $assetFinder = $app['asset.finder'];
             $assetFinder->addPaths([$url => themosis_path('sys').'_assets']);
 
             /*
@@ -281,8 +277,8 @@ if (!class_exists('Themosis')) {
             /*
              * Register framework assets.
              */
-            $this->container->get('asset')->add('themosis-core-styles', 'css/_themosisCore.css', ['wp-color-picker'])->to('admin');
-            $this->container->get('asset')->add('themosis-core-scripts', 'js/_themosisCore.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view', 'wp-color-picker'], '1.3.0', true)->to('admin');
+            $this->container['asset']->add('themosis-core-styles', 'css/_themosisCore.css', ['wp-color-picker'])->to('admin');
+            $this->container['asset']->add('themosis-core-scripts', 'js/_themosisCore.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view', 'wp-color-picker'], '1.3.0', true)->to('admin');
         }
 
         /**
@@ -292,17 +288,12 @@ if (!class_exists('Themosis')) {
          */
         public function setRouter()
         {
-            /*$request = $this->container['request'];
+            $request = $this->container['request'];
             $request = $request::createFromBase($request);
             $response = $this->container['router']->dispatch($request);
             // We only send back the content because, headers are already defined
             // by WordPress internals.
-            $response->sendContent();*/
-            $route = $this->container->get('router');
-            
-            $response = $route->dispatch($this->container->get('request'), $this->container->get('response'));
-
-            $this->container->get('emitter')->emit($response);
+            $response->sendContent();
         }
 
         /**

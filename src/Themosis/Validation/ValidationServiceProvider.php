@@ -6,12 +6,10 @@ use Themosis\Foundation\ServiceProvider;
 
 class ValidationServiceProvider extends ServiceProvider
 {
-    protected $provides = [
-        'validation',
-    ];
-
     public function register()
     {
-        $this->getContainer()->share('validation', 'Themosis\Validation\ValidationBuilder');
+        $this->app->singleton('validation', function () {
+            return new ValidationBuilder();
+        });
     }
 }

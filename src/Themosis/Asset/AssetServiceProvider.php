@@ -6,14 +6,11 @@ use Themosis\Foundation\ServiceProvider;
 
 class AssetServiceProvider extends ServiceProvider
 {
-    protected $provides = [
-        'asset.finder',
-        'asset'
-    ];
-
     public function register()
     {
-        $this->getContainer()->add('asset.finder', new AssetFinder());
-        $this->getContainer()->add('asset', 'Themosis\Asset\AssetFactory')->withArgument('asset.finder')->withArgument($this->getContainer());
+        $this->app->instance('asset.finder', new AssetFinder());
+        $this->app->bind('asset', function ($container) {
+            return new AssetFactory($container['asset.finder'], $container);
+        });
     }
 }

@@ -6,14 +6,13 @@ use Themosis\Foundation\ServiceProvider;
 
 class SectionServiceProvider extends ServiceProvider
 {
-    protected $provides = [
-        'sections'
-    ];
-
     public function register()
     {
-        $data = new SectionData();
+        $this->app->bind('sections', function () {
 
-        $this->getContainer()->add('sections', 'Themosis\Page\Sections\SectionBuilder')->withArgument($data);
+            $data = new SectionData();
+
+            return new SectionBuilder($data);
+        });
     }
 }
