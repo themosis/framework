@@ -10,7 +10,7 @@ class SectionBuilder
     /**
      * Section data.
      *
-     * @var \Themosis\Core\DataContainer
+     * @var \Themosis\Foundation\DataContainer
      */
     protected $data;
 
