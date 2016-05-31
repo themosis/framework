@@ -66,7 +66,7 @@ class ViewServiceProvider extends ServiceProvider
         // Register a ScoutCompiler instance so we can
         // inject it into the ScoutEngine class.
         $storage = $container['path.storage'].'views'.DS;
-        $container->singleton('scout.compiler', new ScoutCompiler($storage));
+        $container->instance('scout.compiler', new ScoutCompiler($storage));
 
         $resolver->register($engine, function () use ($container) {
             return new ScoutEngine($container['scout.compiler']);
