@@ -24,7 +24,7 @@
                 @if (!empty($field['value']) && is_array($field['value']))
                     @foreach($field['value'] as $i => $item)
                         <li>
-                            {{ Themosis\Facades\Form::hidden($field['name'].'[]', $item, ['data-field' => 'collection']) }}
+                            {!! Themosis\Facades\Form::hidden($field['name'].'[]', $item, ['data-field' => 'collection']) !!}
                             <div class="themosis-collection__item">
                                 <?php
                                     $isFile = false;
