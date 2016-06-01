@@ -1,17 +1,18 @@
 <?php
+
 namespace Themosis\Field\Fields;
 
-use Themosis\View\ViewFactory;
+use Illuminate\View\Factory;
 
 class EditorField extends FieldBuilder implements IField
 {
     /**
      * Build an EditorField instance.
      *
-     * @param array $properties
-     * @param ViewFactory $view
+     * @param array                    $properties
+     * @param \Illuminate\View\Factory $view
      */
-    public function __construct(array $properties, ViewFactory $view)
+    public function __construct(array $properties, Factory $view)
     {
         parent::__construct($properties, $view);
         $this->fieldType();
@@ -19,13 +20,11 @@ class EditorField extends FieldBuilder implements IField
 
     /**
      * Set default settings for the WordPress editor.
-     *
-     * @return void
      */
     protected function setSettings()
     {
         $settings = [
-            'textarea_name' => $this['name']
+            'textarea_name' => $this['name'],
         ];
 
         $this['settings'] = isset($this['settings']) ? array_merge($settings, $this['settings']) : $settings;
@@ -33,8 +32,6 @@ class EditorField extends FieldBuilder implements IField
 
     /**
      * Define input where the value is saved.
-     *
-     * @return void
      */
     protected function fieldType()
     {
@@ -74,6 +71,4 @@ class EditorField extends FieldBuilder implements IField
     {
         return $this->metabox();
     }
-
-
 }

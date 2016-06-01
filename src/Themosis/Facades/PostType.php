@@ -1,12 +1,13 @@
 <?php
+
 namespace Themosis\Facades;
 
-class PostType extends Facade {
-
+class PostType extends Facade
+{
     /**
-     * Return the igniter service key responsible for the PostType class.
-     * The key must be the same as the one used in the assigned
-     * igniter service.
+     * Return the service provider key responsible for the asset class.
+     * The key must be the same as the one used when registering
+     * the service provider.
      *
      * @return string
      */
@@ -14,6 +15,4 @@ class PostType extends Facade {
     {
         return 'posttype';
     }
-
-
-} 
+}

@@ -1,4 +1,4 @@
-{{ Themosis\Facades\Form::text($field['name'], $field['value'], $field['atts']) }}
+{!! Themosis\Facades\Form::text($field['name'], $field['value'], $field['atts']) !!}
 
 @if(isset($field['features']['info']))
     <div class="themosis-field-info">

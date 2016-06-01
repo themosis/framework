@@ -1,4 +1,4 @@
-{{ Themosis\Facades\Form::hidden($field['name'], $field['value'], $field['atts']) }}
+{!! Themosis\Facades\Form::hidden($field['name'], $field['value'], $field['atts']) !!}
 
 <table class="themosis-media">
     <tr>

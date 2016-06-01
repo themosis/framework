@@ -13,21 +13,24 @@
   "autoload": {
     "psr-4": {
       "Themosis\\": "src/Themosis/"
-    }
+    },
+    "files": ["src/Themosis/helpers.php"]
   },
   "type": "wordpress-plugin",
   "require": {
-    "php": ">=5.6.4",
-    "symfony/http-foundation": "^2.8.3",
+    "php": ">=5.6",
     "composer/installers": "^1.0",
+    "filp/whoops": "^2.1",
+    "twig/twig": "~1.0",
+    "illuminate/routing": "^5.2",
     "illuminate/container": "^5.2",
-    "illuminate/support": "^5.2"
+    "illuminate/http": "^5.2",
+    "illuminate/events": "^5.2",
+    "illuminate/view": "^5.2",
+    "illuminate/filesystem": "^5.2"
   },
   "require-dev": {
-    "php": ">=5.6.4",
-    "symfony/http-foundation": "^2.8.3",
     "phpunit/phpunit": "5.3.*",
-    "mockery/mockery": "^0.9.4",
-    "10up/wp_mock": "dev-master"
+    "mockery/mockery": "^0.9.4"
   }
 }

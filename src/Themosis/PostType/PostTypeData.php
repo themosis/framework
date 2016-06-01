@@ -1,9 +1,9 @@
 <?php
+
 namespace Themosis\PostType;
 
-use Themosis\Core\DataContainer;
+use Themosis\Foundation\DataContainer;
 
 class PostTypeData extends DataContainer
 {
-
-} 
+}

@@ -1,12 +1,13 @@
 <?php
+
 namespace Themosis\Facades;
 
-class Route extends Facade {
-
+class Route extends Facade
+{
     /**
-     * Return the igniter service key responsible for the Route class.
-     * The key must be the same as the one used in the assigned
-     * igniter service.
+     * Return the service provider key responsible for the asset class.
+     * The key must be the same as the one used when registering
+     * the service provider.
      *
      * @return string
      */
@@ -14,5 +15,4 @@ class Route extends Facade {
     {
         return 'router';
     }
-
-} 
+}

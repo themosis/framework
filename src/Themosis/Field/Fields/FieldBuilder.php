@@ -1,8 +1,9 @@
 <?php
+
 namespace Themosis\Field\Fields;
 
-use Themosis\Core\DataContainer;
-use Themosis\View\ViewFactory;
+use Illuminate\View\Factory;
+use Themosis\Foundation\DataContainer;
 
 abstract class FieldBuilder extends DataContainer
 {
@@ -21,18 +22,19 @@ abstract class FieldBuilder extends DataContainer
     protected $type;
 
     /**
-     * A view instance
-     * @var ViewFactory
+     * A view instance.
+     *
+     * @var \Illuminate\View\Factory
      */
     protected $view;
 
     /**
-     * FieldBuilder instance
+     * FieldBuilder instance.
      *
-     * @param array $properties Field instance properties.
-     * @param ViewFactory $view
+     * @param array                    $properties Field instance properties.
+     * @param \Illuminate\View\Factory $view
      */
-    public function __construct(array $properties, ViewFactory $view)
+    public function __construct(array $properties, Factory $view)
     {
         $this->properties = $properties;
         $this->view = $view;
@@ -43,8 +45,6 @@ abstract class FieldBuilder extends DataContainer
     /**
      * Method to override in the child class to define
      * its input type property.
-     *
-     * @return void
      */
     protected function fieldType()
     {
@@ -77,8 +77,7 @@ abstract class FieldBuilder extends DataContainer
 
         // Check if developer has defined a custom name attribute.
         // If so, remove it.
-        if (isset($atts['name']))
-        {
+        if (isset($atts['name'])) {
             unset($atts['name']);
         }
 
@@ -94,20 +93,15 @@ abstract class FieldBuilder extends DataContainer
     /**
      * Set the type data of the media to insert.
      * If no type is defined, default to 'image'.
-     *
-     * @return void
      */
     protected function setType()
     {
         $allowed = ['image', 'application', 'video', 'audio'];
         $features = $this['features'];
 
-        if (isset($features['type']) && !in_array($features['type'], $allowed))
-        {
+        if (isset($features['type']) && !in_array($features['type'], $allowed)) {
             $features['type'] = 'image';
-        }
-        elseif (!isset($features['type']))
-        {
+        } elseif (!isset($features['type'])) {
             $features['type'] = 'image';
         }
 
@@ -122,8 +116,6 @@ abstract class FieldBuilder extends DataContainer
 
     /**
      * Define the limit of media files or rows we can add.
-     *
-     * @return void
      */
     protected function setLimit()
     {
@@ -135,15 +127,14 @@ abstract class FieldBuilder extends DataContainer
 
     /**
      * Define a default value as array for checkable fields.
-     *
-     * @return void
      */
     protected function defaultCheckableValue()
     {
-        if ('0' === $this['value']) return;
+        if ('0' === $this['value']) {
+            return;
+        }
 
-        if (empty($this['value']))
-        {
+        if (empty($this['value'])) {
             $this['value'] = [];
         }
     }
@@ -157,5 +148,4 @@ abstract class FieldBuilder extends DataContainer
     {
         return $this->type;
     }
-
-} 
+}

@@ -6,9 +6,9 @@ import _ from 'underscore';
  */
 (function($, _)
 {
-    if (!thfmk_themosis._themosisPostTypes) return;// Check if global object is defined first.
+    if (!themosisAdmin._themosisPostTypes) return;// Check if global object is defined first.
 
-    let cpts = thfmk_themosis._themosisPostTypes,
+    let cpts = themosisAdmin._themosisPostTypes,
         cptInput = $('input.post_type_page'),
         cpt = cptInput.val(),
         select = $('.inline-edit-status select[name=_status]');

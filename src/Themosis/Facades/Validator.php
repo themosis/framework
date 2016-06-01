@@ -1,18 +1,18 @@
 <?php
+
 namespace Themosis\Facades;
 
-class Validator extends Facade {
-
+class Validator extends Facade
+{
     /**
-     * Each facade must define their igniter service
-     * class key name.
+     * Return the service provider key responsible for the asset class.
+     * The key must be the same as the one used when registering
+     * the service provider.
      *
-     * @throws \RuntimeException
      * @return string
      */
     protected static function getFacadeAccessor()
     {
         return 'validation';
     }
-
-} 
+}

@@ -1,17 +1,18 @@
 <?php
+
 namespace Themosis\Field\Fields;
 
-use Themosis\View\ViewFactory;
+use Illuminate\View\Factory;
 
 class RadioField extends FieldBuilder implements IField
 {
     /**
      * Define a core CheckboxesField.
      *
-     * @param array $properties The checkboxes field properties.
-     * @param ViewFactory $view
+     * @param array                    $properties The checkboxes field properties.
+     * @param \Illuminate\View\Factory $view
      */
-    public function __construct(array $properties, ViewFactory $view)
+    public function __construct(array $properties, Factory $view)
     {
         parent::__construct($properties, $view);
         $this->fieldType();
@@ -20,8 +21,6 @@ class RadioField extends FieldBuilder implements IField
     /**
      * Method to override to define the input type
      * that handles the value.
-     *
-     * @return void
      */
     protected function fieldType()
     {
@@ -63,6 +62,4 @@ class RadioField extends FieldBuilder implements IField
     {
         return $this->metabox();
     }
-
-
-} 
+}

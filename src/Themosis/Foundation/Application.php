@@ -7,26 +7,74 @@ use Illuminate\Container\Container;
 class Application extends Container
 {
     /**
-     * Application constructor.
+     * Project paths.
+     * Same as $GLOBALS['themosis.paths'].
      *
-     * @param string $basePath Base path of framework.
+     * @var array
      */
-    public function __construct($basePath = '')
+    protected $paths = [];
+
+    /**
+     * The loaded service providers.
+     *
+     * @var array
+     */
+    protected $loadedProviders = [];
+
+    public function __construct()
     {
-        $this->registerBaseBindings();
+        $this->registerApplication();
     }
 
     /**
-     * Register base dependencies into the container.
+     * Register the Application class into the container,
+     * so we can access it from the container itself.
      */
-    protected function registerBaseBindings()
+    public function registerApplication()
     {
-        static::setInstance($this);
-
-        // Add application into the container.
+        // Normally, only one instance is shared into the container.
         $this->instance('app', $this);
+    }
 
-        // Add an extended illuminate container into itself.
-        $this->instance('Themosis\Foundation\Application', $this);
+    /**
+     * Register into the application instance, all project
+     * paths registered.
+     * Setup this method to be called later on an 'init' hook only.
+     *
+     * @param array $paths The registered paths.
+     *
+     * @return \Themosis\Foundation\Application
+     */
+    public function registerAllPaths(array $paths)
+    {
+        $this->paths = $paths;
+
+        foreach ($paths as $key => $path) {
+            $this->instance('path.'.$key, $path);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Register a service provider with the application.
+     *
+     * @param \Themosis\Foundation\ServiceProvider|string $provider
+     * @param array                                       $options
+     * @param bool                                        $force
+     *
+     * @return \Themosis\Foundation\ServiceProvider
+     */
+    public function register($provider, array $options = [], $force = false)
+    {
+        if (!$provider instanceof ServiceProvider) {
+            $provider = new $provider($this);
+        }
+        if (array_key_exists($providerName = get_class($provider), $this->loadedProviders)) {
+            return;
+        }
+        $this->loadedProviders[$providerName] = true;
+        $provider->register();
+        $provider->boot();
     }
 }

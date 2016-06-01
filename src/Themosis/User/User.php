@@ -1,4 +1,5 @@
 <?php
+
 namespace Themosis\User;
 
 use WP_User;
@@ -9,6 +10,7 @@ class User extends WP_User
      * Check if the user has role.
      *
      * @param string $role
+     *
      * @return bool
      */
     public function hasRole($role)
@@ -20,11 +22,13 @@ class User extends WP_User
      * Set User role.
      *
      * @param string $role
+     *
      * @return \Themosis\User\User
      */
     public function setRole($role)
     {
         $this->set_role($role);
+
         return $this;
     }
 
@@ -32,6 +36,7 @@ class User extends WP_User
      * Check if the user can do a defined capability.
      *
      * @param string $cap
+     *
      * @return bool
      */
     public function can($cap)
@@ -43,6 +48,7 @@ class User extends WP_User
      * Update the user properties.
      *
      * @param array $userdata
+     *
      * @return \Themosis\User\User|\WP_Error
      */
     public function update(array $userdata)
@@ -51,9 +57,10 @@ class User extends WP_User
 
         $user = wp_update_user($userdata);
 
-        if(is_wp_error($user)) return $user;
+        if (is_wp_error($user)) {
+            return $user;
+        }
 
         return $this;
     }
-
-} 
+}

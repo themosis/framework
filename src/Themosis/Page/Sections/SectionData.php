@@ -1,8 +1,9 @@
 <?php
+
 namespace Themosis\Page\Sections;
 
-use Themosis\Core\DataContainer;
+use Themosis\Foundation\DataContainer;
 
-class SectionData extends DataContainer {
-
-} 
+class SectionData extends DataContainer
+{
+}

@@ -1,14 +1,16 @@
 <?php
+
 namespace Themosis\Facades;
 
-class Input extends Facade{
-
+class Input extends Facade
+{
     /**
      * Get an item from the input data.
-     * This method is used for all request verbs (GET, POST, PUT, and DELETE)
+     * This method is used for all request verbs (GET, POST, PUT, and DELETE).
      *
      * @param string $key
-     * @param mixed $default A default value if not found.
+     * @param mixed  $default A default value if not found.
+     *
      * @return mixed
      */
     public static function get($key = null, $default = null)
@@ -27,9 +29,9 @@ class Input extends Facade{
     }
 
     /**
-     * Return the igniter service key responsible for the Input class.
-     * The key must be the same as the one used in the assigned
-     * igniter service.
+     * Return the service provider key responsible for the asset class.
+     * The key must be the same as the one used when registering
+     * the service provider.
      *
      * @return string
      */
@@ -37,5 +39,4 @@ class Input extends Facade{
     {
         return 'request';
     }
-
-} 
+}

@@ -1,11 +1,26 @@
 <?php
+/**
+ * PHPUnit bootstrap file.
+ */
+$_tests_dir = getenv('WP_TESTS_DIR');
+if (!$_tests_dir) {
+    $_tests_dir = '/tmp/wordpress-tests-lib';
+}
+
+// Give access to tests_add_filter() function.
+require_once $_tests_dir.'/includes/functions.php';
 
 /**
- * Composer autoload.
+ * Manually load the plugin being tested.
  */
-require_once dirname(__DIR__).'/vendor/autoload.php';
+function _manually_load_plugin()
+{
+    require dirname(dirname(__FILE__)).'/themosis.php';
+}
+tests_add_filter('muplugins_loaded', '_manually_load_plugin');
 
-/**
- * Include helpers.
- */
-require_once dirname(__DIR__).'/src/Themosis/Helpers/helpers.php';
+// Start up the WP testing environment.
+require $_tests_dir.'/includes/bootstrap.php';
+
+// Add test_helpers.php file.
+include 'test_helpers.php';

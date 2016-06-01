@@ -1,8 +1,9 @@
 <?php
+
 namespace Themosis\Taxonomy;
 
-use Themosis\Core\DataContainer;
+use Themosis\Foundation\DataContainer;
 
-class TaxonomyData extends DataContainer {
-
-} 
+class TaxonomyData extends DataContainer
+{
+}
