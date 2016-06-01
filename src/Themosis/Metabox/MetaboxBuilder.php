@@ -4,7 +4,6 @@ namespace Themosis\Metabox;
 use Themosis\Hook\Action;
 use Themosis\Foundation\DataContainer;
 use Themosis\Field\Wrapper;
-use Themosis\Session\Session;
 use Themosis\User\User;
 use Themosis\Validation\ValidationBuilder;
 use Themosis\View\IRenderable;
@@ -62,6 +61,20 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      * @var string
      */
     protected $capability;
+
+    /**
+     * The nonce name.
+     *
+     * @var string
+     */
+    protected $nonce = '_themosisnonce';
+
+    /**
+     * The nonce action.
+     *
+     * @var string
+     */
+    protected $nonceAction = 'metabox';
 
     /**
      * Build a metabox instance.
@@ -201,7 +214,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
     public function build($post, array $datas)
     {
         // Add nonce fields
-        wp_nonce_field(Session::nonceAction, Session::nonceName);
+        wp_nonce_field($this->nonceAction, $this->nonce);
 
         // Set the default 'value' attribute regarding sections.
         if (!empty($this->sections))
@@ -237,8 +250,8 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
     {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
 
-        $nonceName = (isset($_POST[Session::nonceName])) ? $_POST[Session::nonceName] : Session::nonceName;
-        if (!wp_verify_nonce($nonceName, Session::nonceAction)) return;
+        $nonceName = (isset($_POST[$this->nonce])) ? $_POST[$this->nonce] : $this->nonce;
+        if (!wp_verify_nonce($nonceName, $this->nonceAction)) return;
 
         // Grab current custom post type name.
         $postType = get_post_type($postId);

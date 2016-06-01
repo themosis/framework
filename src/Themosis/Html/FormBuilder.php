@@ -58,7 +58,7 @@ class FormBuilder
         // IF 'POST' METHOD
         // HELP TO AVOID CSRF
         $append = '';
-        $nonceAction = 'themosis-nonce-action';
+        $nonceAction = 'form';
         $nonceName = '_themosisnonce';
 
         // Replace custom nonce action.
