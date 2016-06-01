@@ -2,14 +2,17 @@
 
 namespace Themosis\View;
 
-use Themosis\Finder\Finder;
+use Illuminate\View\FileViewFinder;
 
-class ViewFinder extends Finder
+class ViewFinder extends FileViewFinder
 {
     /**
-     * The view file extensions.
+     * Return a list of found views.
      *
-     * @var array
+     * @return array
      */
-    protected $extensions = ['scout.php', 'php', 'twig'];
+    public function getViews()
+    {
+        return $this->views;
+    }
 }

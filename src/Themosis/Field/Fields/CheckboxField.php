@@ -2,17 +2,17 @@
 
 namespace Themosis\Field\Fields;
 
-use Themosis\View\ViewFactory;
+use Illuminate\View\Factory;
 
 class CheckboxField extends FieldBuilder implements IField
 {
     /**
      * Define a core CheckboxField.
      *
-     * @param array       $properties The checkbox field properties.
-     * @param ViewFactory $view
+     * @param array                    $properties The checkbox field properties.
+     * @param \Illuminate\View\Factory $view
      */
-    public function __construct(array $properties, ViewFactory $view)
+    public function __construct(array $properties, Factory $view)
     {
         parent::__construct($properties, $view);
         $this->fieldType();

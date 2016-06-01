@@ -2,12 +2,12 @@
 
 namespace Themosis\User;
 
+use Illuminate\View\View;
 use Themosis\Field\Wrapper;
 use Themosis\Facades\Action;
 use Themosis\Field\FieldException;
-use Themosis\Session\Session;
+use Themosis\Hook\IHook;
 use Themosis\Validation\IValidate;
-use Themosis\View\IRenderable;
 
 class UserFactory extends Wrapper implements IUser
 {
@@ -42,7 +42,7 @@ class UserFactory extends Wrapper implements IUser
     /**
      * The user core/container view.
      *
-     * @var IRenderable
+     * @var \Illuminate\View\View
      */
     protected $view;
 
@@ -61,15 +61,22 @@ class UserFactory extends Wrapper implements IUser
     protected static $hasNonce = false;
 
     /**
+     * @var IHook
+     */
+    protected $action;
+
+    /**
      * Build a UserFactory instance.
      *
-     * @param IRenderable $view      The user core view.
-     * @param IValidate   $validator Validator instance.
+     * @param \Illuminate\View\View $view      The user core view.
+     * @param IValidate             $validator Validator instance.
+     * @param IHook                 $action
      */
-    public function __construct(IRenderable $view, IValidate $validator)
+    public function __construct(View $view, IValidate $validator, IHook $action)
     {
         $this->view = $view;
         $this->validator = $validator;
+        $this->action = $action;
     }
 
     /**
@@ -208,15 +215,15 @@ class UserFactory extends Wrapper implements IUser
 
         // User "display" events.
         // When adding/creating a new user.
-        Action::add('user_new_form', [$this, 'displayFields']);
+        $this->action->add('user_new_form', [$this, 'displayFields']);
         // When editing another user profile.
-        Action::add('edit_user_profile', [$this, 'displayFields']);
+        $this->action->add('edit_user_profile', [$this, 'displayFields']);
         // When editing its own profile.
-        Action::add('show_user_profile', [$this, 'displayFields']);
+        $this->action->add('show_user_profile', [$this, 'displayFields']);
 
         // User "save" events.
-        Action::add('user_register', [$this, 'saveFields']);
-        Action::add('profile_update', [$this, 'saveFields']);
+        $this->action->add('user_register', [$this, 'saveFields']);
+        $this->action->add('profile_update', [$this, 'saveFields']);
 
         return $this;
     }
@@ -267,7 +274,7 @@ class UserFactory extends Wrapper implements IUser
     {
         // Add nonce fields for safety.
         if (!static::$hasNonce) {
-            wp_nonce_field(Session::nonceAction, Session::nonceName);
+            wp_nonce_field('user', '_themosisnonce');
             static::$hasNonce = true;
         }
 
@@ -351,8 +358,8 @@ class UserFactory extends Wrapper implements IUser
         }
 
         // Check nonces
-        $nonceName = (isset($_POST[Session::nonceName])) ? $_POST[Session::nonceName] : Session::nonceName;
-        if (!wp_verify_nonce($nonceName, Session::nonceAction)) {
+        $nonceName = (isset($_POST['_themosisnonce'])) ? $_POST['_themosisnonce'] : '_themosisnonce';
+        if (!wp_verify_nonce($nonceName, 'user')) {
             return;
         }
 

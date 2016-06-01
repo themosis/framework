@@ -2,7 +2,7 @@
 
 namespace Themosis\Field;
 
-use Themosis\View\ViewFactory;
+use Illuminate\View\Factory;
 
 /**
  * Field factory.
@@ -12,16 +12,16 @@ class FieldFactory
     /**
      * A view instance.
      *
-     * @var ViewFactory
+     * @var \Illuminate\View\Factory
      */
     protected $view;
 
     /**
      * Define a FieldFactory instance.
      *
-     * @param ViewFactory $view A view instance.
+     * @param \Illuminate\View\Factory $view A view instance.
      */
-    public function __construct(ViewFactory $view)
+    public function __construct(Factory $view)
     {
         $this->view = $view;
     }

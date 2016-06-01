@@ -2,11 +2,12 @@
 
 namespace Themosis\View;
 
+use Illuminate\View\Compilers\BladeCompiler;
+use Illuminate\View\Engines\CompilerEngine;
+use Illuminate\View\Engines\EngineResolver;
+use Illuminate\View\Engines\PhpEngine;
+use Illuminate\View\Factory;
 use Themosis\Foundation\ServiceProvider;
-use Themosis\View\Compilers\ScoutCompiler;
-use Themosis\View\Engines\EngineResolver;
-use Themosis\View\Engines\PhpEngine;
-use Themosis\View\Engines\ScoutEngine;
 use Themosis\View\Engines\TwigEngine;
 use Themosis\View\Extensions\ThemosisTwigExtension;
 
@@ -14,7 +15,6 @@ class ViewServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->registerViewFinder();
         $this->registerTwigEnvironment();
         $this->registerEngineResolver();
         $this->registerViewFactory();
@@ -32,7 +32,7 @@ class ViewServiceProvider extends ServiceProvider
             $resolver = new EngineResolver();
 
             // Register the engines.
-            foreach (['php', 'scout', 'twig'] as $engine) {
+            foreach (['php', 'blade', 'twig'] as $engine) {
                 $serviceProvider->{'register'.ucfirst($engine).'Engine'}($engine, $resolver);
             }
 
@@ -43,8 +43,8 @@ class ViewServiceProvider extends ServiceProvider
     /**
      * Register the PHP engine to the EngineResolver.
      *
-     * @param string                                $engine   Name of the engine.
-     * @param \Themosis\View\Engines\EngineResolver $resolver
+     * @param string                                  $engine   Name of the engine.
+     * @param \Illuminate\View\Engines\EngineResolver $resolver
      */
     protected function registerPhpEngine($engine, EngineResolver $resolver)
     {
@@ -54,22 +54,22 @@ class ViewServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the Scout engine to the EngineResolver.
+     * Register the Blade engine to the EngineResolver.
      *
-     * @param string                                $engine   Name of the engine.
-     * @param \Themosis\View\Engines\EngineResolver $resolver
+     * @param string                                  $engine   Name of the engine.
+     * @param \Illuminate\View\Engines\EngineResolver $resolver
      */
-    protected function registerScoutEngine($engine, EngineResolver $resolver)
+    protected function registerBladeEngine($engine, EngineResolver $resolver)
     {
         $container = $this->app;
 
-        // Register a ScoutCompiler instance so we can
-        // inject it into the ScoutEngine class.
         $storage = $container['path.storage'].'views'.DS;
-        $container->instance('scout.compiler', new ScoutCompiler($storage));
+        $filesystem = $container['filesystem'];
 
-        $resolver->register($engine, function () use ($container) {
-            return new ScoutEngine($container['scout.compiler']);
+        $bladeCompiler = new BladeCompiler($filesystem, $storage);
+
+        $resolver->register($engine, function () use ($bladeCompiler) {
+            return new CompilerEngine($bladeCompiler);
         });
     }
 
@@ -125,25 +125,22 @@ class ViewServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the ViewFinder instance.
-     */
-    protected function registerViewFinder()
-    {
-        $this->app->singleton('view.finder', function () {
-            return new ViewFinder();
-        });
-    }
-
-    /**
      * Register the view factory. The factory is
      * available in all views.
      */
     protected function registerViewFactory()
     {
+        // Register the View Finder first.
+        $this->app->singleton('view.finder', function ($container) {
+            return new ViewFinder($container['filesystem'], [], ['blade.php', 'scout.php', 'twig', 'php']);
+        });
+
         $this->app->singleton('view', function ($container) {
-            $factory = new ViewFactory($container['view.engine.resolver'], $container['view.finder'], $container['action']);
-            $factory->setContainer($container);
-            $factory->share('__app', $container);
+            $factory = new Factory($container['view.engine.resolver'], $container['view.finder'], $container['events.dispatcher']);
+            // Tell the factory to also handle the scout template for backwards compatibility.
+            $factory->addExtension('scout.php', 'blade');
+            // Tell the factory to handle twig extension files and assign them to the twig engine.
+            $factory->addExtension('twig', 'twig');
 
             return $factory;
         });

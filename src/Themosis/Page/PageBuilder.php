@@ -2,11 +2,11 @@
 
 namespace Themosis\Page;
 
+use Illuminate\View\View;
 use Themosis\Foundation\DataContainer;
 use Themosis\Field\Wrapper;
 use Themosis\Hook\IHook;
 use Themosis\Validation\ValidationBuilder;
-use Themosis\View\IRenderable;
 
 class PageBuilder extends Wrapper
 {
@@ -20,7 +20,7 @@ class PageBuilder extends Wrapper
     /**
      * The page view file.
      *
-     * @var \Themosis\View\IRenderable
+     * @var \Illuminate\View\View
      */
     protected $view;
 
@@ -53,12 +53,12 @@ class PageBuilder extends Wrapper
     /**
      * Build a Page instance.
      *
-     * @param DataContainer     $datas     The page properties.
-     * @param IRenderable       $view      The page view file.
-     * @param ValidationBuilder $validator The page validator.
-     * @param IHook             $action    The Action builder class.
+     * @param DataContainer         $datas     The page properties.
+     * @param \Illuminate\View\View $view      The page view file.
+     * @param ValidationBuilder     $validator The page validator.
+     * @param IHook                 $action    The Action builder class.
      */
-    public function __construct(DataContainer $datas, IRenderable $view, ValidationBuilder $validator, IHook $action)
+    public function __construct(DataContainer $datas, View $view, ValidationBuilder $validator, IHook $action)
     {
         $this->datas = $datas;
         $this->view = $view;
@@ -70,16 +70,16 @@ class PageBuilder extends Wrapper
     }
 
     /**
-     * @param string      $slug   The page slug name.
-     * @param string      $title  The page display title.
-     * @param string      $parent The parent's page slug if a subpage.
-     * @param IRenderable $view   The page main view file.
+     * @param string                $slug   The page slug name.
+     * @param string                $title  The page display title.
+     * @param string                $parent The parent's page slug if a subpage.
+     * @param \Illuminate\View\View $view   The page main view file.
      *
      * @throws PageException
      *
      * @return \Themosis\Page\PageBuilder
      */
-    public function make($slug, $title, $parent = null, IRenderable $view = null)
+    public function make($slug, $title, $parent = null, View $view = null)
     {
         $params = compact('slug', 'title');
 

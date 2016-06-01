@@ -2,7 +2,7 @@
 
 namespace Themosis\Field\Fields;
 
-use Themosis\View\ViewFactory;
+use Illuminate\View\Factory;
 
 class InfiniteField extends FieldBuilder implements IField
 {
@@ -16,10 +16,10 @@ class InfiniteField extends FieldBuilder implements IField
     /**
      * Build an InfiniteField instance.
      *
-     * @param array       $properties
-     * @param ViewFactory $view
+     * @param array                    $properties
+     * @param \Illuminate\View\Factory $view
      */
-    public function __construct(array $properties, ViewFactory $view)
+    public function __construct(array $properties, Factory $view)
     {
         parent::__construct($properties, $view);
         $this->setRows();

@@ -1,15 +1,17 @@
 <?php
+
 namespace Themosis\Metabox;
 
+use Illuminate\View\View;
 use Themosis\Hook\Action;
 use Themosis\Foundation\DataContainer;
 use Themosis\Field\Wrapper;
+use Themosis\Hook\IHook;
 use Themosis\User\User;
 use Themosis\Validation\ValidationBuilder;
-use Themosis\View\IRenderable;
 
-class MetaboxBuilder extends Wrapper implements IMetabox {
-
+class MetaboxBuilder extends Wrapper implements IMetabox
+{
     /**
      * Metabox instance datas.
      *
@@ -20,7 +22,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
     /**
      * The metabox view.
      *
-     * @var \Themosis\View\View
+     * @var \Illuminate\View\View
      */
     protected $view;
 
@@ -36,10 +38,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      */
     protected $validator;
 
-    /**
-     * The display/install event to listen to.
-     */
-    protected $installEvent;
+    protected $action;
 
     /**
      * The current user instance.
@@ -79,38 +78,41 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
     /**
      * Build a metabox instance.
      *
-     * @param DataContainer $datas The metabox properties.
-     * @param \Themosis\View\IRenderable $view The metabox default view.
+     * @param DataContainer                          $datas     The metabox properties.
+     * @param \Illuminate\View\View                  $view      The metabox default view.
      * @param \Themosis\Validation\ValidationBuilder $validator
-     * @param \Themosis\User\User $user
+     * @param \Themosis\User\User                    $user
+     * @param IHook                                  $action
      */
-    public function __construct(DataContainer $datas, IRenderable $view, ValidationBuilder $validator, User $user)
+    public function __construct(DataContainer $datas, View $view, ValidationBuilder $validator, User $user, IHook $action)
     {
         $this->datas = $datas;
         $this->view = $view;
         $this->validator = $validator;
         $this->user = $user;
-        $this->installEvent = Action::listen('add_meta_boxes', $this, 'display');
-        Action::listen('save_post', $this, 'save')->dispatch();
+        $this->action = $action;
+
+        // Handle save action for fields.
+        $action->add('save_post', [$this, 'save']);
     }
 
     /**
      * Set a new metabox.
      *
-     * @param string $title The metabox title.
-     * @param string $postType The metabox parent slug name.
-     * @param array $options Metabox extra options.
-     * @param \Themosis\View\IRenderable $view The metabox view.
+     * @param string                $title    The metabox title.
+     * @param string                $postType The metabox parent slug name.
+     * @param array                 $options  Metabox extra options.
+     * @param \Illuminate\View\View $view     The metabox view.
+     *
      * @return object
      */
-    public function make($title, $postType, array $options = [], IRenderable $view = null)
+    public function make($title, $postType, array $options = [], View $view = null)
     {
         $this->datas['title'] = $title;
         $this->datas['postType'] = $postType;
         $this->datas['options'] = $this->parseOptions($options);
 
-        if (!is_null($view))
-        {
+        if (!is_null($view)) {
             $this->view = $view;
         }
 
@@ -121,6 +123,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      * Build the set metabox.
      *
      * @param array $fields A list of fields to display.
+     *
      * @return \Themosis\Metabox\MetaboxBuilder
      */
     public function set(array $fields = [])
@@ -130,7 +133,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
 
         $this->datas['fields'] = $fields;
 
-        $this->installEvent->dispatch();
+        $this->action->add('add_meta_boxes', [$this, 'display']);
 
         return $this;
     }
@@ -139,12 +142,14 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      * Restrict access to a specific user capability.
      *
      * @param string $capability
+     *
      * @return \Themosis\Metabox\MetaboxBuilder
      */
     public function can($capability)
     {
         $this->capability = $capability;
         $this->check = true;
+
         return $this;
     }
 
@@ -155,7 +160,10 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      */
     protected function hasTemplate()
     {
-        if (isset($this->datas['options']['template']) && !empty($this->datas['options']['template'])) return true;
+        if (isset($this->datas['options']['template']) && !empty($this->datas['options']['template'])) {
+            return true;
+        }
+
         return false;
     }
 
@@ -163,29 +171,26 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      * The wrapper display method.
      *
      * @param string $postType The postType name.
-     * @return void
      */
     public function display($postType)
     {
-        if ($this->check && !$this->user->can($this->capability)) return;
+        if ($this->check && !$this->user->can($this->capability)) {
+            return;
+        }
 
         // Look if a template is defined.
         // Display the metabox on pages/posts that have a template registered.
-        if ($this->hasTemplate() && $postType == $this->datas['postType'])
-        {
+        if ($this->hasTemplate() && $postType == $this->datas['postType']) {
             // Fetch current ID (for cpts only).
             $postID = themosis_get_post_id();
             $template = get_post_meta($postID, '_themosisPageTemplate', true);
 
             // Check if a template is attached to the post/page.
-            if ($template == $this->datas['options']['template'])
-            {
+            if ($template == $this->datas['options']['template']) {
                 // Add a metabox for post/pages with a registered template.
                 $this->addMetabox();
             }
-        }
-        else
-        {
+        } else {
             // Add a metabox for no templates cases.
             $this->addMetabox();
         }
@@ -194,8 +199,6 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
     /**
      * Call the core function add_meta_box in order to output
      * a metabox.
-     *
-     * @return void
      */
     protected function addMetabox()
     {
@@ -206,10 +209,10 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
     /**
      * Call by "add_meta_box", build the HTML code.
      *
-     * @param \WP_Post $post The WP_Post object.
-     * @param array $datas The metabox $args and associated fields.
+     * @param \WP_Post $post  The WP_Post object.
+     * @param array    $datas The metabox $args and associated fields.
+     *
      * @throws MetaboxException
-     * @return void
      */
     public function build($post, array $datas)
     {
@@ -217,67 +220,63 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
         wp_nonce_field($this->nonceAction, $this->nonce);
 
         // Set the default 'value' attribute regarding sections.
-        if (!empty($this->sections))
-        {
-            foreach ($this->sections as $section)
-            {
-                if (isset($datas['args'][$section]))
-                {
+        if (!empty($this->sections)) {
+            foreach ($this->sections as $section) {
+                if (isset($datas['args'][$section])) {
                     $fields = $datas['args'][$section];
 
                     // Set the default 'value' property of all fields.
                     $this->setDefaultValue($post, $fields);
                 }
             }
-        }
-        else
-        {
+        } else {
             // Set the default 'value' property of all fields.
             $this->setDefaultValue($post, $datas['args']);
         }
 
         $this->render($datas['args'], $post);
-
     }
 
     /**
      * The wrapper install method. Save container values.
      *
      * @param int $postId The post ID value.
-     * @return void
      */
     public function save($postId)
     {
-        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return;
+        }
 
         $nonceName = (isset($_POST[$this->nonce])) ? $_POST[$this->nonce] : $this->nonce;
-        if (!wp_verify_nonce($nonceName, $this->nonceAction)) return;
+        if (!wp_verify_nonce($nonceName, $this->nonceAction)) {
+            return;
+        }
 
         // Grab current custom post type name.
         $postType = get_post_type($postId);
 
         // Check user capability.
-        if ($this->check && $this->datas['postType'] === $postType)
-        {
-            if (!$this->user->can($this->capability)) return;
+        if ($this->check && $this->datas['postType'] === $postType) {
+            if (!$this->user->can($this->capability)) {
+                return;
+            }
         }
 
         // Check current post type...avoid to register fields for all registered post type.
-        if ($postType !== $this->datas['postType']) return;
+        if ($postType !== $this->datas['postType']) {
+            return;
+        }
 
         $fields = [];
 
         // Loop through the registered fields.
         // With sections.
-        if (!empty($this->sections))
-        {
-            foreach ($this->datas['fields'] as $fs)
-            {
+        if (!empty($this->sections)) {
+            foreach ($this->datas['fields'] as $fs) {
                 $fields = $fs;
             }
-        }
-        else
-        {
+        } else {
             $fields = $this->datas['fields'];
         }
 
@@ -289,6 +288,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      * Register validation rules for the custom fields.
      *
      * @param array $rules A list of field names and their associated validation rule.
+     *
      * @return \Themosis\Metabox\MetaboxBuilder
      */
     public function validate(array $rules = [])
@@ -301,67 +301,51 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
     /**
      * Register the metabox and its fields into the DB.
      *
-     * @param int $postId
+     * @param int   $postId
      * @param array $fields
-     * @return void
      */
     protected function register($postId, array $fields)
     {
-        foreach($fields as $field)
-        {
+        foreach ($fields as $field) {
             // Default value... (init var)
             $value = '';
 
-            if (isset($_POST[$field['name']]))
-            {
+            if (isset($_POST[$field['name']])) {
                 // Check if a "save" method exists. The method will parse the $_POST value
                 // and transform it for DB save. Ex.: transform an array to string or int...
-                if (method_exists($field, 'save'))
-                {
+                if (method_exists($field, 'save')) {
                     // The field save method
                     $value = $field->save($_POST[$field['name']], $postId);
-                }
-                else
-                {
+                } else {
                     // No "save" method, only fetch the $_POST value.
                     $value = $_POST[$field['name']];
                 }
-            }
-            else
-            {
+            } else {
                 // If nothing...setup a default value...
                 $value = $this->parseValue($field);
             }
 
             // Apply validation if defined.
             // Check if the rule exists for the field in order to validate.
-            if (isset($this->datas['rules'][$field['name']]))
-            {
+            if (isset($this->datas['rules'][$field['name']])) {
                 $rules = $this->datas['rules'][$field['name']];
 
                 // Check if $rules array is an associative array
-                if ($this->validator->isAssociative($rules) && 'infinite' == $field->getFieldType())
-                {
+                if ($this->validator->isAssociative($rules) && 'infinite' == $field->getFieldType()) {
                     // Check Infinite fields validation.
-                    foreach ($value as $row => $rowValues)
-                    {
-                        foreach ($rowValues as $name => $val)
-                        {
-                            if (isset($rules[$name]))
-                            {
+                    foreach ($value as $row => $rowValues) {
+                        foreach ($rowValues as $name => $val) {
+                            if (isset($rules[$name])) {
                                 $value[$row][$name] = $this->validator->single($val, $rules[$name]);
                             }
                         }
                     }
-                }
-                else
-                {
+                } else {
                     $value = $this->validator->single($value, $this->datas['rules'][$field['name']]);
                 }
             }
 
             update_post_meta($postId, $field['name'], $value);
-
         }
     }
 
@@ -369,15 +353,16 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      * Check metabox options: context, priority.
      *
      * @param array $options The metabox options.
+     *
      * @return array
      */
     protected function parseOptions(array $options)
     {
         return wp_parse_args($options, [
-            'context'   => 'normal',
-            'priority'  => 'default',
-            'id'        => md5($this->datas['title']),
-            'template'  => ''
+            'context' => 'normal',
+            'priority' => 'default',
+            'id' => md5($this->datas['title']),
+            'template' => '',
         ]);
     }
 
@@ -385,16 +370,15 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      * Set the metabox view sections.
      *
      * @param array $fields
+     *
      * @return array
      */
     protected function getSections(array $fields)
     {
         $sections = [];
 
-        foreach ($fields as $section => $subFields)
-        {
-            if (!is_numeric($section))
-            {
+        foreach ($fields as $section => $subFields) {
+            if (!is_numeric($section)) {
                 array_push($sections, $section);
             }
         }
@@ -406,13 +390,11 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      * Set the default 'value' property for all fields.
      *
      * @param \WP_Post $post
-     * @param array $fields
-     * @return void
+     * @param array    $fields
      */
     protected function setDefaultValue(\WP_Post $post, array $fields)
     {
-        foreach ($fields as $field)
-        {
+        foreach ($fields as $field) {
             // Check if saved value
             $value = get_post_meta($post->ID, $field['name'], true);
 
@@ -425,19 +407,18 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
     /**
      * Render the metabox.
      *
-     * @param array $fields
+     * @param array    $fields
      * @param \WP_Post $post
-     * @return void
      */
     protected function render(array $fields, $post)
     {
         $this->view->with([
-            '__fields'          => $fields, // Pass the custom fields
-            '__metabox'         => $this, // Pass the metabox instance
-            '__post'            => $post // Pass the WP_Post instance
+            '__fields' => $fields, // Pass the custom fields
+            '__metabox' => $this, // Pass the metabox instance
+            '__post' => $post, // Pass the WP_Post instance
         ]);
 
-        echo($this->view->render());
+        echo $this->view->render();
     }
 
     /**
@@ -445,7 +426,8 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
      * the metabox main view.
      *
      * @param string|array $key
-     * @param mixed $value
+     * @param mixed        $value
+     *
      * @return \Themosis\Metabox\MetaboxBuilder
      */
     public function with($key, $value = null)
@@ -454,5 +436,4 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
 
         return $this;
     }
-
 }

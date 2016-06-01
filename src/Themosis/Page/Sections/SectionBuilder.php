@@ -2,8 +2,8 @@
 
 namespace Themosis\Page\Sections;
 
+use Illuminate\View\View;
 use Themosis\Foundation\DataContainer;
-use Themosis\View\IRenderable;
 
 class SectionBuilder
 {
@@ -17,7 +17,7 @@ class SectionBuilder
     /**
      * Section view.
      *
-     * @var IRenderable
+     * @var \Illuminate\View\View
      */
     protected $view;
 
@@ -36,16 +36,16 @@ class SectionBuilder
     /**
      * Define a Section instance. Used in Page sections.
      *
-     * @param string      $slug
-     * @param string      $name
-     * @param array       $data Custom properties for the section.
-     * @param IRenderable $view
+     * @param string                $slug
+     * @param string                $name
+     * @param array                 $data Custom properties for the section.
+     * @param \Illuminate\View\View $view
      *
      * @throws \Exception
      *
      * @return \Themosis\Page\Sections\SectionBuilder
      */
-    public function make($slug, $name, array $data = [], IRenderable $view = null)
+    public function make($slug, $name, array $data = [], View $view = null)
     {
         $params = compact('slug', 'name');
 

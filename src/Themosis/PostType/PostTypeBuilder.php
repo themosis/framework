@@ -2,10 +2,10 @@
 
 namespace Themosis\PostType;
 
+use Illuminate\View\View;
 use Themosis\Foundation\DataContainer;
 use Themosis\Hook\IHook;
 use Themosis\Metabox\IMetabox;
-use Themosis\View\IRenderable;
 
 class PostTypeBuilder implements IPostType
 {
@@ -50,20 +50,20 @@ class PostTypeBuilder implements IPostType
     /**
      * The custom view used for publish metabox.
      *
-     * @var IRenderable
+     * @var \Illuminate\View\View
      */
     protected $view;
 
     /**
      * Build a custom post type.
      *
-     * @param DataContainer $datas   The post type properties.
-     * @param IMetabox      $metabox The custom metabox for custom publish metabox
-     * @param IRenderable   $view    The view that handles custom publish metabox
-     * @param IHook         $action  The action class
-     * @param IHook         $filter  The filter class
+     * @param DataContainer         $datas   The post type properties.
+     * @param IMetabox              $metabox The custom metabox for custom publish metabox
+     * @param \Illuminate\View\View $view    The view that handles custom publish metabox
+     * @param IHook                 $action  The action class
+     * @param IHook                 $filter  The filter class
      */
-    public function __construct(DataContainer $datas, IMetabox $metabox, IRenderable $view, IHook $action, IHook $filter)
+    public function __construct(DataContainer $datas, IMetabox $metabox, View $view, IHook $action, IHook $filter)
     {
         $this->datas = $datas;
         $this->metabox = $metabox;

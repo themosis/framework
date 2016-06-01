@@ -2,10 +2,11 @@
 
 namespace Themosis\View\Engines;
 
-use Themosis\Finder\IFinder;
+use Illuminate\View\Engines\PhpEngine;
+use Illuminate\View\ViewFinderInterface;
 use Twig_Environment;
 
-class TwigEngine implements IEngine
+class TwigEngine extends PhpEngine
 {
     /**
      * @var Twig_Environment
@@ -13,7 +14,7 @@ class TwigEngine implements IEngine
     protected $environment;
 
     /**
-     * @var IFinder
+     * @var \Illuminate\View\ViewFinderInterface
      */
     protected $finder;
 
@@ -22,7 +23,7 @@ class TwigEngine implements IEngine
      */
     protected $extension = '.twig';
 
-    public function __construct(Twig_Environment $environment, IFinder $finder)
+    public function __construct(Twig_Environment $environment, ViewFinderInterface $finder)
     {
         $this->environment = $environment;
         $this->finder = $finder;
@@ -38,7 +39,7 @@ class TwigEngine implements IEngine
      */
     public function get($path, array $data = [])
     {
-        $file = array_search($path, $this->finder->getFiles());
+        $file = array_search($path, $this->finder->getViews());
 
         // Allow the use of a '.' notation.
         $file = themosis_convert_path($file);

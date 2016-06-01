@@ -13,7 +13,7 @@ class UserServiceProvider extends ServiceProvider
             $view = $container['view'];
             $view = $view->make('_themosisUserCore');
 
-            return new UserFactory($view, $container['validation']);
+            return new UserFactory($view, $container['validation'], $container['action']);
         });
     }
 }
