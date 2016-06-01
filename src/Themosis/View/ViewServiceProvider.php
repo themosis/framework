@@ -67,6 +67,7 @@ class ViewServiceProvider extends ServiceProvider
         $filesystem = $container['filesystem'];
 
         $bladeCompiler = new BladeCompiler($filesystem, $storage);
+        $this->app->instance('blade', $bladeCompiler);
 
         $resolver->register($engine, function () use ($bladeCompiler) {
             return new CompilerEngine($bladeCompiler);
@@ -152,5 +153,48 @@ class ViewServiceProvider extends ServiceProvider
     protected function registerLoop()
     {
         $this->app->instance('loop', new Loop());
+    }
+
+    /**
+     * Register custom Blade directives for use into views.
+     */
+    public function boot()
+    {
+        $blade = $this->app['view']->getEngineResolver()->resolve('blade')->getCompiler();
+
+        /*
+         * Add the "@loop" directive.
+         */
+        $blade->directive('loop', function () {
+            return '<?php if(have_posts()) { while(have_posts()) { the_post(); ?>';
+        });
+
+        /*
+         * Add the "@endloop" directive.
+         */
+        $blade->directive('endloop', function () {
+            return '<?php }} ?>';
+        });
+
+        /*
+         * Add the "@query" directive.
+         */
+        $blade->directive('query', function ($expression) {
+            return '<?php $_themosisQuery = (is_array('.$expression.')) ? new WP_Query('.$expression.') : '.$expression.'; if($_themosisQuery->have_posts()) { while($_themosisQuery->have_posts()) { $_themosisQuery->the_post(); ?>';
+        });
+
+        /**
+         * Add the "@endquery" directive.
+         */
+        $blade->directive('endquery', function () {
+            return '<?php }} wp_reset_postdata(); ?>';
+        });
+
+        /**
+         * Add the "@meta" directive.
+         */
+        $blade->directive('meta', function ($_key, $_id = null, $_context = 'post', $_single = false) {
+            return '<?php if(is_null($_id)){ $_id = get_the_ID(); } get_metadata('.$_context.','.$_id.','.$_key.','.$_single.'); ?>';
+        });
     }
 }
