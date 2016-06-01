@@ -2,10 +2,9 @@
 
 namespace Themosis\Foundation;
 
-use ArrayAccess;
 use Illuminate\Container\Container;
 
-class Application extends Container implements ArrayAccess
+class Application extends Container
 {
     /**
      * Project paths.

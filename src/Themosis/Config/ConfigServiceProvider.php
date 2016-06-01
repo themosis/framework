@@ -8,10 +8,11 @@ class ConfigServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->instance('config.finder', new ConfigFinder());
+        $this->app->singleton('config.finder', function () {
+            return new ConfigFinder();
+        });
 
-        $this->app->singleton('config', function($container)
-        {
+        $this->app->singleton('config', function ($container) {
             return new ConfigFactory($container['config.finder']);
         });
     }

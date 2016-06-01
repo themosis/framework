@@ -100,11 +100,12 @@ class ViewServiceProvider extends ServiceProvider
         $container = $this->app;
 
         // Twig Filesystem loader.
-        $container->singleton('twig.loader', 'Twig_Loader_Filesystem');
+        $container->singleton('twig.loader', function () {
+            return new \Twig_Loader_Filesystem();
+        });
 
         // Twig
-        $container->singleton('twig', function($container)
-        {
+        $container->singleton('twig', function ($container) {
             return new \Twig_Environment($container['twig.loader'], [
                 'auto_reload' => true,
                 'cache' => $container['path.storage'].'twig',
@@ -128,7 +129,9 @@ class ViewServiceProvider extends ServiceProvider
      */
     protected function registerViewFinder()
     {
-        $this->app->instance('view.finder', new ViewFinder());
+        $this->app->singleton('view.finder', function () {
+            return new ViewFinder();
+        });
     }
 
     /**
@@ -137,13 +140,13 @@ class ViewServiceProvider extends ServiceProvider
      */
     protected function registerViewFactory()
     {
-        $container = $this->app;
+        $this->app->singleton('view', function ($container) {
+            $factory = new ViewFactory($container['view.engine.resolver'], $container['view.finder'], $container['action']);
+            $factory->setContainer($container);
+            $factory->share('__app', $container);
 
-        $factory = new ViewFactory($container['view.engine.resolver'], $container['view.finder'], $container['action']);
-        $factory->setContainer($container);
-        $factory->share('__app', $container);
-
-        $container->instance('view', $factory);
+            return $factory;
+        });
     }
 
     /**
