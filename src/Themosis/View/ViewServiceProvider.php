@@ -189,12 +189,5 @@ class ViewServiceProvider extends ServiceProvider
         $blade->directive('endquery', function () {
             return '<?php }} wp_reset_postdata(); ?>';
         });
-
-        /**
-         * Add the "@meta" directive.
-         */
-        $blade->directive('meta', function ($_key, $_id = null, $_context = 'post', $_single = false) {
-            return '<?php if(is_null($_id)){ $_id = get_the_ID(); } get_metadata('.$_context.','.$_id.','.$_key.','.$_single.'); ?>';
-        });
     }
 }

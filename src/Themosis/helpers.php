@@ -529,3 +529,29 @@ if (!function_exists('view')) {
         return $container['view']->make($view, $data)->render();
     }
 }
+
+if (!function_exists('meta')) {
+    /**
+     * Helper function to get any meta data from objects.
+     *
+     * @param string $key
+     * @param int    $id
+     * @param string $context
+     * @param bool   $single
+     *
+     * @return mixed|string
+     */
+    function meta($key = '', $id = null, $context = 'post', $single = true)
+    {
+        if (is_null($id)) {
+            $id = get_the_ID();
+        }
+
+        // If no ID found, return empty string.
+        if (!$id) {
+            return '';
+        }
+
+        return get_metadata($context, $id, $key, $single);
+    }
+}

@@ -103,8 +103,8 @@ class ThemosisTwigExtension extends Twig_Extension
             /*
              * Retrieve any meta data from post, comment, user, ...
              */
-            new Twig_SimpleFunction('meta', function ($id, $key = '', $context = 'post', $single = false) {
-                return get_metadata($context, $id, $key, $single);
+            new Twig_SimpleFunction('meta', function ($key, $id = null, $context = 'post', $single = true) {
+                return meta($key, $id, $context, $single);
             }),
             /*
              * Gettext functions.
