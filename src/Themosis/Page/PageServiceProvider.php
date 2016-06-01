@@ -15,7 +15,7 @@ class PageServiceProvider extends ServiceProvider
             $view = $container['view'];
             $view = $view->make('pages._themosisCorePage');
 
-            return new PageBuilder($data, $view, $container['validation']);
+            return new PageBuilder($data, $view, $container['validation'], $container['action']);
         });
     }
 }

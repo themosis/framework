@@ -2,9 +2,9 @@
 
 namespace Themosis\Page;
 
-use Themosis\Hook\Action;
 use Themosis\Foundation\DataContainer;
 use Themosis\Field\Wrapper;
+use Themosis\Hook\IHook;
 use Themosis\Validation\ValidationBuilder;
 use Themosis\View\IRenderable;
 
@@ -32,25 +32,11 @@ class PageBuilder extends Wrapper
     protected $validator;
 
     /**
-     * The page install action.
-     *
-     * @var static
-     */
-    protected $pageEvent;
-
-    /**
      * The page sections.
      *
      * @var array
      */
     protected $sections;
-
-    /**
-     * The settings install action.
-     *
-     * @var static
-     */
-    protected $settingsEvent;
 
     /**
      * The page settings.
@@ -60,22 +46,27 @@ class PageBuilder extends Wrapper
     protected $settings;
 
     /**
+     * @var IHook
+     */
+    protected $action;
+
+    /**
      * Build a Page instance.
      *
      * @param DataContainer     $datas     The page properties.
      * @param IRenderable       $view      The page view file.
      * @param ValidationBuilder $validator The page validator.
+     * @param IHook             $action    The Action builder class.
      */
-    public function __construct(DataContainer $datas, IRenderable $view, ValidationBuilder $validator)
+    public function __construct(DataContainer $datas, IRenderable $view, ValidationBuilder $validator, IHook $action)
     {
         $this->datas = $datas;
         $this->view = $view;
         $this->validator = $validator;
+        $this->action = $action;
 
         // Events
-        $this->pageEvent = Action::listen('admin_menu', $this, 'build');
-        $this->settingsEvent = Action::listen('admin_init', $this, 'installSettings');
-        Action::listen('admin_enqueue_scripts', $this, 'enqueueMediaUploader')->dispatch();
+        $action->add('admin_enqueue_scripts', [$this, 'enqueueMediaUploader']);
     }
 
     /**
@@ -133,7 +124,7 @@ class PageBuilder extends Wrapper
         $this->datas['args'] = array_merge($this->datas['args'], $params);
 
         // Trigger the 'admin_menu' event in order to register the page.
-        $this->pageEvent->dispatch();
+        $this->action->add('admin_menu', [$this, 'build']);
 
         return $this;
     }
@@ -229,7 +220,7 @@ class PageBuilder extends Wrapper
         $this->settings = $settings;
 
         // Trigger the 'admin_init' action.
-        $this->settingsEvent->dispatch();
+        $this->action->add('admin_init', [$this, 'installSettings']);
 
         return $this;
     }
