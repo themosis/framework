@@ -202,6 +202,7 @@ if (!class_exists('Themosis')) {
                 'Themosis\Asset\AssetServiceProvider',
                 'Themosis\Config\ConfigServiceProvider',
                 'Themosis\Field\FieldServiceProvider',
+                'Themosis\Finder\FinderServiceProvider',
                 'Themosis\Hook\HookServiceProvider',
                 'Themosis\Html\FormServiceProvider',
                 'Themosis\Html\HtmlServiceProvider',
