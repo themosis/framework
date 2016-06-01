@@ -1,4 +1,5 @@
 <?php
+
 namespace Themosis\Field\Fields;
 
 interface IField

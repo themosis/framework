@@ -1,4 +1,5 @@
 <?php
+
 namespace Themosis\Field\Fields;
 
 use Themosis\View\ViewFactory;
@@ -8,7 +9,7 @@ class CheckboxField extends FieldBuilder implements IField
     /**
      * Define a core CheckboxField.
      *
-     * @param array $properties The checkbox field properties.
+     * @param array       $properties The checkbox field properties.
      * @param ViewFactory $view
      */
     public function __construct(array $properties, ViewFactory $view)
@@ -20,8 +21,6 @@ class CheckboxField extends FieldBuilder implements IField
     /**
      * Method to override to define the input type
      * that handles the value.
-     *
-     * @return void
      */
     protected function fieldType()
     {
@@ -63,6 +62,4 @@ class CheckboxField extends FieldBuilder implements IField
     {
         return $this->metabox();
     }
-
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Themosis\Field\Fields;
 
 use Themosis\View\ViewFactory;
@@ -8,7 +9,7 @@ class MediaField extends FieldBuilder implements IField
     /**
      * Build a MediaField instance.
      *
-     * @param array $properties
+     * @param array       $properties
      * @param ViewFactory $view
      */
     public function __construct(array $properties, ViewFactory $view)
@@ -20,8 +21,6 @@ class MediaField extends FieldBuilder implements IField
 
     /**
      * Define the input type that handle the data.
-     *
-     * @return void
      */
     protected function fieldType()
     {
@@ -59,6 +58,4 @@ class MediaField extends FieldBuilder implements IField
     {
         return $this->metabox();
     }
-
-
 }

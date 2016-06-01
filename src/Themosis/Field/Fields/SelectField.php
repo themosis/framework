@@ -1,4 +1,5 @@
 <?php
+
 namespace Themosis\Field\Fields;
 
 use Themosis\View\ViewFactory;
@@ -8,7 +9,7 @@ class SelectField extends FieldBuilder implements IField
     /**
      * Define a core select field.
      *
-     * @param array $properties
+     * @param array       $properties
      * @param ViewFactory $view
      */
     public function __construct(array $properties, ViewFactory $view)
@@ -20,8 +21,6 @@ class SelectField extends FieldBuilder implements IField
     /**
      * Method to override to define the input type
      * that handles the value.
-     *
-     * @return void
      */
     protected function fieldType()
     {
@@ -59,6 +58,4 @@ class SelectField extends FieldBuilder implements IField
     {
         return $this->metabox();
     }
-
-
 }

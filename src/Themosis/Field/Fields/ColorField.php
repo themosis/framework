@@ -1,4 +1,5 @@
 <?php
+
 namespace Themosis\Field\Fields;
 
 use Themosis\View\ViewFactory;
@@ -6,7 +7,7 @@ use Themosis\View\ViewFactory;
 class ColorField extends FieldBuilder implements IField
 {
     /**
-     * @param array $properties
+     * @param array       $properties
      * @param ViewFactory $view
      */
     public function __construct(array $properties, ViewFactory $view)
@@ -17,8 +18,6 @@ class ColorField extends FieldBuilder implements IField
 
     /**
      * Override the input type that handles the value.
-     *
-     * @return void
      */
     protected function fieldType()
     {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Themosis\Field\Fields;
 
 use Themosis\View\ViewFactory;
@@ -8,7 +9,7 @@ class TextField extends FieldBuilder implements IField
     /**
      * Define a core TextField.
      *
-     * @param array $properties The text field properties.
+     * @param array       $properties The text field properties.
      * @param ViewFactory $view
      */
     public function __construct(array $properties, ViewFactory $view)
@@ -20,8 +21,6 @@ class TextField extends FieldBuilder implements IField
     /**
      * Method to override to define the input type
      * that handles the value.
-     *
-     * @return void
      */
     protected function fieldType()
     {
@@ -57,5 +56,4 @@ class TextField extends FieldBuilder implements IField
     {
         return $this->metabox();
     }
-
 }

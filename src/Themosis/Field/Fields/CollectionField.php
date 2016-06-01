@@ -1,4 +1,5 @@
 <?php
+
 namespace Themosis\Field\Fields;
 
 use Themosis\View\ViewFactory;
@@ -8,7 +9,7 @@ class CollectionField extends FieldBuilder implements IField
     /**
      * Define a collection field instance.
      *
-     * @param array $properties
+     * @param array       $properties
      * @param ViewFactory $view
      */
     public function __construct(array $properties, ViewFactory $view)
@@ -22,8 +23,6 @@ class CollectionField extends FieldBuilder implements IField
     /**
      * Method to override that defined the input type
      * that handles the value.
-     *
-     * @return void
      */
     protected function fieldType()
     {
@@ -61,6 +60,4 @@ class CollectionField extends FieldBuilder implements IField
     {
         return $this->metabox();
     }
-
-
 }
