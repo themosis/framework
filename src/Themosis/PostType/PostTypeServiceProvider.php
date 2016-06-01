@@ -15,7 +15,7 @@ class PostTypeServiceProvider extends ServiceProvider
             $view = $container['view'];
             $view = $view->make('_themosisCorePublishBox');
 
-            return new PostTypeBuilder($data, $container['metabox'], $view);
+            return new PostTypeBuilder($data, $container['metabox'], $view, $container['action'], $container['filter']);
         });
     }
 }

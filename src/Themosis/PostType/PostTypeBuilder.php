@@ -2,8 +2,8 @@
 
 namespace Themosis\PostType;
 
-use Themosis\Hook\Action;
 use Themosis\Foundation\DataContainer;
+use Themosis\Hook\IHook;
 use Themosis\Metabox\IMetabox;
 use Themosis\View\IRenderable;
 
@@ -17,9 +17,14 @@ class PostTypeBuilder implements IPostType
     protected $datas;
 
     /**
-     * Event object.
+     * @var IHook
      */
-    protected $event;
+    protected $action;
+
+    /**
+     * @var IHook
+     */
+    protected $filter;
 
     /**
      * The registered custom post type.
@@ -55,13 +60,16 @@ class PostTypeBuilder implements IPostType
      * @param DataContainer $datas   The post type properties.
      * @param IMetabox      $metabox The custom metabox for custom publish metabox
      * @param IRenderable   $view    The view that handles custom publish metabox
+     * @param IHook         $action  The action class
+     * @param IHook         $filter  The filter class
      */
-    public function __construct(DataContainer $datas, IMetabox $metabox, IRenderable $view)
+    public function __construct(DataContainer $datas, IMetabox $metabox, IRenderable $view, IHook $action, IHook $filter)
     {
         $this->datas = $datas;
         $this->metabox = $metabox;
         $this->view = $view;
-        $this->event = Action::listen('init', $this, 'register');
+        $this->action = $action;
+        $this->filter = $filter;
     }
 
     /**
@@ -116,7 +124,7 @@ class PostTypeBuilder implements IPostType
             $this->register();
         } else {
             // Out of an `init` action, call the hook.
-            $this->event->dispatch();
+            $this->action->add('init', [$this, 'register']);
         }
 
         return $this;
@@ -160,6 +168,8 @@ class PostTypeBuilder implements IPostType
     }
 
     /**
+     * Return a defined post type property.
+     *
      * @param null $property
      *
      * @return array
@@ -199,7 +209,7 @@ class PostTypeBuilder implements IPostType
     {
         $name = $this->datas['name'];
 
-        add_filter('enter_title_here', function ($default) use ($name, $title) {
+        $this->filter->add('enter_title_here', function ($default) use ($name, $title) {
             $screen = get_current_screen();
 
             if ($name == $screen->post_type) {
@@ -251,11 +261,11 @@ class PostTypeBuilder implements IPostType
         $this->status[$status] = $args;
 
         // Remove default publish box
-        add_action('add_meta_boxes', [$this, 'removeDefaultPublishBox']);
+        $this->action->add('add_meta_boxes', [$this, 'removeDefaultPublishBox']);
 
         // Apply selected status on save.
-        add_filter('pre_post_status', [$this, 'applyStatus']);
-        add_filter('status_save_pre', [$this, 'applyStatus']);
+        $this->filter->add('pre_post_status', [$this, 'applyStatus']);
+        $this->filter->add('status_save_pre', [$this, 'applyStatus']);
 
         // Expose statuses to main JS object in wp-admin.
         $this->exposeStatuses();
@@ -279,7 +289,7 @@ class PostTypeBuilder implements IPostType
     {
         $self = $this;
 
-        add_filter('themosisAdminGlobalObject', function ($data) use ($self) {
+        $this->filter->add('themosisAdminGlobalObject', function ($data) use ($self) {
             $cpt = new \stdClass();
 
             // Add the defined statuses.

@@ -7,9 +7,9 @@ interface IPostType
     /**
      * Method called to build a post type instance.
      *
-     * @param $name The custom post type name.
-     * @param $plural The custom post type plural display name.
-     * @param $singular The custom post type singular display name.
+     * @param string $name     The custom post type name.
+     * @param string $plural   The custom post type plural display name.
+     * @param string $singular The custom post type singular display name.
      *
      * @return \Themosis\PostType\IPostType
      */
@@ -36,7 +36,7 @@ interface IPostType
     /**
      * Allow a user to change the title placeholder text.
      *
-     * @param $title
+     * @param string $title
      *
      * @return \Themosis\PostType\IPostType
      */
