@@ -241,11 +241,11 @@ if (!class_exists('Themosis')) {
              * Add view paths.
              */
             $viewFinder = $app['view.finder'];
-            $viewFinder->addLocation(themosis_path('sys').'Metabox'.DS.'Views'.DS);
-            $viewFinder->addLocation(themosis_path('sys').'Page'.DS.'Views'.DS);
-            $viewFinder->addLocation(themosis_path('sys').'PostType'.DS.'Views'.DS);
-            $viewFinder->addLocation(themosis_path('sys').'Field'.DS.'Fields'.DS.'Views'.DS);
-            $viewFinder->addLocation(themosis_path('sys').'User'.DS.'Views'.DS);
+            $viewFinder->addLocation(themosis_path('sys').'Metabox'.DS.'Views');
+            $viewFinder->addLocation(themosis_path('sys').'Page'.DS.'Views');
+            $viewFinder->addLocation(themosis_path('sys').'PostType'.DS.'Views');
+            $viewFinder->addLocation(themosis_path('sys').'Field'.DS.'Fields'.DS.'Views');
+            $viewFinder->addLocation(themosis_path('sys').'User'.DS.'Views');
 
             /*
              * Add paths to asset finder.

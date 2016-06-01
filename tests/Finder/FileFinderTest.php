@@ -7,12 +7,14 @@ class FileFinderTest extends PHPUnit_Framework_TestCase
      */
     public function testViewFinder()
     {
-        $finder = new \Themosis\View\ViewFinder();
+        $finder = new \Themosis\View\ViewFinder(new \Illuminate\Filesystem\Filesystem(), [], ['blade.php', 'scout.php', 'php', 'twig']);
         $paths = [
-            themosis_path('sys').'Metabox'.DS.'Views'.DS,
-            themosis_path('sys').'Field'.DS.'Fields'.DS.'Views'.DS,
+            themosis_path('sys').'Metabox'.DS.'Views',
+            themosis_path('sys').'Field'.DS.'Fields'.DS.'Views',
         ];
-        $finder->addPaths($paths);
+        foreach ($paths as $path) {
+            $finder->addLocation($path);
+        }
 
         // Paths are correctly registered.
         $this->assertEquals($paths, $finder->getPaths());
