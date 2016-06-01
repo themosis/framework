@@ -12,7 +12,7 @@ class PostTypeBuilder implements IPostType
     /**
      * PostTypeData instance.
      *
-     * @var \Themosis\Core\DataContainer
+     * @var \Themosis\Foundation\DataContainer
      */
     protected $datas;
 

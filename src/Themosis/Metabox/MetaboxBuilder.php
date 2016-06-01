@@ -14,7 +14,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox {
     /**
      * Metabox instance datas.
      *
-     * @var \Themosis\Core\DataContainer
+     * @var \Themosis\Foundation\DataContainer
      */
     protected $datas;
 
