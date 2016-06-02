@@ -183,11 +183,25 @@ class ViewServiceProvider extends ServiceProvider
             return '<?php $_themosisQuery = (is_array('.$expression.')) ? new WP_Query('.$expression.') : '.$expression.'; if($_themosisQuery->have_posts()) { while($_themosisQuery->have_posts()) { $_themosisQuery->the_post(); ?>';
         });
 
-        /**
+        /*
          * Add the "@endquery" directive.
          */
         $blade->directive('endquery', function () {
             return '<?php }} wp_reset_postdata(); ?>';
+        });
+
+        /*
+         * Add the "@wp_head" directive
+         */
+        $blade->directive('wp_head', function () {
+            return '<?php wp_head(); ?>';
+        });
+
+        /*
+         * Add the "@wp_footer" directive
+         */
+        $blade->directive('wp_footer', function () {
+            return '<?php wp_footer(); ?>';
         });
     }
 }
