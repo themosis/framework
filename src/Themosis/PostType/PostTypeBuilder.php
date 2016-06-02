@@ -156,18 +156,6 @@ class PostTypeBuilder implements IPostType
     }
 
     /**
-     * Returns the custom post type slug name.
-     *
-     * @deprecated
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->datas['name'];
-    }
-
-    /**
      * Return a defined post type property.
      *
      * @param null $property
