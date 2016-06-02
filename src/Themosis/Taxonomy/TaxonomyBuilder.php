@@ -1,12 +1,13 @@
 <?php
+
 namespace Themosis\Taxonomy;
 
-use Themosis\Action\Action;
 use Themosis\Foundation\DataContainer;
 use Themosis\Field\Wrapper;
+use Themosis\Hook\IHook;
 
-class TaxonomyBuilder extends Wrapper {
-
+class TaxonomyBuilder extends Wrapper
+{
     /**
      * Store the taxonomy data.
      *
@@ -15,37 +16,38 @@ class TaxonomyBuilder extends Wrapper {
     protected $datas;
 
     /**
-     * The 'init' event.
+     * @var IHook
      */
-    protected $event;
+    protected $action;
 
     /**
      * Build a TaxonomyBuilder instance.
      *
-     * @param DataContainer $datas The taxonomy properties.
+     * @param DataContainer        $datas  The taxonomy properties.
+     * @param \Themosis\Hook\IHook $action
      */
-    public function __construct(DataContainer $datas)
+    public function __construct(DataContainer $datas, IHook $action)
     {
         $this->datas = $datas;
-        $this->event = Action::listen('init', $this, 'register');
+        $this->action = $action;
     }
 
     /**
-     * @param string $slug The taxonomy slug name.
+     * @param string       $slug     The taxonomy slug name.
      * @param string|array $postType The taxonomy object type slug: 'post', 'page', ...
-     * @param string $plural The taxonomy plural display name.
-     * @param string $singular The taxonomy singular display name.
+     * @param string       $plural   The taxonomy plural display name.
+     * @param string       $singular The taxonomy singular display name.
+     *
      * @throws TaxonomyException
+     *
      * @return \Themosis\Taxonomy\TaxonomyBuilder
      */
     public function make($slug, $postType, $plural, $singular)
     {
         $params = compact('slug', 'postType', 'plural', 'singular');
 
-        foreach($params as $name => $param)
-        {
-            if('postType' !== $name && !is_string($param))
-            {
+        foreach ($params as $name => $param) {
+            if ('postType' !== $name && !is_string($param)) {
                 throw new TaxonomyException('Invalid taxonomy parameter "'.$name.'"');
             }
         }
@@ -63,7 +65,9 @@ class TaxonomyBuilder extends Wrapper {
      * arguments by passing an array of taxonomy arguments.
      *
      * @link http://codex.wordpress.org/Function_Reference/register_taxonomy
+     *
      * @param array $params Taxonomy arguments to override defaults.
+     *
      * @return \Themosis\Taxonomy\TaxonomyBuilder
      */
     public function set(array $params = [])
@@ -75,15 +79,12 @@ class TaxonomyBuilder extends Wrapper {
         // Check if we are not already called by a method attached to the `init` hook.
         $current = current_filter();
 
-        if ('init' === $current)
-        {
+        if ('init' === $current) {
             // If inside an `init` action, simply call the register method.
             $this->register();
-        }
-        else
-        {
+        } else {
             // Out of an `init` action, call the hook.
-            $this->event->dispatch();
+            $this->action->add('init', [$this, 'register']);
         }
 
         return $this;
@@ -92,8 +93,6 @@ class TaxonomyBuilder extends Wrapper {
     /**
      * Triggered by the 'init' action/event.
      * Register the custom taxonomy.
-     *
-     * @return void
      */
     public function register()
     {
@@ -105,12 +104,12 @@ class TaxonomyBuilder extends Wrapper {
      * to be found in 'parse_query' or 'pre_get_posts' filters.
      *
      * @link http://codex.wordpress.org/Function_Reference/register_taxonomy_for_object_type
+     *
      * @return \Themosis\Taxonomy\TaxonomyBuilder
      */
     public function bind()
     {
-        foreach ($this->datas['postType'] as $objectType)
-        {
+        foreach ($this->datas['postType'] as $objectType) {
             register_taxonomy_for_object_type($this->datas['slug'], $objectType);
         }
 
@@ -120,8 +119,9 @@ class TaxonomyBuilder extends Wrapper {
     /**
      * Set the taxonomy default arguments.
      *
-     * @param string $plural The plural display name.
+     * @param string $plural   The plural display name.
      * @param string $singular The singular display name.
+     *
      * @return array
      */
     protected function setDefaultArguments($plural, $singular)
@@ -129,25 +129,55 @@ class TaxonomyBuilder extends Wrapper {
         $labels = [
             'name' => _x($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
             'singular_name' => _x($singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'search_items' =>  __( 'Search ' . $plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'all_items' => __( 'All ' . $plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'parent_item' => __( 'Parent ' . $singular,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'parent_item_colon' => __( 'Parent ' . $singular . ': ' ,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'edit_item' => __( 'Edit ' . $singular,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'update_item' => __( 'Update ' . $singular,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'add_new_item' => __( 'Add New ' . $singular,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'new_item_name' => __( 'New '. $singular .' Name' ,THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'menu_name' => __($plural ,THEMOSIS_FRAMEWORK_TEXTDOMAIN)
+            'search_items' => __('Search '.$plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'all_items' => __('All '.$plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'parent_item' => __('Parent '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'parent_item_colon' => __('Parent '.$singular.': ', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'edit_item' => __('Edit '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'update_item' => __('Update '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'add_new_item' => __('Add New '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'new_item_name' => __('New '.$singular.' Name', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'menu_name' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
         ];
 
         $defaults = [
-            'label' 		=> __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'labels' 		=> $labels,
-            'public'		=> true,
-            'query_var'		=> true
+            'label' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'labels' => $labels,
+            'public' => true,
+            'query_var' => true,
         ];
 
         return $defaults;
     }
 
-} 
+    /**
+     * Return a defined taxonomy property.
+     *
+     * @param null $property
+     *
+     * @return array
+     * 
+     * @throws TaxonomyException
+     */
+    public function get($property = null)
+    {
+        $args = [
+            'slug' => $this->datas['slug'],
+            'post_type' => $this->datas['postType'],
+        ];
+
+        $properties = array_merge($args, $this->datas['args']);
+
+        // If no property asked, return all defined properties.
+        if (is_null($property) || empty($property)) {
+            return $properties;
+        }
+
+        // If property exists, return it.
+        if (isset($properties[$property])) {
+            return $properties[$property];
+        }
+
+        throw new TaxonomyException("Property '{$property}' does not exist on the '{$properties['label']}' taxonomy.");
+    }
+}
