@@ -164,11 +164,26 @@ if (!class_exists('Themosis')) {
             \Themosis\Facades\Facade::setFacadeApplication($this->container);
 
             /*
+             * Register into the container, the registered paths.
+             * Normally at this stage, plugins should have
+             * their paths registered into the $GLOBALS array.
+             */
+            $this->container->registerAllPaths(themosis_path());
+
+            /*
+             * Register core service providers.
+             */
+            $this->registerProviders();
+
+            /*
+             * Setup core.
+             */
+            $this->setup();
+
+            /*
              * Project hooks.
              * Added in their called order.
              */
-            add_action('plugins_loaded', [$this, 'pluginsLoaded'], 0);
-            add_action('themosis_after_setup', [$this, 'themosisAfterSetup'], 0);
             add_action('admin_enqueue_scripts', [$this, 'adminEnqueueScripts']);
             add_action('admin_head', [$this, 'adminHead']);
             add_action('template_redirect', 'redirect_canonical');
@@ -177,23 +192,10 @@ if (!class_exists('Themosis')) {
         }
 
         /**
-         * Used to register plugins configuration.
-         * Services providers, ...
+         * Register core framework service providers.
          */
-        public function pluginsLoaded()
+        protected function registerProviders()
         {
-            /*
-             * Register into the container, the registered paths.
-             * Normally at this stage, plugins should have
-             * their paths registered into the $GLOBALS array.
-             */
-            $this->container->registerAllPaths(themosis_path());
-
-            /*
-             * Hook to setup paths configuration.
-             */
-            do_action('themosis_before_setup', $this->container);
-
             /*
              * Service providers.
              */
@@ -221,26 +223,19 @@ if (!class_exists('Themosis')) {
             foreach ($providers as $provider) {
                 $this->container->register($provider);
             }
-
-            /*
-             * Hook to setup framework and plugins.
-             */
-            do_action('themosis_after_setup', $this->container);
         }
 
         /**
          * Setup core framework parameters.
          * At this moment, all activated plugins have been loaded.
          * Each plugin has its service providers registered.
-         *
-         * @param \Themosis\Foundation\Application $app
          */
-        public function themosisAfterSetup($app)
+        protected function setup()
         {
             /*
              * Add view paths.
              */
-            $viewFinder = $app['view.finder'];
+            $viewFinder = $this->container['view.finder'];
             $viewFinder->addLocation(themosis_path('sys').'Metabox'.DS.'Views');
             $viewFinder->addLocation(themosis_path('sys').'Page'.DS.'Views');
             $viewFinder->addLocation(themosis_path('sys').'PostType'.DS.'Views');
@@ -251,7 +246,7 @@ if (!class_exists('Themosis')) {
              * Add paths to asset finder.
              */
             $url = plugins_url('src/Themosis/_assets', __FILE__);
-            $assetFinder = $app['asset.finder'];
+            $assetFinder = $this->container['asset.finder'];
             $assetFinder->addPaths([$url => themosis_path('sys').'_assets']);
 
             /*
@@ -269,7 +264,7 @@ if (!class_exists('Themosis')) {
              */
             $images = new Themosis\Config\Images([
                 '_themosis_media' => [100, 100, true, __('Mini', THEMOSIS_FRAMEWORK_TEXTDOMAIN)],
-            ], $app['filter']);
+            ], $this->container['filter']);
             $images->make();
 
             /*
