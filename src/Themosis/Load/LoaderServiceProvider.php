@@ -8,11 +8,11 @@ class LoaderServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton('loader', function () {
+        $this->app->bind('loader', function () {
             return new Loader();
         });
 
-        $this->app->singleton('loader.widget', function ($container) {
+        $this->app->bind('loader.widget', function ($container) {
             return new WidgetLoader($container['filter']);
         });
     }

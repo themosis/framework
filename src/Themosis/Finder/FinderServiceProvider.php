@@ -9,7 +9,7 @@ class FinderServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton('filesystem', function () {
+        $this->app->bind('filesystem', function () {
             return new Filesystem();
         });
     }
