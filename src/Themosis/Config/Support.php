@@ -31,15 +31,30 @@ class Support
                     // Here we check if it has been defined without properties.
                     // If there are no properties, it's not added.
                     if ('post-formats' !== $value) {
-                        add_theme_support($value);
+                        //add_theme_support($value);
+                        $this->support($value);
                     }
                 } else {
                     // Theme features with options.
-                    add_theme_support($feature, $value);
+                    //add_theme_support($feature, $value);
+                    $this->support($feature, $value);
                 }
             }
         }
 
         return $this;
+    }
+
+    /**
+     * Add theme support.
+     *
+     * @param string $feature
+     * @param array  $value
+     */
+    protected function support($feature, $value = [])
+    {
+        if (!current_theme_supports($feature)) {
+            add_theme_support($feature, $value);
+        }
     }
 }
