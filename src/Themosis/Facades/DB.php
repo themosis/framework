@@ -2,10 +2,10 @@
 
 namespace Themosis\Facades;
 
-class Taxonomy extends Facade
+class DB extends Facade
 {
     /**
-     * Return the service provider key responsible for the taxonomy class.
+     * Return the service provider key responsible for the db/capsule class.
      * The key must be the same as the one used when registering
      * the service provider.
      *
@@ -13,6 +13,6 @@ class Taxonomy extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'taxonomy';
+        return 'capsule';
     }
 }

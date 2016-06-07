@@ -176,11 +176,6 @@ if (!class_exists('Themosis')) {
             $this->registerProviders();
 
             /*
-             * Configure Capsule Manager.
-             */
-            $this->setupCapsule();
-
-            /*
              * Setup core.
              */
             $this->setup();
@@ -208,6 +203,7 @@ if (!class_exists('Themosis')) {
                 Themosis\Ajax\AjaxServiceProvider::class,
                 Themosis\Asset\AssetServiceProvider::class,
                 Themosis\Config\ConfigServiceProvider::class,
+                Themosis\Database\DatabaseServiceProvider::class,
                 Themosis\Field\FieldServiceProvider::class,
                 Themosis\Finder\FinderServiceProvider::class,
                 Themosis\Hook\HookServiceProvider::class,
@@ -228,19 +224,6 @@ if (!class_exists('Themosis')) {
             foreach ($providers as $provider) {
                 $this->container->register($provider);
             }
-        }
-
-        /**
-         * Configure the Capsule Manager.
-         */
-        protected function setupCapsule()
-        {
-            if (!isset($GLOBALS['themosis.capsule'])) {
-                return;
-            }
-
-            $capsule = $GLOBALS['themosis.capsule'];
-            $capsule->setContainer($this->container);
         }
 
         /**
