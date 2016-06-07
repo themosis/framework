@@ -241,6 +241,7 @@ if (!class_exists('Themosis')) {
             $viewFinder->addLocation(themosis_path('sys').'Page'.DS.'Views');
             $viewFinder->addLocation(themosis_path('sys').'PostType'.DS.'Views');
             $viewFinder->addLocation(themosis_path('sys').'Field'.DS.'Fields'.DS.'Views');
+            $viewFinder->addLocation(themosis_path('sys').'Taxonomy'.DS.'Views');
             $viewFinder->addLocation(themosis_path('sys').'User'.DS.'Views');
 
             /*

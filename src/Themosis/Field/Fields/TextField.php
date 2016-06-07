@@ -56,4 +56,14 @@ class TextField extends FieldBuilder implements IField
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the field HTML code for the taxonomy field output.
+     *
+     * @return string
+     */
+    public function taxonomy()
+    {
+        return $this->metabox();
+    }
 }
