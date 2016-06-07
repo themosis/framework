@@ -285,18 +285,83 @@ class TaxonomyBuilder extends Wrapper
         return $this->validator->single($value, $rule);
     }
 
+    /**
+     * Display fields on add form screen.
+     */
     public function displayAddFields()
     {
-        echo($this->view->make('_themosisCoreTaxonomyAdd', ['fields' => $this->fields])->render());
+        $this->setNonce();
+        echo $this->view->make('_themosisCoreTaxonomyAdd', ['fields' => $this->fields])->render();
     }
 
-    public function displayEditFields()
+    /**
+     * Display fields on edit form screen.
+     *
+     * @param \stdClass $term The term object
+     */
+    public function displayEditFields($term)
     {
-        echo($this->view->make('_themosisCoreTaxonomyEdit', ['fields' => $this->fields])->render());
+        $this->setNonce();
+
+        foreach ($this->fields as $field) {
+            $value = get_term_meta($term->term_id, $field['name'], true);
+            $field['value'] = $this->getValue($term->term_id, $field, $value);
+            echo $this->view->make('_themosisCoreTaxonomyEdit', ['field' => $field])->render();
+        }
     }
 
-    public function save()
+    /**
+     * Set a custom nonce.
+     */
+    protected function setNonce()
     {
+        wp_nonce_field('taxonomy_set_fields', '_themosisnonce');
+    }
+
+    /**
+     * Return a default value for the custom fields.
+     * 
+     * @param int                           $term_id
+     * @param \Themosis\Field\Fields\IField $field
+     * @param string                        $value
+     *
+     * @return mixed|string
+     */
+    protected function getValue($term_id, $field, $value = '')
+    {
+        if (isset($_POST[$field['name']])) {
+            // Check if a "save" method exists. The method will parse the $_POST value
+            // and transform it for DB save. Ex.: transform an array to string or int...
+            if (method_exists($field, 'save')) {
+                // The field save method
+                $value = $field->save($_POST[$field['name']], $term_id);
+            } else {
+                // No "save" method, only fetch the $_POST value.
+                $value = $_POST[$field['name']];
+            }
+        } else {
+            // If nothing...get a default value...
+            $value = $this->parseValue($field, $value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Save term custom field data to database.
+     * 
+     * @param int $term_id
+     */
+    public function save($term_id)
+    {
+        if (!isset($_POST['_themosisnonce']) || !wp_verify_nonce($_POST['_themosisnonce'], 'taxonomy_set_fields')) {
+            return;
+        }
+
+        foreach ($this->fields as $field) {
+            $value = $this->getValue($term_id, $field);
+            update_term_meta($term_id, $field['name'], $value);
+        }
     }
 
     /**
