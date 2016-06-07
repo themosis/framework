@@ -137,7 +137,7 @@ class ViewServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('view', function ($container) {
-            $factory = new Factory($container['view.engine.resolver'], $container['view.finder'], $container['events.dispatcher']);
+            $factory = new Factory($container['view.engine.resolver'], $container['view.finder'], $container['events']);
             // Tell the factory to also handle the scout template for backwards compatibility.
             $factory->addExtension('scout.php', 'blade');
             // Tell the factory to handle twig extension files and assign them to the twig engine.

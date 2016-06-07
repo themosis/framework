@@ -12,11 +12,11 @@ class RouteServiceProvider extends ServiceProvider
         /*
          * Register the Events Dispatcher into the container.
          */
-        $this->app->singleton('events.dispatcher', function ($container) {
+        $this->app->bind('events', function ($container) {
             return new Dispatcher($container);
         });
         $this->app->singleton('router', function ($container) {
-            return new Router($container['events.dispatcher'], $container);
+            return new Router($container['events'], $container);
         });
     }
 }
