@@ -27,7 +27,7 @@ class InfiniteView extends Backbone.View
 
         // Attach the main "add" button to the view.
         new AddView({
-            el: this.$el.closest('.themosis-infinite-container').find('div.themosis-infinite-add-field-container'),
+            el: this.$el.closest('.themosis-infinite-container').children('div.themosis-infinite-add-field-container'),
             parent: this
         });
 
@@ -171,7 +171,7 @@ class InfiniteView extends Backbone.View
      */
     updateCount()
     {
-        this.count = this.$el.find('tr.themosis-infinite-row').length;
+        this.count = this.$el.children('tr.themosis-infinite-row').length;
     }
 
     /**
@@ -179,7 +179,7 @@ class InfiniteView extends Backbone.View
      */
     rename()
     {
-        let rows = this.$el.find('tr.themosis-infinite-row');
+        let rows = this.$el.children('tr.themosis-infinite-row');
 
         _.each(rows, (row, index) =>
         {
@@ -188,7 +188,7 @@ class InfiniteView extends Backbone.View
             row = $(row);
 
             // Get row fields.
-            let fields = row.find('tr.themosis-field-container'),
+            let fields = row.find('td.themosis-infinite-inner>table>tbody').first().children(), // tr.themosis-field-container element
                 order = row.children('td.themosis-infinite-order').children('span');
 
             // Update the row inner fields.
@@ -200,6 +200,7 @@ class InfiniteView extends Backbone.View
                 let input = field.find('input, textarea, select'),
                     label = field.find('th.themosis-label>label'),
                     collectionField = field.find('.themosis-collection-wrapper'); // Check if there is a collection field.
+                    // Probably check for an infinite field
 
                 if (!collectionField.length)
                 {

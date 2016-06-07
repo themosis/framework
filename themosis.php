@@ -66,7 +66,7 @@ if (!function_exists('themosis_path')) {
  * Main class that bootstraps the framework.
  */
 if (!class_exists('Themosis')) {
-    class themosis
+    class Themosis
     {
         /**
          * Themosis instance.

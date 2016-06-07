@@ -8,22 +8,25 @@ import CollectionView from '../collection/ItemsView';
 
 class RowView extends Backbone.View
 {
-    get events()
+    /*get events()
     {
         return {
-            'mouseenter .themosis-infinite-options': 'placeButton',
-            'click span.themosis-infinite-add': 'insert',
-            'click span.themosis-infinite-remove': 'remove'
+            'click .themosis-infinite-options>span.themosis-infinite-add': 'insert',
+            'click .themosis-infinite-options>span.themosis-infinite-remove': 'remove'
         };
-    }
+    }*/
 
     initialize(options)
     {
         // Retrieve passed parameters
         this.options = options;
 
-        _.bindAll(this, 'placeButton');
+        _.bindAll(this, 'placeButton', 'insert', 'remove');
         $(window).on('resize', this.placeButton);
+
+        this.$el.children('.themosis-infinite-options').find('span.themosis-infinite-add').on('click', this.insert);
+        this.$el.children('.themosis-infinite-options').find('span.themosis-infinite-remove').on('click', this.remove);
+        this.$el.children('.themosis-infinite-options').on('mouseenter', this.placeButton);
     }
 
     /**
@@ -47,9 +50,9 @@ class RowView extends Backbone.View
      */
     placeButton()
     {
-        let plusButton = this.$el.find('.themosis-infinite-add'),
-            cellHeight = this.$el.find('td.themosis-infinite-options').height(),
-            cellWidth = this.$el.find('td.themosis-infinite-options').width();
+        let plusButton = this.$el.children('td.themosis-infinite-options').children('.themosis-infinite-add'),
+            cellHeight = this.$el.children('td.themosis-infinite-options').height(),
+            cellWidth = this.$el.children('td.themosis-infinite-options').width();
 
         plusButton.css('margin-top', ((cellHeight / 2) - 13) * -1);
         plusButton.css('margin-left', (cellWidth / 2) - 9);

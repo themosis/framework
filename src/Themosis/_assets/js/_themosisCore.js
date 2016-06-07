@@ -1298,15 +1298,16 @@
 
 	// Implementation.
 	// List all infinite fields.
-	var infinites = (0, _jquery2.default)('div.themosis-infinite-container').closest('tr, div');
+	var infinites = (0, _jquery2.default)('div.themosis-infinite-container');
 
 	_underscore2.default.each(infinites, function (elem) {
 	    var infinite = (0, _jquery2.default)(elem),
-	        rows = infinite.find('tr.themosis-infinite-row');
+	        infiniteViewElem = infinite.find('table.themosis-infinite>tbody').first(),
+	        rows = infiniteViewElem.children('tr.themosis-infinite-row');
 
 	    // Create an infiniteView instance for each infinite field.
 	    new _InfiniteView2.default({
-	        el: infinite.find('table.themosis-infinite>tbody'),
+	        el: infiniteViewElem,
 	        rows: rows
 	    });
 	});
@@ -1382,7 +1383,7 @@
 
 	            // Attach the main "add" button to the view.
 	            new _AddView2.default({
-	                el: this.$el.closest('.themosis-infinite-container').find('div.themosis-infinite-add-field-container'),
+	                el: this.$el.closest('.themosis-infinite-container').children('div.themosis-infinite-add-field-container'),
 	                parent: this
 	            });
 
@@ -1540,7 +1541,7 @@
 	    }, {
 	        key: 'updateCount',
 	        value: function updateCount() {
-	            this.count = this.$el.find('tr.themosis-infinite-row').length;
+	            this.count = this.$el.children('tr.themosis-infinite-row').length;
 	        }
 
 	        /**
@@ -1552,7 +1553,7 @@
 	        value: function rename() {
 	            var _this3 = this;
 
-	            var rows = this.$el.find('tr.themosis-infinite-row');
+	            var rows = this.$el.children('tr.themosis-infinite-row');
 
 	            _underscore2.default.each(rows, function (row, index) {
 	                // Order is 1 based.
@@ -1560,8 +1561,9 @@
 	                row = (0, _jquery2.default)(row);
 
 	                // Get row fields.
-	                var fields = row.find('tr.themosis-field-container'),
-	                    order = row.children('td.themosis-infinite-order').children('span');
+	                var fields = row.find('td.themosis-infinite-inner>table>tbody').first().children(),
+	                    // tr.themosis-field-container element
+	                order = row.children('td.themosis-infinite-order').children('span');
 
 	                // Update the row inner fields.
 	                _underscore2.default.each(fields, function (field) {
@@ -1571,6 +1573,7 @@
 	                    var input = field.find('input, textarea, select'),
 	                        label = field.find('th.themosis-label>label'),
 	                        collectionField = field.find('.themosis-collection-wrapper'); // Check if there is a collection field.
+	                    // Probably check for an infinite field
 
 	                    if (!collectionField.length) {
 	                        if (1 < input.length) {
@@ -1838,12 +1841,25 @@
 
 	    _createClass(RowView, [{
 	        key: 'initialize',
+
+	        /*get events()
+	        {
+	            return {
+	                'click .themosis-infinite-options>span.themosis-infinite-add': 'insert',
+	                'click .themosis-infinite-options>span.themosis-infinite-remove': 'remove'
+	            };
+	        }*/
+
 	        value: function initialize(options) {
 	            // Retrieve passed parameters
 	            this.options = options;
 
-	            _underscore2.default.bindAll(this, 'placeButton');
+	            _underscore2.default.bindAll(this, 'placeButton', 'insert', 'remove');
 	            (0, _jquery2.default)(window).on('resize', this.placeButton);
+
+	            this.$el.children('.themosis-infinite-options').find('span.themosis-infinite-add').on('click', this.insert);
+	            this.$el.children('.themosis-infinite-options').find('span.themosis-infinite-remove').on('click', this.remove);
+	            this.$el.children('.themosis-infinite-options').on('mouseenter', this.placeButton);
 	        }
 
 	        /**
@@ -1873,9 +1889,9 @@
 	    }, {
 	        key: 'placeButton',
 	        value: function placeButton() {
-	            var plusButton = this.$el.find('.themosis-infinite-add'),
-	                cellHeight = this.$el.find('td.themosis-infinite-options').height(),
-	                cellWidth = this.$el.find('td.themosis-infinite-options').width();
+	            var plusButton = this.$el.children('td.themosis-infinite-options').children('.themosis-infinite-add'),
+	                cellHeight = this.$el.children('td.themosis-infinite-options').height(),
+	                cellWidth = this.$el.children('td.themosis-infinite-options').width();
 
 	            plusButton.css('margin-top', (cellHeight / 2 - 13) * -1);
 	            plusButton.css('margin-left', cellWidth / 2 - 9);
@@ -2089,15 +2105,6 @@
 	                collection: c,
 	                el: f
 	            });
-	        }
-	    }, {
-	        key: 'events',
-	        get: function get() {
-	            return {
-	                'mouseenter .themosis-infinite-options': 'placeButton',
-	                'click span.themosis-infinite-add': 'insert',
-	                'click span.themosis-infinite-remove': 'remove'
-	            };
 	        }
 	    }]);
 
