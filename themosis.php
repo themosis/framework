@@ -66,7 +66,7 @@ if (!function_exists('themosis_path')) {
  * Main class that bootstraps the framework.
  */
 if (!class_exists('Themosis')) {
-    class Themosis
+    class themosis
     {
         /**
          * Themosis instance.
@@ -176,6 +176,11 @@ if (!class_exists('Themosis')) {
             $this->registerProviders();
 
             /*
+             * Configure Capsule Manager.
+             */
+            $this->setupCapsule();
+
+            /*
              * Setup core.
              */
             $this->setup();
@@ -223,6 +228,19 @@ if (!class_exists('Themosis')) {
             foreach ($providers as $provider) {
                 $this->container->register($provider);
             }
+        }
+
+        /**
+         * Configure the Capsule Manager.
+         */
+        protected function setupCapsule()
+        {
+            if (!isset($GLOBALS['themosis.capsule'])) {
+                return;
+            }
+
+            $capsule = $GLOBALS['themosis.capsule'];
+            $capsule->setContainer($this->container);
         }
 
         /**
