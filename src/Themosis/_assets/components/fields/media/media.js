@@ -8,7 +8,7 @@ import './media.styl';
 /**
  * Implementation.
  */
-let mediaFields = $('table.themosis-media').closest('tr');
+let mediaFields = $('table.themosis-media').closest('tr, div');
 
 _.each(mediaFields, elem =>
 {
