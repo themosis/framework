@@ -24,4 +24,11 @@ interface IField
      * @return string
      */
     public function user();
+
+    /**
+     * Handle the HTML code for taxonomy output.
+     * 
+     * @return string
+     */
+    public function taxonomy();
 }

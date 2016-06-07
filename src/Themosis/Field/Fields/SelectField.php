@@ -58,4 +58,14 @@ class SelectField extends FieldBuilder implements IField
     {
         return $this->metabox();
     }
+
+    /**
+     * Handle the HTML code for taxonomy output.
+     *
+     * @return string
+     */
+    public function taxonomy()
+    {
+        return $this->metabox();
+    }
 }

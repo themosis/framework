@@ -58,7 +58,7 @@ class TextField extends FieldBuilder implements IField
     }
 
     /**
-     * Handle the field HTML code for the taxonomy field output.
+     * Handle the HTML code for taxonomy output.
      *
      * @return string
      */
