@@ -282,6 +282,34 @@ class TaxonomyBuilder extends Wrapper
 
         $rule = isset($rules[$key]) ? $rules[$key] : ['html'];
 
+        $vals = [];
+
+        // Check sanitization for infinite fields.
+        if (is_array($value)) {
+            foreach ($value as $k => $val) {
+                if (is_array($val)) {
+                    foreach ($val as $subKey => $subVal) {
+                        // Check if there is a sanitize method defined for inner fields.
+                        if (isset($rule[$subKey]) && !is_numeric($subKey)) {
+                            $vals[$k][$subKey] = $this->validator->single($subVal, $rule[$subKey]);
+                        } else {
+                            // If one inner field has a rule, this one is wrong for the others because $rule is an array of array.
+                            if (isset($rules[$key]) && !isset($rule[$subKey])) {
+                                $vals[$k][$subKey] = $this->validator->single($subVal, ['html']);
+                            } else {
+                                $vals[$k][$subKey] = $this->validator->single($subVal, $rule);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Return parsed array of the infinite field.
+        if (!empty($vals)) {
+            return $vals;
+        }
+
         return $this->validator->single($value, $rule);
     }
 

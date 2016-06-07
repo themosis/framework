@@ -5,7 +5,7 @@ import './infinite.styl';
 
 // Implementation.
 // List all infinite fields.
-let infinites = $('div.themosis-infinite-container').closest('tr');
+let infinites = $('div.themosis-infinite-container').closest('tr, div');
 
 _.each(infinites, elem =>
 {

@@ -1298,7 +1298,7 @@
 
 	// Implementation.
 	// List all infinite fields.
-	var infinites = (0, _jquery2.default)('div.themosis-infinite-container').closest('tr');
+	var infinites = (0, _jquery2.default)('div.themosis-infinite-container').closest('tr, div');
 
 	_underscore2.default.each(infinites, function (elem) {
 	    var infinite = (0, _jquery2.default)(elem),

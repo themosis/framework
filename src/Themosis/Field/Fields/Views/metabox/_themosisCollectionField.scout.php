@@ -28,7 +28,7 @@
                             <div class="themosis-collection__item">
                                 <?php
                                     $isFile = false;
-                                    $src = themosis_plugin_url(themosis_path('plugin')).'/src/Themosis/_assets/images/themosisFileIcon.png';
+                                    $src = plugins_url('src/Themosis/_assets', __FILE__).'/images/themosisFileIcon.png';
 
                                     if (wp_attachment_is_image($item))
                                     {
