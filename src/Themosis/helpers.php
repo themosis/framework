@@ -517,16 +517,22 @@ if (!function_exists('view')) {
     /**
      * Helper function to build views.
      *
-     * @param string $view The view relative path, name.
-     * @param array  $data Passed data.
+     * @param string $view      The view relative path, name.
+     * @param array  $data      Passed data.
+     * @param array  $mergeData
      *
-     * @return mixed
+     * @return \Illuminate\View\Factory
      */
-    function view($view, array $data = [])
+    function view($view = null, array $data = [], array $mergeData = [])
     {
         $container = container();
+        $factory = $container['view'];
 
-        return $container['view']->make($view, $data)->render();
+        if (func_num_args() === 0) {
+            return $factory;
+        }
+
+        return $factory->make($view, $data)->render();
     }
 }
 
