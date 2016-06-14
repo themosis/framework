@@ -61,7 +61,7 @@
     </table>
     @if(isset($field['features']['info']))
         <div class="themosis-field-info">
-            <p>{{ $field['features']['info'] }}</p>
+            <p>{!! $field['features']['info'] !!}</p>
         </div>
     @endif
     <div class="themosis-infinite-add-field-container">
