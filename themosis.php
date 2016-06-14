@@ -283,6 +283,10 @@ if (!class_exists('Themosis')) {
          */
         public function setRouter()
         {
+            if (is_feed() || is_comment_feed()) {
+                return;
+            }
+
             $request = $this->container['request'];
             $response = $this->container['router']->dispatch($request);
             // We only send back the content because, headers are already defined
