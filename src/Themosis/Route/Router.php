@@ -11,7 +11,7 @@ class Router extends IlluminateRouter
     /**
      * Build a Router instance.
      *
-     * @param \Illuminate\Events\Dispatcher $events
+     * @param \Illuminate\Events\Dispatcher    $events
      * @param \Themosis\Foundation\Application $container
      */
     public function __construct(Dispatcher $events, Application $container)
@@ -21,17 +21,18 @@ class Router extends IlluminateRouter
     }
 
     /**
-     * Create a new Route object (Themosis Routing).
+     * Create a new Themosis Route object.
      *
-     * @param array|string $methods
-     * @param string $uri
-     * @param mixed $action
-     *
-     * @return $this
+     * @param  array|string $methods
+     * @param  string       $uri
+     * @param  mixed        $action
+     * @return \Illuminate\Routing\Route
      */
     protected function newRoute($methods, $uri, $action)
     {
-        return new Route($methods, $uri, $action);
+        return (new Route($methods, $uri, $action))
+            ->setRouter($this)
+            ->setContainer($this->container);
     }
 
     /**
