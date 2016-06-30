@@ -38,12 +38,7 @@ class RouteCollection extends IlluminateRouteCollection
      */
     protected function check(array $routes, $request, $includingMethod = true)
     {
-        // Reorganize the order of the routes so that the normal routes will be checked first before the conditional WordPress routes
-        $reorganizedRoutes = Arr::sort($routes, function (Route $route) {
-            return $route->condition() != null;
-        });
-
-        $foundRoute = parent::check($reorganizedRoutes, $request, $includingMethod);
+        $foundRoute = parent::check($routes, $request, $includingMethod);
 
         // If no route found, check if the 404 route is set, if so, return that route as our found route.
         if (!$foundRoute && isset($routes['404'])) {
