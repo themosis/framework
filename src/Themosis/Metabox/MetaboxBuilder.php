@@ -3,7 +3,6 @@
 namespace Themosis\Metabox;
 
 use Illuminate\View\View;
-use Themosis\Hook\Action;
 use Themosis\Foundation\DataContainer;
 use Themosis\Field\Wrapper;
 use Themosis\Hook\IHook;
@@ -38,7 +37,22 @@ class MetaboxBuilder extends Wrapper implements IMetabox
      */
     protected $validator;
 
+    /**
+     * @var IHook
+     */
     protected $action;
+
+    /**
+     * @var IHook
+     */
+    protected $filter;
+
+    /**
+     * Mapping rules.
+     *
+     * @var array
+     */
+    protected $mappings = [];
 
     /**
      * The current user instance.
@@ -84,13 +98,14 @@ class MetaboxBuilder extends Wrapper implements IMetabox
      * @param \Themosis\User\User                    $user
      * @param IHook                                  $action
      */
-    public function __construct(DataContainer $datas, View $view, ValidationBuilder $validator, User $user, IHook $action)
+    public function __construct(DataContainer $datas, View $view, ValidationBuilder $validator, User $user, IHook $action, IHook $filter)
     {
         $this->datas = $datas;
         $this->view = $view;
         $this->validator = $validator;
         $this->user = $user;
         $this->action = $action;
+        $this->filter = $filter;
 
         // Handle save action for fields.
         $action->add('save_post', [$this, 'save']);
@@ -151,6 +166,124 @@ class MetaboxBuilder extends Wrapper implements IMetabox
         $this->check = true;
 
         return $this;
+    }
+
+    /**
+     * Map a meta key to a current post data. Be careful as you might override
+     * important post data. Use it with precaution.
+     *
+     * @param array $mappings A list of key/value pairs defining the mappings. Key is the meta_key and its value is the post data name/key.
+     */
+    public function map(array $mappings)
+    {
+        $this->mappings = $this->parseMappings($mappings);
+
+        $this->filter->add('wp_insert_post_data', [$this, 'map_metadata'], 10, 2);
+    }
+
+    protected function parseMappings(array $mappings)
+    {
+        $maps = [];
+        $allowed = [
+            'post_author' => ['is_int', 'strlen' => 20],
+            'post_date' => 'is_string',
+            'post_date_gmt' => 'is_string',
+            'post_content' => 'is_string',
+            'post_content_filtered' => 'is_string',
+            'post_title' => 'is_string',
+            'post_excerpt' => 'is_string',
+            'post_status' => ['is_string', 'strlen' => 20],
+            'post_type' => ['is_string', 'strlen' => 20],
+            'comment_status' => ['is_string', 'strlen' => 20],
+            'ping_status' => ['is_string', 'strlen' => 20],
+            'post_password' => ['is_string', 'strlen' => 20],
+            'post_name' => ['is_string', 'strlen' => 200],
+            'to_ping' => 'is_string',
+            'pinged' => 'is_string',
+            'post_modified' => 'is_string',
+            'post_modified_gmt' => 'is_string',
+            'post_parent' => ['is_int', 'strlen' => 20],
+            'menu_order' => ['is_int', 'strlen' => 11],
+            'post_mime_type' => ['is_string', 'strlen' => 100],
+            'guid' => ['is_string', 'strlen' => 255]
+        ];
+
+        foreach ($mappings as $meta_key => $post_key) {
+            if (in_array($post_key, array_keys($allowed))) {
+                $maps[$meta_key] = $post_key;
+            }
+        }
+
+        return $maps;
+    }
+
+    /**
+     * Handle the mapping.
+     *
+     * @param array $data The post data.
+     * @param array $raw Sanitized but unmodified post data.
+     */
+    public function map_metadata($data, $raw)
+    {
+        $post_id = isset($_POST['post_ID']) ? esc_attr($_POST['post_ID']) : false;
+
+        if (!$post_id) {
+            return;
+        }
+
+        foreach ($this->mappings as $meta_key => $post_key) {
+            
+            $field = array_filter($this->getFields(), function ($field) use ($meta_key) {
+                return $meta_key == $field['name'];
+            });
+
+            $field = array_shift($field);
+
+            $value = '';
+
+            if (isset($_POST[$field['name']])) {
+                // Check if a "save" method exists. The method will parse the $_POST value
+                // and transform it for DB save. Ex.: transform an array to string or int...
+                if (method_exists($field, 'save')) {
+                    // The field save method
+                    $value = $field->save($_POST[$field['name']], $post_id);
+                } else {
+                    // No "save" method, only fetch the $_POST value.
+                    $value = $_POST[$field['name']];
+                }
+            } else {
+                // If nothing...setup a default value...
+                $value = $this->parseValue($field);
+            }
+
+            // Apply validation if defined.
+            // Check if the rule exists for the field in order to validate.
+            if (isset($this->datas['rules'][$field['name']])) {
+                $rules = $this->datas['rules'][$field['name']];
+
+                // Check if $rules array is an associative array
+                if ($this->validator->isAssociative($rules) && 'infinite' == $field->getFieldType()) {
+                    // Check Infinite fields validation.
+                    foreach ($value as $row => $rowValues) {
+                        foreach ($rowValues as $name => $val) {
+                            if (isset($rules[$name])) {
+                                $value[$row][$name] = $this->validator->single($val, $rules[$name]);
+                            }
+                        }
+                    }
+                } else {
+                    $value = $this->validator->single($value, $this->datas['rules'][$field['name']]);
+                }
+            }
+
+            // Assign value to post data.
+            if (isset($data[$post_key])) {
+                $data[$post_key] = $value;
+            }
+
+        }
+
+        return $data;
     }
 
     /**
@@ -268,6 +401,19 @@ class MetaboxBuilder extends Wrapper implements IMetabox
             return;
         }
 
+        $fields = $this->getFields();
+
+        // Register post meta.
+        $this->register($postId, $fields);
+    }
+
+    /**
+     * Retrieve the list of defined fields.
+     *
+     * @return array|mixed
+     */
+    public function getFields()
+    {
         $fields = [];
 
         // Loop through the registered fields.
@@ -280,8 +426,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
             $fields = $this->datas['fields'];
         }
 
-        // Register post meta.
-        $this->register($postId, $fields);
+        return $fields;
     }
 
     /**
