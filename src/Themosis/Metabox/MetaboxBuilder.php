@@ -222,13 +222,15 @@ class MetaboxBuilder extends Wrapper implements IMetabox
      *
      * @param array $data The post data.
      * @param array $raw Sanitized but unmodified post data.
+     *
+     * @return array
      */
     public function map_metadata($data, $raw)
     {
         $post_id = isset($_POST['post_ID']) ? esc_attr($_POST['post_ID']) : false;
 
         if (!$post_id) {
-            return;
+            return $data;
         }
 
         foreach ($this->mappings as $meta_key => $post_key) {
@@ -238,8 +240,6 @@ class MetaboxBuilder extends Wrapper implements IMetabox
             });
 
             $field = array_shift($field);
-
-            $value = '';
 
             if (isset($_POST[$field['name']])) {
                 // Check if a "save" method exists. The method will parse the $_POST value
@@ -280,7 +280,6 @@ class MetaboxBuilder extends Wrapper implements IMetabox
             if (isset($data[$post_key])) {
                 $data[$post_key] = $value;
             }
-
         }
 
         return $data;
