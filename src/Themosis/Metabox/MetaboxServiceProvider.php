@@ -18,7 +18,7 @@ class MetaboxServiceProvider extends ServiceProvider
             $user = $container['user'];
             $user = $user->current();
 
-            return new MetaboxBuilder($data, $view, $container['validation'], $user, $container['action']);
+            return new MetaboxBuilder($data, $view, $container['validation'], $user, $container['action'], $container['filter']);
         });
     }
 }

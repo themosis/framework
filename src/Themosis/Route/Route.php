@@ -190,14 +190,12 @@ class Route extends IlluminateRoute
     {
         // If this route uses a WordPress conditional tag
         if ($this->condition()) {
-            // Loop trough every validator and if the route passes every validator it passed return true
+            // Loop trough every validator and if the route passes, return true else false.
             foreach ($this->getWpValidators() as $validator) {
-                if (!$validator->matches($this, $request)) {
-                    return false;
-                }
+                return $validator->matches($this, $request);
             }
 
-            return true;
+            return false;
         }
 
         // If no WordPress condition is found, use the normal way of getting a route
