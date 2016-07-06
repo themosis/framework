@@ -16,7 +16,7 @@ class Route extends IlluminateRoute
     protected $condition;
 
     /**
-     * The prefix used to name the custom route tags
+     * The prefix used to name the custom route tag.
      *
      * @var string
      */
@@ -235,7 +235,8 @@ class Route extends IlluminateRoute
 
             // Add the rewrite rule to the top
             add_action('init', function () use ($regex) {
-                add_rewrite_rule($regex, 'index.php?is_' . $this->rewrite_tag_prefix . '_route=true', 'top');
+                add_rewrite_tag('%is_'.$this->rewrite_tag_prefix.'_route%', '(\d)');
+                add_rewrite_rule($regex, 'index.php?is_' . $this->rewrite_tag_prefix . '_route=1', 'top');
             });
         }
     }

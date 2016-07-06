@@ -48,32 +48,17 @@ class Router extends IlluminateRouter
         // If the current route is a WordPress route
         if ($route instanceof Route && !$route->condition()) {
 
-            global $wp;
-            //Check if the route is not WordPress route and there is no rewrite rule created for the given route
+            global $wp, $wp_query;
+
+            //Check if the route is not a WordPress route and warn the developer to flush the rewrite rules.
             if ($wp->matched_rule != $route->getRewriteRuleRegex()) {
 
-                $text = 'There were routes non-Wordpress routes created but the needed rewrite rules are not available. Please refresh the permalinks on the settings page to fix this problem.
-                    By default WordPress can not handle static routes like their working in Themosis using Laravel it\'s router. Because of this we create a rewrite rule for every non-WordPress route.
-                    The only good way to refresh the rewrite rules is to do it manually.</br></br>
-                    After every route definition change just refresh your permalinks to avoid unpredicted errors.';
-                $title = 'WordPress - Missing Rewrite Rules';
-
-                /*
-                 * Add a notice in the wp-admin.
-                 */
-                add_action('admin_notices', function () use ($text) {
-                    printf('<div class="notice notice-warning is-dismissible"><p>%s</p></div>', $text);
-                });
-
-                /*
-                 * Add a notice in the front-end.
-                 */
-                wp_die($text, $title);
+                //$text = __("Custom routes are defined in your project. Please flush the rewrite rules.", THEMOSIS_FRAMEWORK_TEXTDOMAIN);
+                //@todo Better way to auto flush rewrite rules or warn the developer to do it.
             }
 
-            global $wp_query;
-            // Set the is_home to false inside the wp_query
-            $wp_query->is_home = false;
+            // Reset the WordPress query.
+            $wp_query->init();
         }
 
         return $route;
