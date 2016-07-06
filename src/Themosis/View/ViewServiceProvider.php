@@ -145,6 +145,13 @@ class ViewServiceProvider extends ServiceProvider
             // Tell the factory to handle twig extension files and assign them to the twig engine.
             $factory->addExtension('twig', 'twig');
 
+            // We will also set the container instance on this view environment since the
+            // view composers may be classes registered in the container, which allows
+            // for great testable, flexible composers for the application developer.
+            $factory->setContainer($container);
+
+            $factory->share('app', $container);
+
             return $factory;
         });
     }
