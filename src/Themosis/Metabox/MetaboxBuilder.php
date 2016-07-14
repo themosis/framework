@@ -576,7 +576,17 @@ class MetaboxBuilder extends Wrapper implements IMetabox
     {
         foreach ($fields as $field) {
             // Check if saved value
-            $value = get_post_meta($post->ID, $field['name'], true);
+            switch ($field->getFieldType()) {
+                case 'checkbox':
+                case 'radio':
+                case 'select':
+                case 'collection':
+                    $value = get_post_meta($post->ID, $field['name'], false);
+                    break;
+
+                default:
+                    $value = get_post_meta($post->ID, $field['name'], true);
+            }
 
             // If none of the above condition is matched
             // simply assign the post meta default or saved value.
