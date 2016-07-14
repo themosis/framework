@@ -489,7 +489,43 @@ class MetaboxBuilder extends Wrapper implements IMetabox
                 }
             }
 
-            update_post_meta($postId, $field['name'], $value);
+            // Multiple meta keys: same name for meta_key but with different values.
+            // Infinite fields cannot be used in meta query...
+            if (is_array($value) && 'infinite' !== $field->getFieldType()) {
+                // Retrieve existing "old_values".
+                $old_values = get_post_meta($postId, $field['name'], false); // array
+                foreach ($value as $val) {
+                    if (in_array($val, $old_values)) {
+                        $old_value = array_filter($old_values, function ($old) use ($val) {
+                            return $old === $val;
+                        });
+
+                        update_post_meta($postId, $field['name'], $val, $old_value);
+
+                    } else if (!empty($val)) {
+                        add_post_meta($postId, $field['name'], $val, false);
+                    }
+                    // Check for removed data...
+                    $notupdated_values = array_diff($old_values, $value);
+
+                    if (!empty($notupdated_values)) {
+                        foreach ($notupdated_values as $value_to_delete) {
+                            delete_post_meta($postId, $field['name'], $value_to_delete);
+                        }
+                    }
+                }
+            } else {
+                // Single meta key
+                $old_value = get_post_meta($postId, $field['name'], true); // unique value
+
+                if (!empty($old_value)) {
+                    update_post_meta($postId, $field['name'], $value, $old_value);
+                } else if (!empty($value)) {
+                    add_post_meta($postId, $field['name'], $value, true);
+                } else {
+                    delete_post_meta($postId, $field['name']);
+                }
+            }
         }
     }
 
