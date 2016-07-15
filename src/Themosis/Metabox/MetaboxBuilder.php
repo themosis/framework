@@ -521,7 +521,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
                 if (!empty($old_value)) {
                     update_post_meta($postId, $field['name'], $value, $old_value);
                 } else if (!empty($value)) {
-                    add_post_meta($postId, $field['name'], $value, true);
+                    update_post_meta($postId, $field['name'], $value);
                 } else {
                     delete_post_meta($postId, $field['name']);
                 }
