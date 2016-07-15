@@ -514,6 +514,15 @@ class MetaboxBuilder extends Wrapper implements IMetabox
                         }
                     }
                 }
+
+                /**
+                 * If no new values are passed but have existed,
+                 * then remove everything.
+                 */
+                if (empty($value) && !empty($old_values)) {
+                    delete_post_meta($postId, $field['name']);
+                }
+
             } else {
                 // Single meta key
                 $old_value = get_post_meta($postId, $field['name'], true); // unique value
