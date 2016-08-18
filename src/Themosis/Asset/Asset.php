@@ -241,6 +241,33 @@ class Asset implements IAsset
     }
 
     /**
+     * Add inline code before or after the loaded asset.
+     * Default to "after".
+     *
+     * @param string $data     The inline code to output.
+     * @param string $position Accepts "after" or "before" as values. Note that position is only working for JS assets.
+     *
+     * @return Asset
+     */
+    public function inline($data, $position = 'after')
+    {
+        if ('script' === $this->type) {
+            $args = [
+                'data' => $data,
+                'position' => $position,
+            ];
+        } elseif ('style' === $this->type) {
+            $args = [
+                'data' => $data,
+            ];
+        }
+
+        $this->args['inline'][] = $args;
+
+        return $this;
+    }
+
+    /**
      * Add attributes to the asset opening tag.
      *
      * @param array $atts The asset attributes to add.
@@ -411,6 +438,9 @@ class Asset implements IAsset
                 wp_localize_script($args['handle'], $objectName, $data);
             }
         }
+
+        // Pass the asset instance and register inline code.
+        $this->registerInline($asset);
     }
 
     /**
@@ -422,6 +452,34 @@ class Asset implements IAsset
     {
         $args = $asset->getArgs();
         wp_enqueue_style($args['handle'], $args['path'], $args['deps'], $args['version'], $args['mixed']);
+
+        // Pass the asset instance and register inline code.
+        $this->registerInline($asset);
+    }
+
+    /**
+     * Register inline code.
+     *
+     * @param Asset $asset
+     */
+    protected function registerInline(Asset $asset)
+    {
+        $args = $asset->getArgs();
+
+        if (empty($args) || !isset($args['inline'])) {
+            return;
+        }
+
+        // Process if there are inline codes.
+        $inlines = $args['inline'];
+
+        foreach ($inlines as $inline) {
+            if ('script' === $asset->getType()) {
+                wp_add_inline_script($args['handle'], $inline['data'], $inline['position']);
+            } elseif ('style' === $asset->getType()) {
+                wp_add_inline_style($args['handle'], $inline['data']);
+            }
+        }
     }
 
     /**
