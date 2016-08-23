@@ -12,6 +12,8 @@ License: GPLv2
 /*----------------------------------------------------*/
 // The directory separator.
 /*----------------------------------------------------*/
+use Illuminate\Events\EventServiceProvider;
+
 defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
 
 /*----------------------------------------------------*/
@@ -171,9 +173,10 @@ if (!class_exists('Themosis')) {
             $this->container->registerAllPaths(themosis_path());
 
             /*
-             * Register core service providers.
+             * Register the service providers.
              */
             $this->registerProviders();
+            $this->registerBaseServiceProviders();
 
             /*
              * Setup core.
@@ -214,16 +217,27 @@ if (!class_exists('Themosis')) {
                 Themosis\Page\PageServiceProvider::class,
                 Themosis\Page\Sections\SectionServiceProvider::class,
                 Themosis\PostType\PostTypeServiceProvider::class,
-                Themosis\Route\RouteServiceProvider::class,
+                Themosis\Route\RoutingServiceProvider::class,
                 Themosis\Taxonomy\TaxonomyServiceProvider::class,
                 Themosis\User\UserServiceProvider::class,
                 Themosis\Validation\ValidationServiceProvider::class,
                 Themosis\View\ViewServiceProvider::class,
+                Themosis\Foundation\Support\Providers\RouteServiceProvider::class,
             ]);
 
             foreach ($providers as $provider) {
                 $this->container->register($provider);
             }
+        }
+
+        /**
+         * Register all of the base service providers.
+         *
+         * @return void
+         */
+        protected function registerBaseServiceProviders()
+        {
+            $this->container->register(new EventServiceProvider($this->container));
         }
 
         /**
