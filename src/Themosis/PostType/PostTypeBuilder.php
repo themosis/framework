@@ -3,6 +3,7 @@
 namespace Themosis\PostType;
 
 use Illuminate\View\View;
+use Themosis\Foundation\Application;
 use Themosis\Foundation\DataContainer;
 use Themosis\Hook\IHook;
 use Themosis\Metabox\IMetabox;
@@ -55,16 +56,32 @@ class PostTypeBuilder implements IPostType
     protected $view;
 
     /**
+     * Application container.
+     *
+     * @var \Themosis\Foundation\Application
+     */
+    protected $container;
+
+    /**
+     * Instance abstract name prefix for registration into the container.
+     *
+     * @var string
+     */
+    protected $prefix = 'posttype';
+
+    /**
      * Build a custom post type.
      *
-     * @param DataContainer         $datas   The post type properties.
-     * @param IMetabox              $metabox The custom metabox for custom publish metabox
-     * @param \Illuminate\View\View $view    The view that handles custom publish metabox
-     * @param IHook                 $action  The action class
-     * @param IHook                 $filter  The filter class
+     * @param Application           $container The application container.
+     * @param DataContainer         $datas     The post type properties.
+     * @param IMetabox              $metabox   The custom metabox for custom publish metabox
+     * @param \Illuminate\View\View $view      The view that handles custom publish metabox
+     * @param IHook                 $action    The action class
+     * @param IHook                 $filter    The filter class
      */
-    public function __construct(DataContainer $datas, IMetabox $metabox, View $view, IHook $action, IHook $filter)
+    public function __construct(Application $container, DataContainer $datas, IMetabox $metabox, View $view, IHook $action, IHook $filter)
     {
+        $this->container = $container;
         $this->datas = $datas;
         $this->metabox = $metabox;
         $this->view = $view;
@@ -126,6 +143,9 @@ class PostTypeBuilder implements IPostType
             // Out of an `init` action, call the hook.
             $this->action->add('init', [$this, 'register']);
         }
+
+        // Register each custom post type instances into the container.
+        $this->container->instance($this->prefix.'.'.$this->datas['name'], $this);
 
         return $this;
     }
@@ -359,5 +379,25 @@ class PostTypeBuilder implements IPostType
         ];
 
         return $defaults;
+    }
+
+    /**
+     * Check if the custom post type has statuses registered.
+     *
+     * @return bool
+     */
+    public function has_status()
+    {
+        return count($this->status) > 0;
+    }
+
+    /**
+     * Return the WordPress post type instance.
+     *
+     * @return \stdClass|\WP_Post_type if WordPress 4.6+
+     */
+    public function instance()
+    {
+        return $this->postType;
     }
 }

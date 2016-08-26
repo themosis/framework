@@ -12,7 +12,7 @@ class TaxonomyServiceProvider extends ServiceProvider
 
             $data = new TaxonomyData();
 
-            return new TaxonomyBuilder($data, $container['action'], $container['validation'], $container['view']);
+            return new TaxonomyBuilder($container, $data, $container['action'], $container['validation'], $container['view']);
         });
     }
 }

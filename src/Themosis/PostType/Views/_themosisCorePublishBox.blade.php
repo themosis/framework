@@ -133,7 +133,7 @@ $status_keys = array_keys($statuses);
                                 ];
                             }
                         ?>
-                        {{ \Themosis\Facades\Form::select('post_status', [$choices], $__post->post_status, ['id' => 'post_status']) }}
+                        {!! \Themosis\Facades\Form::select('post_status', [$choices], $__post->post_status, ['id' => 'post_status']) !!}
                         <a href="#post_status" class="save-post-status hide-if-no-js button"><?php _e('OK'); ?></a>
                         <a href="#post_status" class="cancel-post-status hide-if-no-js button-cancel"><?php _e('Cancel'); ?></a>
                     </div>
