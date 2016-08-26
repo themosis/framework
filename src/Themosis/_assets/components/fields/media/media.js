@@ -12,11 +12,12 @@ let mediaFields = $('table.themosis-media').closest('tr, div');
 
 _.each(mediaFields, elem =>
 {
-    let input = $(elem).find('input.themosis-media-input');
+    let input = $(elem).find('input.themosis-media-input'),
+        types = input.data('type'); // string representation of an array
 
     let data = new MediaModel({
         value: input.val(),
-        type: input.data('type'),
+        type: types.split(','), // return an array from string
         size: input.data('size')
     });
 
