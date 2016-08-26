@@ -446,6 +446,20 @@ if (!function_exists('array_first')) {
     }
 }
 
+if (!function_exists('array_is_sequential')) {
+    /**
+     * Check if an array is sequential (have keys from 0 to n) or not.
+     *
+     * @param array $array The array to check.
+     *
+     * @return bool
+     */
+    function array_is_sequential($array)
+    {
+        return array_keys($array) === range(0, count($array) - 1);
+    }
+}
+
 if (!function_exists('value')) {
     /**
      * Return the default value of the given value.

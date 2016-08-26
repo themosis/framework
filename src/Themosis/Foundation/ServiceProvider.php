@@ -9,8 +9,9 @@ abstract class ServiceProvider extends IlluminateServiceProvider
     /**
      * Dynamically handle missing method calls.
      *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array  $parameters
+     *
      * @return mixed
      *
      * @throws \Exception
