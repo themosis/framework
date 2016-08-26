@@ -197,4 +197,43 @@ class Loop
     {
         return 'class="'.implode(' ', get_post_class($class, $post_id)).'"';
     }
+
+    /**
+     * Return the next link html anchor tag for post entries.
+     *
+     * @param string $label    Link content
+     * @param int    $max_page Max pages in current query.
+     *
+     * @return string
+     */
+    public function nextPage($label = null, $max_page = 0)
+    {
+        return get_next_posts_link($label, $max_page);
+    }
+
+    /**
+     * Return the previous link html anchor tag for post entries.
+     *
+     * @param string $label Link content
+     *
+     * @return string|void
+     */
+    public function previousPage($label = null)
+    {
+        return get_previous_posts_link($label);
+    }
+
+    /**
+     * Return a pagination for any type of loops.
+     *
+     * @param array $args
+     *
+     * @see https://developer.wordpress.org/reference/functions/paginate_links/
+     *
+     * @return string|array
+     */
+    public function paginate($args = [])
+    {
+        return paginate_links($args);
+    }
 }
