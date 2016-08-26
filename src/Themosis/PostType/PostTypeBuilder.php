@@ -278,7 +278,32 @@ class PostTypeBuilder implements IPostType
         // Expose statuses to main JS object in wp-admin.
         $this->exposeStatuses();
 
+        // Re-order the list of statuses on List Table.
+        // Put the "trash" item as the last item.
+        $this->filter->add('views_edit-'.$this->datas['name'], [$this, 'reorderStatusViews']);
+
         return $this;
+    }
+
+    /**
+     * Re-order the status views/links on top of the List Table.
+     * If there is a 'trash' view, move it to last position for better user experience.
+     *
+     * @param array $views The statuses views.
+     *
+     * @return array
+     */
+    public function reorderStatusViews($views)
+    {
+        if (array_key_exists('trash', $views)) {
+            // Move it at the end of the views array.
+            $trash = $views['trash'];
+            unset($views['trash']);
+            end($views); // move array pointer to the end.
+            $views['trash'] = $trash; // add the trash view back.
+        }
+
+        return $views;
     }
 
     /**
