@@ -130,7 +130,7 @@ class PostTypeBuilder implements IPostType
     public function set(array $params = [])
     {
         // Override custom post type arguments if given.
-        $this->datas['args'] = array_merge($this->datas['args'], $params);
+        $this->datas['args'] = wp_parse_args($this->datas['args'], $params);
 
         // Trigger the init event in order to register the custom post type.
         // Check if we are not already called by a method attached to the `init` hook.
@@ -354,28 +354,18 @@ class PostTypeBuilder implements IPostType
     protected function setDefaultArguments($plural, $singular)
     {
         $labels = [
-            'name' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'singular_name' => __($singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'add_new' => __('Add New', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'add_new_item' => __('Add New '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'edit_item' => __('Edit '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'new_item' => __('New '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'all_items' => __('All '.$plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'view_item' => __('View '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'search_items' => __('Search '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'not_found' => __('No '.$singular.' found', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'not_found_in_trash' => __('No '.$singular.' found in Trash', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'parent_item_colon' => '',
-            'menu_name' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'name' => $plural,
+            'singular_name' => $singular,
+            'menu_name' => $plural
         ];
 
         $defaults = [
-            'label' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'label' => $plural,
             'labels' => $labels,
             'description' => '',
             'public' => true,
             'menu_position' => 20,
-            'has_archive' => true,
+            'has_archive' => true
         ];
 
         return $defaults;
