@@ -83,7 +83,7 @@ class Route extends IlluminateRoute
         if (!isset($action['conditional_params'])) {
             // The first element passed in the action is used
             // for the WordPress conditional function parameters.
-            $param = array_first($action, function ($key, $value) {
+            $param = array_first($action, function ($value, $key) {
                 return is_string($value) || is_array($value);
             });
 
