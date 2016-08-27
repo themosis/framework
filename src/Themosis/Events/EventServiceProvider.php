@@ -5,7 +5,7 @@ namespace Themosis\Events;
 use Illuminate\Events\Dispatcher;
 use Themosis\Foundation\ServiceProvider;
 
-class EventsServiceProvider extends ServiceProvider
+class EventServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
