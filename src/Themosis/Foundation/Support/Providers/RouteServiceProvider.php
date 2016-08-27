@@ -24,17 +24,13 @@ class RouteServiceProvider extends ServiceProvider
     public function boot(Router $router)
     {
 //        Because the URL Generator is not yet set in RoutingServiceProvider, we do not to execute this line
-//        $this->setRootControllerNamespace();
+        $this->setRootControllerNamespace();
 
-        if ($this->app->routesAreCached()) {
-            $this->loadCachedRoutes();
-        } else {
-            $this->loadRoutes();
+        $this->loadRoutes();
 
-            $this->app->booted(function () use ($router) {
-                $router->getRoutes()->refreshNameLookups();
-            });
-        }
+        $this->app->booted(function () use ($router) {
+            $router->getRoutes()->refreshNameLookups();
+        });
     }
 
     /**
@@ -52,18 +48,6 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Load the cached routes for the application.
-     *
-     * @return void
-     */
-    protected function loadCachedRoutes()
-    {
-        $this->app->booted(function () {
-            require $this->app->getCachedRoutesPath();
-        });
-    }
-
-    /**
      * Load the application routes.
      *
      * @return void
@@ -71,16 +55,6 @@ class RouteServiceProvider extends ServiceProvider
     protected function loadRoutes()
     {
         $this->app->call([$this, 'map']);
-    }
-
-    /**
-     * Set the initial route file to load
-     *
-     * @return void
-     */
-    public function map()
-    {
-        $this->loadRoutesFrom(themosis_path('theme.resources').'routes.php');
     }
 
     /**
