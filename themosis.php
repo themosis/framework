@@ -218,8 +218,7 @@ if (!class_exists('Themosis')) {
                 Themosis\Taxonomy\TaxonomyServiceProvider::class,
                 Themosis\User\UserServiceProvider::class,
                 Themosis\Validation\ValidationServiceProvider::class,
-                Themosis\View\ViewServiceProvider::class,
-                Themosis\Foundation\Support\Providers\RouteServiceProvider::class,
+                Themosis\View\ViewServiceProvider::class
             ]);
 
             foreach ($providers as $provider) {
