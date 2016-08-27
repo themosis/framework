@@ -92,18 +92,43 @@ abstract class FieldBuilder extends DataContainer
 
     /**
      * Set the type data of the media to insert.
-     * If no type is defined, default to 'image'.
+     * If no type is defined, default to an array containing the 'image' mime type only.
+     *
+     * Need to "serialize" the array for output as a string value. We can use a separated list with commas.
      */
     protected function setType()
     {
-        $allowed = ['image', 'application', 'video', 'audio'];
+        // Retrieve allowed WordPress mime types.
+        // If none are defined, this will be the default types.
+        // Users will be able to add any media file.
+        $allowed = $this->getAllowedMimeTypes();
+
         $features = $this['features'];
 
-        if (isset($features['type']) && !in_array($features['type'], $allowed)) {
-            $features['type'] = 'image';
-        } elseif (!isset($features['type'])) {
-            $features['type'] = 'image';
+        // User has defined media type(s)
+        // It might be a string or an array.
+        if (isset($features['type'])) {
+            $type = $features['type'];
+
+            // Isset... Check if is a string... If it is, turn it into an array.
+            if (is_string($type)) {
+                $type = [$type];
+            }
+
+            // $type is an array, let's check its values.
+            $type = array_intersect($type, $allowed);
+
+            if (!empty($type)) {
+                $features['type'] = $type;
+            } else {
+                $features['type'] = $allowed;
+            }
+        } else {
+            $features['type'] = $allowed;
         }
+
+        // "Serialize" the $features['type'] value. Build a comma separated list of types.
+        $features['type'] = implode(',', $features['type']);
 
         // Set the features back.
         $this['features'] = $features;
@@ -112,6 +137,26 @@ abstract class FieldBuilder extends DataContainer
         $atts = $this['atts'];
         $atts['data-type'] = $this['features']['type'];
         $this['atts'] = $atts;
+    }
+
+    /**
+     * Return a simplified list of allowed mime types.
+     * This will automatically authorize user defined mime types.
+     *
+     * @return array
+     */
+    protected function getAllowedMimeTypes()
+    {
+        $types = get_allowed_mime_types();
+
+        $allowed = array_map(function ($mime) {
+            // type/ext
+            $explodedMime = explode('/', $mime);
+
+            return array_shift($explodedMime);
+        }, $types);
+
+        return array_values(array_unique($allowed));
     }
 
     /**

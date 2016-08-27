@@ -7,7 +7,7 @@ class MediaModel extends Backbone.Model
         super(options);
         this.defaults = {
             value: '', // Register the attachment ID
-            type: 'image',
+            type: [], // Is an array by default. Can be any of attachment mime type: 'image', 'text', 'video', 'audio', 'application'
             size: 'full',
             display: '', // The text to display - Actually the attachment ID
             thumbUrl: '', // The src url of the icon/image to use for thumbnail

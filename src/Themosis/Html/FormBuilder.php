@@ -479,13 +479,15 @@ class FormBuilder
         // Build the re-indexed options array.
         foreach ($options as $group) {
             foreach ($group as $i => $value) {
-                // Custom values - No need to change something.
-                if (is_string($i)) {
-                    $indexedOptions[$i] = $value;
-                } else {
+                // Check if sequential or not.
+                if (array_is_sequential($group)) {
                     // Int values - Reorder options so there are
                     // no duplicates.
                     array_push($indexedOptions, $value);
+                } else {
+                    // Custom index or defined numeric indexes.
+                    // Nothing to change.
+                    $indexedOptions[$i] = $value;
                 }
             }
         }

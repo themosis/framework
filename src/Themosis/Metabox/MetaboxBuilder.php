@@ -205,7 +205,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
             'post_parent' => ['is_int', 'strlen' => 20],
             'menu_order' => ['is_int', 'strlen' => 11],
             'post_mime_type' => ['is_string', 'strlen' => 100],
-            'guid' => ['is_string', 'strlen' => 255]
+            'guid' => ['is_string', 'strlen' => 255],
         ];
 
         foreach ($mappings as $meta_key => $post_key) {
@@ -221,7 +221,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
      * Handle the mapping.
      *
      * @param array $data The post data.
-     * @param array $raw Sanitized but unmodified post data.
+     * @param array $raw  Sanitized but unmodified post data.
      *
      * @return array
      */
@@ -234,7 +234,6 @@ class MetaboxBuilder extends Wrapper implements IMetabox
         }
 
         foreach ($this->mappings as $meta_key => $post_key) {
-            
             $field = array_filter($this->getFields(), function ($field) use ($meta_key) {
                 return $meta_key == $field['name'];
             });
@@ -315,7 +314,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
         if ($this->hasTemplate() && $postType == $this->datas['postType']) {
             // Fetch current ID (for cpts only).
             $postID = themosis_get_post_id();
-            $template = get_post_meta($postID, '_themosisPageTemplate', true);
+            $template = get_post_meta($postID, '_wp_page_template', true);
 
             // Check if a template is attached to the post/page.
             if ($template == $this->datas['options']['template']) {
@@ -501,8 +500,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
                         });
 
                         update_post_meta($postId, $field['name'], $val, $old_value);
-
-                    } else if (!empty($val)) {
+                    } elseif (!empty($val)) {
                         add_post_meta($postId, $field['name'], $val, false);
                     }
                     // Check for removed data...
@@ -515,21 +513,20 @@ class MetaboxBuilder extends Wrapper implements IMetabox
                     }
                 }
 
-                /**
+                /*
                  * If no new values are passed but have existed,
                  * then remove everything.
                  */
                 if (empty($value) && !empty($old_values)) {
                     delete_post_meta($postId, $field['name']);
                 }
-
             } else {
                 // Single meta key
                 $old_value = get_post_meta($postId, $field['name'], true); // unique value
 
                 if (!empty($old_value)) {
                     update_post_meta($postId, $field['name'], $value, $old_value);
-                } else if (!empty($value)) {
+                } elseif (!empty($value)) {
                     update_post_meta($postId, $field['name'], $value);
                 } else {
                     delete_post_meta($postId, $field['name']);

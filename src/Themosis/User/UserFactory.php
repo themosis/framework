@@ -4,7 +4,6 @@ namespace Themosis\User;
 
 use Illuminate\View\View;
 use Themosis\Field\Wrapper;
-use Themosis\Facades\Action;
 use Themosis\Field\FieldException;
 use Themosis\Hook\IHook;
 use Themosis\Validation\IValidate;

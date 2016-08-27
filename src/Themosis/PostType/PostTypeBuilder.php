@@ -3,6 +3,7 @@
 namespace Themosis\PostType;
 
 use Illuminate\View\View;
+use Themosis\Foundation\Application;
 use Themosis\Foundation\DataContainer;
 use Themosis\Hook\IHook;
 use Themosis\Metabox\IMetabox;
@@ -55,16 +56,32 @@ class PostTypeBuilder implements IPostType
     protected $view;
 
     /**
+     * Application container.
+     *
+     * @var \Themosis\Foundation\Application
+     */
+    protected $container;
+
+    /**
+     * Instance abstract name prefix for registration into the container.
+     *
+     * @var string
+     */
+    protected $prefix = 'posttype';
+
+    /**
      * Build a custom post type.
      *
-     * @param DataContainer         $datas   The post type properties.
-     * @param IMetabox              $metabox The custom metabox for custom publish metabox
-     * @param \Illuminate\View\View $view    The view that handles custom publish metabox
-     * @param IHook                 $action  The action class
-     * @param IHook                 $filter  The filter class
+     * @param Application           $container The application container.
+     * @param DataContainer         $datas     The post type properties.
+     * @param IMetabox              $metabox   The custom metabox for custom publish metabox
+     * @param \Illuminate\View\View $view      The view that handles custom publish metabox
+     * @param IHook                 $action    The action class
+     * @param IHook                 $filter    The filter class
      */
-    public function __construct(DataContainer $datas, IMetabox $metabox, View $view, IHook $action, IHook $filter)
+    public function __construct(Application $container, DataContainer $datas, IMetabox $metabox, View $view, IHook $action, IHook $filter)
     {
+        $this->container = $container;
         $this->datas = $datas;
         $this->metabox = $metabox;
         $this->view = $view;
@@ -113,7 +130,7 @@ class PostTypeBuilder implements IPostType
     public function set(array $params = [])
     {
         // Override custom post type arguments if given.
-        $this->datas['args'] = array_merge($this->datas['args'], $params);
+        $this->datas['args'] = wp_parse_args($this->datas['args'], $params);
 
         // Trigger the init event in order to register the custom post type.
         // Check if we are not already called by a method attached to the `init` hook.
@@ -126,6 +143,9 @@ class PostTypeBuilder implements IPostType
             // Out of an `init` action, call the hook.
             $this->action->add('init', [$this, 'register']);
         }
+
+        // Register each custom post type instances into the container.
+        $this->container->instance($this->prefix.'.'.$this->datas['name'], $this);
 
         return $this;
     }
@@ -258,7 +278,32 @@ class PostTypeBuilder implements IPostType
         // Expose statuses to main JS object in wp-admin.
         $this->exposeStatuses();
 
+        // Re-order the list of statuses on List Table.
+        // Put the "trash" item as the last item.
+        $this->filter->add('views_edit-'.$this->datas['name'], [$this, 'reorderStatusViews']);
+
         return $this;
+    }
+
+    /**
+     * Re-order the status views/links on top of the List Table.
+     * If there is a 'trash' view, move it to last position for better user experience.
+     *
+     * @param array $views The statuses views.
+     *
+     * @return array
+     */
+    public function reorderStatusViews($views)
+    {
+        if (array_key_exists('trash', $views)) {
+            // Move it at the end of the views array.
+            $trash = $views['trash'];
+            unset($views['trash']);
+            end($views); // move array pointer to the end.
+            $views['trash'] = $trash; // add the trash view back.
+        }
+
+        return $views;
     }
 
     /**
@@ -334,30 +379,40 @@ class PostTypeBuilder implements IPostType
     protected function setDefaultArguments($plural, $singular)
     {
         $labels = [
-            'name' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'singular_name' => __($singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'add_new' => __('Add New', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'add_new_item' => __('Add New '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'edit_item' => __('Edit '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'new_item' => __('New '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'all_items' => __('All '.$plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'view_item' => __('View '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'search_items' => __('Search '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'not_found' => __('No '.$singular.' found', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'not_found_in_trash' => __('No '.$singular.' found in Trash', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'parent_item_colon' => '',
-            'menu_name' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'name' => $plural,
+            'singular_name' => $singular,
+            'menu_name' => $plural
         ];
 
         $defaults = [
-            'label' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'label' => $plural,
             'labels' => $labels,
             'description' => '',
             'public' => true,
             'menu_position' => 20,
-            'has_archive' => true,
+            'has_archive' => true
         ];
 
         return $defaults;
+    }
+
+    /**
+     * Check if the custom post type has statuses registered.
+     *
+     * @return bool
+     */
+    public function has_status()
+    {
+        return count($this->status) > 0;
+    }
+
+    /**
+     * Return the WordPress post type instance.
+     *
+     * @return \stdClass|\WP_Post_type if WordPress 4.6+
+     */
+    public function instance()
+    {
+        return $this->postType;
     }
 }

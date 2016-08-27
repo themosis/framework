@@ -3,6 +3,7 @@
 namespace Themosis\Taxonomy;
 
 use Illuminate\View\Factory;
+use Themosis\Foundation\Application;
 use Themosis\Foundation\DataContainer;
 use Themosis\Field\Wrapper;
 use Themosis\Hook\IHook;
@@ -40,15 +41,27 @@ class TaxonomyBuilder extends Wrapper
     protected $fields = [];
 
     /**
+     * @var Application
+     */
+    protected $container;
+
+    /**
+     * @var string
+     */
+    protected $prefix = 'taxonomy';
+
+    /**
      * Build a TaxonomyBuilder instance.
      *
+     * @param Application                            $container
      * @param DataContainer                          $datas     The taxonomy properties.
      * @param \Themosis\Hook\IHook                   $action
      * @param \Themosis\Validation\ValidationBuilder $validator
      * @param \Illuminate\View\Factory               $view
      */
-    public function __construct(DataContainer $datas, IHook $action, ValidationBuilder $validator, Factory $view)
+    public function __construct(Application $container, DataContainer $datas, IHook $action, ValidationBuilder $validator, Factory $view)
     {
+        $this->container = $container;
         $this->datas = $datas;
         $this->action = $action;
         $this->validator = $validator;
@@ -75,10 +88,13 @@ class TaxonomyBuilder extends Wrapper
             }
         }
 
+        // Convert post type names to an array (a taxonomy can be shared between multiple post types).
+        $postType = (array) $postType;
+
         // Store properties.
         $this->datas['name'] = $name;
-        $this->datas['postType'] = (array) $postType;
-        $this->datas['args'] = $this->setDefaultArguments($plural, $singular);
+        $this->datas['postType'] = $postType;
+        $this->datas['args'] = $this->setDefaultArguments($postType, $plural, $singular);
 
         return $this;
     }
@@ -96,7 +112,7 @@ class TaxonomyBuilder extends Wrapper
     public function set(array $params = [])
     {
         // Override custom taxonomy arguments if given.
-        $this->datas['args'] = array_merge($this->datas['args'], $params);
+        $this->datas['args'] = wp_parse_args($this->datas['args'], $params);
 
         // Trigger the 'init' event in order to register the custom taxonomy.
         // Check if we are not already called by a method attached to the `init` hook.
@@ -109,6 +125,9 @@ class TaxonomyBuilder extends Wrapper
             // Out of an `init` action, call the hook.
             $this->action->add('init', [$this, 'register']);
         }
+
+        // Register each custom taxonomy instance into the container.
+        $this->container->instance($this->prefix.'.'.$this->datas['name'], $this);
 
         return $this;
     }
@@ -142,33 +161,42 @@ class TaxonomyBuilder extends Wrapper
     /**
      * Set the taxonomy default arguments.
      *
-     * @param string $plural   The plural display name.
-     * @param string $singular The singular display name.
+     * @param array  $posttypes The post type names to attach the taxonomy to.
+     * @param string $plural    The plural display name.
+     * @param string $singular  The singular display name.
      *
      * @return array
      */
-    protected function setDefaultArguments($plural, $singular)
+    protected function setDefaultArguments($posttypes, $plural, $singular)
     {
         $labels = [
-            'name' => _x($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'singular_name' => _x($singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'search_items' => __('Search '.$plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'all_items' => __('All '.$plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'parent_item' => __('Parent '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'parent_item_colon' => __('Parent '.$singular.': ', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'edit_item' => __('Edit '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'update_item' => __('Update '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'add_new_item' => __('Add New '.$singular, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'new_item_name' => __('New '.$singular.' Name', THEMOSIS_FRAMEWORK_TEXTDOMAIN),
-            'menu_name' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'name' => $plural,
+            'singular_name' => $singular,
+            'menu_name' => $plural
         ];
 
         $defaults = [
-            'label' => __($plural, THEMOSIS_FRAMEWORK_TEXTDOMAIN),
+            'label' => $plural,
             'labels' => $labels,
-            'public' => true,
-            'query_var' => true,
+            'public' => true
         ];
+
+        /*
+         * Check if defined custom post type has custom statuses.
+         * If it has custom statuses, change the default update count callback function
+         * before registering.
+         */
+        foreach ($posttypes as $posttype) {
+            if (isset($this->container['posttype.'.$posttype])) {
+                $posttypeInstance = $this->container['posttype.'.$posttype];
+
+                if ($posttypeInstance->has_status()) {
+                    // Tell WordPress to count posts that are associated to a term.
+                    $defaults['update_count_callback'] = '_update_generic_term_count';
+                    break; // No need to loop further if one of the post has custom status.
+                }
+            }
+        }
 
         return $defaults;
     }
