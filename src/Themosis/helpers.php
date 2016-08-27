@@ -541,7 +541,7 @@ if (!function_exists('container')) {
      */
     function container($make = null, $parameters = [])
     {
-        app($make, $parameters);
+        return app($make, $parameters);
     }
 }
 
