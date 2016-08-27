@@ -3,6 +3,8 @@
 /**
  * Helpers functions globally available.
  */
+use Illuminate\Container\Container;
+
 if (!function_exists('themosis_is_subpage')) {
     /**
      * Define if the current page is a child page.
@@ -509,21 +511,37 @@ if (!function_exists('str_contains')) {
     }
 }
 
-if (!function_exists('container')) {
+if (! function_exists('app')) {
     /**
-     * Helper function to retrieve the service container.
+     * Get the available container instance.
      *
-     * @return \Themosis\Foundation\Application
+     * @param  string  $make
+     * @param  array   $parameters
+     * @return mixed|\Themosis\Foundation\Application
      */
-    function container()
+    function app($make = null, $parameters = [])
     {
-        if (!isset($GLOBALS['themosis'])) {
-            wp_die('The service container is not available. Please make sure the Themosis framework is installed.');
+        if (is_null($make)) {
+            return Container::getInstance();
         }
 
-        $themosis = $GLOBALS['themosis'];
+        return Container::getInstance()->make($make, $parameters);
+    }
+}
 
-        return $themosis->container;
+if (!function_exists('container')) {
+    /**
+     * Get the available container instance.
+     *
+     * Simply an alias to the container() function to keep backwards compatibility
+     *
+     * @param  string  $make
+     * @param  array   $parameters
+     * @return mixed|\Themosis\Foundation\Application
+     */
+    function container($make = null, $parameters = [])
+    {
+        app($make, $parameters);
     }
 }
 
@@ -539,14 +557,13 @@ if (!function_exists('view')) {
      */
     function view($view = null, array $data = [], array $mergeData = [])
     {
-        $container = container();
-        $factory = $container['view'];
+        $factory = app('view');
 
         if (func_num_args() === 0) {
             return $factory;
         }
 
-        return $factory->make($view, $data)->render();
+        return $factory->make($view, $data, $mergeData)->render();
     }
 }
 
