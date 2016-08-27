@@ -62,10 +62,10 @@ class Route extends IlluminateRoute
      */
     public function __construct($methods, $uri, $action)
     {
+        $this->condition = $this->parseCondition($uri);
+
         parent::__construct($methods, $uri, $action);
 
-        $this->parameters = [];
-        $this->condition = $this->parseCondition($uri);
         $this->createRewriteRule();
     }
 
@@ -80,7 +80,7 @@ class Route extends IlluminateRoute
     {
         $action = parent::parseAction($action);
 
-        if (!isset($action['conditional_params'])) {
+        if ($this->condition() && !isset($action['conditional_params'])) {
             // The first element passed in the action is used
             // for the WordPress conditional function parameters.
             $param = array_first($action, function ($value, $key) {
