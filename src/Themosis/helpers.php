@@ -549,15 +549,15 @@ if (!function_exists('themosis')) {
     /**
      * Get the themosis main application instance
      *
-     * @return \Themosis\Foundation\Application
+     * @return \Themosis
      */
     function themosis()
     {
-        if (!Themosis::getInstance()) {
+        if (!Themosis::instance()) {
             wp_die('Themosis has not yet been initialized. Please make sure the Themosis framework is installed.');
         }
 
-        return Themosis::getInstance();
+        return Themosis::instance();
     }
 }
 
