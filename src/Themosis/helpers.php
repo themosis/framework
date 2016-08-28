@@ -545,6 +545,22 @@ if (!function_exists('container')) {
     }
 }
 
+if (!function_exists('themosis')) {
+    /**
+     * Get the themosis main application instance
+     *
+     * @return \Themosis\Foundation\Application
+     */
+    function themosis()
+    {
+        if (!Themosis::getInstance()) {
+            wp_die('Themosis has not yet been initialized. Please make sure the Themosis framework is installed.');
+        }
+
+        return Themosis::getInstance();
+    }
+}
+
 if (!function_exists('view')) {
     /**
      * Helper function to build views.
