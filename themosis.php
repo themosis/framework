@@ -87,7 +87,7 @@ if (!class_exists('Themosis')) {
          * 
          * @var \Themosis\Foundation\Application
          */
-        public $container;
+        public $app;
 
         private function __construct()
         {
@@ -149,29 +149,29 @@ if (!class_exists('Themosis')) {
             /*
              * Instantiate the service container for the project.
              */
-            $this->container = new \Themosis\Foundation\Application();
+            $this->app = new \Themosis\Foundation\Application();
 
             /*
              * Create a new Request instance and register it.
              * By providing an instance, the instance is shared.
              */
             $request = \Themosis\Foundation\Request::capture();
-            $this->container->instance('request', $request);
+            $this->app->instance('request', $request);
 
             /*
              * Setup the facade.
              */
-            \Themosis\Facades\Facade::setFacadeApplication($this->container);
+            \Themosis\Facades\Facade::setFacadeApplication($this->app);
 
             /*
              * Register into the container, the registered paths.
              * Normally at this stage, plugins should have
              * their paths registered into the $GLOBALS array.
              */
-            $this->container->registerAllPaths(themosis_path());
+            $this->app->registerAllPaths(themosis_path());
 
             /*
-             * Register core service providers.
+             * Register the service providers.
              */
             $this->registerProviders();
 
@@ -214,15 +214,15 @@ if (!class_exists('Themosis')) {
                 Themosis\Page\PageServiceProvider::class,
                 Themosis\Page\Sections\SectionServiceProvider::class,
                 Themosis\PostType\PostTypeServiceProvider::class,
-                Themosis\Route\RouteServiceProvider::class,
+                Themosis\Route\RoutingServiceProvider::class,
                 Themosis\Taxonomy\TaxonomyServiceProvider::class,
                 Themosis\User\UserServiceProvider::class,
                 Themosis\Validation\ValidationServiceProvider::class,
-                Themosis\View\ViewServiceProvider::class,
+                Themosis\View\ViewServiceProvider::class
             ]);
 
             foreach ($providers as $provider) {
-                $this->container->register($provider);
+                $this->app->register($provider);
             }
         }
 
@@ -236,7 +236,7 @@ if (!class_exists('Themosis')) {
             /*
              * Add view paths.
              */
-            $viewFinder = $this->container['view.finder'];
+            $viewFinder = $this->app['view.finder'];
             $viewFinder->addLocation(themosis_path('sys').'Metabox'.DS.'Views');
             $viewFinder->addLocation(themosis_path('sys').'Page'.DS.'Views');
             $viewFinder->addLocation(themosis_path('sys').'PostType'.DS.'Views');
@@ -248,7 +248,7 @@ if (!class_exists('Themosis')) {
              * Add paths to asset finder.
              */
             $url = plugins_url('src/Themosis/_assets', __FILE__);
-            $assetFinder = $this->container['asset.finder'];
+            $assetFinder = $this->app['asset.finder'];
             $assetFinder->addPaths([$url => themosis_path('sys').'_assets']);
 
             /*
@@ -266,14 +266,14 @@ if (!class_exists('Themosis')) {
              */
             $images = new Themosis\Config\Images([
                 '_themosis_media' => [100, 100, true, __('Mini', THEMOSIS_FRAMEWORK_TEXTDOMAIN)],
-            ], $this->container['filter']);
+            ], $this->app['filter']);
             $images->make();
 
             /*
              * Register framework assets.
              */
-            $this->container['asset']->add('themosis-core-styles', 'css/_themosisCore.css', ['wp-color-picker'])->to('admin');
-            $this->container['asset']->add('themosis-core-scripts', 'js/_themosisCore.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view', 'wp-color-picker'], '1.3.0', true)->to('admin');
+            $this->app['asset']->add('themosis-core-styles', 'css/_themosisCore.css', ['wp-color-picker'])->to('admin');
+            $this->app['asset']->add('themosis-core-scripts', 'js/_themosisCore.js', ['jquery', 'jquery-ui-sortable', 'underscore', 'backbone', 'mce-view', 'wp-color-picker'], '1.3.0', true)->to('admin');
         }
 
         /**
@@ -287,8 +287,8 @@ if (!class_exists('Themosis')) {
                 return;
             }
 
-            $request = $this->container['request'];
-            $response = $this->container['router']->dispatch($request);
+            $request = $this->app['request'];
+            $response = $this->app['router']->dispatch($request);
             // We only send back the content because, headers are already defined
             // by WordPress internals.
             $response->sendContent();

@@ -7,21 +7,13 @@ use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 abstract class ServiceProvider extends IlluminateServiceProvider
 {
     /**
-     * Dynamically handle missing method calls.
+     * Create a new service provider instance.
      *
-     * @param string $method
-     * @param array  $parameters
-     *
-     * @return mixed
-     *
-     * @throws \Exception
+     * @param  \Themosis\Foundation\Application  $app
+     * @return void
      */
-    public function __call($method, $parameters)
+    public function __construct($app)
     {
-        if ($method == 'boot') {
-            return;
-        }
-
-        throw new \Exception("Call to undefined method [{$method}]");
+        $this->app = $app;
     }
 }
