@@ -549,7 +549,7 @@ if (!function_exists('themosis')) {
     /**
      * Get the themosis main application instance
      *
-     * @return \Themosis\Foundation\Application
+     * @return \Themosis
      */
     function themosis()
     {
