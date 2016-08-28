@@ -21,5 +21,9 @@ class RoutingServiceProvider extends ServiceProvider
         $this->app['router'] = $this->app->share(function ($app) {
             return new Router($app['events'], $app);
         });
+
+	    $this->app['wordpress_router'] = $this->app->share(function ($app) {
+		    return new WordPressRouter($app);
+	    });
     }
 }

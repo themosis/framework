@@ -4,10 +4,19 @@ namespace Themosis\Route;
 
 use Illuminate\Events\Dispatcher;
 use Illuminate\Routing\Router as IlluminateRouter;
+use ReflectionClass;
+use Themosis\Facades\WPRoute;
 use Themosis\Foundation\Application;
 
 class Router extends IlluminateRouter
 {
+	/**
+	 * Whether to create the routes as WordPress routes
+	 *
+	 * @var boolean
+	 */
+	protected $createAsWordPressRoute = false;
+
     /**
      * Build a Router instance.
      *
@@ -20,7 +29,26 @@ class Router extends IlluminateRouter
         $this->routes = new RouteCollection();
     }
 
-    /**
+	/**
+	 * @return boolean
+	 */
+	public function isCreateAsWordPressRoute()
+	{
+		return $this->createAsWordPressRoute;
+	}
+
+	/**
+	 * @param boolean $createAsWordPressRoute
+	 *
+	 * @return $this
+	 */
+	public function setCreateAsWordPressRoute($createAsWordPressRoute)
+	{
+		$this->createAsWordPressRoute = $createAsWordPressRoute;
+		return $this;
+	}
+
+	/**
      * Create a new Themosis Route object.
      *
      * @param  array|string $methods
@@ -30,7 +58,10 @@ class Router extends IlluminateRouter
      */
     protected function newRoute($methods, $uri, $action)
     {
-        return (new Route($methods, $uri, $action))
+    	$routeClass = 'Themosis\\Route\\' . ($this->createAsWordPressRoute ? 'WordPressRoute' : 'Route');
+    	$routeInstance = new ReflectionClass($routeClass);
+
+        return $routeInstance->newInstanceArgs([$methods, $uri, $action])
             ->setRouter($this)
             ->setContainer($this->container);
     }
@@ -46,13 +77,12 @@ class Router extends IlluminateRouter
         $route = parent::findRoute($request);
 
         // If the current route is a WordPress route
-        if ($route instanceof Route && !$route->condition()) {
+        if ($route instanceof WPRoute && !$route->condition()) {
 
             global $wp, $wp_query;
 
-            //Check if the route is not a WordPress route and the matched rule is not the the regex of the matched route
+            //Check if the route is not a WordPress route and warn the developer to flush the rewrite rules.
             if ($wp->matched_rule != $route->getRewriteRuleRegex()) {
-                // Flush the rewrite rules
                 flush_rewrite_rules();
             }
 

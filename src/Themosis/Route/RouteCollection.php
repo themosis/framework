@@ -16,7 +16,7 @@ class RouteCollection extends IlluminateRouteCollection
     {
         $domainAndUri = $route->domain().$route->getUri();
 
-        if ($route->condition() && $route->conditionalParameters()) {
+        if (isset($route->condition) && $route->conditionalParameters()) {
             $domainAndUri .= serialize($route->conditionalParameters());
         }
 
