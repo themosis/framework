@@ -4,6 +4,7 @@ namespace Themosis\Route;
 
 use Illuminate\Routing\Route as IlluminateRoute;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Themosis\Route\Matching\ConditionMatching;
 
 class Route extends IlluminateRoute
@@ -83,7 +84,7 @@ class Route extends IlluminateRoute
         if (!isset($action['conditional_params'])) {
             // The first element passed in the action is used
             // for the WordPress conditional function parameters.
-            $param = array_first($action, function ($key, $value) {
+            $param = Arr::first($action, function ($value, $key) {
                 return is_string($value) || is_array($value);
             });
 

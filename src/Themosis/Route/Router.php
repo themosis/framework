@@ -47,14 +47,15 @@ class Router extends IlluminateRouter
 
         // If the current route is a WordPress route
         if ($route instanceof Route && !$route->condition()) {
-
             global $wp, $wp_query;
 
             //Check if the route is not a WordPress route and warn the developer to flush the rewrite rules.
             if ($wp->matched_rule != $route->getRewriteRuleRegex()) {
-
-                //$text = __("Custom routes are defined in your project. Please flush the rewrite rules.", THEMOSIS_FRAMEWORK_TEXTDOMAIN);
-                //@todo Better way to auto flush rewrite rules or warn the developer to do it.
+                /*
+                 * @todo Better way to auto flush rewrite rules or warn the developer to do it.
+                 * We cannot rely on the flush_rewrite_rules() function as it's a heavy process
+                 * especially on a per-request manner.
+                 */
             }
 
             // Reset the WordPress query.
