@@ -33,6 +33,7 @@ class Application extends Container
     public function registerApplication()
     {
         // Normally, only one instance is shared into the container.
+        static::setInstance($this);
         $this->instance('app', $this);
     }
 

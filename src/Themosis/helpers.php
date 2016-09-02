@@ -1,6 +1,8 @@
 <?php
 
-/**
+use Themosis\Foundation\Application;
+
+/*
  * Helpers functions globally available.
  */
 if (!function_exists('themosis_is_subpage')) {
@@ -487,21 +489,53 @@ if (!function_exists('str_contains')) {
     }
 }
 
-if (!function_exists('container')) {
+if (!function_exists('app')) {
     /**
-     * Helper function to retrieve the service container.
+     * Helper function to quickly retrieve an instance.
      *
-     * @return \Themosis\Foundation\Application
+     * @param null  $abstract   The abstract instance name.
+     * @param array $parameters
+     *
+     * @return mixed
      */
-    function container()
+    function app($abstract = null, array $parameters = [])
     {
-        if (!isset($GLOBALS['themosis'])) {
-            wp_die('The service container is not available. Please make sure the Themosis framework is installed.');
+        if (is_null($abstract)) {
+            return Application::getInstance();
         }
 
-        $themosis = $GLOBALS['themosis'];
+        return Application::getInstance()->make($abstract, $parameters);
+    }
+}
 
-        return $themosis->container;
+if (!function_exists('container')) {
+    /**
+     * Helper function to quickly retrieve an instance.
+     *
+     * @param null  $abstract   The abstract instance name.
+     * @param array $parameters
+     *
+     * @return mixed
+     */
+    function container($abstract = null, array $parameters = [])
+    {
+        return app($abstract, $parameters);
+    }
+}
+
+if (!function_exists('themosis')) {
+    /**
+     * Helper function to retrieve the Themosis class instance.
+     * 
+     * @return Themosis
+     */
+    function themosis()
+    {
+        if (!class_exists('Themosis') || Themosis::instance()) {
+            wp_die('Themosis has not yet been initialized. Please make sure the Themosis framework is installed.');
+        }
+
+        return Themosis::instance();
     }
 }
 
@@ -517,14 +551,13 @@ if (!function_exists('view')) {
      */
     function view($view = null, array $data = [], array $mergeData = [])
     {
-        $container = container();
-        $factory = $container['view'];
+        $factory = container('view');
 
         if (func_num_args() === 0) {
             return $factory;
         }
 
-        return $factory->make($view, $data)->render();
+        return $factory->make($view, $data, $mergeData)->render();
     }
 }
 
