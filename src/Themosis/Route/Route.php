@@ -17,6 +17,13 @@ class Route extends IlluminateRoute
     protected $condition;
 
     /**
+     * The additional parameters for the WordPress template conditions
+     *
+     * @var array|void
+     */
+    protected $conditionalParameters = [];
+
+    /**
      * The prefix used to name the custom route tag.
      *
      * @var string
@@ -66,50 +73,43 @@ class Route extends IlluminateRoute
         parent::__construct($methods, $uri, $action);
 
         $this->parameters = [];
+
+        /*
+         * Parse the WordPress condition together with the parameters
+         */
         $this->condition = $this->parseCondition($uri);
+        $this->conditionalParameters = $this->parseConditionalParameters($action);
+
+        /*
+         * Create a WordPress rewrite rule if the route is a non-WordPress route
+         */
         $this->createRewriteRule();
     }
 
     /**
-     * Parse the route action into a standard array.
-     *
-     * @param \Closure|array $action
-     *
-     * @return array
-     */
-    protected function parseAction($action)
-    {
-        $action = parent::parseAction($action);
-
-        if (!isset($action['conditional_params'])) {
-            // The first element passed in the action is used
-            // for the WordPress conditional function parameters.
-            $param = Arr::first($action, function ($value, $key) {
-                return is_string($value) || is_array($value);
-            });
-
-            $action['conditional_params'] = $this->parseConditionalParam($param, $action);
-        }
-
-        return $action;
-    }
-
-    /**
-     * Parse the action condition parameter value. This is the parameter
+     * Parses the conditional parameter out of the action parameter. This is the parameter
      * given to WordPress conditional functions later.
      *
-     * @param string|array $param  The condition param value.
-     * @param array        $action The route action params.
+     * @param array        $action The action parameter where the conditional parameters are in
      *
-     * @return mixed
+     * @return array       An array with the conditional parameters or null
      */
-    protected function parseConditionalParam($param, $action)
+    protected function parseConditionalParameters($action)
     {
-        if (is_string($param)) {
-            return (false !== strrpos($param, '@')) ? null : $action[0];
+        if($this->condition())
+        {
+            // The first element passed in the action is used
+            // for the WordPress conditional function parameters.
+            $parameters = array_values($action)[0];
+
+            if (is_string($parameters) && strrpos($parameters, '@') !== false) {
+                return [];
+            }
+
+            return is_array($parameters) ? $parameters : [$parameters];
         }
 
-        return $param;
+        return [];
     }
 
     /**
@@ -253,13 +253,13 @@ class Route extends IlluminateRoute
     }
 
     /**
-     * Return the 'params' value.
+     * Return the conditional parameters
      *
      * @return array
      */
     public function conditionalParameters()
     {
-        return isset($this->action['conditional_params']) ? (array) $this->action['conditional_params'] : [];
+        return $this->conditionalParameters;
     }
 
     /**
