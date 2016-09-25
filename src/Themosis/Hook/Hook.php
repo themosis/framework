@@ -49,6 +49,23 @@ abstract class Hook implements IHook
     }
 
     /**
+     * Wrapper of the "remove_action" function.
+     *
+     * @param string $hook The action name hook
+     *
+     * @return $this
+     */
+    public function remove($hook)
+    {
+        unset($this->hooks[$hook]);
+
+        // Remove the actual action/filter. It does not care whether the hook is an action or a filter. Removing both works the same
+        remove_action($hook);
+
+        return $this;
+    }
+
+    /**
      * Check if a registered hook exists.
      *
      * @param string $hook
