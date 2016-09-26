@@ -96,17 +96,29 @@ class Route extends IlluminateRoute
      */
     protected function parseConditionalParameters($action)
     {
-        if($this->condition())
-        {
-            // The first element passed in the action is used
-            // for the WordPress conditional function parameters.
-            $parameters = array_values($action)[0];
+        // Retrieve parameters. Accept only string or array.
+        // This help filter the $action parameters as it might also be a Closure.
+        $parameters = Arr::first($action, function ($value, $key) {
+            return is_string($value) || is_array($value);
+        });
 
-            if (is_string($parameters) && strrpos($parameters, '@') !== false) {
+        if ($this->condition() && !is_null($parameters))
+        {
+            // Make sure the given parameters is an array.
+            $parameters = is_array($parameters) ? $parameters : [$parameters];
+
+            // Retrieve only the first element passed in the action as
+            // it is the only parameter used by the WordPress conditional function.
+            $parameter = array_values($parameters)[0];
+
+            if (is_string($parameter) && strrpos($parameter, '@') !== false) {
+                /**
+                 * In case of a controller value statement, return empty array.
+                 */
                 return [];
             }
 
-            return is_array($parameters) ? $parameters : [$parameters];
+            return is_array($parameter) ? $parameter : [$parameter];
         }
 
         return [];
@@ -237,7 +249,7 @@ class Route extends IlluminateRoute
             // Add the rewrite rule to the top
             add_action('init', function () use ($regex) {
                 add_rewrite_tag('%is_'.$this->rewrite_tag_prefix.'_route%', '(\d)');
-                add_rewrite_rule($regex, 'index.php?is_' . $this->rewrite_tag_prefix . '_route=1', 'top');
+                add_rewrite_rule($regex, 'index.php?is_'.$this->rewrite_tag_prefix.'_route=1', 'top');
             });
         }
     }
