@@ -130,7 +130,7 @@ class PostTypeBuilder implements IPostType
     public function set(array $params = [])
     {
         // Override custom post type arguments if given.
-        $this->datas['args'] = wp_parse_args($this->datas['args'], $params);
+        $this->datas['args'] = array_replace_recursive($this->datas['args'], $params);
 
         // Trigger the init event in order to register the custom post type.
         // Check if we are not already called by a method attached to the `init` hook.
