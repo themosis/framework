@@ -8,11 +8,11 @@ class HookServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton('action', function ($container) {
+        $this->app->bind('action', function ($container) {
             return new ActionBuilder($container);
         });
 
-        $this->app->singleton('filter', function ($container) {
+        $this->app->bind('filter', function ($container) {
             return new FilterBuilder($container);
         });
     }

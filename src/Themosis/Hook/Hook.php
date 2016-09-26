@@ -80,9 +80,33 @@ abstract class Hook implements IHook
         return false;
     }
 
-    public function remove()
+    /**
+     * Remove a registered action or filter.
+     *
+     * @param string $hook
+     * @param int $priority
+     * @param \Closure|string $callback
+     *
+     * @return mixed The Hook instance or false.
+     */
+    public function remove($hook, $priority = 10, $callback = null)
     {
-        // TODO: Implement remove() method.
+        // If $callback is null, it means we have chained the methods to
+        // the action/filter instance. If the instance has no callback, return false.
+        if (is_null($callback)) {
+            if (!$callback = $this->getCallback($hook)) {
+                return false;
+            }
+
+            list($callback, $priority, $accepted_args) = $callback;
+
+            // Unset the hook.
+            unset($this->hooks[$hook]);
+        }
+
+        remove_action($hook, $callback, $priority);
+
+        return $this;
     }
 
     /**
