@@ -43,4 +43,11 @@ interface IHook
      * @return array|bool
      */
     public function getCallback($hook);
+
+    /**
+     * Remove a defined action or filter.
+     *
+     * @return mixed
+     */
+    public function remove();
 }

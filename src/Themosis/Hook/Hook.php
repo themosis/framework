@@ -80,6 +80,11 @@ abstract class Hook implements IHook
         return false;
     }
 
+    public function remove()
+    {
+        // TODO: Implement remove() method.
+    }
+
     /**
      * Add an event for the specified hook.
      *
