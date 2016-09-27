@@ -112,7 +112,7 @@ class TaxonomyBuilder extends Wrapper
     public function set(array $params = [])
     {
         // Override custom taxonomy arguments if given.
-        $this->datas['args'] = wp_parse_args($this->datas['args'], $params);
+        $this->datas['args'] = array_replace_recursive($this->datas['args'], $params);
 
         // Trigger the 'init' event in order to register the custom taxonomy.
         // Check if we are not already called by a method attached to the `init` hook.
