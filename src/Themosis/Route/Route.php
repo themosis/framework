@@ -104,21 +104,14 @@ class Route extends IlluminateRoute
 
         if ($this->condition() && !is_null($parameters))
         {
-            // Make sure the given parameters is an array.
-            $parameters = is_array($parameters) ? $parameters : [$parameters];
-
-            // Retrieve only the first element passed in the action as
-            // it is the only parameter used by the WordPress conditional function.
-            $parameter = array_values($parameters)[0];
-
-            if (is_string($parameter) && strrpos($parameter, '@') !== false) {
+            if (is_string($parameters) && strrpos($parameters, '@') !== false) {
                 /**
                  * In case of a controller value statement, return empty array.
                  */
                 return [];
             }
 
-            return is_array($parameter) ? $parameter : [$parameter];
+            return is_array($parameters) ? $parameters : [$parameters];
         }
 
         return [];
