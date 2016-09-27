@@ -138,7 +138,7 @@ class Route extends IlluminateRoute
      */
     protected function getConditions()
     {
-        return $this->conditions;
+        return apply_filters('themosisRouteConditions', $this->conditions);
     }
 
     /**
