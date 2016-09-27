@@ -98,7 +98,7 @@ class Route extends IlluminateRoute
     {
         // Retrieve parameters. Accept only string or array.
         // This help filter the $action parameters as it might also be a Closure.
-        $parameters = Arr::first($action, function ($value, $key) {
+        $parameters = Arr::first($action, function ($key, $value) {
             return is_string($value) || is_array($value);
         });
 
