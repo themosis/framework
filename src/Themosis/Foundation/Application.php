@@ -2,9 +2,9 @@
 
 namespace Themosis\Foundation;
 
-use Illuminate\Container\Container;
+use Illuminate\Foundation\Application as BaseApplication;
 
-class Application extends Container
+class Application extends BaseApplication
 {
     /**
      * Project paths.
@@ -21,20 +21,9 @@ class Application extends Container
      */
     protected $loadedProviders = [];
 
-    public function __construct()
+    public function __construct($paths = null)
     {
-        $this->registerApplication();
-    }
-
-    /**
-     * Register the Application class into the container,
-     * so we can access it from the container itself.
-     */
-    public function registerApplication()
-    {
-        // Normally, only one instance is shared into the container.
-        static::setInstance($this);
-        $this->instance('app', $this);
+        parent::__construct($paths);
     }
 
     /**
@@ -51,7 +40,7 @@ class Application extends Container
         $this->paths = $paths;
 
         foreach ($paths as $key => $path) {
-            $this->instance('path.'.$key, $path);
+            $this->instance('path.' . $key, $path);
         }
 
         return $this;
@@ -66,19 +55,5 @@ class Application extends Container
      *
      * @return \Themosis\Foundation\ServiceProvider
      */
-    public function register($provider, array $options = [], $force = false)
-    {
-        if (!$provider instanceof ServiceProvider) {
-            $provider = new $provider($this);
-        }
-        if (array_key_exists($providerName = get_class($provider), $this->loadedProviders)) {
-            return;
-        }
-        $this->loadedProviders[$providerName] = true;
-        $provider->register();
 
-        if (method_exists($provider, 'boot')) {
-            $provider->boot();
-        }
-    }
 }
