@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Themosis framework
-Plugin URI: http://framework.themosis.com/
+Plugin URI: https://framework.themosis.com/
 Description: A framework for WordPress developers.
-Version: 1.2.3
+Version: 1.3.0
 Author: Julien Lambé
 Author URI: http://www.themosis.com/
 License: GPLv2
@@ -80,7 +80,7 @@ if (!class_exists('Themosis')) {
          *
          * @var float
          */
-        const VERSION = '1.2.3';
+        const VERSION = '1.3.0';
 
         /**
          * The service container.
