@@ -53,8 +53,6 @@ class Support
      */
     protected function support($feature, $value = [])
     {
-        if (!current_theme_supports($feature)) {
-            add_theme_support($feature, $value);
-        }
+	    add_theme_support($feature, $value);
     }
 }
