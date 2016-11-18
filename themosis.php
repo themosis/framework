@@ -84,7 +84,7 @@ if (!class_exists('Themosis')) {
 
         /**
          * The service container.
-         * 
+         *
          * @var \Themosis\Foundation\Application
          */
         public $container;
@@ -287,11 +287,18 @@ if (!class_exists('Themosis')) {
                 return;
             }
 
-            $request = $this->container['request'];
-            $response = $this->container['router']->dispatch($request);
-            // We only send back the content because, headers are already defined
-            // by WordPress internals.
-            $response->sendContent();
+            try {
+                $request = $this->container['request'];
+                $response = $this->container['router']->dispatch($request);
+
+                // We only send back the content because, headers are already defined
+                // by WordPress internals.
+                $response->sendContent();
+            } catch (\Symfony\Component\HttpKernel\Exception\NotFoundHttpException $exception) {
+                /*
+                 * Fallback to WordPress templates.
+                 */
+            }
         }
 
         /**

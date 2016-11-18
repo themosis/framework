@@ -3,7 +3,6 @@
 namespace Themosis\Route;
 
 use Illuminate\Routing\RouteCollection as IlluminateRouteCollection;
-use Illuminate\Support\Arr;
 
 class RouteCollection extends IlluminateRouteCollection
 {
