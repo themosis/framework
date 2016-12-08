@@ -147,4 +147,49 @@ class FormTest extends PHPUnit_Framework_TestCase
         // Multiple checkbox, custom label and multiple values.
         $this->assertEquals('<label><input type="checkbox" name="colors[]" value="red" checked>Rouge</label><label><input type="checkbox" name="colors[]" value="green" checked>Vert</label><label><input type="checkbox" name="colors[]" value="blue">Bleu</label>', $this->form->checkbox('colors', ['red' => 'Rouge', 'green' => 'Vert', 'blue' => 'Bleu'], ['red', 'green']));
     }
+
+    // @todo Test radio input
+
+    /**
+     * Test when sub-group select is defined and where there are identical labels
+     * (basically keys are unique but the array values may be the same).
+     * Test case against themosis/themosis repository issue #126.
+     */
+    public function testSelectInputWithSameLabels()
+    {
+        $options = [
+            [
+                'Select a speciality'
+            ],
+            'Portland' => [
+                'dept-170' => 'Audiology',
+                'dept-177' => 'Ear, Nose and Throat',
+                'dept-178' => 'Infectious Disease',
+                'dept-179' => 'Internal Medicine',
+                'dept-180' => 'Pediatrics',
+                'dept-181' => 'Surgery Center',
+                'dept-182' => 'Travel Medicine',
+                'dept-183' => 'Obstetrics and Gynecology'
+            ],
+            'South Portland' => [
+                'dept-185' => 'Cardiology',
+                'dept-186' => 'Family Medicine',
+                'dept-187' => 'Imaging/Radiology',
+                'dept-188' => 'Laboratory',
+                'dept-189' => 'Pediatrics',
+                'dept-190' => 'Physical Therapy',
+                'dept-191' => 'Sports Medicine',
+                'dept-192' => 'Urgent Care'
+            ],
+            'Yarmouth' => [
+                'dept-193' => 'Family Medicine',
+                'dept-195' => 'Pediatrics',
+                'dept-196' => 'Physical Therapy'
+            ],
+            'Other Locations' => [
+                'dept-197' => 'Administration and Billing',
+                'dept-198' => 'Healthcare at Work'
+            ]
+        ];
+    }
 }

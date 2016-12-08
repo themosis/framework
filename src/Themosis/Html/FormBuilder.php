@@ -21,6 +21,16 @@ class FormBuilder
     protected $request;
 
     /**
+     * Select tag options current index.
+     * Note: only used with indexed (numeric) select options.
+     * Used inside the "organizeOptions()" method to keep track
+     * of option indexed/values.
+     *
+     * @var int
+     */
+    protected $option_current_index = 0;
+
+    /**
      * Define a FormBuilder instance.
      *
      * @param HtmlBuilder                  $html
@@ -494,8 +504,17 @@ class FormBuilder
 
         // Grab the converted values and return them.
         foreach ($indexedOptions as $index => $option) {
-            if (in_array($option, $subOptions)) {
-                $convertedOptions[$index] = $option;
+            if (is_numeric($index)) {
+                if (in_array($option, $subOptions) && !in_array($option, $convertedOptions) && $index >= $this->option_current_index) {
+                    $convertedOptions[$index] = $option;
+
+                    // Record index for comparison.
+                    $this->option_current_index = $index;
+                }
+            } else {
+                if (array_key_exists($index, $subOptions)) {
+                    $convertedOptions[$index] = $option;
+                }
             }
         }
 
