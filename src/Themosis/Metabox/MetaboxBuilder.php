@@ -490,7 +490,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
 
             // Multiple meta keys: same name for meta_key but with different values.
             // Infinite fields cannot be used in meta query...
-            if (is_array($value) && 'infinite' !== $field->getFieldType()) {
+            if (is_array($value) && ('infinite' !== $field->getFieldType() && 'collection' !== $field->getFieldType())) {
                 // Retrieve existing "old_values".
                 $old_values = get_post_meta($postId, $field['name'], false); // array
                 foreach ($value as $val) {
@@ -586,7 +586,6 @@ class MetaboxBuilder extends Wrapper implements IMetabox
                 case 'checkbox':
                 case 'radio':
                 case 'select':
-                case 'collection':
                     $value = get_post_meta($post->ID, $field['name'], false);
                     break;
 
