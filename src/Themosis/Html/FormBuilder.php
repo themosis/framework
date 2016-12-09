@@ -455,6 +455,7 @@ class FormBuilder
     protected function parseSelectOptions(array $options)
     {
         $parsedOptions = [];
+        $sequential_index = 0;
 
         foreach ($options as $key => $option) {
             // Check $option is array in order to continue.
@@ -466,7 +467,20 @@ class FormBuilder
             if (is_string($key)) {
                 $parsedOptions[$key] = $this->organizeOptions($options, $option);
             } else {
-                $parsedOptions[$key] = $option;
+                // We're working with array of array for numeric indexes.
+                // We check if the passed array is sequential or not.
+                // If sequential, we need to re-index values from passed arrays.
+                if (array_is_sequential($option)) {
+                    foreach ($option as $val => $name) {
+                        $parsedOptions[$key][$sequential_index] = $name;
+                        $sequential_index++;
+                    }
+                } else {
+                    // Else we have custom numeric index (post ids for example) or
+                    // index as string (associative array), so we just assign them
+                    // in their coming order.
+                    $parsedOptions[$key] = $option;
+                }
             }
         }
 
