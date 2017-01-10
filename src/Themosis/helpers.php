@@ -531,7 +531,7 @@ if (!function_exists('themosis')) {
      */
     function themosis()
     {
-        if (!class_exists('Themosis') || Themosis::instance()) {
+        if (!class_exists('Themosis')) {
             wp_die('Themosis has not yet been initialized. Please make sure the Themosis framework is installed.');
         }
 
