@@ -417,8 +417,14 @@ class MetaboxBuilder extends Wrapper implements IMetabox
         // Loop through the registered fields.
         // With sections.
         if (!empty($this->sections)) {
-            foreach ($this->datas['fields'] as $fs) {
-                $fields = $fs;
+            foreach ($this->datas['fields'] as $section => $fs) {
+                /*
+                 * Loop through section inner fields
+                 * and add them to the default list.
+                 */
+                foreach ($fs as $f) {
+                    $fields[] = $f;
+                }
             }
         } else {
             $fields = $this->datas['fields'];
