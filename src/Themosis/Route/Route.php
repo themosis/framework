@@ -208,7 +208,11 @@ class Route extends IlluminateRoute
         $matches = parent::matches($request, $includingMethod);
 
         // If we can not find a route using the normal laravel router check if the route which is being checked has the uri "404". If so we return this route as the valid one.
-        return !$matches && $this->getUri() === '404' ? true : $matches;
+        if (method_exists($this, 'getUri')) {
+            return !$matches && $this->getUri() === '404' ? true : $matches;
+        }
+
+        return !$matches && $this->uri() === '404' ? true : $matches;
     }
 
     /**
