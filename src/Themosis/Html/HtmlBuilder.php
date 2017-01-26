@@ -21,7 +21,7 @@ class HtmlBuilder
             // may be specified. Those attributes are HTML5 formatted.
             if (is_numeric($key)) {
                 $html[] = $this->entities($value);
-            } else {
+            } elseif (is_string($key) && !empty($value)) {
                 $html[] = $key.'="'.$this->entities($value).'"';
             }
         }
