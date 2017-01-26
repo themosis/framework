@@ -2,7 +2,6 @@
 
 namespace Themosis\Database;
 
-use Illuminate\Support\Fluent;
 use Themosis\Foundation\ServiceProvider;
 
 class DatabaseServiceProvider extends ServiceProvider
@@ -17,29 +16,29 @@ class DatabaseServiceProvider extends ServiceProvider
             $capsule = $GLOBALS['themosis.capsule'];
 
             /*
-             * Retrieve already defined database connections array.
-             *
-             * $connections['default'] contains the MySQL configuration.
-             */
-            $defaultContainer = $capsule->getContainer();
-            $connections = $defaultContainer['config']['database.connections'];
-
-            /*
-             * Bring the illuminate fluent (as config) for capsule compatibility.
+             * Bring the illuminate fluent (as config) for capsule compatibility
+             * if not defined in the service container.
              */
             if (!$container->bound('config')) {
-                $container->instance('config', new Fluent());
 
                 /*
-                 * Bring back the $connections to the framework container.
+                 * Retrieve the default container created by the "Capsule"
+                 * in the framework bootstrap code.
                  */
-                $container['config']['database.connections'] = $connections;
-            }
+                $defaultContainer = $capsule->getContainer();
 
-            /*
-             * Define the new capsule container.
-             */
-            $capsule->setContainer($container);
+                /*
+                 * Pass default "config" class (Fluent) to the Themosis container.
+                 * It automatically adds "default" database connection
+                 * which refers to the WordPress MySQL.
+                 */
+                $container->instance('config', $defaultContainer['config']);
+
+                /*
+                 * Update the "Capsule" container with the Themosis container.
+                 */
+                $capsule->setContainer($container);
+            }
 
             return $capsule;
         });
