@@ -46,5 +46,13 @@ class HtmlTest extends PHPUnit_Framework_TestCase
         // Mix with and without keys, empty values.
         $atts = $html->attributes(['id' => 'awesome', 'class' => '', 'required', 'href' => 'some/uri/', 'checked']);
         $this->assertEquals(' id="awesome" required href="some/uri/" checked', $atts);
+
+        // Integer attributes
+        $atts = $html->attributes(['min' => 0, 'max' => 10, 'required']);
+        $this->assertEquals(' min="0" max="10" required', $atts);
+
+        // Float attributes
+        $atts = $html->attributes(['min' => 0.5, 'max' => 4.2]);
+        $this->assertEquals(' min="0.5" max="4.2"', $atts);
     }
 }
