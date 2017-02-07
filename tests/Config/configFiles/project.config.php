@@ -7,4 +7,7 @@ return [
         'editor',
     ],
     'name' => 'themosis',
+    'multi-access' => [
+        'sub-key' => 'value',
+    ],
 ];
