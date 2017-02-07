@@ -27,7 +27,7 @@ class Config extends Facade implements ArrayAccess
      */
     public function offsetExists($offset)
     {
-      return self::offsetExists($offset);
+      return static::getInstance()->offsetExists($offset);
     }
 
     /**
@@ -39,7 +39,7 @@ class Config extends Facade implements ArrayAccess
      */
     public function offsetGet($offset)
     {
-        return self::offsetGet($offset);
+        return static::getInstance()->offsetGet($offset);
     }
 
     /**
@@ -53,7 +53,7 @@ class Config extends Facade implements ArrayAccess
      */
     public function offsetSet($offset, $value)
     {
-        self::offsetSet($offset, $value);
+        static::getInstance()->offsetSet($offset, $value);
     }
 
     /**
@@ -66,6 +66,6 @@ class Config extends Facade implements ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        self::offsetSet($offset);
+        static::getInstance()->offsetUnset($offset);
     }
 }
