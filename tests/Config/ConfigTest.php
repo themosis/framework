@@ -35,7 +35,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
             ],
             'name' => 'themosis',
             'multi-access' => [
-                'sub-key' => 'value',
+                'key' => 'value2',
             ],
         ], $values);
 
@@ -65,13 +65,13 @@ class ConfigTest extends PHPUnit_Framework_TestCase
 
     public function testGetMultiDimensionConfigValue()
     {
-        $this->assertEquals('value', $this->factory->get('project.multi-access.sub-key'));
+        $this->assertEquals('value2', $this->factory->get('project.multi-access.key'));
     }
 
     public function testArrayAccessOffsetGet()
     {
         $this->assertEquals('value', $this->factory['project.key']);
-        $this->assertEquals('value', $this->factory['project.multi-access.sub-key']);
+        $this->assertEquals('value2', $this->factory['project.multi-access.key']);
     }
 
     public function testArrayAccessOffsetExists()

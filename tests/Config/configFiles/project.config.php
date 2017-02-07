@@ -8,6 +8,6 @@ return [
     ],
     'name' => 'themosis',
     'multi-access' => [
-        'sub-key' => 'value',
+        'key' => 'value2',
     ],
 ];
