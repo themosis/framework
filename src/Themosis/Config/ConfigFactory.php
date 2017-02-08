@@ -39,7 +39,7 @@ class ConfigFactory implements IConfig, ArrayAccess
         if (isset($property) && array_key_exists($property, $properties)) {
           // Looking for a single property in an array
           if (is_array($properties[$property])) {
-            return $this->getRecurisve(array_slice($parts, 1), $properties);
+            return $this->getRecursive(array_slice($parts, 1), $properties);
           }
           // Return the single property
           else {
@@ -91,7 +91,7 @@ class ConfigFactory implements IConfig, ArrayAccess
      *
      * @return mixed
      */
-    protected function getRecurisve(array $keys, array $array)
+    protected function getRecursive(array $keys, array $array)
     {
         foreach ($keys as $key) {
             if (array_key_exists($key, $array)) {
