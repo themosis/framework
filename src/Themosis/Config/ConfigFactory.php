@@ -36,14 +36,16 @@ class ConfigFactory implements IConfig, ArrayAccess
         $properties = include $path;
 
         // Looking for a single property
-        if (isset($property) && array_key_exists($property, $properties)) {
-          // Looking for a single property in an array
-          if (is_array($properties[$property])) {
-            return $this->getRecursive(array_slice($parts, 1), $properties);
-          }
-          // Return the single property
-          else {
-            return $properties[$property];
+        if (isset($property)) {
+          if (array_key_exists($property, $properties)) {
+            // Looking for a single property in an array
+            if (is_array($properties[$property])) {
+              return $this->getRecursive(array_slice($parts, 1), $properties);
+            }
+            // Return the single property
+            else {
+              return $properties[$property];
+            }
           }
         }
         // Return all properties
