@@ -77,6 +77,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     public function testArrayAccessOffsetExists()
     {
         $this->assertTrue(isset($this->factory['project.key']));
+        $this->assertTrue(isset($this->factory['project.multi-access']));
         $this->assertFalse(isset($this->factory['project.made-up']));
     }
 }
