@@ -13,6 +13,6 @@ class DB extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'capsule';
+        return 'db';
     }
 }

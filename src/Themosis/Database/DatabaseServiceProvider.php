@@ -2,45 +2,51 @@
 
 namespace Themosis\Database;
 
+use Illuminate\Database\Connectors\ConnectionFactory;
+use Illuminate\Database\DatabaseManager;
+use Illuminate\Database\Eloquent\Model;
 use Themosis\Foundation\ServiceProvider;
 
 class DatabaseServiceProvider extends ServiceProvider
 {
-    public function register()
-    {
-        if (!isset($GLOBALS['themosis.capsule'])) {
-            return;
-        }
+	/**
+	 * Bootstrap the application events.
+	 *
+	 * @return void
+	 */
+	public function boot(){
 
-        $this->app->singleton('capsule', function ($container) {
-            $capsule = $GLOBALS['themosis.capsule'];
+		Model::setConnectionResolver($this->app['db']);
 
-            /*
-             * Bring the illuminate fluent (as config) for capsule compatibility
-             * if not defined in the service container.
-             */
-            if (!$container->bound('config')) {
+	}
 
-                /*
-                 * Retrieve the default container created by the "Capsule"
-                 * in the framework bootstrap code.
-                 */
-                $defaultContainer = $capsule->getContainer();
+	/**
+	 * Register the service provider.
+	 *
+	 * @return void
+	 */
+	public function register()
+	{
+		Model::clearBootedModels();
 
-                /*
-                 * Pass default "config" class (Fluent) to the Themosis container.
-                 * It automatically adds "default" database connection
-                 * which refers to the WordPress MySQL.
-                 */
-                $container->instance('config', $defaultContainer['config']);
+		// The connection factory is used to create the actual connection instances on
+		// the database. We will inject the factory into the manager so that it may
+		// make the connections while they are actually needed and not of before.
+		$this->app->singleton('db.factory', function ($app) {
+			return new ConnectionFactory($app);
+		});
 
-                /*
-                 * Update the "Capsule" container with the Themosis container.
-                 */
-                $capsule->setContainer($container);
-            }
+		// The database manager is used to resolve various connections, since multiple
+		// connections might be managed. It also implements the connection resolver
+		// interface which may be used by other components requiring connections.
+		$this->app->singleton('db', function ($app) {
+			return new DatabaseManager($app, $app['db.factory']);
+		});
 
-            return $capsule;
-        });
-    }
+		$this->app->bind('db.connection', function ($app) {
+			return $app['db']->connection();
+		});
+	}
+
+
 }
