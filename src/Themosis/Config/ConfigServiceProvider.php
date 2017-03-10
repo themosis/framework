@@ -12,7 +12,7 @@ class ConfigServiceProvider extends ServiceProvider
             return new ConfigFinder();
         });
 
-        $this->app->singleton('config.factory', function ($container) {
+        $this->app->singleton('config', function ($container) {
             return new ConfigFactory($container['config.finder']);
         });
     }

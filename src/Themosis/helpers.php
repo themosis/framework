@@ -6,25 +6,29 @@ use Themosis\Foundation\Application;
  * Helpers functions globally available.
  */
 if (!function_exists('themosis_is_subpage')) {
-    /**
-     * Define if the current page is a child page.
-     *
-     * @param array $parent The parent page properties.
-     *
-     * @return int|bool Parent page ID if subpage. False if not.
-     */
-    function themosis_is_subpage(array $parent)
-    {
-        global $post;
+	/**
+	 * Define if the current page is a child page.
+	 *
+	 * @param array $filtered The filtered pages from route Route::get('subpage',['subpage_name','uses'=>'SubPageController@index']).
+	 *
+	 * @return bool Return true if post is subpage. False if not.
+	 */
+	function themosis_is_subpage( array $filtered ) {
+		global $post;
 
-        $parentPage = get_post($post->post_parent);
+		if ( is_object($post) && $post->post_type == 'page' && $post->post_parent ) {
 
-        if (is_page() && $post->post_parent && $parentPage->post_name === $parent[0]) {
-            return $post->post_parent;
-        }
+			if ( ! empty( $filtered ) ) {
 
-        return false;
-    }
+				return in_array( $post->post_name, $filtered );
+			}
+
+			return true;
+		}
+
+
+		return false;
+	}
 }
 
 if (!function_exists('themosis_convert_path')) {
