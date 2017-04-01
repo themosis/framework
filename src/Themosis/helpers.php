@@ -547,7 +547,7 @@ if (!function_exists('view')) {
      * @param array  $data      Passed data.
      * @param array  $mergeData
      *
-     * @return \Illuminate\View\Factory
+     * @return string
      */
     function view($view = null, array $data = [], array $mergeData = [])
     {
