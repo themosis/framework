@@ -181,9 +181,24 @@ class MetaboxBuilder extends Wrapper implements IMetabox
         $this->filter->add('wp_insert_post_data', [$this, 'map_metadata'], 10, 2);
     }
 
+    /**
+     * Parse passed mapping parameters and return only valid
+     * arguments based on the WP_Post table.
+     *
+     * @param array $mappings A list of key/value pairs (meta_key/post_property).
+     *
+     * @return array
+     */
     protected function parseMappings(array $mappings)
     {
+        /*
+         * Default mapping.
+         */
         $maps = [];
+
+        /*
+         * List of authorized mapping relations.
+         */
         $allowed = [
             'post_author' => ['is_int', 'strlen' => 20],
             'post_date' => 'is_string',
@@ -221,7 +236,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
      * Handle the mapping.
      *
      * @param array $data The post data.
-     * @param array $raw  Sanitized but unmodified post data.
+     * @param array $raw  Request $_POST data.
      *
      * @return array
      */
@@ -275,8 +290,12 @@ class MetaboxBuilder extends Wrapper implements IMetabox
                 }
             }
 
-            // Assign value to post data.
-            if (isset($data[$post_key])) {
+            /*
+             * Assign value to post data only if at request
+             * a corresponding meta_data is available as well (this avoids)
+             * rewriting data globally on any post object.
+             */
+            if (isset($data[$post_key]) && isset($raw[$meta_key])) {
                 $data[$post_key] = $value;
             }
         }
