@@ -158,7 +158,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
      *
      * @param string $capability
      *
-     * @return \Themosis\Metabox\MetaboxBuilder
+     * @return $this
      */
     public function can($capability)
     {
@@ -173,12 +173,15 @@ class MetaboxBuilder extends Wrapper implements IMetabox
      * important post data. Use it with precaution.
      *
      * @param array $mappings A list of key/value pairs defining the mappings. Key is the meta_key and its value is the post data name/key.
+     *
+     * @return $this
      */
     public function map(array $mappings)
     {
         $this->mappings = $this->parseMappings($mappings);
-
         $this->filter->add('wp_insert_post_data', [$this, 'map_metadata'], 10, 2);
+
+        return $this;
     }
 
     /**
@@ -457,7 +460,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
      *
      * @param array $rules A list of field names and their associated validation rule.
      *
-     * @return \Themosis\Metabox\MetaboxBuilder
+     * @return $this
      */
     public function validate(array $rules = [])
     {
@@ -648,7 +651,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
      * @param string|array $key
      * @param mixed        $value
      *
-     * @return \Themosis\Metabox\MetaboxBuilder
+     * @return $this
      */
     public function with($key, $value = null)
     {
