@@ -41,11 +41,11 @@ class TwigEngine extends PhpEngine
     {
         $file = array_search($path, $this->finder->getViews());
 
-        // Allow the use of a '.' notation.
+        /*
+         * Allow the use of a '.' notation.
+         */
         $file = themosis_convert_path($file);
 
-        $template = $this->environment->loadTemplate($file.$this->extension);
-
-        return $template->render($data);
+        return $this->environment->render($file.$this->extension, $data);
     }
 }
