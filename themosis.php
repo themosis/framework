@@ -3,7 +3,7 @@
 Plugin Name: Themosis framework
 Plugin URI: https://framework.themosis.com/
 Description: A WordPress framework.
-Version: 1.3.1
+Version: 1.3.2
 Author: Julien Lambé
 Author URI: http://www.themosis.com/
 License: GPLv2
@@ -80,7 +80,7 @@ if (!class_exists('Themosis')) {
          *
          * @var float
          */
-        const VERSION = '1.3.1';
+        const VERSION = '1.3.2';
 
         /**
          * The service container.
