@@ -146,6 +146,12 @@ class FormTest extends PHPUnit_Framework_TestCase
 
         // Multiple checkbox, custom label and multiple values.
         $this->assertEquals('<label><input type="checkbox" name="colors[]" value="red" checked>Rouge</label><label><input type="checkbox" name="colors[]" value="green" checked>Vert</label><label><input type="checkbox" name="colors[]" value="blue">Bleu</label>', $this->form->checkbox('colors', ['red' => 'Rouge', 'green' => 'Vert', 'blue' => 'Bleu'], ['red', 'green']));
+
+        // Checkbox with a numeric key (value) and custom label.
+        $this->assertEquals('<label><input type="checkbox" name="items" value="24" checked>Item Title</label>', $this->form->checkbox('items', [24 => "Item Title"], 24));
+
+        // Checkbox with multiple numeric keys (values).
+        $this->assertEquals('<label><input type="checkbox" name="items[]" value="16">Item 1</label><label><input type="checkbox" name="items[]" value="18">Item 2</label><label><input type="checkbox" name="items[]" value="20" checked>Item 3</label>', $this->form->checkbox('items', [16 => "Item 1", 18 => "Item 2", 20 => "Item 3"], 20));
     }
 
     // @todo Test radio input

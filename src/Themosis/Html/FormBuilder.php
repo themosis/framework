@@ -326,8 +326,12 @@ class FormBuilder
 
         foreach ($choices as $choiceVal => $choice) {
 
-            // The current choice that is parsed...
-            $c = is_numeric($choiceVal) ? $choice : $choiceVal;
+            /*
+             * We need to know if the "$choices" array is an indexed array (sequential)
+             * or associative array. If sequential, use the "$choice" value else
+             * use the "$choiceVal" key.
+             */
+            $c = array_is_sequential($choices) ? $choice : $choiceVal;
 
             // Check the value.
             // If it corresponds to the choice, add the checked attribute.
