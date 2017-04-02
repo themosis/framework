@@ -288,7 +288,7 @@ class Asset implements IAsset
         };
 
         if ('script' === $this->type) {
-            $append = '></script>';
+            $append = "></script>\n";
             $this->filter->add('script_loader_tag', function ($tag, $handle) use ($atts, $append, $replace, $key) {
                 // Check we're only filtering the current asset and not all.
                 if ($key === $handle) {
@@ -300,7 +300,7 @@ class Asset implements IAsset
         }
 
         if ('style' === $this->type) {
-            $append = ' />';
+            $append = " />\n";
             $this->filter->add('style_loader_tag', function ($tag, $handle) use ($atts, $append, $replace, $key) {
                 // Check we're only filtering the current asset and not all.
                 if ($key === $handle) {
