@@ -7,6 +7,7 @@ Version: 1.3.2
 Author: Julien Lambé
 Author URI: http://www.themosis.com/
 License: GPLv2
+
 */
 
 /*----------------------------------------------------*/
