@@ -39,4 +39,26 @@ class ConfigFactory implements IConfig
 
         return $properties;
     }
+
+    /**
+     * Check if the config file exists.
+     *
+     * @param string $name The config file name or its property full name.
+     *
+     * @return bool
+     */
+    public function has($name)
+    {
+        if (strpos($name, '.') !== false) {
+            list($name, $property) = explode('.', $name);
+        }
+
+        if (empty($this->finder->getPaths()[0])) {
+            return false;
+        }
+
+        $path = $this->finder->getPaths()[0];
+
+        return file_exists($path . $name . '.config.php');
+    }
 }
