@@ -53,12 +53,12 @@ class ConfigFactory implements IConfig
             list($name, $property) = explode('.', $name);
         }
 
-        if (empty($this->finder->getPaths()[0])) {
-            return false;
+        foreach($this->finder->getPaths() as $path) {
+            if(file_exists($path . $name . '.config.php')) {
+                return true;
+            }
         }
 
-        $path = $this->finder->getPaths()[0];
-
-        return file_exists($path . $name . '.config.php');
+        return false;
     }
 }
