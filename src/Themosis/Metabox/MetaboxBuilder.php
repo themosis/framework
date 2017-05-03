@@ -452,7 +452,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
             $fields = $this->datas['fields'];
         }
 
-        return $fields;
+        return is_null($fields) || !is_array($fields) ? [] : $fields;
     }
 
     /**
