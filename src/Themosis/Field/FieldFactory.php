@@ -109,6 +109,26 @@ class FieldFactory
     }
 
     /**
+     * Return a EmailField instance.
+     *
+     * @param string $name       The name attribute of the email input.
+     * @param array  $features   Custom field features - title, info.
+     * @param array  $attributes Input html attributes.
+     *
+     * @return \Themosis\Field\Fields\EmailField
+     */
+    public function email($name, array $features = [], array $attributes = [])
+    {
+        $properties = [
+            'features' => $features,
+            'atts' => array_merge(['class' => 'large-text'], $attributes, ['data-field' => 'email']),
+            'name' => $name,
+        ];
+
+        return $this->make('Themosis\\Field\\Fields\\EmailField', $properties);
+    }
+
+    /**
      * Return a DateField instance.
      *
      * @param string $name       The name attribute of the date input.
