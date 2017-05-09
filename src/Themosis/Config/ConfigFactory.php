@@ -25,64 +25,18 @@ class ConfigFactory implements IConfig
      */
     public function get($name)
     {
-        $segments = explode('.', $name);
+        if (strpos($name, '.') !== false) {
+            list($name, $property) = explode('.', $name);
+        }
 
-        $path = $this->finder->find($segments[0]);
+        $path = $this->finder->find($name);
         $properties = include $path;
 
-        // When you are just checking
-        // if the configuration file exists
-        if(count($segments) === 1) return $properties;
-        // Remove the file_name segment
-        // we are already in the file
-        array_splice($segments, 0, 1);
-
-        foreach ($segments as $segment) {
-
-            if (is_array($properties) && array_key_exists($segment, $properties)) {
-                $properties = $properties[$segment];
-            }else{
-                throw new ConfigException('Property "'.$segment.'" not found.');
-            }
+        // Looking for single property
+        if (isset($property) && isset($properties[$property])) {
+            return $properties[$property];
         }
 
         return $properties;
-
     }
-
-
-    /**
-     * Check all or specific property from a config file exists.
-     *
-     * @param string $name The config file name or its property full name.
-     *
-     * @return mixed
-     */
-    public function has($name)
-    {
-        $segments = explode('.', $name);
-
-        $path = $this->finder->find($segments[0]);
-        $properties = include $path;
-
-        // When you are just checking
-        // if the configuration file exists
-        if(count($segments) === 1) return true;
-
-        // Remove the file_name segment
-        // we are already in the file
-        array_splice($segments, 0, 1);
-
-        foreach ($segments as $segment) {
-
-            if (is_array($properties) && array_key_exists($segment, $properties)) {
-                $properties = $properties[$segment];
-            } else {
-                return false;
-            }
-        }
-        return true;
-
-    }
-
 }
