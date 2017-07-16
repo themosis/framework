@@ -101,11 +101,11 @@ class PostTypeBuilder implements IPostType
      *
      * @return \Themosis\PostType\PostTypeBuilder
      */
-    public function make($name, $plural, $singular)
+    public function make($name, $plural = false, $singular = false)
     {
         
         $plural = $plural ? $plural : Inflector::pluralize($name);
-	    $singular = $singular ? $singular : Inflector::singularize($name);
+	$singular = $singular ? $singular : Inflector::singularize($name);
         
         $params = compact('name', 'plural', 'singular');
 
