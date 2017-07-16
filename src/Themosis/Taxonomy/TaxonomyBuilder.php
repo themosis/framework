@@ -8,6 +8,7 @@ use Themosis\Foundation\DataContainer;
 use Themosis\Field\Wrapper;
 use Themosis\Hook\IHook;
 use Themosis\Validation\ValidationBuilder;
+use Doctrine\Common\Inflector\Inflector;
 
 class TaxonomyBuilder extends Wrapper
 {
@@ -78,8 +79,12 @@ class TaxonomyBuilder extends Wrapper
      *
      * @return \Themosis\Taxonomy\TaxonomyBuilder
      */
-    public function make($name, $postType, $plural, $singular)
+    public function make($name, $postType, $plural = false, $singular = false)
     {
+        
+        $plural = $plural ? $plural : Inflector::pluralize($name);
+	    $singular = $singular ? $singular : Inflector::singularize($name);
+        
         $params = compact('name', 'postType', 'plural', 'singular');
 
         foreach ($params as $key => $param) {
