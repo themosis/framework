@@ -7,6 +7,7 @@ use Themosis\Foundation\Application;
 use Themosis\Foundation\DataContainer;
 use Themosis\Hook\IHook;
 use Themosis\Metabox\IMetabox;
+use Doctrine\Common\Inflector\Inflector;
 
 class PostTypeBuilder implements IPostType
 {
@@ -102,6 +103,10 @@ class PostTypeBuilder implements IPostType
      */
     public function make($name, $plural, $singular)
     {
+        
+        $plural = $plural ? $plural : Inflector::pluralize($name);
+	    $singular = $singular ? $singular : Inflector::singularize($name);
+        
         $params = compact('name', 'plural', 'singular');
 
         foreach ($params as $key => $param) {
