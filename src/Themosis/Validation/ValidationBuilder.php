@@ -9,7 +9,7 @@ class ValidationBuilder implements IValidate
     /**
      * Runs a validation rule on a single passed data.
      *
-     * @param mixed $data  The given data: string, int, array, bool...
+     * @param mixed $data The given data: string, int, array, bool...
      * @param array $rules The rules to use for validation.
      *
      * @return mixed
@@ -21,7 +21,7 @@ class ValidationBuilder implements IValidate
             $ruleProperties = $this->parseRule($rule);
 
             // Set rule method.
-            $signature = 'validate_'.$ruleProperties['rule'];
+            $signature = 'validate_' . $ruleProperties['rule'];
 
             // Check if the datas given is an array
             // If array, parse each item and return them
@@ -128,15 +128,17 @@ class ValidationBuilder implements IValidate
      */
     public function isAssociative(array $arr)
     {
-        if (empty($arr)) return false;
+        if (empty($arr)) {
+            return false;
+        }
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
 
     /**
      * Validate a value with only alphabetic characters.
      *
-     * @param string $data       The data to validate.
-     * @param array  $attributes
+     * @param string $data The data to validate.
+     * @param array $attributes
      *
      * @return string
      */
@@ -148,8 +150,8 @@ class ValidationBuilder implements IValidate
     /**
      * Validate a value with only numeric characters.
      *
-     * @param string $data       The data to validate.
-     * @param array  $attributes
+     * @param string $data The data to validate.
+     * @param array $attributes
      *
      * @return string
      */
@@ -162,22 +164,22 @@ class ValidationBuilder implements IValidate
      * Validate a negative full number.
      *
      * @param string $data
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return string
      */
     protected function validate_negnum($data, array $attributes = [])
     {
-        $data = (int) $data;
+        $data = (int)$data;
 
-        return (0 > $data) ? (string) $data : '';
+        return (0 > $data) ? (string)$data : '';
     }
 
     /**
      * Validate a value with alphanumeric characters.
      *
      * @param string $data
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return string
      */
@@ -189,8 +191,8 @@ class ValidationBuilder implements IValidate
     /**
      * Validate a text field value.
      *
-     * @param string $data       The data to validate.
-     * @param array  $attributes
+     * @param string $data The data to validate.
+     * @param array $attributes
      *
      * @return string
      */
@@ -203,7 +205,7 @@ class ValidationBuilder implements IValidate
      * Encode a textarea value.
      *
      * @param string $data
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return string
      */
@@ -216,7 +218,7 @@ class ValidationBuilder implements IValidate
      * Encode a HTML value.
      *
      * @param string $data
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return string
      */
@@ -228,13 +230,15 @@ class ValidationBuilder implements IValidate
     /**
      * Validate an email value.
      *
-     * @param string $data       The data to validate.
-     * @param array  $attributes
+     * @param string $data The data to validate.
+     * @param array $attributes
      *
      * @return string
      */
     protected function validate_email($data, array $attributes = [])
     {
+        $data = trim($data);
+        
         $email = sanitize_email($data);
 
         return is_email($email) ? $email : '';
@@ -243,13 +247,15 @@ class ValidationBuilder implements IValidate
     /**
      * Validate a URL value.
      *
-     * @param string $data       The URL to validate.
-     * @param array  $attributes
+     * @param string $data The URL to validate.
+     * @param array $attributes
      *
      * @return string
      */
     protected function validate_url($data, array $attributes = [])
     {
+        $data = trim($data);
+        
         if (!empty($attributes)) {
             return esc_url($data, $attributes);
         }
@@ -260,8 +266,8 @@ class ValidationBuilder implements IValidate
     /**
      * Validate a MIN length of string.
      *
-     * @param string $data       The string to evaluate.
-     * @param array  $attributes
+     * @param string $data The string to evaluate.
+     * @param array $attributes
      *
      * @return string
      */
@@ -287,7 +293,7 @@ class ValidationBuilder implements IValidate
      * Validate a MAX length of string.
      *
      * @param string $data
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return string
      */
@@ -314,7 +320,7 @@ class ValidationBuilder implements IValidate
      * Return TRUE for '1', 'on', 'yes', 'true'. Else FALSE.
      *
      * @param string $data
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return string
      */
@@ -327,7 +333,7 @@ class ValidationBuilder implements IValidate
      * Strips Evil Scripts.
      *
      * @param string $data
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return string
      */
@@ -375,7 +381,7 @@ class ValidationBuilder implements IValidate
      * Validate an hexadecimal value.
      *
      * @param string $data
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return string
      */
@@ -388,7 +394,7 @@ class ValidationBuilder implements IValidate
      * Validate a color hexadecimal value.
      *
      * @param string $data
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return string
      */
@@ -401,7 +407,7 @@ class ValidationBuilder implements IValidate
      * Validate a file extension.
      *
      * @param string $data
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return string
      */
@@ -416,7 +422,7 @@ class ValidationBuilder implements IValidate
      * Validate a required data.
      *
      * @param string|array $data
-     * @param array        $attributes
+     * @param array $attributes
      *
      * @return string|array
      */
