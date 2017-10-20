@@ -627,7 +627,7 @@ class FormBuilder
 
         // Deal single selection.
         // $key might be an int or a string
-        if (is_string($value) || is_integer($value) && $key == $value) {
+        if (is_string($value) && $key == $value || is_integer($value) && $key == $value) {
             return $selected;
         }
 
