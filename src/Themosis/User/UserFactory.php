@@ -93,7 +93,7 @@ class UserFactory extends Wrapper implements IUser
 
         // Clean credentials.
         $username = sanitize_user($username, true);
-        $password = sanitize_user($password);
+        $password = trim($password);
         $email = sanitize_email($email);
 
         // Create a WordPress in the database.
