@@ -14,7 +14,7 @@ Extensive contribution guidelines are available online at:
 - https://framework.themosis.com/docs/1.3/contributing/
 
 **Warning: non-trivial pull requests (anything more than fixing a typo) without
-Trac tickets will be closed!** `Please open and fill in an issue` to suggest changes.
+opened issue will be closed!** `Please open and fill in an issue` to suggest changes.
 
 - https://github.com/themosis/framework/issues
 
