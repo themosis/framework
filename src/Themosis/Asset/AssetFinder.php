@@ -73,9 +73,9 @@ class AssetFinder extends Finder
         $path = $this->parsePath($path);
 
         foreach ($dirs as $dirUrl => $dirPath) {
-            if (file_exists($dirPath.$path)) {
+            if (file_exists($dirPath . $path)) {
                 // Return the full URL.
-                return $dirUrl.$path;
+                return $dirUrl . $path;
             }
         }
 
@@ -111,7 +111,7 @@ class AssetFinder extends Finder
     protected function parsePath($path)
     {
         if (substr($path, 0, 1) !== '/' && substr($path, 0, 4) !== 'http') {
-            return '/'.$path;
+            return '/' . $path;
         }
 
         return $path;

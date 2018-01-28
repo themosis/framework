@@ -36,8 +36,7 @@ class Template
 
         // Loop templates per $post_type and register templates per $post_type.
         foreach ($all_templates as $post_type => $templates) {
-            $this->filter->add("theme_{$post_type}_templates", function($registeredTemplates) use ($templates)
-            {
+            $this->filter->add("theme_{$post_type}_templates", function ($registeredTemplates) use ($templates) {
                 return array_merge($registeredTemplates, $templates);
             });
         }

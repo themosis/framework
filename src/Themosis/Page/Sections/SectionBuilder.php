@@ -51,7 +51,7 @@ class SectionBuilder
 
         foreach ($params as $var => $param) {
             if (!is_string($param)) {
-                throw new \Exception('Invalid section parameter "'.$var.'"');
+                throw new \Exception('Invalid section parameter "' . $var . '"');
             }
         }
 

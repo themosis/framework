@@ -20,7 +20,8 @@ class ActionTest extends PHPUnit_Framework_TestCase
     {
         $action = new ActionBuilder($this->app);
 
-        $action->add('init_test', function () {});
+        $action->add('init_test', function () {
+        });
 
         // Check if this action is registered.
         $this->assertTrue($action->exists('init_test'));

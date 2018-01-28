@@ -3,8 +3,8 @@
 namespace Themosis\User;
 
 use Illuminate\View\View;
-use Themosis\Field\Wrapper;
 use Themosis\Field\FieldException;
+use Themosis\Field\Wrapper;
 use Themosis\Hook\IHook;
 use Themosis\Validation\IValidate;
 

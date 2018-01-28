@@ -28,24 +28,25 @@
                             <div class="themosis-collection__item">
                                 <?php
                                     $isFile = false;
-                                    $src = plugins_url('src/Themosis/_assets', __FILE__).'/images/themosisFileIcon.png';
+                                    $src = plugins_url('src/Themosis/_assets', __FILE__) . '/images/themosisFileIcon.png';
 
-                                    if (wp_attachment_is_image($item))
-                                    {
+                                    if (wp_attachment_is_image($item)) {
                                         $src = wp_get_attachment_image_src($item, '_themosis_media');
                                         $src = $src[0];
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         $src = wp_get_attachment_image_src($item, '_themosis_media', true);
                                         $src = $src[0];
                                         $isFile = true;
                                     }
                                 ?>
                                 <div class="centered">
-                                    <img src="{{ $src }}" alt="Collection Item" <?php if ($isFile){ echo('class="icon"'); } ?>/>
+                                    <img src="{{ $src }}" alt="Collection Item" <?php if ($isFile) {
+                                    echo('class="icon"');
+                                } ?>/>
                                 </div>
-                                <div class="filename <?php if ($isFile){ echo('show'); } ?>">
+                                <div class="filename <?php if ($isFile) {
+                                    echo('show');
+                                } ?>">
                                     <div>{{ get_the_title($item) }}</div>
                                 </div>
                                 <a class="check" title="Remove" href="#">
@@ -60,7 +61,9 @@
         <!-- End collection -->
     </div>
     <div class="themosis-collection-buttons">
-        <button id="themosis-collection-add" type="button" class="button button-primary <?php if ($field['features']['limit'] && !empty($field['value']) && is_array($field['value']) && $field['features']['limit'] <= count($field['value'])) { echo('disabled'); } ?>"><?php _e('Add'); ?></button>
+        <button id="themosis-collection-add" type="button" class="button button-primary <?php if ($field['features']['limit'] && !empty($field['value']) && is_array($field['value']) && $field['features']['limit'] <= count($field['value'])) {
+                                    echo('disabled');
+                                } ?>"><?php _e('Add'); ?></button>
         <button id="themosis-collection-remove" type="button" class="button button-primary themosis-button-remove"><?php _e('Remove'); ?></button>
     </div>
     @if(isset($field['features']['info']))

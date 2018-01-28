@@ -27,7 +27,7 @@ interface IField
 
     /**
      * Handle the HTML code for taxonomy output.
-     * 
+     *
      * @return string
      */
     public function taxonomy();

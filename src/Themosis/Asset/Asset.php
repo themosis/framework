@@ -100,7 +100,7 @@ class Asset implements IAsset
 
     /**
      * Parse defined asset properties.
-     * 
+     *
      * @param array $args The asset properties.
      *
      * @return mixed
@@ -281,7 +281,7 @@ class Asset implements IAsset
 
         $replace = function ($tag, $atts, $append) use ($html) {
             if (false !== $pos = strrpos($tag, $append)) {
-                $tag = substr_replace($tag, $html->attributes($atts), $pos).' '.trim($append);
+                $tag = substr_replace($tag, $html->attributes($atts), $pos) . ' ' . trim($append);
             }
 
             return $tag;

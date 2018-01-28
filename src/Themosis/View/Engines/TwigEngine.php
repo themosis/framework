@@ -46,6 +46,6 @@ class TwigEngine extends PhpEngine
          */
         $file = themosis_convert_path($file);
 
-        return $this->environment->render($file.$this->extension, $data);
+        return $this->environment->render($file . $this->extension, $data);
     }
 }

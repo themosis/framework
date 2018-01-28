@@ -9,7 +9,6 @@ class MetaboxServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('metabox', function ($container) {
-
             $data = new MetaboxData();
 
             $view = $container['view'];

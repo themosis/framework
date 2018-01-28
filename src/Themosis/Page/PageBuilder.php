@@ -3,8 +3,8 @@
 namespace Themosis\Page;
 
 use Illuminate\View\View;
-use Themosis\Foundation\DataContainer;
 use Themosis\Field\Wrapper;
+use Themosis\Foundation\DataContainer;
 use Themosis\Hook\IHook;
 use Themosis\Validation\ValidationBuilder;
 
@@ -85,7 +85,7 @@ class PageBuilder extends Wrapper
 
         foreach ($params as $name => $param) {
             if (!is_string($param)) {
-                throw new PageException('Invalid page parameter "'.$name.'"');
+                throw new PageException('Invalid page parameter "' . $name . '"');
             }
         }
 
@@ -345,7 +345,7 @@ class PageBuilder extends Wrapper
         $setting['value'] = (!is_null($val) || !empty($val)) ? $val : $this->parseValue($setting, $val);
 
         // Set the name attribute.
-        $setting['name'] = $setting['section'].'['.$setting['name'].']';
+        $setting['name'] = $setting['section'] . '[' . $setting['name'] . ']';
 
         // Display the setting.
         echo $setting->page();
@@ -465,7 +465,7 @@ class PageBuilder extends Wrapper
         $params = parse_url($default, PHP_URL_QUERY);
 
         if (!empty($params)) {
-            return '?'.$params.'&';
+            return '?' . $params . '&';
         }
 
         return '?';

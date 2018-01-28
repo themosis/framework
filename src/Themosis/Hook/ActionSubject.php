@@ -4,7 +4,7 @@ namespace Themosis\Hook;
 
 abstract class ActionSubject
 {
-    private $observers = array();
+    private $observers = [];
 
     /**
      * Register an observer.

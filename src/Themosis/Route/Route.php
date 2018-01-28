@@ -2,8 +2,8 @@
 
 namespace Themosis\Route;
 
-use Illuminate\Routing\Route as IlluminateRoute;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route as IlluminateRoute;
 use Illuminate\Support\Arr;
 use Themosis\Route\Matching\ConditionMatching;
 
@@ -102,8 +102,7 @@ class Route extends IlluminateRoute
             return is_string($value) || is_array($value);
         });
 
-        if ($this->condition() && !is_null($parameters))
-        {
+        if ($this->condition() && !is_null($parameters)) {
             if (is_string($parameters) && strrpos($parameters, '@') !== false) {
                 /**
                  * In case of a controller value statement, return empty array.
@@ -231,7 +230,6 @@ class Route extends IlluminateRoute
     /**
      * Create a WordPress rewrite rule for the route if the route is not using a WordPress conditional tag.
      * By registering a rewrite rule using the route's regex we force WordPress not to change the url to one Wordpress knows.
-     *
      */
     public function createRewriteRule()
     {
@@ -244,8 +242,8 @@ class Route extends IlluminateRoute
 
             // Add the rewrite rule to the top
             add_action('init', function () use ($regex) {
-                add_rewrite_tag('%is_'.$this->rewrite_tag_prefix.'_route%', '(\d)');
-                add_rewrite_rule($regex, 'index.php?is_'.$this->rewrite_tag_prefix.'_route=1', 'top');
+                add_rewrite_tag('%is_' . $this->rewrite_tag_prefix . '_route%', '(\d)');
+                add_rewrite_rule($regex, 'index.php?is_' . $this->rewrite_tag_prefix . '_route=1', 'top');
             });
         }
     }

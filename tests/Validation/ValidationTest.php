@@ -6,7 +6,8 @@ class ValidationTest extends PHPUnit_Framework_TestCase
 {
     protected $validator;
 
-    public function setUp() {
+    public function setUp()
+    {
         $this->validator = new ValidationBuilder();
     }
 
@@ -231,7 +232,7 @@ class ValidationTest extends PHPUnit_Framework_TestCase
 
     public function testValidateBool()
     {
-        $input =    ['1', 'on', 'yes', 'true', 'TRUE', TRUE, '11', null, false, 0, 'string'];
+        $input =    ['1', 'on', 'yes', 'true', 'TRUE', true, '11', null, false, 0, 'string'];
         $expected = ['1', 'on', 'yes', 'true', 'TRUE', true, '', '', '', '', ''];
 
         $v = $this->validator->single($input, ['bool']);

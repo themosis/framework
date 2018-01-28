@@ -82,10 +82,10 @@ abstract class FieldBuilder extends DataContainer
         }
 
         // Set the 'id' attribute.
-        $atts['id'] = isset($atts['id']) ? $atts['id'] : $this['name'].'-id';
+        $atts['id'] = isset($atts['id']) ? $atts['id'] : $this['name'] . '-id';
 
         // Set the 'class' attribute.
-        $atts['class'] = isset($atts['class']) ? $atts['class'] : 'field-'.$this['name'];
+        $atts['class'] = isset($atts['class']) ? $atts['class'] : 'field-' . $this['name'];
 
         return $atts;
     }

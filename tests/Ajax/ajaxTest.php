@@ -21,7 +21,8 @@ class AjaxTest extends PHPUnit_Framework_TestCase
         $ajax = new \Themosis\Ajax\AjaxBuilder($this->action);
 
         // Listen to an ajax request on logged in and out users (default).
-        $ajax->listen('infinite-scroll', function(){});
+        $ajax->listen('infinite-scroll', function () {
+        });
 
         // Check the action is registered.
         $this->assertTrue($this->action->exists('wp_ajax_nopriv_infinite-scroll'));

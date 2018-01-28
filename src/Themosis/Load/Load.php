@@ -10,7 +10,7 @@ abstract class Load implements ILoader
 {
     /**
      * List of registered paths.
-     * 
+     *
      * @var array
      */
     protected $paths = [];
@@ -78,7 +78,7 @@ abstract class Load implements ILoader
                     if ($file_extension === 'php') {
                         $this->files[] = [
                             'name' => $file->getBasename('.php'),
-                            'path' => $file->getPath().DS.$file->getBasename(),
+                            'path' => $file->getPath() . DS . $file->getBasename(),
                         ];
                     }
                 }
@@ -104,7 +104,7 @@ abstract class Load implements ILoader
 
     /**
      * Return a list of loaded files.
-     * 
+     *
      * @return array
      */
     public function getFiles()

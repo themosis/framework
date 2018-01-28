@@ -4,7 +4,7 @@ namespace Themosis\Taxonomy;
 
 /**
  * TaxField class.
- * 
+ *
  * Allow the user to add custom fields to a taxonomy.
  */
 class TaxField
@@ -28,7 +28,7 @@ class TaxField
      *
      * @var array
      */
-    private $fields = array();
+    private $fields = [];
 
     /**
      * The TaxField constructor.
@@ -42,7 +42,7 @@ class TaxField
         /*-----------------------------------------------------------------------*/
         // Check if the taxonomy exists before going further.
         /*-----------------------------------------------------------------------*/
-        add_action('wp_loaded', array($this, 'check'));
+        add_action('wp_loaded', [$this, 'check']);
     }
 
     /**
@@ -82,7 +82,7 @@ class TaxField
             /*-----------------------------------------------------------------------*/
             $this->exists = true;
         } else {
-            throw new TaxonomyException('The taxonomy slug "'.$this->slug.'" does not exists.');
+            throw new TaxonomyException('The taxonomy slug "' . $this->slug . '" does not exists.');
         }
     }
 
@@ -108,28 +108,28 @@ class TaxField
             // Add the field to the "add term page"
             // {$taxonomy_slug}_add_form_fields
             /*-----------------------------------------------------------------------*/
-            $slug = $this->slug.'_add_form_fields';
+            $slug = $this->slug . '_add_form_fields';
 
-            add_action($slug, array($this, 'addFields'));
+            add_action($slug, [$this, 'addFields']);
 
             /*-----------------------------------------------------------------------*/
             // Add the field to the "edit term page"
             /*-----------------------------------------------------------------------*/
-            $slug = $this->slug.'_edit_form_fields';
+            $slug = $this->slug . '_edit_form_fields';
 
-            add_action($slug, array($this, 'editFields'));
+            add_action($slug, [$this, 'editFields']);
 
             /*-----------------------------------------------------------------------*/
             // Register the save hooks on the add + edit pages.
             /*-----------------------------------------------------------------------*/
-            add_action('edited_'.$this->slug, array($this, 'save'), 10, 2);
-            add_action('create_'.$this->slug, array($this, 'save'), 10, 2);
+            add_action('edited_' . $this->slug, [$this, 'save'], 10, 2);
+            add_action('create_' . $this->slug, [$this, 'save'], 10, 2);
 
             /*-----------------------------------------------------------------------*/
             // Register the delete hook in order to remove the custom fields
             // from the options table.
             /*-----------------------------------------------------------------------*/
-            add_action('delete_term', array($this, 'delete'));
+            add_action('delete_term', [$this, 'delete']);
 
             return $this;
         } else {
@@ -177,7 +177,7 @@ class TaxField
             /*-----------------------------------------------------------------------*/
             // Option unique key
             /*-----------------------------------------------------------------------*/
-            $optionKey = $this->slug.'_'.$term_id;
+            $optionKey = $this->slug . '_' . $term_id;
 
             /*-----------------------------------------------------------------------*/
             // Retrieve an existing value if it exists...
@@ -211,7 +211,7 @@ class TaxField
      */
     public function delete($term_id)
     {
-        $key = $this->slug.'_'.$term_id;
+        $key = $this->slug . '_' . $term_id;
 
         delete_option($key);
     }
@@ -226,21 +226,21 @@ class TaxField
      */
     private function parse(array $fields, $taxonomySlug)
     {
-        $newFields = array();
+        $newFields = [];
 
         foreach ($fields as $field) {
-            $defaults = array(
+            $defaults = [
                 'name' => 'default_field',
                 'title' => ucfirst($field['name']),
                 'info' => '',
                 'default' => '',
                 'type' => 'text',
-                'options' => array(),
+                'options' => [],
                 'class' => '',
                 'multiple' => false,
-                'fields' => array(),
+                'fields' => [],
                 'taxonomy_slug' => $taxonomySlug,
-            );
+            ];
 
             /*-----------------------------------------------------------------------*/
             // Mix values from defaults and $args and then extract
@@ -248,7 +248,7 @@ class TaxField
             /*-----------------------------------------------------------------------*/
             extract(wp_parse_args($field, $defaults));
 
-            $field_args = array(
+            $field_args = [
                 'type' => $type,
                 'name' => $name,
                 'info' => $info,
@@ -260,7 +260,7 @@ class TaxField
                 'multiple' => $multiple,
                 'fields' => $fields,
                 'taxonomy_slug' => $taxonomy_slug,
-            );
+            ];
 
             /*-----------------------------------------------------------------------*/
             // Add new settings

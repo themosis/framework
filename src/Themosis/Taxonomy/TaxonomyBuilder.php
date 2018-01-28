@@ -3,9 +3,9 @@
 namespace Themosis\Taxonomy;
 
 use Illuminate\View\Factory;
+use Themosis\Field\Wrapper;
 use Themosis\Foundation\Application;
 use Themosis\Foundation\DataContainer;
-use Themosis\Field\Wrapper;
 use Themosis\Hook\IHook;
 use Themosis\Validation\ValidationBuilder;
 
@@ -35,7 +35,7 @@ class TaxonomyBuilder extends Wrapper
 
     /**
      * The taxonomy custom fields.
-     * 
+     *
      * @var array
      */
     protected $fields = [];
@@ -84,7 +84,7 @@ class TaxonomyBuilder extends Wrapper
 
         foreach ($params as $key => $param) {
             if ('postType' !== $key && !is_string($param)) {
-                throw new TaxonomyException('Invalid taxonomy parameter "'.$key.'"');
+                throw new TaxonomyException('Invalid taxonomy parameter "' . $key . '"');
             }
         }
 
@@ -127,7 +127,7 @@ class TaxonomyBuilder extends Wrapper
         }
 
         // Register each custom taxonomy instance into the container.
-        $this->container->instance($this->prefix.'.'.$this->datas['name'], $this);
+        $this->container->instance($this->prefix . '.' . $this->datas['name'], $this);
 
         return $this;
     }
@@ -187,8 +187,8 @@ class TaxonomyBuilder extends Wrapper
          * before registering.
          */
         foreach ($posttypes as $posttype) {
-            if (isset($this->container['posttype.'.$posttype])) {
-                $posttypeInstance = $this->container['posttype.'.$posttype];
+            if (isset($this->container['posttype.' . $posttype])) {
+                $posttypeInstance = $this->container['posttype.' . $posttype];
 
                 if ($posttypeInstance->has_status()) {
                     // Tell WordPress to count posts that are associated to a term.
@@ -207,7 +207,7 @@ class TaxonomyBuilder extends Wrapper
      * @param null $property
      *
      * @return array
-     * 
+     *
      * @throws TaxonomyException
      */
     public function get($property = null)
@@ -273,14 +273,14 @@ class TaxonomyBuilder extends Wrapper
         /*
          * Let's add the fields...
          */
-        $this->action->add($taxonomy.'_add_form_fields', [$this, 'displayAddFields']);
-        $this->action->add($taxonomy.'_edit_form_fields', [$this, 'displayEditFields']);
+        $this->action->add($taxonomy . '_add_form_fields', [$this, 'displayAddFields']);
+        $this->action->add($taxonomy . '_edit_form_fields', [$this, 'displayEditFields']);
 
         /*
          * Let's handle the save...
          */
-        $this->action->add('create_'.$taxonomy, [$this, 'save']);
-        $this->action->add('edit_'.$taxonomy, [$this, 'save']);
+        $this->action->add('create_' . $taxonomy, [$this, 'save']);
+        $this->action->add('edit_' . $taxonomy, [$this, 'save']);
 
         return $this;
     }
@@ -376,7 +376,7 @@ class TaxonomyBuilder extends Wrapper
 
     /**
      * Return a default value for the custom fields.
-     * 
+     *
      * @param int                           $term_id
      * @param \Themosis\Field\Fields\IField $field
      * @param string                        $value
@@ -405,7 +405,7 @@ class TaxonomyBuilder extends Wrapper
 
     /**
      * Save term custom field data to database.
-     * 
+     *
      * @param int $term_id
      */
     public function save($term_id)

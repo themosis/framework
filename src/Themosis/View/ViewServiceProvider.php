@@ -33,7 +33,7 @@ class ViewServiceProvider extends ServiceProvider
 
             // Register the engines.
             foreach (['php', 'blade', 'twig'] as $engine) {
-                $serviceProvider->{'register'.ucfirst($engine).'Engine'}($engine, $resolver);
+                $serviceProvider->{'register' . ucfirst($engine) . 'Engine'}($engine, $resolver);
             }
 
             return $resolver;
@@ -63,7 +63,7 @@ class ViewServiceProvider extends ServiceProvider
     {
         $container = $this->app;
 
-        $storage = $container['path.storage'].'views'.DS;
+        $storage = $container['path.storage'] . 'views' . DS;
         $filesystem = $container['filesystem'];
 
         $bladeCompiler = new BladeCompiler($filesystem, $storage);
@@ -76,7 +76,7 @@ class ViewServiceProvider extends ServiceProvider
 
     /**
      * Register the Twig engine to the EngineResolver.
-     * 
+     *
      * @param string         $engine
      * @param EngineResolver $resolver
      */
@@ -109,7 +109,7 @@ class ViewServiceProvider extends ServiceProvider
         $container->singleton('twig', function ($container) {
             return new \Twig_Environment($container['twig.loader'], [
                 'auto_reload' => true,
-                'cache' => $container['path.storage'].'twig',
+                'cache' => $container['path.storage'] . 'twig',
             ]);
         });
 
@@ -189,7 +189,7 @@ class ViewServiceProvider extends ServiceProvider
          * Add the "@query" directive.
          */
         $blade->directive('query', function ($expression) {
-            return '<?php $_themosisQuery = (is_array('.$expression.')) ? new WP_Query('.$expression.') : '.$expression.'; if($_themosisQuery->have_posts()) { while($_themosisQuery->have_posts()) { $_themosisQuery->the_post(); ?>';
+            return '<?php $_themosisQuery = (is_array(' . $expression . ')) ? new WP_Query(' . $expression . ') : ' . $expression . '; if($_themosisQuery->have_posts()) { while($_themosisQuery->have_posts()) { $_themosisQuery->the_post(); ?>';
         });
 
         /*

@@ -80,7 +80,7 @@ class Action extends ActionSubject
      */
     public function dispatch()
     {
-        add_action($this->hook, array($this, 'action'));
+        add_action($this->hook, [$this, 'action']);
     }
 
     /**
@@ -98,7 +98,7 @@ class Action extends ActionSubject
     /**
      * Execute the callback function associated
      * to the given object.
-     * 
+     *
      * @ignore
      */
     public function run()

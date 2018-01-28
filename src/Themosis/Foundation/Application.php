@@ -51,7 +51,7 @@ class Application extends Container
         $this->paths = $paths;
 
         foreach ($paths as $key => $path) {
-            $this->instance('path.'.$key, $path);
+            $this->instance('path.' . $key, $path);
         }
 
         return $this;

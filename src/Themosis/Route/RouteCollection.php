@@ -14,9 +14,9 @@ class RouteCollection extends IlluminateRouteCollection
     protected function addToCollections($route)
     {
         if (method_exists($route, 'getUri')) {
-            $domainAndUri = $route->domain().$route->getUri();
+            $domainAndUri = $route->domain() . $route->getUri();
         } else {
-            $domainAndUri = $route->domain().$route->uri();
+            $domainAndUri = $route->domain() . $route->uri();
         }
 
         if ($route->condition() && $route->conditionalParameters()) {
@@ -27,7 +27,7 @@ class RouteCollection extends IlluminateRouteCollection
             $this->routes[$method][$domainAndUri] = $route;
         }
 
-        $this->allRoutes[$method.$domainAndUri] = $route;
+        $this->allRoutes[$method . $domainAndUri] = $route;
     }
 
     /**

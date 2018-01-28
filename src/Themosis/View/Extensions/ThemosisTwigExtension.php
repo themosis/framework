@@ -3,8 +3,8 @@
 namespace Themosis\View\Extensions;
 
 use Themosis\Foundation\Application;
-use Twig_SimpleFunction;
 use Twig_Extension;
+use Twig_SimpleFunction;
 
 class ThemosisTwigExtension extends Twig_Extension
 {
@@ -59,7 +59,7 @@ class ThemosisTwigExtension extends Twig_Extension
 
     /**
      * Register a list of functions available into Twig templates.
-     * 
+     *
      * @return array|\Twig_SimpleFunction[]
      */
     public function getFunctions()

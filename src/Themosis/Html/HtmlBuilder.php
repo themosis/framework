@@ -22,11 +22,11 @@ class HtmlBuilder
             if (is_numeric($key)) {
                 $html[] = $this->entities($value);
             } elseif (is_string($key) && (is_numeric($value) || !empty($value))) {
-                $html[] = $key.'="'.$this->entities($value).'"';
+                $html[] = $key . '="' . $this->entities($value) . '"';
             }
         }
 
-        return (count($html) > 0) ? ' '.implode(' ', $html) : '';
+        return (count($html) > 0) ? ' ' . implode(' ', $html) : '';
     }
 
     /**

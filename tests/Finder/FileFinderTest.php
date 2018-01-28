@@ -9,8 +9,8 @@ class FileFinderTest extends PHPUnit_Framework_TestCase
     {
         $finder = new \Themosis\View\ViewFinder(new \Illuminate\Filesystem\Filesystem(), [], ['blade.php', 'scout.php', 'php', 'twig']);
         $paths = [
-            themosis_path('sys').'Metabox'.DS.'Views',
-            themosis_path('sys').'Field'.DS.'Fields'.DS.'Views',
+            themosis_path('sys') . 'Metabox' . DS . 'Views',
+            themosis_path('sys') . 'Field' . DS . 'Fields' . DS . 'Views',
         ];
         foreach ($paths as $path) {
             $finder->addLocation($path);
@@ -22,7 +22,7 @@ class FileFinderTest extends PHPUnit_Framework_TestCase
         // Test if core Metabox file is found.
         $metaboxCoreFullPath = $finder->find('_themosisCoreMetabox');
 
-        $this->assertEquals(themosis_path('sys').'Metabox'.DS.'Views'.DS.'_themosisCoreMetabox.scout.php', $metaboxCoreFullPath);
+        $this->assertEquals(themosis_path('sys') . 'Metabox' . DS . 'Views' . DS . '_themosisCoreMetabox.scout.php', $metaboxCoreFullPath);
     }
 
     /**
@@ -31,7 +31,7 @@ class FileFinderTest extends PHPUnit_Framework_TestCase
     public function testAssetFinder()
     {
         $finder = new \Themosis\Asset\AssetFinder();
-        $paths = [plugins_url('themosis-framework/src/Themosis/_assets') => themosis_path('sys').'_assets'];
+        $paths = [plugins_url('themosis-framework/src/Themosis/_assets') => themosis_path('sys') . '_assets'];
         $finder->addPaths($paths);
 
         // Check paths are correctly registered.
@@ -43,7 +43,7 @@ class FileFinderTest extends PHPUnit_Framework_TestCase
         $coreCss = $finder->find('css/_themosisCore.css');
         $coreJs = $finder->find('js/_themosisCore.js');
 
-        $this->assertEquals(plugins_url('themosis-framework/src/Themosis/_assets').'/css/_themosisCore.css', $coreCss);
-        $this->assertEquals(plugins_url('themosis-framework/src/Themosis/_assets').'/js/_themosisCore.js', $coreJs);
+        $this->assertEquals(plugins_url('themosis-framework/src/Themosis/_assets') . '/css/_themosisCore.css', $coreCss);
+        $this->assertEquals(plugins_url('themosis-framework/src/Themosis/_assets') . '/js/_themosisCore.js', $coreJs);
     }
 }

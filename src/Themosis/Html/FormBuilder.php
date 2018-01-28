@@ -87,7 +87,7 @@ class FormBuilder
             $append = wp_nonce_field($nonceAction, $nonceName, true, false);
         }
 
-        return '<form'.$this->html->attributes($attributes).'>'.$append;
+        return '<form' . $this->html->attributes($attributes) . '>' . $append;
     }
 
     /**
@@ -115,7 +115,7 @@ class FormBuilder
 
         // Check the given path.
         // If none given, set to the current page url.
-        $uri = ($action === null || empty($action)) ? $this->request->getPathInfo() : '/'.trim($action, '/');
+        $uri = ($action === null || empty($action)) ? $this->request->getPathInfo() : '/' . trim($action, '/');
 
         // Build the action url.
         // The uri could be absolute or relative path.
@@ -141,7 +141,7 @@ class FormBuilder
             return (is_ssl() || $ssl) ? str_replace('http://', 'https://', $uri) : $uri;
         }
 
-        return (is_ssl() || $ssl) ? 'https://'.$this->request->getHttpHost().$uri : 'http://'.$this->request->getHttpHost().$uri;
+        return (is_ssl() || $ssl) ? 'https://' . $this->request->getHttpHost() . $uri : 'http://' . $this->request->getHttpHost() . $uri;
     }
 
     /**
@@ -168,7 +168,7 @@ class FormBuilder
      */
     public function label($display, array $attributes = [])
     {
-        return '<label'.$this->html->attributes($attributes).'>'.$display.'</label>';
+        return '<label' . $this->html->attributes($attributes) . '>' . $display . '</label>';
     }
 
     /**
@@ -185,7 +185,7 @@ class FormBuilder
     {
         $merge = compact('type', 'name', 'value');
 
-        return '<input'.$this->html->attributes($merge).$this->html->attributes($attributes).'>';
+        return '<input' . $this->html->attributes($merge) . $this->html->attributes($attributes) . '>';
     }
 
     /**
@@ -350,13 +350,13 @@ class FormBuilder
             // Check if there are multiple options. Radio input are always single as there is only one value selected.
             // But checkbox could be one or multiple. Only specify the name attribute as array if there more than one choice.
             if (count($choices) > 1 && 'radio' !== $type) {
-                $n = $name.'[]';
+                $n = $name . '[]';
             } else {
                 $n = $name;
             }
 
             // Build html output
-            $input = $this->input($type, $n, $c, $attributes).ucfirst($choice);
+            $input = $this->input($type, $n, $c, $attributes) . ucfirst($choice);
             $field .= $this->label($input, $labelAttributes);
 
             // Reset 'checked' attributes.
@@ -384,7 +384,7 @@ class FormBuilder
 
         $attributes = array_merge($attributes, $merge);
 
-        return '<textarea name="'.$name.'" '.$this->html->attributes($attributes).'>'.$value.'</textarea>';
+        return '<textarea name="' . $name . '" ' . $this->html->attributes($attributes) . '>' . $value . '</textarea>';
     }
 
     /**
@@ -406,7 +406,7 @@ class FormBuilder
         // Check if multiple is defined.
         // If defined, change the name attribute.
         if (in_array('multiple', $attributes) || (isset($attributes['multiple']) && 'multiple' === $attributes['multiple'])) {
-            $attributes['name'] = $attributes['name'].'[]';
+            $attributes['name'] = $attributes['name'] . '[]';
         } else {
             unset($attributes['multiple']);
         }
@@ -414,7 +414,7 @@ class FormBuilder
         // Build the options of the select tag.
         $options = $this->makeOptionTags($options, $value);
 
-        return '<select'.$this->html->attributes($attributes).'>'.$options.'</select>';
+        return '<select' . $this->html->attributes($attributes) . '>' . $options . '</select>';
     }
 
     /**
@@ -552,7 +552,7 @@ class FormBuilder
     {
         $options = $this->parseOptionTags($options, $value);
 
-        return '<optgroup label="'.ucfirst($label).'">'.$options.'</optgroup>';
+        return '<optgroup label="' . ucfirst($label) . '">' . $options . '</optgroup>';
     }
 
     /**
@@ -606,7 +606,7 @@ class FormBuilder
             unset($attributes['selected']);
         }
 
-        return '<option value="'.$key.'" '.$selected.' '.$this->html->attributes($attributes).'>'.ucfirst($option).'</option>';
+        return '<option value="' . $key . '" ' . $selected . ' ' . $this->html->attributes($attributes) . '>' . ucfirst($option) . '</option>';
     }
 
     /**
@@ -676,6 +676,6 @@ class FormBuilder
 
         $attributes = array_merge($attributes, $merge);
 
-        return '<button '.$this->html->attributes($attributes).'>'.$display.'</button>';
+        return '<button ' . $this->html->attributes($attributes) . '>' . $display . '</button>';
     }
 }

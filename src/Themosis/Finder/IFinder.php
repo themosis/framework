@@ -24,7 +24,7 @@ interface IFinder
 
     /**
      * Return a list of registered paths.
-     * 
+     *
      * @return array
      */
     public function getPaths();

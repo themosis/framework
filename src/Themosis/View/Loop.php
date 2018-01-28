@@ -54,7 +54,7 @@ class Loop
      *
      * @param string $more_text    Content to show when there is more text.
      * @param bool   $strip_teaser Strip teaser content before the more text.
-     * 
+     *
      * @return string The content of the current post.
      */
     public function content($more_text = null, $strip_teaser = false)
@@ -195,7 +195,7 @@ class Loop
      */
     public function postClass($class = '', $post_id = null)
     {
-        return 'class="'.implode(' ', get_post_class($class, $post_id)).'"';
+        return 'class="' . implode(' ', get_post_class($class, $post_id)) . '"';
     }
 
     /**
