@@ -5,8 +5,8 @@ Plugin URI: https://framework.themosis.com/
 Description: A WordPress framework.
 Version: 1.3.2
 Author: Julien Lambé
-Author URI: http://www.themosis.com/
-License: GPLv2
+Author URI: https://www.themosis.com/
+License: GPL-2.0-or-later
 */
 
 /*----------------------------------------------------*/
