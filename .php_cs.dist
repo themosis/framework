@@ -7,6 +7,10 @@ use PhpCsFixer\Finder;
  * Plugin PHP code fixer.
  */
 $finder = Finder::create()
+    ->in([
+        'src',
+        'tests'
+    ])
     ->exclude([
         'bin',
         'node_modules'
@@ -16,7 +20,7 @@ return Config::create()
     ->setFinder($finder)
     ->setRules([
         '@PSR2' => true,
-        'strict_param' => true,
+        'strict_param' => false,
         'array_syntax' => [
             'syntax' => 'short'
         ],
