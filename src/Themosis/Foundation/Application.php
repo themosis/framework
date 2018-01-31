@@ -3,82 +3,167 @@
 namespace Themosis\Foundation;
 
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-class Application extends Container
+class Application extends Container implements ApplicationContract, HttpKernelInterface
 {
     /**
-     * Project paths.
-     * Same as $GLOBALS['themosis.paths'].
+     * Get the version number of the application.
      *
-     * @var array
+     * @return string
      */
-    protected $paths = [];
-
-    /**
-     * The loaded service providers.
-     *
-     * @var array
-     */
-    protected $loadedProviders = [];
-
-    public function __construct()
+    public function version()
     {
-        $this->registerApplication();
+        // TODO: Implement version() method.
     }
 
     /**
-     * Register the Application class into the container,
-     * so we can access it from the container itself.
+     * Get the base path of the Laravel installation.
+     *
+     * @return string
      */
-    public function registerApplication()
+    public function basePath()
     {
-        // Normally, only one instance is shared into the container.
-        static::setInstance($this);
-        $this->instance('app', $this);
+        // TODO: Implement basePath() method.
     }
 
     /**
-     * Register into the application instance, all project
-     * paths registered.
-     * Setup this method to be called later on an 'init' hook only.
+     * Get or check the current application environment.
      *
-     * @param array $paths The registered paths.
-     *
-     * @return \Themosis\Foundation\Application
+     * @return string
      */
-    public function registerAllPaths(array $paths)
+    public function environment()
     {
-        $this->paths = $paths;
+        // TODO: Implement environment() method.
+    }
 
-        foreach ($paths as $key => $path) {
-            $this->instance('path.' . $key, $path);
-        }
+    /**
+     * Determine if we are running in the console.
+     *
+     * @return bool
+     */
+    public function runningInConsole()
+    {
+        // TODO: Implement runningInConsole() method.
+    }
 
-        return $this;
+    /**
+     * Determine if the application is currently down for maintenance.
+     *
+     * @return bool
+     */
+    public function isDownForMaintenance()
+    {
+        // TODO: Implement isDownForMaintenance() method.
+    }
+
+    /**
+     * Register all of the configured providers.
+     *
+     * @return void
+     */
+    public function registerConfiguredProviders()
+    {
+        // TODO: Implement registerConfiguredProviders() method.
+    }
+
+    /**
+     * Register a deferred provider and service.
+     *
+     * @param  string $provider
+     * @param  string|null $service
+     * @return void
+     */
+    public function registerDeferredProvider($provider, $service = null)
+    {
+        // TODO: Implement registerDeferredProvider() method.
+    }
+
+    /**
+     * Boot the application's service providers.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        // TODO: Implement boot() method.
+    }
+
+    /**
+     * Register a new boot listener.
+     *
+     * @param  mixed $callback
+     * @return void
+     */
+    public function booting($callback)
+    {
+        // TODO: Implement booting() method.
+    }
+
+    /**
+     * Register a new "booted" listener.
+     *
+     * @param  mixed $callback
+     * @return void
+     */
+    public function booted($callback)
+    {
+        // TODO: Implement booted() method.
+    }
+
+    /**
+     * Get the path to the cached services.php file.
+     *
+     * @return string
+     */
+    public function getCachedServicesPath()
+    {
+        // TODO: Implement getCachedServicesPath() method.
+    }
+
+    /**
+     * Get the path to the cached packages.php file.
+     *
+     * @return string
+     */
+    public function getCachedPackagesPath()
+    {
+        // TODO: Implement getCachedPackagesPath() method.
+    }
+
+    /**
+     * Handles a Request to convert it to a Response.
+     *
+     * When $catch is true, the implementation must catch all exceptions
+     * and do its best to convert them to a Response instance.
+     *
+     * @param Request $request A Request instance
+     * @param int $type The type of the request
+     *                         (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
+     * @param bool $catch Whether to catch exceptions or not
+     *
+     * @return Response A Response instance
+     *
+     * @throws \Exception When an Exception occurs during processing
+     */
+    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
+    {
+        // TODO: Implement handle() method.
     }
 
     /**
      * Register a service provider with the application.
      *
-     * @param \Themosis\Foundation\ServiceProvider|string $provider
-     * @param array                                       $options
-     * @param bool                                        $force
-     *
-     * @return \Themosis\Foundation\ServiceProvider
+     * @param  \Illuminate\Support\ServiceProvider|string $provider
+     * @param  array $options
+     * @param  bool $force
+     * @return \Illuminate\Support\ServiceProvider
      */
-    public function register($provider, array $options = [], $force = false)
+    public function register($provider, $options = [], $force = false)
     {
-        if (!$provider instanceof ServiceProvider) {
-            $provider = new $provider($this);
-        }
-        if (array_key_exists($providerName = get_class($provider), $this->loadedProviders)) {
-            return;
-        }
-        $this->loadedProviders[$providerName] = true;
-        $provider->register();
-
-        if (method_exists($provider, 'boot')) {
-            $provider->boot();
-        }
+        // TODO: Implement register() method.
     }
 }
