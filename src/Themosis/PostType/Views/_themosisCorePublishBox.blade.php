@@ -177,7 +177,7 @@ $status_keys = array_keys($statuses);
                 if ($can_publish) {
                     // Check if post date is longer than now.
                     // If so, the post has to be scheduled.
-                    if (!empty($__post->post_date_gmt) && time() < strtotime($__post->post_date_gmt . ' +0000')) {
+                    if (!empty($__post->post_date_gmt) && time() < strtotime($__post->post_date_gmt.' +0000')) {
                         ?>
                         <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e('Schedule') ?>"/>
                         <?php submit_button(__('Schedule'), 'primary button-large', 'publish', false, ['accesskey' => 'p']); ?>
@@ -185,13 +185,13 @@ $status_keys = array_keys($statuses);
                     } else {
                         // The user can publish the post.
                         // This case mean the post is a new one with default status of draft.
-                        // By default, use the "publish_text" property of the first registered custom status. ?>
+                        // By default, use the "publish_text" property of the first registered custom status.?>
                         <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e($statuses[$status_keys[0]]['publish_text']); ?>"/>
                         <?php submit_button($statuses[$status_keys[0]]['publish_text'], 'primary button-large', 'publish', false, ['accesskey' => 'p']); ?>
                 <?php
                     }
                 } else {
-                    // User can't publish a post. So he can only submit it for review. ?>
+                    // User can't publish a post. So he can only submit it for review.?>
                     <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e('Submit for Review') ?>"/>
                     <?php submit_button(__('Submit for Review'), 'primary button-large', 'publish', false, ['accesskey' => 'p']); ?>
                 <?php

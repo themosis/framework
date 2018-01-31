@@ -106,7 +106,7 @@ class PostTypeBuilder implements IPostType
 
         foreach ($params as $key => $param) {
             if (!is_string($param)) {
-                throw new PostTypeException('Invalid custom post type parameter "' . $key . '". Accepts string only.');
+                throw new PostTypeException('Invalid custom post type parameter "'.$key.'". Accepts string only.');
             }
         }
 
@@ -145,7 +145,7 @@ class PostTypeBuilder implements IPostType
         }
 
         // Register each custom post type instances into the container.
-        $this->container->instance($this->prefix . '.' . $this->datas['name'], $this);
+        $this->container->instance($this->prefix.'.'.$this->datas['name'], $this);
 
         return $this;
     }
@@ -261,7 +261,7 @@ class PostTypeBuilder implements IPostType
             'exclude_from_search' => false,
             'show_in_admin_all_list' => true,
             'show_in_admin_status_list' => true,
-            'label_count' => _n_noop($defaultName . ' <span class="count">(%s)</span>', $defaultName . ' <span class="count">(%s)</span>'),
+            'label_count' => _n_noop($defaultName.' <span class="count">(%s)</span>', $defaultName.' <span class="count">(%s)</span>'),
             'publish_text' => __('Apply Changes'),
         ]);
 
@@ -280,7 +280,7 @@ class PostTypeBuilder implements IPostType
 
         // Re-order the list of statuses on List Table.
         // Put the "trash" item as the last item.
-        $this->filter->add('views_edit-' . $this->datas['name'], [$this, 'reorderStatusViews']);
+        $this->filter->add('views_edit-'.$this->datas['name'], [$this, 'reorderStatusViews']);
 
         return $this;
     }

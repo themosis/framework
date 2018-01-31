@@ -21,7 +21,7 @@
                             // Set the id attribute.
                             $f_atts = $f['atts']; // Grab ALL attributes of the field.
                             $defaultId = $f_atts['id']; // Keep a copy of the field id attribute.
-                            $f_atts['id'] = $field['name'] . '-' . $i . '-' . $f['name'] . '-id'; // Update the id attribute of the field.
+                            $f_atts['id'] = $field['name'].'-'.$i.'-'.$f['name'].'-id'; // Update the id attribute of the field.
                             $f['atts'] = $f_atts; // Update ALL attributes of the field. Contains its new id value.
 
                             // Grab the value if it exists.
@@ -33,7 +33,7 @@
                             // Note: this completely change the name attribute. Do not write
                             // any code that would need the default 'name' attribute below.
                             $defaultName = $f['name'];
-                            $f['name'] = $field['name'] . '[' . $i . '][' . $f['name'] . ']';
+                            $f['name'] = $field['name'].'['.$i.']['.$f['name'].']';
 
                             // Render the field.
                             echo(Themosis\Facades\View::make('_themosisMetaboxRow', ['field' => $f])->render());

@@ -84,7 +84,7 @@ class TaxonomyBuilder extends Wrapper
 
         foreach ($params as $key => $param) {
             if ('postType' !== $key && !is_string($param)) {
-                throw new TaxonomyException('Invalid taxonomy parameter "' . $key . '"');
+                throw new TaxonomyException('Invalid taxonomy parameter "'.$key.'"');
             }
         }
 
@@ -127,7 +127,7 @@ class TaxonomyBuilder extends Wrapper
         }
 
         // Register each custom taxonomy instance into the container.
-        $this->container->instance($this->prefix . '.' . $this->datas['name'], $this);
+        $this->container->instance($this->prefix.'.'.$this->datas['name'], $this);
 
         return $this;
     }
@@ -187,8 +187,8 @@ class TaxonomyBuilder extends Wrapper
          * before registering.
          */
         foreach ($posttypes as $posttype) {
-            if (isset($this->container['posttype.' . $posttype])) {
-                $posttypeInstance = $this->container['posttype.' . $posttype];
+            if (isset($this->container['posttype.'.$posttype])) {
+                $posttypeInstance = $this->container['posttype.'.$posttype];
 
                 if ($posttypeInstance->has_status()) {
                     // Tell WordPress to count posts that are associated to a term.
@@ -273,14 +273,14 @@ class TaxonomyBuilder extends Wrapper
         /*
          * Let's add the fields...
          */
-        $this->action->add($taxonomy . '_add_form_fields', [$this, 'displayAddFields']);
-        $this->action->add($taxonomy . '_edit_form_fields', [$this, 'displayEditFields']);
+        $this->action->add($taxonomy.'_add_form_fields', [$this, 'displayAddFields']);
+        $this->action->add($taxonomy.'_edit_form_fields', [$this, 'displayEditFields']);
 
         /*
          * Let's handle the save...
          */
-        $this->action->add('create_' . $taxonomy, [$this, 'save']);
-        $this->action->add('edit_' . $taxonomy, [$this, 'save']);
+        $this->action->add('create_'.$taxonomy, [$this, 'save']);
+        $this->action->add('edit_'.$taxonomy, [$this, 'save']);
 
         return $this;
     }

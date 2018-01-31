@@ -51,7 +51,7 @@ class FormTest extends PHPUnit_Framework_TestCase
         $open = $form->open();
         $nonce = wp_create_nonce('form');
 
-        $this->assertEquals('<form action="http://somedomain.com/" method="POST" accept-charset="UTF-8"><input type="hidden" id="_themosisnonce" name="_themosisnonce" value="' . $nonce . '" /><input type="hidden" name="_wp_http_referer" value="" />', $open);
+        $this->assertEquals('<form action="http://somedomain.com/" method="POST" accept-charset="UTF-8"><input type="hidden" id="_themosisnonce" name="_themosisnonce" value="'.$nonce.'" /><input type="hidden" name="_wp_http_referer" value="" />', $open);
     }
 
     /**
@@ -64,7 +64,7 @@ class FormTest extends PHPUnit_Framework_TestCase
         $open = $form->open('contact', 'post', true);
         $nonce = wp_create_nonce('form');
 
-        $this->assertEquals('<form action="https://www.themosis.test/contact" method="POST" accept-charset="UTF-8"><input type="hidden" id="_themosisnonce" name="_themosisnonce" value="' . $nonce . '" /><input type="hidden" name="_wp_http_referer" value="" />', $open);
+        $this->assertEquals('<form action="https://www.themosis.test/contact" method="POST" accept-charset="UTF-8"><input type="hidden" id="_themosisnonce" name="_themosisnonce" value="'.$nonce.'" /><input type="hidden" name="_wp_http_referer" value="" />', $open);
     }
 
     public function testCloseFormTag()

@@ -19,7 +19,7 @@ class TaxMeta
      */
     public static function all($taxonomySlug, $term_id)
     {
-        $key = $taxonomySlug . '_' . $term_id;
+        $key = $taxonomySlug.'_'.$term_id;
 
         return get_option($key);
     }

@@ -16,7 +16,7 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     {
         $this->finder = new \Themosis\Config\ConfigFinder();
         $this->finder->addPaths([
-            themosis_path('core') . 'tests/Config/configFiles/',
+            themosis_path('core').'tests/Config/configFiles/',
         ]);
         $this->factory = new \Themosis\Config\ConfigFactory($this->finder);
     }

@@ -98,7 +98,7 @@ if (!function_exists('themosis_assets')) {
             return themosis_theme_assets();
         }
 
-        return get_template_directory_uri() . '/resources/assets';
+        return get_template_directory_uri().'/resources/assets';
     }
 }
 
@@ -250,7 +250,7 @@ if (!function_exists('themosis_attachment_id_from_url')) {
             /*-----------------------------------------------------------------------*/
             // Remove the upload path base directory from the attachment URL
             /*-----------------------------------------------------------------------*/
-            $url = str_replace($upload_dir_paths['baseurl'] . '/', '', $url);
+            $url = str_replace($upload_dir_paths['baseurl'].'/', '', $url);
 
             /*-----------------------------------------------------------------------*/
             // Grab the database prefix

@@ -10,7 +10,7 @@ if (!function_exists('themosis_set_paths')) {
     {
         foreach ($paths as $name => $path) {
             if (!isset($GLOBALS['themosis.paths'][$name])) {
-                $GLOBALS['themosis.paths'][$name] = realpath($path) . DS;
+                $GLOBALS['themosis.paths'][$name] = realpath($path).DS;
             }
         }
     }

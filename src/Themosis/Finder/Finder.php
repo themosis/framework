@@ -116,13 +116,13 @@ abstract class Finder implements IFinder
     {
         foreach ($paths as $path) {
             foreach ($this->getPossibleFiles($name) as $file) {
-                if (file_exists($filePath = $path . $file)) {
+                if (file_exists($filePath = $path.$file)) {
                     return $filePath;
                 }
             }
         }
 
-        throw new FinderException('File or entity "' . $name . '" not found.');
+        throw new FinderException('File or entity "'.$name.'" not found.');
     }
 
     /**
@@ -135,7 +135,7 @@ abstract class Finder implements IFinder
     protected function getPossibleFiles($name)
     {
         return array_map(function ($extension) use ($name) {
-            return str_replace('.', DS, $name) . '.' . $extension;
+            return str_replace('.', DS, $name).'.'.$extension;
         }, $this->extensions);
     }
 }

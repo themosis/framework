@@ -82,7 +82,7 @@ class TaxField
             /*-----------------------------------------------------------------------*/
             $this->exists = true;
         } else {
-            throw new TaxonomyException('The taxonomy slug "' . $this->slug . '" does not exists.');
+            throw new TaxonomyException('The taxonomy slug "'.$this->slug.'" does not exists.');
         }
     }
 
@@ -108,22 +108,22 @@ class TaxField
             // Add the field to the "add term page"
             // {$taxonomy_slug}_add_form_fields
             /*-----------------------------------------------------------------------*/
-            $slug = $this->slug . '_add_form_fields';
+            $slug = $this->slug.'_add_form_fields';
 
             add_action($slug, [$this, 'addFields']);
 
             /*-----------------------------------------------------------------------*/
             // Add the field to the "edit term page"
             /*-----------------------------------------------------------------------*/
-            $slug = $this->slug . '_edit_form_fields';
+            $slug = $this->slug.'_edit_form_fields';
 
             add_action($slug, [$this, 'editFields']);
 
             /*-----------------------------------------------------------------------*/
             // Register the save hooks on the add + edit pages.
             /*-----------------------------------------------------------------------*/
-            add_action('edited_' . $this->slug, [$this, 'save'], 10, 2);
-            add_action('create_' . $this->slug, [$this, 'save'], 10, 2);
+            add_action('edited_'.$this->slug, [$this, 'save'], 10, 2);
+            add_action('create_'.$this->slug, [$this, 'save'], 10, 2);
 
             /*-----------------------------------------------------------------------*/
             // Register the delete hook in order to remove the custom fields
@@ -177,7 +177,7 @@ class TaxField
             /*-----------------------------------------------------------------------*/
             // Option unique key
             /*-----------------------------------------------------------------------*/
-            $optionKey = $this->slug . '_' . $term_id;
+            $optionKey = $this->slug.'_'.$term_id;
 
             /*-----------------------------------------------------------------------*/
             // Retrieve an existing value if it exists...
@@ -211,7 +211,7 @@ class TaxField
      */
     public function delete($term_id)
     {
-        $key = $this->slug . '_' . $term_id;
+        $key = $this->slug.'_'.$term_id;
 
         delete_option($key);
     }

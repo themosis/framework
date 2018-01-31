@@ -8,7 +8,7 @@ class LoaderTest extends PHPUnit_Framework_TestCase
 
         // Add files.
         $loader->add([
-            themosis_path('core') . 'tests/Load/files'
+            themosis_path('core').'tests/Load/files'
         ]);
 
         $loader->load();
@@ -31,7 +31,7 @@ class LoaderTest extends PHPUnit_Framework_TestCase
         $loader = new Themosis\Load\WidgetLoader(new \Themosis\Hook\FilterBuilder(new \Themosis\Foundation\Application()));
 
         $loader->add([
-            themosis_path('core') . 'tests/Load/widgets'
+            themosis_path('core').'tests/Load/widgets'
         ]);
 
         $loader->load();

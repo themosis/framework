@@ -61,7 +61,7 @@
             $stamp = __('Published on: <b>%1$s</b>');
         } elseif ('0000-00-00 00:00:00' == $post->post_date_gmt) { // draft, 1 or more saves, no date specified
             $stamp = __('Publish <b>immediately</b>');
-        } elseif (time() < strtotime($post->post_date_gmt . ' +0000')) { // draft, 1 or more saves, future date specified
+        } elseif (time() < strtotime($post->post_date_gmt.' +0000')) { // draft, 1 or more saves, future date specified
             $stamp = __('Schedule for: <b>%1$s</b>');
         } else { // draft, 1 or more saves, date specified
             $stamp = __('Publish on: <b>%1$s</b>');
@@ -78,14 +78,14 @@
         <div class="misc-pub-section misc-pub-revisions">
             <?php
             if ($revisions_to_keep > 0 && $revisions_to_keep <= $args['args']['revisions_count']) {
-                echo '<span title="' . esc_attr(sprintf(
+                echo '<span title="'.esc_attr(sprintf(
                     __('Your site is configured to keep only the last %s revisions.'),
                         number_format_i18n($revisions_to_keep)
-                )) . '">';
-                printf(__('Revisions: %s'), '<b>' . number_format_i18n($args['args']['revisions_count']) . '+</b>');
+                )).'">';
+                printf(__('Revisions: %s'), '<b>'.number_format_i18n($args['args']['revisions_count']).'+</b>');
                 echo '</span>';
             } else {
-                printf(__('Revisions: %s'), '<b>' . number_format_i18n($args['args']['revisions_count']) . '</b>');
+                printf(__('Revisions: %s'), '<b>'.number_format_i18n($args['args']['revisions_count']).'</b>');
             }
             ?>
             <a class="hide-if-no-js" href="<?php echo esc_url(get_edit_post_link($args['args']['revision_id'])); ?>"><span aria-hidden="true"><?php _ex('Browse', 'revisions'); ?></span> <span class="screen-reader-text"><?php _e('Browse revisions'); ?></span></a>

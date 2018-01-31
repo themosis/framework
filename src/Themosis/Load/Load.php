@@ -78,7 +78,7 @@ abstract class Load implements ILoader
                     if ($file_extension === 'php') {
                         $this->files[] = [
                             'name' => $file->getBasename('.php'),
-                            'path' => $file->getPath() . DS . $file->getBasename(),
+                            'path' => $file->getPath().DS.$file->getBasename(),
                         ];
                     }
                 }

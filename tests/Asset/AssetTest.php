@@ -20,7 +20,7 @@ class AssetTest extends PHPUnit_Framework_TestCase
     {
         $finder = new AssetFinder();
         $finder->addPaths([
-            plugins_url('themosis-framework/tests/_assets') => themosis_path('core') . 'tests/_assets',
+            plugins_url('themosis-framework/tests/_assets') => themosis_path('core').'tests/_assets',
         ]);
         $this->container = $container = new Application();
         $this->container->bind('action', 'Themosis\Hook\ActionBuilder');
@@ -101,23 +101,23 @@ class AssetTest extends PHPUnit_Framework_TestCase
 
         $replace = function ($tag, $atts, $append) use ($html) {
             if (false !== $pos = strrpos($tag, $append)) {
-                $tag = substr_replace($tag, $html->attributes($atts), $pos) . ' ' . trim($append);
+                $tag = substr_replace($tag, $html->attributes($atts), $pos).' '.trim($append);
             }
 
             return $tag;
         };
 
         // CSS
-        $assetUrl = plugins_url('themosis-framework/tests/_assets') . '/css/project-test.css?ver=1.0';
-        $originalTag = '<link rel="stylesheet" id="test-css-css" href="' . $assetUrl . '" type="text/css" media="all" />';
+        $assetUrl = plugins_url('themosis-framework/tests/_assets').'/css/project-test.css?ver=1.0';
+        $originalTag = '<link rel="stylesheet" id="test-css-css" href="'.$assetUrl.'" type="text/css" media="all" />';
 
-        $this->assertEquals('<link rel="stylesheet" id="test-css-css" href="' . $assetUrl . '" type="text/css" media="all" data-loaded="loadTemplate" />', $replace($originalTag, ['data-loaded' => 'loadTemplate'], ' />'));
+        $this->assertEquals('<link rel="stylesheet" id="test-css-css" href="'.$assetUrl.'" type="text/css" media="all" data-loaded="loadTemplate" />', $replace($originalTag, ['data-loaded' => 'loadTemplate'], ' />'));
 
         // JS
-        $assetUrl = plugins_url('themosis-framework/tests/_assets') . '/js/project-main.js?ver=1.0';
-        $originalTag = '<script type="text/javascript" src="' . $assetUrl . '"></script>';
+        $assetUrl = plugins_url('themosis-framework/tests/_assets').'/js/project-main.js?ver=1.0';
+        $originalTag = '<script type="text/javascript" src="'.$assetUrl.'"></script>';
 
-        $this->assertEquals('<script type="text/javascript" src="' . $assetUrl . '"></script>', $replace($originalTag, ['async', 'data-ready' => 'onReady()'], '><script>'));
+        $this->assertEquals('<script type="text/javascript" src="'.$assetUrl.'"></script>', $replace($originalTag, ['async', 'data-ready' => 'onReady()'], '><script>'));
     }
 
     public function testAssetChangeArea()

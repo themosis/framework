@@ -21,7 +21,7 @@ class ValidationBuilder implements IValidate
             $ruleProperties = $this->parseRule($rule);
 
             // Set rule method.
-            $signature = 'validate_' . $ruleProperties['rule'];
+            $signature = 'validate_'.$ruleProperties['rule'];
 
             // Check if the datas given is an array
             // If array, parse each item and return them
