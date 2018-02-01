@@ -94,6 +94,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     {
         $this->basePath = rtrim($basePath, '\/');
         $this->bindPathsInContainer();
+
         return $this;
     }
 
