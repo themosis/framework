@@ -55,8 +55,11 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     protected $booted = false;
 
-    public function __construct()
+    public function __construct($basePath = null)
     {
+        if ($basePath) {
+            $this->setBasePath($basePath);
+        }
     }
 
     /**
@@ -79,6 +82,46 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function basePath($path = '')
     {
         return $this->basePath.($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Set the base path for the application.
+     *
+     * @param string $basePath
+     * @return $this
+     */
+    public function setBasePath($basePath)
+    {
+        $this->basePath = rtrim($basePath, '\/');
+        $this->bindPathsInContainer();
+        return $this;
+    }
+
+    /**
+     * Bind all of the application paths in the container.
+     *
+     * @return void
+     */
+    protected function bindPathsInContainer()
+    {
+        // Core
+        $this->instance('path', $this->path());
+        // Mu-plugins
+        // Plugins
+        // Theme
+        // Storage
+        // Public
+    }
+
+    /**
+     * Get the path to the application "themosis-application" directory.
+     *
+     * @param string $path
+     * @return string
+     */
+    public function path($path = '')
+    {
+        return $this->basePath.DIRECTORY_SEPARATOR.'themosis-application'.($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
