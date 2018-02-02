@@ -4,12 +4,15 @@ namespace Themosis\Foundation;
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Illuminate\Events\EventServiceProvider;
+use Illuminate\Log\LogServiceProvider;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Themosis\Route\RouteServiceProvider;
 
 class Application extends Container implements ApplicationContract, HttpKernelInterface
 {
@@ -62,6 +65,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         }
 
         $this->registerBaseBindings();
+        $this->registerBaseServiceProviders();
     }
 
     /**
@@ -82,6 +86,16 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         static::setInstance($this);
         $this->instance('app', $this);
         $this->instance(Container::class, $this);
+    }
+
+    /**
+     * Register base service providers.
+     */
+    protected function registerBaseServiceProviders()
+    {
+        $this->register(new EventServiceProvider($this));
+        $this->register(new LogServiceProvider($this));
+        $this->register(new RouteServiceProvider($this));
     }
 
     /**

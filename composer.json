@@ -29,12 +29,13 @@
     "composer/installers": "^1.0",
     "filp/whoops": "~2.1",
     "twig/twig": "~2.4",
-    "illuminate/http": "^5.5",
-    "illuminate/routing": "^5.5",
     "illuminate/container": "^5.5",
     "illuminate/events": "^5.5",
-    "illuminate/view": "^5.5",
-    "illuminate/filesystem": "^5.5"
+    "illuminate/filesystem": "^5.5",
+    "illuminate/http": "^5.5",
+    "illuminate/log": "^5.5",
+    "illuminate/routing": "^5.5",
+    "illuminate/view": "^5.5"
   },
   "require-dev": {
     "phpunit/phpunit": "~6.0",

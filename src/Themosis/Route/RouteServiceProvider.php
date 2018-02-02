@@ -3,7 +3,7 @@
 namespace Themosis\Route;
 
 use Illuminate\Events\Dispatcher;
-use Themosis\Foundation\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
