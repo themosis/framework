@@ -107,10 +107,29 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     {
         // Core
         $this->instance('path', $this->path());
+        // Base
+        $this->instance('path.base', $this->basePath());
+        // Content
+        $this->instance('path.content', $this->contentPath());
         // Mu-plugins
+        $this->instance('path.muplugins', $this->mupluginsPath());
         // Plugins
-        // Theme
+        $this->instance('path.plugins', $this->pluginsPath());
+        // Themes
+        $this->instance('path.themes', $this->themesPath());
+        // Application
+        $this->instance('path.application', $this->applicationPath());
+        // Resources
+        $this->instance('path.resources', $this->resourcePath());
+        // Languages
+        $this->instance('path.lang', $this->langPath());
+        // Web root
+        $this->instance('path.web', $this->webPath());
+        // Root
+        $this->instance('path.root', $this->rootPath());
+        dd($this['path.root']);
         // Storage
+        //$this->instance('path.storage', $this->storagePath());
         // Public
     }
 
@@ -122,7 +141,114 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function path($path = '')
     {
-        return $this->basePath.DIRECTORY_SEPARATOR.'themosis-application'.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->basePath.DIRECTORY_SEPARATOR.'themosis-framework'.($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Get the WordPress "content" directory.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function contentPath($path = '')
+    {
+        return WP_CONTENT_DIR.($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Get the WordPress "mu-plugins" directory.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function mupluginsPath($path = '')
+    {
+        return $this->basePath($path);
+    }
+
+    /**
+     * Get the WordPress "plugins" directory.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function pluginsPath($path = '')
+    {
+        return $this->contentPath('plugins').($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Get the WordPress "themes" directory.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function themesPath($path = '')
+    {
+        return $this->contentPath('themes').($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Get the application directory.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function applicationPath($path = '')
+    {
+        return $this->mupluginsPath('themosis-application').($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Get the path to the application "resources" directory.
+     *
+     * @param string $path
+     * @return string
+     */
+    public function resourcePath($path = '')
+    {
+        return $this->applicationPath('resources').($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Get the path to the WordPress "languages" directory.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function langPath($path = '')
+    {
+        return $this->contentPath('languages').($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Get the path of the web server root.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function webPath($path = '')
+    {
+        return ABSPATH.($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Get the root path of the project.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function rootPath($path = '')
+    {
+        return $this->webPath($path);
     }
 
     /**
