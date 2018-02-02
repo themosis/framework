@@ -127,10 +127,16 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this->instance('path.web', $this->webPath());
         // Root
         $this->instance('path.root', $this->rootPath());
-        dd($this['path.root']);
-        // Storage
-        //$this->instance('path.storage', $this->storagePath());
+        // Config
+        $this->instance('path.config', $this->configPath());
         // Public
+        $this->instance('path.public', $this->webPath());
+        // Storage
+        $this->instance('path.storage', $this->storagePath());
+        // Database
+        $this->instance('path.database', $this->databasePath());
+        // Bootstrap
+        $this->instance('path.bootstrap', $this->bootstrapPath());
     }
 
     /**
@@ -236,7 +242,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function webPath($path = '')
     {
-        return ABSPATH.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return rtrim(ABSPATH, '\/').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
@@ -248,7 +254,60 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function rootPath($path = '')
     {
+        if (defined('THEMOSIS_ROOT')) {
+            return THEMOSIS_ROOT.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        }
+
         return $this->webPath($path);
+    }
+
+    /**
+     * Get the main application plugin configuration directory.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function configPath($path = '')
+    {
+        return $this->resourcePath('config').($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Get the storage directory.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function storagePath($path = '')
+    {
+        if (defined('THEMOSIS_ROOT')) {
+            return $this->rootPath('storage').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        }
+
+        return $this->contentPath('storage').($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Get the database directory.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function databasePath($path = '')
+    {
+        return $this->rootPath('data').($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    public function bootstrapPath($path = '')
+    {
+        if (defined('THEMOSIS_ROOT')) {
+            return $this->rootPath('bootstrap').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        }
+
+        return $this->applicationPath('bootstrap').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
