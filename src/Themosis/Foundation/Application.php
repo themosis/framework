@@ -60,6 +60,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         if ($basePath) {
             $this->setBasePath($basePath);
         }
+
+        $this->registerBaseBindings();
     }
 
     /**
@@ -70,6 +72,16 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function version()
     {
         return static::VERSION;
+    }
+
+    /**
+     * Register basic bindings into the container.
+     */
+    protected function registerBaseBindings()
+    {
+        static::setInstance($this);
+        $this->instance('app', $this);
+        $this->instance(Container::class, $this);
     }
 
     /**
