@@ -66,6 +66,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
         $this->registerBaseBindings();
         $this->registerBaseServiceProviders();
+        $this->registerCoreContainerAliases();
     }
 
     /**
@@ -96,6 +97,24 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this->register(new EventServiceProvider($this));
         $this->register(new LogServiceProvider($this));
         $this->register(new RouteServiceProvider($this));
+    }
+
+    protected function registerCoreContainerAliases()
+    {
+        $list = [
+            'app' => [
+                Application::class,
+                \Illuminate\Contracts\Container\Container::class,
+                \Illuminate\Contracts\Foundation\Application::class,
+                \Psr\Container\ContainerInterface::class
+            ]
+        ];
+
+        foreach ($list as $key => $aliases) {
+            foreach ($aliases as $alias) {
+                $this->alias($key, $alias);
+            }
+        }
     }
 
     /**
