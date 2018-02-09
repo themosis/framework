@@ -603,4 +603,14 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this->serviceProviders[] = $provider;
         $this->loadedProviders[get_class($provider)] = true;
     }
+
+    /**
+     * Determine if the application is running unit tests.
+     *
+     * @return bool
+     */
+    public function runningUnitTests()
+    {
+        // TODO: Implement runningUnitTests() method.
+    }
 }
