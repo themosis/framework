@@ -15,6 +15,7 @@
       "homepage": "http://www.themosis.com/"
     }
   ],
+  "type": "wordpress-plugin",
   "autoload": {
     "psr-4": {
       "Themosis\\": "src/Themosis/"
