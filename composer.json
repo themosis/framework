@@ -28,7 +28,7 @@
     "php": ">=7.1.0",
     "composer/installers": "^1.0",
     "filp/whoops": "~2.1",
-    "twig/twig": "~2.4",
+    "twig/twig": "~2.0",
     "illuminate/container": "^5.5",
     "illuminate/events": "^5.5",
     "illuminate/filesystem": "^5.5",
