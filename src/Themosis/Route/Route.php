@@ -281,8 +281,8 @@ class Route extends IlluminateRoute
         $routeRegex = $this->getCompiled()->getRegex();
         // Remove the first part (#^/) of the regex because WordPress adds this already by itself
         $routeRegex = preg_replace('/^\#\^\//', '^', $routeRegex);
-        // Remove the last part (#s$) of the regex because WordPress adds this already by itself
-        $routeRegex = preg_replace('/\#[s]$/', '', $routeRegex);
+        // Remove the modifiers of the regex because WordPress adds this already by itself
+        $routeRegex = preg_replace('/\$\#.*$/', '$', $routeRegex);
 
         return $routeRegex;
     }
