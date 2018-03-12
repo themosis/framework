@@ -500,11 +500,13 @@ if (!function_exists('app')) {
      */
     function app($abstract = null, array $parameters = [])
     {
+        $application = isset($GLOBALS['themosis']) ? $GLOBALS['themosis']->container : Application::getInstance();
+
         if (is_null($abstract)) {
-            return Application::getInstance();
+            return $application;
         }
 
-        return Application::getInstance()->make($abstract, $parameters);
+        return $application->make($abstract, $parameters);
     }
 }
 
