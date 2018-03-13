@@ -1,7 +1,6 @@
 Themosis framework
 ==================
 
-[![Build Status](https://travis-ci.org/themosis/framework.svg?branch=master)](https://travis-ci.org/themosis/framework)
 [![Join the chat at https://gitter.im/themosis/framework](https://badges.gitter.im/themosis/framework.svg)](https://gitter.im/themosis/framework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 The Themosis framework is a WordPress focused framework. It helps you develop enterprise level WordPress applications and websites using an elegant and simple code syntax.
