@@ -20,8 +20,7 @@
       "Themosis\\": "src/"
     },
     "files": [
-      "src/Foundation/helpers.php",
-      "src/helpers.php"
+      "src/Core/helpers.php"
     ]
   },
   "require": {

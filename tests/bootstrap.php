@@ -1,26 +1,19 @@
 <?php
-/**
- * PHPUnit bootstrap file
- *
- * @package Themosis_Framework
- */
-$_tests_dir = getenv('WP_TESTS_DIR');
-if (!$_tests_dir) {
-    $_tests_dir = '/tmp/wordpress-tests-lib';
-}
 
-// Give access to tests_add_filter() function.
-require_once $_tests_dir.'/includes/functions.php';
+/*----------------------------------------------------*/
+// Directory separator
+/*----------------------------------------------------*/
+defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
 
-/**
- * Manually load the plugin being tested.
- */
-function _manually_load_plugin()
-{
-    require dirname(dirname(__FILE__)).'/themosis.php';
-}
+/*----------------------------------------------------*/
+// Application paths
+/*----------------------------------------------------*/
+define('THEMOSIS_PUBLIC_DIR', 'htdocstest');
+define('THEMOSIS_ROOT', realpath(__DIR__));
+define('CONTENT_DIR', 'content');
+define('WP_CONTENT_DIR', realpath(THEMOSIS_ROOT.DS.THEMOSIS_PUBLIC_DIR.DS.CONTENT_DIR));
 
-tests_add_filter('muplugins_loaded', '_manually_load_plugin');
-
-// Start up the WP testing environment.
-require $_tests_dir.'/includes/bootstrap.php';
+/*----------------------------------------------------*/
+// Composer autoload
+/*----------------------------------------------------*/
+require __DIR__.'/../vendor/autoload.php';
