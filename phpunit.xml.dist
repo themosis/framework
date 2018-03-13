@@ -6,13 +6,11 @@
     convertErrorsToExceptions="true"
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
+    processIsolation="false"
     verbose="true">
     <testsuites>
-        <testsuite name="Themosis framework test suite">
+        <testsuite name="Themosis framework">
             <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>
-    <php>
-        <ini name="display_errors" value="true"/>
-    </php>
 </phpunit>
