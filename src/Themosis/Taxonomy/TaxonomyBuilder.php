@@ -3,9 +3,9 @@
 namespace Themosis\Taxonomy;
 
 use Illuminate\View\Factory;
+use Themosis\Field\Wrapper;
 use Themosis\Foundation\Application;
 use Themosis\Foundation\DataContainer;
-use Themosis\Field\Wrapper;
 use Themosis\Hook\IHook;
 use Themosis\Validation\ValidationBuilder;
 
@@ -35,7 +35,7 @@ class TaxonomyBuilder extends Wrapper
 
     /**
      * The taxonomy custom fields.
-     * 
+     *
      * @var array
      */
     protected $fields = [];
@@ -207,7 +207,7 @@ class TaxonomyBuilder extends Wrapper
      * @param null $property
      *
      * @return array
-     * 
+     *
      * @throws TaxonomyException
      */
     public function get($property = null)
@@ -376,7 +376,7 @@ class TaxonomyBuilder extends Wrapper
 
     /**
      * Return a default value for the custom fields.
-     * 
+     *
      * @param int                           $term_id
      * @param \Themosis\Field\Fields\IField $field
      * @param string                        $value
@@ -405,7 +405,7 @@ class TaxonomyBuilder extends Wrapper
 
     /**
      * Save term custom field data to database.
-     * 
+     *
      * @param int $term_id
      */
     public function save($term_id)

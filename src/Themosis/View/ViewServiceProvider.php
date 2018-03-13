@@ -76,7 +76,7 @@ class ViewServiceProvider extends ServiceProvider
 
     /**
      * Register the Twig engine to the EngineResolver.
-     * 
+     *
      * @param string         $engine
      * @param EngineResolver $resolver
      */

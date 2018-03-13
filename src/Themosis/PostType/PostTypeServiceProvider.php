@@ -9,7 +9,6 @@ class PostTypeServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('posttype', function ($container) {
-
             $data = new PostTypeData();
 
             $view = $container['view'];

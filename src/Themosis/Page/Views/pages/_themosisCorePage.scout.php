@@ -4,8 +4,7 @@
 
     <?php
     $parent = $__page->get('parent');
-    if (empty($parent) || 'options-general.php' !== $parent)
-    {
+    if (empty($parent) || 'options-general.php' !== $parent) {
         settings_errors();
     }
 

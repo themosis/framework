@@ -528,7 +528,7 @@ if (!function_exists('container')) {
 if (!function_exists('themosis')) {
     /**
      * Helper function to retrieve the Themosis class instance.
-     * 
+     *
      * @return Themosis
      */
     function themosis()

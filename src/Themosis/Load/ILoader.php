@@ -20,7 +20,7 @@ interface ILoader
 
     /**
      * Return a list of loaded files.
-     * 
+     *
      * @return array
      */
     public function getFiles();

@@ -72,7 +72,7 @@ class WidgetLoader extends Load
 
     /**
      * Return a list of allowed widgets.
-     * 
+     *
      * @return array
      */
     public function getWidgets()

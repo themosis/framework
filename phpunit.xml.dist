@@ -7,12 +7,12 @@
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
     verbose="true">
-    <php>
-        <ini name="display_errors" value="true"/>
-    </php>
     <testsuites>
         <testsuite name="Themosis framework test suite">
             <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <ini name="display_errors" value="true"/>
+    </php>
 </phpunit>

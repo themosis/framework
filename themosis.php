@@ -1,12 +1,13 @@
 <?php
+
 /*
 Plugin Name: Themosis framework
 Plugin URI: https://framework.themosis.com/
 Description: A WordPress framework.
 Version: 1.3.2
 Author: Julien Lambé
-Author URI: http://www.themosis.com/
-License: GPLv2
+Author URI: https://www.themosis.com/
+License: GPL-2.0-or-later
 */
 
 /*----------------------------------------------------*/
@@ -16,50 +17,20 @@ defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
 
 /*----------------------------------------------------*/
 // Themosis framework textdomain.
-//
-// This constant is only used by the core plugin.
-// Developers should not try to use it into their
-// own projects.
 /*----------------------------------------------------*/
-defined('THEMOSIS_FRAMEWORK_TEXTDOMAIN') ? THEMOSIS_FRAMEWORK_TEXTDOMAIN : define('THEMOSIS_FRAMEWORK_TEXTDOMAIN', 'themosis-framework');
+defined('THEMOSIS_FRAMEWORK_TEXTDOMAIN') ?
+    THEMOSIS_FRAMEWORK_TEXTDOMAIN : define('THEMOSIS_FRAMEWORK_TEXTDOMAIN', 'themosis-framework');
 
 /*----------------------------------------------------*/
 // Storage path.
 /*----------------------------------------------------*/
-defined('THEMOSIS_STORAGE') ? THEMOSIS_STORAGE : define('THEMOSIS_STORAGE', WP_CONTENT_DIR.DS.'storage');
+defined('THEMOSIS_STORAGE') ? THEMOSIS_STORAGE : define('THEMOSIS_STORAGE', WP_CONTENT_DIR . DS . 'storage');
 
-if (!function_exists('themosis_set_paths')) {
-    /**
-     * Register paths globally.
-     *
-     * @param array $paths Paths to register using alias => path pairs.
-     */
-    function themosis_set_paths(array $paths)
-    {
-        foreach ($paths as $name => $path) {
-            if (!isset($GLOBALS['themosis.paths'][$name])) {
-                $GLOBALS['themosis.paths'][$name] = realpath($path).DS;
-            }
-        }
-    }
-}
-
-if (!function_exists('themosis_path')) {
-    /**
-     * Helper function to retrieve a previously registered path.
-     *
-     * @param string $name The path name/alias. If none is provided, returns all registered paths.
-     *
-     * @return string|array
-     */
-    function themosis_path($name = '')
-    {
-        if (!empty($name)) {
-            return $GLOBALS['themosis.paths'][$name];
-        }
-
-        return $GLOBALS['themosis.paths'];
-    }
+/*----------------------------------------------------*/
+// Load.
+/*----------------------------------------------------*/
+if (file_exists($autoload = __DIR__ . DS . 'vendor' . DS . 'autoload.php')) {
+    require $autoload;
 }
 
 /*
@@ -91,7 +62,6 @@ if (!class_exists('Themosis')) {
 
         private function __construct()
         {
-            $this->autoload();
             $this->bootstrap();
         }
 
@@ -110,29 +80,6 @@ if (!class_exists('Themosis')) {
         }
 
         /**
-         * Check for the composer autoload file.
-         */
-        protected function autoload()
-        {
-            // Check if there is a autoload.php file.
-            // Meaning we're in development mode or
-            // the plugin has been installed on a "classic" WordPress configuration.
-            if (file_exists($autoload = __DIR__.DS.'vendor'.DS.'autoload.php')) {
-                require $autoload;
-
-                // Developers using the framework in a "classic" WordPress
-                // installation can activate this by defining
-                // a THEMOSIS_ERROR constant and set its value to true or false
-                // depending of their environment.
-                if (defined('THEMOSIS_ERROR') && THEMOSIS_ERROR) {
-                    $whoops = new \Whoops\Run();
-                    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
-                    $whoops->register();
-                }
-            }
-        }
-
-        /**
          * Bootstrap the core plugin.
          */
         protected function bootstrap()
@@ -141,8 +88,8 @@ if (!class_exists('Themosis')) {
              * Define core framework paths.
              * These are real paths, not URLs to the framework files.
              */
-            $paths['core'] = __DIR__.DS;
-            $paths['sys'] = __DIR__.DS.'src'.DS.'Themosis'.DS;
+            $paths['core'] = __DIR__ . DS;
+            $paths['sys'] = __DIR__ . DS . 'src' . DS . 'Themosis' . DS;
             $paths['storage'] = THEMOSIS_STORAGE;
             themosis_set_paths($paths);
 
@@ -237,19 +184,19 @@ if (!class_exists('Themosis')) {
              * Add view paths.
              */
             $viewFinder = $this->container['view.finder'];
-            $viewFinder->addLocation(themosis_path('sys').'Metabox'.DS.'Views');
-            $viewFinder->addLocation(themosis_path('sys').'Page'.DS.'Views');
-            $viewFinder->addLocation(themosis_path('sys').'PostType'.DS.'Views');
-            $viewFinder->addLocation(themosis_path('sys').'Field'.DS.'Fields'.DS.'Views');
-            $viewFinder->addLocation(themosis_path('sys').'Taxonomy'.DS.'Views');
-            $viewFinder->addLocation(themosis_path('sys').'User'.DS.'Views');
+            $viewFinder->addLocation(themosis_path('sys') . 'Metabox' . DS . 'Views');
+            $viewFinder->addLocation(themosis_path('sys') . 'Page' . DS . 'Views');
+            $viewFinder->addLocation(themosis_path('sys') . 'PostType' . DS . 'Views');
+            $viewFinder->addLocation(themosis_path('sys') . 'Field' . DS . 'Fields' . DS . 'Views');
+            $viewFinder->addLocation(themosis_path('sys') . 'Taxonomy' . DS . 'Views');
+            $viewFinder->addLocation(themosis_path('sys') . 'User' . DS . 'Views');
 
             /*
              * Add paths to asset finder.
              */
             $url = plugins_url('src/Themosis/_assets', __FILE__);
             $assetFinder = $this->container['asset.finder'];
-            $assetFinder->addPaths([$url => themosis_path('sys').'_assets']);
+            $assetFinder->addPaths([$url => themosis_path('sys') . '_assets']);
 
             /*
              * Add framework core assets URL to the global
@@ -326,7 +273,7 @@ if (!class_exists('Themosis')) {
 
             if (!empty($datas)) {
                 foreach ($datas as $key => $value) {
-                    $output .= $key.': '.json_encode($value).",\n\r";
+                    $output .= $key . ': ' . json_encode($value) . ",\n\r";
                 }
             }
 
@@ -343,4 +290,4 @@ if (!class_exists('Themosis')) {
 /*
  * Globally register the instance.
  */
-$GLOBALS['themosis'] = Themosis::instance();
+//$GLOBALS['themosis'] = Themosis::instance();

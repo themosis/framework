@@ -1,8 +1,8 @@
 <?php
 
+use Themosis\Foundation\Request;
 use Themosis\Html\FormBuilder as Form;
 use Themosis\Html\HtmlBuilder as Html;
-use Themosis\Foundation\Request;
 
 class FormTest extends PHPUnit_Framework_TestCase
 {
@@ -106,7 +106,7 @@ class FormTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('<input type="number" name="sku" value="123">', $this->form->number('sku', 123));
         $this->assertEquals('<input type="number" name="price" data-onComplete="sum()">', $this->form->number('price', '', ['data-onComplete' => 'sum()']));
     }
-    
+
     public function testDate()
     {
         $this->assertEquals('<input type="date" name="calendar" value="10/07/1986">', $this->form->date('calendar', '10/07/1986'));

@@ -1,9 +1,14 @@
 {
   "name": "themosis/framework",
   "description": "The Themosis framework.",
-  "keywords": ["themosis", "framework", "WordPress", "plugin"],
+  "keywords": [
+    "themosis",
+    "framework",
+    "WordPress",
+    "plugin"
+  ],
   "license": "GPL-2.0-or-later",
-  "authors":[
+  "authors": [
     {
       "name": "Julien Lambé",
       "email": "julien@themosis.com",
@@ -15,22 +20,27 @@
     "psr-4": {
       "Themosis\\": "src/Themosis/"
     },
-    "files": ["src/Themosis/helpers.php"]
+    "files": [
+      "src/Themosis/Foundation/helpers.php",
+      "src/Themosis/helpers.php"
+    ]
   },
   "require": {
-    "php": ">=5.6.4",
+    "php": ">=7.1.0",
     "composer/installers": "^1.0",
-    "filp/whoops": "^2.1",
-    "twig/twig": "~1.0",
-    "illuminate/routing": "^5.4",
-    "illuminate/container": "^5.4",
-    "illuminate/http": "^5.4",
-    "illuminate/events": "^5.4",
-    "illuminate/view": "^5.4",
-    "illuminate/filesystem": "^5.4"
+    "filp/whoops": "~2.1",
+    "twig/twig": "~2.0",
+    "illuminate/container": "^5.5",
+    "illuminate/events": "^5.5",
+    "illuminate/filesystem": "^5.5",
+    "illuminate/http": "^5.5",
+    "illuminate/log": "^5.5",
+    "illuminate/routing": "^5.5",
+    "illuminate/view": "^5.5"
   },
   "require-dev": {
-    "phpunit/phpunit": "5.3.*",
-    "mockery/mockery": "^0.9.4"
-  }
+    "phpunit/phpunit": "~6.0",
+    "mockery/mockery": "~1.0"
+  },
+  "prefer-stable": true
 }

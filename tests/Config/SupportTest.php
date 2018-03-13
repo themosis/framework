@@ -20,6 +20,6 @@ class SupportTest extends PHPUnit_Framework_TestCase
         $this->assertEquals([['post']], get_theme_support('post-thumbnail'));
         $this->assertTrue(is_array(get_theme_support('my-feature')));
         $this->assertEquals([[]], get_theme_support('my-feature'));
-        $this->assertEquals(['property-value'],get_theme_support('another-feature'));
+        $this->assertEquals(['property-value'], get_theme_support('another-feature'));
     }
 }

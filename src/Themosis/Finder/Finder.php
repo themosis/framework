@@ -50,7 +50,7 @@ abstract class Finder implements IFinder
 
     /**
      * Register multiple file paths.
-     * 
+     *
      * @param array $paths
      *
      * @return $this
@@ -66,7 +66,7 @@ abstract class Finder implements IFinder
 
     /**
      * Return a list of registered paths.
-     * 
+     *
      * @return array
      */
     public function getPaths()

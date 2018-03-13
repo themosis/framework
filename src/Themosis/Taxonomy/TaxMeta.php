@@ -4,7 +4,7 @@ namespace Themosis\Taxonomy;
 
 /**
  * TaxMeta class.
- * 
+ *
  * Allow the user to retrieve a custom field of a taxonomy.
  */
 class TaxMeta

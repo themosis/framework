@@ -1,7 +1,7 @@
 <?php
 
-use Themosis\Asset\AssetFinder;
 use Themosis\Asset\AssetFactory;
+use Themosis\Asset\AssetFinder;
 use Themosis\Foundation\Application;
 
 class AssetTest extends PHPUnit_Framework_TestCase

@@ -4,9 +4,11 @@
 
         <?php
         // Rows
-        for($i = 1; $i <= $field->getRows(); $i++):
+        for ($i = 1; $i <= $field->getRows(); $i++):
 
-            if(0 < $field['features']['limit'] && $i > $field['features']['limit']) break;
+            if (0 < $field['features']['limit'] && $i > $field['features']['limit']) {
+                break;
+            }
             ?>
 
             <tr class="themosis-infinite-row">
@@ -15,7 +17,7 @@
                     <table>
                         <tbody>
                         <?php
-                        foreach($field['fields'] as $f):
+                        foreach ($field['fields'] as $f):
                             // Set the id attribute.
                             $f_atts = $f['atts']; // Grab ALL attributes of the field.
                             $defaultId = $f_atts['id']; // Keep a copy of the field id attribute.
@@ -23,7 +25,7 @@
                             $f['atts'] = $f_atts; // Update ALL attributes of the field. Contains its new id value.
 
                             // Grab the value if it exists.
-                            if(isset($field['value'][$i][$f['name']])){
+                            if (isset($field['value'][$i][$f['name']])) {
                                 $f['value'] = $field['value'][$i][$f['name']];
                             }
 

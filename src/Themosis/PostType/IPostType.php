@@ -22,7 +22,7 @@ interface IPostType
      *
      * @return mixed
      */
-    public function set(array $params = array());
+    public function set(array $params = []);
 
     /**
      * Method to return defined post type properties.

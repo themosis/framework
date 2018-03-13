@@ -3,8 +3,8 @@
 namespace Themosis\Page;
 
 use Illuminate\View\View;
-use Themosis\Foundation\DataContainer;
 use Themosis\Field\Wrapper;
+use Themosis\Foundation\DataContainer;
 use Themosis\Hook\IHook;
 use Themosis\Validation\ValidationBuilder;
 

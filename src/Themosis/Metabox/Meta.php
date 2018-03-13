@@ -7,7 +7,7 @@ class Meta
     /**
      * Retrieve the meta data from the given
      * post type ID and meta key.
-     * 
+     *
      * @param int    $id     The post type ID.
      * @param string $key    The meta name.
      * @param bool   $single Default to true. False to return as an array.
@@ -29,7 +29,7 @@ class Meta
      * Parse the returned value by 'get_post_meta'. Convert
      * URLs from the domain to their 'https' equivalent.
      * Avoid getting an alert message for non-secure asset in browsers.
-     * 
+     *
      * @param mixed $default The default value returned by 'get_post_meta'. Could be of type: string, boolean, int, array,...
      *
      * @return mixed The converted value if needed or the default one.
@@ -78,7 +78,7 @@ class Meta
      * Determine if the given URL belong to the domain.
      * Tell if the URL is internal and not pointing to
      * an external domain.
-     * 
+     *
      * @param string $url The URL from a custom field
      *
      * @return bool True if application URL, false if external.

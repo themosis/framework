@@ -8,7 +8,7 @@ class FacadesTest extends PHPUnit_Framework_TestCase
     {
         $app = new \Themosis\Foundation\Application();
         $facade = \Themosis\Facades\Facade::setFacadeApplication($app);
-        
+
         // Register a class in the container with the `custom` alias.
         $app->instance('custom', new stdClass());
 

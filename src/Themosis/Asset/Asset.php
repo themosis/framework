@@ -100,7 +100,7 @@ class Asset implements IAsset
 
     /**
      * Parse defined asset properties.
-     * 
+     *
      * @param array $args The asset properties.
      *
      * @return mixed

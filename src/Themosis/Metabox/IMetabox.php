@@ -16,7 +16,7 @@ interface IMetabox
      *
      * @return \Themosis\Metabox\IMetabox
      */
-    public function make($title, $postType, array $options = array(), View $view = null);
+    public function make($title, $postType, array $options = [], View $view = null);
 
     /**
      * Register the metabox to WordPress.
@@ -25,7 +25,7 @@ interface IMetabox
      *
      * @return \Themosis\Metabox\IMetabox
      */
-    public function set(array $fields = array());
+    public function set(array $fields = []);
 
     /**
      * Define a custom capability to check before adding the metabox.
@@ -43,7 +43,7 @@ interface IMetabox
      *
      * @return \Themosis\Metabox\IMetabox
      */
-    public function validate(array $rules = array());
+    public function validate(array $rules = []);
 
     /**
      * Pass custom data to the metabox view.

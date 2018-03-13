@@ -1,4 +1,5 @@
 <?php
+
 namespace Themosis\Taxonomy;
 
 /**
@@ -76,12 +77,9 @@ class TaxFieldRenderer
         ?>
         
     	<div class="form-field">
-                <label for="<?php echo $name;
-        ?>-field"><?php echo $title;
-        ?></label>
+                <label for="<?php echo $name; ?>-field"><?php echo $title; ?></label>
                 
         <?php
-
     }
 
     /**
@@ -94,7 +92,6 @@ class TaxFieldRenderer
     	</div>
     	
     	<?php
-
     }
 
     /**
@@ -109,14 +106,11 @@ class TaxFieldRenderer
     	
     	<tr class="form-field">
     	        <th scope="row" valign="top">
-    	            <label for="<?php echo $name;
-        ?>-field"><?php echo $title;
-        ?></label>
+    	            <label for="<?php echo $name; ?>-field"><?php echo $title; ?></label>
     	        </th>
     	        <td>
     	
     	<?php
-
     }
 
     /**
@@ -129,7 +123,6 @@ class TaxFieldRenderer
         </tr>
         
     	<?php
-
     }
 
     /**
@@ -148,8 +141,7 @@ class TaxFieldRenderer
 
             ?>
             
-                <p><?php echo ucfirst($info);
-            ?></p>
+                <p><?php echo ucfirst($info); ?></p>
                 
             <?php
 
@@ -163,8 +155,7 @@ class TaxFieldRenderer
 
             ?>
         
-                <span class="description"><?php echo ucfirst($info);
-            ?></span>
+                <span class="description"><?php echo ucfirst($info); ?></span>
             
             <?php
 
@@ -191,13 +182,9 @@ class TaxFieldRenderer
             /*-----------------------------------------------------------------------*/
             // Open tags
             /*-----------------------------------------------------------------------*/
-            static::openTagsForAddPage($name, $title);
-
-        ?>
+            static::openTagsForAddPage($name, $title); ?>
             
-            <input type="text" id="<?php echo $name;
-        ?>-field" name="<?php echo $taxonomy_slug.'['.$name.']';
-        ?>" value="" size="40"/>
+            <input type="text" id="<?php echo $name; ?>-field" name="<?php echo $taxonomy_slug.'['.$name.']'; ?>" value="" size="40"/>
             
             <?php
 
@@ -206,10 +193,10 @@ class TaxFieldRenderer
             /*-----------------------------------------------------------------------*/
             static::infos($typeOfPage, $info);
 
-            /*-----------------------------------------------------------------------*/
-            // Close tags
-            /*-----------------------------------------------------------------------*/
-            static::closeTagsForAddPage();
+        /*-----------------------------------------------------------------------*/
+        // Close tags
+        /*-----------------------------------------------------------------------*/
+        static::closeTagsForAddPage();
 
         /*-----------------------------------------------------------------------*/
         // HTML output for the edit term page.
@@ -221,23 +208,18 @@ class TaxFieldRenderer
             /*-----------------------------------------------------------------------*/
             $optionkey = $taxonomy_slug.'_'.$term->term_id;
 
-            // Array of values of all taxonomy fields.
-            $values = get_option($optionkey);
-            // Get the field value and check if it is set.
-            $value = isset($values[$name]) ? $values[$name] : '';
+        // Array of values of all taxonomy fields.
+        $values = get_option($optionkey);
+        // Get the field value and check if it is set.
+        $value = isset($values[$name]) ? $values[$name] : '';
 
-            /*-----------------------------------------------------------------------*/
-            // Open tags
-            /*-----------------------------------------------------------------------*/
-            static::openTagsForEditPage($name, $title);
-
-        ?>
-	            <input type="text" id="<?php echo $name;
-        ?>-field" name="<?php echo $taxonomy_slug.'['.$name.']';
-        ?>" value="<?php if (isset($value) && !empty($value)) {
-    echo $value;
-}
-        ?>" size="40" />
+        /*-----------------------------------------------------------------------*/
+        // Open tags
+        /*-----------------------------------------------------------------------*/
+        static::openTagsForEditPage($name, $title); ?>
+	            <input type="text" id="<?php echo $name; ?>-field" name="<?php echo $taxonomy_slug.'['.$name.']'; ?>" value="<?php if (isset($value) && !empty($value)) {
+            echo $value;
+        } ?>" size="40" />
 	            <br />
 	            
 	            <?php
@@ -247,10 +229,10 @@ class TaxFieldRenderer
                 /*-----------------------------------------------------------------------*/
                 static::infos($typeOfPage, $info);
 
-            /*-----------------------------------------------------------------------*/
-            // Close tags
-            /*-----------------------------------------------------------------------*/
-            static::closeTagsForEditPage();
+        /*-----------------------------------------------------------------------*/
+        // Close tags
+        /*-----------------------------------------------------------------------*/
+        static::closeTagsForEditPage();
 
         endif;
     }
@@ -274,9 +256,7 @@ class TaxFieldRenderer
             /*-----------------------------------------------------------------------*/
             // Open tags
             /*-----------------------------------------------------------------------*/
-            static::openTagsForAddPage($name, $title);
-
-        ?>
+            static::openTagsForAddPage($name, $title); ?>
     	    
     	    <table class="themosis-media-table">
 					
@@ -285,19 +265,15 @@ class TaxFieldRenderer
 					<tr class="themosis-field-media">
 					
 						<td class="themosis-media-input">
-						    <input type="text" size="40" name="<?php echo $taxonomy_slug.'['.$name.']';
-        ?>" id="<?php echo $name;
-        ?>-field" />
+						    <input type="text" size="40" name="<?php echo $taxonomy_slug.'['.$name.']'; ?>" id="<?php echo $name; ?>-field" />
 						</td>
 						
 						<td>
-						    <button type="button" class="button-primary themosis-media-button" id="themosis-media-add"><?php _e('Add', THEMOSIS_FRAMEWORK_TEXTDOMAIN);
-        ?></button>
+						    <button type="button" class="button-primary themosis-media-button" id="themosis-media-add"><?php _e('Add', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
 						</td>
 						
 						<td>
-						    <button type="button" class="button themosis-media-clear" id="themosis-media-clear"><?php _e('Clear', THEMOSIS_FRAMEWORK_TEXTDOMAIN);
-        ?></button>
+						    <button type="button" class="button themosis-media-clear" id="themosis-media-clear"><?php _e('Clear', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
 						</td>
 						
 					</tr>
@@ -313,10 +289,10 @@ class TaxFieldRenderer
             /*-----------------------------------------------------------------------*/
             static::infos($typeOfPage, $info);
 
-            /*-----------------------------------------------------------------------*/
-            // Close tags
-            /*-----------------------------------------------------------------------*/
-            static::closeTagsForAddPage();
+        /*-----------------------------------------------------------------------*/
+        // Close tags
+        /*-----------------------------------------------------------------------*/
+        static::closeTagsForAddPage();
 
         /*-----------------------------------------------------------------------*/
         // HTML output for the edit term page.
@@ -328,17 +304,15 @@ class TaxFieldRenderer
             /*-----------------------------------------------------------------------*/
             $optionkey = $taxonomy_slug.'_'.$term->term_id;
 
-            // Array of values of all taxonomy fields.
-            $values = get_option($optionkey);
-            // Get the field value and check if it is set.
-            $value = isset($values[$name]) ? $values[$name] : '';
+        // Array of values of all taxonomy fields.
+        $values = get_option($optionkey);
+        // Get the field value and check if it is set.
+        $value = isset($values[$name]) ? $values[$name] : '';
 
-            /*-----------------------------------------------------------------------*/
-            // Open tags
-            /*-----------------------------------------------------------------------*/
-            static::openTagsForEditPage($name, $title);
-
-        ?>
+        /*-----------------------------------------------------------------------*/
+        // Open tags
+        /*-----------------------------------------------------------------------*/
+        static::openTagsForEditPage($name, $title); ?>
     	    
     	    <table class="themosis-media-table">
 					
@@ -347,22 +321,17 @@ class TaxFieldRenderer
 					<tr class="themosis-field-media">
 					
 						<td class="themosis-media-input">
-						    <input type="text" size="40" name="<?php echo $taxonomy_slug.'['.$name.']';
-        ?>" id="<?php echo $name;
-        ?>-field" value="<?php if (isset($value) && !empty($value)) {
-    echo $value;
-}
-        ?>" />
+						    <input type="text" size="40" name="<?php echo $taxonomy_slug.'['.$name.']'; ?>" id="<?php echo $name; ?>-field" value="<?php if (isset($value) && !empty($value)) {
+            echo $value;
+        } ?>" />
 						</td>
 						
 						<td>
-						    <button type="button" class="button-primary themosis-media-button" id="themosis-media-add"><?php _e('Add', THEMOSIS_FRAMEWORK_TEXTDOMAIN);
-        ?></button>
+						    <button type="button" class="button-primary themosis-media-button" id="themosis-media-add"><?php _e('Add', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
 						</td>
 						
 						<td>
-						    <button type="button" class="button themosis-media-clear" id="themosis-media-clear"><?php _e('Clear', THEMOSIS_FRAMEWORK_TEXTDOMAIN);
-        ?></button>
+						    <button type="button" class="button themosis-media-clear" id="themosis-media-clear"><?php _e('Clear', THEMOSIS_FRAMEWORK_TEXTDOMAIN); ?></button>
 						</td>
 						
 					</tr>
@@ -378,10 +347,10 @@ class TaxFieldRenderer
             /*-----------------------------------------------------------------------*/
             static::infos($typeOfPage, $info);
 
-            /*-----------------------------------------------------------------------*/
-            // Close tags
-            /*-----------------------------------------------------------------------*/
-            static::closeTagsForEditPage();
+        /*-----------------------------------------------------------------------*/
+        // Close tags
+        /*-----------------------------------------------------------------------*/
+        static::closeTagsForEditPage();
 
         endif;
     }

@@ -21,7 +21,7 @@ class ValidationBuilder implements IValidate
             $ruleProperties = $this->parseRule($rule);
 
             // Set rule method.
-            $signature = 'validate_' . $ruleProperties['rule'];
+            $signature = 'validate_'.$ruleProperties['rule'];
 
             // Check if the datas given is an array
             // If array, parse each item and return them
@@ -107,9 +107,7 @@ class ValidationBuilder implements IValidate
         if (0 < strpos($attributes, ',')) {
             $attributes = explode(',', $attributes);
             $attributes = array_map(function ($att) {
-
                 return trim($att);
-
             }, $attributes);
         } else {
             // No comma, only one attribute
@@ -131,6 +129,7 @@ class ValidationBuilder implements IValidate
         if (empty($arr)) {
             return false;
         }
+
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
 
@@ -238,7 +237,7 @@ class ValidationBuilder implements IValidate
     protected function validate_email($data, array $attributes = [])
     {
         $data = trim($data);
-        
+
         $email = sanitize_email($data);
 
         return is_email($email) ? $email : '';
@@ -255,7 +254,7 @@ class ValidationBuilder implements IValidate
     protected function validate_url($data, array $attributes = [])
     {
         $data = trim($data);
-        
+
         if (!empty($attributes)) {
             return esc_url($data, $attributes);
         }

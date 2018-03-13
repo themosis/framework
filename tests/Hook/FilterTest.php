@@ -15,7 +15,8 @@ class FilterTest extends PHPUnit_Framework_TestCase
     {
         $filter = new FilterBuilder($this->app);
 
-        $filter->add('filter-one', function () {});
+        $filter->add('filter-one', function () {
+        });
 
         // Check if filter is registered.
         $this->assertTrue($filter->exists('filter-one'));

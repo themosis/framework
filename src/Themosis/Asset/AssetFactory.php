@@ -105,6 +105,7 @@ class AssetFactory
         // by their unique asset handle: 'asset.unique-handle'
         $asset = new Asset($t, $args, $this->container['action'], $this->container['html'], $this->container['filter']);
         $this->container->instance($this->aliasPrefix.'.'.$handle, $asset);
+
         return $asset;
     }
 }

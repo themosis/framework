@@ -10,7 +10,7 @@ abstract class Load implements ILoader
 {
     /**
      * List of registered paths.
-     * 
+     *
      * @var array
      */
     protected $paths = [];
@@ -104,7 +104,7 @@ abstract class Load implements ILoader
 
     /**
      * Return a list of loaded files.
-     * 
+     *
      * @return array
      */
     public function getFiles()
