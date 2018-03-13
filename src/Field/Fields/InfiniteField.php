@@ -34,7 +34,7 @@ class InfiniteField extends FieldBuilder implements IField
      */
     protected function setRows()
     {
-        $this->rows = (is_array($this['value']) && !empty($this['value'])) ? count($this['value']) : 1;
+        $this->rows = (is_array($this['value']) && ! empty($this['value'])) ? count($this['value']) : 1;
     }
 
     /**

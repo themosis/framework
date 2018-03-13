@@ -37,7 +37,7 @@ abstract class Finder implements IFinder
      */
     protected function addPath($key, $path)
     {
-        if (!in_array($path, $this->paths)) {
+        if (! in_array($path, $this->paths)) {
             if (is_numeric($key)) {
                 $this->paths[] = $path;
             } else {
@@ -89,9 +89,9 @@ abstract class Finder implements IFinder
      *
      * @param string $name The file name or relative path.
      *
-     * @return string
-     *
      * @throws FinderException
+     *
+     * @return string
      */
     public function find($name)
     {

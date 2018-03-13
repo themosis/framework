@@ -1,6 +1,6 @@
 <?php
 
-if (!function_exists('themosis_set_paths')) {
+if (! function_exists('themosis_set_paths')) {
     /**
      * Register paths globally.
      *
@@ -9,14 +9,14 @@ if (!function_exists('themosis_set_paths')) {
     function themosis_set_paths(array $paths)
     {
         foreach ($paths as $name => $path) {
-            if (!isset($GLOBALS['themosis.paths'][$name])) {
+            if (! isset($GLOBALS['themosis.paths'][$name])) {
                 $GLOBALS['themosis.paths'][$name] = realpath($path).DS;
             }
         }
     }
 }
 
-if (!function_exists('themosis_path')) {
+if (! function_exists('themosis_path')) {
     /**
      * Helper function to retrieve a previously registered path.
      *
@@ -26,7 +26,7 @@ if (!function_exists('themosis_path')) {
      */
     function themosis_path($name = '')
     {
-        if (!empty($name)) {
+        if (! empty($name)) {
             return $GLOBALS['themosis.paths'][$name];
         }
 

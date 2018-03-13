@@ -1,6 +1,8 @@
 <?php
 
-class FileFinderTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class FileFinderTest extends TestCase
 {
     /**
      * Test in order to find view files.

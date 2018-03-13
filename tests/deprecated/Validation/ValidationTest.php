@@ -1,8 +1,9 @@
 <?php
 
 use \Themosis\Validation\ValidationBuilder;
+use PHPUnit\Framework\TestCase;
 
-class ValidationTest extends PHPUnit_Framework_TestCase
+class ValidationTest extends TestCase
 {
     protected $validator;
 

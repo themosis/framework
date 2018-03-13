@@ -1,6 +1,8 @@
 <?php
 
-class SupportTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SupportTest extends TestCase
 {
     public function testSupportsAreRegistered()
     {

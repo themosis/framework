@@ -8,7 +8,7 @@ class DatabaseServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        if (!isset($GLOBALS['themosis.capsule'])) {
+        if (! isset($GLOBALS['themosis.capsule'])) {
             return;
         }
 
@@ -19,7 +19,7 @@ class DatabaseServiceProvider extends ServiceProvider
              * Bring the illuminate fluent (as config) for capsule compatibility
              * if not defined in the service container.
              */
-            if (!$container->bound('config')) {
+            if (! $container->bound('config')) {
 
                 /*
                  * Retrieve the default container created by the "Capsule"

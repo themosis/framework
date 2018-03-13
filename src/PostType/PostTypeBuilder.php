@@ -105,7 +105,7 @@ class PostTypeBuilder implements IPostType
         $params = compact('name', 'plural', 'singular');
 
         foreach ($params as $key => $param) {
-            if (!is_string($param)) {
+            if (! is_string($param)) {
                 throw new PostTypeException('Invalid custom post type parameter "'.$key.'". Accepts string only.');
             }
         }
@@ -159,7 +159,7 @@ class PostTypeBuilder implements IPostType
         $this->postType = register_post_type($this->datas['name'], $this->datas['args']);
 
         // Register the status.
-        if (!empty($this->status)) {
+        if (! empty($this->status)) {
             foreach ($this->status as $key => $args) {
                 register_post_status($key, $args);
             }
@@ -180,9 +180,9 @@ class PostTypeBuilder implements IPostType
      *
      * @param null $property
      *
-     * @return array
-     *
      * @throws PostTypeException
+     *
+     * @return array
      */
     public function get($property = null)
     {
@@ -344,18 +344,18 @@ class PostTypeBuilder implements IPostType
     public function applyStatus($value)
     {
         // Check post_type and look if there are any custom statuses defined.
-        if (isset($_POST['post_type']) && $this->datas['name'] === $_POST['post_type'] && !empty($this->status)) {
+        if (isset($_POST['post_type']) && $this->datas['name'] === $_POST['post_type'] && ! empty($this->status)) {
             if ((isset($_POST['post_status']) && 'publish' === $_POST['post_status']) && (isset($_REQUEST['post_status']) && 'draft' === $_REQUEST['post_status'])) {
                 // New post with draft as default and "publish" button is clicked. Set to 1st registered post status.
                 $statuses = array_keys($this->status);
 
                 return esc_attr($statuses[0]);
-            } elseif (isset($_REQUEST['post_status']) && !empty($_REQUEST['post_status'])) {
+            } elseif (isset($_REQUEST['post_status']) && ! empty($_REQUEST['post_status'])) {
                 /*
                  * In case of a quickedit ajax save call, check the value of the _status select tag
                  * before processing default post_status.
                  */
-                if (isset($_POST['_status']) && !empty($_POST['_status'])) {
+                if (isset($_POST['_status']) && ! empty($_POST['_status'])) {
                     return esc_attr($_POST['_status']);
                 }
 

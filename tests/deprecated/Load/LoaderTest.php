@@ -1,6 +1,8 @@
 <?php
 
-class LoaderTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class LoaderTest extends TestCase
 {
     public function testLoader()
     {

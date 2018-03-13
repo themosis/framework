@@ -83,6 +83,9 @@ class Loop
      * @param string|array The size of the current post thumbnail.
      * @param string|array The attributes of the current post thumbnail.
      * @param int|\WP_Post The post ID or WP_Post object.
+     * @param mixed      $size
+     * @param mixed      $attr
+     * @param null|mixed $post
      *
      * @return string The thumbnail of the current post.
      */
@@ -154,6 +157,7 @@ class Loop
      *
      * @param string $taxonomy The custom taxonomy slug.
      * @param int|\WP_Post The post ID or WP_Post object
+     * @param mixed $post
      *
      * @see https://codex.wordpress.org/Function_Reference/get_the_terms
      *
@@ -161,7 +165,7 @@ class Loop
      */
     public function terms($taxonomy, $post = 0)
     {
-        if (!$post) {
+        if (! $post) {
             $post = $this->id();
         }
 

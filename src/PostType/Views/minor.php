@@ -11,7 +11,7 @@
                 $post->post_password = '';
                 $visibility = 'private';
                 $visibility_trans = __('Private');
-            } elseif (!empty($post->post_password)) {
+            } elseif (! empty($post->post_password)) {
                 $visibility = 'password';
                 $visibility_trans = __('Password protected');
             } elseif ($post_type == 'post' && is_sticky($post->ID)) {

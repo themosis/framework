@@ -1,8 +1,10 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 include 'AjaxCustom.php';
 
-class AjaxTest extends PHPUnit_Framework_TestCase
+class AjaxTest extends TestCase
 {
     /**
      * Action hook instance.

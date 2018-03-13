@@ -72,7 +72,7 @@ class Template
                 }
 
                 // 2.2 - $properties is an array.
-                if (is_array($properties) && !empty($properties)) {
+                if (is_array($properties) && ! empty($properties)) {
                     // 2.2.1 - $properties has only one value, meaning it's a display name and only
                     // available to page.
                     if (1 === count($properties) && is_string($properties[0])) {
@@ -88,7 +88,7 @@ class Template
                             $post_type = trim($post_type);
 
                             // A - Verify if $post_type exists. If not, add it.
-                            if (!isset($templates[$post_type])) {
+                            if (! isset($templates[$post_type])) {
                                 $templates[$post_type] = [];
                             }
 

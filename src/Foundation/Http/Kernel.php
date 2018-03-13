@@ -21,8 +21,6 @@ class Kernel implements KernelContract
 
     /**
      * Bootstrap the application for HTTP requests.
-     *
-     * @return void
      */
     public function bootstrap()
     {
@@ -32,7 +30,8 @@ class Kernel implements KernelContract
     /**
      * Handle an incoming HTTP request.
      *
-     * @param  \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle($request)
@@ -43,9 +42,8 @@ class Kernel implements KernelContract
     /**
      * Perform any final actions for the request lifecycle.
      *
-     * @param  \Symfony\Component\HttpFoundation\Request $request
-     * @param  \Symfony\Component\HttpFoundation\Response $response
-     * @return void
+     * @param \Symfony\Component\HttpFoundation\Request  $request
+     * @param \Symfony\Component\HttpFoundation\Response $response
      */
     public function terminate($request, $response)
     {

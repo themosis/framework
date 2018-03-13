@@ -84,13 +84,13 @@ class PageBuilder extends Wrapper
         $params = compact('slug', 'title');
 
         foreach ($params as $name => $param) {
-            if (!is_string($param)) {
+            if (! is_string($param)) {
                 throw new PageException('Invalid page parameter "'.$name.'"');
             }
         }
 
         // Check the view file.
-        if (!is_null($view)) {
+        if (! is_null($view)) {
             $this->view = $view;
         }
 
@@ -135,7 +135,7 @@ class PageBuilder extends Wrapper
      */
     public function build()
     {
-        if (!is_null($this->datas['parent'])) {
+        if (! is_null($this->datas['parent'])) {
             add_submenu_page($this->datas['parent'], $this->datas['title'], $this->datas['args']['menu'], $this->datas['args']['capability'], $this->datas['slug'], [$this, 'displayPage']);
         } else {
             add_menu_page($this->datas['title'], $this->datas['args']['menu'], $this->datas['args']['capability'], $this->datas['slug'], [$this, 'displayPage'], $this->datas['args']['icon'], $this->datas['args']['position']);
@@ -342,7 +342,7 @@ class PageBuilder extends Wrapper
         // Check if a registered value exists.
         $value = get_option($setting['section']);
         $val = isset($value[$setting['name']]) ? $value[$setting['name']] : null;
-        $setting['value'] = (!is_null($val) || !empty($val)) ? $val : $this->parseValue($setting, $val);
+        $setting['value'] = (! is_null($val) || ! empty($val)) ? $val : $this->parseValue($setting, $val);
 
         // Set the name attribute.
         $setting['name'] = $setting['section'].'['.$setting['name'].']';
@@ -361,7 +361,7 @@ class PageBuilder extends Wrapper
     public function validateSettings($values)
     {
         // No validation rules
-        if (!isset($this->datas['rules']) || !is_array($this->datas['rules'])) {
+        if (! isset($this->datas['rules']) || ! is_array($this->datas['rules'])) {
             return $values;
         }
 
@@ -380,7 +380,7 @@ class PageBuilder extends Wrapper
                 // 1.1 - Check for infinite settings.
                 if (is_array($value) && $this->isInfinite($setting)) {
                     foreach ($value as $index => $row) {
-                        if ($this->validator->isAssociative($row) && !empty($row)) {
+                        if ($this->validator->isAssociative($row) && ! empty($row)) {
                             foreach ($row as $infiniteSetting => $infiniteValue) {
                                 // 1.1.1 - Check if a rule is defined for the infinite sub fields.
                                 if (isset($this->datas['rules'][$setting][$infiniteSetting])) {
@@ -464,7 +464,7 @@ class PageBuilder extends Wrapper
         // Get the query parameters from the slug if any...
         $params = parse_url($default, PHP_URL_QUERY);
 
-        if (!empty($params)) {
+        if (! empty($params)) {
             return '?'.$params.'&';
         }
 
@@ -497,7 +497,7 @@ class PageBuilder extends Wrapper
     public function renderSettings()
     {
         // Check if there are sections before proceeding.
-        if (!$this->hasSections()) {
+        if (! $this->hasSections()) {
             return;
         }
 

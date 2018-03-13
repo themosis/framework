@@ -61,7 +61,7 @@
         <!-- End collection -->
     </div>
     <div class="themosis-collection-buttons">
-        <button id="themosis-collection-add" type="button" class="button button-primary <?php if ($field['features']['limit'] && !empty($field['value']) && is_array($field['value']) && $field['features']['limit'] <= count($field['value'])) {
+        <button id="themosis-collection-add" type="button" class="button button-primary <?php if ($field['features']['limit'] && ! empty($field['value']) && is_array($field['value']) && $field['features']['limit'] <= count($field['value'])) {
                                     echo('disabled');
                                 } ?>"><?php _e('Add'); ?></button>
         <button id="themosis-collection-remove" type="button" class="button button-primary themosis-button-remove"><?php _e('Remove'); ?></button>

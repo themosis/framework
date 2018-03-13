@@ -127,7 +127,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
         $this->datas['postType'] = $postType;
         $this->datas['options'] = $this->parseOptions($options);
 
-        if (!is_null($view)) {
+        if (! is_null($view)) {
             $this->view = $view;
         }
 
@@ -247,7 +247,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
     {
         $post_id = isset($_POST['post_ID']) ? esc_attr($_POST['post_ID']) : false;
 
-        if (!$post_id) {
+        if (! $post_id) {
             return $data;
         }
 
@@ -313,7 +313,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
      */
     protected function hasTemplate()
     {
-        if (isset($this->datas['options']['template']) && !empty($this->datas['options']['template'])) {
+        if (isset($this->datas['options']['template']) && ! empty($this->datas['options']['template'])) {
             return true;
         }
 
@@ -327,7 +327,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
      */
     public function display($postType)
     {
-        if ($this->check && !$this->user->can($this->capability)) {
+        if ($this->check && ! $this->user->can($this->capability)) {
             return;
         }
 
@@ -373,7 +373,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
         wp_nonce_field($this->nonceAction, $this->nonce);
 
         // Set the default 'value' attribute regarding sections.
-        if (!empty($this->sections)) {
+        if (! empty($this->sections)) {
             foreach ($this->sections as $section) {
                 if (isset($datas['args'][$section])) {
                     $fields = $datas['args'][$section];
@@ -402,7 +402,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
         }
 
         $nonceName = (isset($_POST[$this->nonce])) ? $_POST[$this->nonce] : $this->nonce;
-        if (!wp_verify_nonce($nonceName, $this->nonceAction)) {
+        if (! wp_verify_nonce($nonceName, $this->nonceAction)) {
             return;
         }
 
@@ -411,7 +411,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
 
         // Check user capability.
         if ($this->check && $this->datas['postType'] === $postType) {
-            if (!$this->user->can($this->capability)) {
+            if (! $this->user->can($this->capability)) {
                 return;
             }
         }
@@ -438,7 +438,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
 
         // Loop through the registered fields.
         // With sections.
-        if (!empty($this->sections)) {
+        if (! empty($this->sections)) {
             foreach ($this->datas['fields'] as $section => $fs) {
                 /*
                  * Loop through section inner fields
@@ -528,13 +528,13 @@ class MetaboxBuilder extends Wrapper implements IMetabox
                         });
 
                         update_post_meta($postId, $field['name'], $val, $old_value);
-                    } elseif (!empty($val)) {
+                    } elseif (! empty($val)) {
                         add_post_meta($postId, $field['name'], $val, false);
                     }
                     // Check for removed data...
                     $notupdated_values = array_diff($old_values, $value);
 
-                    if (!empty($notupdated_values)) {
+                    if (! empty($notupdated_values)) {
                         foreach ($notupdated_values as $value_to_delete) {
                             delete_post_meta($postId, $field['name'], $value_to_delete);
                         }
@@ -545,16 +545,16 @@ class MetaboxBuilder extends Wrapper implements IMetabox
                  * If no new values are passed but have existed,
                  * then remove everything.
                  */
-                if (empty($value) && !empty($old_values)) {
+                if (empty($value) && ! empty($old_values)) {
                     delete_post_meta($postId, $field['name']);
                 }
             } else {
                 // Single meta key
                 $old_value = get_post_meta($postId, $field['name'], true); // unique value
 
-                if (!empty($old_value)) {
+                if (! empty($old_value)) {
                     update_post_meta($postId, $field['name'], $value, $old_value);
-                } elseif (!empty($value)) {
+                } elseif (! empty($value)) {
                     update_post_meta($postId, $field['name'], $value);
                 } else {
                     delete_post_meta($postId, $field['name']);
@@ -592,7 +592,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
         $sections = [];
 
         foreach ($fields as $section => $subFields) {
-            if (!is_numeric($section)) {
+            if (! is_numeric($section)) {
                 array_push($sections, $section);
             }
         }

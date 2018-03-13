@@ -58,7 +58,7 @@ class TaxField
     {
         $slug = trim($taxonomySlug);
 
-        if (!empty($slug) && is_string($slug)) {
+        if (! empty($slug) && is_string($slug)) {
             return new static($slug);
         } else {
             throw new TaxonomyException('String expected as a parameter.');
@@ -97,7 +97,7 @@ class TaxField
      */
     public function set(array $fields)
     {
-        if (is_array($fields) && !empty($fields)) {
+        if (is_array($fields) && ! empty($fields)) {
 
             /*-----------------------------------------------------------------------*/
             // Parse the fields and save them to the instance property.

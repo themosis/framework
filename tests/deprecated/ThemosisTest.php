@@ -1,7 +1,8 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 
-class ThemosisTest extends PHPUnit_Framework_TestCase
+class ThemosisTest extends TestCase
 {
     public function testThemosisSetPathsAndThemosisPaths()
     {

@@ -25,7 +25,7 @@ class AssetFinder extends Finder
     public function addPaths(array $paths)
     {
         foreach ($paths as $url => $path) {
-            if (!is_numeric($url)) {
+            if (! is_numeric($url)) {
                 $this->addPath($url, $path);
             } else {
                 throw new AssetException('Please provide an URL as key and a PATH as value in order to find assets.');

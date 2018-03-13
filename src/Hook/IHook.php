@@ -7,10 +7,10 @@ interface IHook
     /**
      * Add event using the WordPress hooks.
      *
-     * @param string $hook The hook name.
-     * @param \Closure|string $callback Using a class method like so "MyClass@method"
-     * @param int $priority
-     * @param int $accepted_args
+     * @param string          $hook          The hook name.
+     * @param \Closure|string $callback      Using a class method like so "MyClass@method"
+     * @param int             $priority
+     * @param int             $accepted_args
      *
      * @return mixed
      */
@@ -47,8 +47,8 @@ interface IHook
     /**
      * Remove a defined action or filter.
      *
-     * @param string $hook The hook name.
-     * @param int $priority The priority number.
+     * @param string          $hook     The hook name.
+     * @param int             $priority The priority number.
      * @param \Closure|string $callback The callback to remove.
      *
      * @return mixed

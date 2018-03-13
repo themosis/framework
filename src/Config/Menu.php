@@ -23,7 +23,7 @@ class Menu
      */
     public function make()
     {
-        if (is_array($this->data) && !empty($this->data)) {
+        if (is_array($this->data) && ! empty($this->data)) {
             $locations = [];
 
             foreach ($this->data as $slug => $desc) {

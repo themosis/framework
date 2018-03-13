@@ -50,7 +50,7 @@ class SectionBuilder
         $params = compact('slug', 'name');
 
         foreach ($params as $var => $param) {
-            if (!is_string($param)) {
+            if (! is_string($param)) {
                 throw new \Exception('Invalid section parameter "'.$var.'"');
             }
         }
@@ -59,7 +59,7 @@ class SectionBuilder
         $this->data['name'] = $name;
         $this->data['args'] = $data;
 
-        if (!is_null($view)) {
+        if (! is_null($view)) {
             $this->view = $view;
         }
 

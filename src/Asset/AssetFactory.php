@@ -61,13 +61,13 @@ class AssetFactory
      * @param bool|string $mixed   Boolean if javascript file | String if stylesheet file.
      * @param string      $type    'script' or 'style'.
      *
-     * @return Asset|\WP_Error
-     *
      * @throws AssetException
+     *
+     * @return Asset|\WP_Error
      */
     public function add($handle, $path, $deps = [], $version = '1.0', $mixed = null, $type = '')
     {
-        if (!is_string($handle) && !is_string($path)) {
+        if (! is_string($handle) && ! is_string($path)) {
             throw new AssetException('Invalid parameters for [Asset::add] method.');
         }
 
@@ -84,7 +84,7 @@ class AssetFactory
         $ext = pathinfo($path, PATHINFO_EXTENSION);
 
         // Define the asset type.
-        if (!empty($type) && in_array($type, $this->allowedAssets)) {
+        if (! empty($type) && in_array($type, $this->allowedAssets)) {
             $t = $type;
         } elseif ($ext) {
             $t = ($ext === 'css') ? 'style' : 'script';

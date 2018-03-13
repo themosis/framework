@@ -21,7 +21,7 @@ class Sidebar
      */
     public function make()
     {
-        if (is_array($this->data) && !empty($this->data)) {
+        if (is_array($this->data) && ! empty($this->data)) {
             foreach ($this->data as $sidebar) {
                 register_sidebar($sidebar);
             }

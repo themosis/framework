@@ -19,13 +19,13 @@ class Option
     {
         $option = get_option($optionGroup);
 
-        if (!empty($option) && !is_null($name)) {
+        if (! empty($option) && ! is_null($name)) {
             if (isset($option[$name])) {
                 return $option[$name];
             }
 
             return '';
-        } elseif (!empty($option)) {
+        } elseif (! empty($option)) {
             return $option;
         }
 

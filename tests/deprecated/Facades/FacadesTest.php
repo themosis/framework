@@ -1,8 +1,10 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
+
 include 'Custom.php';
 
-class FacadesTest extends PHPUnit_Framework_TestCase
+class FacadesTest extends TestCase
 {
     public function testRunFacades()
     {

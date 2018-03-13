@@ -118,7 +118,7 @@ abstract class FieldBuilder extends DataContainer
             // $type is an array, let's check its values.
             $type = array_intersect($type, $allowed);
 
-            if (!empty($type)) {
+            if (! empty($type)) {
                 $features['type'] = $type;
             } else {
                 $features['type'] = $allowed;

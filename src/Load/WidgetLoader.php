@@ -47,7 +47,7 @@ class WidgetLoader extends Load
         parent::load();
 
         foreach ($this->files as $file) {
-            if (!in_array($file['name'], $this->excludedWidgets)) {
+            if (! in_array($file['name'], $this->excludedWidgets)) {
                 $name = $file['name'].'_Widget';
                 $this->widgets[] = $name;
             }

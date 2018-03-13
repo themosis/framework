@@ -54,7 +54,7 @@ class Meta
         /*-----------------------------------------------------------------*/
         $value = filter_var($default, FILTER_VALIDATE_URL);
 
-        if (!$value) {
+        if (! $value) {
 
             /*-----------------------------------------------------------------*/
             // This is not a valid URL - Return the default one

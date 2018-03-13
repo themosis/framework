@@ -23,7 +23,7 @@ class Constant
      */
     public function make()
     {
-        if (!empty($this->data)) {
+        if (! empty($this->data)) {
             foreach ($this->data as $name => $value) {
                 $name = strtoupper($name);
                 defined($name) ? $name : define($name, $value);

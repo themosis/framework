@@ -1,10 +1,11 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Themosis\Asset\AssetFactory;
 use Themosis\Asset\AssetFinder;
 use Themosis\Foundation\Application;
 
-class AssetTest extends PHPUnit_Framework_TestCase
+class AssetTest extends TestCase
 {
     /**
      * @var AssetFactory

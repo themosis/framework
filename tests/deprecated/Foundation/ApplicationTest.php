@@ -1,10 +1,11 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Themosis\Foundation\Application;
 
 include 'AppNoDependencies.php';
 
-class ApplicationTest extends PHPUnit_Framework_TestCase
+class ApplicationFoundationTest extends TestCase
 {
     public function testApplicationIsInTheContainer()
     {

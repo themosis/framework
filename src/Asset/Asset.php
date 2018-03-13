@@ -155,7 +155,7 @@ class Asset implements IAsset
     protected function parseMixed($mixed)
     {
         if ('style' === $this->type) {
-            $mixed = (is_string($mixed) && !empty($mixed)) ? $mixed : 'all';
+            $mixed = (is_string($mixed) && ! empty($mixed)) ? $mixed : 'all';
         } elseif ('script' === $this->type) {
             $mixed = is_bool($mixed) ? $mixed : false;
         }
@@ -337,7 +337,7 @@ class Asset implements IAsset
             // Front-end assets.
             case 'wp_enqueue_scripts':
 
-                if (isset(static::$instances['front']) && !empty(static::$instances['front'])) {
+                if (isset(static::$instances['front']) && ! empty(static::$instances['front'])) {
                     foreach (static::$instances['front'] as $asset) {
                         // Check if asset has not yet been called...
                         if (isset(static::$instantiated['front'][$asset->getKey()])) {
@@ -353,7 +353,7 @@ class Asset implements IAsset
             // WordPress admin assets.
             case 'admin_enqueue_scripts':
 
-                if (isset(static::$instances['admin']) && !empty(static::$instances['admin'])) {
+                if (isset(static::$instances['admin']) && ! empty(static::$instances['admin'])) {
                     foreach (static::$instances['admin'] as $asset) {
                         // Check if asset has not yet been called...
                         if (isset(static::$instantiated['admin'][$asset->getKey()])) {
@@ -369,7 +369,7 @@ class Asset implements IAsset
             // Login assets.
             case 'login_enqueue_scripts':
 
-                if (isset(static::$instances['login']) && !empty(static::$instances['login'])) {
+                if (isset(static::$instances['login']) && ! empty(static::$instances['login'])) {
                     foreach (static::$instances['login'] as $asset) {
                         // Check if asset has not yet been called...
                         if (isset(static::$instantiated['login'][$asset->getKey()])) {
@@ -384,7 +384,7 @@ class Asset implements IAsset
 
             case 'customize_preview_init':
 
-                if (isset(static::$instances['customizer']) && !empty(static::$instances['customizer'])) {
+                if (isset(static::$instances['customizer']) && ! empty(static::$instances['customizer'])) {
                     foreach (static::$instances['customizer'] as $asset) {
                         // Check if asset has not yet been called...
                         if (isset(static::$instantiated['customizer'][$asset->getKey()])) {
@@ -433,7 +433,7 @@ class Asset implements IAsset
         wp_enqueue_script($args['handle'], $args['path'], $args['deps'], $args['version'], $args['mixed']);
 
         // Add localized data for scripts.
-        if (isset($args['localize']) && !empty($args['localize'])) {
+        if (isset($args['localize']) && ! empty($args['localize'])) {
             foreach ($args['localize'] as $objectName => $data) {
                 wp_localize_script($args['handle'], $objectName, $data);
             }
@@ -466,7 +466,7 @@ class Asset implements IAsset
     {
         $args = $asset->getArgs();
 
-        if (empty($args) || !isset($args['inline'])) {
+        if (empty($args) || ! isset($args['inline'])) {
             return;
         }
 
@@ -502,7 +502,7 @@ class Asset implements IAsset
      */
     public function getArgs($name = '')
     {
-        if (!empty($name) && array_key_exists($name, $this->args)) {
+        if (! empty($name) && array_key_exists($name, $this->args)) {
             return $this->args[$name];
         }
 

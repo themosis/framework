@@ -90,9 +90,9 @@ class Route extends IlluminateRoute
      * Parses the conditional parameter out of the action parameter. This is the parameter
      * given to WordPress conditional functions later.
      *
-     * @param array        $action The action parameter where the conditional parameters are in
+     * @param array $action The action parameter where the conditional parameters are in
      *
-     * @return array       An array with the conditional parameters or null
+     * @return array An array with the conditional parameters or null
      */
     protected function parseConditionalParameters($action)
     {
@@ -102,7 +102,7 @@ class Route extends IlluminateRoute
             return is_string($value) || is_array($value);
         });
 
-        if ($this->condition() && !is_null($parameters)) {
+        if ($this->condition() && ! is_null($parameters)) {
             if (is_string($parameters) && strrpos($parameters, '@') !== false) {
                 /**
                  * In case of a controller value statement, return empty array.
@@ -208,10 +208,10 @@ class Route extends IlluminateRoute
 
         // If we can not find a route using the normal laravel router check if the route which is being checked has the uri "404". If so we return this route as the valid one.
         if (method_exists($this, 'getUri')) {
-            return !$matches && $this->getUri() === '404' ? true : $matches;
+            return ! $matches && $this->getUri() === '404' ? true : $matches;
         }
 
-        return !$matches && $this->uri() === '404' ? true : $matches;
+        return ! $matches && $this->uri() === '404' ? true : $matches;
     }
 
     /**
@@ -233,7 +233,7 @@ class Route extends IlluminateRoute
      */
     public function createRewriteRule()
     {
-        if (!$this->condition()) {
+        if (! $this->condition()) {
             // Compile the route to get a Symfony compiled route
             $this->compileRoute();
 

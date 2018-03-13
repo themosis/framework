@@ -23,9 +23,10 @@ class Router extends IlluminateRouter
     /**
      * Create a new Themosis Route object.
      *
-     * @param  array|string $methods
-     * @param  string       $uri
-     * @param  mixed        $action
+     * @param array|string $methods
+     * @param string       $uri
+     * @param mixed        $action
+     *
      * @return \Illuminate\Routing\Route
      */
     protected function newRoute($methods, $uri, $action)
@@ -38,7 +39,8 @@ class Router extends IlluminateRouter
     /**
      * Find the route matching a given request.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Themosis\Route\Route
      */
     protected function findRoute($request)
@@ -46,7 +48,7 @@ class Router extends IlluminateRouter
         $route = parent::findRoute($request);
 
         // If the current route is a WordPress route
-        if ($route instanceof Route && !$route->condition()) {
+        if ($route instanceof Route && ! $route->condition()) {
             global $wp, $wp_query;
 
             //Check if the route is not a WordPress route and warn the developer to flush the rewrite rules.

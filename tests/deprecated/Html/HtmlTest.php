@@ -1,8 +1,9 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Themosis\Html\HtmlBuilder as Html;
 
-class HtmlTest extends PHPUnit_Framework_TestCase
+class HtmlTest extends TestCase
 {
     public function testEntities()
     {

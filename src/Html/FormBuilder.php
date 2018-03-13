@@ -60,7 +60,7 @@ class FormBuilder
         // If a character encoding has not been specified in the attributes, we will
         // use the default encoding as specified in the application configuration
         // file for the "accept-charset" attribute.
-        if (!array_key_exists('accept-charset', $attributes)) {
+        if (! array_key_exists('accept-charset', $attributes)) {
             $attributes['accept-charset'] = 'UTF-8';
         }
 
@@ -227,7 +227,7 @@ class FormBuilder
      */
     public function email($name, $value = null, array $attributes = [])
     {
-        if (!isset($attributes['placeholder'])) {
+        if (! isset($attributes['placeholder'])) {
             $attributes['placeholder'] = __('Please enter your email...', THEMOSIS_FRAMEWORK_TEXTDOMAIN);
         }
 
@@ -463,7 +463,7 @@ class FormBuilder
 
         foreach ($options as $key => $option) {
             // Check $option is array in order to continue.
-            if (!is_array($option)) {
+            if (! is_array($option)) {
                 throw new HtmlException('In order to build the select tag, the parameter must be an array of arrays.');
             }
 
@@ -523,7 +523,7 @@ class FormBuilder
         // Grab the converted values and return them.
         foreach ($indexedOptions as $index => $option) {
             if (is_numeric($index)) {
-                if (in_array($option, $subOptions) && !in_array($option, $convertedOptions) && $index >= $this->option_current_index) {
+                if (in_array($option, $subOptions) && ! in_array($option, $convertedOptions) && $index >= $this->option_current_index) {
                     $convertedOptions[$index] = $option;
 
                     // Record index for comparison.

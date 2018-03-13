@@ -1,8 +1,9 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Themosis\Hook\ActionBuilder;
 
-class ActionTest extends PHPUnit_Framework_TestCase
+class ActionTest extends TestCase
 {
     /**
      * The service container.

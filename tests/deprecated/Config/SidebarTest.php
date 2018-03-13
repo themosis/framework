@@ -1,6 +1,8 @@
 <?php
 
-class SidebarTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SidebarTest extends TestCase
 {
     public function testSidebarsAreRegistered()
     {

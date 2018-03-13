@@ -137,7 +137,7 @@ class TaxFieldRenderer
         // ADD page description
         /*-----------------------------------------------------------------------*/
         if (static::isAddPage($typeOfPage)) {
-            if (isset($info) && !empty($info)):
+            if (isset($info) && ! empty($info)):
 
             ?>
             
@@ -151,7 +151,7 @@ class TaxFieldRenderer
         // EDIT page description
         /*-----------------------------------------------------------------------*/
         } else {
-            if (isset($info) && !empty($info)):
+            if (isset($info) && ! empty($info)):
 
             ?>
         
@@ -217,7 +217,7 @@ class TaxFieldRenderer
         // Open tags
         /*-----------------------------------------------------------------------*/
         static::openTagsForEditPage($name, $title); ?>
-	            <input type="text" id="<?php echo $name; ?>-field" name="<?php echo $taxonomy_slug.'['.$name.']'; ?>" value="<?php if (isset($value) && !empty($value)) {
+	            <input type="text" id="<?php echo $name; ?>-field" name="<?php echo $taxonomy_slug.'['.$name.']'; ?>" value="<?php if (isset($value) && ! empty($value)) {
             echo $value;
         } ?>" size="40" />
 	            <br />
@@ -321,7 +321,7 @@ class TaxFieldRenderer
 					<tr class="themosis-field-media">
 					
 						<td class="themosis-media-input">
-						    <input type="text" size="40" name="<?php echo $taxonomy_slug.'['.$name.']'; ?>" id="<?php echo $name; ?>-field" value="<?php if (isset($value) && !empty($value)) {
+						    <input type="text" size="40" name="<?php echo $taxonomy_slug.'['.$name.']'; ?>" id="<?php echo $name; ?>-field" value="<?php if (isset($value) && ! empty($value)) {
             echo $value;
         } ?>" />
 						</td>

@@ -83,7 +83,7 @@ class TaxonomyBuilder extends Wrapper
         $params = compact('name', 'postType', 'plural', 'singular');
 
         foreach ($params as $key => $param) {
-            if ('postType' !== $key && !is_string($param)) {
+            if ('postType' !== $key && ! is_string($param)) {
                 throw new TaxonomyException('Invalid taxonomy parameter "'.$key.'"');
             }
         }
@@ -206,9 +206,9 @@ class TaxonomyBuilder extends Wrapper
      *
      * @param null $property
      *
-     * @return array
-     *
      * @throws TaxonomyException
+     *
+     * @return array
      */
     public function get($property = null)
     {
@@ -318,11 +318,11 @@ class TaxonomyBuilder extends Wrapper
                 if (is_array($val)) {
                     foreach ($val as $subKey => $subVal) {
                         // Check if there is a sanitize method defined for inner fields.
-                        if (isset($rule[$subKey]) && !is_numeric($subKey)) {
+                        if (isset($rule[$subKey]) && ! is_numeric($subKey)) {
                             $vals[$k][$subKey] = $this->validator->single($subVal, $rule[$subKey]);
                         } else {
                             // If one inner field has a rule, this one is wrong for the others because $rule is an array of array.
-                            if (isset($rules[$key]) && !isset($rule[$subKey])) {
+                            if (isset($rules[$key]) && ! isset($rule[$subKey])) {
                                 $vals[$k][$subKey] = $this->validator->single($subVal, ['html']);
                             } else {
                                 $vals[$k][$subKey] = $this->validator->single($subVal, $rule);
@@ -334,7 +334,7 @@ class TaxonomyBuilder extends Wrapper
         }
 
         // Return parsed array of the infinite field.
-        if (!empty($vals)) {
+        if (! empty($vals)) {
             return $vals;
         }
 
@@ -410,7 +410,7 @@ class TaxonomyBuilder extends Wrapper
      */
     public function save($term_id)
     {
-        if (!isset($_POST['_themosisnonce']) || !wp_verify_nonce($_POST['_themosisnonce'], 'taxonomy_set_fields')) {
+        if (! isset($_POST['_themosisnonce']) || ! wp_verify_nonce($_POST['_themosisnonce'], 'taxonomy_set_fields')) {
             return;
         }
 

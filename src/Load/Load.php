@@ -72,7 +72,7 @@ abstract class Load implements ILoader
             $dir = new \DirectoryIterator($path);
 
             foreach ($dir as $file) {
-                if (!$file->isDot() || !$file->isDir()) {
+                if (! $file->isDot() || ! $file->isDir()) {
                     $file_extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
 
                     if ($file_extension === 'php') {
@@ -86,7 +86,7 @@ abstract class Load implements ILoader
 
             // Organize files per alphabetical order
             // and include them.
-            if (!empty($this->files)) {
+            if (! empty($this->files)) {
                 usort($this->files, function ($a, $b) {
                     return strnatcmp($a['name'], $b['name']);
                 });

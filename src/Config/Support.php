@@ -23,7 +23,7 @@ class Support
      */
     public function make()
     {
-        if (is_array($this->data) && !empty($this->data)) {
+        if (is_array($this->data) && ! empty($this->data)) {
             foreach ($this->data as $feature => $value) {
                 // Allow theme features without options.
                 if (is_int($feature)) {

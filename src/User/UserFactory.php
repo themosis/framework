@@ -150,11 +150,11 @@ class UserFactory extends Wrapper implements IUser
     protected function parseCredentials(array $credentials)
     {
         foreach ($credentials as $name => $cred) {
-            if ('email' === $name && !is_email($cred)) {
+            if ('email' === $name && ! is_email($cred)) {
                 throw new UserException("Invalid user property '{$name}'.");
             }
 
-            if (!is_string($cred) || empty($cred)) {
+            if (! is_string($cred) || empty($cred)) {
                 throw new UserException("Invalid user property '{$name}'.");
             }
         }
@@ -243,7 +243,7 @@ class UserFactory extends Wrapper implements IUser
                 $section = $section->getData();
 
                 // Check if fields are defined per section.
-                if (!isset($fields[$section['slug']])) {
+                if (! isset($fields[$section['slug']])) {
                     throw new UserException("There are no user custom fields defined for the section: {$section['slug']}.");
                 }
             }
@@ -272,7 +272,7 @@ class UserFactory extends Wrapper implements IUser
     public function displayFields($user)
     {
         // Add nonce fields for safety.
-        if (!static::$hasNonce) {
+        if (! static::$hasNonce) {
             wp_nonce_field('user', '_themosisnonce');
             static::$hasNonce = true;
         }
@@ -322,7 +322,7 @@ class UserFactory extends Wrapper implements IUser
             $id = (is_a($user, 'WP_User')) ? $user->ID : 0;
 
             // It's a section...
-            if (!is_numeric($section)) {
+            if (! is_numeric($section)) {
                 foreach ($fs as $f) {
                     $value = get_user_meta($id, $f['name'], true);
                     $f['value'] = $this->parseValue($f, $value);
@@ -352,13 +352,13 @@ class UserFactory extends Wrapper implements IUser
     {
         // Check capability
         $user = new \WP_User($id);
-        if (!in_array($this->capability, $user->allcaps)) {
+        if (! in_array($this->capability, $user->allcaps)) {
             return;
         }
 
         // Check nonces
         $nonceName = (isset($_POST['_themosisnonce'])) ? $_POST['_themosisnonce'] : '_themosisnonce';
-        if (!wp_verify_nonce($nonceName, 'user')) {
+        if (! wp_verify_nonce($nonceName, 'user')) {
             return;
         }
 
@@ -409,9 +409,9 @@ class UserFactory extends Wrapper implements IUser
      *
      * @param array $fields The fields.
      *
-     * @return array A clean list of fields.
-     *
      * @throws FieldException
+     *
+     * @return array A clean list of fields.
      */
     protected function parseTheFields(array $fields)
     {
@@ -419,15 +419,15 @@ class UserFactory extends Wrapper implements IUser
 
         foreach ($fields as $section => $fs) {
             // Sections defined.
-            if (!is_numeric($section)) {
+            if (! is_numeric($section)) {
                 foreach ($fs as $f) {
-                    if (!is_a($f, '\Themosis\Field\Fields\IField')) {
+                    if (! is_a($f, '\Themosis\Field\Fields\IField')) {
                         throw new FieldException('An IField instance is necessary in order to save custom user data.');
                     }
                     $theFields[] = $f;
                 }
             } else {
-                if (!is_a($fs, '\Themosis\Field\Fields\IField')) {
+                if (! is_a($fs, '\Themosis\Field\Fields\IField')) {
                     throw new FieldException('An IField instance is necessary in order to save custom user data.');
                 }
                 $theFields[] = $fs;

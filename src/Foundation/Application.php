@@ -133,6 +133,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Set the base path for the application.
      *
      * @param string $basePath
+     *
      * @return $this
      */
     public function setBasePath($basePath)
@@ -145,8 +146,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Bind all of the application paths in the container.
-     *
-     * @return void
      */
     protected function bindPathsInContainer()
     {
@@ -188,6 +187,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Get the path to the application "themosis-application" directory.
      *
      * @param string $path
+     *
      * @return string
      */
     public function path($path = '')
@@ -259,6 +259,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Get the path to the application "resources" directory.
      *
      * @param string $path
+     *
      * @return string
      */
     public function resourcePath($path = '')
@@ -399,8 +400,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Register all of the configured providers.
-     *
-     * @return void
      */
     public function registerConfiguredProviders()
     {
@@ -410,9 +409,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Register a deferred provider and service.
      *
-     * @param  string $provider
-     * @param  string|null $service
-     * @return void
+     * @param string      $provider
+     * @param string|null $service
      */
     public function registerDeferredProvider($provider, $service = null)
     {
@@ -422,7 +420,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
         $this->register($instance = new $provider($this));
 
-        if (!$this->booted) {
+        if (! $this->booted) {
             $this->booting(function () use ($instance) {
                 $this->bootProvider($instance);
             });
@@ -431,8 +429,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
     /**
      * Boot the application's service providers.
-     *
-     * @return void
      */
     public function boot()
     {
@@ -456,8 +452,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Register a new boot listener.
      *
-     * @param  mixed $callback
-     * @return void
+     * @param mixed $callback
      */
     public function booting($callback)
     {
@@ -467,8 +462,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Register a new "booted" listener.
      *
-     * @param  mixed $callback
-     * @return void
+     * @param mixed $callback
      */
     public function booted($callback)
     {
@@ -502,13 +496,13 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * and do its best to convert them to a Response instance.
      *
      * @param Request $request A Request instance
-     * @param int $type The type of the request
+     * @param int     $type    The type of the request
      *                         (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
-     * @param bool $catch Whether to catch exceptions or not
-     *
-     * @return Response A Response instance
+     * @param bool    $catch   Whether to catch exceptions or not
      *
      * @throws \Exception When an Exception occurs during processing
+     *
+     * @return Response A Response instance
      */
     public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
     {
@@ -518,15 +512,15 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Register a service provider with the application.
      *
-     * @param  \Illuminate\Support\ServiceProvider|string $provider
-     * @param  array $options
-     * @param  bool $force
+     * @param \Illuminate\Support\ServiceProvider|string $provider
+     * @param array                                      $options
+     * @param bool                                       $force
      *
      * @return \Illuminate\Support\ServiceProvider
      */
     public function register($provider, $options = [], $force = false)
     {
-        if (($registered = $this->getProvider($provider)) && !$force) {
+        if (($registered = $this->getProvider($provider)) && ! $force) {
             return $registered;
         }
 

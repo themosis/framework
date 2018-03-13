@@ -1,10 +1,11 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use Themosis\Foundation\Request;
 use Themosis\Html\FormBuilder as Form;
 use Themosis\Html\HtmlBuilder as Html;
 
-class FormTest extends PHPUnit_Framework_TestCase
+class FormTest extends TestCase
 {
     /**
      * Form instance in order to test

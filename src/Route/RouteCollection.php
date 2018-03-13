@@ -44,7 +44,7 @@ class RouteCollection extends IlluminateRouteCollection
         $foundRoute = parent::check($routes, $request, $includingMethod);
 
         // If no route found, check if the 404 route is set, if so, return that route as our found route.
-        if (!$foundRoute && isset($routes['404'])) {
+        if (! $foundRoute && isset($routes['404'])) {
             $foundRoute = $routes['404'];
         }
 

@@ -1,6 +1,8 @@
 <?php
 
-class ConstantTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ConstantTest extends TestCase
 {
     public function testConstantsAreDefined()
     {

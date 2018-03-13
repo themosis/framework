@@ -83,8 +83,8 @@ abstract class Hook implements IHook
     /**
      * Remove a registered action or filter.
      *
-     * @param string $hook
-     * @param int $priority
+     * @param string          $hook
+     * @param int             $priority
      * @param \Closure|string $callback
      *
      * @return mixed The Hook instance or false.
@@ -94,7 +94,7 @@ abstract class Hook implements IHook
         // If $callback is null, it means we have chained the methods to
         // the action/filter instance. If the instance has no callback, return false.
         if (is_null($callback)) {
-            if (!$callback = $this->getCallback($hook)) {
+            if (! $callback = $this->getCallback($hook)) {
                 return false;
             }
 

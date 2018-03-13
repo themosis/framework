@@ -10,7 +10,8 @@
     verbose="true">
     <testsuites>
         <testsuite name="Themosis framework">
-            <directory suffix="Test.php">./tests/</directory>
+            <directory suffix="Test.php">./tests</directory>
+            <exclude>./tests/deprecated</exclude>
         </testsuite>
     </testsuites>
 </phpunit>
