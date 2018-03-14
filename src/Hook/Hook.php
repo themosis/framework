@@ -32,7 +32,7 @@ abstract class Hook implements IHook
      * Wrapper of the "add_action" or "add_filter" functions. Allows
      * a developer to specify a controller class or closure.
      *
-     * @param string                $hook          The action hook name.
+     * @param string|array          $hooks         The action hook name.
      * @param \Closure|string|array $callback      The action hook callback instance.
      * @param int                   $priority      The priority order for this action.
      * @param int                   $accepted_args Default number of accepted arguments.
@@ -41,9 +41,11 @@ abstract class Hook implements IHook
      *
      * @return $this
      */
-    public function add($hook, $callback, $priority = 10, $accepted_args = 3)
+    public function add($hooks, $callback, $priority = 10, $accepted_args = 3)
     {
-        $this->addHookEvent($hook, $callback, $priority, $accepted_args);
+        foreach ((array) $hooks as $hook) {
+            $this->addHookEvent($hook, $callback, $priority, $accepted_args);
+        }
 
         return $this;
     }
@@ -57,11 +59,7 @@ abstract class Hook implements IHook
      */
     public function exists($hook)
     {
-        if (array_key_exists($hook, $this->hooks)) {
-            return true;
-        }
-
-        return false;
+        return array_key_exists($hook, $this->hooks);
     }
 
     /**
@@ -69,7 +67,7 @@ abstract class Hook implements IHook
      *
      * @param string $hook The hook name.
      *
-     * @return array|bool
+     * @return array|null
      */
     public function getCallback($hook)
     {
@@ -77,7 +75,7 @@ abstract class Hook implements IHook
             return $this->hooks[$hook];
         }
 
-        return false;
+        return null;
     }
 
     /**

@@ -125,4 +125,17 @@ class ActionTest extends TestCase
 
         $this->assertEquals(2, did_action('some-hook'));
     }
+
+    public function testCanListenToMultipleActionsAtOnce()
+    {
+        $action = new ActionBuilder($this->app);
+        $action->add(['init', 'admin-init', 'user-init'], [$this, 'someMethod']);
+
+        $this->assertTrue($action->exists('init'));
+        $this->assertTrue($action->exists('admin-init'));
+        $this->assertTrue($action->exists('user-init'));
+        $this->assertEquals([$this, 'someMethod'], $action->getCallback('init')[0]);
+        $this->assertEquals([$this, 'someMethod'], $action->getCallback('admin-init')[0]);
+        $this->assertEquals([$this, 'someMethod'], $action->getCallback('user-init')[0]);
+    }
 }

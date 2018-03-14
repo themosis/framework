@@ -32,7 +32,7 @@ function did_action($tag)
 {
     global $wp_actions;
 
-    if (!isset($wp_actions[$tag])) {
+    if (! isset($wp_actions[$tag])) {
         return 0;
     }
 
