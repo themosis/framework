@@ -15,9 +15,9 @@ class ActionBuilder extends Hook
     public function run($hook, $args = null)
     {
         if (is_array($args)) {
-            \do_action_ref_array($hook, $args);
+            do_action_ref_array($hook, $args);
         } else {
-            \do_action($hook, $args);
+            do_action($hook, $args);
         }
 
         return $this;
@@ -34,6 +34,6 @@ class ActionBuilder extends Hook
     protected function addEventListener($name, $callback, $priority, $accepted_args)
     {
         $this->hooks[$name] = [$callback, $priority, $accepted_args];
-        \add_action($name, $callback, $priority, $accepted_args);
+        add_action($name, $callback, $priority, $accepted_args);
     }
 }

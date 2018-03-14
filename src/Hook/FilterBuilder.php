@@ -15,9 +15,9 @@ class FilterBuilder extends Hook
     public function run($hook, $args = null)
     {
         if (is_array($args)) {
-            \apply_filters_ref_array($hook, $args);
+            apply_filters_ref_array($hook, $args);
         } else {
-            \apply_filters($hook, $args);
+            apply_filters($hook, $args);
         }
 
         return $this;
@@ -34,6 +34,6 @@ class FilterBuilder extends Hook
     protected function addEventListener($name, $callback, $priority, $accepted_args)
     {
         $this->hooks[$name] = [$callback, $priority, $accepted_args];
-        \add_filter($name, $callback, $priority, $accepted_args);
+        add_filter($name, $callback, $priority, $accepted_args);
     }
 }

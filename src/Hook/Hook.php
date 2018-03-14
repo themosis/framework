@@ -104,7 +104,7 @@ abstract class Hook implements IHook
             unset($this->hooks[$hook]);
         }
 
-        \remove_action($hook, $callback, $priority);
+        remove_action($hook, $callback, $priority);
 
         return $this;
     }
