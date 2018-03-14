@@ -85,4 +85,17 @@ class FilterTest extends TestCase
         // Check if callback is callable.
         $this->assertTrue(is_callable($filter->getCallback('uncharted')[0]));
     }
+
+    public function testFilterCanListenToMultipleHooks()
+    {
+        $filter = new FilterBuilder($this->app);
+        $filter->add(['content', 'title', 'custom'], [$this, 'someMethod']);
+
+        $this->assertTrue($filter->exists('content'), 'No filter hook attached for "content"');
+        $this->assertTrue($filter->exists('title'), 'No filter hook attached for "title"');
+        $this->assertTrue($filter->exists('custom'), 'No filter hook attached for "custom"');
+        $this->assertEquals([$this, 'someMethod'], $filter->getCallback('content')[0]);
+        $this->assertEquals([$this, 'someMethod'], $filter->getCallback('title')[0]);
+        $this->assertEquals([$this, 'someMethod'], $filter->getCallback('custom')[0]);
+    }
 }
