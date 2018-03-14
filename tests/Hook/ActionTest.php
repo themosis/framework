@@ -1,20 +1,19 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use Themosis\Core\Application;
 use Themosis\Hook\ActionBuilder;
 
 class ActionTest extends TestCase
 {
     /**
-     * The service container.
-     *
-     * @var \Themosis\Foundation\Application
+     * @var Application
      */
     protected $app;
 
     public function setUp()
     {
-        $this->app = new \Themosis\Foundation\Application();
+        $this->app = Application::getInstance();
     }
 
     public function testActionWithClosure()
@@ -99,7 +98,7 @@ class ActionTest extends TestCase
 
         // Run action without arguments.
         $action->run('my-custom-hook');
-        $this->assertTrue(1 == did_action('my-custom-hook'));
+        $this->assertTrue(1 === did_action('my-custom-hook'));
 
         // Check action is ran once.
         $this->assertEquals(1, did_action('my-custom-hook'));

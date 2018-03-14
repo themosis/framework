@@ -2,14 +2,12 @@
 
 namespace Themosis\Hook;
 
-use Themosis\Foundation\Application;
+use Illuminate\Contracts\Foundation\Application;
 
 abstract class Hook implements IHook
 {
     /**
-     * The service container.
-     *
-     * @var \Themosis\Foundation\Application
+     * @var Application
      */
     protected $container;
 
@@ -35,11 +33,13 @@ abstract class Hook implements IHook
      * a developer to specify a controller class or closure.
      *
      * @param string                $hook          The action hook name.
-     * @param \Closure|string|array $callback      The closure, function name or class to use, array containing an instance and its public method name.
+     * @param \Closure|string|array $callback      The action hook callback instance.
      * @param int                   $priority      The priority order for this action.
      * @param int                   $accepted_args Default number of accepted arguments.
      *
-     * @return \Themosis\Hook\ActionBuilder
+     * @throws HookException
+     *
+     * @return $this
      */
     public function add($hook, $callback, $priority = 10, $accepted_args = 3)
     {
@@ -104,7 +104,7 @@ abstract class Hook implements IHook
             unset($this->hooks[$hook]);
         }
 
-        remove_action($hook, $callback, $priority);
+        \remove_action($hook, $callback, $priority);
 
         return $this;
     }
@@ -112,10 +112,12 @@ abstract class Hook implements IHook
     /**
      * Add an event for the specified hook.
      *
-     * @param string                $hook
-     * @param \Closure|string|array $callback      The closure, function name or class to use, array containing an instance and its public method name.
+     * @param string                $hook          The hook name.
+     * @param \Closure|string|array $callback      The hook callback instance.
      * @param int                   $priority      The priority order.
      * @param int                   $accepted_args The default number of accepted arguments.
+     *
+     * @throws HookException
      *
      * @return \Closure|array|string
      */
@@ -144,6 +146,8 @@ abstract class Hook implements IHook
      * @param string $class
      * @param int    $priority
      * @param int    $accepted_args
+     *
+     * @throws HookException
      *
      * @return array
      */
@@ -196,10 +200,10 @@ abstract class Hook implements IHook
     /**
      * Add an event for the specified hook.
      *
-     * @param string          $name
-     * @param \Closure|string $callback
-     * @param int             $priority
-     * @param int             $accepted_args
+     * @param string                $name
+     * @param \Closure|string|array $callback
+     * @param int                   $priority
+     * @param int                   $accepted_args
      *
      * @throws HookException
      */

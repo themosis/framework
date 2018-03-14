@@ -1,15 +1,19 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use Themosis\Core\Application;
 use Themosis\Hook\FilterBuilder;
 
 class FilterTest extends TestCase
 {
+    /**
+     * @var Application
+     */
     protected $app;
 
     public function setUp()
     {
-        $this->app = new \Themosis\Foundation\Application();
+        $this->app = Application::getInstance();
     }
 
     public function testFilterWithClosure()

@@ -33,22 +33,22 @@ class ApplicationTest extends TestCase
             'Cannot get the base path'
         );
         $this->assertEquals(
-            $path.'/htdocstest/content',
+            $path.'/htdocs/content',
             $app['path.content'],
             'Cannot get the content path'
         );
         $this->assertEquals(
-            $path.'/htdocstest/content/mu-plugins',
+            $path.'/htdocs/content/mu-plugins',
             $app['path.muplugins'],
             'Cannot get the mu-plugins path'
         );
         $this->assertEquals(
-            $path.'/htdocstest/content/plugins',
+            $path.'/htdocs/content/plugins',
             $app['path.plugins'],
             'Cannot get the plugins path'
         );
         $this->assertEquals(
-            $path.'/htdocstest/content/themes',
+            $path.'/htdocs/content/themes',
             $app['path.themes'],
             'Cannot get the themes path'
         );
@@ -58,12 +58,12 @@ class ApplicationTest extends TestCase
             'Cannot get the app path'
         );
         $this->assertEquals(
-            $path.'/htdocstest/content/languages',
+            $path.'/htdocs/content/languages',
             $app['path.lang'],
             'Cannot get the languages path'
         );
         $this->assertEquals(
-            $path.'/htdocstest',
+            $path.'/htdocs',
             $app['path.web'],
             'Cannot get the web path'
         );
@@ -78,7 +78,7 @@ class ApplicationTest extends TestCase
             'Cannot get the defaut config path'
         );
         $this->assertEquals(
-            $path.'/htdocstest',
+            $path.'/htdocs',
             $app['path.public'],
             'Cannot get the public path'
         );
