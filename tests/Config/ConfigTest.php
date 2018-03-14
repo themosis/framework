@@ -34,6 +34,9 @@ class ConfigTest extends PHPUnit_Framework_TestCase
                 'editor',
             ],
             'name' => 'themosis',
+            'multi-access' => [
+                'key' => 'value2',
+            ],
         ], $values);
 
         // Check return single value.
@@ -58,5 +61,23 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $theme = $this->factory->get('sample.theme');
 
         $this->assertEquals('Themosis Theme', $theme);
+    }
+
+    public function testGetMultiDimensionConfigValue()
+    {
+        $this->assertEquals('value2', $this->factory->get('project.multi-access.key'));
+    }
+
+    public function testArrayAccessOffsetGet()
+    {
+        $this->assertEquals('value', $this->factory['project.key']);
+        $this->assertEquals('value2', $this->factory['project.multi-access.key']);
+    }
+
+    public function testArrayAccessOffsetExists()
+    {
+        $this->assertTrue(isset($this->factory['project.key']));
+        $this->assertTrue(isset($this->factory['project.multi-access']));
+        $this->assertFalse(isset($this->factory['project.made-up']));
     }
 }
