@@ -39,5 +39,6 @@
   "replace": {
     "themosis/hook": "self.version"
   },
+  "minimum-stability": "dev",
   "prefer-stable": true
 }
