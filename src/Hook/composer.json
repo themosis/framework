@@ -1,0 +1,22 @@
+{
+  "name": "themosis/hook",
+  "description": "The Themosis framework hook package.",
+  "keywords": ["themosis", "framework", "wordpress"],
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Julien Lambé",
+      "email": "julien@themosis.com",
+      "homepage": "https://www.themosis.com/"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Themosis\\Hook\\": ""
+    }
+  },
+  "require": {
+    "php": ">=7.1.0"
+  },
+  "prefer-stable": true
+}
