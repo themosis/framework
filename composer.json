@@ -3,6 +3,10 @@
   "description": "The Themosis framework.",
   "keywords": ["themosis", "framework", "wordpress"],
   "license": "GPL-2.0-or-later",
+  "support": {
+    "issues": "https://github.com/themosis/framework/issues",
+    "source": "https://github.com/themosis/framework"
+  },
   "authors": [
     {
       "name": "Julien Lambé",
@@ -38,6 +42,9 @@
   },
   "replace": {
     "themosis/hook": "self.version"
+  },
+  "config": {
+    "sort-packages": true
   },
   "minimum-stability": "dev",
   "prefer-stable": true

@@ -3,6 +3,10 @@
   "description": "The Themosis framework hook package.",
   "keywords": ["themosis", "framework", "wordpress"],
   "license": "GPL-2.0-or-later",
+  "support": {
+    "issues": "https://github.com/themosis/framework/issues",
+    "source": "https://github.com/themosis/framework"
+  },
   "authors": [
     {
       "name": "Julien Lambé",
@@ -18,5 +22,5 @@
   "require": {
     "php": ">=7.1.0"
   },
-  "prefer-stable": true
+  "minimum-stability": "dev"
 }
