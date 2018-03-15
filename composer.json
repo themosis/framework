@@ -16,10 +16,10 @@
   ],
   "autoload": {
     "psr-4": {
-      "Themosis\\": "src/"
+      "Themosis\\": "src/Themosis/"
     },
     "files": [
-      "src/Core/helpers.php"
+      "src/Themosis/Core/helpers.php"
     ]
   },
   "require": {
