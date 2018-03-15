@@ -1,6 +1,6 @@
 {
-  "name": "themosis/hook",
-  "description": "The Themosis framework hook subpackage.",
+  "name": "themosis/ajax",
+  "description": "The Themosis framework ajax subpackage.",
   "keywords": ["themosis", "framework", "wordpress"],
   "license": "GPL-2.0-or-later",
   "support": {
@@ -16,7 +16,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Themosis\\Hook\\": ""
+      "Themosis\\Ajax\\": ""
     }
   },
   "require": {
