@@ -4,7 +4,7 @@ namespace Themosis\Route;
 
 use Illuminate\Events\Dispatcher;
 use Illuminate\Routing\Router as IlluminateRouter;
-use Themosis\Foundation\Application;
+use Themosis\Core\Application;
 
 class Router extends IlluminateRouter
 {
@@ -12,7 +12,7 @@ class Router extends IlluminateRouter
      * Build a Router instance.
      *
      * @param \Illuminate\Events\Dispatcher    $events
-     * @param \Themosis\Foundation\Application $container
+     * @param \Themosis\Core\Application $container
      */
     public function __construct(Dispatcher $events, Application $container)
     {
