@@ -2,21 +2,14 @@
 
 namespace Themosis\Route;
 
-use Illuminate\Events\Dispatcher;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Routing\RoutingServiceProvider;
 
-class RouteServiceProvider extends ServiceProvider
+class RouteServiceProvider extends RoutingServiceProvider
 {
     public function register()
     {
-        /*
-         * Register the Events Dispatcher into the container.
-         */
-        $this->app->bind('events', function ($container) {
-            return new Dispatcher($container);
-        });
-        $this->app->singleton('router', function ($container) {
-            return new Router($container['events'], $container);
+        $this->app->singleton('router', function ($app) {
+            return new Router($app['events'], $app);
         });
     }
 }
