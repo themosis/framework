@@ -3,7 +3,9 @@
 namespace Themosis\Core\Http;
 
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Routing\Pipeline;
 use Illuminate\Support\Facades\Facade;
+use Themosis\Route\Router;
 
 class Kernel implements \Illuminate\Contracts\Http\Kernel
 {
@@ -11,6 +13,8 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
      * @var Application
      */
     protected $app;
+
+    protected $router;
 
     /**
      * List of bootstrap classes.
@@ -26,9 +30,10 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
         \Themosis\Core\Bootstrap\BootProviders::class
     ];
 
-    public function __construct(Application $app)
+    public function __construct(Application $app, Router $router)
     {
         $this->app = $app;
+        $this->router = $router;
     }
 
     /**
@@ -46,13 +51,49 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Handle an incoming HTTP request.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Illuminate\Http\Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Illuminate\Http\Response
      */
     public function handle($request)
     {
-        // TODO: Implement handle() method.
+        try {
+            $request->enableHttpMethodParameterOverride();
+            $response = $this->sendRequestThroughRouter($request);
+        } catch (\Exception $e) {
+            $response = null;
+        }
+
+        return $response;
+    }
+
+    /**
+     * Send given request through the middleware (if any) and router.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\Response
+     */
+    protected function sendRequestThroughRouter($request)
+    {
+        return (new Pipeline($this->app))
+            ->send($request)
+            ->through([])
+            ->then($this->dispatchToRouter());
+    }
+
+    /**
+     * Get route dispatcher callback used by the
+     * routing pipeline.
+     *
+     * @return \Closure
+     */
+    protected function dispatchToRouter()
+    {
+        return function ($request) {
+            $this->app->instance('request', $request);
+            return $this->router->dispatch($request);
+        };
     }
 
     /**
