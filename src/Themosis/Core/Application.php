@@ -16,6 +16,7 @@ use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Themosis\Route\Router;
 
 class Application extends Container implements ApplicationContract, HttpKernelInterface
 {
@@ -170,6 +171,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
                 \Symfony\Component\HttpFoundation\Request::class
             ],
             'router' => [
+                \Themosis\Route\Router::class,
                 \Illuminate\Routing\Router::class,
                 \Illuminate\Contracts\Routing\Registrar::class,
                 \Illuminate\Contracts\Routing\BindingRegistrar::class
