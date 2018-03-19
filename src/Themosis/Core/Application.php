@@ -915,4 +915,16 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     {
         return $this->bootstrapPath('cache/plugins.php');
     }
+
+    /**
+     * Load current active theme.
+     *
+     * @param string $dirPath    The theme directory path.
+     * @param string $routesPath The theme routes.php file path, relative to theme root directory.
+     */
+    public function loadTheme(string $dirPath, string $routesPath)
+    {
+        (new ThemeManager($this, $dirPath, $this->make('action')))
+            ->load($routesPath);
+    }
 }
