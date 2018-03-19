@@ -14,6 +14,9 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
      */
     protected $app;
 
+    /**
+     * @var Router
+     */
     protected $router;
 
     /**

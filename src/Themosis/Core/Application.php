@@ -7,7 +7,6 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Illuminate\Events\EventServiceProvider;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Log\LogServiceProvider;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -16,7 +15,6 @@ use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Themosis\Route\Router;
 use Themosis\Route\RouteServiceProvider;
 
 class Application extends Container implements ApplicationContract, HttpKernelInterface
