@@ -70,7 +70,7 @@ class ThemeManager
      */
     public function loadThemeRoutes()
     {
-        require $this->routesPath;
+        require $this->getThemeRoutesPath();
     }
 
     /**
