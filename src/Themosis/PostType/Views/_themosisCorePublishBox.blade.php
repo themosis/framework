@@ -198,7 +198,7 @@ $status_keys = array_keys($statuses);
                 }
             } else {
                 // Current status of the post is in the list of registered statuses.
-                // So, show the "update" button ?>
+                // So, show the "update" button?>
                 <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e('Update'); ?>" />
                 <input name="save" type="submit" class="button button-primary button-large" id="publish" accesskey="p" value="<?php esc_attr_e('Update'); ?>" />
             <?php

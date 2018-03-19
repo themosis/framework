@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Themosis\Hook\HookServiceProvider;
 use Themosis\Route\RouteServiceProvider;
 
 class Application extends Container implements ApplicationContract, HttpKernelInterface
@@ -145,6 +146,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     protected function registerBaseServiceProviders()
     {
         $this->register(new EventServiceProvider($this));
+        $this->register(new HookServiceProvider($this));
         $this->register(new LogServiceProvider($this));
         $this->register(new RouteServiceProvider($this));
     }

@@ -95,6 +95,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     {
         return function ($request) {
             $this->app->instance('request', $request);
+
             return $this->router->dispatch($request);
         };
     }

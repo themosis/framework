@@ -11,8 +11,8 @@ class Router extends IlluminateRouter
     /**
      * Build a Router instance.
      *
-     * @param \Illuminate\Events\Dispatcher    $events
-     * @param \Themosis\Core\Application $container
+     * @param \Illuminate\Events\Dispatcher $events
+     * @param \Themosis\Core\Application    $container
      */
     public function __construct(Dispatcher $events, Application $container)
     {
