@@ -2,11 +2,12 @@
 
 use Illuminate\Container\Container;
 use Illuminate\Events\EventServiceProvider;
-use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Log\LogServiceProvider;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
 use Themosis\Core\PackageManifest;
+use Themosis\Hook\HookServiceProvider;
+use Themosis\Route\RouteServiceProvider;
 
 class ApplicationTest extends TestCase
 {
@@ -137,9 +138,14 @@ class ApplicationTest extends TestCase
             'Log service provider is not registered'
         );
         $this->assertInstanceOf(
-            'Illuminate\Filesystem\FilesystemServiceProvider',
-            $app->getProvider(FilesystemServiceProvider::class),
-            'Filesystem service provider is not registered'
+            'Themosis\Route\RouteServiceProvider',
+            $app->getProvider(RouteServiceProvider::class),
+            'Route service provider is not registered'
+        );
+        $this->assertInstanceOf(
+            'Themosis\Hook\HookServiceProvider',
+            $app->getProvider(HookServiceProvider::class),
+            'Hook service provider is not registered'
         );
     }
 }

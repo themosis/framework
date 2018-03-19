@@ -56,7 +56,7 @@ class ThemeManager
      *
      * @return $this
      */
-    public function load(string $routesPath)
+    public function load(string $routesPath): ThemeManager
     {
         $this->routesPath = $this->app->themesPath($this->theme->get_stylesheet().'/'.ltrim($routesPath, '\/'));
 
@@ -71,5 +71,15 @@ class ThemeManager
     public function loadThemeRoutes()
     {
         require $this->routesPath;
+    }
+
+    /**
+     * Return the path to the theme routes.php file.
+     *
+     * @return string
+     */
+    public function getThemeRoutesPath(): string
+    {
+        return $this->routesPath;
     }
 }
