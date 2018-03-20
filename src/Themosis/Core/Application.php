@@ -5,14 +5,16 @@ namespace Themosis\Core;
 use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
 use Illuminate\Events\EventServiceProvider;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Http\Request;
 use Illuminate\Log\LogServiceProvider;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Themosis\Hook\HookServiceProvider;
@@ -685,18 +687,18 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * When $catch is true, the implementation must catch all exceptions
      * and do its best to convert them to a Response instance.
      *
-     * @param Request $request A Request instance
-     * @param int     $type    The type of the request
-     *                         (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
-     * @param bool    $catch   Whether to catch exceptions or not
+     * @param SymfonyRequest $request A Request instance
+     * @param int            $type    The type of the request
+     *                                (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
+     * @param bool           $catch   Whether to catch exceptions or not
      *
      * @throws \Exception When an Exception occurs during processing
      *
      * @return Response A Response instance
      */
-    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
+    public function handle(SymfonyRequest $request, $type = self::MASTER_REQUEST, $catch = true)
     {
-        // TODO: Implement handle() method.
+        return $this[HttpKernelContract::class]->handle(Request::createFromBase($request));
     }
 
     /**
