@@ -13,12 +13,18 @@ class FilterTest extends TestCase
 
     public function setUp()
     {
-        $this->app = Application::getInstance();
+        $this->app = new Application();
     }
 
     public function testFilterWithClosure()
     {
-        $filter = new FilterBuilder($this->app);
+        $filter = $this->getMockBuilder(FilterBuilder::class)
+            ->setConstructorArgs([$this->app])
+            ->setMethods(['addFilter'])
+            ->getMock();
+
+        $filter->expects($this->once())
+            ->method('addFilter');
 
         $filter->add('filter-one', function () {
         });
@@ -38,7 +44,13 @@ class FilterTest extends TestCase
 
     public function testFilterWithClass()
     {
-        $filter = new FilterBuilder($this->app);
+        $filter = $this->getMockBuilder(FilterBuilder::class)
+            ->setConstructorArgs([$this->app])
+            ->setMethods(['addFilter'])
+            ->getMock();
+
+        $filter->expects($this->exactly(2))
+            ->method('addFilter');
 
         $filter->add('custom-filter', 'AFilterClassForTest', 4, 2);
 
@@ -75,7 +87,13 @@ class FilterTest extends TestCase
 
     public function testFilterWithNamedCallback()
     {
-        $filter = new FilterBuilder($this->app);
+        $filter = $this->getMockBuilder(FilterBuilder::class)
+            ->setConstructorArgs([$this->app])
+            ->setMethods(['addFilter'])
+            ->getMock();
+
+        $filter->expects($this->once())
+            ->method('addFilter');
 
         $filter->add('uncharted', 'callingForUncharted');
 
@@ -88,7 +106,14 @@ class FilterTest extends TestCase
 
     public function testFilterCanListenToMultipleHooks()
     {
-        $filter = new FilterBuilder($this->app);
+        $filter = $this->getMockBuilder(FilterBuilder::class)
+            ->setConstructorArgs([$this->app])
+            ->setMethods(['addFilter'])
+            ->getMock();
+
+        $filter->expects($this->exactly(3))
+            ->method('addFilter');
+
         $filter->add(['content', 'title', 'custom'], [$this, 'someMethod']);
 
         $this->assertTrue($filter->exists('content'), 'No filter hook attached for "content"');

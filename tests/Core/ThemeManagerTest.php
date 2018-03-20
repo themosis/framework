@@ -3,6 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
 use Themosis\Core\ThemeManager;
+use Themosis\Hook\ActionBuilder;
 
 class ThemeManagerTest extends TestCase
 {
@@ -12,11 +13,11 @@ class ThemeManagerTest extends TestCase
             ->setMethods(['get_stylesheet'])
             ->getMock();
 
-        $app = Application::getInstance();
+        $app = new Application();
         $manager = new ThemeManager(
             $app,
             $app->themesPath('sample-theme'),
-            $app['action'],
+            $this->getMockBuilder(ActionBuilder::class)->setConstructorArgs([$app])->getMock(),
             $stub
         );
 

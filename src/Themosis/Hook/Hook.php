@@ -2,6 +2,7 @@
 
 namespace Themosis\Hook;
 
+use BadMethodCallException;
 use Illuminate\Contracts\Foundation\Application;
 
 abstract class Hook implements IHook
@@ -37,7 +38,7 @@ abstract class Hook implements IHook
      * @param int                   $priority      The priority order for this action.
      * @param int                   $accepted_args Default number of accepted arguments.
      *
-     * @throws HookException
+     * @throws BadMethodCallException
      *
      * @return $this
      */
@@ -115,7 +116,7 @@ abstract class Hook implements IHook
      * @param int                   $priority      The priority order.
      * @param int                   $accepted_args The default number of accepted arguments.
      *
-     * @throws HookException
+     * @throws BadMethodCallException
      *
      * @return \Closure|array|string
      */
@@ -145,7 +146,7 @@ abstract class Hook implements IHook
      * @param int    $priority
      * @param int    $accepted_args
      *
-     * @throws HookException
+     * @throws BadMethodCallException
      *
      * @return array
      */
@@ -203,10 +204,10 @@ abstract class Hook implements IHook
      * @param int                   $priority
      * @param int                   $accepted_args
      *
-     * @throws HookException
+     * @throws BadMethodCallException
      */
     protected function addEventListener($name, $callback, $priority, $accepted_args)
     {
-        throw new HookException('The "addEventListener" method must be overridden.');
+        throw new BadMethodCallException('The "addEventListener" method must be overridden.');
     }
 }

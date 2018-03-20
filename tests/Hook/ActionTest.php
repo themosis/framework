@@ -13,12 +13,18 @@ class ActionTest extends TestCase
 
     public function setUp()
     {
-        $this->app = Application::getInstance();
+        $this->app = new Application();
     }
 
     public function testActionWithClosure()
     {
-        $action = new ActionBuilder($this->app);
+        $action = $this->getMockBuilder(ActionBuilder::class)
+            ->setConstructorArgs([$this->app])
+            ->setMethods(['addAction'])
+            ->getMock();
+
+        $action->expects($this->once())
+            ->method('addAction');
 
         $action->add('init_test', function () {
         });
@@ -38,7 +44,13 @@ class ActionTest extends TestCase
 
     public function testActionWithClass()
     {
-        $action = new ActionBuilder($this->app);
+        $action = $this->getMockBuilder(ActionBuilder::class)
+            ->setConstructorArgs([$this->app])
+            ->setMethods(['addAction'])
+            ->getMock();
+
+        $action->expects($this->exactly(2))
+            ->method('addAction');
 
         // Run the action
         $action->add('a_custom_action', 'AnActionClassForTest', 5, 4);
@@ -67,7 +79,12 @@ class ActionTest extends TestCase
 
     public function testActionWithNamedCallback()
     {
-        $action = new ActionBuilder($this->app);
+        $action = $this->getMockBuilder(ActionBuilder::class)
+            ->setConstructorArgs([$this->app])
+            ->setMethods(['addAction'])
+            ->getMock();
+
+        $action->expects($this->once())->method('addAction');
 
         $action->add('some_hook', 'actionHookCallback');
 
@@ -80,7 +97,12 @@ class ActionTest extends TestCase
 
     public function testActionUsingCurrentInstance()
     {
-        $action = new ActionBuilder($this->app);
+        $action = $this->getMockBuilder(ActionBuilder::class)
+            ->setConstructorArgs([$this->app])
+            ->setMethods(['addAction'])
+            ->getMock();
+
+        $action->expects($this->once())->method('addAction');
 
         $action->add('after-custom-setup', [$this, 'afterSetup']);
 
@@ -94,41 +116,44 @@ class ActionTest extends TestCase
 
     public function testActionIsRanWithoutArguments()
     {
-        $action = new ActionBuilder($this->app);
+        $action = $this->getMockBuilder(ActionBuilder::class)
+            ->setConstructorArgs([$this->app])
+            ->setMethods(['doAction'])
+            ->getMock();
+
+        $action->expects($this->exactly(2))
+            ->method('doAction');
 
         // Run action without arguments.
         $action->run('my-custom-hook');
-        $this->assertTrue(1 === did_action('my-custom-hook'));
-
-        // Check action is ran once.
-        $this->assertEquals(1, did_action('my-custom-hook'));
-
         // Run action a second time...
         $action->run('my-custom-hook');
-
-        // Check action is ran twice.
-        $this->assertEquals(2, did_action('my-custom-hook'));
     }
 
     public function testActionIsRanWithMultipleArguments()
     {
-        $action = new ActionBuilder($this->app);
+        $action = $this->getMockBuilder(ActionBuilder::class)
+            ->setConstructorArgs([$this->app])
+            ->setMethods(['doActionRefArray'])
+            ->getMock();
+
+        $action->expects($this->exactly(2))->method('doActionRefArray');
 
         // Run action with multiple arguments.
         $action->run('some-hook', ['value1', 'value2', 'value3']);
-
-        // Check if this action has run once.
-        $this->assertEquals(1, did_action('some-hook'));
-
         // Run action a second time...
         $action->run('some-hook', ['value4', 'value5']);
-
-        $this->assertEquals(2, did_action('some-hook'));
     }
 
     public function testCanListenToMultipleActionsAtOnce()
     {
-        $action = new ActionBuilder($this->app);
+        $action = $this->getMockBuilder(ActionBuilder::class)
+            ->setConstructorArgs([$this->app])
+            ->setMethods(['addAction'])
+            ->getMock();
+
+        $action->expects($this->exactly(3))->method('addAction');
+
         $action->add(['init', 'admin-init', 'user-init'], [$this, 'someMethod']);
 
         $this->assertTrue($action->exists('init'));
