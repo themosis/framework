@@ -924,7 +924,10 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function loadTheme(string $dirPath, string $routesPath)
     {
-        (new ThemeManager($this, $dirPath, $this->make('action')))
+        $name = ltrim(str_replace($this->themesPath(), '', $dirPath), '\/');
+        $theme = new \WP_Theme($name, $this->themesPath());
+
+        (new ThemeManager($this, $dirPath, $this->make('action'), $theme))
             ->load($routesPath);
     }
 }

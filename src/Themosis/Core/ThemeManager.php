@@ -31,22 +31,12 @@ class ThemeManager
      */
     protected $routesPath;
 
-    public function __construct(Application $app, string $dirPath, IHook $action)
+    public function __construct(Application $app, string $dirPath, IHook $action, \WP_Theme $theme)
     {
         $this->app = $app;
         $this->dirPath = $dirPath;
         $this->action = $action;
-
-        $this->init();
-    }
-
-    /**
-     * Initialize WordPress theme.
-     */
-    protected function init()
-    {
-        $name = ltrim(str_replace($this->app->themesPath(), '', $this->dirPath), '\/');
-        $this->theme = new \WP_Theme($name, $this->app->themesPath());
+        $this->theme = $theme;
     }
 
     /**
