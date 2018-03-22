@@ -67,12 +67,7 @@ class Router extends IlluminateRouter
     {
         global $post, $wp_query;
 
-        $parameters = [
-            'post' => $post,
-            'query' => $wp_query
-        ];
-
-        foreach ($parameters as $key => $value) {
+        foreach (compact('post', 'wp_query') as $key => $value) {
             $route->setParameter($key, $value);
         }
 

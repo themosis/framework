@@ -510,7 +510,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals([
             'post' => null,
-            'query' => null
+            'wp_query' => null
         ], $route->parameters());
     }
 
