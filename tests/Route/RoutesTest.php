@@ -5,6 +5,7 @@ use Illuminate\Contracts\Routing\Registrar;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Themosis\Route\Router;
 
 class RoutesTest extends TestCase
@@ -457,6 +458,43 @@ class RoutesTest extends TestCase
         );
     }
 
+    public function testCustomCallbackRouteWithParameter()
+    {
+        $router = $this->getWordPressRouter();
+
+        $router->get('custom', [42, function () {
+            return 'Custom content';
+        }]);
+
+        $this->assertEquals(
+            'Custom content',
+            $router->dispatch(Request::create('whatever', 'GET'))->getContent()
+        );
+
+        $router->post('anything', [42, function () {
+            return 'Post custom content';
+        }]);
+
+        $this->assertEquals(
+            'Post custom content',
+            $router->dispatch(Request::create('some-uri', 'POST'))->getContent()
+        );
+    }
+
+    public function testRouteNotFoundIfNoCallback()
+    {
+        $router = $this->getWordPressRouter();
+
+        $router->get('some-not-defined-callback-condition', function () {
+            return 'Nothing';
+        });
+
+        $this->expectException(NotFoundHttpException::class);
+
+        $router->dispatch(Request::create('some-random-uri', 'GET'));
+
+    }
+
     protected function getWordPressRouter()
     {
         $router = $this->getRouter();
@@ -482,7 +520,8 @@ class RoutesTest extends TestCase
             'is_tag' => 'tag',
             'is_tax' => 'tax',
             'is_time' => 'time',
-            'is_year' => 'year'
+            'is_year' => 'year',
+            'is_custom' => ['custom', 'anything']
         ]);
 
         return $router;

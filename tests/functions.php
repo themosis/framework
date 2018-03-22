@@ -188,3 +188,12 @@ function is_year()
 {
     return true;
 }
+
+function is_custom($num)
+{
+    if (42 === $num) {
+        return true;
+    }
+
+    return false;
+}
