@@ -20,6 +20,8 @@ function callingForUncharted()
 |--------------------------------------------------------------------------
 |
 */
+global $post, $wp_query;
+
 function is_home()
 {
     return true;

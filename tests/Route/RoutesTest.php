@@ -6,6 +6,7 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Themosis\Route\Middleware\WordPressBindings;
 use Themosis\Route\Router;
 
 class RoutesTest extends TestCase
@@ -492,6 +493,25 @@ class RoutesTest extends TestCase
         $this->expectException(NotFoundHttpException::class);
 
         $router->dispatch(Request::create('some-random-uri', 'GET'));
+    }
+
+    public function testWordPressRouteParametersBindings()
+    {
+        $router = $this->getWordPressRouter();
+
+        $route = $router->get('home', [
+            'middleware' => WordPressBindings::class,
+            'uses' => function () {
+                return 'Something';
+            }
+        ]);
+
+        $router->dispatch(Request::create('/', 'GET'));
+
+        $this->assertEquals([
+            'post' => null,
+            'query' => null
+        ], $route->parameters());
     }
 
     protected function getWordPressRouter()

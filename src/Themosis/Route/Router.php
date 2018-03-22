@@ -55,4 +55,27 @@ class Router extends IlluminateRouter
             $this->conditions = $conditions;
         }
     }
+
+    /**
+     * Add WordPress default parameters if WordPress route.
+     *
+     * @param \Themosis\Route\Route $route
+     *
+     * @return \Themosis\Route\Route
+     */
+    public function addWordPressBindings($route)
+    {
+        global $post, $wp_query;
+
+        $parameters = [
+            'post' => $post,
+            'query' => $wp_query
+        ];
+
+        foreach ($parameters as $key => $value) {
+            $route->setParameter($key, $value);
+        }
+
+        return $route;
+    }
 }
