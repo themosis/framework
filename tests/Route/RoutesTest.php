@@ -4,6 +4,8 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Routing\Registrar;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Controller;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Themosis\Route\Middleware\WordPressBindings;
@@ -514,6 +516,69 @@ class RoutesTest extends TestCase
         ], $route->parameters());
     }
 
+    public function testWordPressRouteWithController()
+    {
+        $router = $this->getWordPressRouter();
+
+        $route = $router->get('home', 'FooController@index')
+            ->middleware(WordPressBindings::class);
+
+        $this->assertEquals(
+            'Controller index action',
+            $router->dispatch(Request::create('/', 'GET'))->getContent()
+        );
+
+        $this->assertEquals([
+            'post' => null,
+            'wp_query' => null
+        ], $route->parameters());
+    }
+
+    /**
+     * @see laravel/framework/tests/Routing/RoutingRouteTest.php
+     */
+    public function testBasicRouting()
+    {
+        $router = $this->getWordPressRouter();
+        $router->get('foo/bar', function () {
+            return 'hello';
+        });
+        $this->assertEquals('hello', $router->dispatch(Request::create('foo/bar', 'GET'))->getContent());
+
+        $router = $this->getWordPressRouter();
+        $router->get('foo/bar', function () {
+            throw new \Illuminate\Http\Exceptions\HttpResponseException(new Response('hello'));
+        });
+        $this->assertEquals('hello', $router->dispatch(Request::create('foo/bar', 'GET'))->getContent());
+
+        $router = $this->getWordPressRouter();
+        $router->get('foo/bar', ['domain' => 'api.{name}.bar', function ($name) {
+            return $name;
+        }]);
+        $router->get('foo/bar', ['domain' => 'api.{name}.baz', function ($name) {
+            return $name;
+        }]);
+        $this->assertEquals(
+            'themosis',
+            $router->dispatch(Request::create('http://api.themosis.bar/foo/bar', 'GET'))->getContent()
+        );
+        $this->assertEquals(
+            'wordpress',
+            $router->dispatch(Request::create('http://api.wordpress.baz/foo/bar', 'GET'))->getContent()
+        );
+
+        $router = $this->getWordPressRouter();
+        $router->get('foo/{age}', ['domain' => 'api.{name}.bar', function ($name, $age) {
+            return $name.$age;
+        }]);
+        $this->assertEquals(
+            'max35',
+            $router->dispatch(
+                Request::create('http://api.max.bar/foo/35', 'GET')
+            )->getContent()
+        );
+    }
+
     protected function getWordPressRouter()
     {
         $router = $this->getRouter();
@@ -555,5 +620,13 @@ class RoutesTest extends TestCase
         });
 
         return $router;
+    }
+}
+
+class FooController extends Controller
+{
+    public function index()
+    {
+        return 'Controller index action';
     }
 }
