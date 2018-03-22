@@ -492,7 +492,6 @@ class RoutesTest extends TestCase
         $this->expectException(NotFoundHttpException::class);
 
         $router->dispatch(Request::create('some-random-uri', 'GET'));
-
     }
 
     protected function getWordPressRouter()
