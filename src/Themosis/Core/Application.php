@@ -939,6 +939,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param Repository $config
      * @param string     $path   The configuration files folder path.
+     *
+     * @return Application
      */
     public function loadConfigurationFiles(Repository $config, $path = '')
     {
@@ -947,6 +949,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         foreach ($files as $key => $path) {
             $config->set($key, require $path);
         }
+
+        return $this;
     }
 
     /**
