@@ -3,7 +3,9 @@
 namespace Themosis\Core;
 
 use Closure;
+use Composer\Autoload\ClassLoader;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
 use Illuminate\Events\EventServiceProvider;
@@ -14,6 +16,8 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -922,14 +926,66 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * Load current active theme.
      *
      * @param string $dirPath    The theme directory path.
-     * @param string $routesPath The theme routes.php file path, relative to theme root directory.
+     * @param string $configPath The theme relative configuration folder path.
      */
-    public function loadTheme(string $dirPath, string $routesPath)
+    public function loadTheme(string $dirPath, string $configPath)
     {
-        $name = ltrim(str_replace($this->themesPath(), '', $dirPath), '\/');
-        $theme = new \WP_Theme($name, $this->themesPath());
+        (new ThemeManager($this, $dirPath, new ClassLoader()))
+            ->load($dirPath.'/'.trim($configPath, '\/'));
+    }
 
-        (new ThemeManager($this, $dirPath, $this->make('action'), $theme))
-            ->load($routesPath);
+    /**
+     * Load configuration files based on given path.
+     *
+     * @param Repository $config
+     * @param string     $path   The configuration files folder path.
+     */
+    public function loadConfigurationFiles(Repository $config, $path = '')
+    {
+        $files = $this->getConfigurationFiles($path);
+
+        foreach ($files as $key => $path) {
+            $config->set($key, require $path);
+        }
+    }
+
+    /**
+     * Get all configuration files.
+     *
+     * @param mixed $path
+     *
+     * @return array
+     */
+    protected function getConfigurationFiles($path)
+    {
+        $files = [];
+
+        foreach (Finder::create()->files()->name('*.php')->in($path) as $file) {
+            $directory = $this->getNestedDirectory($file, $path);
+            $files[$directory.basename($file->getRealPath(), '.php')] = $file->getRealPath();
+        }
+
+        ksort($files, SORT_NATURAL);
+
+        return $files;
+    }
+
+    /**
+     * Get configuration file nesting path.
+     *
+     * @param SplFileInfo $file
+     * @param string      $path
+     *
+     * @return string
+     */
+    protected function getNestedDirectory(SplFileInfo $file, $path)
+    {
+        $directory = $file->getPath();
+
+        if ($nested = trim(str_replace($path, '', $directory), DIRECTORY_SEPARATOR)) {
+            $nested = str_replace(DIRECTORY_SEPARATOR, '.', $nested).'.';
+        }
+
+        return $nested;
     }
 }

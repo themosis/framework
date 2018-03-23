@@ -102,7 +102,21 @@ if (! function_exists('storage_path')) {
      */
     function storage_path($path = '')
     {
-        return app('path.storage').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return app()->storagePath($path);
+    }
+}
+
+if (! function_exists('themes_path')) {
+    /**
+     * Get the path to the themes folder.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    function themes_path($path = '')
+    {
+        return app()->themesPath($path);
     }
 }
 

@@ -2,7 +2,8 @@
 
 namespace Themosis\Core;
 
-use Themosis\Hook\IHook;
+use Composer\Autoload\ClassLoader;
+use Illuminate\Config\Repository;
 
 class ThemeManager
 {
@@ -12,14 +13,19 @@ class ThemeManager
     protected $app;
 
     /**
+     * @var ClassLoader
+     */
+    protected $loader;
+
+    /**
+     * @var Repository
+     */
+    protected $config;
+
+    /**
      * @var string
      */
     protected $dirPath;
-
-    /**
-     * @var IHook
-     */
-    protected $action;
 
     /**
      * @var \WP_Theme
@@ -31,45 +37,64 @@ class ThemeManager
      */
     protected $routesPath;
 
-    public function __construct(Application $app, string $dirPath, IHook $action, \WP_Theme $theme)
+    public function __construct(Application $app, string $dirPath, ClassLoader $loader)
     {
         $this->app = $app;
         $this->dirPath = $dirPath;
-        $this->action = $action;
-        $this->theme = $theme;
+        $this->loader = $loader;
+        $this->config = $this->app->has('config') ? $this->app['config'] : new Repository();
     }
 
     /**
      * Load the theme. Setup theme requirements.
      *
-     * @param string $routesPath The relative routes.php file path based on theme root folder.
+     * @param string $path Theme configuration folder path.
      *
      * @return $this
      */
-    public function load(string $routesPath): ThemeManager
+    public function load(string $path): ThemeManager
     {
-        $this->routesPath = $this->app->themesPath($this->theme->get_stylesheet().'/'.ltrim($routesPath, '\/'));
+        $this->loadThemeConfiguration($path);
 
-        $this->action->add('template_redirect', [$this, 'loadThemeRoutes']);
+        $this->setThemeAutoloading();
+
+        $this->registerThemeServicesProviders();
 
         return $this;
     }
 
     /**
-     * Load theme "routes.php" file.
+     * Load theme configuration files.
+     *
+     * @param string $path
      */
-    public function loadThemeRoutes()
+    protected function loadThemeConfiguration(string $path)
     {
-        require $this->getThemeRoutesPath();
+        $this->app->loadConfigurationFiles($this->config, $path);
     }
 
     /**
-     * Return the path to the theme routes.php file.
-     *
-     * @return string
+     * Load theme classes.
      */
-    public function getThemeRoutesPath(): string
+    protected function setThemeAutoloading()
     {
-        return $this->routesPath;
+        foreach ($this->config->get('theme.autoloading', []) as $ns => $path) {
+            $path = $this->dirPath.'/'.trim($path, '\/');
+            $this->loader->addPsr4($ns, $path);
+        }
+
+        $this->loader->register();
+    }
+
+    /**
+     * Register theme services providers.
+     */
+    protected function registerThemeServicesProviders()
+    {
+        $providers = $this->config->get('theme.providers', []);
+
+        foreach ($providers as $provider) {
+            $this->app->register(new $provider($this->app));
+        }
     }
 }
