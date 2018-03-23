@@ -2,10 +2,16 @@
 
 namespace Themosis\Core\Http;
 
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Routing\Pipeline;
 use Illuminate\Support\Facades\Facade;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Symfony\Component\HttpFoundation\Response;
+use Themosis\Core\Exceptions\Handler;
+use Themosis\Core\Http\Events\RequestHandled;
 use Themosis\Route\Router;
+use Throwable;
 
 class Kernel implements \Illuminate\Contracts\Http\Kernel
 {
@@ -63,9 +69,17 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
         try {
             $request->enableHttpMethodParameterOverride();
             $response = $this->sendRequestThroughRouter($request);
-        } catch (\Exception $e) {
-            $response = null;
+        } catch (Exception $e) {
+            $this->reportException($e);
+            $response = $this->renderException($request, $e);
+        } catch (Throwable $e) {
+            $this->reportException($e = new FatalThrowableError($e));
+            $response = $this->renderException($request, $e);
         }
+
+        $this->app['events']->dispatch(
+            new RequestHandled($request, $response)
+        );
 
         return $response;
     }
@@ -133,5 +147,28 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     public function getApplication()
     {
         return $this->app;
+    }
+
+    /**
+     * Report the exception to the exception handler.
+     *
+     * @param Exception $e
+     */
+    protected function reportException(Exception $e)
+    {
+        $this->app[Handler::class]->report($e);
+    }
+
+    /**
+     * Render the exception to a response.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param Exception                $e
+     *
+     * @return Response
+     */
+    protected function renderException($request, Exception $e)
+    {
+        return $this->app[Handler::class]->render($request, $e);
     }
 }

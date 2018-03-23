@@ -142,10 +142,5 @@ class ApplicationTest extends TestCase
             $app->getProvider(RouteServiceProvider::class),
             'Route service provider is not registered'
         );
-        $this->assertInstanceOf(
-            'Themosis\Hook\HookServiceProvider',
-            $app->getProvider(HookServiceProvider::class),
-            'Hook service provider is not registered'
-        );
     }
 }

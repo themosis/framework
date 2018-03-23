@@ -21,7 +21,6 @@ use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Themosis\Hook\HookServiceProvider;
 use Themosis\Route\RouteServiceProvider;
 
 class Application extends Container implements ApplicationContract, HttpKernelInterface
@@ -152,7 +151,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     protected function registerBaseServiceProviders()
     {
         $this->register(new EventServiceProvider($this));
-        $this->register(new HookServiceProvider($this));
         $this->register(new LogServiceProvider($this));
         $this->register(new RouteServiceProvider($this));
     }
@@ -172,6 +170,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             'log' => [
                 \Illuminate\Log\LogManager::class,
                 \Psr\Log\LoggerInterface::class
+            ],
+            'redirect' => [
+                \Illuminate\Routing\Redirector::class
             ],
             'request' => [
                 \Illuminate\Http\Request::class,
