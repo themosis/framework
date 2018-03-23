@@ -39,10 +39,52 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
         \Themosis\Core\Bootstrap\BootProviders::class
     ];
 
+    /**
+     * Application middleware stack. Used on every request.
+     *
+     * @var array
+     */
+    protected $middleware = [];
+
+    /**
+     * The application's route middleware groups.
+     *
+     * @var array
+     */
+    protected $middlewareGroups = [];
+
+    /**
+     * Aliased middleware. Can be used individually or within groups.
+     *
+     * @var array
+     */
+    protected $routeMiddleware = [];
+
+    /**
+     * Priority-sorted list of middleware.
+     *
+     * @var array
+     */
+    protected $middlewarePriority = [
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Illuminate\Routing\Middleware\SubstituteBindings::class
+    ];
+
     public function __construct(Application $app, Router $router)
     {
         $this->app = $app;
         $this->router = $router;
+
+        $router->middlewarePriority = $this->middlewarePriority;
+
+        foreach ($this->middlewareGroups as $key => $middleware) {
+            $router->middlewareGroup($key, $middleware);
+        }
+
+        foreach ($this->routeMiddleware as $key => $middleware) {
+            $router->aliasMiddleware($key, $middleware);
+        }
     }
 
     /**
