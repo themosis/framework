@@ -6,7 +6,6 @@ use Illuminate\Log\LogServiceProvider;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
 use Themosis\Core\PackageManifest;
-use Themosis\Hook\HookServiceProvider;
 use Themosis\Route\RouteServiceProvider;
 
 class ApplicationTest extends TestCase
