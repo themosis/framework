@@ -4,6 +4,8 @@ namespace Themosis\Core\Http;
 
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response as IlluminateResponse;
 use Illuminate\Routing\Pipeline;
 use Illuminate\Support\Facades\Facade;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
@@ -104,7 +106,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return IlluminateResponse
      */
     public function handle($request)
     {
@@ -131,13 +133,13 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return IlluminateResponse
      */
     protected function sendRequestThroughRouter($request)
     {
         return (new Pipeline($this->app))
             ->send($request)
-            ->through([])
+            ->through($this->app->shouldSkipMiddleware() ? [] : $this->middleware)
             ->then($this->dispatchToRouter());
     }
 
@@ -176,9 +178,78 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
         return $this->bootstrappers;
     }
 
+    /**
+     * Call the terminate method on any terminable middleware.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Response                                  $response
+     */
     public function terminate($request, $response)
     {
-        // TODO: Implement terminate() method.
+        $this->terminateMiddleware($request, $response);
+        $this->app->terminate();
+    }
+
+    /**
+     * Call the terminate method on any terminable middleware.
+     *
+     * @param \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Response $response
+     */
+    protected function terminateMiddleware($request, $response)
+    {
+        $middlewares = $this->app->shouldSkipMiddleware() ? [] : array_merge(
+            $this->gatherRouteMiddleware($request),
+            $this->middleware
+        );
+
+        foreach ($middlewares as $middleware) {
+            if (! is_string($middleware)) {
+                continue;
+            }
+
+            list($name) = $this->parseMiddleware($middleware);
+
+            $instance = $this->app->make($name);
+
+            if (method_exists($instance, 'terminate')) {
+                $instance->terminate($request, $response);
+            }
+        }
+    }
+
+    /**
+     * Gather the route middleware for the given request.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return array
+     */
+    protected function gatherRouteMiddleware($request)
+    {
+        if ($route = $request->route()) {
+            return $this->router->gatherRouteMiddleware($route);
+        }
+
+        return [];
+    }
+
+    /**
+     * Parse a middleware string to get the name and parameters.
+     *
+     * @param string $middleware
+     *
+     * @return array
+     */
+    protected function parseMiddleware($middleware)
+    {
+        list($name, $parameters) = array_pad(explode(':', $middleware, 2), 2, []);
+
+        if (is_string($parameters)) {
+            $parameters = explode(',', $parameters);
+        }
+
+        return [$name, $parameters];
     }
 
     /**

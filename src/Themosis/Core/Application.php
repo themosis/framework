@@ -1004,4 +1004,28 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
         return $nested;
     }
+
+    /**
+     * Register a terminating callback with the application.
+     *
+     * @param Closure $callback
+     *
+     * @return $this
+     */
+    public function terminating(Closure $callback)
+    {
+        $this->terminatingCallbacks[] = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Terminate the application.
+     */
+    public function terminate()
+    {
+        foreach ($this->terminatingCallbacks as $terminating) {
+            $this->call($terminating);
+        }
+    }
 }
