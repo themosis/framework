@@ -3,6 +3,7 @@
 use Illuminate\Container\Container;
 use Illuminate\Events\EventServiceProvider;
 use Illuminate\Log\LogServiceProvider;
+use Illuminate\Support\ServiceProvider;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
 use Themosis\Core\PackageManifest;
@@ -142,4 +143,54 @@ class ApplicationTest extends TestCase
             'Route service provider is not registered'
         );
     }
+
+    public function testServiceProvidersAreCorrectlyRegistered()
+    {
+        $app = new Application();
+        $provider = $this->getMockBuilder('BasicServiceProvider')->setMethods(['register', 'boot'])->getMock();
+        $class = get_class($provider);
+        $provider->expects($this->once())->method('register');
+        $app->register($provider);
+
+        $this->assertTrue(in_array($class, $app->getLoadedProviders()));
+    }
+
+    public function testClassesAreBoundWhenServiceProviderIsRegistered()
+    {
+        $app = new Application();
+        $provider = new ServiceProviderForTestingThree($app);
+        $app->register($provider);
+
+        $this->assertTrue(in_array(get_class($provider), $app->getLoadedProviders()));
+        $this->assertInstanceOf(ConcreteClass::class, $app->make(AbstractClass::class));
+    }
+}
+
+class ServiceProviderForTestingThree extends ServiceProvider
+{
+    public $bindings = [
+        AbstractClass::class => ConcreteClass::class
+    ];
+
+    public $singletons = [
+        AbstractClass::class => ConcreteClass::class
+    ];
+
+    public function register()
+    {
+    }
+
+    public function boot()
+    {
+    }
+}
+
+abstract class AbstractClass
+{
+    //
+}
+
+class ConcreteClass extends AbstractClass
+{
+    //
 }
