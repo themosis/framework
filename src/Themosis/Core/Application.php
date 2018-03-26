@@ -167,6 +167,14 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
                 \Illuminate\Contracts\Foundation\Application::class,
                 \Psr\Container\ContainerInterface::class
             ],
+            'config' => [
+                \Illuminate\Config\Repository::class,
+                \Illuminate\Contracts\Config\Repository::class
+            ],
+            'events' => [
+                \Illuminate\Events\Dispatcher::class,
+                \Illuminate\Contracts\Events\Dispatcher::class
+            ],
             'log' => [
                 \Illuminate\Log\LogManager::class,
                 \Psr\Log\LoggerInterface::class
