@@ -589,6 +589,26 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
+     * Get the application's deferred services.
+     *
+     * @return array
+     */
+    public function getDeferredServices()
+    {
+        return $this->deferredServices;
+    }
+
+    /**
+     * Set the application's deferred services.
+     *
+     * @param array $services
+     */
+    public function setDeferredServices(array $services)
+    {
+        $this->deferredServices = $services;
+    }
+
+    /**
      * Verify if the application has been bootstrapped before.
      *
      * @return bool

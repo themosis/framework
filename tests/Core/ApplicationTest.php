@@ -1,5 +1,7 @@
 <?php
 
+namespace Themosis\Tests\Core;
+
 use Illuminate\Container\Container;
 use Illuminate\Events\EventServiceProvider;
 use Illuminate\Log\LogServiceProvider;
@@ -164,6 +166,42 @@ class ApplicationTest extends TestCase
         $this->assertTrue(in_array(get_class($provider), $app->getLoadedProviders()));
         $this->assertInstanceOf(ConcreteClass::class, $app->make(AbstractClass::class));
     }
+
+    public function testSingletonsAreCreatedWhenServiceProviderIsRegistered()
+    {
+        $app = new Application();
+        $provider = new ServiceProviderForTestingThree($app);
+        $app->register($provider);
+
+        $this->assertTrue(in_array(get_class($provider), $app->getLoadedProviders()));
+        $instance = $app->make(AbstractClass::class);
+        $this->assertSame($instance, $app->make(AbstractClass::class));
+    }
+
+    public function testDeferredServicesMarkedAsBound()
+    {
+        $app = new Application();
+        $app->setDeferredServices([
+            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceStub'
+        ]);
+
+        $this->assertTrue($app->bound('foo'));
+        $this->assertEquals('foo', $app->make('foo'));
+    }
+}
+
+class ApplicationDeferredServiceStub extends ServiceProvider
+{
+    protected $defer = true;
+
+    public function register()
+    {
+        $this->app['foo'] = 'foo';
+    }
+}
+
+class ServiceProviderWithNoRegisterMethod extends ServiceProvider
+{
 }
 
 class ServiceProviderForTestingThree extends ServiceProvider

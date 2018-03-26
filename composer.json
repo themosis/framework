@@ -22,6 +22,11 @@
       "src/Themosis/Core/helpers.php"
     ]
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Themosis\\Tests\\": "tests/"
+    }
+  },
   "require": {
     "php": ">=7.1.0",
     "composer/installers": "^1.0",
