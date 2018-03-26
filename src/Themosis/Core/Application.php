@@ -184,6 +184,10 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
                 \Illuminate\Contracts\Routing\Registrar::class,
                 \Illuminate\Contracts\Routing\BindingRegistrar::class
             ],
+            'url' => [
+                \Illuminate\Routing\UrlGenerator::class,
+                \Illuminate\Contracts\Routing\UrlGenerator::class
+            ],
             'view' => [
                 \Illuminate\View\Factory::class,
                 \Illuminate\Contracts\View\Factory::class
@@ -586,7 +590,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function boot()
     {
-        if (! $this->booted) {
+        if ($this->booted) {
             return;
         }
 
