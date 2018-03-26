@@ -438,6 +438,20 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
+     * Set the environment file to be loaded during bootstrapping.
+     *
+     * @param string $file
+     *
+     * @return $this
+     */
+    public function loadEnvironmentFrom($file)
+    {
+        $this->environmentFile = $file;
+
+        return $this;
+    }
+
+    /**
      * Return the environment path.
      *
      * @return string
@@ -445,6 +459,20 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function environmentPath()
     {
         return $this->environmentPath ?: $this->basePath();
+    }
+
+    /**
+     * Set the directory for the environment file.
+     *
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function useEnvironmentPath($path)
+    {
+        $this->environmentPath = $path;
+
+        return $this;
     }
 
     /**
@@ -686,6 +714,16 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function getCachedPackagesPath()
     {
         return $this->bootstrapPath('cache/packages.php');
+    }
+
+    /**
+     * Determine if the application configuration is cached.
+     *
+     * @return bool
+     */
+    public function configurationIsCached()
+    {
+        return file_exists($this->getCachedConfigPath());
     }
 
     /**

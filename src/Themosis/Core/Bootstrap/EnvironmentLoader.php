@@ -4,14 +4,10 @@ namespace Themosis\Core\Bootstrap;
 
 use Dotenv\Dotenv;
 use Illuminate\Contracts\Foundation\Application;
+use Symfony\Component\Console\Input\ArgvInput;
 
 class EnvironmentLoader
 {
-    /**
-     * @var Application
-     */
-    protected $app;
-
     /**
      * Required environment variables.
      *
@@ -33,14 +29,63 @@ class EnvironmentLoader
      */
     public function bootstrap(Application $app)
     {
-        $this->app = $app;
+        if ($app->configurationIsCached()) {
+            return;
+        }
+
+        $this->checkForSpecificEnvironmentFile($app);
 
         try {
             $dotenv = new Dotenv($app->environmentPath(), $app->environmentFile());
             $dotenv->load();
             $dotenv->required($this->required);
         } catch (\Exception $e) {
-            $app->make('log')->debug($e->getMessage());
+            error_log($e->getMessage());
         }
+    }
+
+    /**
+     * Detect if a custom environment file matching the APP_ENV exists.
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     */
+    protected function checkForSpecificEnvironmentFile($app)
+    {
+        if ($app->runningInConsole() && ($input = new ArgvInput())->hasParameterOption('--env')) {
+            if ($this->setEnvironmentFilePath(
+                $app,
+                $app->environmentFile().'.'.$input->getParameterOption('--env')
+            )) {
+                return;
+            }
+        }
+
+        if (! env('APP_ENV')) {
+            return;
+        }
+
+        $this->setEnvironmentFilePath(
+            $app,
+            $app->environmentFile().'.'.env('APP_ENV')
+        );
+    }
+
+    /**
+     * Load a custom environment file.
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     * @param string                                       $file
+     *
+     * @return bool
+     */
+    protected function setEnvironmentFilePath($app, $file)
+    {
+        if (file_exists($app->environmentPath().'/'.$file)) {
+            $app->loadEnvironmentFrom($file);
+
+            return true;
+        }
+
+        return false;
     }
 }
