@@ -1028,4 +1028,26 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             $this->call($terminating);
         }
     }
+
+    /**
+     * Handle incoming and request and returned response.
+     * Abstract the implementation from the user for easy
+     * theme integration.
+     *
+     * @param string                                    $kernel  Application kernel class name.
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return $this
+     */
+    public function manage(string $kernel, $request)
+    {
+        $kernel = $this->make($kernel);
+
+        $response = $kernel->handle($request);
+        $response->send();
+
+        $kernel->terminate($request, $response);
+
+        return $this;
+    }
 }
