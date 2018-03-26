@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Themosis\Route\Middleware\WordPressBindings;
 use Themosis\Route\Router;
@@ -577,6 +578,123 @@ class RoutesTest extends TestCase
                 Request::create('http://api.max.bar/foo/35', 'GET')
             )->getContent()
         );
+
+        $router = $this->getWordPressRouter();
+        $router->get('foo/bar', function () {
+            return 'hello';
+        });
+        $router->post('foo/bar', function () {
+            return 'post hello';
+        });
+        $this->assertEquals('hello', $router->dispatch(Request::create('foo/bar', 'GET'))->getContent());
+        $this->assertEquals('post hello', $router->dispatch(Request::create('foo/bar', 'POST'))->getContent());
+
+        $router = $this->getWordPressRouter();
+        $router->get('foo/{bar}', function ($name) {
+            return $name;
+        });
+        $this->assertEquals('john', $router->dispatch(Request::create('foo/john', 'GET'))->getContent());
+
+        $router = $this->getWordPressRouter();
+        $router->get('foo/{name}/boom/{age?}/{location?}', function ($name, $age = 25, $location = 'AR') {
+            return $name.$age.$location;
+        });
+        $this->assertEquals(
+            'wordpress30AR',
+            $router->dispatch(Request::create('foo/wordpress/boom/30', 'GET'))->getContent()
+        );
+
+        $router = $this->getWordPressRouter();
+        $router->get('{bar}/{baz?}', function ($name, $age = 25) {
+            return $name.$age;
+        });
+        $this->assertEquals('wordpress25', $router->dispatch(Request::create('wordpress', 'GET'))->getContent());
+
+        $router = $this->getWordPressRouter();
+        $router->get('{baz?}', function ($age = 25) {
+            return $age;
+        });
+        $this->assertEquals('25', $router->dispatch(Request::create('/', 'GET'))->getContent());
+        $this->assertEquals('30', $router->dispatch(Request::create('30', 'GET'))->getContent());
+
+        $router = $this->getWordPressRouter();
+        $router->get('{foo?}/{baz?}', ['as' => 'foo', function ($name = 'julien', $age = 25) {
+            return $name.$age;
+        }]);
+        $this->assertEquals('julien25', $router->dispatch(Request::create('/', 'GET'))->getContent());
+        $this->assertEquals('marcel25', $router->dispatch(Request::create('marcel', 'GET'))->getContent());
+        $this->assertEquals('marcel30', $router->dispatch(Request::create('marcel/30', 'GET'))->getContent());
+        $this->assertTrue($router->currentRouteNamed('foo'));
+        $this->assertTrue($router->currentRouteNamed('fo*'));
+        $this->assertTrue($router->is('foo'));
+        $this->assertTrue($router->is('foo', 'bar'));
+        $this->assertFalse($router->is('bar'));
+
+        $router = $this->getWordPressRouter();
+        $router->get('foo/{file}', function ($file) {
+            return $file;
+        });
+        $this->assertEquals(
+            'oxygen%20',
+            $router->dispatch(Request::create('http://test.com/foo/oxygen%2520', 'GET'))->getContent()
+        );
+
+        $router = $this->getWordPressRouter();
+        $router->patch('foo/bar', ['as' => 'foo', function () {
+            return 'bar';
+        }]);
+
+        $this->assertEquals('bar', $router->dispatch(Request::create('foo/bar', 'PATCH'))->getContent());
+        $this->assertEquals('foo', $router->currentRouteName());
+
+        $router = $this->getWordPressRouter();
+        $router->get('foo/bar', function () {
+            return 'hello';
+        });
+        $this->assertEmpty($router->dispatch(Request::create('foo/bar', 'HEAD'))->getContent());
+
+        $router = $this->getWordPressRouter();
+        $router->any('foo/bar', function () {
+            return 'hello';
+        });
+        $this->assertEmpty($router->dispatch(Request::create('foo/bar', 'HEAD'))->getContent());
+
+        $router = $this->getWordPressRouter();
+        $router->get('foo/bar', function () {
+            return 'first';
+        });
+        $router->get('foo/bar', function () {
+            return 'second';
+        });
+        $this->assertEquals('second', $router->dispatch(Request::create('foo/bar', 'GET'))->getContent());
+
+        $router = $this->getWordPressRouter();
+        $router->get('foo/bar/åαф', function () {
+            return 'hello';
+        });
+        $this->assertEquals(
+            'hello',
+            $router->dispatch(Request::create('foo/bar/%C3%A5%CE%B1%D1%84', 'GET'))->getContent()
+        );
+
+        $router = $this->getWordPressRouter();
+        $router->get('foo/bar', ['boom' => 'auth', function () {
+            return 'closure';
+        }]);
+        $this->assertEquals('closure', $router->dispatch(Request::create('foo/bar', 'GET'))->getContent());
+    }
+
+    public function testNotModifiedResponseIsProperlyReturned()
+    {
+        $router = $this->getWordPressRouter();
+        $router->get('test', function () {
+            return (new SymfonyResponse('test', 304, ['foo' => 'bar']))->setLastModified(new DateTime);
+        });
+        $response = $router->dispatch(Request::create('test', 'GET'));
+        $this->assertSame(304, $response->getStatusCode());
+        $this->assertEmpty($response->getContent());
+        $this->assertSame('bar', $response->headers->get('foo'));
+        $this->assertNull($response->getLastModified());
     }
 
     protected function getWordPressRouter()
