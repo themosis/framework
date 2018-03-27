@@ -5,7 +5,6 @@ namespace Themosis\Tests\Core;
 use Illuminate\Container\Container;
 use Illuminate\Events\EventServiceProvider;
 use Illuminate\Log\LogServiceProvider;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
