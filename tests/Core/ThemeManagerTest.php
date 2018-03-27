@@ -1,5 +1,7 @@
 <?php
 
+namespace Themosis\Tests\Core;
+
 use Composer\Autoload\ClassLoader;
 use PHPUnit\Framework\TestCase;
 use Theme\Providers\RouteServiceProvider;

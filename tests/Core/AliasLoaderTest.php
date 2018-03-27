@@ -1,5 +1,7 @@
 <?php
 
+namespace Themosis\Tests\Core;
+
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\AliasLoader;
 
