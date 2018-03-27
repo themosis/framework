@@ -88,6 +88,9 @@ class PackageManifest
         if (! file_exists($this->manifestPath)) {
             $this->build();
         }
+
+        return $this->manifest = file_exists($this->manifestPath) ?
+            $this->files->getRequire($this->manifestPath) : [];
     }
 
     /**

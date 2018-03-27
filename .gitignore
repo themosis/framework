@@ -5,7 +5,7 @@ Thumbs.db
 node_modules/
 
 # Framework
-vendor/
+/vendor
 composer.lock
 composer.phar
 /.php_cs.cache
