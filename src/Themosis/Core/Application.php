@@ -21,6 +21,7 @@ use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Themosis\Core\Bootstrap\EnvironmentLoader;
 use Themosis\Route\RouteServiceProvider;
 
 class Application extends Container implements ApplicationContract, HttpKernelInterface
@@ -1132,5 +1133,37 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $kernel->terminate($request, $response);
 
         return $this;
+    }
+
+    /**
+     * Register a callback to run after loading the environment.
+     *
+     * @param Closure $callback
+     */
+    public function afterLoadingEnvironment(Closure $callback)
+    {
+        $this->afterBootstrapping(EnvironmentLoader::class, $callback);
+    }
+
+    /**
+     * Register a callback to run before a bootstrapper.
+     *
+     * @param string  $bootstrapper
+     * @param Closure $callback
+     */
+    public function beforeBootstrapping($bootstrapper, Closure $callback)
+    {
+        $this['events']->listen('bootstrapping: '.$bootstrapper, $callback);
+    }
+
+    /**
+     * Register a callback to run after a bootstrapper.
+     *
+     * @param string  $bootstrapper
+     * @param Closure $callback
+     */
+    public function afterBootstrapping($bootstrapper, Closure $callback)
+    {
+        $this['events']->listen('bootstrapped: '.$bootstrapper, $callback);
     }
 }

@@ -5,6 +5,7 @@ namespace Themosis\Tests\Core;
 use Illuminate\Container\Container;
 use Illuminate\Events\EventServiceProvider;
 use Illuminate\Log\LogServiceProvider;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
@@ -188,14 +189,221 @@ class ApplicationTest extends TestCase
         $this->assertTrue($app->bound('foo'));
         $this->assertEquals('foo', $app->make('foo'));
     }
+
+    public function testDeferredServicesAreShared()
+    {
+        $app = new Application();
+        $app->setDeferredServices([
+            'foo' => 'Themosis\Tests\Core\ApplicationDeferredSharedService'
+        ]);
+        $this->assertTrue($app->bound('foo'));
+
+        $one = $app->make('foo');
+        $two = $app->make('foo');
+
+        $this->assertInstanceOf('stdClass', $one);
+        $this->assertInstanceOf('stdClass', $two);
+        $this->assertSame($one, $two);
+    }
+
+    public function testDeferredServiceCanBeExtended()
+    {
+        $app = new Application();
+        $app->setDeferredServices([
+            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceStub'
+        ]);
+        $app->extend('foo', function ($instance, $container) {
+            return $instance.'bar';
+        });
+
+        $this->assertEquals('foobar', $app->make('foo'));
+    }
+
+    public function testDeferredServiceProviderIsRegisteredOnlyOnce()
+    {
+        $app = new Application();
+        $app->setDeferredServices([
+            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceCountStub'
+        ]);
+        $instance = $app->make('foo');
+        $this->assertInstanceOf('stdClass', $instance);
+        $this->assertSame($instance, $app->make('foo'));
+        $this->assertEquals(1, ApplicationDeferredServiceCountStub::$count);
+    }
+
+    public function testDeferredServiceDontRunWhenInstanceSet()
+    {
+        $app = new Application();
+        $app->setDeferredServices([
+            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceStub'
+        ]);
+        $app->instance('foo', 'bar');
+        $instance = $app->make('foo');
+        $this->assertEquals($instance, 'bar');
+    }
+
+    public function testDeferredServicesAreLazilyInitialized()
+    {
+        ApplicationDeferredServiceStub::$initialized = false;
+        $app = new Application();
+        $app->setDeferredServices([
+            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceStub'
+        ]);
+        $this->assertTrue($app->bound('foo'));
+        $this->assertFalse(ApplicationDeferredServiceStub::$initialized);
+
+        $app->extend('foo', function ($instance) {
+            return $instance.'bar';
+        });
+
+        $this->assertFalse(ApplicationDeferredServiceStub::$initialized);
+        $this->assertEquals('foobar', $app->make('foo'));
+        $this->assertTrue(ApplicationDeferredServiceStub::$initialized);
+    }
+
+    public function testDeferredServicesCanRegisterFactories()
+    {
+        $app = new Application();
+        $app->setDeferredServices([
+            'foo' => 'Themosis\Tests\Core\ApplicationFactoryServiceProvider'
+        ]);
+
+        $this->assertTrue($app->bound('foo'));
+        $this->assertEquals(1, $app->make('foo'));
+        $this->assertEquals(2, $app->make('foo'));
+        $this->assertEquals(3, $app->make('foo'));
+    }
+
+    public function testSingleProviderCanProvideMultipleDeferredServices()
+    {
+        $app = new Application();
+        $app->setDeferredServices([
+            'foo' => 'Themosis\Tests\Core\ApplicationMultiProvider',
+            'bar' => 'Themosis\Tests\Core\ApplicationMultiProvider'
+        ]);
+
+        $this->assertEquals('foo', $app->make('foo'));
+        $this->assertEquals('foobar', $app->make('bar'));
+    }
+
+    public function testEnvironment()
+    {
+        $app = new Application();
+        $app['env'] = 'foo';
+
+        $this->assertEquals('foo', $app->environment());
+
+        $this->assertTrue($app->environment('foo'));
+        $this->assertTrue($app->environment('f*'));
+        $this->assertTrue($app->environment('foo', 'bar'));
+        $this->assertTrue($app->environment(['foo', 'bar']));
+        $this->assertFalse($app->environment('qux'));
+        $this->assertFalse($app->environment('q*'));
+        $this->assertFalse($app->environment('qux', 'bar'));
+        $this->assertFalse($app->environment(['qux', 'bar']));
+    }
+
+    public function testMethodAfterLoadingEnvironmentAddsClosure()
+    {
+        $app = new Application();
+        $closure = function () {
+        };
+        $app->afterLoadingEnvironment($closure);
+        $this->assertArrayHasKey(
+            0,
+            $app['events']->getListeners('bootstrapped: Themosis\Core\Bootstrap\EnvironmentLoader')
+        );
+    }
+
+    public function testBeforeBootstrappingMethodAddsClosure()
+    {
+        $app = new Application();
+        $closure = function () {
+        };
+        $app->beforeBootstrapping('Themosis\Core\Bootstrap\RegisterFacades', $closure);
+        $this->assertArrayHasKey(
+            0,
+            $app['events']->getListeners('bootstrapping: Themosis\Core\Bootstrap\RegisterFacades')
+        );
+    }
+
+    public function testAfterBootstrappingMethodAddsClosure()
+    {
+        $app = new Application();
+        $closure = function () {
+        };
+        $app->afterBootstrapping('Themosis\Core\Bootstrap\RegisterFacades', $closure);
+        $this->assertArrayHasKey(
+            0,
+            $app['events']->getListeners('bootstrapped: Themosis\Core\Bootstrap\RegisterFacades')
+        );
+    }
 }
 
-class ApplicationDeferredServiceStub extends ServiceProvider
+class ApplicationMultiProvider extends ServiceProvider
 {
     protected $defer = true;
 
     public function register()
     {
+        $this->app->singleton('foo', function () {
+            return 'foo';
+        });
+
+        $this->app->singleton('bar', function ($app) {
+            return $app['foo'].'bar';
+        });
+    }
+}
+
+class ApplicationFactoryServiceProvider extends ServiceProvider
+{
+    protected $defer = true;
+
+    public function register()
+    {
+        $this->app->bind('foo', function () {
+            static $count = 0;
+
+            return ++$count;
+        });
+    }
+}
+
+class ApplicationDeferredServiceCountStub extends ServiceProvider
+{
+    public static $count = 0;
+
+    protected $defer = true;
+
+    public function register()
+    {
+        static::$count++;
+        $this->app['foo'] = new \stdClass();
+    }
+}
+
+class ApplicationDeferredSharedService extends ServiceProvider
+{
+    protected $defer = true;
+
+    public function register()
+    {
+        $this->app->singleton('foo', function () {
+            return new \stdClass();
+        });
+    }
+}
+
+class ApplicationDeferredServiceStub extends ServiceProvider
+{
+    public static $initialized = false;
+
+    protected $defer = true;
+
+    public function register()
+    {
+        static::$initialized = true;
         $this->app['foo'] = 'foo';
     }
 }
