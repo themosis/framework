@@ -88,7 +88,7 @@ class PluginsLoaderTest extends TestCase
     public function testLoaderCanGetThePluginWithHeaders()
     {
         $loader = new PluginsRepository(
-            Application::getInstance(),
+            new Application(),
             new Filesystem(),
             realpath(__DIR__.'/../htdocs/content/mu-plugins'),
             ''

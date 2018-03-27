@@ -9,6 +9,7 @@ use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Arr;
@@ -169,10 +170,44 @@ class Handler implements ExceptionHandler
      *
      * @param $request
      * @param Exception $e
+     *
+     * @return JsonResponse
      */
     protected function prepareJsonResponse($request, Exception $e)
     {
-        // TODO: Implement JSON Response exception.
+        $status = $this->isHttpException($e) ? $e->getStatusCode() : 500;
+        $headers = $this->isHttpException($e) ? $e->getHeaders() : [];
+
+        return new JsonResponse(
+            $this->convertExceptionToArray($e),
+            $status,
+            $headers,
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+        );
+    }
+
+    /**
+     * Convert the given exception to an array.
+     *
+     * @param Exception $e
+     *
+     * @throws \Illuminate\Container\EntryNotFoundException
+     *
+     * @return array
+     */
+    protected function convertExceptionToArray(Exception $e)
+    {
+        return config('app.debug') ? [
+            'message' => $e->getMessage(),
+            'exception' => get_class($e),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => collect($e->getTrace())->map(function ($trace) {
+                return Arr::except($trace, ['args']);
+            })->all()
+        ] : [
+            'message' => $this->isHttpException($e) ? $e->getMessage() : 'Server Error'
+        ];
     }
 
     /**
