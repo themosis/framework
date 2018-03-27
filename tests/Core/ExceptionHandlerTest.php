@@ -10,6 +10,8 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Routing\ResponseFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Themosis\Core\Exceptions\Handler;
 
 class ExceptionHandlerTest extends TestCase
@@ -112,6 +114,72 @@ class ExceptionHandlerTest extends TestCase
         $response = $this->handler->render($this->request, new CustomException())->getContent();
 
         $this->assertSame('{"response":"Custom exception response"}', $response);
+    }
+
+    public function testReturnsJsonWithoutStackTraceWhenAjaxRequestAndDebugFalseAndExceptionMessageIsMasked()
+    {
+        $this->config->expects($this->once())
+            ->method('get')
+            ->with('app.debug', $this->equalTo(null))
+            ->will($this->returnValue(false));
+        $this->request->expects($this->once())->method('expectsJson')->will($this->returnValue(true));
+
+        $response = $this->handler->render(
+            $this->request,
+            new \Exception('This error message should not be visible')
+        )->getContent();
+
+        $this->assertContains('"message": "Server Error"', $response);
+        $this->assertNotContains('<!DOCTYPE html>', $response);
+        $this->assertNotContains('This error message should not be visible', $response);
+        $this->assertNotContains('"file":', $response);
+        $this->assertNotContains('"line":', $response);
+        $this->assertNotContains('"trace":', $response);
+    }
+
+    public function testReturnsJsonWithoutStackTraceWhenAjaxRequestAndDebugFalseAndHttpExceptionIsShown()
+    {
+        $this->config->expects($this->once())
+            ->method('get')
+            ->with('app.debug', $this->equalTo(null))
+            ->will($this->returnValue(false));
+        $this->request->expects($this->once())->method('expectsJson')->will($this->returnValue(true));
+
+        $response = $this->handler->render(
+            $this->request,
+            new HttpException(
+                403,
+                'Custom error message'
+            )
+        )->getContent();
+
+        $this->assertContains('"message": "Custom error message"', $response);
+        $this->assertNotContains('<!DOCTYPE html>', $response);
+        $this->assertNotContains('"message": "Server Error"', $response);
+        $this->assertNotContains('"file":', $response);
+        $this->assertNotContains('"line":', $response);
+        $this->assertNotContains('"trace":', $response);
+    }
+
+    public function testReturnsJsonWithoutStackTraceWhenAjaxRequestAndDebugFalseAndAccessDeniedHttpExceptionErrorIsShown()
+    {
+        $this->config->expects($this->once())
+            ->method('get')
+            ->with('app.debug', $this->equalTo(null))
+            ->will($this->returnValue(false));
+        $this->request->expects($this->once())->method('expectsJson')->will($this->returnValue(true));
+
+        $response = $this->handler->render(
+            $this->request,
+            new AccessDeniedHttpException('Custom error message')
+        )->getContent();
+
+        $this->assertContains('"message": "Custom error message"', $response);
+        $this->assertNotContains('<!DOCTYPE html>', $response);
+        $this->assertNotContains('"message": "Server Error"', $response);
+        $this->assertNotContains('"file":', $response);
+        $this->assertNotContains('"line":', $response);
+        $this->assertNotContains('"trace":', $response);
     }
 }
 
