@@ -4,6 +4,7 @@ namespace Themosis\Tests\Core;
 
 use Illuminate\Config\Repository;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Routing\Redirector;
 use Illuminate\Routing\ResponseFactory;
@@ -104,5 +105,20 @@ class ExceptionHandlerTest extends TestCase
         $this->assertContains('"file":', $response);
         $this->assertContains('"line":', $response);
         $this->assertContains('"trace":', $response);
+    }
+
+    public function testReturnsCustomResponseWhenExceptionImplementResponsable()
+    {
+        $response = $this->handler->render($this->request, new CustomException())->getContent();
+
+        $this->assertSame('{"response":"Custom exception response"}', $response);
+    }
+}
+
+class CustomException extends \Exception implements Responsable
+{
+    public function toResponse($request)
+    {
+        return response()->json(['response' => 'Custom exception response']);
     }
 }

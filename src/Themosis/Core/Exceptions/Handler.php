@@ -102,7 +102,7 @@ class Handler implements ExceptionHandler
         if (method_exists($e, 'render') && $response = $e->render($request)) {
             return Router::toResponse($request, $response);
         } elseif ($e instanceof Responsable) {
-            $e->toResponse($request);
+            return $e->toResponse($request);
         }
 
         $e = $this->prepareException($e);
@@ -170,6 +170,8 @@ class Handler implements ExceptionHandler
      *
      * @param $request
      * @param Exception $e
+     *
+     * @throws \Illuminate\Container\EntryNotFoundException
      *
      * @return JsonResponse
      */
