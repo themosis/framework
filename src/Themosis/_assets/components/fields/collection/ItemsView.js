@@ -114,9 +114,10 @@ class ItemsView extends Backbone.View
     getAttachmentThumbnail(attachment)
     {
         let type = attachment.get('type'),
+  	    subtype = attachment.get('subtype'),
             url = attachment.get('icon');
 
-        if('image' === type)
+        if('image' === type && 'svg+xml' !== subtype)
         {
             // Check if the _themosis_media size is available.
             let sizes = attachment.get('sizes');
