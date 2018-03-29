@@ -114,7 +114,7 @@ class ItemsView extends Backbone.View
     getAttachmentThumbnail(attachment)
     {
         let type = attachment.get('type'),
-  	    subtype = attachment.get('subtype'),
+            subtype = attachment.get('subtype'),
             url = attachment.get('icon');
 
         if('image' === type && 'svg+xml' !== subtype)
