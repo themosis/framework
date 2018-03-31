@@ -112,7 +112,7 @@ class ProviderRepository
      *
      * @return array
      */
-    public function compileManifest($providers)
+    public function compileManifest(array $providers)
     {
         /*
          * The service manifest should contain a list of all of the providers for
