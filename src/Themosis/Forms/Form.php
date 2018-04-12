@@ -4,7 +4,7 @@ namespace Themosis\Forms;
 
 use Themosis\Html\HtmlBuilder;
 
-class Form
+abstract class Form
 {
     /**
      * Opening form tag attributes.
