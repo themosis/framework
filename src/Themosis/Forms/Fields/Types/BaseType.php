@@ -2,9 +2,10 @@
 
 namespace Themosis\Forms\Fields\Types;
 
+use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Html\HtmlBuilder;
 
-class BaseType implements \ArrayAccess, \Countable
+abstract class BaseType implements \ArrayAccess, \Countable, FieldTypeInterface
 {
     /**
      * @var HtmlBuilder
@@ -22,11 +23,37 @@ class BaseType implements \ArrayAccess, \Countable
     }
 
     /**
+     * Default field HTML structure.
+     *
+     * @return string
+     */
+    protected function build()
+    {
+        throw new \BadMethodCallException('A field must implement a default structure or view and return it.');
+    }
+
+    /**
+     * Render the field to HTML.
+     *
+     * @param \Closure|null $callback
+     *
+     * @return string
+     */
+    public function toHTML(\Closure $callback = null)
+    {
+        if (is_callable($callback)) {
+            return $callback($this);
+        }
+
+        return $this->build();
+    }
+
+    /**
      * Return field attributes as a string.
      *
      * @return string
      */
-    protected function attributes()
+    public function attributes()
     {
         return count($this) ? ' '.$this->html->attributes($this->attributes) : '';
     }

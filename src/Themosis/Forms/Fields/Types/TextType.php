@@ -2,16 +2,12 @@
 
 namespace Themosis\Forms\Fields\Types;
 
-use Themosis\Forms\Contracts\FieldTypeInterface;
-
-class TextType extends BaseType implements FieldTypeInterface
+class TextType extends BaseType
 {
     /**
-     * Return the field type html.
-     *
      * @return string
      */
-    public function toHTML()
+    protected function build()
     {
         return '<input type="text"'.$this->attributes().'>';
     }
