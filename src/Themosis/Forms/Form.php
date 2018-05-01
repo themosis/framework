@@ -100,7 +100,10 @@ abstract class Form implements FormInterface
      */
     protected function add($name, $field, $group = 'default')
     {
-        $fieldInstance = new $field($name);
+        $fieldInstance = new $field($this->html);
+
+        // Set the "name" attribute.
+        $fieldInstance['name'] = $name;
 
         $this->allFields[$group][$name] = $fieldInstance;
 

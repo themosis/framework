@@ -4,20 +4,15 @@ namespace Themosis\Forms\Fields\Types;
 
 use Themosis\Forms\Contracts\FieldTypeInterface;
 
-class TextType implements FieldTypeInterface
+class TextType extends BaseType implements FieldTypeInterface
 {
     /**
-     * @var string
+     * Return the field type html.
+     *
+     * @return string
      */
-    protected $name;
-
-    /**
-     * @var string
-     */
-    protected $value;
-
-    /**
-     * @var array
-     */
-    protected $attributes;
+    public function toHTML()
+    {
+        return '<input type="text"'.$this->attributes().'>';
+    }
 }
