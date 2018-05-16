@@ -17,6 +17,13 @@ abstract class BaseType implements \ArrayAccess, \Countable, FieldTypeInterface
      */
     protected $attributes = [];
 
+    /**
+     * Default value a field.
+     *
+     * @var mixed
+     */
+    protected $default;
+
     public function __construct(HtmlBuilder $html)
     {
         $this->html = $html;
@@ -56,6 +63,62 @@ abstract class BaseType implements \ArrayAccess, \Countable, FieldTypeInterface
     public function attributes()
     {
         return count($this) ? ' '.$this->html->attributes($this->attributes) : '';
+    }
+
+    /**
+     * Return the field attributes.
+     *
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * Set the field attributes.
+     *
+     * @param array $attributes
+     *
+     * @return FieldTypeInterface
+     */
+    public function setAttributes(array $attributes)
+    {
+        $this->attributes = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * Set the "name" attribute value for the field.
+     *
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this['name'] = $name;
+
+        return $this;
+    }
+
+    /**
+     * Specify a default value for the field.
+     * Not all fields will have their default value
+     * assigned to the "value" attribute. Each field
+     * must check the "default" property and add it where
+     * needed.
+     *
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function setDefaultValue($value)
+    {
+        $this->default = $value;
+
+        return $this;
     }
 
     /**
