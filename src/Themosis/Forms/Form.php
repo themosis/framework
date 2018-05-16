@@ -7,7 +7,7 @@ use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Fields\FieldBuilder;
 use Themosis\Html\HtmlBuilder;
 
-abstract class Form implements FormInterface
+class Form implements FormInterface
 {
     /**
      * Opening form tag attributes.
@@ -50,17 +50,8 @@ abstract class Form implements FormInterface
      */
     protected $allFields = [];
 
-    public function __construct(HtmlBuilder $html, FieldBuilder $builder)
+    public function __construct()
     {
-        $this->html = $html;
-        $this->builder = $builder;
-
-        // Set default form attributes.
-        $this->setAttributes([
-            'method' => 'post'
-        ]);
-
-        $this->configure($builder);
     }
 
     /**
