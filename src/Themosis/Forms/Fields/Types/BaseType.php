@@ -5,14 +5,18 @@ namespace Themosis\Forms\Fields\Types;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Html\HtmlBuilder;
 
-abstract class BaseType implements \ArrayAccess, \Countable, FieldTypeInterface
+abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable, FieldTypeInterface
 {
     /**
-     * @var HtmlBuilder
+     * List of variables.
+     *
+     * @var array
      */
-    protected $html;
+    protected $vars;
 
     /**
+     * List of attributes.
+     *
      * @var array
      */
     protected $attributes = [];
@@ -24,9 +28,15 @@ abstract class BaseType implements \ArrayAccess, \Countable, FieldTypeInterface
      */
     protected $default;
 
-    public function __construct(HtmlBuilder $html)
+    /**
+     * BaseType constructor.
+     *
+     * @param string $name
+     */
+    public function __construct(string $name)
     {
-        $this->html = $html;
+        parent::__construct();
+        $this['name'] = $name;
     }
 
     /**
@@ -53,16 +63,6 @@ abstract class BaseType implements \ArrayAccess, \Countable, FieldTypeInterface
         }
 
         return $this->build();
-    }
-
-    /**
-     * Return field attributes as a string.
-     *
-     * @return string
-     */
-    public function attributes()
-    {
-        return count($this) ? ' '.$this->html->attributes($this->attributes) : '';
     }
 
     /**

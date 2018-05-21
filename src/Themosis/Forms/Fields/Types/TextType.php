@@ -4,16 +4,9 @@ namespace Themosis\Forms\Fields\Types;
 
 class TextType extends BaseType
 {
-    /**
-     * @return string
-     */
-    protected function build()
+    public function view()
     {
-        // Handle the default value if one defined.
-        if (! is_null($this->default) && is_string($this->default)) {
-            $this['value'] = $this->default;
-        }
-
-        return '<input type="text"'.$this->attributes().'>';
+        // <input type="text" name="firstname" data-attr1="val1" ... value="joe">
+        // <entity attribute="attr_value" attribute="attr_value" ...>
     }
 }

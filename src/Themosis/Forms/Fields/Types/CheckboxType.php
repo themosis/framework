@@ -51,7 +51,7 @@ class CheckboxType extends BaseType
      */
     protected function build()
     {
-        if (!is_null($this->options) && is_array($this->options)) {
+        if (! is_null($this->options) && is_array($this->options)) {
             return $this->checkableFields();
         }
 
@@ -60,7 +60,7 @@ class CheckboxType extends BaseType
             $this['value'] = $this->default;
         }
 
-        if (!is_null($this->label)) {
+        if (! is_null($this->label)) {
             // @todo Handle prefixing of "id" attributes ?
             $this['id'] = 'f_'.$this['value'];
 

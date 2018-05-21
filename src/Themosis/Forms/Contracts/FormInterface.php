@@ -2,9 +2,21 @@
 
 namespace Themosis\Forms\Contracts;
 
-use Themosis\Forms\Fields\FieldBuilder;
-
 interface FormInterface
 {
+    /**
+     * Output the form as HTML.
+     *
+     * @return string
+     */
+    public function render(): string;
 
+    /**
+     * Attach a field to the form.
+     *
+     * @param FieldTypeInterface $field
+     *
+     * @return mixed
+     */
+    public function addField(FieldTypeInterface $field): FormInterface;
 }

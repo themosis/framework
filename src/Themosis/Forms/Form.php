@@ -5,8 +5,12 @@ namespace Themosis\Forms;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Fields\FieldBuilder;
-use Themosis\Html\HtmlBuilder;
 
+/**
+ * Class Form
+ *
+ * @package Themosis\Forms
+ */
 class Form implements FormInterface
 {
     /**
@@ -73,30 +77,21 @@ class Form implements FormInterface
      *
      * @return string
      */
-    public function render()
+    public function render(): string
     {
-        return '<form '.$this->html->attributes($this->attributes).'></form>';
+        return '';
     }
 
     /**
      * Add a field to the form instance.
-     * By default, each new field instance is added
-     * to the "default" form group.
      *
-     * @param string             $name
      * @param FieldTypeInterface $field
-     * @param string             $group
      *
-     * @return $this
+     * @return FormInterface
      */
-    protected function add($name, $field, $group = 'default')
+    public function addField(FieldTypeInterface $field): FormInterface
     {
-        $fieldInstance = new $field($this->html);
-
-        // Set the "name" attribute.
-        $fieldInstance['name'] = $name;
-
-        $this->allFields[$group][$name] = $fieldInstance;
+        $this->fields[] = $field;
 
         return $this;
     }

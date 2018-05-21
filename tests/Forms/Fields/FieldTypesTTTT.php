@@ -9,7 +9,7 @@ use Themosis\Forms\Fields\Types\NumberType;
 use Themosis\Forms\Fields\Types\TextType;
 use Themosis\Html\HtmlBuilder;
 
-class FieldTypesTest extends TestCase
+class FieldTypesTTTT extends TestCase
 {
     public function testTextTypeField()
     {
