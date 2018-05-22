@@ -2,6 +2,7 @@
 
 namespace Themosis\Forms;
 
+use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormBuilderInterface;
 use Themosis\Forms\Contracts\FormInterface;
 
@@ -20,26 +21,27 @@ class FormBuilder implements FormBuilderInterface
     /**
      * Add a field to the current form instance.
      *
-     * @param string $name
-     * @param string $type
-     * @param array  $options
+     * @param FieldTypeInterface $field
+     * @param array              $options
      *
      * @return FormBuilderInterface
      */
-    public function add(string $name, string $type, array $options = []): FormBuilderInterface
+    public function add(FieldTypeInterface $field, array $options = []): FormBuilderInterface
     {
-        // Create and add the field to the form instance.
-        $field = new $type($name);
+        $field->setOptions($options);
+
         $this->form->addField($field);
 
         return $this;
     }
 
+    /**
+     * Return generated form instance.
+     *
+     * @return FormInterface
+     */
     public function get(): FormInterface
     {
-        // Build the form and return it.
-        $form = new Form();
-
-        return $form;
+        return $this->form;
     }
 }

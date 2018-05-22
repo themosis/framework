@@ -8,25 +8,29 @@ use Themosis\Html\HtmlBuilder;
 abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable, FieldTypeInterface
 {
     /**
-     * List of variables.
+     * List of options.
      *
      * @var array
      */
-    protected $vars;
+    protected $options;
 
     /**
-     * List of attributes.
+     * Reserved options keys.
      *
      * @var array
      */
-    protected $attributes = [];
+    protected $reservedOptions = [
+        'name',
+        'attributes'
+    ];
 
     /**
-     * Default value a field.
+     * Field name prefix.
+     * Applied automatically to avoid conflicts with core query variables.
      *
-     * @var mixed
+     * @var string
      */
-    protected $default;
+    protected $prefix = 'th_';
 
     /**
      * BaseType constructor.
@@ -36,33 +40,69 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     public function __construct(string $name)
     {
         parent::__construct();
-        $this['name'] = $name;
+        $this->options['name'] = $this->prefixName($name);
     }
 
     /**
-     * Default field HTML structure.
+     * Prefix the field name property.
+     *
+     * @param string $name
      *
      * @return string
      */
-    protected function build()
+    protected function prefixName(string $name): string
     {
-        throw new \BadMethodCallException('A field must implement a default structure or view and return it.');
+        return trim($this->prefix).$name;
     }
 
     /**
-     * Render the field to HTML.
+     * Set field options.
      *
-     * @param \Closure|null $callback
+     * @param array $options
+     *
+     * @return FieldTypeInterface
+     */
+    public function setOptions(array $options): FieldTypeInterface
+    {
+        $this->options = array_merge($this->options, $options);
+
+        return $this;
+    }
+
+    /**
+     * Return field options.
+     *
+     * @param string $optionKey Optional. Retrieve all options by default or the value based on given option key.
+     *
+     * @return array|mixed
+     */
+    public function getOptions(string $optionKey = ''): array
+    {
+        return $this->options[$optionKey] ?? $this->options;
+    }
+
+    /**
+     * Set the field prefix.
+     *
+     * @param string $prefix
+     *
+     * @return FieldTypeInterface
+     */
+    public function setPrefix(string $prefix): FieldTypeInterface
+    {
+        $this->prefix = $prefix;
+
+        return $this;
+    }
+
+    /**
+     * Return the field prefix.
      *
      * @return string
      */
-    public function toHTML(\Closure $callback = null)
+    public function getPrefix(): string
     {
-        if (is_callable($callback)) {
-            return $callback($this);
-        }
-
-        return $this->build();
+        return $this->prefix;
     }
 
     /**
@@ -72,7 +112,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function getAttributes()
     {
-        return $this->attributes;
+        return $this->getOptions('attributes');
     }
 
     /**
@@ -84,45 +124,13 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function setAttributes(array $attributes)
     {
-        $this->attributes = $attributes;
+        $this->options['attributes'] = $attributes;
 
         return $this;
     }
 
     /**
-     * Set the "name" attribute value for the field.
-     *
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this['name'] = $name;
-
-        return $this;
-    }
-
-    /**
-     * Specify a default value for the field.
-     * Not all fields will have their default value
-     * assigned to the "value" attribute. Each field
-     * must check the "default" property and add it where
-     * needed.
-     *
-     * @param mixed $value
-     *
-     * @return $this
-     */
-    public function setDefaultValue($value)
-    {
-        $this->default = $value;
-
-        return $this;
-    }
-
-    /**
-     * Whether a offset exists
+     * Whether a offset exists.
      *
      * @link http://php.net/manual/en/arrayaccess.offsetexists.php
      *
@@ -134,7 +142,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function offsetExists($offset)
     {
-        return isset($this->attributes[$offset]);
+        return isset($this->options[$offset]);
     }
 
     /**
@@ -150,7 +158,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function offsetGet($offset)
     {
-        return isset($this->attributes[$offset]) ? $this->attributes[$offset] : null;
+        return isset($this->options[$offset]) ? $this->options[$offset] : null;
     }
 
     /**
@@ -166,9 +174,9 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     public function offsetSet($offset, $value)
     {
         if (is_null($offset)) {
-            $this->attributes[] = $value;
+            $this->options[] = $value;
         } else {
-            $this->attributes[$offset] = $value;
+            $this->options[$offset] = $value;
         }
     }
 
@@ -183,7 +191,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function offsetUnset($offset)
     {
-        unset($this->attributes[$offset]);
+        unset($this->options[$offset]);
     }
 
     /**
@@ -197,6 +205,6 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function count()
     {
-        return count($this->attributes);
+        return count($this->options);
     }
 }
