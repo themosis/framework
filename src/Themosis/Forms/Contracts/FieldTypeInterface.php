@@ -18,9 +18,9 @@ interface FieldTypeInterface
      *
      * @param string $optionKey
      *
-     * @return array
+     * @return mixed
      */
-    public function getOptions(string $optionKey = ''): array;
+    public function getOptions(string $optionKey = '');
 
     /**
      * Set a field prefix. Mainly applied to field name to avoid conflict
@@ -38,6 +38,20 @@ interface FieldTypeInterface
      * @return string
      */
     public function getPrefix(): string;
+
+    /**
+     * Return the field name property.
+     *
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
+     * Return the field basename property.
+     *
+     * @return string
+     */
+    public function getBaseName(): string;
 
     /**
      * Return field attributes list.

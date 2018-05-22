@@ -20,8 +20,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * @var array
      */
     protected $reservedOptions = [
-        'name',
-        'attributes'
+        'name'
     ];
 
     /**
@@ -33,6 +32,14 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     protected $prefix = 'th_';
 
     /**
+     * The field basename.
+     * Name property without the prefix as defined by the user.
+     *
+     * @var string
+     */
+    protected $baseName;
+
+    /**
      * BaseType constructor.
      *
      * @param string $name
@@ -40,19 +47,22 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     public function __construct(string $name)
     {
         parent::__construct();
-        $this->options['name'] = $this->prefixName($name);
+        $this->baseName = $name;
+        $this->prefixName($name);
     }
 
     /**
      * Prefix the field name property.
      *
-     * @param string $name
+     * @param string $name The name property value (base name).
      *
-     * @return string
+     * @return $this
      */
-    protected function prefixName(string $name): string
+    protected function prefixName(string $name): FieldTypeInterface
     {
-        return trim($this->prefix).$name;
+        $this->options['name'] = trim($this->prefix).$name;
+
+        return $this;
     }
 
     /**
@@ -64,6 +74,11 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function setOptions(array $options): FieldTypeInterface
     {
+        // A user cannot override the "name" property.
+        if (isset($options['name'])) {
+            throw new \InvalidArgumentException('The "name" option can not be overridden.');
+        }
+
         $this->options = array_merge($this->options, $options);
 
         return $this;
@@ -74,9 +89,9 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      *
      * @param string $optionKey Optional. Retrieve all options by default or the value based on given option key.
      *
-     * @return array|mixed
+     * @return mixed
      */
-    public function getOptions(string $optionKey = ''): array
+    public function getOptions(string $optionKey = '')
     {
         return $this->options[$optionKey] ?? $this->options;
     }
@@ -92,6 +107,10 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     {
         $this->prefix = $prefix;
 
+        // Automatically update the "name" option based
+        // on the new prefix.
+        $this->prefixName($this->getBaseName());
+
         return $this;
     }
 
@@ -103,6 +122,26 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     public function getPrefix(): string
     {
         return $this->prefix;
+    }
+
+    /**
+     * Return the field name property value.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->getOptions('name');
+    }
+
+    /**
+     * Return the field basename.
+     *
+     * @return string
+     */
+    public function getBaseName(): string
+    {
+        return $this->baseName;
     }
 
     /**

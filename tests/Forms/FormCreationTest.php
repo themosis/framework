@@ -26,5 +26,28 @@ class FormCreationTest extends TestCase
         $this->assertEquals(['name' => 'th_firstname'], $firstname->getOptions());
         $this->assertEquals(['name' => 'th_lastname'], $lastname->getOptions());
         $this->assertEquals(['name' => 'th_email'], $email->getOptions());
+
+        $this->expectException('\InvalidArgumentException');
+        $firstname->setOptions(['name' => 'something']);
+    }
+
+    public function testCreateNewFormAndChangePropertiesAtRuntime()
+    {
+        $contact = new ContactEntity();
+        $factory = new FormFactory();
+
+        $formBuilder = $factory->make($contact);
+        $this->assertInstanceOf('Themosis\Forms\Contracts\FormBuilderInterface', $formBuilder);
+
+        $form = $formBuilder->add($firstname = new TextType('firstname'))
+            ->add($email = new EmailType('email'))
+            ->get();
+
+        // Change prefix of the form attached fields.
+        $form->setPrefix('wp_');
+        $this->assertEquals(['name' => 'wp_firstname'], $form->getFields('firstname')->getOptions());
+        $this->assertEquals(['name' => 'wp_email'], $form->getFields('email')->getOptions());
+        $this->assertEquals(['name' => 'wp_firstname'], $firstname->getOptions());
+        $this->assertEquals(['name' => 'wp_email'], $email->getOptions());
     }
 }
