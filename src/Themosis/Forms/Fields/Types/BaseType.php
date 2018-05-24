@@ -20,7 +20,8 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * @var array
      */
     protected $allowedOptions = [
-        'group'
+        'group',
+        'rules'
     ];
 
     /**
@@ -29,7 +30,8 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * @var array
      */
     protected $defaultOptions = [
-        'group' => 'default'
+        'group' => 'default',
+        'rules' => []
     ];
 
     /**
@@ -47,6 +49,13 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * @var string
      */
     protected $baseName;
+
+    /**
+     * Field validation rules.
+     *
+     * @var array
+     */
+    protected $rules = [];
 
     /**
      * BaseType constructor.
@@ -67,6 +76,9 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function getDefaultOptions(): array
     {
+        // Setup default validation rules.
+        $this->defaultOptions['rules'] = $this->rules;
+
         return $this->defaultOptions;
     }
 

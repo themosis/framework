@@ -110,13 +110,17 @@ class FormCreationTest extends TestCase
         ], $form->repository()->getGroups());
     }
 
-    public function testCreateFormAndValidate()
+    public function testCreateFormAndValidateUsingValidData()
     {
         $factory = $this->getFormFactory();
 
         $form = $factory->make()
-            ->add(new TextType('firstname'))
-            ->add(new EmailType('lastname'))
+            ->add($firstname = new TextType('firstname'), [
+                'rules' => 'required|min:3'
+            ])
+            ->add($email = new EmailType('email'), [
+                'rules' => 'required|email'
+            ])
             ->get();
 
         $request = Request::create('/', 'POST', [
@@ -126,6 +130,6 @@ class FormCreationTest extends TestCase
 
         $form->handleRequest($request);
 
-        //$this->assertTrue($form->isValid());
+        $this->assertTrue($form->isValid());
     }
 }

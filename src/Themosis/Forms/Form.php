@@ -110,21 +110,36 @@ class Form implements FormInterface
      */
     public function handleRequest(Request $request): FormInterface
     {
-        /*
+        /**
+         * @todo Implement "messages" and "attributes"
          * $this->getValidationFactory()
-             ->make($request->all(), $rules, $messages, $customAttributes)
-             ->validate();
+         * ->make($request->all(), $rules, $messages, $customAttributes)
+         * ->validate();
          */
-        $this->validator = $this->validation->make($request->all(), [
-            'th_firstname' => 'min:3',
-            'th_email' => 'email'
-        ]);
+        $this->validator = $this->validation->make($request->all(), $this->getFormRules());
 
-        $validData = $this->validator->validate();
-
-        var_dump($validData);
+        $this->validator->validate();
 
         return $this;
+    }
+
+    /**
+     * Get the list of form rules.
+     *
+     * @return array
+     */
+    protected function getFormRules()
+    {
+        $rules = [];
+
+        $fields = $this->repository->all();
+
+        foreach ($fields as $field) {
+            /** @var FieldTypeInterface $field */
+            $rules[$field->getName()] = $field->getOptions('rules');
+        }
+
+        return $rules;
     }
 
     /**
@@ -134,6 +149,6 @@ class Form implements FormInterface
      */
     public function isValid(): bool
     {
-        return false;
+        return $this->validator->passes();
     }
 }
