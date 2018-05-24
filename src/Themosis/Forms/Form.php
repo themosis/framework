@@ -4,7 +4,7 @@ namespace Themosis\Forms;
 
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
-use Themosis\Forms\Fields\FieldBuilder;
+use Themosis\Forms\Contracts\FormRepositoryInterface;
 
 /**
  * Class Form
@@ -13,23 +13,6 @@ use Themosis\Forms\Fields\FieldBuilder;
  */
 class Form implements FormInterface
 {
-    /**
-     * Opening form tag attributes.
-     *
-     * @var array
-     */
-    protected $attributes = [];
-
-    /**
-     * @var \Themosis\Html\HtmlBuilder
-     */
-    protected $html;
-
-    /**
-     * @var FieldBuilder
-     */
-    protected $builder;
-
     /**
      * @var string
      */
@@ -45,35 +28,23 @@ class Form implements FormInterface
     ];
 
     /**
-     * Fields organized by group.
-     *
-     * @var array
+     * @var FormRepositoryInterface
      */
-    protected $fields = [];
+    protected $repository;
 
-    /**
-     * All fields.
-     *
-     * @var FieldTypeInterface[]
-     */
-    protected $allFields = [];
-
-    public function __construct()
+    public function __construct(FormRepositoryInterface $repository)
     {
+        $this->repository = $repository;
     }
 
     /**
-     * Set form open tag attributes.
+     * Get the form repository instance.
      *
-     * @param array $attributes
-     *
-     * @return \Themosis\Forms\Form;
+     * @return FormRepositoryInterface
      */
-    public function setAttributes(array $attributes)
+    public function repository(): FormRepositoryInterface
     {
-        $this->attributes = $attributes;
-
-        return $this;
+        return $this->repository;
     }
 
     /**
@@ -84,27 +55,6 @@ class Form implements FormInterface
     public function render(): string
     {
         return '';
-    }
-
-    /**
-     * Add a field to the form instance.
-     *
-     * @param FieldTypeInterface $field
-     *
-     * @return FormInterface
-     */
-    public function addField(FieldTypeInterface $field): FormInterface
-    {
-        // We store all fields together
-        // as well as per group. On each form,
-        // there is a "default" group defined where
-        // all fields are attached to. A user can specify
-        // a form group to the passed options on the "add"
-        // method of the FormBuilder instance.
-        $this->allFields[$field->getBaseName()] = $field;
-        $this->fields['default'][$field->getBaseName()] = $field;
-
-        return $this;
     }
 
     /**
@@ -120,7 +70,8 @@ class Form implements FormInterface
         $this->prefix = $prefix;
 
         // Update all attached fields with the given prefix.
-        foreach ($this->allFields as $field) {
+        foreach ($this->repository->all() as $field) {
+            /** @var FieldTypeInterface $field */
             $field->setPrefix($prefix);
         }
 
@@ -135,18 +86,5 @@ class Form implements FormInterface
     public function getPrefix(): string
     {
         return $this->prefix;
-    }
-
-    /**
-     * Return a list of attached fields instances.
-     *
-     * @param string $name
-     * @param string $group
-     *
-     * @return mixed A FieldTypeInterface instance or an array of fields.
-     */
-    public function getFields(string $name = '', string $group = 'default')
-    {
-        return $this->fields[$group][$name] ?? $this->fields[$group];
     }
 }

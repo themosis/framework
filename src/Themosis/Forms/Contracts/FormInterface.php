@@ -12,15 +12,6 @@ interface FormInterface
     public function render(): string;
 
     /**
-     * Attach a field to the form.
-     *
-     * @param FieldTypeInterface $field
-     *
-     * @return mixed
-     */
-    public function addField(FieldTypeInterface $field): FormInterface;
-
-    /**
      * Set the form prefix. If fields are attached to the form,
      * all fields are updated with the given prefix.
      *
@@ -38,12 +29,9 @@ interface FormInterface
     public function getPrefix(): string;
 
     /**
-     * Return attached fields instances.
+     * Return the form repository instance.
      *
-     * @param string $name  The field base name.
-     * @param string $group
-     *
-     * @return mixed
+     * @return FormRepositoryInterface
      */
-    public function getFields(string $name = '', string $group = 'default');
+    public function repository(): FormRepositoryInterface;
 }

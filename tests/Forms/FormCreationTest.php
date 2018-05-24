@@ -45,9 +45,31 @@ class FormCreationTest extends TestCase
 
         // Change prefix of the form attached fields.
         $form->setPrefix('wp_');
-        $this->assertEquals(['name' => 'wp_firstname'], $form->getFields('firstname')->getOptions());
-        $this->assertEquals(['name' => 'wp_email'], $form->getFields('email')->getOptions());
+        $this->assertEquals(['name' => 'wp_firstname'], $form->repository()->getField('firstname')->getOptions());
+        $this->assertEquals(['name' => 'wp_email'], $form->repository()->getField('email')->getOptions());
         $this->assertEquals(['name' => 'wp_firstname'], $firstname->getOptions());
         $this->assertEquals(['name' => 'wp_email'], $email->getOptions());
+
+        // Check fields attached to "default" group.
+        $this->assertEquals(2, count($form->repository()->getFieldsByGroup('default')));
+    }
+
+    public function testCreateFormWithMultipleGroups()
+    {
+        $contact = new ContactEntity();
+        $factory = new FormFactory();
+
+        $form = $factory->make($contact)
+            ->add($firstname = new TextType('firstname'))
+            ->add($lastname = new TextType('lastname'))
+            ->add($email = new EmailType('email'), [
+                'group' => 'corporate'
+            ])
+            ->add($company = new TextType('company'), [
+                'group' => 'corporate'
+            ])
+            ->get();
+
+        $this->assertEquals('default', $firstname->getOptions('group'));
     }
 }

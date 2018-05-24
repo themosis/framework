@@ -15,11 +15,6 @@ class FormFactory implements FormFactoryInterface
     protected $builder;
 
     /**
-     * @var FormCollection
-     */
-    protected $collection;
-
-    /**
      * Creates a new form instance and returns it.
      *
      * @param mixed  $data    The POPO (DTO) object.
@@ -29,7 +24,7 @@ class FormFactory implements FormFactoryInterface
      */
     public function make($data, $builder = FormBuilder::class)
     {
-        $this->builder = new $builder(new Form());
+        $this->builder = new $builder(new Form(new FormRepository()));
 
         return $this->builder;
     }

@@ -30,7 +30,7 @@ class FormBuilder implements FormBuilderInterface
     {
         $field->setOptions($options);
 
-        $this->form->addField($field);
+        $this->form->repository()->addField($field);
 
         return $this;
     }
