@@ -2,6 +2,8 @@
 
 namespace Themosis\Forms;
 
+use Illuminate\Contracts\Validation\Factory as ValidationFactoryInterface;
+use Illuminate\Http\Request;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Contracts\FormRepositoryInterface;
@@ -30,9 +32,20 @@ class Form implements FormInterface
      */
     protected $repository;
 
-    public function __construct(FormRepositoryInterface $repository)
+    /**
+     * @var ValidationFactoryInterface
+     */
+    protected $validation;
+
+    /**
+     * @var \Illuminate\Validation\Validator
+     */
+    protected $validator;
+
+    public function __construct(FormRepositoryInterface $repository, ValidationFactoryInterface $validation)
     {
         $this->repository = $repository;
+        $this->validation = $validation;
     }
 
     /**
@@ -84,5 +97,43 @@ class Form implements FormInterface
     public function getPrefix(): string
     {
         return $this->prefix;
+    }
+
+    /**
+     * Handle current request and start form data validation.
+     *
+     * @param Request $request
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     *
+     * @return $this
+     */
+    public function handleRequest(Request $request): FormInterface
+    {
+        /*
+         * $this->getValidationFactory()
+             ->make($request->all(), $rules, $messages, $customAttributes)
+             ->validate();
+         */
+        $this->validator = $this->validation->make($request->all(), [
+            'th_firstname' => 'min:3',
+            'th_email' => 'email'
+        ]);
+
+        $validData = $this->validator->validate();
+
+        var_dump($validData);
+
+        return $this;
+    }
+
+    /**
+     * Check if submitted form is valid or not.
+     *
+     * @return bool
+     */
+    public function isValid(): bool
+    {
+        return false;
     }
 }

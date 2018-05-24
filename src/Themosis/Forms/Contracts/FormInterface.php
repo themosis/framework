@@ -2,6 +2,8 @@
 
 namespace Themosis\Forms\Contracts;
 
+use Illuminate\Http\Request;
+
 interface FormInterface
 {
     /**
@@ -34,4 +36,20 @@ interface FormInterface
      * @return FormRepositoryInterface
      */
     public function repository(): FormRepositoryInterface;
+
+    /**
+     * Handle request in order to validate form data.
+     *
+     * @param Request $request
+     *
+     * @return FormInterface
+     */
+    public function handleRequest(Request $request): FormInterface;
+
+    /**
+     * Check if submitted form is valid or not.
+     *
+     * @return bool
+     */
+    public function isValid(): bool;
 }

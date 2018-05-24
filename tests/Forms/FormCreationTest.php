@@ -2,7 +2,13 @@
 
 namespace Themosis\Tests\Forms;
 
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Http\Request;
+use Illuminate\Translation\FileLoader;
+use Illuminate\Translation\Translator;
+use Illuminate\Validation\Factory;
 use PHPUnit\Framework\TestCase;
+use Themosis\Core\Application;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\TextType;
 use Themosis\Forms\FormFactory;
@@ -10,10 +16,23 @@ use Themosis\Tests\Forms\Entities\ContactEntity;
 
 class FormCreationTest extends TestCase
 {
+    protected function getValidationFactory()
+    {
+        $application = new Application();
+        $translator = new Translator(new FileLoader(new Filesystem(), ''), 'en');
+
+        return new Factory($translator, $application);
+    }
+
+    protected function getFormFactory()
+    {
+        return new FormFactory($this->getValidationFactory());
+    }
+
     public function testCreateNewForm()
     {
         $contact = new ContactEntity();
-        $factory = new FormFactory();
+        $factory = $this->getFormFactory();
 
         $form = $factory->make($contact)
             ->add($firstname = new TextType('firstname'))
@@ -34,7 +53,7 @@ class FormCreationTest extends TestCase
     public function testCreateNewFormAndChangePrefixAtRuntime()
     {
         $contact = new ContactEntity();
-        $factory = new FormFactory();
+        $factory = $this->getFormFactory();
 
         $formBuilder = $factory->make($contact);
         $this->assertInstanceOf('Themosis\Forms\Contracts\FormBuilderInterface', $formBuilder);
@@ -57,7 +76,7 @@ class FormCreationTest extends TestCase
     public function testCreateFormWithMultipleGroups()
     {
         $contact = new ContactEntity();
-        $factory = new FormFactory();
+        $factory = $this->getFormFactory();
 
         $form = $factory->make($contact)
             ->add($firstname = new TextType('firstname'))
@@ -89,5 +108,24 @@ class FormCreationTest extends TestCase
             'default',
             'corporate'
         ], $form->repository()->getGroups());
+    }
+
+    public function testCreateFormAndValidate()
+    {
+        $factory = $this->getFormFactory();
+
+        $form = $factory->make()
+            ->add(new TextType('firstname'))
+            ->add(new EmailType('lastname'))
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_firstname' => 'Foo',
+            'th_email' => 'foo@bar.com'
+        ]);
+
+        $form->handleRequest($request);
+
+        //$this->assertTrue($form->isValid());
     }
 }

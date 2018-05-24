@@ -11,5 +11,5 @@ interface FormFactoryInterface
      *
      * @return $this
      */
-    public function make($data);
+    public function make($data = null);
 }
