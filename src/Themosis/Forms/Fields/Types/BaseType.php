@@ -15,12 +15,21 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     protected $options;
 
     /**
-     * Reserved options keys.
+     * Allowed options keys.
      *
      * @var array
      */
-    protected $reservedOptions = [
-        'name'
+    protected $allowedOptions = [
+        'group'
+    ];
+
+    /**
+     * List of default options per field.
+     *
+     * @var array
+     */
+    protected $defaultOptions = [
+        'group' => 'default'
     ];
 
     /**
@@ -49,6 +58,26 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         parent::__construct();
         $this->baseName = $name;
         $this->prefixName($name);
+    }
+
+    /**
+     * Return the list of default options.
+     *
+     * @return array
+     */
+    public function getDefaultOptions(): array
+    {
+        return $this->defaultOptions;
+    }
+
+    /**
+     * Return allowed options for the field.
+     *
+     * @return array
+     */
+    public function getAllowedOptions(): array
+    {
+        return $this->allowedOptions;
     }
 
     /**

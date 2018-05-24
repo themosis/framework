@@ -23,15 +23,15 @@ class FormCreationTest extends TestCase
 
         $this->assertInstanceOf('Themosis\Forms\Form', $form);
 
-        $this->assertEquals(['name' => 'th_firstname'], $firstname->getOptions());
-        $this->assertEquals(['name' => 'th_lastname'], $lastname->getOptions());
-        $this->assertEquals(['name' => 'th_email'], $email->getOptions());
+        $this->assertEquals('th_firstname', $firstname->getOptions('name'));
+        $this->assertEquals('th_lastname', $lastname->getOptions('name'));
+        $this->assertEquals('th_email', $email->getOptions('name'));
 
         $this->expectException('\InvalidArgumentException');
         $firstname->setOptions(['name' => 'something']);
     }
 
-    public function testCreateNewFormAndChangePropertiesAtRuntime()
+    public function testCreateNewFormAndChangePrefixAtRuntime()
     {
         $contact = new ContactEntity();
         $factory = new FormFactory();
@@ -45,10 +45,10 @@ class FormCreationTest extends TestCase
 
         // Change prefix of the form attached fields.
         $form->setPrefix('wp_');
-        $this->assertEquals(['name' => 'wp_firstname'], $form->repository()->getField('firstname')->getOptions());
-        $this->assertEquals(['name' => 'wp_email'], $form->repository()->getField('email')->getOptions());
-        $this->assertEquals(['name' => 'wp_firstname'], $firstname->getOptions());
-        $this->assertEquals(['name' => 'wp_email'], $email->getOptions());
+        $this->assertEquals('wp_firstname', $form->repository()->getField('firstname')->getOptions('name'));
+        $this->assertEquals('wp_email', $form->repository()->getField('email')->getOptions('name'));
+        $this->assertEquals('wp_firstname', $firstname->getOptions('name'));
+        $this->assertEquals('wp_email', $email->getOptions('name'));
 
         // Check fields attached to "default" group.
         $this->assertEquals(2, count($form->repository()->getFieldsByGroup('default')));
@@ -71,5 +71,23 @@ class FormCreationTest extends TestCase
             ->get();
 
         $this->assertEquals('default', $firstname->getOptions('group'));
+        $this->assertEquals('default', $lastname->getOptions('group'));
+        $this->assertEquals('corporate', $email->getOptions('group'));
+        $this->assertEquals('corporate', $company->getOptions('group'));
+
+        // We check if the repository is correctly storing fields by group.
+        $this->assertEquals(2, count($form->repository()->getFieldsByGroup('default')));
+        $this->assertEquals(2, count($form->repository()->getFieldsByGroup('corporate')));
+        $this->assertEquals([
+            'email' => $email,
+            'company' => $company
+        ], $form->repository()->getFieldsByGroup('corporate'));
+
+        // Form instance should be aware of its groups.
+        $this->assertEquals(2, count($form->repository()->getGroups()));
+        $this->assertEquals([
+            'default',
+            'corporate'
+        ], $form->repository()->getGroups());
     }
 }

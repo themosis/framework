@@ -19,6 +19,29 @@ class FormBuilder implements FormBuilderInterface
     }
 
     /**
+     * Parse the "options" used by a field instance.
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function parseOptions(array $options, FieldTypeInterface $field)
+    {
+        $allowed = $field->getAllowedOptions();
+        $parsed = [];
+
+        foreach ($options as $key => $value) {
+            if (! in_array($key, $allowed, true)) {
+                throw new \DomainException('The "'.$key.'" is not allowed on the provided field.');
+            }
+
+            $parsed[$key] = $value;
+        }
+
+        return $parsed;
+    }
+
+    /**
      * Add a field to the current form instance.
      *
      * @param FieldTypeInterface $field
@@ -28,7 +51,8 @@ class FormBuilder implements FormBuilderInterface
      */
     public function add(FieldTypeInterface $field, array $options = []): FormBuilderInterface
     {
-        $field->setOptions($options);
+        $opts = array_merge($field->getDefaultOptions(), $options);
+        $field->setOptions($this->parseOptions($opts, $field));
 
         $this->form->repository()->addField($field);
 

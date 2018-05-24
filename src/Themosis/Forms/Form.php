@@ -23,9 +23,7 @@ class Form implements FormInterface
      *
      * @var array
      */
-    protected $groups = [
-        'default'
-    ];
+    protected $groups = [];
 
     /**
      * @var FormRepositoryInterface

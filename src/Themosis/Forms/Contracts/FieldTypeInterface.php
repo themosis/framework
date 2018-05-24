@@ -68,4 +68,18 @@ interface FieldTypeInterface
      * @return FieldTypeInterface
      */
     public function setAttributes(array $attributes);
+
+    /**
+     * Return a list of default options.
+     *
+     * @return array
+     */
+    public function getDefaultOptions(): array;
+
+    /**
+     * Return the allowed options for a field.
+     *
+     * @return array
+     */
+    public function getAllowedOptions(): array;
 }

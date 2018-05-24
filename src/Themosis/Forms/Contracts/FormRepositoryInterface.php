@@ -39,5 +39,12 @@ interface FormRepositoryInterface
      *
      * @return array
      */
-    public function getFieldsByGroup(string $group): array;
+    public function getFieldsByGroup(string $group = ''): array;
+
+    /**
+     * Return a list of registered groups within the form.
+     *
+     * @return array
+     */
+    public function getGroups(): array;
 }

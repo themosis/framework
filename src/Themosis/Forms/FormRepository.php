@@ -45,7 +45,7 @@ class FormRepository implements FormRepositoryInterface
         // a form group to the passed options on the "add"
         // method of the FormBuilder instance.
         $this->allFields[$field->getBaseName()] = $field;
-        $this->fields['default'][$field->getBaseName()] = $field;
+        $this->fields[$field->getOptions('group')][$field->getBaseName()] = $field;
 
         return $this;
     }
@@ -72,8 +72,18 @@ class FormRepository implements FormRepositoryInterface
      *
      * @return array
      */
-    public function getFieldsByGroup(string $group): array
+    public function getFieldsByGroup(string $group = ''): array
     {
-        return $this->fields[$group] ?? [];
+        return $this->fields[$group] ?? $this->fields;
+    }
+
+    /**
+     * Return a list of registered groups within the form.
+     *
+     * @return array
+     */
+    public function getGroups(): array
+    {
+        return array_keys($this->getFieldsByGroup());
     }
 }
