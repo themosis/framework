@@ -3,7 +3,6 @@
 namespace Themosis\Forms;
 
 use Illuminate\Contracts\Support\MessageBag;
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\Validation\Factory as ValidationFactoryInterface;
 use Illuminate\Contracts\View\Factory as ViewFactoryInterface;
 use Illuminate\Http\Request;
@@ -51,7 +50,7 @@ class Form implements FormInterface
     protected $viewer;
 
     /**
-     * Default view name.
+     * Form view name.
      *
      * @var string
      */
@@ -246,7 +245,20 @@ class Form implements FormInterface
      */
     public function render(): string
     {
-        return $this->getView()->render();
+        return $this->viewer->make($this->getView(), $this->getFormData())->render();
+    }
+
+    /**
+     * Retrieve form view data.
+     *
+     * @return array
+     */
+    protected function getFormData(): array
+    {
+        // Form should have FormGroup instances containing
+        // associated Fields
+        // FormGroup should have a "View File" name associated to.
+        return [];
     }
 
     /**
@@ -266,10 +278,10 @@ class Form implements FormInterface
     /**
      * Return the view instance used by the form.
      *
-     * @return Renderable
+     * @return string
      */
-    public function getView(): Renderable
+    public function getView(): string
     {
-        return $this->viewer->make($this->view, []);
+        return $this->view;
     }
 }

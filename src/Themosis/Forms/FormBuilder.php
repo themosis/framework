@@ -51,8 +51,8 @@ class FormBuilder implements FormBuilderInterface
      */
     public function add(FieldTypeInterface $field, array $options = []): FormBuilderInterface
     {
-        $opts = array_merge($field->getDefaultOptions(), $options);
-        $field->setOptions($this->parseOptions($opts, $field));
+        $opts = $this->parseOptions(array_merge($field->getDefaultOptions(), $options), $field);
+        $field->setOptions($opts);
 
         $this->form->repository()->addField($field);
 

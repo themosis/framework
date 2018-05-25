@@ -25,6 +25,11 @@ class FormCreationTest extends TestCase
 {
     protected $application;
 
+    /**
+     * @var \Illuminate\Contracts\View\Factory
+     */
+    protected $viewFactory;
+
     protected function getApplication()
     {
         if (! is_null($this->application)) {
@@ -32,6 +37,7 @@ class FormCreationTest extends TestCase
         }
 
         $this->application = new Application();
+
         return $this->application;
     }
 
@@ -44,6 +50,10 @@ class FormCreationTest extends TestCase
 
     protected function getViewFactory()
     {
+        if (! is_null($this->viewFactory)) {
+            return $this->viewFactory;
+        }
+
         $application = $this->getApplication();
 
         $filesystem = new Filesystem();
@@ -74,6 +84,8 @@ class FormCreationTest extends TestCase
 
         $factory->addExtension('blade', $resolver);
         $factory->setContainer($application);
+
+        $this->viewFactory = $factory;
 
         return $factory;
     }
@@ -231,7 +243,7 @@ class FormCreationTest extends TestCase
         }
     }
 
-    public function testFormIsRendered()
+    public function testFormHasAllDataForRendering()
     {
         $factory = $this->getFormFactory();
 
@@ -240,8 +252,9 @@ class FormCreationTest extends TestCase
             ->add(new EmailType('email'))
             ->get();
 
+        // Test form "data" only and not the output
         $this->assertEquals(
-            '<div><form method="post"></form></div>',
+            $this->viewFactory->make('form.default')->render(),
             $form->render()
         );
     }
