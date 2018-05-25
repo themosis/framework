@@ -2,12 +2,18 @@
 
 namespace Themosis\Tests\Forms;
 
+use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Translation\FileLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\Compilers\BladeCompiler;
+use Illuminate\View\Engines\CompilerEngine;
+use Illuminate\View\Engines\EngineResolver;
+use Illuminate\View\Engines\PhpEngine;
+use Illuminate\View\FileViewFinder;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
 use Themosis\Forms\Fields\Types\EmailType;
@@ -17,17 +23,64 @@ use Themosis\Tests\Forms\Entities\ContactEntity;
 
 class FormCreationTest extends TestCase
 {
+    protected $application;
+
+    protected function getApplication()
+    {
+        if (! is_null($this->application)) {
+            return $this->application;
+        }
+
+        $this->application = new Application();
+        return $this->application;
+    }
+
     protected function getValidationFactory()
     {
-        $application = new Application();
         $translator = new Translator(new FileLoader(new Filesystem(), ''), 'en');
 
-        return new Factory($translator, $application);
+        return new Factory($translator, $this->getApplication());
+    }
+
+    protected function getViewFactory()
+    {
+        $application = $this->getApplication();
+
+        $filesystem = new Filesystem();
+
+        $bladeCompiler = new BladeCompiler(
+            $filesystem,
+            __DIR__.'/../storage/views'
+        );
+        $application->instance('blade', $bladeCompiler);
+
+        $resolver = new EngineResolver();
+
+        $resolver->register('php', function () {
+            return new PhpEngine();
+        });
+
+        $resolver->register('blade', function () use ($bladeCompiler) {
+            return new CompilerEngine($bladeCompiler);
+        });
+
+        $factory = new \Illuminate\View\Factory(
+            $resolver,
+            $viewFinder = new FileViewFinder($filesystem, [
+                __DIR__.'/../../../framework/src/Themosis/Forms/views/'
+            ], ['blade.php', 'php']),
+            new Dispatcher($application)
+        );
+
+        $factory->addExtension('blade', $resolver);
+        $factory->setContainer($application);
+
+        return $factory;
     }
 
     protected function getFormFactory()
     {
-        return new FormFactory($this->getValidationFactory());
+        return new FormFactory($this->getValidationFactory(), $this->getViewFactory());
     }
 
     public function testCreateNewForm()
@@ -176,5 +229,20 @@ class FormCreationTest extends TestCase
                 $form->error('company', true)
             );
         }
+    }
+
+    public function testFormIsRendered()
+    {
+        $factory = $this->getFormFactory();
+
+        $form = $factory->make()
+            ->add(new TextType('firstname'))
+            ->add(new EmailType('email'))
+            ->get();
+
+        $this->assertEquals(
+            '<div><form method="post"></form></div>',
+            $form->render()
+        );
     }
 }

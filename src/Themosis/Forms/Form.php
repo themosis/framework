@@ -3,7 +3,9 @@
 namespace Themosis\Forms;
 
 use Illuminate\Contracts\Support\MessageBag;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\Validation\Factory as ValidationFactoryInterface;
+use Illuminate\Contracts\View\Factory as ViewFactoryInterface;
 use Illuminate\Http\Request;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
@@ -43,10 +45,26 @@ class Form implements FormInterface
      */
     protected $validator;
 
-    public function __construct(FormRepositoryInterface $repository, ValidationFactoryInterface $validation)
-    {
+    /**
+     * @var ViewFactoryInterface
+     */
+    protected $viewer;
+
+    /**
+     * Default view name.
+     *
+     * @var string
+     */
+    protected $view = 'form.default';
+
+    public function __construct(
+        FormRepositoryInterface $repository,
+        ValidationFactoryInterface $validation,
+        ViewFactoryInterface $viewer
+    ) {
         $this->repository = $repository;
         $this->validation = $validation;
+        $this->viewer = $viewer;
     }
 
     /**
@@ -57,16 +75,6 @@ class Form implements FormInterface
     public function repository(): FormRepositoryInterface
     {
         return $this->repository;
-    }
-
-    /**
-     * Render a form and returns its HTML structure.
-     *
-     * @return string
-     */
-    public function render(): string
-    {
-        return '';
     }
 
     /**
@@ -229,5 +237,39 @@ class Form implements FormInterface
         }
 
         return $errors->get($field->getName());
+    }
+
+    /**
+     * Render a form and returns its HTML structure.
+     *
+     * @return string
+     */
+    public function render(): string
+    {
+        return $this->getView()->render();
+    }
+
+    /**
+     * Specify the view file to use by the form.
+     *
+     * @param string $view
+     *
+     * @return FormInterface
+     */
+    public function setView(string $view): FormInterface
+    {
+        $this->view = $view;
+
+        return $this;
+    }
+
+    /**
+     * Return the view instance used by the form.
+     *
+     * @return Renderable
+     */
+    public function getView(): Renderable
+    {
+        return $this->viewer->make($this->view, []);
     }
 }

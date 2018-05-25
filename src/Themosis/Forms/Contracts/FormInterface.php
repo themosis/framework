@@ -3,6 +3,7 @@
 namespace Themosis\Forms\Contracts;
 
 use Illuminate\Contracts\Support\MessageBag;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 
 interface FormInterface
@@ -73,4 +74,20 @@ interface FormInterface
      * @return mixed
      */
     public function error(string $name, bool $first = false);
+
+    /**
+     * Specify the view file to use by the form.
+     *
+     * @param string $view
+     *
+     * @return FormInterface
+     */
+    public function setView(string $view): FormInterface;
+
+    /**
+     * Return the view instance used by the form.
+     *
+     * @return Renderable
+     */
+    public function getView(): Renderable;
 }
