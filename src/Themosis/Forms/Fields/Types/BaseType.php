@@ -15,13 +15,15 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     protected $options;
 
     /**
-     * Allowed options keys.
+     * List of allowed options.
      *
      * @var array
      */
     protected $allowedOptions = [
         'group',
-        'rules'
+        'rules',
+        'messages',
+        'placeholder'
     ];
 
     /**
@@ -31,7 +33,8 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     protected $defaultOptions = [
         'group' => 'default',
-        'rules' => []
+        'rules' => [],
+        'messages' => []
     ];
 
     /**
@@ -58,6 +61,22 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     protected $rules = [];
 
     /**
+     * A list of custom error messages
+     * by field rules.
+     *
+     * @var array
+     */
+    protected $messages = [];
+
+    /**
+     * A custom :attribute
+     * placeholder value.
+     *
+     * @var string
+     */
+    protected $placeholder;
+
+    /**
      * BaseType constructor.
      *
      * @param string $name
@@ -78,6 +97,12 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     {
         // Setup default validation rules.
         $this->defaultOptions['rules'] = $this->rules;
+
+        // Setup default messages.
+        $this->defaultOptions['messages'] = $this->messages;
+
+        // Setup default placeholder.
+        $this->defaultOptions['placeholder'] = $this->placeholder ?? $this->getBaseName();
 
         return $this->defaultOptions;
     }
@@ -120,7 +145,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
             throw new \InvalidArgumentException('The "name" option can not be overridden.');
         }
 
-        $this->options = array_merge($this->options, $options);
+        $this->options = array_merge($this->getDefaultOptions(), $this->options, $options);
 
         return $this;
     }

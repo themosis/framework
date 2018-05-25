@@ -2,6 +2,7 @@
 
 namespace Themosis\Forms;
 
+use Illuminate\Contracts\Support\MessageBag;
 use Illuminate\Contracts\Validation\Factory as ValidationFactoryInterface;
 use Illuminate\Http\Request;
 use Themosis\Forms\Contracts\FieldTypeInterface;
@@ -111,12 +112,19 @@ class Form implements FormInterface
     public function handleRequest(Request $request): FormInterface
     {
         /**
-         * @todo Implement "messages" and "attributes"
+         * @todo Implement "attributes"
          * $this->getValidationFactory()
          * ->make($request->all(), $rules, $messages, $customAttributes)
          * ->validate();
          */
-        $this->validator = $this->validation->make($request->all(), $this->getFormRules());
+        $fields = $this->repository->all();
+
+        $this->validator = $this->validation->make(
+            $request->all(),
+            $this->getFormRules($fields),
+            $this->getFormMessages($fields),
+            $this->getFormPlaceholders($fields)
+        );
 
         $this->validator->validate();
 
@@ -126,13 +134,13 @@ class Form implements FormInterface
     /**
      * Get the list of form rules.
      *
+     * @param array $fields The form fields instances.
+     *
      * @return array
      */
-    protected function getFormRules()
+    protected function getFormRules(array $fields)
     {
         $rules = [];
-
-        $fields = $this->repository->all();
 
         foreach ($fields as $field) {
             /** @var FieldTypeInterface $field */
@@ -143,6 +151,49 @@ class Form implements FormInterface
     }
 
     /**
+     * Get the list of form fields messages.
+     *
+     * @param array $fields The form fields instances.
+     *
+     * @return array
+     */
+    protected function getFormMessages(array $fields)
+    {
+        // Each message is defined by field and its own rules.
+        // In our case, we need to prepend the field name (attribute)
+        // using a "dot" notation. Ex.: email.required
+        $messages = [];
+
+        foreach ($fields as $field) {
+            /** @var FieldTypeInterface $field */
+            foreach ($field->getOptions('messages') as $attr => $message) {
+                $messages[$field->getName().'.'.$attr] = $message;
+            }
+        }
+
+        return $messages;
+    }
+
+    /**
+     * Get the list of custom :attribute placeholders values.
+     *
+     * @param array $fields The form fields instances.
+     *
+     * @return array
+     */
+    protected function getFormPlaceholders(array $fields)
+    {
+        $attributes = [];
+
+        foreach ($fields as $field) {
+            /** @var FieldTypeInterface $field */
+            $attributes[$field->getName()] = $field->getOptions('placeholder');
+        }
+
+        return $attributes;
+    }
+
+    /**
      * Check if submitted form is valid or not.
      *
      * @return bool
@@ -150,5 +201,39 @@ class Form implements FormInterface
     public function isValid(): bool
     {
         return $this->validator->passes();
+    }
+
+    /**
+     * Return a list of form errors.
+     *
+     * @return MessageBag
+     */
+    public function errors(): MessageBag
+    {
+        return $this->validator->errors();
+    }
+
+    /**
+     * Return error messages for a specific field.
+     * By setting the second parameter to true, a user
+     * can fetch the first error message only on the
+     * mentioned field.
+     *
+     * @param string $name
+     * @param bool   $first
+     *
+     * @return mixed
+     */
+    public function error(string $name, bool $first = false)
+    {
+        $errors = $this->errors();
+
+        $field = $this->repository->getFieldByName($name);
+
+        if ($first) {
+            return $errors->first($field->getName());
+        }
+
+        return $errors->get($field->getName());
     }
 }

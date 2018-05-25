@@ -47,4 +47,13 @@ interface FormRepositoryInterface
      * @return array
      */
     public function getGroups(): array;
+
+    /**
+     * Retrieve a field by its name.
+     *
+     * @param string $name
+     *
+     * @return FieldTypeInterface
+     */
+    public function getFieldByName(string $name): FieldTypeInterface;
 }

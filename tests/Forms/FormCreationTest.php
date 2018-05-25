@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Translation\FileLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
+use Illuminate\Validation\ValidationException;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
 use Themosis\Forms\Fields\Types\EmailType;
@@ -131,5 +132,49 @@ class FormCreationTest extends TestCase
         $form->handleRequest($request);
 
         $this->assertTrue($form->isValid());
+    }
+
+    public function testCreateFormWithErrorsMessages()
+    {
+        $factory = $this->getFormFactory();
+
+        $form = $factory->make()
+            ->add(new TextType('firstname'), [
+                'rules' => 'required|max:5',
+                'messages' => [
+                    'max' => 'The :attribute can only have 5 characters maximum.',
+                    'required' => 'The firstname is required.'
+                ]
+            ])
+            ->add(new EmailType('email'), [
+                'rules' => 'required|email'
+            ])
+            ->add(new TextType('company'), [
+                'rules' => 'required',
+                'messages' => [
+                    'required' => 'The :attribute name is required.'
+                ],
+                'placeholder' => 'enterprise'
+            ])
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_firstname' => 'Marcel',
+            'th_email' => 'marcel@domain.com'
+        ]);
+
+        try {
+            $form->handleRequest($request);
+        } catch (ValidationException $exception) {
+            $this->assertFalse($form->isValid());
+            $this->assertEquals(
+                'The firstname can only have 5 characters maximum.',
+                $form->error('firstname', true)
+            );
+            $this->assertEquals(
+                'The enterprise name is required.',
+                $form->error('company', true)
+            );
+        }
     }
 }

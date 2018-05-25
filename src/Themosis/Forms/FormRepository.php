@@ -86,4 +86,16 @@ class FormRepository implements FormRepositoryInterface
     {
         return array_keys($this->getFieldsByGroup());
     }
+
+    /**
+     * Retrieve a field by its name.
+     *
+     * @param string $name
+     *
+     * @return FieldTypeInterface
+     */
+    public function getFieldByName(string $name): FieldTypeInterface
+    {
+        return $this->allFields[$name] ?? null;
+    }
 }

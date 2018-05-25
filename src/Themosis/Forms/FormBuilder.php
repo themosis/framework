@@ -32,7 +32,7 @@ class FormBuilder implements FormBuilderInterface
 
         foreach ($options as $key => $value) {
             if (! in_array($key, $allowed, true)) {
-                throw new \DomainException('The "'.$key.'" is not allowed on the provided field.');
+                throw new \DomainException('The "'.$key.'" option is not allowed on the provided field.');
             }
 
             $parsed[$key] = $value;
