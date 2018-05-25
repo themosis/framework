@@ -111,12 +111,6 @@ class Form implements FormInterface
      */
     public function handleRequest(Request $request): FormInterface
     {
-        /**
-         * @todo Implement "attributes"
-         * $this->getValidationFactory()
-         * ->make($request->all(), $rules, $messages, $customAttributes)
-         * ->validate();
-         */
         $fields = $this->repository->all();
 
         $this->validator = $this->validation->make(
