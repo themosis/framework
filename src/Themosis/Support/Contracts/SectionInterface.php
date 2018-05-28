@@ -21,6 +21,22 @@ interface SectionInterface
     public function setView(string $view): SectionInterface;
 
     /**
+     * Set section view data array.
+     *
+     * @param array $data
+     *
+     * @return SectionInterface
+     */
+    public function setViewData(array $data): SectionInterface;
+
+    /**
+     * Return the view data array.
+     *
+     * @return array
+     */
+    public function getViewData(): array;
+
+    /**
      * Get the section view file.
      *
      * @return string
