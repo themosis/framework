@@ -4,6 +4,7 @@ namespace Themosis\Forms;
 
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormRepositoryInterface;
+use Themosis\Support\Contracts\SectionInterface;
 
 class FormRepository implements FormRepositoryInterface
 {
@@ -22,6 +23,13 @@ class FormRepository implements FormRepositoryInterface
     protected $allFields = [];
 
     /**
+     * The groups instances (sections).
+     *
+     * @var array
+     */
+    protected $groups = [];
+
+    /**
      * @inheritdoc
      */
     public function all(): array
@@ -33,10 +41,11 @@ class FormRepository implements FormRepositoryInterface
      * Add a field to the form instance.
      *
      * @param FieldTypeInterface $field
+     * @param SectionInterface   $group
      *
      * @return FormRepositoryInterface
      */
-    public function addField(FieldTypeInterface $field): FormRepositoryInterface
+    public function addField(FieldTypeInterface $field, SectionInterface $group): FormRepositoryInterface
     {
         // We store all fields together
         // as well as per group. On each form,
@@ -45,7 +54,7 @@ class FormRepository implements FormRepositoryInterface
         // a form group to the passed options on the "add"
         // method of the FormBuilder instance.
         $this->allFields[$field->getBaseName()] = $field;
-        $this->fields[$field->getOptions('group')][$field->getBaseName()] = $field;
+        $this->fields[$group->getId()] = $group;
 
         return $this;
     }
@@ -57,11 +66,18 @@ class FormRepository implements FormRepositoryInterface
      * @param string $name
      * @param string $group
      *
-     * @return mixed
+     * @return FieldTypeInterface|FieldTypeInterface[]|array
      */
     public function getField(string $name = '', string $group = 'default')
     {
-        return $this->fields[$group][$name] ?? $this->fields[$group];
+        /** @var SectionInterface $section */
+        $section = $this->fields[$group];
+
+        $foundItems = array_filter($section->getItems(), function (FieldTypeInterface $item) use ($name) {
+            return $name === $item->getBaseName();
+        });
+
+        return ! empty($foundItems) ? array_shift($foundItems) : [];
     }
 
     /**
@@ -97,5 +113,29 @@ class FormRepository implements FormRepositoryInterface
     public function getFieldByName(string $name): FieldTypeInterface
     {
         return $this->allFields[$name] ?? null;
+    }
+
+    /**
+     * Check if form contains provided group instance (section).
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasGroup(string $name): bool
+    {
+        return isset($this->groups[$name]);
+    }
+
+    /**
+     * Return the registered group/section instance.
+     *
+     * @param string $name
+     *
+     * @return SectionInterface
+     */
+    public function getGroup(string $name): SectionInterface
+    {
+        return $this->groups[$name];
     }
 }

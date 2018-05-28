@@ -58,4 +58,13 @@ interface SectionInterface
      * @return array
      */
     public function getItems(): array;
+
+    /**
+     * Add an item to the section.
+     *
+     * @param mixed $item
+     *
+     * @return SectionInterface
+     */
+    public function addItem($item): SectionInterface;
 }

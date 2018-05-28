@@ -5,6 +5,7 @@ namespace Themosis\Forms;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormBuilderInterface;
 use Themosis\Forms\Contracts\FormInterface;
+use Themosis\Support\Section;
 
 class FormBuilder implements FormBuilderInterface
 {
@@ -54,7 +55,21 @@ class FormBuilder implements FormBuilderInterface
         $opts = $this->parseOptions(array_merge($field->getDefaultOptions(), $options), $field);
         $field->setOptions($opts);
 
-        $this->form->repository()->addField($field);
+        // Check if section instance already exists on the form.
+        // If not, create a new section instance.
+        if ($this->form->repository()->hasGroup($field->getOptions('group'))) {
+            // The section/group instance is already registered, just fetch it.
+            $section = $this->form->repository()->getGroup($field->getOptions('group'));
+        } else {
+            // No defined group. Let's create an instance so we can attach
+            // the field to it right after.
+            $section = new Section($field->getOptions('group'));
+        }
+
+        // Add the field first to section instance.
+        // Then pass both objects to the repository.
+        $section->addItem($field);
+        $this->form->repository()->addField($field, $section);
 
         return $this;
     }

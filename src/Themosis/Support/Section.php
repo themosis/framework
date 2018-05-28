@@ -138,6 +138,20 @@ class Section implements SectionInterface, Iterator, Countable
     }
 
     /**
+     * Add an item to the section.
+     *
+     * @param mixed $item
+     *
+     * @return SectionInterface
+     */
+    public function addItem($item): SectionInterface
+    {
+        $this->items[] = $item;
+
+        return $this;
+    }
+
+    /**
      * Get current item.
      *
      * @return mixed

@@ -2,6 +2,8 @@
 
 namespace Themosis\Forms\Contracts;
 
+use Themosis\Support\Contracts\SectionInterface;
+
 interface FormRepositoryInterface
 {
     /**
@@ -15,10 +17,11 @@ interface FormRepositoryInterface
      * Attach a field to the form.
      *
      * @param FieldTypeInterface $field
+     * @param SectionInterface   $group
      *
      * @return FormRepositoryInterface
      */
-    public function addField(FieldTypeInterface $field): FormRepositoryInterface;
+    public function addField(FieldTypeInterface $field, SectionInterface $group): FormRepositoryInterface;
 
     /**
      * Return the defined field instance based on its basename property.
@@ -56,4 +59,22 @@ interface FormRepositoryInterface
      * @return FieldTypeInterface
      */
     public function getFieldByName(string $name): FieldTypeInterface;
+
+    /**
+     * Check if form contains provided group instance (section).
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function hasGroup(string $name): bool;
+
+    /**
+     * Return the registered group/section instance.
+     *
+     * @param string $name
+     *
+     * @return SectionInterface
+     */
+    public function getGroup(string $name): SectionInterface;
 }
