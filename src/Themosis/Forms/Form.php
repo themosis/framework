@@ -94,7 +94,7 @@ class Form implements FormInterface, FieldTypeInterface
     ];
 
     /**
-     * Form "name" attribute value without prefix.
+     * Form "name" attribute value.
      *
      * @var string
      */

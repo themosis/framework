@@ -176,6 +176,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
                 \Illuminate\Events\Dispatcher::class,
                 \Illuminate\Contracts\Events\Dispatcher::class
             ],
+            'form' => [
+                \Themosis\Forms\FormFactory::class,
+            ],
             'log' => [
                 \Illuminate\Log\LogManager::class,
                 \Psr\Log\LoggerInterface::class
