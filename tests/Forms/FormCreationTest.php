@@ -19,6 +19,7 @@ use Themosis\Core\Application;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\TextType;
 use Themosis\Forms\FormFactory;
+use Themosis\Support\Contracts\SectionInterface;
 use Themosis\Tests\Forms\Entities\ContactEntity;
 
 class FormCreationTest extends TestCase
@@ -145,15 +146,15 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory();
 
         $form = $factory->make($contact)
-            ->add($firstname = new TextType('firstname'))
-            ->add($lastname = new TextType('lastname'))
-            ->add($email = new EmailType('email'), [
-                'group' => 'corporate'
-            ])
-            ->add($company = new TextType('company'), [
-                'group' => 'corporate'
-            ])
-            ->get();
+                ->add($firstname = new TextType('firstname'))
+                ->add($lastname = new TextType('lastname'))
+                ->add($email = new EmailType('email'), [
+                    'group' => 'corporate'
+                ])
+                ->add($company = new TextType('company'), [
+                    'group' => 'corporate'
+                ])
+                ->get();
 
         $this->assertEquals('default', $firstname->getOptions('group'));
         $this->assertEquals('default', $lastname->getOptions('group'));
@@ -164,16 +165,22 @@ class FormCreationTest extends TestCase
         $this->assertEquals(2, count($form->repository()->getFieldsByGroup('default')));
         $this->assertEquals(2, count($form->repository()->getFieldsByGroup('corporate')));
         $this->assertEquals([
-            'email' => $email,
-            'company' => $company
-        ], $form->repository()->getFieldsByGroup('corporate'));
+                $email,
+                $company
+            ], $form->repository()->getFieldsByGroup('corporate')->getItems());
 
         // Form instance should be aware of its groups.
         $this->assertEquals(2, count($form->repository()->getGroups()));
-        $this->assertEquals([
-            'default',
-            'corporate'
-        ], $form->repository()->getGroups());
+
+        $groups = $form->repository()->getGroups();
+
+        foreach ($groups as $group) {
+            /** @var SectionInterface $group */
+            $this->assertTrue(in_array($group->getId(), [
+                'default',
+                'corporate'
+            ]));
+        }
     }
 
     public function testCreateFormAndValidateUsingValidData()

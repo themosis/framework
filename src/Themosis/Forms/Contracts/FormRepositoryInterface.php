@@ -40,9 +40,9 @@ interface FormRepositoryInterface
      *
      * @param string $group
      *
-     * @return array
+     * @return SectionInterface|array
      */
-    public function getFieldsByGroup(string $group = ''): array;
+    public function getFieldsByGroup(string $group = '');
 
     /**
      * Return a list of registered groups within the form.

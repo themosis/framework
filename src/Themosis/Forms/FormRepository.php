@@ -16,16 +16,9 @@ class FormRepository implements FormRepositoryInterface
     protected $fields = [];
 
     /**
-     * All fields.
+     * All groups with fields.
      *
-     * @var FieldTypeInterface[]
-     */
-    protected $allFields = [];
-
-    /**
-     * The groups instances (sections).
-     *
-     * @var array
+     * @var SectionInterface[]
      */
     protected $groups = [];
 
@@ -34,7 +27,7 @@ class FormRepository implements FormRepositoryInterface
      */
     public function all(): array
     {
-        return $this->allFields;
+        return $this->fields;
     }
 
     /**
@@ -53,8 +46,8 @@ class FormRepository implements FormRepositoryInterface
         // all fields are attached to. A user can specify
         // a form group to the passed options on the "add"
         // method of the FormBuilder instance.
-        $this->allFields[$field->getBaseName()] = $field;
-        $this->fields[$group->getId()] = $group;
+        $this->fields[$field->getBaseName()] = $field;
+        $this->groups[$group->getId()] = $group;
 
         return $this;
     }
@@ -71,7 +64,7 @@ class FormRepository implements FormRepositoryInterface
     public function getField(string $name = '', string $group = 'default')
     {
         /** @var SectionInterface $section */
-        $section = $this->fields[$group];
+        $section = $this->groups[$group];
 
         $foundItems = array_filter($section->getItems(), function (FieldTypeInterface $item) use ($name) {
             return $name === $item->getBaseName();
@@ -86,11 +79,11 @@ class FormRepository implements FormRepositoryInterface
      *
      * @param string $group
      *
-     * @return array
+     * @return SectionInterface|array
      */
-    public function getFieldsByGroup(string $group = ''): array
+    public function getFieldsByGroup(string $group = '')
     {
-        return $this->fields[$group] ?? $this->fields;
+        return $this->groups[$group] ?? $this->groups;
     }
 
     /**
@@ -100,7 +93,7 @@ class FormRepository implements FormRepositoryInterface
      */
     public function getGroups(): array
     {
-        return array_keys($this->getFieldsByGroup());
+        return $this->getFieldsByGroup();
     }
 
     /**
@@ -112,7 +105,7 @@ class FormRepository implements FormRepositoryInterface
      */
     public function getFieldByName(string $name): FieldTypeInterface
     {
-        return $this->allFields[$name] ?? null;
+        return $this->fields[$name] ?? null;
     }
 
     /**
