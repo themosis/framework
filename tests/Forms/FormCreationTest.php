@@ -315,6 +315,10 @@ class FormCreationTest extends TestCase
         ], $form->getAttributes());
         $this->assertEquals('forms.custom', $form->getView());
 
+        $this->assertEquals('_themosisnonce', $form->getOptions('nonce'));
+        $this->assertEquals('form', $form->getOptions('nonce_action'));
+        $this->assertTrue($form->getOptions('referer'));
+
         $this->assertFalse($form->isRendered());
         $form->render();
         $this->assertTrue($form->isRendered());

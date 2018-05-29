@@ -78,7 +78,10 @@ class Form implements FormInterface, FieldTypeInterface
      */
     protected $allowedOptions = [
         'name',
-        'attributes'
+        'attributes',
+        'nonce',
+        'nonce_action',
+        'referer'
     ];
 
     /**
@@ -397,9 +400,32 @@ class Form implements FormInterface, FieldTypeInterface
     public function setOptions(array $options): FieldTypeInterface
     {
         $this->validateOptions($options);
-        $this->options = array_merge($this->getDefaultOptions(), $this->options, $options);
+        $this->options = $this->parseOptions(array_merge(
+            $this->getDefaultOptions(),
+            $this->options,
+            $options
+        ));
 
         return $this;
+    }
+
+    /**
+     * Parse form options and add some default parameters.
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function parseOptions(array $options)
+    {
+        // Define nonce default values if "method" attribute is set to "post".
+        if (isset($options['attributes']['method']) && 'post' === strtolower($options['attributes']['method'])) {
+            $options['nonce'] = $options['nonce'] ?? '_themosisnonce';
+            $options['nonce_action'] = $options['nonce_action'] ?? 'form';
+            $options['referer'] = $options['referer'] ?? true;
+        }
+
+        return $options;
     }
 
     /**
