@@ -10,13 +10,14 @@ use Illuminate\Http\Request;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Contracts\FormRepositoryInterface;
+use Themosis\Html\HtmlBuilder;
 
 /**
  * Class Form
  *
  * @package Themosis\Forms
  */
-class Form implements FormInterface, FieldTypeInterface
+class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 {
     /**
      * @var string
@@ -105,6 +106,7 @@ class Form implements FormInterface, FieldTypeInterface
         ValidationFactoryInterface $validation,
         ViewFactoryInterface $viewer
     ) {
+        parent::__construct();
         $this->repository = $repository;
         $this->validation = $validation;
         $this->viewer = $viewer;
@@ -418,6 +420,9 @@ class Form implements FormInterface, FieldTypeInterface
      */
     protected function parseOptions(array $options)
     {
+        // Make sure to keep defined default attributes on the form.
+        $options['attributes'] = array_merge($this->getAttributes(), $options['attributes']);
+
         // Define nonce default values if "method" attribute is set to "post".
         if (isset($options['attributes']['method']) && 'post' === strtolower($options['attributes']['method'])) {
             $options['nonce'] = $options['nonce'] ?? '_themosisnonce';

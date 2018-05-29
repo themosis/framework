@@ -1,5 +1,5 @@
 <div>
-    <form method="post">
+    <form {!! $__form->attributes($__form->getAttributes()) !!}>
 
     </form>
 </div>

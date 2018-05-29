@@ -265,7 +265,12 @@ class FormCreationTest extends TestCase
     {
         $factory = $this->getFormFactory();
 
-        $form = $factory->make()
+        $form = $factory->make([
+            'attributes' => [
+                'id' => 'some-form',
+                'name' => 'formidable'
+            ]
+        ])
             ->add($fn = new TextType('firstname'), [
                 'attributes' => [
                     'class' => 'field branding',
@@ -311,7 +316,9 @@ class FormCreationTest extends TestCase
         $this->assertEquals('groups.custom', $form->repository()->getGroup($em->getOptions('group'))->getView());
 
         $this->assertEquals([
-            'method' => 'post'
+            'method' => 'post',
+            'id' => 'some-form',
+            'name' => 'formidable'
         ], $form->getAttributes());
         $this->assertEquals('forms.custom', $form->getView());
 
