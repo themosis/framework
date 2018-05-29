@@ -12,7 +12,11 @@ class FormServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('form', function ($app) {
-            return new FormFactory($app['validator'], $app['view']);
+            // Add framework view path for form and types views.
+            $viewFactory = $app['view'];
+            $viewFactory->addLocation(__DIR__.'/views');
+
+            return new FormFactory($app['validator'], $viewFactory);
         });
     }
 }
