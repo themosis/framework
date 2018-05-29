@@ -263,6 +263,20 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     }
 
     /**
+     * Get the value of a defined attribute.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function getAttribute(string $name)
+    {
+        $atts = $this->getAttributes();
+
+        return $atts[$name] ?? '';
+    }
+
+    /**
      * Set the field attributes.
      *
      * @param array $attributes

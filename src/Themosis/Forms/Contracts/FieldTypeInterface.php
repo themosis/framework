@@ -61,6 +61,15 @@ interface FieldTypeInterface
     public function getAttributes();
 
     /**
+     * Get the value of a defined attribute.
+     *
+     * @param string $name The attribute name.
+     *
+     * @return mixed
+     */
+    public function getAttribute(string $name);
+
+    /**
      * Set the attributes for the field.
      *
      * @param array $attributes

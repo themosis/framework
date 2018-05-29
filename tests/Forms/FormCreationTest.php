@@ -198,7 +198,12 @@ class FormCreationTest extends TestCase
     {
         $factory = $this->getFormFactory();
 
-        $form = $factory->make()
+        $form = $factory->make([
+            'attributes' => [
+                'method' => 'get',
+                'id' => 'get-form'
+            ]
+        ])
             ->add($firstname = new TextType('firstname'), [
                 'rules' => 'required|min:3'
             ])
@@ -211,6 +216,11 @@ class FormCreationTest extends TestCase
             'th_firstname' => 'Foo',
             'th_email' => 'foo@bar.com'
         ]);
+
+        $this->assertEquals([
+            'method' => 'get',
+            'id' => 'get-form'
+        ], $form->getAttributes());
 
         $form->handleRequest($request);
 

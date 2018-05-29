@@ -476,6 +476,20 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     }
 
     /**
+     * Get the value of a defined attribute.
+     *
+     * @param string $name The attribute name.
+     *
+     * @return mixed
+     */
+    public function getAttribute(string $name)
+    {
+        $atts = $this->getAttributes();
+
+        return $atts[$name] ?? '';
+    }
+
+    /**
      * Set the form attributes.
      *
      * @param array $attributes
