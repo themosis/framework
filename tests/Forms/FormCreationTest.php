@@ -16,6 +16,8 @@ use Illuminate\View\Engines\PhpEngine;
 use Illuminate\View\FileViewFinder;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
+use Themosis\Forms\Contracts\FieldTypeInterface;
+use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\TextType;
 use Themosis\Forms\FormFactory;
@@ -78,7 +80,8 @@ class FormCreationTest extends TestCase
         $factory = new \Illuminate\View\Factory(
             $resolver,
             $viewFinder = new FileViewFinder($filesystem, [
-                __DIR__.'/../../../framework/src/Themosis/Forms/views/'
+                __DIR__.'/../../../framework/src/Themosis/Forms/views/',
+                __DIR__.'/views/'
             ], ['blade.php', 'php']),
             new Dispatcher($application)
         );
@@ -101,7 +104,7 @@ class FormCreationTest extends TestCase
         $contact = new ContactEntity();
         $factory = $this->getFormFactory();
 
-        $form = $factory->make($contact)
+        $form = $factory->make([], $contact)
             ->add($firstname = new TextType('firstname'))
             ->add($lastname = new TextType('lastname'))
             ->add($email = new EmailType('email'))
@@ -113,6 +116,13 @@ class FormCreationTest extends TestCase
         $this->assertEquals('th_lastname', $lastname->getOptions('name'));
         $this->assertEquals('th_email', $email->getOptions('name'));
 
+        /** @var $form FormInterface|FieldTypeInterface */
+        $this->assertEquals([
+            'method' => 'post'
+        ], $form->getAttributes());
+        $this->assertEquals('form.default', $form->getView());
+        $this->assertEquals('form.group', $form->repository()->getGroup('default')->getView());
+
         $this->expectException('\InvalidArgumentException');
         $firstname->setOptions(['name' => 'something']);
     }
@@ -122,7 +132,7 @@ class FormCreationTest extends TestCase
         $contact = new ContactEntity();
         $factory = $this->getFormFactory();
 
-        $formBuilder = $factory->make($contact);
+        $formBuilder = $factory->make([], $contact);
         $this->assertInstanceOf('Themosis\Forms\Contracts\FormBuilderInterface', $formBuilder);
 
         $form = $formBuilder->add($firstname = new TextType('firstname'))
@@ -130,6 +140,7 @@ class FormCreationTest extends TestCase
             ->get();
 
         // Change prefix of the form attached fields.
+        /** @var $form FormInterface|FieldTypeInterface */
         $form->setPrefix('wp_');
         $this->assertEquals('wp_firstname', $form->repository()->getField('firstname')->getOptions('name'));
         $this->assertEquals('wp_email', $form->repository()->getField('email')->getOptions('name'));
@@ -145,7 +156,7 @@ class FormCreationTest extends TestCase
         $contact = new ContactEntity();
         $factory = $this->getFormFactory();
 
-        $form = $factory->make($contact)
+        $form = $factory->make([], $contact)
                 ->add($firstname = new TextType('firstname'))
                 ->add($lastname = new TextType('lastname'))
                 ->add($email = new EmailType('email'), [
@@ -271,6 +282,10 @@ class FormCreationTest extends TestCase
             ])
             ->get();
 
+        $form->setView('forms.custom');
+        $form->setGroupView('groups.custom');
+
+        /** @var $form FormInterface|FieldTypeInterface */
         // Test form "data" only and not the output
         $this->assertEquals(1, count($form->repository()->getGroups()));
         $this->assertEquals([
@@ -291,5 +306,17 @@ class FormCreationTest extends TestCase
             'class' => 'label',
             'for' => 'th_email_field'
         ], $em->getOptions('label_attr'));
+
+        $this->assertEquals('groups.custom', $form->repository()->getGroup($fn->getOptions('group'))->getView());
+        $this->assertEquals('groups.custom', $form->repository()->getGroup($em->getOptions('group'))->getView());
+
+        $this->assertEquals([
+            'method' => 'post'
+        ], $form->getAttributes());
+        $this->assertEquals('forms.custom', $form->getView());
+
+        $this->assertFalse($form->isRendered());
+        $form->render();
+        $this->assertTrue($form->isRendered());
     }
 }

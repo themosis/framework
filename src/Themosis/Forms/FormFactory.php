@@ -26,6 +26,15 @@ class FormFactory implements FormFactoryInterface
      */
     protected $builder;
 
+    /**
+     * Form instances default attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'method' => 'post'
+    ];
+
     public function __construct(ValidationFactoryInterface $validation, ViewFactoryInterface $viewer)
     {
         $this->validation = $validation;
@@ -33,16 +42,21 @@ class FormFactory implements FormFactoryInterface
     }
 
     /**
-     * Creates a new form instance and returns it.
+     * Create a FormBuilderInterface instance.
      *
-     * @param mixed  $data    The POPO (DTO) object.
-     * @param string $builder
+     * @param array  $options
+     * @param mixed  $data    Data object (DTO).
+     * @param string $builder A FieldBuilderInterface class.
      *
      * @return FormBuilderInterface
      */
-    public function make($data = null, $builder = FormBuilder::class)
+    public function make($options = [], $data = null, $builder = FormBuilder::class): FormBuilderInterface
     {
-        $this->builder = new $builder(new Form(new FormRepository(), $this->validation, $this->viewer));
+        $form = new Form(new FormRepository(), $this->validation, $this->viewer);
+        $form->setAttributes($this->attributes);
+        $form->setOptions($options);
+
+        $this->builder = new $builder($form);
 
         return $this->builder;
     }

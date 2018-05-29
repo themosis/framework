@@ -2,14 +2,18 @@
 
 namespace Themosis\Forms\Contracts;
 
+use Themosis\Field\Fields\FieldBuilder;
+
 interface FormFactoryInterface
 {
     /**
      * Create a FormBuilderInterface instance.
      *
-     * @param mixed $data Data object (DTO).
+     * @param array  $options
+     * @param mixed  $data    Data object (DTO).
+     * @param string $builder A FormBuilderInterface class.
      *
-     * @return $this
+     * @return FormBuilderInterface
      */
-    public function make($data = null);
+    public function make($options = [], $data = null, $builder = FieldBuilder::class): FormBuilderInterface;
 }

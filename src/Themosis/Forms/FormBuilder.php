@@ -20,19 +20,18 @@ class FormBuilder implements FormBuilderInterface
     }
 
     /**
-     * Parse the "options" used by a field instance.
+     * Validate the "options" used by a field instance.
      *
      * @param array $options
      *
      * @return array
      */
-    protected function parseOptions(array $options, FieldTypeInterface $field)
+    protected function validateOptions(array $options, FieldTypeInterface $field)
     {
-        $allowed = $field->getAllowedOptions();
         $parsed = [];
 
         foreach ($options as $key => $value) {
-            if (! in_array($key, $allowed, true)) {
+            if (! in_array($key, $field->getAllowedOptions(), true)) {
                 throw new \DomainException('The "'.$key.'" option is not allowed on the provided field.');
             }
 
@@ -52,7 +51,7 @@ class FormBuilder implements FormBuilderInterface
      */
     public function add(FieldTypeInterface $field, array $options = []): FormBuilderInterface
     {
-        $opts = $this->parseOptions(array_merge($field->getDefaultOptions(), $options), $field);
+        $opts = $this->validateOptions(array_merge($field->getDefaultOptions(), $options), $field);
         $field->setOptions($opts);
 
         // Check if section instance already exists on the form.
@@ -65,6 +64,9 @@ class FormBuilder implements FormBuilderInterface
             // the field to it right after.
             $section = new Section($field->getOptions('group'));
         }
+
+        // Setup group/section default view.
+        $section->setView('form.group');
 
         // Add the field first to section instance.
         // Then pass both objects to the repository.

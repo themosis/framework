@@ -15,23 +15,6 @@ interface FormInterface
     public function render(): string;
 
     /**
-     * Set the form prefix. If fields are attached to the form,
-     * all fields are updated with the given prefix.
-     *
-     * @param string $prefix
-     *
-     * @return FormInterface
-     */
-    public function setPrefix(string $prefix): FormInterface;
-
-    /**
-     * Return the form prefix.
-     *
-     * @return string
-     */
-    public function getPrefix(): string;
-
-    /**
      * Return the form repository instance.
      *
      * @return FormRepositoryInterface
@@ -89,4 +72,21 @@ interface FormInterface
      * @return string
      */
     public function getView(): string;
+
+    /**
+     * Indicates if the form has been rendered or not.
+     *
+     * @return bool
+     */
+    public function isRendered(): bool;
+
+    /**
+     * Set form group view file.
+     *
+     * @param string $view
+     * @param string $group
+     *
+     * @return FormInterface
+     */
+    public function setGroupView(string $view, string $group = 'default'): FormInterface;
 }

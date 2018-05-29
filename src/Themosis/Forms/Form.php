@@ -2,6 +2,7 @@
 
 namespace Themosis\Forms;
 
+use DomainException;
 use Illuminate\Contracts\Support\MessageBag;
 use Illuminate\Contracts\Validation\Factory as ValidationFactoryInterface;
 use Illuminate\Contracts\View\Factory as ViewFactoryInterface;
@@ -15,7 +16,7 @@ use Themosis\Forms\Contracts\FormRepositoryInterface;
  *
  * @package Themosis\Forms
  */
-class Form implements FormInterface
+class Form implements FormInterface, FieldTypeInterface
 {
     /**
      * @var string
@@ -56,6 +57,46 @@ class Form implements FormInterface
      */
     protected $view = 'form.default';
 
+    /**
+     * Indicates if form is rendered.
+     *
+     * @var bool
+     */
+    protected $rendered = false;
+
+    /**
+     * Form options.
+     *
+     * @var array
+     */
+    protected $options;
+
+    /**
+     * List of allowed options on a form instance.
+     *
+     * @var array
+     */
+    protected $allowedOptions = [
+        'name',
+        'attributes'
+    ];
+
+    /**
+     * List of default form options.
+     *
+     * @var array
+     */
+    protected $defaultOptions = [
+        'attributes' => []
+    ];
+
+    /**
+     * Form "name" attribute value without prefix.
+     *
+     * @var string
+     */
+    protected $basename;
+
     public function __construct(
         FormRepositoryInterface $repository,
         ValidationFactoryInterface $validation,
@@ -82,9 +123,9 @@ class Form implements FormInterface
      *
      * @param string $prefix
      *
-     * @return FormInterface
+     * @return FieldTypeInterface
      */
-    public function setPrefix(string $prefix): FormInterface
+    public function setPrefix(string $prefix): FieldTypeInterface
     {
         $this->prefix = $prefix;
 
@@ -245,7 +286,13 @@ class Form implements FormInterface
      */
     public function render(): string
     {
-        return $this->viewer->make($this->getView(), $this->getFormData())->render();
+        $view = $this->viewer->make($this->getView(), $this->getFormData());
+
+        // Indicates that the form has been rendered at least once.
+        // Then return its content.
+        $this->rendered = true;
+
+        return $view->render();
     }
 
     /**
@@ -255,10 +302,33 @@ class Form implements FormInterface
      */
     protected function getFormData(): array
     {
-        // Form should have FormGroup instances containing
-        // associated Fields
-        // FormGroup should have a "View File" name associated to.
-        return [];
+        // Only provide the form instance
+        // to its view under the private
+        // variable "$__form".
+        return [
+            '__form' => $this
+        ];
+    }
+
+    /**
+     * Set form group view file.
+     *
+     * @param string $view
+     * @param string $group
+     *
+     * @return FormInterface
+     */
+    public function setGroupView(string $view, string $group = 'default'): FormInterface
+    {
+        // Verify that the form has the mentioned group.
+        // If not, throw an error.
+        if (! $this->repository()->hasGroup($group)) {
+            throw new DomainException('You cannot change the view of an undefined form group.');
+        }
+
+        $this->repository()->getGroup($group)->setView($view);
+
+        return $this;
     }
 
     /**
@@ -283,5 +353,128 @@ class Form implements FormInterface
     public function getView(): string
     {
         return $this->view;
+    }
+
+    /**
+     * Indicates if the form has been rendered or not.
+     *
+     * @return bool
+     */
+    public function isRendered(): bool
+    {
+        return $this->rendered;
+    }
+
+    /**
+     * Validate form options.
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function validateOptions(array $options)
+    {
+        $validated = [];
+
+        foreach ($options as $name => $option) {
+            if (! in_array($name, $this->getAllowedOptions())) {
+                throw new DomainException('The "'.$name.'" option is not allowed on the provided form.');
+            }
+
+            $validated[$name] = $option;
+        }
+
+        return $validated;
+    }
+
+    /**
+     * Set form options.
+     *
+     * @param array $options
+     *
+     * @return FieldTypeInterface
+     */
+    public function setOptions(array $options): FieldTypeInterface
+    {
+        $this->validateOptions($options);
+        $this->options = array_merge($this->getDefaultOptions(), $this->options, $options);
+
+        return $this;
+    }
+
+    /**
+     * Return form options.
+     *
+     * @param string $optionKey
+     *
+     * @return array
+     */
+    public function getOptions(string $optionKey = '')
+    {
+        return $this->options[$optionKey] ?? $this->options;
+    }
+
+    /**
+     * Get the form "name" attribute value.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->options['name'] ?? '';
+    }
+
+    /**
+     * getName() method alias.
+     *
+     * @return string
+     */
+    public function getBaseName(): string
+    {
+        return $this->getName();
+    }
+
+    /**
+     * Return the form attributes.
+     *
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->getOptions('attributes');
+    }
+
+    /**
+     * Set the form attributes.
+     *
+     * @param array $attributes
+     *
+     * @return FieldTypeInterface
+     */
+    public function setAttributes(array $attributes)
+    {
+        $this->options['attributes'] = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * Return the list of default options.
+     *
+     * @return array
+     */
+    public function getDefaultOptions(): array
+    {
+        return $this->defaultOptions;
+    }
+
+    /**
+     * Return allowed options for the form.
+     *
+     * @return array
+     */
+    public function getAllowedOptions(): array
+    {
+        return $this->allowedOptions;
     }
 }
