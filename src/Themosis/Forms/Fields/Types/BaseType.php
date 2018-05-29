@@ -23,7 +23,10 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         'group',
         'rules',
         'messages',
-        'placeholder'
+        'placeholder',
+        'attributes',
+        'label',
+        'label_attr'
     ];
 
     /**
@@ -34,7 +37,9 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     protected $defaultOptions = [
         'group' => 'default',
         'rules' => [],
-        'messages' => []
+        'messages' => [],
+        'attributes' => [],
+        'label_attr' => []
     ];
 
     /**
@@ -77,6 +82,13 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     protected $placeholder;
 
     /**
+     * The field label display title.
+     *
+     * @var string
+     */
+    protected $label;
+
+    /**
      * BaseType constructor.
      *
      * @param string $name
@@ -103,6 +115,9 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
 
         // Setup default placeholder.
         $this->defaultOptions['placeholder'] = $this->placeholder ?? $this->getBaseName();
+
+        // Setup default label.
+        $this->defaultOptions['label'] = $this->label ?? ucfirst(str_replace(['-', '_'], ' ', $this->getBaseName()));
 
         return $this->defaultOptions;
     }
@@ -145,9 +160,36 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
             throw new \InvalidArgumentException('The "name" option can not be overridden.');
         }
 
-        $this->options = array_merge($this->getDefaultOptions(), $this->options, $options);
+        $this->options = $this->parseOptions(array_merge(
+            $this->getDefaultOptions(),
+            $this->options,
+            $options
+        ));
 
         return $this;
+    }
+
+    /**
+     * Parse and setup some default options if not set.
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function parseOptions(array $options)
+    {
+        // Set a default "id" attribute. This attribute can be used on the field
+        // and to its associated label as the "for" attribute value if not set.
+        if (! isset($options['attributes']['id'])) {
+            $options['attributes']['id'] = $this->getName().'_field';
+        }
+
+        // Set the "for" attribute automatically on the label attributes property.
+        if (! isset($options['label_attr']['for'])) {
+            $options['label_attr']['for'] = $options['attributes']['id'];
+        }
+
+        return $options;
     }
 
     /**

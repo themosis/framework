@@ -255,14 +255,41 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory();
 
         $form = $factory->make()
-            ->add(new TextType('firstname'))
-            ->add(new EmailType('email'))
+            ->add($fn = new TextType('firstname'), [
+                'attributes' => [
+                    'class' => 'field branding',
+                    'data-type' => 'text',
+                    'required',
+                    'id' => 'custom-id'
+                ]
+            ])
+            ->add($em = new EmailType('email'), [
+                'label' => 'Email Address',
+                'label_attr' => [
+                    'class' => 'label'
+                ]
+            ])
             ->get();
 
         // Test form "data" only and not the output
-        $this->assertEquals(
-            $this->viewFactory->make('form.default')->render(),
-            $form->render()
-        );
+        $this->assertEquals(1, count($form->repository()->getGroups()));
+        $this->assertEquals([
+            'class' => 'field branding',
+            'data-type' => 'text',
+            'required',
+            'id' => 'custom-id'
+        ], $fn->getOptions('attributes'));
+        $this->assertEquals([
+            'id' => 'th_email_field'
+        ], $em->getOptions('attributes'));
+        $this->assertEquals('Firstname', $fn->getOptions('label'));
+        $this->assertEquals('Email Address', $em->getOptions('label'));
+        $this->assertEquals([
+            'for' => 'custom-id'
+        ], $fn->getOptions('label_attr'));
+        $this->assertEquals([
+            'class' => 'label',
+            'for' => 'th_email_field'
+        ], $em->getOptions('label_attr'));
     }
 }
