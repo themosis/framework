@@ -23,6 +23,7 @@ use Themosis\Forms\Fields\Types\TextType;
 use Themosis\Forms\FormFactory;
 use Themosis\Support\Contracts\SectionInterface;
 use Themosis\Tests\Forms\Entities\ContactEntity;
+use Themosis\Tests\Forms\Forms\ContactForm;
 
 class FormCreationTest extends TestCase
 {
@@ -339,5 +340,16 @@ class FormCreationTest extends TestCase
         $this->assertFalse($form->isRendered());
         $form->render();
         $this->assertTrue($form->isRendered());
+    }
+
+    public function testCreateFormFromAClass()
+    {
+        $class = new ContactForm();
+        $form = $class->build($this->getFormFactory())->get();
+
+        $this->assertInstanceOf(FormInterface::class, $form);
+        $this->assertEquals(1, count($form->repository()->getGroups()));
+        $this->assertInstanceOf(FieldTypeInterface::class, $form->repository()->getField('name'));
+        $this->assertInstanceOf(FieldTypeInterface::class, $form->repository()->getField('email'));
     }
 }
