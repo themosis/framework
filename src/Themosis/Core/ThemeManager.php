@@ -109,8 +109,17 @@ class ThemeManager
             return;
         }
 
+        $paths = $this->config->get('theme.views', []);
+
+        if (empty($paths)) {
+            return;
+        }
+
         $factory = $this->app->make('view');
 
-        $factory->addLocation($this->dirPath.'/views');
+        foreach ($paths as $path) {
+            $dir = trim($path, '\/');
+            $factory->addLocation($this->dirPath.'/'.$dir);
+        }
     }
 }
