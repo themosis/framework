@@ -3,17 +3,11 @@
 namespace Themosis\Forms\Contracts;
 
 use Illuminate\Contracts\Support\MessageBag;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 
 interface FormInterface
 {
-    /**
-     * Output the form as HTML.
-     *
-     * @return string
-     */
-    public function render(): string;
-
     /**
      * Return the form repository instance.
      *
@@ -58,29 +52,6 @@ interface FormInterface
     public function error(string $name, bool $first = false);
 
     /**
-     * Specify the view file to use by the form.
-     *
-     * @param string $view
-     *
-     * @return FormInterface
-     */
-    public function setView(string $view): FormInterface;
-
-    /**
-     * Return the view instance used by the form.
-     *
-     * @return string
-     */
-    public function getView(): string;
-
-    /**
-     * Indicates if the form has been rendered or not.
-     *
-     * @return bool
-     */
-    public function isRendered(): bool;
-
-    /**
      * Set form group view file.
      *
      * @param string $view
@@ -89,4 +60,11 @@ interface FormInterface
      * @return FormInterface
      */
     public function setGroupView(string $view, string $group = 'default'): FormInterface;
+
+    /**
+     * Get the view factory instance.
+     *
+     * @return Factory
+     */
+    public function getViewer(): Factory;
 }

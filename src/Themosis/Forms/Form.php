@@ -341,9 +341,9 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      *
      * @param string $view
      *
-     * @return FormInterface
+     * @return FieldTypeInterface
      */
-    public function setView(string $view): FormInterface
+    public function setView(string $view): FieldTypeInterface
     {
         $this->view = $view;
 
@@ -358,6 +358,16 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function getView(): string
     {
         return $this->view;
+    }
+
+    /**
+     * Get the view factory instance.
+     *
+     * @return ViewFactoryInterface
+     */
+    public function getViewer(): ViewFactoryInterface
+    {
+        return $this->viewer;
     }
 
     /**

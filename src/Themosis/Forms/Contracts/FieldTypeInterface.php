@@ -5,6 +5,13 @@ namespace Themosis\Forms\Contracts;
 interface FieldTypeInterface
 {
     /**
+     * Output the entity as HTML.
+     *
+     * @return string
+     */
+    public function render(): string;
+
+    /**
      * Set the field options.
      *
      * @param array $options
@@ -91,4 +98,27 @@ interface FieldTypeInterface
      * @return array
      */
     public function getAllowedOptions(): array;
+
+    /**
+     * Specify the view file to use by the entity.
+     *
+     * @param string $view
+     *
+     * @return FieldTypeInterface
+     */
+    public function setView(string $view): FieldTypeInterface;
+
+    /**
+     * Return the view instance used by the entity.
+     *
+     * @return string
+     */
+    public function getView(): string;
+
+    /**
+     * Indicates if the entity has been rendered or not.
+     *
+     * @return bool
+     */
+    public function isRendered(): bool;
 }

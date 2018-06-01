@@ -3,6 +3,7 @@
 namespace Themosis\Forms\Fields\Types;
 
 use Themosis\Forms\Contracts\FieldTypeInterface;
+use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Html\HtmlBuilder;
 
 abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable, FieldTypeInterface
@@ -87,6 +88,27 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * @var string
      */
     protected $label;
+
+    /**
+     * The form instance handling the field.
+     *
+     * @var FormInterface
+     */
+    protected $form;
+
+    /**
+     * Indicates if form is rendered.
+     *
+     * @var bool
+     */
+    protected $rendered = false;
+
+    /**
+     * The field view.
+     *
+     * @var string
+     */
+    protected $view;
 
     /**
      * BaseType constructor.
@@ -288,6 +310,82 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         $this->options['attributes'] = $attributes;
 
         return $this;
+    }
+
+    /**
+     * Setup the form instance handling the field.
+     *
+     * @param FormInterface $form
+     *
+     * @return FieldTypeInterface
+     */
+    public function setForm(FormInterface $form)
+    {
+        $this->form = $form;
+
+        return $this;
+    }
+
+    /**
+     * Output the entity as HTML.
+     *
+     * @return string
+     */
+    public function render(): string
+    {
+        $view = $this->form->getViewer()->make($this->getView(), $this->getFieldData());
+
+        // Indicates that the form has been rendered at least once.
+        // Then return its content.
+        $this->rendered = true;
+
+        return $view->render();
+    }
+
+    /**
+     * Generate and get field data.
+     *
+     * @return array
+     */
+    protected function getFieldData(): array
+    {
+        return [
+            '__field' => $this
+        ];
+    }
+
+    /**
+     * Specify the view file to use by the form.
+     *
+     * @param string $view
+     *
+     * @return FieldTypeInterface
+     */
+    public function setView(string $view): FieldTypeInterface
+    {
+        $this->view = $view;
+
+        return $this;
+    }
+
+    /**
+     * Return the view instance used by the entity.
+     *
+     * @return string
+     */
+    public function getView(): string
+    {
+        return $this->view;
+    }
+
+    /**
+     * Indicates if the entity has been rendered or not.
+     *
+     * @return bool
+     */
+    public function isRendered(): bool
+    {
+        return $this->rendered;
     }
 
     /**
