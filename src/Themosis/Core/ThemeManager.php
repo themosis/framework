@@ -60,6 +60,8 @@ class ThemeManager
 
         $this->registerThemeServicesProviders();
 
+        $this->setThemeViews();
+
         return $this;
     }
 
@@ -96,5 +98,19 @@ class ThemeManager
         foreach ($providers as $provider) {
             $this->app->register(new $provider($this->app));
         }
+    }
+
+    /**
+     * Register theme views path.
+     */
+    protected function setThemeViews()
+    {
+        if (! $this->app->has('view')) {
+            return;
+        }
+
+        $factory = $this->app->make('view');
+
+        $factory->addLocation($this->dirPath.'/views');
     }
 }
