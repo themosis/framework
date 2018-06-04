@@ -123,9 +123,34 @@ interface FieldTypeInterface
     public function isRendered(): bool;
 
     /**
+     * Set the field transformer.
+     *
+     * @param DataTransformerInterface $transformer
+     *
+     * @return FieldTypeInterface
+     */
+    public function setTransformer(DataTransformerInterface $transformer): FieldTypeInterface;
+
+    /**
+     * Set the field raw value.
+     *
+     * @param string|array $value
+     *
+     * @return FieldTypeInterface
+     */
+    public function setValue($value): FieldTypeInterface;
+
+    /**
      * Retrieve the field "normalized" value.
      *
      * @return mixed
      */
     public function getValue();
+
+    /**
+     * Setup the field behavior.
+     *
+     * @return FieldTypeInterface
+     */
+    public function build(): FieldTypeInterface;
 }

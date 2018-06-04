@@ -368,11 +368,18 @@ class FormCreationTest extends TestCase
         ]);
 
         $this->assertFalse($form->isValid());
+        $this->assertEquals('', $name->getValue());
+        $this->assertEquals('', $name->getRawValue());
+        $this->assertEquals('', $email->getValue());
+        $this->assertEquals('', $email->getRawValue());
 
         $form->handleRequest($request);
 
         $this->assertTrue($form->isValid());
 
         $this->assertEquals('Marcel', $name->getValue());
+        $this->assertEquals('Marcel', $name->getRawValue());
+        $this->assertEquals('marcel@domain.com', $email->getValue());
+        $this->assertEquals('marcel@domain.com', $email->getRawValue());
     }
 }

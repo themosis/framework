@@ -2,6 +2,7 @@
 
 namespace Themosis\Forms\Fields\Types;
 
+use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Html\HtmlBuilder;
@@ -109,6 +110,18 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * @var string
      */
     protected $view;
+
+    /**
+     * @var DataTransformerInterface
+     */
+    protected $transformer;
+
+    /**
+     * The "normalized" field value.
+     *
+     * @var mixed
+     */
+    protected $value;
 
     /**
      * BaseType constructor.
@@ -389,14 +402,51 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     }
 
     /**
-     * Generic field value getter.
+     * Set the field transformer.
+     *
+     * @param DataTransformerInterface $transformer
+     *
+     * @return FieldTypeInterface
+     */
+    public function setTransformer(DataTransformerInterface $transformer): FieldTypeInterface
+    {
+        $this->transformer = $transformer;
+
+        return $this;
+    }
+
+    /**
+     * Set the value property of the field.
+     *
+     * @param array|string $value
+     *
+     * @return FieldTypeInterface
+     */
+    public function setValue($value): FieldTypeInterface
+    {
+        $this->value = $this->transformer->transform($value);
+
+        return $this;
+    }
+
+    /**
      * Retrieve the field "normalized" value.
      *
      * @return mixed
      */
     public function getValue()
     {
-        // TODO: Implement value() method.
+        return $this->value;
+    }
+
+    /**
+     * Retrieve the field "raw" value.
+     *
+     * @return mixed
+     */
+    public function getRawValue()
+    {
+        return $this->transformer->reverseTransform($this->value);
     }
 
     /**

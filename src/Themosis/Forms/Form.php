@@ -7,6 +7,8 @@ use Illuminate\Contracts\Support\MessageBag;
 use Illuminate\Contracts\Validation\Factory as ValidationFactoryInterface;
 use Illuminate\Contracts\View\Factory as ViewFactoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Contracts\FormRepositoryInterface;
@@ -166,12 +168,17 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     {
         $fields = $this->repository->all();
 
-        $this->validator = $this->validation->make(
+        $this->validator = $validator = $this->validation->make(
             $request->all(),
             $this->getFormRules($fields),
             $this->getFormMessages($fields),
             $this->getFormPlaceholders($fields)
         );
+
+        array_walk($fields, function ($field) use ($validator) {
+            /** @var $field FieldTypeInterface */
+            $field->setValue(Arr::get($this->validator->getData(), $field->getName()));
+        });
 
         $this->validator->validate();
 
@@ -537,8 +544,47 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         return $this->allowedOptions;
     }
 
+    /**
+     * @inheritdoc
+     *
+     * @param DataTransformerInterface $transformer
+     *
+     * @return FieldTypeInterface
+     */
+    public function setTransformer(DataTransformerInterface $transformer): FieldTypeInterface
+    {
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @return FieldTypeInterface
+     */
+    public function build(): FieldTypeInterface
+    {
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @param array|string $value
+     *
+     * @return FieldTypeInterface
+     */
+    public function setValue($value): FieldTypeInterface
+    {
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @return mixed|null
+     */
     public function getValue()
     {
-        // TODO: Implement value() method.
+        return null;
     }
 }

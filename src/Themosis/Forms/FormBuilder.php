@@ -56,6 +56,7 @@ class FormBuilder implements FormBuilderInterface
         $opts = $this->validateOptions(array_merge($field->getDefaultOptions(), $options), $field);
         $field->setOptions($opts);
         $field->setForm($this->form);
+        $field->build();
 
         // Check if section instance already exists on the form.
         // If not, create a new section instance.
