@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Translation\FileLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Factory;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\View\Engines\CompilerEngine;
 use Illuminate\View\Engines\EngineResolver;
@@ -257,19 +256,17 @@ class FormCreationTest extends TestCase
             'th_email' => 'marcel@domain.com'
         ]);
 
-        try {
-            $form->handleRequest($request);
-        } catch (ValidationException $exception) {
-            $this->assertFalse($form->isValid());
-            $this->assertEquals(
-                'The firstname can only have 5 characters maximum.',
-                $form->error('firstname', true)
-            );
-            $this->assertEquals(
-                'The enterprise name is required.',
-                $form->error('company', true)
-            );
-        }
+        $form->handleRequest($request);
+
+        $this->assertFalse($form->isValid());
+        $this->assertEquals(
+            'The firstname can only have 5 characters maximum.',
+            $form->error('firstname', true)
+        );
+        $this->assertEquals(
+            'The enterprise name is required.',
+            $form->error('company', true)
+        );
     }
 
     public function testFormHasAllDataForRendering()
@@ -376,10 +373,37 @@ class FormCreationTest extends TestCase
         $form->handleRequest($request);
 
         $this->assertTrue($form->isValid());
-
         $this->assertEquals('Marcel', $name->getValue());
         $this->assertEquals('Marcel', $name->getRawValue());
         $this->assertEquals('marcel@domain.com', $email->getValue());
         $this->assertEquals('marcel@domain.com', $email->getRawValue());
+    }
+
+    public function testFormValuesOnFailingSubmission()
+    {
+        $factory = $this->getFormFactory();
+
+        $form = $factory->make()
+            ->add($name = new TextType('name'), [
+                'rules' => 'min:5'
+            ])
+            ->add($email = new EmailType('email'), [
+                'rules' => 'email'
+            ])
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_name' => 'xxx',
+            'th_email' => 'notanemail'
+        ]);
+
+        $this->assertEquals('', $name->getValue());
+        $this->assertFalse($form->isValid());
+
+        $form->handleRequest($request);
+
+        $this->assertFalse($form->isValid());
+        $this->assertEquals('', $name->getValue());
+        $this->assertEquals('', $email->getValue());
     }
 }

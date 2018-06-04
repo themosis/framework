@@ -175,12 +175,12 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
             $this->getFormPlaceholders($fields)
         );
 
-        array_walk($fields, function ($field) use ($validator) {
-            /** @var $field FieldTypeInterface */
-            $field->setValue(Arr::get($this->validator->getData(), $field->getName()));
-        });
+        $data = $this->validator->valid();
 
-        $this->validator->validate();
+        array_walk($fields, function ($field) use ($data) {
+            /** @var $field FieldTypeInterface */
+            $field->setValue(Arr::get($data, $field->getName()));
+        });
 
         return $this;
     }
