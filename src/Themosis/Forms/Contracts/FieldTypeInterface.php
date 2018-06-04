@@ -121,4 +121,11 @@ interface FieldTypeInterface
      * @return bool
      */
     public function isRendered(): bool;
+
+    /**
+     * Retrieve the field "normalized" value.
+     *
+     * @return mixed
+     */
+    public function getValue();
 }

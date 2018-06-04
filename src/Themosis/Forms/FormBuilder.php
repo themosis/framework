@@ -52,7 +52,7 @@ class FormBuilder implements FormBuilderInterface
      */
     public function add(FieldTypeInterface $field, array $options = []): FormBuilderInterface
     {
-        /** @var FieldTypeInterface|BaseType $field */
+        /** @var BaseType $field */
         $opts = $this->validateOptions(array_merge($field->getDefaultOptions(), $options), $field);
         $field->setOptions($opts);
         $field->setForm($this->form);

@@ -389,6 +389,17 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     }
 
     /**
+     * Generic field value getter.
+     * Retrieve the field "normalized" value.
+     *
+     * @return mixed
+     */
+    public function getValue()
+    {
+        // TODO: Implement value() method.
+    }
+
+    /**
      * Whether a offset exists.
      *
      * @link http://php.net/manual/en/arrayaccess.offsetexists.php

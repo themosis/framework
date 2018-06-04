@@ -352,4 +352,27 @@ class FormCreationTest extends TestCase
         $this->assertInstanceOf(FieldTypeInterface::class, $form->repository()->getField('name'));
         $this->assertInstanceOf(FieldTypeInterface::class, $form->repository()->getField('email'));
     }
+
+    public function testFormValuesOnSuccessfulSubmission()
+    {
+        $factory = $this->getFormFactory();
+
+        $form = $factory->make()
+            ->add($name = new TextType('name'))
+            ->add($email = new EmailType('email'))
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_name' => 'Marcel',
+            'th_email' => 'marcel@domain.com'
+        ]);
+
+        $this->assertFalse($form->isValid());
+
+        $form->handleRequest($request);
+
+        $this->assertTrue($form->isValid());
+
+        $this->assertEquals('Marcel', $name->getValue());
+    }
 }

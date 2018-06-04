@@ -247,6 +247,10 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     public function isValid(): bool
     {
+        if (is_null($this->validator)) {
+            return false;
+        }
+
         return $this->validator->passes();
     }
 
@@ -531,5 +535,10 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function getAllowedOptions(): array
     {
         return $this->allowedOptions;
+    }
+
+    public function getValue()
+    {
+        // TODO: Implement value() method.
     }
 }
