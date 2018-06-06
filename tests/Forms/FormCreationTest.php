@@ -18,6 +18,7 @@ use Themosis\Core\Application;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Fields\Types\EmailType;
+use Themosis\Forms\Fields\Types\NumberType;
 use Themosis\Forms\Fields\Types\PasswordType;
 use Themosis\Forms\Fields\Types\TextareaType;
 use Themosis\Forms\Fields\Types\TextType;
@@ -418,13 +419,15 @@ class FormCreationTest extends TestCase
             ->add($email = new EmailType('email'))
             ->add($message = new TextareaType('message'))
             ->add($pass = new PasswordType('secret'))
+            ->add($num = new NumberType('age'))
             ->get();
 
         $request = Request::create('/', 'POST', [
             'th_name' => 'Anyone',
             'th_email' => 'any@one.com',
             'th_message' => 'A very long message',
-            'th_secret' => '1234'
+            'th_secret' => '1234',
+            'th_age' => 32
         ]);
 
         $form->handleRequest($request);
@@ -434,5 +437,8 @@ class FormCreationTest extends TestCase
         $this->assertEquals('any@one.com', $email->getValue());
         $this->assertEquals('A very long message', $message->getValue());
         $this->assertEquals('1234', $pass->getValue());
+        $this->assertEquals('32', $num->getValue());
+        $this->assertTrue(is_string($num->getValue()));
+        $this->assertTrue(is_numeric($num->getValue()));
     }
 }

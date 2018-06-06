@@ -103,6 +103,13 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     protected $basename;
 
+    /**
+     * Form locale (intl).
+     *
+     * @var string
+     */
+    protected $locale;
+
     public function __construct(
         FormRepositoryInterface $repository,
         ValidationFactoryInterface $validation,
@@ -542,6 +549,30 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function getAllowedOptions(): array
     {
         return $this->allowedOptions;
+    }
+
+    /**
+     * Set the form locale.
+     *
+     * @param string $locale
+     *
+     * @return FormInterface
+     */
+    public function setLocale(string $locale): FormInterface
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Return the form locale.
+     *
+     * @return string
+     */
+    public function getLocale(): string
+    {
+        return $this->locale;
     }
 
     /**

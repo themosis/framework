@@ -35,10 +35,18 @@ class FormFactory implements FormFactoryInterface
         'method' => 'post'
     ];
 
-    public function __construct(ValidationFactoryInterface $validation, ViewFactoryInterface $viewer)
+    /**
+     * Form locale.
+     *
+     * @var string
+     */
+    protected $locale;
+
+    public function __construct(ValidationFactoryInterface $validation, ViewFactoryInterface $viewer, $locale = 'en_US')
     {
         $this->validation = $validation;
         $this->viewer = $viewer;
+        $this->locale = $locale;
     }
 
     /**
@@ -55,6 +63,7 @@ class FormFactory implements FormFactoryInterface
         $form = new Form(new FormRepository(), $this->validation, $this->viewer);
         $form->setAttributes($this->attributes);
         $form->setOptions($options);
+        $form->setLocale($this->locale);
 
         $this->builder = new $builder($form);
 
