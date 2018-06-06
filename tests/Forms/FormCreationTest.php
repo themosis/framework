@@ -440,9 +440,10 @@ class FormCreationTest extends TestCase
         $this->assertEquals('any@one.com', $email->getValue());
         $this->assertEquals('A very long message', $message->getValue());
         $this->assertEquals('1234', $pass->getValue());
-        $this->assertEquals('32', $num->getValue());
+        $this->assertEquals(32, $num->getValue());
         $this->assertTrue(is_string($num->getValue()));
-        $this->assertTrue(is_numeric($num->getValue()));
+        $this->assertTrue(32 === $num->getRawValue());
+        $this->assertTrue(is_int($num->getRawValue()));
         $this->assertEquals('24,99', $price->getValue());
         $this->assertFalse(is_numeric($price->getValue()));
         $this->assertEquals(24.99, $price->getRawValue());

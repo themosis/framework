@@ -3,7 +3,7 @@
 namespace Themosis\Forms\Fields\Types;
 
 use Themosis\Forms\Contracts\FieldTypeInterface;
-use Themosis\Forms\Transformers\NumberToLocalizedStringTransformer;
+use Themosis\Forms\Transformers\IntegerToLocalizedStringTransformer;
 
 class IntegerType extends BaseType
 {
@@ -21,7 +21,7 @@ class IntegerType extends BaseType
      */
     public function build(): FieldTypeInterface
     {
-        $this->setTransformer(new NumberToLocalizedStringTransformer($this->form->getLocale()));
+        $this->setTransformer(new IntegerToLocalizedStringTransformer($this->form->getLocale()));
 
         return $this;
     }
