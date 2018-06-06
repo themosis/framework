@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
+use Themosis\Forms\Fields\Types\CheckboxType;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\IntegerType;
 use Themosis\Forms\Fields\Types\NumberType;
@@ -422,6 +423,8 @@ class FormCreationTest extends TestCase
             ->add($pass = new PasswordType('secret'))
             ->add($num = new IntegerType('age'))
             ->add($price = new NumberType('price'))
+            ->add($enable = new CheckboxType('enable'))
+            ->add($subscribe = new CheckboxType('subscribe'))
             ->get();
 
         $request = Request::create('/', 'POST', [
@@ -430,7 +433,9 @@ class FormCreationTest extends TestCase
             'th_message' => 'A very long message',
             'th_secret' => '1234',
             'th_age' => 32,
-            'th_price' => 24.99
+            'th_price' => 24.99,
+            'th_enable' => 'yes',
+            'th_subscribe' => 'no'
         ]);
 
         $form->handleRequest($request);
@@ -447,5 +452,9 @@ class FormCreationTest extends TestCase
         $this->assertEquals('24,99', $price->getValue());
         $this->assertFalse(is_numeric($price->getValue()));
         $this->assertEquals(24.99, $price->getRawValue());
+        $this->assertTrue($enable->getValue());
+        $this->assertEquals('on', $enable->getRawValue());
+        $this->assertFalse($subscribe->getValue());
+        $this->assertEquals('off', $subscribe->getRawValue());
     }
 }
