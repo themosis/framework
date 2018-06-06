@@ -18,6 +18,8 @@ use Themosis\Core\Application;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Fields\Types\EmailType;
+use Themosis\Forms\Fields\Types\PasswordType;
+use Themosis\Forms\Fields\Types\TextareaType;
 use Themosis\Forms\Fields\Types\TextType;
 use Themosis\Forms\FormFactory;
 use Themosis\Support\Contracts\SectionInterface;
@@ -405,5 +407,32 @@ class FormCreationTest extends TestCase
         $this->assertFalse($form->isValid());
         $this->assertEquals('', $name->getValue());
         $this->assertEquals('', $email->getValue());
+    }
+
+    public function testFormFieldTypesOnSuccessfulSubmission()
+    {
+        $factory = $this->getFormFactory();
+
+        $form = $factory->make()
+            ->add($name = new TextType('name'))
+            ->add($email = new EmailType('email'))
+            ->add($message = new TextareaType('message'))
+            ->add($pass = new PasswordType('secret'))
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_name' => 'Anyone',
+            'th_email' => 'any@one.com',
+            'th_message' => 'A very long message',
+            'th_secret' => '1234'
+        ]);
+
+        $form->handleRequest($request);
+
+        $this->assertTrue($form->isValid());
+        $this->assertEquals('Anyone', $name->getValue());
+        $this->assertEquals('any@one.com', $email->getValue());
+        $this->assertEquals('A very long message', $message->getValue());
+        $this->assertEquals('1234', $pass->getValue());
     }
 }

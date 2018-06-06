@@ -14,6 +14,11 @@ class TextType extends BaseType implements DataTransformerInterface
      */
     protected $view = 'types.text';
 
+    /**
+     * Setup the field.
+     *
+     * @return FieldTypeInterface
+     */
     public function build(): FieldTypeInterface
     {
         $this->setTransformer($this);

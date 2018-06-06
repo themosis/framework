@@ -168,7 +168,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     {
         $fields = $this->repository->all();
 
-        $this->validator = $validator = $this->validation->make(
+        $this->validator = $this->validation->make(
             $request->all(),
             $this->getFormRules($fields),
             $this->getFormMessages($fields),
