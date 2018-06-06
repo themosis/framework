@@ -40,7 +40,14 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
 
         $formatter = $this->getFormatter();
 
-        return $formatter->format($data);
+        $value =  $formatter->format($data);
+
+        if (intl_is_failure($formatter->getErrorCode())) {
+            throw new DataTransformerException($formatter->getErrorMessage());
+        }
+
+        // Convert fixed spaces to normal ones
+        return str_replace("\xc2\xa0", ' ', $value);
     }
 
     /**
@@ -48,11 +55,25 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
      *
      * @param string $data
      *
+     * @throws DataTransformerException
+     *
      * @return int|float
      */
     public function reverseTransform($data)
     {
-        return $data;
+        if (is_null($data)) {
+            return '';
+        }
+
+        $formatter = $this->getFormatter();
+
+        $value = $formatter->parse($data);
+
+        if (intl_is_failure($formatter->getErrorCode())) {
+            throw new DataTransformerException($formatter->getErrorMessage());
+        }
+
+        return $value;
     }
 
     /**

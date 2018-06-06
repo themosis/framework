@@ -18,6 +18,7 @@ use Themosis\Core\Application;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Fields\Types\EmailType;
+use Themosis\Forms\Fields\Types\IntegerType;
 use Themosis\Forms\Fields\Types\NumberType;
 use Themosis\Forms\Fields\Types\PasswordType;
 use Themosis\Forms\Fields\Types\TextareaType;
@@ -47,9 +48,9 @@ class FormCreationTest extends TestCase
         return $this->application;
     }
 
-    protected function getValidationFactory()
+    protected function getValidationFactory($locale)
     {
-        $translator = new Translator(new FileLoader(new Filesystem(), ''), 'en');
+        $translator = new Translator(new FileLoader(new Filesystem(), ''), $locale);
 
         return new Factory($translator, $this->getApplication());
     }
@@ -97,9 +98,9 @@ class FormCreationTest extends TestCase
         return $factory;
     }
 
-    protected function getFormFactory()
+    protected function getFormFactory($locale = 'en_US')
     {
-        return new FormFactory($this->getValidationFactory(), $this->getViewFactory());
+        return new FormFactory($this->getValidationFactory($locale), $this->getViewFactory());
     }
 
     public function testCreateNewForm()
@@ -412,14 +413,15 @@ class FormCreationTest extends TestCase
 
     public function testFormFieldTypesOnSuccessfulSubmission()
     {
-        $factory = $this->getFormFactory();
+        $factory = $this->getFormFactory('fr_FR');
 
         $form = $factory->make()
             ->add($name = new TextType('name'))
             ->add($email = new EmailType('email'))
             ->add($message = new TextareaType('message'))
             ->add($pass = new PasswordType('secret'))
-            ->add($num = new NumberType('age'))
+            ->add($num = new IntegerType('age'))
+            ->add($price = new NumberType('price'))
             ->get();
 
         $request = Request::create('/', 'POST', [
@@ -427,7 +429,8 @@ class FormCreationTest extends TestCase
             'th_email' => 'any@one.com',
             'th_message' => 'A very long message',
             'th_secret' => '1234',
-            'th_age' => 32
+            'th_age' => 32,
+            'th_price' => 24.99
         ]);
 
         $form->handleRequest($request);
@@ -440,5 +443,8 @@ class FormCreationTest extends TestCase
         $this->assertEquals('32', $num->getValue());
         $this->assertTrue(is_string($num->getValue()));
         $this->assertTrue(is_numeric($num->getValue()));
+        $this->assertEquals('24,99', $price->getValue());
+        $this->assertFalse(is_numeric($price->getValue()));
+        $this->assertEquals(24.99, $price->getRawValue());
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Contracts\Validation\Factory as ValidationFactoryInterface;
 use Illuminate\Contracts\View\Factory as ViewFactoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Validation\Factory;
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
@@ -119,6 +120,9 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         $this->repository = $repository;
         $this->validation = $validation;
         $this->viewer = $viewer;
+
+        /** @var Factory $validation */
+        $this->setLocale($validation->getTranslator()->getLocale());
     }
 
     /**
