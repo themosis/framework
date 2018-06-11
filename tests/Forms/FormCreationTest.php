@@ -459,7 +459,7 @@ class FormCreationTest extends TestCase
         $this->assertEquals('off', $subscribe->getRawValue());
     }
 
-    public function testFormSuccessfulSubmissionWithChoiceTypeFields()
+    public function testFormWithChoiceTypeFields()
     {
         $factory = $this->getFormFactory();
 
