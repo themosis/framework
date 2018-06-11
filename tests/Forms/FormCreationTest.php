@@ -18,6 +18,7 @@ use Themosis\Core\Application;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Fields\Types\CheckboxType;
+use Themosis\Forms\Fields\Types\ChoiceType;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\IntegerType;
 use Themosis\Forms\Fields\Types\NumberType;
@@ -412,7 +413,7 @@ class FormCreationTest extends TestCase
         $this->assertEquals('', $email->getValue());
     }
 
-    public function testFormFieldTypesOnSuccessfulSubmission()
+    public function testFormBasicFieldTypesOnSuccessfulSubmission()
     {
         $factory = $this->getFormFactory('fr_FR');
 
@@ -456,5 +457,146 @@ class FormCreationTest extends TestCase
         $this->assertEquals('on', $enable->getRawValue());
         $this->assertFalse($subscribe->getValue());
         $this->assertEquals('off', $subscribe->getRawValue());
+    }
+
+    public function testFormSuccessfulSubmissionWithChoiceTypeFields()
+    {
+        $factory = $this->getFormFactory();
+
+        $form = $factory->make()
+            ->add($color = new ChoiceType('colors'), [
+                'choices' => ['red', 'green', 'blue']
+            ])
+            ->add($country = new ChoiceType('country'), [
+                'choices' => [
+                    'Allemagne' => 'de',
+                    'Belgique' => 'be',
+                    'France' => 'fr'
+                ]
+            ])
+            ->add($groupedCountry = new ChoiceType('group_country'), [
+                'choices' => [
+                    'Europe' => [
+                        'Allemagne' => 'de',
+                        'Belgique' => 'be',
+                        'France' => 'fr'
+                    ],
+                    'America' => [
+                        'Canada' => 'ca',
+                        'United States' => 'us',
+                        'Mexico' => 'mx'
+                    ]
+                ]
+            ])
+            ->add($anotherGroupCountry = new ChoiceType('another_country'), [
+                'choices' => [
+                    'Europe' => [
+                        'de',
+                        'be',
+                        'fr'
+                    ],
+                    'America' => [
+                        'ca',
+                        'us',
+                        'mx'
+                    ]
+                ]
+            ])
+            ->add($article = new ChoiceType('article'), [
+                'choices' => [
+                    'Title 1' => 24,
+                    'Title 2' => 456,
+                    'Title XYZ' => 10
+                ]
+            ])
+            ->add($post = new ChoiceType('post'), [
+                'choices' => [
+                    35,
+                    7,
+                    986
+                ]
+            ])
+            ->add($featured = new ChoiceType('featured'), [
+                'choices' => [
+                    'Politics' => [
+                        'Article 23' => 34,
+                        'Article 35' => 78
+                    ],
+                    'Tech' => [
+                        'Article 67' => 89,
+                        'Article 12' => 17
+                    ]
+                ]
+            ])
+            ->get();
+
+        $request = Request::create('/', 'GET', [
+            'th_colors' => 'green'
+        ]);
+
+        $form->handleRequest($request);
+
+        $this->assertEquals([
+            'Red' => 'red',
+            'Green' => 'green',
+            'Blue' => 'blue'
+        ], $color->getOptions('choices')->format()->get());
+
+        $this->assertEquals([
+            'Allemagne' => 'de',
+            'Belgique' => 'be',
+            'France' => 'fr'
+        ], $country->getOptions('choices')->format()->get());
+
+        $this->assertEquals([
+            'Europe' => [
+                'Allemagne' => 'de',
+                'Belgique' => 'be',
+                'France' => 'fr'
+            ],
+            'America' => [
+                'Canada' => 'ca',
+                'United States' => 'us',
+                'Mexico' => 'mx'
+            ]
+        ], $groupedCountry->getOptions('choices')->format()->get());
+
+        $this->assertEquals([
+            'Europe' => [
+                'De' => 'de',
+                'Be' => 'be',
+                'Fr' => 'fr'
+            ],
+            'America' => [
+                'Ca' => 'ca',
+                'Us' => 'us',
+                'Mx' => 'mx'
+            ]
+        ], $anotherGroupCountry->getOptions('choices')->format()->get());
+
+        $this->assertEquals([
+            'Title 1' => 24,
+            'Title 2' => 456,
+            'Title XYZ' => 10
+        ], $article->getOptions('choices')->format()->get());
+
+        $this->assertEquals([
+            '35' => 35,
+            '7' => 7,
+            '986' => 986
+        ], $post->getOptions('choices')->format()->get());
+
+        $this->assertEquals([
+            'Politics' => [
+                'Article 23' => 34,
+                'Article 35' => 78
+            ],
+            'Tech' => [
+                'Article 67' => 89,
+                'Article 12' => 17
+            ]
+        ], $featured->getOptions('choices')->format()->get());
+
+        $this->assertEquals('green', $color->getValue());
     }
 }

@@ -196,7 +196,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         }
 
         $this->options = $this->parseOptions(array_merge(
-            $this->getDefaultOptions(),
+            $this->defaultOptions,
             $this->options,
             $options
         ));
