@@ -13,7 +13,7 @@ class ChoiceType extends BaseType
      *
      * @var string
      */
-    protected $layout;
+    protected $layout = 'select';
 
     public function __construct(string $name)
     {
@@ -84,15 +84,11 @@ class ChoiceType extends BaseType
      */
     protected function setLayout($expanded = false, $multiple = false)
     {
-        $layout = 'select';
-
         if ($expanded && false === $multiple) {
-            $layout = 'radio';
+            $this->layout = 'radio';
         } elseif ($expanded && $multiple) {
-            $layout = 'checkbox';
+            $this->layout = 'checkbox';
         }
-
-        $this->layout = $layout;
 
         return $this;
     }
@@ -104,7 +100,7 @@ class ChoiceType extends BaseType
      */
     public function getLayout()
     {
-        return is_null($this->layout) ? 'select' : $this->layout;
+        return $this->layout;
     }
 
     /**

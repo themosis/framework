@@ -472,7 +472,8 @@ class FormCreationTest extends TestCase
                     'Allemagne' => 'de',
                     'Belgique' => 'be',
                     'France' => 'fr'
-                ]
+                ],
+                'multiple' => true
             ])
             ->add($groupedCountry = new ChoiceType('group_country'), [
                 'choices' => [
@@ -486,7 +487,8 @@ class FormCreationTest extends TestCase
                         'United States' => 'us',
                         'Mexico' => 'mx'
                     ]
-                ]
+                ],
+                'expanded' => true
             ])
             ->add($anotherGroupCountry = new ChoiceType('another_country'), [
                 'choices' => [
@@ -500,7 +502,8 @@ class FormCreationTest extends TestCase
                         'us',
                         'mx'
                     ]
-                ]
+                ],
+                'multiple' => true
             ])
             ->add($article = new ChoiceType('article'), [
                 'choices' => [
@@ -526,7 +529,9 @@ class FormCreationTest extends TestCase
                         'Article 67' => 89,
                         'Article 12' => 17
                     ]
-                ]
+                ],
+                'multiple' => true,
+                'expanded' => true
             ])
             ->get();
 
@@ -541,12 +546,15 @@ class FormCreationTest extends TestCase
             'Green' => 'green',
             'Blue' => 'blue'
         ], $color->getOptions('choices')->format()->get());
+        $this->assertEquals('select', $color->getLayout());
+        $this->assertEquals('green', $color->getValue());
 
         $this->assertEquals([
             'Allemagne' => 'de',
             'Belgique' => 'be',
             'France' => 'fr'
         ], $country->getOptions('choices')->format()->get());
+        $this->assertEquals('select', $country->getLayout());
 
         $this->assertEquals([
             'Europe' => [
@@ -560,6 +568,7 @@ class FormCreationTest extends TestCase
                 'Mexico' => 'mx'
             ]
         ], $groupedCountry->getOptions('choices')->format()->get());
+        $this->assertEquals('radio', $groupedCountry->getLayout());
 
         $this->assertEquals([
             'Europe' => [
@@ -573,6 +582,7 @@ class FormCreationTest extends TestCase
                 'Mx' => 'mx'
             ]
         ], $anotherGroupCountry->getOptions('choices')->format()->get());
+        $this->assertEquals('select', $anotherGroupCountry->getLayout());
 
         $this->assertEquals([
             'Title 1' => 24,
@@ -596,7 +606,6 @@ class FormCreationTest extends TestCase
                 'Article 12' => 17
             ]
         ], $featured->getOptions('choices')->format()->get());
-
-        $this->assertEquals('green', $color->getValue());
+        $this->assertEquals('checkbox', $featured->getLayout());
     }
 }
