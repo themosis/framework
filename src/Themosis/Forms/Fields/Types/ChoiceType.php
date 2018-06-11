@@ -8,6 +8,13 @@ use Themosis\Forms\Transformers\ChoiceToValueTransformer;
 
 class ChoiceType extends BaseType
 {
+    /**
+     * Field layout.
+     *
+     * @var string
+     */
+    protected $layout;
+
     public function __construct(string $name)
     {
         parent::__construct($name);
@@ -61,7 +68,43 @@ class ChoiceType extends BaseType
 
         $options['choices'] = new ChoiceList($options['choices']);
 
+        // Set field layout based on field options.
+        $this->setLayout($options['expanded'], $options['multiple']);
+
         return $options;
+    }
+
+    /**
+     * Set the field layout option.
+     *
+     * @param bool $expanded
+     * @param bool $multiple
+     *
+     * @return $this
+     */
+    protected function setLayout($expanded = false, $multiple = false)
+    {
+        $layout = 'select';
+
+        if ($expanded && false === $multiple) {
+            $layout = 'radio';
+        } elseif ($expanded && $multiple) {
+            $layout = 'checkbox';
+        }
+
+        $this->layout = $layout;
+
+        return $this;
+    }
+
+    /**
+     * Retrieve the field layout.
+     *
+     * @return string
+     */
+    public function getLayout()
+    {
+        return is_null($this->layout) ? 'select' : $this->layout;
     }
 
     /**
