@@ -85,7 +85,8 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         'attributes',
         'nonce',
         'nonce_action',
-        'referer'
+        'referer',
+        'flush'
     ];
 
     /**
@@ -94,7 +95,8 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * @var array
      */
     protected $defaultOptions = [
-        'attributes' => []
+        'attributes' => [],
+        'flush' => true
     ];
 
     /**
@@ -188,10 +190,15 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
         $data = $this->validator->valid();
 
-        array_walk($fields, function ($field) use ($data) {
-            /** @var $field FieldTypeInterface */
-            $field->setValue(Arr::get($data, $field->getName()));
-        });
+        // By default, if the form is not valid, we keep populating fields values.
+        // In the case of a valid form, by default, values are flushed except if
+        // the "flush" option for the form has been set to true.
+        if ($this->validator->fails() || false === $this->getOptions('flush')) {
+            array_walk($fields, function ($field) use ($data) {
+                /** @var $field FieldTypeInterface */
+                $field->setValue(Arr::get($data, $field->getName()));
+            });
+        }
 
         return $this;
     }

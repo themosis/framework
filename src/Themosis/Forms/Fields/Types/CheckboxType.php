@@ -20,4 +20,25 @@ class CheckboxType extends BaseType
 
         return $this;
     }
+
+    /**
+     * @inheritdoc
+     *
+     * @param string $value
+     *
+     * @return FieldTypeInterface
+     */
+    public function setValue($value): FieldTypeInterface
+    {
+        parent::setValue($value);
+
+        if ($this->getValue()) {
+            // The value is only set on the field when it fails
+            // or when the option "flush" is set to "false".
+            // If true, let's automatically add the "checked" attribute.
+            $this->options['attributes'][] = 'checked';
+        }
+
+        return $this;
+    }
 }

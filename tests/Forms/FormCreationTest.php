@@ -360,7 +360,9 @@ class FormCreationTest extends TestCase
     {
         $factory = $this->getFormFactory();
 
-        $form = $factory->make()
+        $form = $factory->make([
+            'flush' => false
+        ])
             ->add($name = new TextType('name'))
             ->add($email = new EmailType('email'))
             ->get();
@@ -417,7 +419,9 @@ class FormCreationTest extends TestCase
     {
         $factory = $this->getFormFactory('fr_FR');
 
-        $form = $factory->make()
+        $form = $factory->make([
+            'flush' => false
+        ])
             ->add($name = new TextType('name'))
             ->add($email = new EmailType('email'))
             ->add($message = new TextareaType('message'))
@@ -463,7 +467,9 @@ class FormCreationTest extends TestCase
     {
         $factory = $this->getFormFactory();
 
-        $form = $factory->make()
+        $form = $factory->make([
+            'flush' => false
+        ])
             ->add($color = new ChoiceType('colors'), [
                 'choices' => ['red', 'green', 'blue']
             ])
@@ -614,7 +620,9 @@ class FormCreationTest extends TestCase
     {
         $factory = $this->getFormFactory();
 
-        $form = $factory->make()
+        $form = $factory->make([
+            'flush' => false
+        ])
             ->add($featured = new ChoiceType('featured'), [
                 'choices' => [
                     'Politics' => [
@@ -637,5 +645,41 @@ class FormCreationTest extends TestCase
         $form->handleRequest($request);
 
         $this->assertEquals([78], $featured->getValue());
+    }
+
+    public function testFormFlushFieldsValuesOnSubmissionSuccess()
+    {
+        $factory = $this->getFormFactory();
+
+        $form = $factory->make()
+            ->add($firstname = new TextType('firstname'), [
+                'rules' => 'required|min:3'
+            ])
+            ->add($email = new EmailType('email'), [
+                'rules' => 'required|email'
+            ])
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_firstname' => 'Marcel',
+            'th_email' => 'marcel@example.com'
+        ]);
+
+        $form->handleRequest($request);
+
+        $this->assertTrue($form->isValid());
+        $this->assertEmpty($firstname->getValue());
+        $this->assertEmpty($email->getValue());
+
+        $failingRequest = Request::create('/', 'POST', [
+            'th_firstname' => 'Gilbert',
+            'th_email' => 'notworkingemail'
+        ]);
+
+        $form->handleRequest($failingRequest);
+
+        $this->assertFalse($form->isValid());
+        $this->assertEquals($failingRequest->get($firstname->getName()), $firstname->getValue());
+        $this->assertEmpty($email->getValue());
     }
 }
