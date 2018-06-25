@@ -7,14 +7,14 @@
                 <div class="th-group-choices">
                     @foreach($choices as $label => $choice)
                         <label>
-                            <input type="checkbox" name="{{ $field->getName() }}" value="{{ $choice }}">{{ $label }}
+                            <input type="checkbox" name="{{ $field->getName() }}[]" value="{{ $choice }}">{{ $label }}
                         </label>
                     @endforeach
                 </div>
             </div>
         @else
             <label>
-                <input type="checkbox" name="{{ $field->getName() }}" value="{{ $choices }}">{{ $group }}
+                <input type="checkbox" name="{{ $field->getName() }}[]" value="{{ $choices }}">{{ $group }}
             </label>
         @endif
     @endforeach

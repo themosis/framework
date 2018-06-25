@@ -630,11 +630,11 @@ class FormCreationTest extends TestCase
             ])->get();
 
         $request = Request::create('/', 'POST', [
-            'th_featured' => 78
+            'th_featured' => [78]
         ]);
 
         $form->handleRequest($request);
 
-        $this->assertEquals(78, $featured->getValue());
+        $this->assertEquals([78], $featured->getValue());
     }
 }
