@@ -15,6 +15,13 @@ class ChoiceType extends BaseType
      */
     protected $layout = 'select';
 
+    /**
+     * ChoiceType field view.
+     *
+     * @var string
+     */
+    protected $view = 'types.choice';
+
     public function __construct(string $name)
     {
         parent::__construct($name);

@@ -608,4 +608,33 @@ class FormCreationTest extends TestCase
         ], $featured->getOptions('choices')->format()->get());
         $this->assertEquals('checkbox', $featured->getLayout());
     }
+
+    public function testChoiceTypeWithCheckboxLayout()
+    {
+        $factory = $this->getFormFactory();
+
+        $form = $factory->make()
+            ->add($featured = new ChoiceType('featured'), [
+                'choices' => [
+                    'Politics' => [
+                        'Article 23' => 34,
+                        'Article 35' => 78
+                    ],
+                    'Tech' => [
+                        'Article 67' => 89,
+                        'Article 12' => 17
+                    ]
+                ],
+                'multiple' => true,
+                'expanded' => true
+            ])->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_featured' => 78
+        ]);
+
+        $form->handleRequest($request);
+
+        $this->assertEquals(78, $featured->getValue());
+    }
 }
