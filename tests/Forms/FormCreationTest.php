@@ -583,6 +583,7 @@ class FormCreationTest extends TestCase
             ]
         ], $anotherGroupCountry->getOptions('choices')->format()->get());
         $this->assertEquals('select', $anotherGroupCountry->getLayout());
+        $this->assertTrue(in_array('multiple', $anotherGroupCountry->getAttributes()));
 
         $this->assertEquals([
             'Title 1' => 24,

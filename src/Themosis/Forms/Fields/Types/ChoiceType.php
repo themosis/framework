@@ -78,6 +78,13 @@ class ChoiceType extends BaseType
         // Set field layout based on field options.
         $this->setLayout($options['expanded'], $options['multiple']);
 
+        // Set the "multiple" attribute for <select> tag.
+        if ('select' === $this->getLayout() && $options['multiple']) {
+            // We're using a <select> tag with the multiple option set to true.
+            // So we're going to directly inject the multiple attribute.
+            $options['attributes'][] = 'multiple';
+        }
+
         return $options;
     }
 
