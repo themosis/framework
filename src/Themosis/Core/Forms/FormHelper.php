@@ -15,7 +15,7 @@ trait FormHelper
      *
      * @return FormInterface
      */
-    public function createForm(Formidable $formClass)
+    public function form(Formidable $formClass)
     {
         $factory = $this->getFormFactory();
 
