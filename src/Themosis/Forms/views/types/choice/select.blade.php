@@ -1,17 +1,31 @@
-<label for="{{ $__field->getAttribute('id') }}">{{ $__field->getOptions('label') }}</label>
+<label for="{{ $field->getAttribute('id') }}">{{ $field->getOptions('label') }}</label>
 @php
-    $name = $__field->getOptions('multiple') ? $__field->getName().'[]' : $__field->getName();
+    $name = $field->getOptions('multiple') ? $field->getName().'[]' : $field->getName();
 @endphp
-<select name="{{ $name }}" id="{{ $__field->getAttribute('id') }}" {!! $__field->attributes($__field->getAttributes()) !!}>
+<select name="{{ $name }}" id="{{ $field->getAttribute('id') }}" {!! $field->attributes($field->getAttributes()) !!}>
     @foreach($field->getOptions('choices')->format()->get() as $group => $choices)
         @if(is_array($choices))
             <optgroup label="{{ $group }}">
                 @foreach($choices as $label => $choice)
-                    <option value="{{ $choice }}">{{ $label }}</option>
+                    <?php
+                        $selected = $field->selected(function ($option, $value) {
+                            $values = (array) $value;
+
+                            return ! is_null($value) && in_array($option, $values, true) ? 'selected' : '';
+                        }, [$choice, $field->getValue()]);
+                    ?>
+                    <option value="{{ $choice }}" {{ $selected }}>{{ $label }}</option>
                 @endforeach
             </optgroup>
         @else
-            <option value="{{ $choices }}">{{ $group }}</option>
+            <?php
+                $selected = $field->selected(function ($option, $value) {
+                    $values = (array) $value;
+
+                    return ! is_null($value) && in_array($option, $values, true) ? 'selected' : '';
+                }, [$choices, $field->getValue()]);
+            ?>
+            <option value="{{ $choices }}" {{ $selected }}>{{ $group }}</option>
         @endif
     @endforeach
 </select>

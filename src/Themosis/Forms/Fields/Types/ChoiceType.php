@@ -2,11 +2,13 @@
 
 namespace Themosis\Forms\Fields\Types;
 
+use Themosis\Forms\Contracts\CheckableInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
+use Themosis\Forms\Contracts\SelectableInterface;
 use Themosis\Forms\Fields\ChoiceList\ChoiceList;
 use Themosis\Forms\Transformers\ChoiceToValueTransformer;
 
-class ChoiceType extends BaseType
+class ChoiceType extends BaseType implements CheckableInterface, SelectableInterface
 {
     /**
      * Field layout.
@@ -127,5 +129,31 @@ class ChoiceType extends BaseType
         $this->setTransformer(new ChoiceToValueTransformer());
 
         return $this;
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @param callable $callback
+     * @param array    $args
+     *
+     * @return string
+     */
+    public function checked(callable $callback, array $args): string
+    {
+        return call_user_func_array($callback, $args);
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @param callable $callback
+     * @param array    $args
+     *
+     * @return string
+     */
+    public function selected(callable $callback, array $args): string
+    {
+        return call_user_func_array($callback, $args);
     }
 }

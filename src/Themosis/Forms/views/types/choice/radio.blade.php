@@ -6,15 +6,25 @@
                 <span class="th-group-label">{{ $group }}</span>
                 <div class="th-group-choices">
                     @foreach($choices as $label => $choice)
+                        <?php
+                            $checked = $field->checked(function ($value, $choice) {
+                                return ! is_null($value) && $value === $choice ? 'checked' : '';
+                            }, [$field->getValue(), $choice]);
+                        ?>
                         <label>
-                            <input type="radio" name="{{ $field->getName() }}" value="{{ $choice }}">{{ $label }}
+                            <input type="radio" name="{{ $field->getName() }}" value="{{ $choice }}" {{ $checked }}>{{ $label }}
                         </label>
                     @endforeach
                 </div>
             </div>
         @else
+            <?php
+                $checked = $field->checked(function ($value, $choice) {
+                    return ! is_null($value) && $value === $choice ? 'checked' : '';
+                }, [$field->getValue(), $choices]);
+            ?>
             <label>
-                <input type="radio" name="{{ $field->getName() }}" value="{{ $choices }}">{{ $group }}
+                <input type="radio" name="{{ $field->getName() }}" value="{{ $choices }}" {{ $checked }}>{{ $group }}
             </label>
         @endif
     @endforeach
