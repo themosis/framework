@@ -2,6 +2,8 @@
 
 namespace Themosis\Forms\Contracts;
 
+use Illuminate\Contracts\Support\MessageBag;
+
 interface FieldTypeInterface
 {
     /**
@@ -155,12 +157,19 @@ interface FieldTypeInterface
     public function build(): FieldTypeInterface;
 
     /**
-     * Return the error messages of the field.
+     * Return an error message bag instance.
+     *
+     * @return MessageBag
+     */
+    public function errors(): MessageBag;
+
+    /**
+     * Retrieve the error messages of a specific input.
      *
      * @param string $name
      * @param bool   $first
      *
-     * @return mixed
+     * @return string|array
      */
-    public function error(string $name, bool $first = false);
+    public function error(string $name = '', bool $first = false);
 }

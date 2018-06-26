@@ -682,4 +682,59 @@ class FormCreationTest extends TestCase
         $this->assertEquals($failingRequest->get($firstname->getName()), $firstname->getValue());
         $this->assertEmpty($email->getValue());
     }
+
+    public function testFormFieldsHaveErrorsMessagesOnFailingSubmission()
+    {
+        $factory = $this->getFormFactory();
+
+        $form = $factory->make()
+            ->add($firstname = new TextType('firstname'), [
+                'rules' => 'required|min:3|max:20|string',
+                'messages' => [
+                    'min' => 'The :attribute must be at least 3 characters long.',
+                    'string' => 'The :attribute must be a string.'
+                ]
+
+            ])
+            ->add($email = new EmailType('email'), [
+                'rules' => 'required|email',
+                'messages' => [
+                    'email' => 'The :attribute must be a valid email address.'
+                ]
+            ])
+            ->add($message = new TextareaType('message'), [
+                'rules' => 'string',
+                'messages' => [
+                    'string' => 'The :attribute must be text.'
+                ]
+            ])
+            ->add($subscribe = new CheckboxType('subscribe'), [
+                'rules' => 'accepted',
+                'messages' => [
+                    'accepted' => 'The :attribute option must be checked.'
+                ]
+            ])
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_firstname' => 3,
+            'th_email' => 'notanemail',
+            'th_message' => 34
+        ]);
+
+        $form->handleRequest($request);
+
+        $this->assertEquals([
+            'The firstname must be at least 3 characters long.',
+            'The firstname must be a string.'
+        ], $firstname->error());
+
+        $this->assertEquals([
+            'The email must be a valid email address.'
+        ], $email->error());
+
+        $this->assertEquals('The message must be text.', $message->error($message->getName(), true));
+
+        $this->assertEquals('The subscribe option must be checked.', $subscribe->error($subscribe->getName(), true));
+    }
 }

@@ -472,22 +472,36 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     }
 
     /**
+     * Return the field error message bag instance.
+     *
+     * @return MessageBag
+     */
+    public function errors(): MessageBag
+    {
+        return $this->errors;
+    }
+
+    /**
      * Retrieve the field error messages.
      *
      * @param string $name
      * @param bool   $first
      *
-     * @return mixed
+     * @return string|array
      */
-    public function error(string $name, bool $first = false)
+    public function error(string $name = '', bool $first = false)
     {
-        $errors = $this->errors;
+        $errors = $this->errors();
 
-        if ($first) {
-            return $errors->first($this->getName());
+        if (empty($name)) {
+            $name = $this->getName();
         }
 
-        return $errors->get($this->getName());
+        if ($first) {
+            return $errors->first($name);
+        }
+
+        return $errors->get($name);
     }
 
     /**

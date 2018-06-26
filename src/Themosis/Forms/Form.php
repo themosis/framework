@@ -302,11 +302,17 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * @param string $name
      * @param bool   $first
      *
-     * @return mixed
+     * @return string|array
      */
-    public function error(string $name, bool $first = false)
+    public function error(string $name = '', bool $first = false)
     {
         $errors = $this->errors();
+
+        if (empty($name)) {
+            // Return all errors messages by default if the
+            // name argument is not specified.
+            return $errors->all();
+        }
 
         $field = $this->repository->getFieldByName($name);
 
