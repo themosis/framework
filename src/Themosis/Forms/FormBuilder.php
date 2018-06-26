@@ -54,6 +54,7 @@ class FormBuilder implements FormBuilderInterface
     {
         /** @var BaseType $field */
         $opts = $this->validateOptions(array_merge($field->getDefaultOptions(), [
+            // Pass form global options directly to the fields.
             'errors' => $this->form->getOptions('errors')
         ], $options), $field);
         $field->setOptions($opts);

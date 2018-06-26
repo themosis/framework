@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\MessageBag;
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
+use Themosis\Forms\NullMessageBag;
 use Themosis\Html\HtmlBuilder;
 
 abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable, FieldTypeInterface
@@ -480,6 +481,10 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function errors(): MessageBag
     {
+        if (is_null($this->errors)) {
+            return new NullMessageBag();
+        }
+
         return $this->errors;
     }
 
