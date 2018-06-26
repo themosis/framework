@@ -153,4 +153,14 @@ interface FieldTypeInterface
      * @return FieldTypeInterface
      */
     public function build(): FieldTypeInterface;
+
+    /**
+     * Return the error messages of the field.
+     *
+     * @param string $name
+     * @param bool   $first
+     *
+     * @return mixed
+     */
+    public function error(string $name, bool $first = false);
 }

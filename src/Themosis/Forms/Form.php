@@ -13,6 +13,7 @@ use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Contracts\FormRepositoryInterface;
+use Themosis\Forms\Fields\Types\BaseType;
 use Themosis\Html\HtmlBuilder;
 
 /**
@@ -190,15 +191,18 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
         $data = $this->validator->valid();
 
-        // By default, if the form is not valid, we keep populating fields values.
-        // In the case of a valid form, by default, values are flushed except if
-        // the "flush" option for the form has been set to true.
-        if ($this->validator->fails() || false === $this->getOptions('flush')) {
-            array_walk($fields, function ($field) use ($data) {
-                /** @var $field FieldTypeInterface */
+        // Attach the errors message bag to each field.
+        array_walk($fields, function ($field) use ($data) {
+            /** @var $field BaseType */
+            $field->setErrorMessageBag($this->errors());
+
+            // By default, if the form is not valid, we keep populating fields values.
+            // In the case of a valid form, by default, values are flushed except if
+            // the "flush" option for the form has been set to true.
+            if ($this->validator->fails() || false === $this->getOptions('flush')) {
                 $field->setValue(Arr::get($data, $field->getName()));
-            });
-        }
+            }
+        });
 
         return $this;
     }
@@ -628,5 +632,20 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function getValue()
     {
         return null;
+    }
+
+    public function hasError(): bool
+    {
+        // TODO: Implement hasError() method.
+    }
+
+    public function setError()
+    {
+        // TODO: Implement setError() method.
+    }
+
+    public function getError()
+    {
+        // TODO: Implement getError() method.
     }
 }

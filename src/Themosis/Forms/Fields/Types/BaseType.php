@@ -2,6 +2,7 @@
 
 namespace Themosis\Forms\Fields\Types;
 
+use Illuminate\Contracts\Support\MessageBag;
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
@@ -122,6 +123,13 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * @var mixed
      */
     protected $value;
+
+    /**
+     * Errors message bag.
+     *
+     * @var MessageBag
+     */
+    private $errors;
 
     /**
      * BaseType constructor.
@@ -447,6 +455,39 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     public function getRawValue()
     {
         return $this->transformer->reverseTransform($this->value);
+    }
+
+    /**
+     * Set the field error message bag instance.
+     *
+     * @param MessageBag $messageBag
+     *
+     * @return $this
+     */
+    public function setErrorMessageBag($messageBag)
+    {
+        $this->errors = $messageBag;
+
+        return $this;
+    }
+
+    /**
+     * Retrieve the field error messages.
+     *
+     * @param string $name
+     * @param bool   $first
+     *
+     * @return mixed
+     */
+    public function error(string $name, bool $first = false)
+    {
+        $errors = $this->errors;
+
+        if ($first) {
+            return $errors->first($this->getName());
+        }
+
+        return $errors->get($this->getName());
     }
 
     /**
