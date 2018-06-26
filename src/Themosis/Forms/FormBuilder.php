@@ -11,7 +11,7 @@ use Themosis\Support\Section;
 class FormBuilder implements FormBuilderInterface
 {
     /**
-     * @var FormInterface
+     * @var FormInterface|FieldTypeInterface
      */
     protected $form;
 
@@ -53,7 +53,9 @@ class FormBuilder implements FormBuilderInterface
     public function add(FieldTypeInterface $field, array $options = []): FormBuilderInterface
     {
         /** @var BaseType $field */
-        $opts = $this->validateOptions(array_merge($field->getDefaultOptions(), $options), $field);
+        $opts = $this->validateOptions(array_merge($field->getDefaultOptions(), [
+            'errors' => $this->form->getOptions('errors')
+        ], $options), $field);
         $field->setOptions($opts);
         $field->setForm($this->form);
         $field->build();

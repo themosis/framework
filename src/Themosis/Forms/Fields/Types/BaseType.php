@@ -29,7 +29,8 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         'placeholder',
         'attributes',
         'label',
-        'label_attr'
+        'label_attr',
+        'errors'
     ];
 
     /**
@@ -42,7 +43,8 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         'rules' => [],
         'messages' => [],
         'attributes' => [],
-        'label_attr' => []
+        'label_attr' => [],
+        'errors' => false
     ];
 
     /**

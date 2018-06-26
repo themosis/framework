@@ -737,4 +737,21 @@ class FormCreationTest extends TestCase
 
         $this->assertEquals('The subscribe option must be checked.', $subscribe->error($subscribe->getName(), true));
     }
+
+    public function testFormGlobalErrorPropertyIsPassedToTheFields()
+    {
+        $factory = $this->getFormFactory();
+
+        $form = $factory->make()
+            ->add($firstname = new TextType('firstname'))
+            ->add($email = new EmailType('email'))
+            ->add($message = new TextareaType('message'), [
+                'errors' => false
+            ])
+            ->get();
+
+        $this->assertTrue($firstname->getOptions('errors'));
+        $this->assertTrue($email->getOptions('errors'));
+        $this->assertFalse($message->getOptions('errors'));
+    }
 }

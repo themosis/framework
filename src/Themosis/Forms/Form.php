@@ -87,7 +87,8 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         'nonce',
         'nonce_action',
         'referer',
-        'flush'
+        'flush',
+        'errors'
     ];
 
     /**
@@ -97,7 +98,8 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     protected $defaultOptions = [
         'attributes' => [],
-        'flush' => true
+        'flush' => true,
+        'errors' => true
     ];
 
     /**
@@ -638,20 +640,5 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function getValue()
     {
         return null;
-    }
-
-    public function hasError(): bool
-    {
-        // TODO: Implement hasError() method.
-    }
-
-    public function setError()
-    {
-        // TODO: Implement setError() method.
-    }
-
-    public function getError()
-    {
-        // TODO: Implement getError() method.
     }
 }
