@@ -1,6 +1,7 @@
 Themosis framework
 ==================
 
+[![Build Status](https://semaphoreci.com/api/v1/themosis/framework/branches/develop/badge.svg)](https://semaphoreci.com/themosis/framework)
 [![Join the chat at https://gitter.im/themosis/framework](https://badges.gitter.im/themosis/framework.svg)](https://gitter.im/themosis/framework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 The Themosis framework is a WordPress focused framework. It helps you develop enterprise level WordPress applications and websites using an elegant and simple code syntax.
