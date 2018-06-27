@@ -1,0 +1,1 @@
+<input type="submit" {!! $__field->attributes($__field->getAttributes()) !!} value="{{ $__field->getOptions('label') }}">

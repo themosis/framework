@@ -67,7 +67,7 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
      *
      * @return array
      */
-    protected function parseOptions(array $options)
+    protected function parseOptions(array $options): array
     {
         $options = parent::parseOptions($options);
 

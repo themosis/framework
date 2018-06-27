@@ -227,7 +227,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      *
      * @return array
      */
-    protected function parseOptions(array $options)
+    protected function parseOptions(array $options): array
     {
         // Set a default "id" attribute. This attribute can be used on the field
         // and to its associated label as the "for" attribute value if not set.
@@ -238,6 +238,11 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         // Set the "for" attribute automatically on the label attributes property.
         if (! isset($options['label_attr']['for'])) {
             $options['label_attr']['for'] = $options['attributes']['id'];
+        }
+
+        // Set some default CSS classes if chosen theme is "bootstrap".
+        if ('bootstrap' === $options['theme']) {
+            $options['attributes']['class'] = isset($options['attributes']['class']) ? ' form-control' : 'form-control';
         }
 
         return $options;

@@ -22,6 +22,28 @@ class CheckboxType extends BaseType
     }
 
     /**
+     * Parse field options.
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function parseOptions(array $options): array
+    {
+        $options = parent::parseOptions($options);
+
+        // Set some default CSS classes if chosen theme is "bootstrap".
+        if ('bootstrap' === $options['theme']) {
+            $options['attributes']['class'] = isset($options['attributes']['class']) ?
+                ' form-check-input' : 'form-check-input';
+            $options['label_attr']['class'] = isset($options['label_attr']['class']) ?
+                ' form-check-label' : 'form-check-label';
+        }
+
+        return $options;
+    }
+
+    /**
      * @inheritdoc
      *
      * @param string $value

@@ -40,6 +40,26 @@ class ButtonType extends BaseType implements DataTransformerInterface
     }
 
     /**
+     * Parse field options.
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function parseOptions(array $options): array
+    {
+        $options = parent::parseOptions($options);
+
+        // Set some default CSS classes if chosen theme is "bootstrap".
+        if ('bootstrap' === $options['theme']) {
+            $options['attributes']['class'] = isset($options['attributes']['class']) ?
+                ' btn btn-primary' : 'btn btn-primary';
+        }
+
+        return $options;
+    }
+
+    /**
      * @inheritdoc
      *
      * @param mixed $data
