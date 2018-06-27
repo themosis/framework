@@ -276,7 +276,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     }
 
     /**
-     * Check if submitted form is valid or not.
+     * Check if submitted form is valid.
      *
      * @return bool
      */
@@ -287,6 +287,16 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         }
 
         return $this->validator->passes();
+    }
+
+    /**
+     * Check if submitted form is not valid.
+     *
+     * @return bool
+     */
+    public function isNotValid(): bool
+    {
+        return ! $this->isValid();
     }
 
     /**

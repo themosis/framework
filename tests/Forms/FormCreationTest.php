@@ -668,6 +668,7 @@ class FormCreationTest extends TestCase
         $form->handleRequest($request);
 
         $this->assertTrue($form->isValid());
+        $this->assertFalse($form->isNotValid());
         $this->assertEmpty($firstname->getValue());
         $this->assertEmpty($email->getValue());
 

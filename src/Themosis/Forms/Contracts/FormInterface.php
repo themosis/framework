@@ -25,11 +25,18 @@ interface FormInterface
     public function handleRequest(Request $request): FormInterface;
 
     /**
-     * Check if submitted form is valid or not.
+     * Check if submitted form is valid.
      *
      * @return bool
      */
     public function isValid(): bool;
+
+    /**
+     * Check if submitted form is not valid.
+     *
+     * @return bool
+     */
+    public function isNotValid(): bool;
 
     /**
      * Return a list of errors.
