@@ -306,6 +306,10 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     public function errors(): MessageBag
     {
+        if (is_null($this->validator)) {
+            return new NullMessageBag();
+        }
+
         return $this->validator->errors();
     }
 

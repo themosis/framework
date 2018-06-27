@@ -162,4 +162,14 @@ class NullMessageBag implements MessageBag
     {
         return 0;
     }
+
+    /**
+     * @inheritdoc
+     *
+     * @return bool
+     */
+    public function any()
+    {
+        return $this->count() > 0;
+    }
 }
