@@ -6,11 +6,14 @@ use Illuminate\Contracts\Support\MessageBag;
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
+use Themosis\Forms\FormHelper;
 use Themosis\Forms\NullMessageBag;
 use Themosis\Html\HtmlBuilder;
 
 abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable, FieldTypeInterface
 {
+    use FormHelper;
+
     /**
      * List of options.
      *
@@ -31,7 +34,8 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         'attributes',
         'label',
         'label_attr',
-        'errors'
+        'errors',
+        'theme'
     ];
 
     /**
@@ -45,7 +49,8 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         'messages' => [],
         'attributes' => [],
         'label_attr' => [],
-        'errors' => false
+        'errors' => false,
+        'theme' => 'themosis'
     ];
 
     /**
@@ -399,7 +404,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function getView(): string
     {
-        return $this->view;
+        return $this->buildViewPath($this->getOptions('theme'), $this->view);
     }
 
     /**

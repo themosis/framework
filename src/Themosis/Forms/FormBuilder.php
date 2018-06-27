@@ -10,6 +10,8 @@ use Themosis\Support\Section;
 
 class FormBuilder implements FormBuilderInterface
 {
+    use FormHelper;
+
     /**
      * @var FormInterface|FieldTypeInterface
      */
@@ -55,7 +57,8 @@ class FormBuilder implements FormBuilderInterface
         /** @var BaseType $field */
         $opts = $this->validateOptions(array_merge($field->getDefaultOptions(), [
             // Pass form global options directly to the fields.
-            'errors' => $this->form->getOptions('errors')
+            'errors' => $this->form->getOptions('errors'),
+            'theme' => $this->form->getOptions('theme')
         ], $options), $field);
         $field->setOptions($opts);
         $field->setForm($this->form);
@@ -73,7 +76,7 @@ class FormBuilder implements FormBuilderInterface
         }
 
         // Setup group/section default view.
-        $section->setView('form.group');
+        $section->setView($this->buildViewPath($this->form->getOptions('theme'), 'form.group'));
 
         // Add the field first to section instance.
         // Then pass both objects to the repository.

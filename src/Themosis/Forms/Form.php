@@ -23,6 +23,8 @@ use Themosis\Html\HtmlBuilder;
  */
 class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 {
+    use FormHelper;
+
     /**
      * @var string
      */
@@ -88,7 +90,8 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         'nonce_action',
         'referer',
         'flush',
-        'errors'
+        'errors',
+        'theme'
     ];
 
     /**
@@ -99,7 +102,8 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     protected $defaultOptions = [
         'attributes' => [],
         'flush' => true,
-        'errors' => true
+        'errors' => true,
+        'theme' => 'themosis'
     ];
 
     /**
@@ -372,7 +376,10 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
             throw new DomainException('You cannot change the view of an undefined form group.');
         }
 
-        $this->repository()->getGroup($group)->setView($view);
+        // Prepend the form theme to the group view path.
+        $groupView = $this->buildViewPath($this->getOptions('theme'), $view);
+
+        $this->repository()->getGroup($group)->setView($groupView);
 
         return $this;
     }
@@ -392,13 +399,13 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     }
 
     /**
-     * Return the view instance used by the form.
+     * Return the view path instance used by the form.
      *
      * @return string
      */
     public function getView(): string
     {
-        return $this->view;
+        return $this->buildViewPath($this->getOptions('theme'), $this->view);
     }
 
     /**
@@ -481,6 +488,12 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
             $options['referer'] = $options['referer'] ?? true;
         }
 
+        // Make sure a default theme is always defined. User cannot defined an
+        // empty string for the form theme.
+        if (empty($options['theme'])) {
+            $options['theme'] = $this->defaultOptions['theme'];
+        }
+
         return $options;
     }
 
@@ -489,7 +502,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      *
      * @param string $optionKey
      *
-     * @return array
+     * @return string|array
      */
     public function getOptions(string $optionKey = '')
     {

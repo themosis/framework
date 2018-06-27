@@ -126,8 +126,8 @@ class FormCreationTest extends TestCase
         $this->assertEquals([
             'method' => 'post'
         ], $form->getAttributes());
-        $this->assertEquals('form.default', $form->getView());
-        $this->assertEquals('form.group', $form->repository()->getGroup('default')->getView());
+        $this->assertEquals('themosis.form.default', $form->getView());
+        $this->assertEquals('themosis.form.group', $form->repository()->getGroup('default')->getView());
 
         $this->expectException('\InvalidArgumentException');
         $firstname->setOptions(['name' => 'something']);
@@ -326,15 +326,15 @@ class FormCreationTest extends TestCase
             'for' => 'th_email_field'
         ], $em->getOptions('label_attr'));
 
-        $this->assertEquals('groups.custom', $form->repository()->getGroup($fn->getOptions('group'))->getView());
-        $this->assertEquals('groups.custom', $form->repository()->getGroup($em->getOptions('group'))->getView());
+        $this->assertEquals('themosis.groups.custom', $form->repository()->getGroup($fn->getOptions('group'))->getView());
+        $this->assertEquals('themosis.groups.custom', $form->repository()->getGroup($em->getOptions('group'))->getView());
 
         $this->assertEquals([
             'method' => 'post',
             'id' => 'some-form',
             'name' => 'formidable'
         ], $form->getAttributes());
-        $this->assertEquals('forms.custom', $form->getView());
+        $this->assertEquals('themosis.forms.custom', $form->getView());
 
         $this->assertEquals('_themosisnonce', $form->getOptions('nonce'));
         $this->assertEquals('form', $form->getOptions('nonce_action'));
@@ -753,5 +753,49 @@ class FormCreationTest extends TestCase
         $this->assertTrue($firstname->getOptions('errors'));
         $this->assertTrue($email->getOptions('errors'));
         $this->assertFalse($message->getOptions('errors'));
+    }
+
+    public function testFormTheming()
+    {
+        $factory = $this->getFormFactory();
+
+        $form = $factory->make()
+            ->add($firstname = new TextType('firstname'))
+            ->add($email = new EmailType('email'))
+            ->get();
+
+        // Test default 'themosis' theme.
+        $this->assertEquals('themosis', $form->getOptions('theme'));
+        $this->assertEquals('themosis.form.default', $form->getView());
+        $this->assertEquals('themosis', $firstname->getOptions('theme'));
+
+        $form = $factory->make([
+            'theme' => ''
+        ])
+            ->add(new TextType('firstname'))
+            ->get();
+
+        $this->assertEquals('themosis', $form->getOptions('theme'));
+
+        // Test custom form theme.
+        $form = $factory->make([
+            'theme' => 'bootstrap'
+        ])
+            ->add($firstname = new TextType('firstname'))
+            ->add($email = new EmailType('email'), [
+                'theme' => 'themosis'
+            ])
+            ->get();
+
+        $this->assertEquals('bootstrap', $form->getOptions('theme'));
+        $this->assertEquals('bootstrap.form.default', $form->getView());
+
+        $this->assertEquals('bootstrap.form.group', $form->repository()->getGroup('default')->getView());
+
+        $this->assertEquals('bootstrap', $firstname->getOptions('theme'));
+        $this->assertEquals('bootstrap.types.text', $firstname->getView());
+
+        $this->assertEquals('themosis', $email->getOptions('theme'));
+        $this->assertEquals('themosis.types.email', $email->getView());
     }
 }
