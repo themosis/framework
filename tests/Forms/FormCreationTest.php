@@ -799,4 +799,21 @@ class FormCreationTest extends TestCase
         $this->assertEquals('themosis', $email->getOptions('theme'));
         $this->assertEquals('themosis.types.email', $email->getView());
     }
+
+    public function testFormOpenAndClosingTags()
+    {
+        $factory = $this->getFormFactory();
+
+        $form = $factory->make()
+            ->get();
+
+        $this->assertTrue($form->getOptions('tags'));
+
+        $form = $factory->make([
+            'tags' => false
+        ])
+            ->get();
+
+        $this->assertFalse($form->getOptions('tags'));
+    }
 }

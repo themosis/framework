@@ -91,7 +91,8 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         'referer',
         'flush',
         'errors',
-        'theme'
+        'theme',
+        'tags'
     ];
 
     /**
@@ -103,7 +104,8 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         'attributes' => [],
         'flush' => true,
         'errors' => true,
-        'theme' => 'themosis'
+        'theme' => 'themosis',
+        'tags' => true
     ];
 
     /**
