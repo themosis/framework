@@ -88,6 +88,17 @@ interface FieldTypeInterface
     public function setAttributes(array $attributes);
 
     /**
+     * Add an attribute to the field.
+     *
+     * @param string $name
+     * @param string $value
+     * @param bool   $overwrite By default, it appends the value. Set to true, to replace the existing attribute value.
+     *
+     * @return FieldTypeInterface
+     */
+    public function addAttribute(string $name, string $value, $overwrite = false): FieldTypeInterface;
+
+    /**
      * Return a list of default options.
      *
      * @return array
@@ -123,6 +134,20 @@ interface FieldTypeInterface
      * @return bool
      */
     public function isRendered(): bool;
+
+    /**
+     * Check if submitted form is valid.
+     *
+     * @return bool
+     */
+    public function isValid(): bool;
+
+    /**
+     * Check if submitted form is not valid.
+     *
+     * @return bool
+     */
+    public function isNotValid(): bool;
 
     /**
      * Set the field transformer.

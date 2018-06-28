@@ -242,7 +242,11 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
 
         // Set some default CSS classes if chosen theme is "bootstrap".
         if ('bootstrap' === $options['theme']) {
-            $options['attributes']['class'] = isset($options['attributes']['class']) ? ' form-control' : 'form-control';
+            if (isset($options['attributes']['class'])) {
+                $options['attributes']['class'] .= ' form-control';
+            } else {
+                $options['attributes']['class'] = 'form-control';
+            }
         }
 
         return $options;
@@ -347,6 +351,32 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     }
 
     /**
+     * Add an attribute to the field.
+     *
+     * @param string $name
+     * @param string $value
+     * @param bool   $overwrite By default, it appends the value. Set to true, to replace the existing attribute value.
+     *
+     * @return FieldTypeInterface
+     */
+    public function addAttribute(string $name, string $value, $overwrite = false): FieldTypeInterface
+    {
+        if ($overwrite) {
+            $this->options['attributes'][$name] = $value;
+
+            return $this;
+        }
+
+        if (isset($this->options['attributes'][$name])) {
+            $this->options['attributes'][$name] .= ' '.$value;
+        } else {
+            $this->options['attributes'][$name] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
      * Setup the form instance handling the field.
      *
      * @param FormInterface $form
@@ -420,6 +450,26 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     public function isRendered(): bool
     {
         return $this->rendered;
+    }
+
+    /**
+     * Check if field is valid.
+     *
+     * @return bool
+     */
+    public function isValid(): bool
+    {
+        return empty($this->error());
+    }
+
+    /**
+     * Check if field is not valid.
+     *
+     * @return bool
+     */
+    public function isNotValid(): bool
+    {
+        return ! $this->isValid();
     }
 
     /**

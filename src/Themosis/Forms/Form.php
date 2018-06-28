@@ -209,6 +209,13 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
             // the "flush" option for the form has been set to true.
             if ($this->validator->fails() || false === $this->getOptions('flush')) {
                 $field->setValue(Arr::get($data, $field->getName()));
+                if ($field->error()) {
+                    // Add invalid CSS classes.
+                    $field->addAttribute('class', 'is-invalid');
+                } else {
+                    // Add valid CSS classes and validate the field.
+                    $field->addAttribute('class', 'is-valid');
+                }
             }
         });
 
@@ -579,6 +586,26 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function setAttributes(array $attributes)
     {
         $this->options['attributes'] = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * Add an attribute to the field.
+     *
+     * @param string $name
+     * @param string $value
+     * @param bool   $overwrite
+     *
+     * @return FieldTypeInterface
+     */
+    public function addAttribute(string $name, string $value, $overwrite = false): FieldTypeInterface
+    {
+        if (isset($this->options['attributes'][$name]) && ! $overwrite) {
+            $this->options['attributes'][$name] .= ' '.$value;
+        } else {
+            $this->options['attributes'][$name] = $value;
+        }
 
         return $this;
     }
