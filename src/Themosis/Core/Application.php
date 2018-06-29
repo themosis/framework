@@ -266,6 +266,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this->instance('path.themes', $this->themesPath());
         // Application
         $this->instance('path.application', $this->applicationPath());
+        // Resources
+        $this->instance('path.resources', $this->resourcePath());
         // Languages
         $this->instance('path.lang', $this->langPath());
         // Web root
@@ -357,7 +359,19 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Get the path to the WordPress "languages" directory.
+     * Get the resources directory path.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    public function resourcePath($path = '')
+    {
+        return $this->basePath('resources').($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Get the path to the resources "languages" directory.
      *
      * @param string $path
      *
@@ -365,7 +379,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function langPath($path = '')
     {
-        return $this->contentPath('languages').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->resourcePath('languages').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**

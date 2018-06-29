@@ -61,7 +61,11 @@ class ApplicationTest extends TestCase
             'Cannot get the app path'
         );
         $this->assertEquals(
-            $path.'/htdocs/content/languages',
+            $path.'/resources',
+            $app['path.resources']
+        );
+        $this->assertEquals(
+            $path.'/resources/languages',
             $app['path.lang'],
             'Cannot get the languages path'
         );
