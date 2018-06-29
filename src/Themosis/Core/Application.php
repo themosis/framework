@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Themosis\Core\Bootstrap\EnvironmentLoader;
+use Themosis\Core\Events\LocaleUpdated;
 use Themosis\Route\RouteServiceProvider;
 
 class Application extends Container implements ApplicationContract, HttpKernelInterface
@@ -162,6 +163,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     protected function registerCoreContainerAliases()
     {
         $list = [
+            'action' => [
+                \Themosis\Hook\ActionBuilder::class
+            ],
             'app' => [
                 Application::class,
                 \Illuminate\Contracts\Container\Container::class,
@@ -175,6 +179,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             'events' => [
                 \Illuminate\Events\Dispatcher::class,
                 \Illuminate\Contracts\Events\Dispatcher::class
+            ],
+            'filter' => [
+                \Themosis\Hook\FilterBuilder::class
             ],
             'form' => [
                 \Themosis\Forms\FormFactory::class,
@@ -1168,5 +1175,39 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function afterBootstrapping($bootstrapper, Closure $callback)
     {
         $this['events']->listen('bootstrapped: '.$bootstrapper, $callback);
+    }
+
+    /**
+     * Set the application locale.
+     *
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this['config']->set('app.locale', $locale);
+        $this['translator']->setLocale($locale);
+        $this['events']->dispatch(new LocaleUpdated($locale));
+    }
+
+    /**
+     * Get the application locale.
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this['config']->get('app.locale');
+    }
+
+    /**
+     * Check if passed locale is current locale.
+     *
+     * @param string $locale
+     *
+     * @return bool
+     */
+    public function isLocale($locale)
+    {
+        return $this->getLocale() == $locale;
     }
 }
