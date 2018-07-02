@@ -7,12 +7,12 @@ class RequestHandled
     /**
      * @var \Illuminate\Http\Request
      */
-    protected $request;
+    public $request;
 
     /**
      * @var \Illuminate\Http\Response
      */
-    protected $response;
+    public $response;
 
     /**
      * RequestHandled constructor.
