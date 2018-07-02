@@ -1043,6 +1043,38 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
+     * Register a list of hookable instances.
+     *
+     * @param string $config
+     */
+    public function registerConfiguredHooks(string $config = '')
+    {
+        if (empty($config)) {
+            $config = 'app.hooks';
+        }
+
+        $hooks = Collection::make($this->config[$config]);
+
+        (new HooksRepository($this))->load($hooks->all());
+    }
+
+    /**
+     * Create and register a hook instance.
+     *
+     * @param string $hook
+     */
+    public function registerHook(string $hook)
+    {
+        // Build a "Hookable" instance.
+        // Hookable instances must extend the "Hookable" class.
+        $instance = new $hook($this);
+
+        if (method_exists($instance, 'register')) {
+            $instance->register();
+        }
+    }
+
+    /**
      * Load current active theme.
      *
      * @param string $dirPath    The theme directory path.
