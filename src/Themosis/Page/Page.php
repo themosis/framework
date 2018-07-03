@@ -66,6 +66,11 @@ class Page implements PageInterface
      */
     protected $repository;
 
+    /**
+     * @var string
+     */
+    protected $prefix = 'th_';
+
     public function __construct(IHook $action, UIContainerInterface $ui, SettingsRepositoryInterface $repository)
     {
         $this->action = $action;
@@ -401,19 +406,6 @@ class Page implements PageInterface
             $settings = array_merge($currentSettings, [$section => $settings]);
         }
 
-        // Set some settings defaults.
-        array_walk($settings, function ($fields) {
-            array_walk($fields, function ($setting) {
-                /** @var FieldTypeInterface $setting */
-                // Set a default setting title based on its basename.
-                $setting->setOptions([
-                    'label' => ucfirst($setting->getBaseName())
-                ]);
-                // Set a default CSS class.
-                $setting->addAttribute('class', 'regular-text');
-            });
-        });
-
         $this->repository()->setSettings($settings);
 
         // Set a default page view for handling
@@ -427,6 +419,16 @@ class Page implements PageInterface
     }
 
     /**
+     * Return the page prefix.
+     *
+     * @return string
+     */
+    public function getPrefix(): string
+    {
+        return $this->prefix;
+    }
+
+    /**
      * Set the page settings name prefix.
      *
      * @param string $prefix
@@ -435,6 +437,8 @@ class Page implements PageInterface
      */
     public function setPrefix(string $prefix): PageInterface
     {
+        $this->prefix = $prefix;
+
         $this->repository()->getSettings()->collapse()->each(function ($setting) use ($prefix) {
             /** @var $setting FieldTypeInterface */
             $setting->setPrefix($prefix);
@@ -467,6 +471,19 @@ class Page implements PageInterface
         foreach ($settings->all() as $slug => $fields) {
             foreach ($fields as $setting) {
                 /** @var FieldTypeInterface $setting */
+                // Set prefix.
+                $setting->setPrefix($this->getPrefix());
+                // Set a default setting title based on its basename.
+                $setting->setOptions([
+                    'label' => ucfirst($setting->getBaseName()),
+                    'attributes' => [
+                        'id' => $setting->getName().'_setting'
+                    ]
+                ]);
+                // Set a default CSS class.
+                $setting->addAttribute('class', 'regular-text');
+
+                // Display the setting.
                 add_settings_field(
                     $setting->getName(),
                     $setting->getOptions('label'),

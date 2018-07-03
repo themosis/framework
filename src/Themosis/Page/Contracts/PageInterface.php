@@ -185,6 +185,13 @@ interface PageInterface
     public function addSettings($section, array $settings = []): PageInterface;
 
     /**
+     * Return the page prefix.
+     *
+     * @return string
+     */
+    public function getPrefix(): string;
+
+    /**
      * Set the page settings name prefix.
      *
      * @param string $prefix
