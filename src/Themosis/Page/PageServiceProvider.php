@@ -9,11 +9,10 @@ class PageServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('page', function ($app) {
-            // Add framework view path for page views.
-            $viewFactory = $app['view'];
-            $viewFactory->addLocation(__DIR__.'/views');
+            $view = $app['view'];
+            $view->addLocation(__DIR__.'/views');
 
-            return new PageFactory($app['action'], $viewFactory);
+            return new PageFactory($app['action'], $app['view']);
         });
     }
 }

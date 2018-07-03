@@ -124,9 +124,11 @@ interface FieldTypeInterface
     /**
      * Return the view instance used by the entity.
      *
+     * @param bool $prefixed
+     *
      * @return string
      */
-    public function getView(): string;
+    public function getView(bool $prefixed = true): string;
 
     /**
      * Indicates if the entity has been rendered or not.

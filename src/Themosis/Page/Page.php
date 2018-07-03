@@ -397,11 +397,24 @@ class Page implements PageInterface
 
         if (is_array($section)) {
             $settings = array_merge($currentSettings, $section);
-            $this->repository()->setSettings($settings);
         } else {
             $settings = array_merge($currentSettings, [$section => $settings]);
-            $this->repository()->setSettings($settings);
         }
+
+        // Set some settings defaults.
+        array_walk($settings, function ($fields) {
+            array_walk($fields, function ($setting) {
+                /** @var FieldTypeInterface $setting */
+                // Set a default setting title based on its basename.
+                $setting->setOptions([
+                    'label' => ucfirst($setting->getBaseName())
+                ]);
+                // Set a default CSS class.
+                $setting->addAttribute('class', 'regular-text');
+            });
+        });
+
+        $this->repository()->setSettings($settings);
 
         // Set a default page view for handling
         // the settings. A user can still overwrite
@@ -494,5 +507,10 @@ class Page implements PageInterface
      */
     public function renderSettings($setting)
     {
+        $view = sprintf('%s.%s', $this->ui()->getTheme(), $setting->getView(false));
+
+        echo $this->ui()->factory()->make($view)->with([
+            '__field' => $setting
+        ])->render();
     }
 }

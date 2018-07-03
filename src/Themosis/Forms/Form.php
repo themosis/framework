@@ -424,11 +424,17 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Return the view path instance used by the form.
      *
+     * @param bool $prefixed
+     *
      * @return string
      */
-    public function getView(): string
+    public function getView(bool $prefixed = true): string
     {
-        return $this->buildViewPath($this->getOptions('theme'), $this->view);
+        if ($prefixed) {
+            return $this->buildViewPath($this->getOptions('theme'), $this->view);
+        }
+
+        return $this->view;
     }
 
     /**
