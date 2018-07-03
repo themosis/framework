@@ -4,6 +4,7 @@ namespace Themosis\Page;
 
 use Themosis\Hook\IHook;
 use Themosis\Page\Contracts\PageInterface;
+use Themosis\Support\Contracts\UIContainerInterface;
 
 class Page implements PageInterface
 {
@@ -52,9 +53,15 @@ class Page implements PageInterface
      */
     protected $action;
 
-    public function __construct(IHook $action)
+    /**
+     * @var UIContainerInterface
+     */
+    protected $ui;
+
+    public function __construct(IHook $action, UIContainerInterface $ui)
     {
         $this->action = $action;
+        $this->ui = $ui;
     }
 
     /**
@@ -297,6 +304,33 @@ class Page implements PageInterface
      */
     public function render()
     {
-        echo "Page";
+        echo $this->ui()->getView()->with([
+            '__page' => $this
+        ])->render();
+    }
+
+    /**
+     * Return the page view layer.
+     *
+     * @return UIContainerInterface
+     */
+    public function ui(): UIContainerInterface
+    {
+        return $this->ui;
+    }
+
+    /**
+     * Add data to the page view.
+     *
+     * @param string|array $key
+     * @param mixed        $value
+     *
+     * @return PageInterface
+     */
+    public function with($key, $value = null): PageInterface
+    {
+        $this->ui()->getView()->with($key, $value);
+
+        return $this;
     }
 }

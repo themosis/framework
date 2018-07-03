@@ -2,6 +2,8 @@
 
 namespace Themosis\Page\Contracts;
 
+use Themosis\Support\Contracts\UIContainerInterface;
+
 interface PageInterface
 {
     /**
@@ -138,6 +140,23 @@ interface PageInterface
      * @return PageInterface
      */
     public function set(): PageInterface;
+
+    /**
+     * Return the page ui instance.
+     *
+     * @return UIContainerInterface
+     */
+    public function ui(): UIContainerInterface;
+
+    /**
+     * Add data to page ui instance.
+     *
+     * @param string|array $key
+     * @param mixed        $value
+     *
+     * @return PageInterface
+     */
+    public function with($key, $value = null): PageInterface;
 
     //public function addSections();
 

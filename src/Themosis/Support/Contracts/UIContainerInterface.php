@@ -7,11 +7,27 @@ use Illuminate\Contracts\View\View;
 interface UIContainerInterface
 {
     /**
+     * Return the container theme.
+     *
+     * @return string
+     */
+    public function getTheme(): string;
+
+    /**
+     * Set the container theme.
+     *
+     * @param string $theme
+     *
+     * @return UIContainerInterface
+     */
+    public function setTheme(string $theme): UIContainerInterface;
+
+    /**
      * Return the container layout.
      *
-     * @return String
+     * @return string
      */
-    public function getLayout(): String;
+    public function getLayout(): string;
 
     /**
      * Define a layout/view to use for the container (without a namespace).
@@ -30,6 +46,13 @@ interface UIContainerInterface
      * @return UIContainerInterface
      */
     public function setView(string $view): UIContainerInterface;
+
+    /**
+     * Return the container view path.
+     *
+     * @return string
+     */
+    public function getViewPath(): string;
 
     /**
      * Return the container view instance.

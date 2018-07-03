@@ -2,6 +2,7 @@
 
 namespace Themosis\Page;
 
+use Illuminate\Contracts\View\Factory;
 use Themosis\Hook\IHook;
 use Themosis\Page\Contracts\PageFactoryInterface;
 use Themosis\Page\Contracts\PageInterface;
@@ -13,9 +14,15 @@ class PageFactory implements PageFactoryInterface
      */
     protected $action;
 
-    public function __construct(IHook $action)
+    /**
+     * @var Factory
+     */
+    protected $view;
+
+    public function __construct(IHook $action, Factory $view)
     {
         $this->action = $action;
+        $this->view = $view;
     }
 
     /**
@@ -28,7 +35,12 @@ class PageFactory implements PageFactoryInterface
      */
     public function make(string $slug, string $title): PageInterface
     {
-        return (new Page($this->action))
+        $view = (new PageView($this->view))
+            ->setTheme('themosis')
+            ->setLayout('default')
+            ->setView('page');
+
+        return (new Page($this->action, $view))
             ->setSlug($slug)
             ->setTitle($title)
             ->setMenu($title);
