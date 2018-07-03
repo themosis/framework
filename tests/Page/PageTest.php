@@ -11,7 +11,11 @@ use Illuminate\View\Engines\PhpEngine;
 use Illuminate\View\FileViewFinder;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
+use Themosis\Forms\Fields\Types\EmailType;
+use Themosis\Forms\Fields\Types\TextareaType;
+use Themosis\Forms\Fields\Types\TextType;
 use Themosis\Page\PageFactory;
+use Themosis\Support\Section;
 
 class PageTest extends TestCase
 {
@@ -138,5 +142,35 @@ class PageTest extends TestCase
         $this->assertInstanceOf(\Themosis\Page\Page::class, $view['__page']);
         $this->assertEquals('value', $view['some']);
         $this->assertEquals(42, $view['key']);
+    }
+
+    public function testCreateASettingsPage()
+    {
+        $factory = $this->getFactory($this->getActionMock());
+
+        $page = $factory->make('the-settings', 'App Settings');
+        $page->addSections([
+            new Section('general'),
+            new Section('custom')
+        ]);
+
+        $page->addSettings('general', [
+            $firstname = new TextType('firstname'),
+            $email = new EmailType('email')
+        ]);
+
+        $page->addSettings([
+            'custom' => [
+                $message = new TextareaType('message')
+            ]
+        ]);
+
+        $this->assertInstanceOf(\Themosis\Page\PageSettingsRepository::class, $page->repository());
+        $this->assertEquals(2, count($page->repository()->getSections()));
+
+        $settings = $page->repository()->getSettings();
+
+        $this->assertEquals(2, count(array_keys($settings)));
+        $this->assertEquals(3, count(collect($settings)->collapse()->toArray()));
     }
 }

@@ -4,6 +4,7 @@ namespace Themosis\Page;
 
 use Themosis\Hook\IHook;
 use Themosis\Page\Contracts\PageInterface;
+use Themosis\Page\Contracts\SettingsRepositoryInterface;
 use Themosis\Support\Contracts\UIContainerInterface;
 
 class Page implements PageInterface
@@ -58,10 +59,16 @@ class Page implements PageInterface
      */
     protected $ui;
 
-    public function __construct(IHook $action, UIContainerInterface $ui)
+    /**
+     * @var SettingsRepositoryInterface
+     */
+    protected $repository;
+
+    public function __construct(IHook $action, UIContainerInterface $ui, SettingsRepositoryInterface $repository)
     {
         $this->action = $action;
         $this->ui = $ui;
+        $this->repository = $repository;
     }
 
     /**
@@ -330,6 +337,58 @@ class Page implements PageInterface
     public function with($key, $value = null): PageInterface
     {
         $this->ui()->getView()->with($key, $value);
+
+        return $this;
+    }
+
+    /**
+     * Return the page settings repository.
+     *
+     * @return SettingsRepositoryInterface
+     */
+    public function repository(): SettingsRepositoryInterface
+    {
+        return $this->repository;
+    }
+
+    /**
+     * Add sections to the page.
+     *
+     * @param array $sections
+     *
+     * @return PageInterface
+     */
+    public function addSections(array $sections): PageInterface
+    {
+        $sections = array_merge(
+            $this->repository()->getSections(),
+            $sections
+        );
+
+        $this->repository()->setSections($sections);
+
+        return $this;
+    }
+
+    /**
+     * Add settings to the page.
+     *
+     * @param string|array $section
+     * @param array        $settings
+     *
+     * @return PageInterface
+     */
+    public function addSettings($section, array $settings = []): PageInterface
+    {
+        $currentSettings = $this->repository()->getSettings();
+
+        if (is_array($section)) {
+            $settings = array_merge($currentSettings, $section);
+            $this->repository()->setSettings($settings);
+        } else {
+            $settings = array_merge($currentSettings, [$section => $settings]);
+            $this->repository()->setSettings($settings);
+        }
 
         return $this;
     }

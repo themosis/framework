@@ -158,9 +158,31 @@ interface PageInterface
      */
     public function with($key, $value = null): PageInterface;
 
-    //public function addSections();
+    /**
+     * Return the page settings repository.
+     *
+     * @return SettingsRepositoryInterface
+     */
+    public function repository(): SettingsRepositoryInterface;
 
-    //public function addSettings();
+    /**
+     * Add sections to the page.
+     *
+     * @param array $sections
+     *
+     * @return PageInterface
+     */
+    public function addSections(array $sections): PageInterface;
+
+    /**
+     * Add settings to the page.
+     *
+     * @param string|array $section
+     * @param array        $settings
+     *
+     * @return PageInterface
+     */
+    public function addSettings($section, array $settings = []): PageInterface;
 
     //public function validate();
 }

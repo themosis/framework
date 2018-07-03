@@ -40,7 +40,7 @@ class PageFactory implements PageFactoryInterface
             ->setLayout('default')
             ->setView('page');
 
-        return (new Page($this->action, $view))
+        return (new Page($this->action, $view, new PageSettingsRepository()))
             ->setSlug($slug)
             ->setTitle($title)
             ->setMenu($title);
