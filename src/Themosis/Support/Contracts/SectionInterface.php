@@ -67,4 +67,20 @@ interface SectionInterface
      * @return SectionInterface
      */
     public function addItem($item): SectionInterface;
+
+    /**
+     * Set the section title.
+     *
+     * @param string $title
+     *
+     * @return SectionInterface
+     */
+    public function setTitle(string $title): SectionInterface;
+
+    /**
+     * Return the section title.
+     *
+     * @return string
+     */
+    public function getTitle(): string;
 }

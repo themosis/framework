@@ -2,6 +2,10 @@
 
 namespace Themosis\Page\Contracts;
 
+use Illuminate\Support\Collection;
+use Themosis\Forms\Contracts\FieldTypeInterface;
+use Themosis\Support\Contracts\SectionInterface;
+
 interface SettingsRepositoryInterface
 {
     /**
@@ -18,7 +22,7 @@ interface SettingsRepositoryInterface
      *
      * @return array
      */
-    public function getSections(): array;
+    public function getSections(): Collection;
 
     /**
      * Set the repository settings.
@@ -34,5 +38,23 @@ interface SettingsRepositoryInterface
      *
      * @return array
      */
-    public function getSettings(): array;
+    public function getSettings(): Collection;
+
+    /**
+     * Return the setting instance.
+     *
+     * @param string $name
+     *
+     * @return FieldTypeInterface
+     */
+    public function getSettingByName(string $name): FieldTypeInterface;
+
+    /**
+     * Return the section instance.
+     *
+     * @param string $name
+     *
+     * @return SectionInterface
+     */
+    public function getSectionByName(string $name): SectionInterface;
 }

@@ -2,14 +2,14 @@
 
 namespace Themosis\Field;
 
-use Themosis\Foundation\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class FieldServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton('field', function ($container) {
-            return new FieldFactory($container['view']);
+        $this->app->singleton('field', function () {
+            return new FieldFactory();
         });
     }
 }

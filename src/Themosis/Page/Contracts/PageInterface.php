@@ -184,5 +184,14 @@ interface PageInterface
      */
     public function addSettings($section, array $settings = []): PageInterface;
 
+    /**
+     * Set the page settings name prefix.
+     *
+     * @param string $prefix
+     *
+     * @return PageInterface
+     */
+    public function setPrefix(string $prefix): PageInterface;
+
     //public function validate();
 }

@@ -128,4 +128,14 @@ class PageView implements UIContainerInterface
 
         return $this->viewInstance;
     }
+
+    /**
+     * Return the page view factory.
+     *
+     * @return Factory
+     */
+    public function factory(): Factory
+    {
+        return $this->factory;
+    }
 }

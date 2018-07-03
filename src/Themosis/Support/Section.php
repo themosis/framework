@@ -16,11 +16,18 @@ class Section implements SectionInterface, Iterator, Countable
     protected $id;
 
     /**
+     * The section title.
+     *
+     * @var string
+     */
+    protected $title;
+
+    /**
      * The section view file name.
      *
      * @var string
      */
-    protected $view;
+    protected $view = '';
 
     /**
      * The section items (children instances).
@@ -43,9 +50,10 @@ class Section implements SectionInterface, Iterator, Countable
      */
     private $position = 0;
 
-    public function __construct(string $id)
+    public function __construct(string $id, string $title = '')
     {
         $this->id = $id;
+        $this->title = $title;
     }
 
     /**
@@ -56,6 +64,30 @@ class Section implements SectionInterface, Iterator, Countable
     public function getId(): string
     {
         return $this->id;
+    }
+
+    /**
+     * Set the section title.
+     *
+     * @param string $title
+     *
+     * @return SectionInterface
+     */
+    public function setTitle(string $title): SectionInterface
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Return the section title.
+     *
+     * @return string
+     */
+    public function getTitle(): string
+    {
+        return $this->title;
     }
 
     /**

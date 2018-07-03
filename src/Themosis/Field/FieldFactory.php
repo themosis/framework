@@ -3,29 +3,16 @@
 namespace Themosis\Field;
 
 use Illuminate\View\Factory;
+use Themosis\Forms\Contracts\FieldTypeInterface;
+use Themosis\Forms\Fields\Types\EmailType;
+use Themosis\Forms\Fields\Types\TextareaType;
+use Themosis\Forms\Fields\Types\TextType;
 
 /**
  * Field factory.
  */
 class FieldFactory
 {
-    /**
-     * A view instance.
-     *
-     * @var \Illuminate\View\Factory
-     */
-    protected $view;
-
-    /**
-     * Define a FieldFactory instance.
-     *
-     * @param \Illuminate\View\Factory $view A view instance.
-     */
-    public function __construct(Factory $view)
-    {
-        $this->view = $view;
-    }
-
     /**
      * Call the appropriate field class.
      *
@@ -49,23 +36,16 @@ class FieldFactory
     }
 
     /**
-     * Return a TextField instance.
+     * Return a text type instance.
      *
-     * @param string $name       The name attribute of the text input.
-     * @param array  $features   Custom field features - title, info.
-     * @param array  $attributes Input html attributes.
+     * @param string $name
+     * @param array  $options
      *
-     * @return \Themosis\Field\Fields\TextField
+     * @return FieldTypeInterface
      */
-    public function text($name, array $features = [], array $attributes = [])
+    public function text(string $name, array $options = []): FieldTypeInterface
     {
-        $properties = [
-            'features' => $features,
-            'atts' => array_merge(['class' => 'large-text'], $attributes, ['data-field' => 'text']),
-            'name' => $name,
-        ];
-
-        return $this->make('Themosis\\Field\\Fields\\TextField', $properties);
+        return (new TextType($name))->setOptions($options);
     }
 
     /**
@@ -109,23 +89,16 @@ class FieldFactory
     }
 
     /**
-     * Return a EmailField instance.
+     * Return an email type instance.
      *
-     * @param string $name       The name attribute of the email input.
-     * @param array  $features   Custom field features - title, info.
-     * @param array  $attributes Input html attributes.
+     * @param string $name
+     * @param array  $options
      *
-     * @return \Themosis\Field\Fields\EmailField
+     * @return FieldTypeInterface
      */
-    public function email($name, array $features = [], array $attributes = [])
+    public function email(string $name, array $options = []): FieldTypeInterface
     {
-        $properties = [
-            'features' => $features,
-            'atts' => array_merge(['class' => 'large-text'], $attributes, ['data-field' => 'email']),
-            'name' => $name,
-        ];
-
-        return $this->make('Themosis\\Field\\Fields\\EmailField', $properties);
+        return (new EmailType($name))->setOptions($options);
     }
 
     /**
@@ -149,23 +122,16 @@ class FieldFactory
     }
 
     /**
-     * Return a TextareaField instance.
+     * Return a textarea type instance.
      *
-     * @param string $name       The name attribute of the textarea.
-     * @param array  $features   Custom field features - title, info.
-     * @param array  $attributes Input html attributes.
+     * @param string $name
+     * @param array  $options
      *
-     * @return \Themosis\Field\Fields\TextareaField
+     * @return FieldTypeInterface
      */
-    public function textarea($name, array $features = [], array $attributes = [])
+    public function textarea(string $name, array $options = [])
     {
-        $properties = [
-            'features' => $features,
-            'atts' => array_merge(['class' => 'large-text', 'rows' => 5], $attributes, ['data-field' => 'textarea']),
-            'name' => $name,
-        ];
-
-        return $this->make('Themosis\\Field\\Fields\\TextareaField', $properties);
+        return (new TextareaType($name))->setOptions($options);
     }
 
     /**

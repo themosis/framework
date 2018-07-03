@@ -11,9 +11,7 @@ use Illuminate\View\Engines\PhpEngine;
 use Illuminate\View\FileViewFinder;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
-use Themosis\Forms\Fields\Types\EmailType;
-use Themosis\Forms\Fields\Types\TextareaType;
-use Themosis\Forms\Fields\Types\TextType;
+use Themosis\Field\FieldFactory;
 use Themosis\Page\PageFactory;
 use Themosis\Support\Section;
 
@@ -98,7 +96,7 @@ class PageTest extends TestCase
         $this->assertEquals('default', $page->ui()->getLayout());
         $this->assertEquals('page', $page->ui()->getViewPath());
 
-        $action->expects($this->once())->method('add');
+        $action->expects($this->exactly(2))->method('add');
 
         $page->set();
     }
@@ -113,7 +111,7 @@ class PageTest extends TestCase
 
         $this->assertTrue($page->isNetwork());
 
-        $action->expects($this->once())->method('add');
+        $action->expects($this->exactly(2))->method('add');
 
         $page->set();
     }
@@ -147,21 +145,23 @@ class PageTest extends TestCase
     public function testCreateASettingsPage()
     {
         $factory = $this->getFactory($this->getActionMock());
+        $fieldFactory = new FieldFactory();
 
-        $page = $factory->make('the-settings', 'App Settings');
+        $page = $factory->make('the-settings', 'App Settings')->set();
+
         $page->addSections([
-            new Section('general'),
-            new Section('custom')
+            new Section('general', 'General'),
+            (new Section('custom', 'Custom Section'))->setView('custom')
         ]);
 
         $page->addSettings('general', [
-            $firstname = new TextType('firstname'),
-            $email = new EmailType('email')
+            $firstname = $fieldFactory->text('firstname'),
+            $email = $fieldFactory->email('email')
         ]);
 
         $page->addSettings([
             'custom' => [
-                $message = new TextareaType('message')
+                $message = $fieldFactory->textarea('message')
             ]
         ]);
 
@@ -170,7 +170,19 @@ class PageTest extends TestCase
 
         $settings = $page->repository()->getSettings();
 
-        $this->assertEquals(2, count(array_keys($settings)));
-        $this->assertEquals(3, count(collect($settings)->collapse()->toArray()));
+        $this->assertEquals(2, count($settings->keys()));
+        $this->assertEquals(3, count($settings->collapse()->toArray()));
+
+        $this->assertEquals($firstname, $page->repository()->getSettingByName('firstname'));
+        $this->assertEquals('th_', $firstname->getPrefix());
+
+        $page->setPrefix('xy_');
+
+        $this->assertEquals('xy_', $email->getPrefix());
+        $this->assertEquals('xy_', $message->getPrefix());
+        $this->assertEquals('options', $page->ui()->getViewPath());
+
+        $this->assertEquals('section', $page->repository()->getSectionByName('general')->getView());
+        $this->assertEquals('custom', $page->repository()->getSectionByName('custom')->getView());
     }
 }

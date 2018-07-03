@@ -2,9 +2,11 @@
 
 namespace Themosis\Page;
 
+use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Hook\IHook;
 use Themosis\Page\Contracts\PageInterface;
 use Themosis\Page\Contracts\SettingsRepositoryInterface;
+use Themosis\Support\Contracts\SectionInterface;
 use Themosis\Support\Contracts\UIContainerInterface;
 
 class Page implements PageInterface
@@ -272,7 +274,10 @@ class Page implements PageInterface
     {
         $hook = $this->isNetwork() ? 'network_admin_menu' : 'admin_menu';
 
+        // Action for page display.
         $this->action->add($hook, [$this, 'build']);
+        // Action for page settings.
+        $this->action->add('admin_init', [$this, 'configureSettings']);
 
         return $this;
     }
@@ -361,9 +366,17 @@ class Page implements PageInterface
     public function addSections(array $sections): PageInterface
     {
         $sections = array_merge(
-            $this->repository()->getSections(),
+            $this->repository()->getSections()->all(),
             $sections
         );
+
+        array_walk($sections, function ($section) {
+            // Set a default view to each section if none defined.
+            /** @var SectionInterface $section */
+            if (empty($section->getView())) {
+                $section->setView('section');
+            }
+        });
 
         $this->repository()->setSections($sections);
 
@@ -380,7 +393,7 @@ class Page implements PageInterface
      */
     public function addSettings($section, array $settings = []): PageInterface
     {
-        $currentSettings = $this->repository()->getSettings();
+        $currentSettings = $this->repository()->getSettings()->all();
 
         if (is_array($section)) {
             $settings = array_merge($currentSettings, $section);
@@ -390,6 +403,96 @@ class Page implements PageInterface
             $this->repository()->setSettings($settings);
         }
 
+        // Set a default page view for handling
+        // the settings. A user can still overwrite
+        // the view.
+        if ('options' !== $this->ui()->getViewPath()) {
+            $this->ui()->setView('options');
+        }
+
         return $this;
+    }
+
+    /**
+     * Set the page settings name prefix.
+     *
+     * @param string $prefix
+     *
+     * @return PageInterface
+     */
+    public function setPrefix(string $prefix): PageInterface
+    {
+        $this->repository()->getSettings()->collapse()->each(function ($setting) use ($prefix) {
+            /** @var $setting FieldTypeInterface */
+            $setting->setPrefix($prefix);
+        });
+
+        return $this;
+    }
+
+    /**
+     * Configure page settings if any.
+     * Called by the "admin_init" hook.
+     */
+    public function configureSettings()
+    {
+        // If no settings && sections, return.
+        $settings = $this->repository()->getSettings();
+        $sections = $this->repository()->getSections();
+
+        if ($settings->isEmpty() && $sections->isEmpty()) {
+            return;
+        }
+
+        // Configure sections.
+        $sections->each(function ($section) {
+            /** @var SectionInterface $section */
+            add_settings_section($section->getId(), $section->getTitle(), [$this, 'renderSections'], $this->getSlug());
+        });
+
+        // Configure settings.
+        foreach ($settings->all() as $slug => $fields) {
+            foreach ($fields as $setting) {
+                /** @var FieldTypeInterface $setting */
+                add_settings_field(
+                    $setting->getName(),
+                    $setting->getOptions('label'),
+                    [$this, 'renderSettings'],
+                    $this->getSlug(),
+                    $slug,
+                    $setting
+                );
+            }
+        }
+
+        // Validate settings.
+        // @todo Validate settings
+    }
+
+    /**
+     * Output the section HTML.
+     *
+     * @param array $args
+     */
+    public function renderSections(array $args)
+    {
+        $section = $this->repository()->getSectionByName($args['id']);
+        $view = sprintf(
+            '%s.%s.%s',
+            $this->ui()->getTheme(),
+            $this->ui()->getLayout(),
+            $section->getView()
+        );
+
+        echo $this->ui()->factory()->make($view)->with($section->getViewData())->render();
+    }
+
+    /**
+     * Output the setting HTML.
+     *
+     * @param FieldTypeInterface $setting
+     */
+    public function renderSettings($setting)
+    {
     }
 }

@@ -21,6 +21,7 @@ class SectionTest extends TestCase
         ]);
 
         $this->assertEquals('default', $section->getId());
+        $this->assertEmpty($section->getTitle());
         $this->assertEquals($items, $section->getItems());
         $this->assertEquals('com.site.component.default', $section->getView());
         $this->assertEquals([
@@ -34,5 +35,16 @@ class SectionTest extends TestCase
         foreach ($section as $item) {
             $this->assertInstanceOf('stdClass', $item);
         }
+    }
+
+    public function testBasicSectionWithTitle()
+    {
+        $section = new Section('custom', 'Custom Title');
+
+        $this->assertEquals('Custom Title', $section->getTitle());
+
+        $section->setTitle('Another Title');
+
+        $this->assertEquals('Another Title', $section->getTitle());
     }
 }

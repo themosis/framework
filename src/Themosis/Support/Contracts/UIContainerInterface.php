@@ -2,6 +2,7 @@
 
 namespace Themosis\Support\Contracts;
 
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 
 interface UIContainerInterface
@@ -60,4 +61,11 @@ interface UIContainerInterface
      * @return View
      */
     public function getView(): View;
+
+    /**
+     * Return the container view factory.
+     *
+     * @return Factory
+     */
+    public function factory(): Factory;
 }
