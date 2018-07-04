@@ -4,6 +4,7 @@
         @php
             settings_fields($__page->getSlug());
             do_settings_sections($__page->getSlug());
+            submit_button();
         @endphp
     </form>
 </div>

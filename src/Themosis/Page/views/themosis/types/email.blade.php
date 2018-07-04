@@ -1,1 +1,1 @@
-<p>Email setting</p>
+<input type="email" name="{{ $__field->getName() }}" {!! $__field->attributes($__field->getAttributes()) !!}>

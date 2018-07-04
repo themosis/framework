@@ -471,17 +471,14 @@ class Page implements PageInterface
         foreach ($settings->all() as $slug => $fields) {
             foreach ($fields as $setting) {
                 /** @var FieldTypeInterface $setting */
-                // Set prefix.
                 $setting->setPrefix($this->getPrefix());
-                // Set a default setting title based on its basename.
                 $setting->setOptions([
                     'label' => ucfirst($setting->getBaseName()),
                     'attributes' => [
-                        'id' => $setting->getName().'_setting'
+                        'id' => $setting->getName().'_setting',
+                        'class' => 'regular-text'
                     ]
                 ]);
-                // Set a default CSS class.
-                $setting->addAttribute('class', 'regular-text');
 
                 // Display the setting.
                 add_settings_field(
@@ -492,11 +489,22 @@ class Page implements PageInterface
                     $slug,
                     $setting
                 );
+
+                // Validate setting.
+                register_setting($this->getSlug(), $setting->getName(), [
+                    'sanitize_callback' => [$this, 'sanitizeSetting']
+                ]);
             }
         }
+    }
 
-        // Validate settings.
-        // @todo Validate settings
+    /**
+     * Sanitize each settings values.
+     *
+     * @param mixed $args
+     */
+    public function sanitizeSetting($args)
+    {
     }
 
     /**

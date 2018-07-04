@@ -1,1 +1,1 @@
-<p>Textarea setting</p>
+<textarea name="{{ $__field->getName() }}" {!! $__field->attributes($__field->getAttributes()) !!}></textarea>
