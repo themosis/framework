@@ -641,9 +641,9 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      *
      * @param string $locale
      *
-     * @return FormInterface
+     * @return FieldTypeInterface
      */
-    public function setLocale(string $locale): FormInterface
+    public function setLocale(string $locale): FieldTypeInterface
     {
         $this->locale = $locale;
 

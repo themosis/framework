@@ -141,6 +141,11 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     private $errors;
 
     /**
+     * @var string
+     */
+    protected $locale;
+
+    /**
      * BaseType constructor.
      *
      * @param string $name
@@ -576,6 +581,30 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         }
 
         return $errors->get($name);
+    }
+
+    /**
+     * Return the field locale.
+     *
+     * @return string
+     */
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set the field locale.
+     *
+     * @param string $locale
+     *
+     * @return FieldTypeInterface
+     */
+    public function setLocale(string $locale): FieldTypeInterface
+    {
+        $this->locale = $locale;
+
+        return $this;
     }
 
     /**

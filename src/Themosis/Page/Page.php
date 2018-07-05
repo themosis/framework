@@ -521,20 +521,19 @@ class Page implements PageInterface
      */
     protected function prepareSetting(FieldTypeInterface $setting)
     {
+        $setting->setLocale($this->validator->getTranslator()->getLocale());
         $setting->setPrefix($this->getPrefix());
         $setting->setOptions([
             'label' => $setting->getOptions('label') ?
                 $setting->getOptions('label') : ucfirst($setting->getBaseName()),
-            'label_attr' => [
-                'for' => $setting->getName().'_setting'
-            ],
-            'attributes' => [
-                'id' => $setting->getName().'_setting',
-                'class' => 'regular-text'
-            ],
             'placeholder' => ! is_array($setting->getOptions('placeholder')) ?
                 $setting->getOptions('placeholder') : $setting->getBaseName()
         ]);
+
+        $attributes = array_merge([
+            'class' => 'regular-text'
+        ], $setting->getAttributes());
+        $setting->setAttributes($attributes);
         $setting->build();
 
         return $setting;

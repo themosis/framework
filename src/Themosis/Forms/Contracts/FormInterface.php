@@ -60,20 +60,4 @@ interface FormInterface
      * @return Factory
      */
     public function getViewer(): Factory;
-
-    /**
-     * Set form locale.
-     *
-     * @param string $locale
-     *
-     * @return FormInterface
-     */
-    public function setLocale(string $locale): FormInterface;
-
-    /**
-     * Return form locale.
-     *
-     * @return string
-     */
-    public function getLocale(): string;
 }

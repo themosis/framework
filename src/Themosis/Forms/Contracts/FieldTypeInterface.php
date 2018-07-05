@@ -199,4 +199,20 @@ interface FieldTypeInterface
      * @return string|array
      */
     public function error(string $name = '', bool $first = false);
+
+    /**
+     * Return the field locale.
+     *
+     * @return string
+     */
+    public function getLocale(): string;
+
+    /**
+     * Set the field locale.
+     *
+     * @param string $locale
+     *
+     * @return FieldTypeInterface
+     */
+    public function setLocale(string $locale): FieldTypeInterface;
 }

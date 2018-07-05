@@ -21,7 +21,7 @@ class NumberType extends BaseType
      */
     public function build(): FieldTypeInterface
     {
-        $this->setTransformer(new NumberToLocalizedStringTransformer($this->form->getLocale()));
+        $this->setTransformer(new NumberToLocalizedStringTransformer($this->getLocale()));
 
         return $this;
     }

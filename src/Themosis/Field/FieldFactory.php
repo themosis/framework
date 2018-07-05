@@ -7,6 +7,7 @@ use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Fields\Types\ButtonType;
 use Themosis\Forms\Fields\Types\CheckboxType;
 use Themosis\Forms\Fields\Types\EmailType;
+use Themosis\Forms\Fields\Types\NumberType;
 use Themosis\Forms\Fields\Types\TextareaType;
 use Themosis\Forms\Fields\Types\TextType;
 
@@ -49,23 +50,16 @@ class FieldFactory
     }
 
     /**
-     * Return a NumberField instance.
+     * Return a number field type instance.
      *
-     * @param string $name       The name attribute of the number input.
-     * @param array  $features   Custom field features - title, info.
-     * @param array  $attributes Input html attributes.
+     * @param string $name
+     * @param array  $options
      *
-     * @return \Themosis\Field\Fields\NumberField
+     * @return FieldTypeInterface
      */
-    public function number($name, array $features = [], array $attributes = [])
+    public function number(string $name, array $options = [])
     {
-        $properties = [
-            'features' => $features,
-            'atts' => array_merge(['class' => 'small-text'], $attributes, ['data-field' => 'number']),
-            'name' => $name,
-        ];
-
-        return $this->make('Themosis\\Field\\Fields\\NumberField', $properties);
+        return (new NumberType($name))->setOptions($options);
     }
 
     /**

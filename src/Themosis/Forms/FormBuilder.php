@@ -61,6 +61,7 @@ class FormBuilder implements FormBuilderInterface
             'theme' => $this->form->getOptions('theme')
         ], $options), $field);
         $field->setOptions($opts);
+        $field->setLocale($this->form->getLocale());
         $field->setForm($this->form);
         $field->build();
 
