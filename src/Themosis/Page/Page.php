@@ -666,7 +666,28 @@ class Page implements PageInterface
         $view = sprintf('%s.%s', $this->ui()->getTheme(), $setting->getView(false));
 
         echo $this->ui()->factory()->make($view)->with([
-            '__field' => $setting
+            '__field' => $setting,
+            '__page' => $this
         ])->render();
+    }
+
+    /**
+     * Return the setting error from its name.
+     *
+     * @param string $name
+     *
+     * @return array
+     */
+    public function getSettingError(string $name): array
+    {
+        $errors = get_settings_errors($this->getSlug());
+
+        if (empty($errors)) {
+            return [];
+        }
+
+        return collect($errors)->first(function ($error) use ($name) {
+            return $error['code'] === $name;
+        });
     }
 }
