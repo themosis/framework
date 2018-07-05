@@ -531,7 +531,9 @@ class Page implements PageInterface
             'attributes' => [
                 'id' => $setting->getName().'_setting',
                 'class' => 'regular-text'
-            ]
+            ],
+            'placeholder' => ! is_array($setting->getOptions('placeholder')) ?
+                $setting->getOptions('placeholder') : $setting->getBaseName()
         ]);
         $setting->build();
 
