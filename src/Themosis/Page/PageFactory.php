@@ -2,6 +2,7 @@
 
 namespace Themosis\Page;
 
+use Illuminate\Contracts\Validation\Factory as FactoryInterface;
 use Illuminate\Contracts\View\Factory;
 use Themosis\Hook\IHook;
 use Themosis\Page\Contracts\PageFactoryInterface;
@@ -19,10 +20,16 @@ class PageFactory implements PageFactoryInterface
      */
     protected $view;
 
-    public function __construct(IHook $action, Factory $view)
+    /**
+     * @var FactoryInterface
+     */
+    protected $validator;
+
+    public function __construct(IHook $action, Factory $view, FactoryInterface $validator)
     {
         $this->action = $action;
         $this->view = $view;
+        $this->validator = $validator;
     }
 
     /**
@@ -40,7 +47,7 @@ class PageFactory implements PageFactoryInterface
             ->setLayout('default')
             ->setView('page');
 
-        return (new Page($this->action, $view, new PageSettingsRepository()))
+        return (new Page($this->action, $view, new PageSettingsRepository(), $this->validator))
             ->setSlug($slug)
             ->setTitle($title)
             ->setMenu($title);

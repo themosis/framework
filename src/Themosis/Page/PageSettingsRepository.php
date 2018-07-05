@@ -78,7 +78,7 @@ class PageSettingsRepository implements SettingsRepositoryInterface
     {
         return $this->getSettings()->collapse()->first(function ($setting) use ($name) {
             /** @var FieldTypeInterface $setting */
-            return $name === $setting->getBaseName();
+            return $name === $setting->getName();
         });
     }
 

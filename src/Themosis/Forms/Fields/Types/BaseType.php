@@ -45,7 +45,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     protected $defaultOptions = [
         'group' => 'default',
-        'rules' => [],
+        'rules' => '',
         'messages' => [],
         'attributes' => [],
         'label' => '',

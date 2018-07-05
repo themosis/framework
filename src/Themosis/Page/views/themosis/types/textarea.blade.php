@@ -1,1 +1,1 @@
-<textarea name="{{ $__field->getName() }}" {!! $__field->attributes($__field->getAttributes()) !!}></textarea>
+<textarea name="{{ $__field->getName() }}" {!! $__field->attributes($__field->getAttributes()) !!}>{{ $__field->getValue() }}</textarea>

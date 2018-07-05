@@ -2,6 +2,8 @@
 
 namespace Themosis\Page;
 
+use Illuminate\Contracts\Validation\Factory;
+use Illuminate\Validation\Validator;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Hook\IHook;
 use Themosis\Page\Contracts\PageInterface;
@@ -71,11 +73,31 @@ class Page implements PageInterface
      */
     protected $prefix = 'th_';
 
-    public function __construct(IHook $action, UIContainerInterface $ui, SettingsRepositoryInterface $repository)
-    {
+    /**
+     * @var Factory
+     */
+    protected $validator;
+
+    /**
+     * @var int
+     */
+    protected $errors = 0;
+
+    /**
+     * @var int
+     */
+    protected $offset = 0;
+
+    public function __construct(
+        IHook $action,
+        UIContainerInterface $ui,
+        SettingsRepositoryInterface $repository,
+        Factory $validator
+    ) {
         $this->action = $action;
         $this->ui = $ui;
         $this->repository = $repository;
+        $this->validator = $validator;
     }
 
     /**
@@ -470,15 +492,7 @@ class Page implements PageInterface
         // Configure settings.
         foreach ($settings->all() as $slug => $fields) {
             foreach ($fields as $setting) {
-                /** @var FieldTypeInterface $setting */
-                $setting->setPrefix($this->getPrefix());
-                $setting->setOptions([
-                    'label' => ucfirst($setting->getBaseName()),
-                    'attributes' => [
-                        'id' => $setting->getName().'_setting',
-                        'class' => 'regular-text'
-                    ]
-                ]);
+                $setting = $this->prepareSetting($setting);
 
                 // Display the setting.
                 add_settings_field(
@@ -499,12 +513,120 @@ class Page implements PageInterface
     }
 
     /**
-     * Sanitize each settings values.
+     * Prepare the setting.
      *
-     * @param mixed $args
+     * @param FieldTypeInterface $setting
+     *
+     * @return FieldTypeInterface
      */
-    public function sanitizeSetting($args)
+    protected function prepareSetting(FieldTypeInterface $setting)
     {
+        $setting->setPrefix($this->getPrefix());
+        $setting->setOptions([
+            'label' => $setting->getOptions('label') ?
+                $setting->getOptions('label') : ucfirst($setting->getBaseName()),
+            'label_attr' => [
+                'for' => $setting->getName().'_setting'
+            ],
+            'attributes' => [
+                'id' => $setting->getName().'_setting',
+                'class' => 'regular-text'
+            ]
+        ]);
+        $setting->build();
+
+        return $setting;
+    }
+
+    /**
+     * Sanitize the setting before save.
+     *
+     * @param string|array $value
+     *
+     * @return string|array
+     */
+    public function sanitizeSetting($value)
+    {
+        $keys = $this->repository()->getSettings()->collapse()->map(function ($setting) {
+            /** @var FieldTypeInterface $setting */
+            return $setting->getName();
+        });
+
+        $settingName = $keys->slice($this->offset, 1)->first();
+        $lastSetting = $this->repository()->getSettings()->collapse()->last();
+
+        $setting = $this->repository()->getSettingByName($settingName);
+
+        $validator = $this->validator->make(
+            collect($_POST)->all(),
+            [$setting->getName() => $setting->getOptions('rules')],
+            $this->getSettingMessages($setting),
+            $this->getSettingPlaceholder($setting)
+        );
+
+        // Update setting offset.
+        $this->offset++;
+
+        /** @var Validator $validator */
+        if ($validator->fails()) {
+            $this->errors++;
+
+            add_settings_error(
+                $this->getSlug(),
+                $setting->getName(),
+                $validator->getMessageBag()->first($setting->getName()),
+                'error'
+            );
+
+            return '';
+        }
+
+        if ($settingName === $lastSetting->getName() && ! $this->errors) {
+            add_settings_error(
+                $this->getSlug(),
+                'settings_updated',
+                __('Settings saved.'),
+                'updated'
+            );
+        }
+
+        return $value;
+    }
+
+    /**
+     * Return the setting custom error messages.
+     *
+     * @param FieldTypeInterface $setting
+     *
+     * @return array
+     */
+    protected function getSettingMessages(FieldTypeInterface $setting): array
+    {
+        $messages = [];
+
+        foreach ($setting->getOptions('messages') as $attr => $message) {
+            $messages[$setting->getName().'.'.$attr] = $message;
+        }
+
+        return $messages;
+    }
+
+    /**
+     * Return the setting placeholder.
+     *
+     * @param FieldTypeInterface $setting
+     *
+     * @return array
+     */
+    protected function getSettingPlaceholder(FieldTypeInterface $setting): array
+    {
+        $placeholder = $setting->getOptions('placeholder');
+
+        if (is_array($placeholder)) {
+            return [];
+        }
+
+        return [$setting->getName() => $placeholder];
     }
 
     /**
@@ -532,6 +654,13 @@ class Page implements PageInterface
      */
     public function renderSettings($setting)
     {
+        // Set the setting value if any.
+        $value = get_option($setting->getName());
+
+        if (false !== $value) {
+            $setting->setValue($value);
+        }
+
         $view = sprintf('%s.%s', $this->ui()->getTheme(), $setting->getView(false));
 
         echo $this->ui()->factory()->make($view)->with([

@@ -14,7 +14,7 @@ class PageServiceProvider extends ServiceProvider
             $view = $app['view'];
             $view->addLocation(__DIR__.'/views');
 
-            return new PageFactory($app['action'], $app['view']);
+            return new PageFactory($app['action'], $app['view'], $app['validator']);
         });
     }
 }

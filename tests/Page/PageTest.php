@@ -4,6 +4,9 @@ namespace Themosis\Tests\Page;
 
 use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Translation\FileLoader;
+use Illuminate\Translation\Translator;
+use Illuminate\Validation\Factory;
 use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\View\Engines\CompilerEngine;
 use Illuminate\View\Engines\EngineResolver;
@@ -19,12 +22,17 @@ class PageTest extends TestCase
 {
     protected $viewFactory;
 
-    public function getActionMock()
+    protected function getActionMock()
     {
         return $this->getMockBuilder(\Themosis\Hook\ActionBuilder::class)
             ->setMethods(['add'])
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    protected function getApplication()
+    {
+        return new Application();
     }
 
     protected function getViewFactory()
@@ -70,9 +78,16 @@ class PageTest extends TestCase
         return $factory;
     }
 
+    protected function getValidationFactory($locale)
+    {
+        $translator = new Translator(new FileLoader(new Filesystem(), ''), $locale);
+
+        return new Factory($translator, $this->getApplication());
+    }
+
     public function getFactory($action)
     {
-        return new PageFactory($action, $this->getViewFactory());
+        return new PageFactory($action, $this->getViewFactory(), $this->getValidationFactory('en_US'));
     }
 
     public function testCreateACustomPage()
@@ -173,7 +188,7 @@ class PageTest extends TestCase
         $this->assertEquals(2, count($settings->keys()));
         $this->assertEquals(3, count($settings->collapse()->toArray()));
 
-        $this->assertEquals($firstname, $page->repository()->getSettingByName('firstname'));
+        $this->assertEquals($firstname, $page->repository()->getSettingByName('th_firstname'));
         $this->assertEquals('th_', $firstname->getPrefix());
 
         $page->setPrefix('xy_');
