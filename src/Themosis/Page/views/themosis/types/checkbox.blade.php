@@ -1,0 +1,1 @@
+<label><input type="checkbox" name="{{ $__field->getName() }}" {!! $__field->attributes($__field->getAttributes()) !!}></label>

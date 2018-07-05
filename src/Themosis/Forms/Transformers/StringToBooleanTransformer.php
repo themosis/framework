@@ -26,6 +26,10 @@ class StringToBooleanTransformer implements DataTransformerInterface
             throw new DataTransformerException('A string value is expected.');
         }
 
+        if (empty($data)) {
+            return false;
+        }
+
         if (in_array($data, ['off', 'no'], true)) {
             return false;
         }

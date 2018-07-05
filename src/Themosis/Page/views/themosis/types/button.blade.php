@@ -1,0 +1,1 @@
+<button {!! $__field->attributes($__field->getAttributes()) !!}>{!! $__field->getOptions('label') !!}</button>

@@ -657,9 +657,9 @@ class Page implements PageInterface
     public function renderSettings($setting)
     {
         // Set the setting value if any.
-        $value = get_option($setting->getName());
+        $value = get_option($setting->getName(), null);
 
-        if (false !== $value) {
+        if (! is_null($value)) {
             $setting->setValue($value);
         }
 

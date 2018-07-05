@@ -4,6 +4,8 @@ namespace Themosis\Field;
 
 use Illuminate\View\Factory;
 use Themosis\Forms\Contracts\FieldTypeInterface;
+use Themosis\Forms\Fields\Types\ButtonType;
+use Themosis\Forms\Fields\Types\CheckboxType;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\TextareaType;
 use Themosis\Forms\Fields\Types\TextType;
@@ -13,28 +15,6 @@ use Themosis\Forms\Fields\Types\TextType;
  */
 class FieldFactory
 {
-    /**
-     * Call the appropriate field class.
-     *
-     * @param string $class           The custom field class name.
-     * @param array  $fieldProperties The defined field properties. Muse be an associative array.
-     *
-     * @throws FieldException
-     *
-     * @return object Themosis\Field\Fields\IField
-     */
-    public function make($class, array $fieldProperties)
-    {
-        try {
-            // Return the called class.
-            $class = new $class($fieldProperties, $this->view);
-        } catch (\Exception $e) {
-            //@TODO Implement log if class is not found
-        }
-
-        return $class;
-    }
-
     /**
      * Return a text type instance.
      *
@@ -135,25 +115,16 @@ class FieldFactory
     }
 
     /**
-     * Return a CheckboxField instance.
+     * Return a checkbox type instance.
      *
-     * @param string       $name       The name attribute of the checkbox input.
-     * @param string|array $options    The checkbox options.
-     * @param array        $features   Custom field features - title, info.
-     * @param array        $attributes Input html attributes.
+     * @param string $name
+     * @param array  $options
      *
-     * @return \Themosis\Field\Fields\CheckboxField
+     * @return FieldTypeInterface
      */
-    public function checkbox($name, $options, array $features = [], array $attributes = [])
+    public function checkbox(string $name, array $options)
     {
-        $properties = [
-            'features' => $features,
-            'atts' => array_merge($attributes, ['data-field' => 'checkbox']),
-            'name' => $name,
-            'options' => $options,
-        ];
-
-        return $this->make('Themosis\\Field\\Fields\\CheckboxField', $properties);
+        return (new CheckboxType($name))->setOptions($options);
     }
 
     /**
@@ -297,5 +268,18 @@ class FieldFactory
         ];
 
         return $this->make('Themosis\\Field\\Fields\\ColorField', $properties);
+    }
+
+    /**
+     * Return a button type instance.
+     *
+     * @param string $name
+     * @param array  $options
+     *
+     * @return FieldTypeInterface
+     */
+    public function button(string $name, array $options = [])
+    {
+        return (new ButtonType($name))->setOptions($options);
     }
 }
