@@ -8,6 +8,7 @@ use Themosis\Forms\Fields\Types\ButtonType;
 use Themosis\Forms\Fields\Types\CheckboxType;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\NumberType;
+use Themosis\Forms\Fields\Types\PasswordType;
 use Themosis\Forms\Fields\Types\TextareaType;
 use Themosis\Forms\Fields\Types\TextType;
 
@@ -30,23 +31,16 @@ class FieldFactory
     }
 
     /**
-     * Return a PasswordField instance.
+     * Return a password type instance.
      *
-     * @param string $name       The name attribute of the password input.
-     * @param array  $features   Custom field features - title, info.
-     * @param array  $attributes Input html attributes.
+     * @param string $name
+     * @param array  $options
      *
-     * @return \Themosis\Field\Fields\PasswordField
+     * @return FieldTypeInterface
      */
-    public function password($name, array $features = [], array $attributes = [])
+    public function password(string $name, array $options = [])
     {
-        $properties = [
-            'features' => $features,
-            'atts' => array_merge(['class' => 'large-text'], $attributes, ['data-field' => 'password']),
-            'name' => $name,
-        ];
-
-        return $this->make('Themosis\\Field\\Fields\\PasswordField', $properties);
+        return (new PasswordType($name))->setOptions($options);
     }
 
     /**
