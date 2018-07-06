@@ -2,11 +2,13 @@
 
 namespace Themosis\Field;
 
+use Themosis\Core\Application;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Fields\Types\ButtonType;
 use Themosis\Forms\Fields\Types\CheckboxType;
 use Themosis\Forms\Fields\Types\ChoiceType;
 use Themosis\Forms\Fields\Types\EmailType;
+use Themosis\Forms\Fields\Types\HiddenType;
 use Themosis\Forms\Fields\Types\NumberType;
 use Themosis\Forms\Fields\Types\PasswordType;
 use Themosis\Forms\Fields\Types\SubmitType;
@@ -19,6 +21,16 @@ use Themosis\Forms\Fields\Types\TextType;
 class FieldFactory
 {
     /**
+     * @var Application
+     */
+    protected $app;
+
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
+
+    /**
      * Return a text type instance.
      *
      * @param string $name
@@ -28,7 +40,9 @@ class FieldFactory
      */
     public function text(string $name, array $options = []): FieldTypeInterface
     {
-        return (new TextType($name))->setOptions($options);
+        return (new TextType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
     }
 
     /**
@@ -41,7 +55,9 @@ class FieldFactory
      */
     public function password(string $name, array $options = [])
     {
-        return (new PasswordType($name))->setOptions($options);
+        return (new PasswordType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
     }
 
     /**
@@ -54,7 +70,9 @@ class FieldFactory
      */
     public function number(string $name, array $options = [])
     {
-        return (new NumberType($name))->setOptions($options);
+        return (new NumberType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
     }
 
     /**
@@ -67,7 +85,9 @@ class FieldFactory
      */
     public function email(string $name, array $options = []): FieldTypeInterface
     {
-        return (new EmailType($name))->setOptions($options);
+        return (new EmailType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
     }
 
     /**
@@ -100,7 +120,9 @@ class FieldFactory
      */
     public function textarea(string $name, array $options = [])
     {
-        return (new TextareaType($name))->setOptions($options);
+        return (new TextareaType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
     }
 
     /**
@@ -113,7 +135,9 @@ class FieldFactory
      */
     public function checkbox(string $name, array $options = [])
     {
-        return (new CheckboxType($name))->setOptions($options);
+        return (new CheckboxType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
     }
 
     /**
@@ -126,7 +150,9 @@ class FieldFactory
      */
     public function choice(string $name, array $options = [])
     {
-        return (new ChoiceType($name))->setOptions($options);
+        return (new ChoiceType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
     }
 
     /**
@@ -238,7 +264,9 @@ class FieldFactory
      */
     public function button(string $name, array $options = [])
     {
-        return (new ButtonType($name))->setOptions($options);
+        return (new ButtonType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
     }
 
     /**
@@ -251,6 +279,23 @@ class FieldFactory
      */
     public function submit(string $name, array $options = [])
     {
-        return (new SubmitType($name))->setOptions($options);
+        return (new SubmitType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
+    }
+
+    /**
+     * Return a hidden type instance.
+     *
+     * @param string $name
+     * @param array  $options
+     *
+     * @return FieldTypeInterface
+     */
+    public function hidden(string $name, array $options = [])
+    {
+        return (new HiddenType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
     }
 }

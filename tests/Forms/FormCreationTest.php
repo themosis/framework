@@ -20,6 +20,7 @@ use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Fields\Types\CheckboxType;
 use Themosis\Forms\Fields\Types\ChoiceType;
 use Themosis\Forms\Fields\Types\EmailType;
+use Themosis\Forms\Fields\Types\HiddenType;
 use Themosis\Forms\Fields\Types\IntegerType;
 use Themosis\Forms\Fields\Types\NumberType;
 use Themosis\Forms\Fields\Types\PasswordType;
@@ -815,5 +816,22 @@ class FormCreationTest extends TestCase
             ->get();
 
         $this->assertFalse($form->getOptions('tags'));
+    }
+
+    public function testFormHiddenFieldType()
+    {
+        $factory = $this->getFormFactory();
+
+        $form = $factory->make()
+            ->add($update = new HiddenType('update'))
+            ->add($action = new HiddenType('action'), [
+                'data' => 'something'
+            ])
+            ->get();
+
+        $this->assertEquals('th_action', $action->getName());
+        $this->assertEquals($action, $form->repository()->getFieldByName('action'));
+        $this->assertEmpty($form->repository()->getFieldByName('update')->getValue());
+        $this->assertEquals('something', $form->repository()->getFieldByName('action')->getValue());
     }
 }

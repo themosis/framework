@@ -3,7 +3,6 @@
 namespace Themosis\Forms\Fields\Types;
 
 use Themosis\Forms\Contracts\DataTransformerInterface;
-use Themosis\Forms\Contracts\FieldTypeInterface;
 
 class TextType extends BaseType implements DataTransformerInterface
 {
@@ -15,15 +14,17 @@ class TextType extends BaseType implements DataTransformerInterface
     protected $view = 'types.text';
 
     /**
-     * Setup the field.
+     * Parse and setup default options.
      *
-     * @return FieldTypeInterface
+     * @param array $options
+     *
+     * @return array
      */
-    public function build(): FieldTypeInterface
+    protected function parseOptions(array $options): array
     {
         $this->setTransformer($this);
 
-        return $this;
+        return parent::parseOptions($options);
     }
 
     /**

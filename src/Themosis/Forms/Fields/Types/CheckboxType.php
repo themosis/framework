@@ -14,13 +14,6 @@ class CheckboxType extends BaseType
      */
     protected $view = 'types.checkbox';
 
-    public function build(): FieldTypeInterface
-    {
-        $this->setTransformer(new StringToBooleanTransformer());
-
-        return $this;
-    }
-
     /**
      * Parse field options.
      *
@@ -30,6 +23,8 @@ class CheckboxType extends BaseType
      */
     protected function parseOptions(array $options): array
     {
+        $this->setTransformer(new StringToBooleanTransformer());
+
         $options = parent::parseOptions($options);
 
         // Set some default CSS classes if chosen theme is "bootstrap".

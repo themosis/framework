@@ -3,7 +3,6 @@
 namespace Themosis\Forms\Fields\Types;
 
 use Themosis\Forms\Contracts\CheckableInterface;
-use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\SelectableInterface;
 use Themosis\Forms\Fields\ChoiceList\ChoiceList;
 use Themosis\Forms\Transformers\ChoiceToValueTransformer;
@@ -69,6 +68,8 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
      */
     protected function parseOptions(array $options): array
     {
+        $this->setTransformer(new ChoiceToValueTransformer());
+
         $options = parent::parseOptions($options);
 
         if (is_null($options['choices'])) {
@@ -119,18 +120,6 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
     public function getLayout()
     {
         return $this->layout;
-    }
-
-    /**
-     * Setup field.
-     *
-     * @return FieldTypeInterface
-     */
-    public function build(): FieldTypeInterface
-    {
-        $this->setTransformer(new ChoiceToValueTransformer());
-
-        return $this;
     }
 
     /**

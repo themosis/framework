@@ -32,7 +32,14 @@ class PageTest extends TestCase
 
     protected function getApplication()
     {
-        return new Application();
+        $application = $this->getMockBuilder(\Themosis\Core\Application::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getLocale'])
+            ->getMock();
+
+        $application->method('getLocale')->willReturn('en_US');
+
+        return $application;
     }
 
     protected function getViewFactory()
@@ -160,7 +167,7 @@ class PageTest extends TestCase
     public function testCreateASettingsPage()
     {
         $factory = $this->getFactory($this->getActionMock());
-        $fieldFactory = new FieldFactory();
+        $fieldFactory = new FieldFactory($this->getApplication());
 
         $page = $factory->make('the-settings', 'App Settings')->set();
 

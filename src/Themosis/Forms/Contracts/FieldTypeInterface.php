@@ -177,13 +177,6 @@ interface FieldTypeInterface
     public function getValue();
 
     /**
-     * Setup the field behavior.
-     *
-     * @return FieldTypeInterface
-     */
-    public function build(): FieldTypeInterface;
-
-    /**
      * Return an error message bag instance.
      *
      * @return MessageBag

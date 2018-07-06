@@ -3,7 +3,6 @@
 namespace Themosis\Forms\Fields\Types;
 
 use Themosis\Forms\Contracts\DataTransformerInterface;
-use Themosis\Forms\Contracts\FieldTypeInterface;
 
 class ButtonType extends BaseType implements DataTransformerInterface
 {
@@ -13,13 +12,6 @@ class ButtonType extends BaseType implements DataTransformerInterface
      * @var string
      */
     protected $view = 'types.button';
-
-    public function build(): FieldTypeInterface
-    {
-        $this->setTransformer($this);
-
-        return $this;
-    }
 
     /**
      * Get default button options.
@@ -48,6 +40,8 @@ class ButtonType extends BaseType implements DataTransformerInterface
      */
     protected function parseOptions(array $options): array
     {
+        $this->setTransformer($this);
+
         $options = parent::parseOptions($options);
 
         // Set some default CSS classes if chosen theme is "bootstrap".

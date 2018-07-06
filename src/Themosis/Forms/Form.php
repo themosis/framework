@@ -675,16 +675,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * @inheritdoc
      *
-     * @return FieldTypeInterface
-     */
-    public function build(): FieldTypeInterface
-    {
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
      * @param array|string $value
      *
      * @return FieldTypeInterface

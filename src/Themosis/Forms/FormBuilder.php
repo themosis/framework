@@ -60,10 +60,9 @@ class FormBuilder implements FormBuilderInterface
             'errors' => $this->form->getOptions('errors'),
             'theme' => $this->form->getOptions('theme')
         ], $options), $field);
-        $field->setOptions($opts);
         $field->setLocale($this->form->getLocale());
+        $field->setOptions($opts);
         $field->setForm($this->form);
-        $field->build();
 
         // Check if section instance already exists on the form.
         // If not, create a new section instance.

@@ -35,7 +35,8 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         'label',
         'label_attr',
         'errors',
-        'theme'
+        'theme',
+        'data'
     ];
 
     /**
@@ -253,6 +254,11 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
             } else {
                 $options['attributes']['class'] = 'form-control';
             }
+        }
+
+        // Set default value if defined.
+        if (isset($options['data']) && ! is_null($options['data'])) {
+            $this->setValue($options['data']);
         }
 
         return $options;

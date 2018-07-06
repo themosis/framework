@@ -521,7 +521,6 @@ class Page implements PageInterface
      */
     protected function prepareSetting(FieldTypeInterface $setting)
     {
-        $setting->setLocale($this->validator->getTranslator()->getLocale());
         $setting->setPrefix($this->getPrefix());
         $setting->setOptions([
             'label' => $setting->getOptions('label') ?
@@ -534,7 +533,6 @@ class Page implements PageInterface
             'class' => 'regular-text'
         ], $setting->getAttributes());
         $setting->setAttributes($attributes);
-        $setting->build();
 
         return $setting;
     }

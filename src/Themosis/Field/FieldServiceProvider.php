@@ -8,8 +8,8 @@ class FieldServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton('field', function () {
-            return new FieldFactory();
+        $this->app->singleton('field', function ($app) {
+            return new FieldFactory($app);
         });
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Themosis\Forms\Fields\Types;
 
-use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Transformers\IntegerToLocalizedStringTransformer;
 
 class IntegerType extends BaseType
@@ -15,14 +14,16 @@ class IntegerType extends BaseType
     protected $view = 'types.number';
 
     /**
-     * Setup the field.
+     * Parse and setup default options.
      *
-     * @return FieldTypeInterface
+     * @param array $options
+     *
+     * @return array
      */
-    public function build(): FieldTypeInterface
+    protected function parseOptions(array $options): array
     {
-        $this->setTransformer(new IntegerToLocalizedStringTransformer($this->form->getLocale()));
+        $this->setTransformer(new IntegerToLocalizedStringTransformer($this->getLocale()));
 
-        return $this;
+        return parent::parseOptions($options);
     }
 }
