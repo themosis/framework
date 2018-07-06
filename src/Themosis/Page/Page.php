@@ -553,10 +553,6 @@ class Page implements PageInterface
             return $setting->getName();
         });
 
-        if ($this->offset > $keys->count() - 1) {
-            return '';
-        }
-
         $settingName = $keys->slice($this->offset, 1)->first();
         $lastSetting = $this->repository()->getSettings()->collapse()->last();
 
