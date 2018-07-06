@@ -553,11 +553,30 @@ class Page implements PageInterface
 
         $settingName = $keys->slice($this->offset, 1)->first();
         $lastSetting = $this->repository()->getSettings()->collapse()->last();
+        $data = collect($_POST);
+
+        if ($this->offset > $keys->count() - 1) {
+            if (empty($value)) {
+                return '';
+            }
+
+            // Sanitize is called one more time with a valid value.
+            // Let's get the $settingName based on the given value
+            // as we can't rely anymore on the offset.
+            $settingName = $data->search($value, true);
+
+            if (! $settingName) {
+                return '';
+            }
+
+            // Let's add a "fake" error to avoid duplicate success messages.
+            $this->errors++;
+        }
 
         $setting = $this->repository()->getSettingByName($settingName);
 
         $validator = $this->validator->make(
-            collect($_POST)->all(),
+            $data->all(),
             [$setting->getName() => $setting->getOptions('rules')],
             $this->getSettingMessages($setting),
             $this->getSettingPlaceholder($setting)
