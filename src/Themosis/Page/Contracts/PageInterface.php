@@ -119,6 +119,13 @@ interface PageInterface
     public function setParent(string $parent): PageInterface;
 
     /**
+     * Check if current page has a parent.
+     *
+     * @return bool
+     */
+    public function hasParent(): bool;
+
+    /**
      * Set the page for network display.
      *
      * @param bool $network
@@ -209,4 +216,16 @@ interface PageInterface
      * @return PageInterface
      */
     public function setView(string $name, bool $useShortPath = false): PageInterface;
+
+    /**
+     * Register page routes.
+     *
+     * @param string          $action
+     * @param string|callable $callback
+     * @param string          $method
+     * @param string          $title
+     *
+     * @return PageInterface
+     */
+    public function route(string $action, $callback, $method = 'get', $title = ''): PageInterface;
 }

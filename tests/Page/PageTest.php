@@ -94,7 +94,11 @@ class PageTest extends TestCase
 
     public function getFactory($action)
     {
-        return new PageFactory($action, $this->getViewFactory(), $this->getValidationFactory('en_US'));
+        return new PageFactory(
+            $action,
+            $this->getViewFactory(),
+            $this->getValidationFactory('en_US')
+        );
     }
 
     public function testCreateACustomPage()
@@ -118,9 +122,11 @@ class PageTest extends TestCase
         $this->assertEquals('default', $page->ui()->getLayout());
         $this->assertEquals('page', $page->ui()->getViewPath());
 
-        $action->expects($this->exactly(2))->method('add');
+        $action->expects($this->exactly(6))->method('add');
 
         $page->set();
+
+        $this->assertEquals($page, $factory->getContainer()->make('page.'.$page->getSlug()));
     }
 
     public function testCreateANetworkPage()
@@ -133,7 +139,7 @@ class PageTest extends TestCase
 
         $this->assertTrue($page->isNetwork());
 
-        $action->expects($this->exactly(2))->method('add');
+        $action->expects($this->exactly(6))->method('add');
 
         $page->set();
     }
@@ -228,5 +234,21 @@ class PageTest extends TestCase
             ->set();
 
         $this->assertEquals('pages.somepage', $page->ui()->getView()->name());
+    }
+
+    public function testPageParents()
+    {
+        $factory = $this->getFactory($this->getActionMock());
+
+        $page = $factory->make('page', 'Page A')
+            ->set();
+
+        $this->assertFalse($page->hasParent());
+
+        $page = $factory->make('page-b', 'Page B')
+            ->setParent('general')
+            ->set();
+
+        $this->assertTrue($page->hasParent());
     }
 }

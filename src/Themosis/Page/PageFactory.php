@@ -2,6 +2,7 @@
 
 namespace Themosis\Page;
 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Validation\Factory as FactoryInterface;
 use Illuminate\Contracts\View\Factory;
 use Themosis\Hook\IHook;
@@ -25,6 +26,11 @@ class PageFactory implements PageFactoryInterface
      */
     protected $validator;
 
+    /**
+     * @var string
+     */
+    protected $prefix = 'page';
+
     public function __construct(IHook $action, Factory $view, FactoryInterface $validator)
     {
         $this->action = $action;
@@ -47,9 +53,24 @@ class PageFactory implements PageFactoryInterface
             ->setLayout('default')
             ->setView('page');
 
-        return (new Page($this->action, $view, new PageSettingsRepository(), $this->validator))
-            ->setSlug($slug)
+        $page = new Page($this->action, $view, new PageSettingsRepository(), $this->validator);
+        $page->setSlug($slug)
             ->setTitle($title)
             ->setMenu($title);
+
+        // Store page instance within the service container.
+        $this->view->getContainer()->instance($this->prefix.'.'.$page->getSlug(), $page);
+
+        return $page;
+    }
+
+    /**
+     * Return the application service container.
+     *
+     * @return Container
+     */
+    public function getContainer(): Container
+    {
+        return $this->view->getContainer();
     }
 }

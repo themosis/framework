@@ -88,6 +88,11 @@ class Page implements PageInterface
      */
     protected $offset = 0;
 
+    /**
+     * @var array
+     */
+    protected $routes = [];
+
     public function __construct(
         IHook $action,
         UIContainerInterface $ui,
@@ -301,12 +306,51 @@ class Page implements PageInterface
     {
         $hook = $this->isNetwork() ? 'network_admin_menu' : 'admin_menu';
 
+        // Actions for page routing.
+        $this->action->add('load-toplevel_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('load-admin_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('load-'.$this->findParentHook().'_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('admin_init', [$this, 'parsePostRoute']);
+
         // Action for page display.
         $this->action->add($hook, [$this, 'build']);
         // Action for page settings.
         $this->action->add('admin_init', [$this, 'configureSettings']);
 
         return $this;
+    }
+
+    /**
+     * Find the page parent hook if any.
+     *
+     * @return string
+     */
+    protected function findParentHook(): string
+    {
+        if (! $this->hasParent()) {
+            return '';
+        }
+
+        // Check if parent attribute is attached to a custom post type or another page.
+        if (false !== $pos = strpos($this->getParent(), 'post_type=')) {
+            // Parent hook is equivalent to the post type slug value.
+            return substr($this->getParent(), $pos + 10);
+        } elseif ('edit.php' === trim($this->getParent(), '\/?&')) {
+            // Parent is the default post post type.
+            return 'post';
+        }
+
+        // The current page is attached to another one.
+        $abstract = 'page.'.$this->getParent();
+
+        if ($this->ui()->factory()->getContainer()->bound($abstract)) {
+            // Parent hook is equivalent to the page menu as lowercase.
+            $parent = $this->ui()->factory()->getContainer()->make($abstract);
+
+            return strtolower($parent->getMenu());
+        }
+
+        return '';
     }
 
     /**
@@ -720,5 +764,47 @@ class Page implements PageInterface
         $this->ui()->useShortPath($useShortPath)->setView($name);
 
         return $this;
+    }
+
+    /**
+     * Check if current page has a parent.
+     *
+     * @return bool
+     */
+    public function hasParent(): bool
+    {
+        return ! is_null($this->parent);
+    }
+
+    /**
+     * Parse page GET requests.
+     */
+    public function parseGetRoute()
+    {
+    }
+
+    /**
+     * Parse page POST requests.
+     *
+     * Note: POST requests should always target "admin-post.php"
+     * on a custom page form.
+     */
+    public function parsePostRoute()
+    {
+    }
+
+    /**
+     * Register page routes.
+     *
+     * @param string          $action
+     * @param callable|string $callback
+     * @param string          $method
+     * @param string          $title
+     *
+     * @return PageInterface
+     */
+    public function route(string $action, $callback, $method = 'get', $title = ''): PageInterface
+    {
+        // TODO: Implement route() method.
     }
 }
