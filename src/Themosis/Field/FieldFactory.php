@@ -6,6 +6,7 @@ use Illuminate\View\Factory;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Fields\Types\ButtonType;
 use Themosis\Forms\Fields\Types\CheckboxType;
+use Themosis\Forms\Fields\Types\ChoiceType;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\NumberType;
 use Themosis\Forms\Fields\Types\PasswordType;
@@ -111,53 +112,22 @@ class FieldFactory
      *
      * @return FieldTypeInterface
      */
-    public function checkbox(string $name, array $options)
+    public function checkbox(string $name, array $options = [])
     {
         return (new CheckboxType($name))->setOptions($options);
     }
 
     /**
-     * Return a RadioField instance.
+     * Return a choice type instance.
      *
-     * @param string       $name       The name attribute.
-     * @param string|array $options    The radio options.
-     * @param array        $features   Custom field features - title, info.
-     * @param array        $attributes Input html attributes.
+     * @param string $name
+     * @param array  $options
      *
-     * @return \Themosis\Field\Fields\RadioField
+     * @return FieldTypeInterface
      */
-    public function radio($name, $options, array $features = [], array $attributes = [])
+    public function choice(string $name, array $options = [])
     {
-        $properties = [
-            'features' => $features,
-            'atts' => array_merge($attributes, ['data-field' => 'radio']),
-            'name' => $name,
-            'options' => $options,
-        ];
-
-        return $this->make('Themosis\\Field\\Fields\\RadioField', $properties);
-    }
-
-    /**
-     * Define a SelectField instance.
-     *
-     * @param string $name       The name attribute of the select custom field.
-     * @param array  $options    The select options tag.
-     * @param array  $features   Custom field features - title, info.
-     * @param array  $attributes Input html attributes.
-     *
-     * @return \Themosis\Field\Fields\SelectField
-     */
-    public function select($name, array $options, array $features = [], array $attributes = [])
-    {
-        $properties = [
-            'features' => $features,
-            'atts' => array_merge($attributes, ['data-field' => 'select']),
-            'name' => $name,
-            'options' => $options,
-        ];
-
-        return $this->make('Themosis\\Field\\Fields\\SelectField', $properties);
+        return (new ChoiceType($name))->setOptions($options);
     }
 
     /**

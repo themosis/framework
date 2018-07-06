@@ -75,7 +75,9 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
             $options['choices'] = [];
         }
 
-        $options['choices'] = new ChoiceList($options['choices']);
+        if (is_array($options['choices'])) {
+            $options['choices'] = new ChoiceList($options['choices']);
+        }
 
         // Set field layout based on field options.
         $this->setLayout($options['expanded'], $options['multiple']);
