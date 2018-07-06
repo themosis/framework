@@ -200,5 +200,13 @@ interface PageInterface
      */
     public function setPrefix(string $prefix): PageInterface;
 
-    //public function validate();
+    /**
+     * Set the page view path.
+     *
+     * @param string $name
+     * @param bool   $useShortPath
+     *
+     * @return PageInterface
+     */
+    public function setView(string $name, bool $useShortPath = false): PageInterface;
 }

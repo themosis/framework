@@ -200,4 +200,26 @@ class PageTest extends TestCase
         $this->assertEquals('section', $page->repository()->getSectionByName('general')->getView());
         $this->assertEquals('custom', $page->repository()->getSectionByName('custom')->getView());
     }
+
+    public function testCreateCustomPageUsingComposedViewPath()
+    {
+        $factory = $this->getFactory($this->getActionMock());
+
+        $page = $factory->make('some-page', 'Awesome Page')
+            ->setView('custom')
+            ->set();
+
+        $this->assertEquals('themosis.default.custom', $page->ui()->getView()->name());
+    }
+
+    public function testCreateCustomPageUsingShortViewPath()
+    {
+        $factory = $this->getFactory($this->getActionMock());
+
+        $page = $factory->make('the-page', 'Options')
+            ->setView('pages.somepage', true)
+            ->set();
+
+        $this->assertEquals('pages.somepage', $page->ui()->getView()->name());
+    }
 }

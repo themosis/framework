@@ -689,4 +689,19 @@ class Page implements PageInterface
             return $error['code'] === $name;
         });
     }
+
+    /**
+     * Set the page view path.
+     *
+     * @param string $name
+     * @param bool   $useShortPath
+     *
+     * @return PageInterface
+     */
+    public function setView(string $name, bool $useShortPath = false): PageInterface
+    {
+        $this->ui()->useShortPath($useShortPath)->setView($name);
+
+        return $this;
+    }
 }

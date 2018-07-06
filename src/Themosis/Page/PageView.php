@@ -31,6 +31,11 @@ class PageView implements UIContainerInterface
     protected $viewInstance;
 
     /**
+     * @var bool
+     */
+    protected $useShortViewPath = false;
+
+    /**
      * Page view theme (namespace).
      *
      * @var string
@@ -121,8 +126,10 @@ class PageView implements UIContainerInterface
      */
     public function getView(): View
     {
+        $path = $this->useShortViewPath ?
+            $this->getViewPath() : sprintf('%s.%s.%s', $this->getTheme(), $this->getLayout(), $this->getViewPath());
+
         if (is_null($this->viewInstance)) {
-            $path = sprintf('%s.%s.%s', $this->getTheme(), $this->getLayout(), $this->getViewPath());
             $this->viewInstance = $this->factory->make($path);
         }
 
@@ -137,5 +144,20 @@ class PageView implements UIContainerInterface
     public function factory(): Factory
     {
         return $this->factory;
+    }
+
+    /**
+     * Tell the page UI to use the view path only instead
+     * of the composed one with page layout and theme.
+     *
+     * @param bool $use
+     *
+     * @return $this
+     */
+    public function useShortPath(bool $use = true): UIContainerInterface
+    {
+        $this->useShortViewPath = $use;
+
+        return $this;
     }
 }

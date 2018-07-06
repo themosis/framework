@@ -2,7 +2,6 @@
 
 namespace Themosis\Field;
 
-use Illuminate\View\Factory;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Fields\Types\ButtonType;
 use Themosis\Forms\Fields\Types\CheckboxType;
