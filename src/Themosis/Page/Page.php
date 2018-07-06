@@ -433,7 +433,7 @@ class Page implements PageInterface
         // Set a default page view for handling
         // the settings. A user can still overwrite
         // the view.
-        if ('options' !== $this->ui()->getViewPath()) {
+        if ('page' === $this->ui()->getViewPath()) {
             $this->ui()->setView('options');
         }
 
