@@ -9,6 +9,7 @@ use Themosis\Forms\Fields\Types\CheckboxType;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\NumberType;
 use Themosis\Forms\Fields\Types\PasswordType;
+use Themosis\Forms\Fields\Types\SubmitType;
 use Themosis\Forms\Fields\Types\TextareaType;
 use Themosis\Forms\Fields\Types\TextType;
 
@@ -269,5 +270,18 @@ class FieldFactory
     public function button(string $name, array $options = [])
     {
         return (new ButtonType($name))->setOptions($options);
+    }
+
+    /**
+     * Return a submit type instance.
+     *
+     * @param string $name
+     * @param array  $options
+     *
+     * @return FieldTypeInterface
+     */
+    public function submit(string $name, array $options = [])
+    {
+        return (new SubmitType($name))->setOptions($options);
     }
 }
