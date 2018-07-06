@@ -2,17 +2,23 @@
 
 namespace Themosis\Page;
 
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\Validation\Factory;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Hook\IHook;
 use Themosis\Page\Contracts\PageInterface;
 use Themosis\Page\Contracts\SettingsRepositoryInterface;
+use Themosis\Support\CallbackHandler;
 use Themosis\Support\Contracts\SectionInterface;
 use Themosis\Support\Contracts\UIContainerInterface;
 
 class Page implements PageInterface
 {
+    use CallbackHandler;
+
     /**
      * @var string
      */
@@ -59,6 +65,11 @@ class Page implements PageInterface
     protected $action;
 
     /**
+     * @var IHook
+     */
+    protected $filter;
+
+    /**
      * @var UIContainerInterface
      */
     protected $ui;
@@ -93,16 +104,29 @@ class Page implements PageInterface
      */
     protected $routes = [];
 
+    /**
+     * List of pages titles per route action.
+     * Only used if multiple routes are defined
+     * for the current page. Default to main
+     * $title property.
+     *
+     * @var array
+     */
+    protected $titles = [];
+
     public function __construct(
         IHook $action,
+        IHook $filter,
         UIContainerInterface $ui,
         SettingsRepositoryInterface $repository,
         Factory $validator
     ) {
         $this->action = $action;
+        $this->filter = $filter;
         $this->ui = $ui;
         $this->repository = $repository;
         $this->validator = $validator;
+        $this->setContainer($this->getContainer());
     }
 
     /**
@@ -311,6 +335,7 @@ class Page implements PageInterface
         $this->action->add('load-admin_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
         $this->action->add('load-'.$this->findParentHook().'_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
         $this->action->add('admin_init', [$this, 'parsePostRoute']);
+        $this->filter->add('admin_title', [$this, 'handleTitle']);
 
         // Action for page display.
         $this->action->add($hook, [$this, 'build']);
@@ -337,7 +362,7 @@ class Page implements PageInterface
             return substr($this->getParent(), $pos + 10);
         } elseif ('edit.php' === trim($this->getParent(), '\/?&')) {
             // Parent is the default post post type.
-            return 'post';
+            return 'posts';
         }
 
         // The current page is attached to another one.
@@ -781,6 +806,25 @@ class Page implements PageInterface
      */
     public function parseGetRoute()
     {
+        $request = $this->getRequest();
+
+        if (is_null($request) || ! isset($this->routes['get'])) {
+            return;
+        }
+
+        $action = $request->get('action', '/');
+
+        if (in_array($action, array_keys($this->routes['get']))) {
+            $callback = $this->routes['get'][$action];
+            $response = $this->handleCallback($callback);
+
+            if (! is_a($response, Renderable::class)) {
+                throw new \Exception('The controller method must return a view instance.');
+            }
+
+            // Set the page view.
+            $this->ui()->setViewInstance($response);
+        }
     }
 
     /**
@@ -791,6 +835,13 @@ class Page implements PageInterface
      */
     public function parsePostRoute()
     {
+        if (empty($this->routes) || ! isset($this->routes['post'])) {
+            return;
+        }
+
+        foreach ($this->routes['post'] as $action => $callback) {
+            $this->action->add('admin_post_'.$action, $callback);
+        }
     }
 
     /**
@@ -803,8 +854,82 @@ class Page implements PageInterface
      *
      * @return PageInterface
      */
-    public function route(string $action, $callback, $method = 'get', $title = ''): PageInterface
+    public function route(string $action, $callback, string $method = 'get', string $title = ''): PageInterface
     {
-        // TODO: Implement route() method.
+        $method = strtolower($method);
+        $action = $this->parseAction($action, $method);
+
+        $this->routes[$method][$action] = $callback;
+
+        $this->titles[$action] = ! empty($title) ? $title : $this->getTitle();
+
+        return $this;
+    }
+
+    /**
+     * Format the action name.
+     *
+     * @param string $action
+     * @param string $method
+     *
+     * @return string
+     */
+    protected function parseAction(string $action, string $method): string
+    {
+        if ('post' === $method) {
+            return $this->getSlug().'_'.$action;
+        }
+
+        return $action;
+    }
+
+    /**
+     * Called by the "admin_title" filter. Handle the page titles.
+     *
+     * @param string $title
+     *
+     * @return string
+     */
+    public function handleTitle($title)
+    {
+        if (is_null($request = $this->getRequest()) || empty($this->titles)) {
+            return $title;
+        }
+
+        if (in_array($action = $request->get('action', '/'), array_keys($this->titles))) {
+            return $this->titles[$action];
+        }
+
+        return $title;
+    }
+
+    /**
+     * Return the service container instance.
+     *
+     * @return Container
+     */
+    public function getContainer(): Container
+    {
+        if (is_null($this->container)) {
+            $this->container = $this->ui()->factory()->getContainer();
+        }
+
+        return $this->container;
+    }
+
+    /**
+     * Get the application request instance.
+     *
+     * @return null|Request
+     */
+    protected function getRequest()
+    {
+        $container = $this->getContainer();
+
+        if ($container->bound('request')) {
+            return $container['request'];
+        }
+
+        return null;
     }
 }

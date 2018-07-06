@@ -2,6 +2,7 @@
 
 namespace Themosis\Page\Contracts;
 
+use Illuminate\Contracts\Container\Container;
 use Themosis\Support\Contracts\UIContainerInterface;
 
 interface PageInterface
@@ -227,5 +228,12 @@ interface PageInterface
      *
      * @return PageInterface
      */
-    public function route(string $action, $callback, $method = 'get', $title = ''): PageInterface;
+    public function route(string $action, $callback, string $method = 'get', string $title = ''): PageInterface;
+
+    /**
+     * Return the service container instance.
+     *
+     * @return Container
+     */
+    public function getContainer(): Container;
 }

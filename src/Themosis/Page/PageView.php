@@ -2,6 +2,7 @@
 
 namespace Themosis\Page;
 
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Themosis\Support\Contracts\UIContainerInterface;
@@ -105,6 +106,20 @@ class PageView implements UIContainerInterface
     public function setView(string $view): UIContainerInterface
     {
         $this->view = $view;
+
+        return $this;
+    }
+
+    /**
+     * Set the page view instance.
+     *
+     * @param Renderable $view
+     *
+     * @return UIContainerInterface
+     */
+    public function setViewInstance(Renderable $view): UIContainerInterface
+    {
+        $this->viewInstance = $view;
 
         return $this;
     }

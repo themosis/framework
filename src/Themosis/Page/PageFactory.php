@@ -16,6 +16,8 @@ class PageFactory implements PageFactoryInterface
      */
     protected $action;
 
+    protected $filter;
+
     /**
      * @var Factory
      */
@@ -31,9 +33,10 @@ class PageFactory implements PageFactoryInterface
      */
     protected $prefix = 'page';
 
-    public function __construct(IHook $action, Factory $view, FactoryInterface $validator)
+    public function __construct(IHook $action, IHook $filter, Factory $view, FactoryInterface $validator)
     {
         $this->action = $action;
+        $this->filter = $filter;
         $this->view = $view;
         $this->validator = $validator;
     }
@@ -53,7 +56,7 @@ class PageFactory implements PageFactoryInterface
             ->setLayout('default')
             ->setView('page');
 
-        $page = new Page($this->action, $view, new PageSettingsRepository(), $this->validator);
+        $page = new Page($this->action, $this->filter, $view, new PageSettingsRepository(), $this->validator);
         $page->setSlug($slug)
             ->setTitle($title)
             ->setMenu($title);

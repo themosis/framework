@@ -30,6 +30,14 @@ class PageTest extends TestCase
             ->getMock();
     }
 
+    protected function getFilter()
+    {
+        return $this->getMockBuilder(\Themosis\Hook\FilterBuilder::class)
+            ->setMethods(['add'])
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     protected function getApplication()
     {
         $application = $this->getMockBuilder(\Themosis\Core\Application::class)
@@ -96,6 +104,7 @@ class PageTest extends TestCase
     {
         return new PageFactory(
             $action,
+            $this->getFilter(),
             $this->getViewFactory(),
             $this->getValidationFactory('en_US')
         );
