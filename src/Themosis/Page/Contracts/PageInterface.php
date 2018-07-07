@@ -236,4 +236,13 @@ interface PageInterface
      * @return Container
      */
     public function getContainer(): Container;
+
+    /**
+     * Return the prefixed action name for POST requests.
+     *
+     * @param string $action
+     *
+     * @return string
+     */
+    public function getAction(string $action): string;
 }

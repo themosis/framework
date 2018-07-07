@@ -932,4 +932,16 @@ class Page implements PageInterface
 
         return null;
     }
+
+    /**
+     * Return the action name for POST requests.
+     *
+     * @param string $action
+     *
+     * @return string
+     */
+    public function getAction(string $action): string
+    {
+        return $this->parseAction($action, 'post');
+    }
 }
