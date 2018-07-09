@@ -330,13 +330,6 @@ class Page implements PageInterface
     {
         $hook = $this->isNetwork() ? 'network_admin_menu' : 'admin_menu';
 
-        // Actions for page routing.
-        $this->action->add('load-toplevel_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
-        $this->action->add('load-admin_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
-        $this->action->add('load-'.$this->findParentHook().'_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
-        $this->action->add('admin_init', [$this, 'parsePostRoute']);
-        $this->filter->add('admin_title', [$this, 'handleTitle']);
-
         // Action for page display.
         $this->action->add($hook, [$this, 'build']);
         // Action for page settings.
@@ -863,7 +856,23 @@ class Page implements PageInterface
 
         $this->titles[$action] = ! empty($title) ? $title : $this->getTitle();
 
+        $this->registerRouteActions();
+
         return $this;
+    }
+
+    /**
+     * Register page routes actions and filters.
+     */
+    protected function registerRouteActions()
+    {
+        // Actions for page routing.
+        $this->action->add('load-toplevel_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('load-admin_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('load-'.$this->findParentHook().'_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('admin_init', [$this, 'parsePostRoute']);
+
+        $this->filter->add('admin_title', [$this, 'handleTitle']);
     }
 
     /**
