@@ -131,7 +131,7 @@ class PageTest extends TestCase
         $this->assertEquals('default', $page->ui()->getLayout());
         $this->assertEquals('page', $page->ui()->getViewPath());
 
-        $action->expects($this->exactly(6))->method('add');
+        $action->expects($this->exactly(2))->method('add');
 
         $page->set();
 
@@ -148,7 +148,7 @@ class PageTest extends TestCase
 
         $this->assertTrue($page->isNetwork());
 
-        $action->expects($this->exactly(6))->method('add');
+        $action->expects($this->exactly(2))->method('add');
 
         $page->set();
     }
