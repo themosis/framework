@@ -3,12 +3,14 @@
 namespace Themosis\Field;
 
 use Themosis\Core\Application;
+use Themosis\Field\Contracts\FieldFactoryInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Fields\Types\ButtonType;
 use Themosis\Forms\Fields\Types\CheckboxType;
 use Themosis\Forms\Fields\Types\ChoiceType;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\HiddenType;
+use Themosis\Forms\Fields\Types\IntegerType;
 use Themosis\Forms\Fields\Types\NumberType;
 use Themosis\Forms\Fields\Types\PasswordType;
 use Themosis\Forms\Fields\Types\SubmitType;
@@ -18,7 +20,7 @@ use Themosis\Forms\Fields\Types\TextType;
 /**
  * Field factory.
  */
-class FieldFactory
+class Factory implements FieldFactoryInterface
 {
     /**
      * @var Application
@@ -71,6 +73,21 @@ class FieldFactory
     public function number(string $name, array $options = [])
     {
         return (new NumberType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
+    }
+
+    /**
+     * Return an integer field type instance.
+     *
+     * @param string $name
+     * @param array  $options
+     *
+     * @return FieldTypeInterface
+     */
+    public function integer(string $name, array $options = [])
+    {
+        return (new IntegerType($name))
             ->setLocale($this->app->getLocale())
             ->setOptions($options);
     }

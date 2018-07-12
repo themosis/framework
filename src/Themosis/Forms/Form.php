@@ -90,8 +90,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         'nonce_action',
         'referer',
         'flush',
-        'errors',
-        'theme',
         'tags'
     ];
 
@@ -103,8 +101,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     protected $defaultOptions = [
         'attributes' => [],
         'flush' => true,
-        'errors' => true,
-        'theme' => 'themosis',
         'tags' => true
     ];
 
@@ -121,6 +117,20 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * @var string
      */
     protected $locale;
+
+    /**
+     * Form default theme.
+     *
+     * @var string
+     */
+    protected $theme = 'themosis';
+
+    /**
+     * Form show errors.
+     *
+     * @var bool
+     */
+    protected $errors = true;
 
     public function __construct(
         FormRepositoryInterface $repository,
@@ -175,6 +185,36 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function getPrefix(): string
     {
         return $this->prefix;
+    }
+
+    /**
+     * Return the form theme.
+     *
+     * @return string
+     */
+    public function getTheme(): string
+    {
+        return $this->theme;
+    }
+
+    /**
+     * Set the form and attached fields theme.
+     *
+     * @param string $theme
+     *
+     * @return FieldTypeInterface
+     */
+    public function setTheme(string $theme): FieldTypeInterface
+    {
+        $this->theme = $theme;
+
+        // Update all attached fields with the given theme.
+        foreach ($this->repository->all() as $field) {
+            /** @var FieldTypeInterface $field */
+            $field->setTheme($theme);
+        }
+
+        return $this;
     }
 
     /**
@@ -519,8 +559,8 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
         // Make sure a default theme is always defined. User cannot defined an
         // empty string for the form theme.
-        if (empty($options['theme'])) {
-            $options['theme'] = $this->defaultOptions['theme'];
+        if (empty($this->getTheme())) {
+            $this->setTheme('themosis');
         }
 
         return $options;

@@ -208,4 +208,20 @@ interface FieldTypeInterface
      * @return FieldTypeInterface
      */
     public function setLocale(string $locale): FieldTypeInterface;
+
+    /**
+     * Return the field theme.
+     *
+     * @return string
+     */
+    public function getTheme(): string;
+
+    /**
+     * Set the field theme.
+     *
+     * @param string $theme
+     *
+     * @return FieldTypeInterface
+     */
+    public function setTheme(string $theme): FieldTypeInterface;
 }

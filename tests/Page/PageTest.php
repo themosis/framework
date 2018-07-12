@@ -14,7 +14,6 @@ use Illuminate\View\Engines\PhpEngine;
 use Illuminate\View\FileViewFinder;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
-use Themosis\Field\FieldFactory;
 use Themosis\Page\PageFactory;
 use Themosis\Support\Section;
 
@@ -182,7 +181,7 @@ class PageTest extends TestCase
     public function testCreateASettingsPage()
     {
         $factory = $this->getFactory($this->getActionMock());
-        $fieldFactory = new FieldFactory($this->getApplication());
+        $fieldFactory = new \Themosis\Field\Factory($this->getApplication());
 
         $page = $factory->make('the-settings', 'App Settings')->set();
 

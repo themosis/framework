@@ -2,6 +2,7 @@
 
 namespace Themosis\Core\Forms;
 
+use Themosis\Field\Contracts\FieldFactoryInterface;
 use Themosis\Forms\Contracts\FormFactoryInterface;
 use Themosis\Forms\Contracts\Formidable;
 use Themosis\Forms\Contracts\FormInterface;
@@ -17,9 +18,7 @@ trait FormHelper
      */
     public function form(Formidable $formClass)
     {
-        $factory = $this->getFormFactory();
-
-        return $formClass->build($factory)->get();
+        return $formClass->build($this->getFormFactory(), $this->getFieldsFactory())->get();
     }
 
     /**
@@ -30,5 +29,15 @@ trait FormHelper
     private function getFormFactory()
     {
         return app('form');
+    }
+
+    /**
+     * Retrieve the fields factory instance.
+     *
+     * @return FieldFactoryInterface
+     */
+    private function getFieldsFactory()
+    {
+        return app('field');
     }
 }

@@ -2,11 +2,10 @@
 
 namespace Themosis\Tests\Forms\Forms;
 
+use Themosis\Field\Contracts\FieldFactoryInterface;
 use Themosis\Forms\Contracts\FormFactoryInterface;
 use Themosis\Forms\Contracts\Formidable;
 use Themosis\Forms\Contracts\FormInterface;
-use Themosis\Forms\Fields\Types\EmailType;
-use Themosis\Forms\Fields\Types\TextType;
 
 class ContactForm implements Formidable
 {
@@ -15,11 +14,11 @@ class ContactForm implements Formidable
      */
     protected $form;
 
-    public function build(FormFactoryInterface $factory): Formidable
+    public function build(FormFactoryInterface $factory, FieldFactoryInterface $fields): Formidable
     {
         $this->form = $factory->make()
-            ->add(new TextType('name'))
-            ->add(new EmailType('email'))
+            ->add($fields->text('name'))
+            ->add($fields->email('email'))
             ->get();
 
         return $this;

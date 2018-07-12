@@ -2,16 +2,19 @@
 
 namespace Themosis\Forms\Contracts;
 
+use Themosis\Field\Contracts\FieldFactoryInterface;
+
 interface Formidable
 {
     /**
      * Build and configure a re-usable form.
      *
-     * @param $factory FormFactoryInterface
+     * @param FormFactoryInterface  $factory
+     * @param FieldFactoryInterface $fields
      *
      * @return Formidable
      */
-    public function build(FormFactoryInterface $factory): Formidable;
+    public function build(FormFactoryInterface $factory, FieldFactoryInterface $fields): Formidable;
 
     /**
      * Get the generated form instance.

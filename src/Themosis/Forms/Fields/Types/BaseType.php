@@ -19,7 +19,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      *
      * @var array
      */
-    protected $options;
+    protected $options = [];
 
     /**
      * List of allowed options.
@@ -74,9 +74,9 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Field validation rules.
      *
-     * @var array
+     * @var string
      */
-    protected $rules = [];
+    protected $rules = '';
 
     /**
      * A list of custom error messages
@@ -155,7 +155,6 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     {
         parent::__construct();
         $this->baseName = $name;
-        $this->prefixName($name);
     }
 
     /**
@@ -191,20 +190,6 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     }
 
     /**
-     * Prefix the field name property.
-     *
-     * @param string $name The name property value (base name).
-     *
-     * @return $this
-     */
-    protected function prefixName(string $name): FieldTypeInterface
-    {
-        $this->options['name'] = trim($this->prefix).$name;
-
-        return $this;
-    }
-
-    /**
      * Set field options.
      *
      * @param array $options
@@ -213,13 +198,8 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function setOptions(array $options): FieldTypeInterface
     {
-        // A user cannot override the "name" property.
-        if (isset($options['name'])) {
-            throw new \InvalidArgumentException('The "name" option can not be overridden.');
-        }
-
         $this->options = $this->parseOptions(array_merge(
-            $this->defaultOptions,
+            $this->getDefaultOptions(),
             $this->options,
             $options
         ));
@@ -269,7 +249,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      *
      * @param string $optionKey Optional. Retrieve all options by default or the value based on given option key.
      *
-     * @return mixed
+     * @return string|array
      */
     public function getOptions(string $optionKey = '')
     {
@@ -287,10 +267,6 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     {
         $this->prefix = $prefix;
 
-        // Automatically update the "name" option based
-        // on the new prefix.
-        $this->prefixName($this->getBaseName());
-
         return $this;
     }
 
@@ -305,13 +281,37 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     }
 
     /**
+     * Return the field theme.
+     *
+     * @return string
+     */
+    public function getTheme(): string
+    {
+        return $this->getOptions('theme');
+    }
+
+    /**
+     * Set the field theme.
+     *
+     * @param string $theme
+     *
+     * @return FieldTypeInterface
+     */
+    public function setTheme(string $theme): FieldTypeInterface
+    {
+        $this->options['theme'] = $theme;
+
+        return $this;
+    }
+
+    /**
      * Return the field name property value.
      *
      * @return string
      */
     public function getName(): string
     {
-        return $this->getOptions('name');
+        return trim($this->prefix).$this->getBaseName();
     }
 
     /**

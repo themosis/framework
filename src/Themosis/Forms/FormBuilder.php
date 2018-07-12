@@ -48,18 +48,13 @@ class FormBuilder implements FormBuilderInterface
      * Add a field to the current form instance.
      *
      * @param FieldTypeInterface $field
-     * @param array              $options
      *
      * @return FormBuilderInterface
      */
-    public function add(FieldTypeInterface $field, array $options = []): FormBuilderInterface
+    public function add(FieldTypeInterface $field): FormBuilderInterface
     {
         /** @var BaseType $field */
-        $opts = $this->validateOptions(array_merge($field->getDefaultOptions(), [
-            // Pass form global options directly to the fields.
-            'errors' => $this->form->getOptions('errors'),
-            'theme' => $this->form->getOptions('theme')
-        ], $options), $field);
+        $opts = $this->validateOptions($field->getOptions(), $field);
         $field->setLocale($this->form->getLocale());
         $field->setOptions($opts);
         $field->setForm($this->form);
