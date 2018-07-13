@@ -920,4 +920,31 @@ class FormCreationTest extends TestCase
         $this->assertEquals('Insert a valid email address.', $form->repository()->getField('email')->getOptions('info'));
         $this->assertEquals('<strong>HTML</strong>', $form->repository()->getField('message')->getOptions('info'));
     }
+
+    public function testFormFieldsTypeProperty()
+    {
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+
+        $factory->make()
+            ->add($name = $fields->text('name'))
+            ->add($email = $fields->email('email', [
+                'data_type' => 'string'
+            ]))
+            ->add($colors = $fields->choice('colors', [
+                'choices' => [
+                    'Rouge' => 'red',
+                    'Vert' => 'green',
+                    'Bleu' => 'blue'
+                ],
+                'expanded' => true,
+                'multiple' => true,
+                'data_type' => 'array'
+            ]))
+            ->get();
+
+        $this->assertTrue(is_array($name->getOptions('data_type')));
+        $this->assertEquals('string', $email->getOptions('data_type'));
+        $this->assertEquals('array', $colors->getOptions('data_type'));
+    }
 }
