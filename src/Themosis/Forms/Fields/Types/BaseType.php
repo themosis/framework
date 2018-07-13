@@ -50,8 +50,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         'messages' => [],
         'attributes' => [],
         'label' => '',
-        'label_attr' => [],
-        'theme' => 'themosis'
+        'label_attr' => []
     ];
 
     /**
@@ -227,7 +226,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         }
 
         // Set some default CSS classes if chosen theme is "bootstrap".
-        if ('bootstrap' === $options['theme']) {
+        if (isset($options['theme']) && 'bootstrap' === $options['theme']) {
             if (isset($options['attributes']['class'])) {
                 $options['attributes']['class'] .= ' form-control';
             } else {

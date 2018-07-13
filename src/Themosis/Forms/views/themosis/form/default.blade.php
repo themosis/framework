@@ -7,7 +7,7 @@
         @endif
         @foreach($__form->repository()->getGroups() as $group)
             <div class="th-form-group">
-                @each($group->getView(), $group->getItems(), '__field')
+                @each($group->getView(true), $group->getItems(), '__field')
             </div>
         @endforeach
     @if($__form->getOptions('tags'))

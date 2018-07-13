@@ -794,14 +794,14 @@ class FormCreationTest extends TestCase
         $this->assertEquals('themosis', $form->getTheme());
 
         // Test custom form theme.
-        $form = $factory->make()
+        $form = $factory->make([
+            'theme' => 'bootstrap'
+        ])
             ->add($firstname = $fields->text('firstname'))
-            ->add($email = $fields->email('email'), [
+            ->add($email = $fields->email('email', [
                 'theme' => 'themosis'
-            ])
+            ]))
             ->get();
-
-        $form->setTheme('bootstrap');
 
         $this->assertEquals('bootstrap', $form->getTheme());
         $this->assertEquals('bootstrap.form.default', $form->getView());
@@ -811,8 +811,8 @@ class FormCreationTest extends TestCase
         $this->assertEquals('bootstrap', $firstname->getTheme());
         $this->assertEquals('bootstrap.types.text', $firstname->getView());
 
-        $this->assertEquals('bootstrap', $email->getTheme());
-        $this->assertEquals('bootstrap.types.email', $email->getView());
+        $this->assertEquals('themosis', $email->getTheme());
+        $this->assertEquals('themosis.types.email', $email->getView());
     }
 
     public function testFormOpenAndClosingTags()

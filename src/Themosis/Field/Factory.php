@@ -55,7 +55,7 @@ class Factory implements FieldFactoryInterface
      *
      * @return FieldTypeInterface
      */
-    public function password(string $name, array $options = [])
+    public function password(string $name, array $options = []): FieldTypeInterface
     {
         return (new PasswordType($name))
             ->setLocale($this->app->getLocale())
@@ -70,7 +70,7 @@ class Factory implements FieldFactoryInterface
      *
      * @return FieldTypeInterface
      */
-    public function number(string $name, array $options = [])
+    public function number(string $name, array $options = []): FieldTypeInterface
     {
         return (new NumberType($name))
             ->setLocale($this->app->getLocale())
@@ -85,7 +85,7 @@ class Factory implements FieldFactoryInterface
      *
      * @return FieldTypeInterface
      */
-    public function integer(string $name, array $options = [])
+    public function integer(string $name, array $options = []): FieldTypeInterface
     {
         return (new IntegerType($name))
             ->setLocale($this->app->getLocale())
@@ -135,7 +135,7 @@ class Factory implements FieldFactoryInterface
      *
      * @return FieldTypeInterface
      */
-    public function textarea(string $name, array $options = [])
+    public function textarea(string $name, array $options = []): FieldTypeInterface
     {
         return (new TextareaType($name))
             ->setLocale($this->app->getLocale())
@@ -150,7 +150,7 @@ class Factory implements FieldFactoryInterface
      *
      * @return FieldTypeInterface
      */
-    public function checkbox(string $name, array $options = [])
+    public function checkbox(string $name, array $options = []): FieldTypeInterface
     {
         return (new CheckboxType($name))
             ->setLocale($this->app->getLocale())
@@ -165,7 +165,7 @@ class Factory implements FieldFactoryInterface
      *
      * @return FieldTypeInterface
      */
-    public function choice(string $name, array $options = [])
+    public function choice(string $name, array $options = []): FieldTypeInterface
     {
         return (new ChoiceType($name))
             ->setLocale($this->app->getLocale())
@@ -279,7 +279,7 @@ class Factory implements FieldFactoryInterface
      *
      * @return FieldTypeInterface
      */
-    public function button(string $name, array $options = [])
+    public function button(string $name, array $options = []): FieldTypeInterface
     {
         return (new ButtonType($name))
             ->setLocale($this->app->getLocale())
@@ -294,7 +294,7 @@ class Factory implements FieldFactoryInterface
      *
      * @return FieldTypeInterface
      */
-    public function submit(string $name, array $options = [])
+    public function submit(string $name, array $options = []): FieldTypeInterface
     {
         return (new SubmitType($name))
             ->setLocale($this->app->getLocale())
@@ -309,7 +309,7 @@ class Factory implements FieldFactoryInterface
      *
      * @return FieldTypeInterface
      */
-    public function hidden(string $name, array $options = [])
+    public function hidden(string $name, array $options = []): FieldTypeInterface
     {
         return (new HiddenType($name))
             ->setLocale($this->app->getLocale())

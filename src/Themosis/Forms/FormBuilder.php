@@ -55,7 +55,8 @@ class FormBuilder implements FormBuilderInterface
     {
         /** @var BaseType $field */
         $opts = $this->validateOptions(array_merge([
-            'errors' => $this->form->getOptions('errors')
+            'errors' => $this->form->getOptions('errors'),
+            'theme' => $this->form->getOptions('theme')
         ], $field->getOptions()), $field);
         $field->setLocale($this->form->getLocale());
         $field->setOptions($opts);

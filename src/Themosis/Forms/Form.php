@@ -91,7 +91,8 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         'nonce',
         'nonce_action',
         'referer',
-        'tags'
+        'tags',
+        'theme'
     ];
 
     /**
@@ -103,7 +104,8 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         'attributes' => [],
         'flush' => true,
         'tags' => true,
-        'errors' => true
+        'errors' => true,
+        'theme' => 'themosis'
     ];
 
     /**
@@ -119,20 +121,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * @var string
      */
     protected $locale;
-
-    /**
-     * Form default theme.
-     *
-     * @var string
-     */
-    protected $theme = 'themosis';
-
-    /**
-     * Form show errors.
-     *
-     * @var bool
-     */
-    protected $errors = true;
 
     public function __construct(
         FormRepositoryInterface $repository,
@@ -196,7 +184,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     public function getTheme(): string
     {
-        return $this->theme;
+        return $this->getOptions('theme');
     }
 
     /**
@@ -208,7 +196,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     public function setTheme(string $theme): FieldTypeInterface
     {
-        $this->theme = $theme;
+        $this->options['theme'] = $theme;
 
         // Update all attached fields with the given theme.
         foreach ($this->repository->all() as $field) {
@@ -564,7 +552,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
         // Make sure a default theme is always defined. User cannot defined an
         // empty string for the form theme.
-        if (empty($this->getTheme())) {
+        if (! isset($this->options['theme'])) {
             $this->setTheme('themosis');
         }
 

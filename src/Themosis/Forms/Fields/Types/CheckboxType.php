@@ -28,7 +28,7 @@ class CheckboxType extends BaseType
         $options = parent::parseOptions($options);
 
         // Set some default CSS classes if chosen theme is "bootstrap".
-        if ('bootstrap' === $options['theme']) {
+        if (isset($options['theme']) && 'bootstrap' === $options['theme']) {
             $options['attributes']['class'] = isset($options['attributes']['class']) ?
                 ' form-check-input' : 'form-check-input';
             $options['label_attr']['class'] = isset($options['label_attr']['class']) ?
