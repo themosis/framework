@@ -1,1 +1,2 @@
 <textarea name="{{ $__field->getName() }}" {!! $__field->attributes($__field->getAttributes()) !!}>{{ $__field->getValue() }}</textarea>
+@include($__field->getTheme().'.types.includes.info', ['field' => $__field])
