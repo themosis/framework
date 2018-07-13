@@ -905,7 +905,7 @@ class Page implements PageInterface
             return $title;
         }
 
-        if (in_array($action = $request->get('action', '/'), array_keys($this->titles))) {
+        if (in_array($action = $request->get('action'), array_keys($this->titles))) {
             return $this->titles[$action];
         }
 
