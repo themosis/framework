@@ -583,6 +583,11 @@ class Page implements PageInterface
      */
     protected function prepareSetting(FieldTypeInterface $setting)
     {
+        if (empty($setting->getTheme()) || is_array($setting->getTheme())) {
+            // Page settings only have the "themosis" theme available.
+            $setting->setTheme('themosis');
+        }
+
         $setting->setPrefix($this->getPrefix());
         $setting->setOptions([
             'label' => $setting->getOptions('label') ?

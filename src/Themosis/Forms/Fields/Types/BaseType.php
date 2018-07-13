@@ -285,7 +285,13 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function getTheme(): string
     {
-        return $this->getOptions('theme');
+        $theme = $this->getOptions('theme');
+
+        if (is_array($theme)) {
+            return '';
+        }
+
+        return $theme;
     }
 
     /**
