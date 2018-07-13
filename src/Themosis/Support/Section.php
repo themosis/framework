@@ -30,6 +30,13 @@ class Section implements SectionInterface, Iterator, Countable
     protected $view = '';
 
     /**
+     * The section theme.
+     *
+     * @var string
+     */
+    protected $theme = '';
+
+    /**
      * The section items (children instances).
      *
      * @var array
@@ -107,11 +114,41 @@ class Section implements SectionInterface, Iterator, Countable
     /**
      * Get the section view file.
      *
+     * @param bool $prefixed
+     *
      * @return string
      */
-    public function getView(): string
+    public function getView(bool $prefixed = false): string
     {
+        if ($prefixed) {
+            return $this->getTheme().'.'.$this->view;
+        }
+
         return $this->view;
+    }
+
+    /**
+     * Set the section theme.
+     *
+     * @param string $theme
+     *
+     * @return SectionInterface
+     */
+    public function setTheme(string $theme): SectionInterface
+    {
+        $this->theme = $theme;
+
+        return $this;
+    }
+
+    /**
+     * Return the section theme.
+     *
+     * @return string
+     */
+    public function getTheme(): string
+    {
+        return $this->theme;
     }
 
     /**

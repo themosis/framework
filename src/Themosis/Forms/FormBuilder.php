@@ -54,7 +54,9 @@ class FormBuilder implements FormBuilderInterface
     public function add(FieldTypeInterface $field): FormBuilderInterface
     {
         /** @var BaseType $field */
-        $opts = $this->validateOptions($field->getOptions(), $field);
+        $opts = $this->validateOptions(array_merge([
+            'errors' => $this->form->getOptions('errors')
+        ], $field->getOptions()), $field);
         $field->setLocale($this->form->getLocale());
         $field->setOptions($opts);
         $field->setForm($this->form);
@@ -71,7 +73,8 @@ class FormBuilder implements FormBuilderInterface
         }
 
         // Setup group/section default view.
-        $section->setView($this->buildViewPath($this->form->getOptions('theme'), 'form.group'));
+        $section->setTheme($this->form->getTheme());
+        $section->setView('form.group');
 
         // Add the field first to section instance.
         // Then pass both objects to the repository.

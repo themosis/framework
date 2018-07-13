@@ -39,9 +39,27 @@ interface SectionInterface
     /**
      * Get the section view file.
      *
+     * @param bool $prefixed
+     *
      * @return string
      */
-    public function getView(): string;
+    public function getView(bool $prefixed = false): string;
+
+    /**
+     * Set the section theme.
+     *
+     * @param string $theme
+     *
+     * @return SectionInterface
+     */
+    public function setTheme(string $theme): SectionInterface;
+
+    /**
+     * Return the section theme.
+     *
+     * @return string
+     */
+    public function getTheme(): string;
 
     /**
      * Set section items instances.

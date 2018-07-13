@@ -134,10 +134,7 @@ class FormCreationTest extends TestCase
             'method' => 'post'
         ], $form->getAttributes());
         $this->assertEquals('themosis.form.default', $form->getView());
-        $this->assertEquals('themosis.form.group', $form->repository()->getGroup('default')->getView());
-
-        $this->expectException('\InvalidArgumentException');
-        $firstname->setOptions(['name' => 'something']);
+        $this->assertEquals('themosis.form.group', $form->repository()->getGroup('default')->getView(true));
     }
 
     public function testCreateNewFormAndChangePrefixAtRuntime()
@@ -338,8 +335,8 @@ class FormCreationTest extends TestCase
             'for' => 'th_email_field'
         ], $em->getOptions('label_attr'));
 
-        $this->assertEquals('themosis.groups.custom', $form->repository()->getGroup($fn->getOptions('group'))->getView());
-        $this->assertEquals('themosis.groups.custom', $form->repository()->getGroup($em->getOptions('group'))->getView());
+        $this->assertEquals('themosis.groups.custom', $form->repository()->getGroup($fn->getOptions('group'))->getView(true));
+        $this->assertEquals('themosis.groups.custom', $form->repository()->getGroup($em->getOptions('group'))->getView(true));
 
         $this->assertEquals([
             'method' => 'post',
@@ -766,10 +763,9 @@ class FormCreationTest extends TestCase
         $form = $factory->make()
             ->add($firstname = $fields->text('firstname'))
             ->add($email = $fields->email('email'))
-            ->add($message = $fields->textarea('message'), [
+            ->add($message = $fields->textarea('message', [
                 'errors' => false
-            ])
-            ->get();
+            ]))->get();
 
         $this->assertTrue($firstname->getOptions('errors'));
         $this->assertTrue($email->getOptions('errors'));
@@ -787,15 +783,15 @@ class FormCreationTest extends TestCase
             ->get();
 
         // Test default 'themosis' theme.
-        $this->assertEquals('themosis', $form->getOptions('theme'));
+        $this->assertEquals('themosis', $form->getTheme());
         $this->assertEquals('themosis.form.default', $form->getView());
-        $this->assertEquals('themosis', $firstname->getOptions('theme'));
+        $this->assertEquals('themosis', $firstname->getTheme());
 
         $form = $factory->make()
             ->add(new TextType('firstname'))
             ->get();
 
-        $this->assertEquals('themosis', $form->getOptions('theme'));
+        $this->assertEquals('themosis', $form->getTheme());
 
         // Test custom form theme.
         $form = $factory->make()
@@ -805,16 +801,18 @@ class FormCreationTest extends TestCase
             ])
             ->get();
 
-        $this->assertEquals('bootstrap', $form->getOptions('theme'));
+        $form->setTheme('bootstrap');
+
+        $this->assertEquals('bootstrap', $form->getTheme());
         $this->assertEquals('bootstrap.form.default', $form->getView());
 
-        $this->assertEquals('bootstrap.form.group', $form->repository()->getGroup('default')->getView());
+        $this->assertEquals('bootstrap.form.group', $form->repository()->getGroup('default')->getView(true));
 
-        $this->assertEquals('bootstrap', $firstname->getOptions('theme'));
+        $this->assertEquals('bootstrap', $firstname->getTheme());
         $this->assertEquals('bootstrap.types.text', $firstname->getView());
 
-        $this->assertEquals('themosis', $email->getOptions('theme'));
-        $this->assertEquals('themosis.types.email', $email->getView());
+        $this->assertEquals('bootstrap', $email->getTheme());
+        $this->assertEquals('bootstrap.types.email', $email->getView());
     }
 
     public function testFormOpenAndClosingTags()

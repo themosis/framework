@@ -15,6 +15,7 @@ use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Contracts\FormRepositoryInterface;
 use Themosis\Forms\Fields\Types\BaseType;
 use Themosis\Html\HtmlBuilder;
+use Themosis\Support\Contracts\SectionInterface;
 
 /**
  * Class Form
@@ -84,12 +85,12 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * @var array
      */
     protected $allowedOptions = [
-        'name',
         'attributes',
+        'errors',
+        'flush',
         'nonce',
         'nonce_action',
         'referer',
-        'flush',
         'tags'
     ];
 
@@ -101,7 +102,8 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     protected $defaultOptions = [
         'attributes' => [],
         'flush' => true,
-        'tags' => true
+        'tags' => true,
+        'errors' => true
     ];
 
     /**
@@ -212,6 +214,12 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         foreach ($this->repository->all() as $field) {
             /** @var FieldTypeInterface $field */
             $field->setTheme($theme);
+        }
+
+        // Update all attached groups with the given theme.
+        foreach ($this->repository()->getGroups() as $group) {
+            /** @var SectionInterface $group */
+            $group->setTheme($theme);
         }
 
         return $this;
@@ -439,10 +447,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
             throw new DomainException('You cannot change the view of an undefined form group.');
         }
 
-        // Prepend the form theme to the group view path.
-        $groupView = $this->buildViewPath($this->getOptions('theme'), $view);
-
-        $this->repository()->getGroup($group)->setView($groupView);
+        $this->repository()->getGroup($group)->setView($view);
 
         return $this;
     }
@@ -471,7 +476,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function getView(bool $prefixed = true): string
     {
         if ($prefixed) {
-            return $this->buildViewPath($this->getOptions('theme'), $this->view);
+            return $this->buildViewPath($this->getTheme(), $this->view);
         }
 
         return $this->view;
