@@ -52,7 +52,7 @@ class PageFactory implements PageFactoryInterface
     public function make(string $slug, string $title): PageInterface
     {
         $view = (new PageView($this->view))
-            ->setTheme('themosis')
+            ->setTheme('themosis.pages')
             ->setLayout('default')
             ->setView('page');
 

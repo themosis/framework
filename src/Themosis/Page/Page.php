@@ -585,7 +585,7 @@ class Page implements PageInterface
     {
         if (empty($setting->getTheme()) || is_array($setting->getTheme())) {
             // Page settings only have the "themosis" theme available.
-            $setting->setTheme('themosis');
+            $setting->setTheme('themosis.pages');
         }
 
         $setting->setPrefix($this->getPrefix());

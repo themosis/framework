@@ -126,7 +126,7 @@ class PageTest extends TestCase
         $this->assertNull($page->getParent());
         $this->assertFalse($page->isNetwork());
         $this->assertInstanceOf(\Themosis\Page\PageView::class, $page->ui());
-        $this->assertEquals('themosis', $page->ui()->getTheme());
+        $this->assertEquals('themosis.pages', $page->ui()->getTheme());
         $this->assertEquals('default', $page->ui()->getLayout());
         $this->assertEquals('page', $page->ui()->getViewPath());
 
@@ -168,7 +168,7 @@ class PageTest extends TestCase
         $page->set();
 
         $this->assertEquals('custom', $page->ui()->getViewPath());
-        $this->assertEquals('themosis.default.custom', $page->ui()->getView()->name());
+        $this->assertEquals('themosis.pages.default.custom', $page->ui()->getView()->name());
         $this->assertEquals('custom_cap', $page->getCapability());
 
         $view = $page->ui()->getView();
@@ -230,7 +230,7 @@ class PageTest extends TestCase
             ->setView('custom')
             ->set();
 
-        $this->assertEquals('themosis.default.custom', $page->ui()->getView()->name());
+        $this->assertEquals('themosis.pages.default.custom', $page->ui()->getView()->name());
     }
 
     public function testCreateCustomPageUsingShortViewPath()

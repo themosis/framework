@@ -27,16 +27,17 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * @var array
      */
     protected $allowedOptions = [
-        'group',
-        'rules',
-        'messages',
-        'placeholder',
         'attributes',
+        'data',
+        'errors',
+        'group',
+        'info',
         'label',
         'label_attr',
-        'errors',
-        'theme',
-        'data'
+        'messages',
+        'placeholder',
+        'rules',
+        'theme'
     ];
 
     /**
@@ -45,12 +46,13 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * @var array
      */
     protected $defaultOptions = [
-        'group' => 'default',
-        'rules' => '',
-        'messages' => [],
         'attributes' => [],
+        'group' => 'default',
+        'info' => '',
         'label' => '',
-        'label_attr' => []
+        'label_attr' => [],
+        'messages' => [],
+        'rules' => ''
     ];
 
     /**

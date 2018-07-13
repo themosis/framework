@@ -900,4 +900,24 @@ class FormCreationTest extends TestCase
 
         $this->assertFalse($form->isValid());
     }
+
+    public function testFormFieldsInfoProperty()
+    {
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+
+        $form = $factory->make()
+            ->add($fields->text('name'))
+            ->add($fields->email('email', [
+                'info' => 'Insert a valid email address.'
+            ]))
+            ->add($fields->textarea('message', [
+                'info' => '<strong>HTML</strong>'
+            ]))
+            ->get();
+
+        $this->assertEmpty($form->repository()->getField('name')->getOptions('info'));
+        $this->assertEquals('Insert a valid email address.', $form->repository()->getField('email')->getOptions('info'));
+        $this->assertEquals('<strong>HTML</strong>', $form->repository()->getField('message')->getOptions('info'));
+    }
 }
