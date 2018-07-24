@@ -339,7 +339,7 @@ class MetaboxBuilder extends Wrapper implements IMetabox
             $template = get_post_meta($postID, '_wp_page_template', true);
 
             // Check if a template is attached to the post/page.
-            if ($template == $this->datas['options']['template']) {
+            if (in_array($template, $this->datas['options']['template'], true)) {
                 // Add a metabox for post/pages with a registered template.
                 $this->addMetabox();
             }
