@@ -3,6 +3,7 @@
 namespace Themosis\Forms\Contracts;
 
 use Illuminate\Contracts\Support\MessageBag;
+use League\Fractal\Manager;
 
 interface FieldTypeInterface
 {
@@ -224,4 +225,27 @@ interface FieldTypeInterface
      * @return FieldTypeInterface
      */
     public function setTheme(string $theme): FieldTypeInterface;
+
+    /**
+     * Return the Fractal manager.
+     *
+     * @return Manager
+     */
+    public function getManager(): Manager;
+
+    /**
+     * Set the Fractal manager.
+     *
+     * @param Manager $manager
+     *
+     * @return FieldTypeInterface
+     */
+    public function setManager(Manager $manager): FieldTypeInterface;
+
+    /**
+     * Return a JSON representation of the field.
+     *
+     * @return string
+     */
+    public function toJSON(): string;
 }

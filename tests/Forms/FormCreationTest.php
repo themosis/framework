@@ -14,6 +14,7 @@ use Illuminate\View\Engines\CompilerEngine;
 use Illuminate\View\Engines\EngineResolver;
 use Illuminate\View\Engines\PhpEngine;
 use Illuminate\View\FileViewFinder;
+use League\Fractal\Manager;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
 use Themosis\Forms\Contracts\FieldTypeInterface;
@@ -103,7 +104,7 @@ class FormCreationTest extends TestCase
 
     protected function getFormFactory($locale = 'en_US')
     {
-        return new FormFactory($this->getValidationFactory($locale), $this->getViewFactory());
+        return new FormFactory($this->getValidationFactory($locale), $this->getViewFactory(), new Manager());
     }
 
     protected function getFieldsFactory()
@@ -946,5 +947,13 @@ class FormCreationTest extends TestCase
         $this->assertTrue(is_array($name->getOptions('data_type')));
         $this->assertEquals('string', $email->getOptions('data_type'));
         $this->assertEquals('array', $colors->getOptions('data_type'));
+    }
+
+    public function testFormFieldTextTypeToJSON()
+    {
+        $fields = $this->getFieldsFactory();
+
+        $name = $fields->text('name')
+            ->toJSON();
     }
 }

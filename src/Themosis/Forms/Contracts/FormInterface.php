@@ -5,6 +5,7 @@ namespace Themosis\Forms\Contracts;
 use Illuminate\Contracts\Support\MessageBag;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
+use League\Fractal\Manager;
 
 interface FormInterface
 {
@@ -60,4 +61,11 @@ interface FormInterface
      * @return Factory
      */
     public function getViewer(): Factory;
+
+    /**
+     * Get the Fractal manager.
+     *
+     * @return Manager
+     */
+    public function getManager(): Manager;
 }

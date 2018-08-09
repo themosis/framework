@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\Factory as ViewFactoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Factory;
+use League\Fractal\Manager;
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
@@ -121,6 +122,13 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * @var string
      */
     protected $locale;
+
+    /**
+     * Fractal manager instance.
+     *
+     * @var Manager
+     */
+    protected $manager;
 
     public function __construct(
         FormRepositoryInterface $repository,
@@ -725,5 +733,39 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function getValue()
     {
         return null;
+    }
+
+    /**
+     * Set the Fractal manager.
+     *
+     * @param Manager $manager
+     *
+     * @return FieldTypeInterface
+     */
+    public function setManager(Manager $manager): FieldTypeInterface
+    {
+        $this->manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * Return the Fractal manager.
+     *
+     * @return Manager
+     */
+    public function getManager(): Manager
+    {
+        return $this->manager;
+    }
+
+    /**
+     * Return a JSON representation of the form instance.
+     *
+     * @return string
+     */
+    public function toJSON(): string
+    {
+        return '';
     }
 }

@@ -3,6 +3,7 @@
 namespace Themosis\Forms\Fields\Types;
 
 use Illuminate\Contracts\Support\MessageBag;
+use League\Fractal\Manager;
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
@@ -146,6 +147,11 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * @var string
      */
     protected $locale;
+
+    /**
+     * @var Manager
+     */
+    protected $manager;
 
     /**
      * BaseType constructor.
@@ -618,6 +624,40 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         $this->locale = $locale;
 
         return $this;
+    }
+
+    /**
+     * Return the Fractal manager.
+     *
+     * @return Manager
+     */
+    public function getManager(): Manager
+    {
+        return $this->manager;
+    }
+
+    /**
+     * Set the Fractal manager.
+     *
+     * @param Manager $manager
+     *
+     * @return FieldTypeInterface
+     */
+    public function setManager(Manager $manager): FieldTypeInterface
+    {
+        $this->manager = $manager;
+
+        return $this;
+    }
+
+    /**
+     * Return a JSON representation of the field.
+     *
+     * @return string
+     */
+    public function toJSON(): string
+    {
+        return '';
     }
 
     /**
