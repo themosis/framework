@@ -104,7 +104,12 @@ class FormCreationTest extends TestCase
 
     protected function getFormFactory($locale = 'en_US')
     {
-        return new FormFactory($this->getValidationFactory($locale), $this->getViewFactory(), new Manager());
+        return new FormFactory(
+            $this->getValidationFactory($locale),
+            $this->getViewFactory(),
+            new Manager(),
+            new \Themosis\Forms\Resources\Factory()
+        );
     }
 
     protected function getFieldsFactory()
@@ -180,10 +185,10 @@ class FormCreationTest extends TestCase
                 ]))
                 ->get();
 
-        $this->assertEquals('default', $firstname->getOptions('group'));
-        $this->assertEquals('default', $lastname->getOptions('group'));
-        $this->assertEquals('corporate', $email->getOptions('group'));
-        $this->assertEquals('corporate', $company->getOptions('group'));
+        $this->assertEquals('default', $firstname->getOption('group'));
+        $this->assertEquals('default', $lastname->getOption('group'));
+        $this->assertEquals('corporate', $email->getOption('group'));
+        $this->assertEquals('corporate', $company->getOption('group'));
 
         // We check if the repository is correctly storing fields by group.
         $this->assertEquals(2, count($form->repository()->getFieldsByGroup('default')));
@@ -322,22 +327,22 @@ class FormCreationTest extends TestCase
             'data-type' => 'text',
             'required',
             'id' => 'custom-id'
-        ], $fn->getOptions('attributes'));
+        ], $fn->getOption('attributes'));
         $this->assertEquals([
             'id' => 'th_email_field'
-        ], $em->getOptions('attributes'));
-        $this->assertEquals('Firstname', $fn->getOptions('label'));
-        $this->assertEquals('Email Address', $em->getOptions('label'));
+        ], $em->getOption('attributes'));
+        $this->assertEquals('Firstname', $fn->getOption('label'));
+        $this->assertEquals('Email Address', $em->getOption('label'));
         $this->assertEquals([
             'for' => 'custom-id'
-        ], $fn->getOptions('label_attr'));
+        ], $fn->getOption('label_attr'));
         $this->assertEquals([
             'class' => 'label',
             'for' => 'th_email_field'
-        ], $em->getOptions('label_attr'));
+        ], $em->getOption('label_attr'));
 
-        $this->assertEquals('themosis.groups.custom', $form->repository()->getGroup($fn->getOptions('group'))->getView(true));
-        $this->assertEquals('themosis.groups.custom', $form->repository()->getGroup($em->getOptions('group'))->getView(true));
+        $this->assertEquals('themosis.groups.custom', $form->repository()->getGroup($fn->getOption('group'))->getView(true));
+        $this->assertEquals('themosis.groups.custom', $form->repository()->getGroup($em->getOption('group'))->getView(true));
 
         $this->assertEquals([
             'method' => 'post',
@@ -346,9 +351,9 @@ class FormCreationTest extends TestCase
         ], $form->getAttributes());
         $this->assertEquals('themosis.forms.custom', $form->getView());
 
-        $this->assertEquals('_themosisnonce', $form->getOptions('nonce'));
-        $this->assertEquals('form', $form->getOptions('nonce_action'));
-        $this->assertTrue($form->getOptions('referer'));
+        $this->assertEquals('_themosisnonce', $form->getOption('nonce'));
+        $this->assertEquals('form', $form->getOption('nonce_action'));
+        $this->assertTrue($form->getOption('referer'));
 
         $this->assertFalse($form->isRendered());
         $form->render();
@@ -565,7 +570,7 @@ class FormCreationTest extends TestCase
             'Red' => 'red',
             'Green' => 'green',
             'Blue' => 'blue'
-        ], $color->getOptions('choices')->format()->get());
+        ], $color->getOption('choices')->format()->get());
         $this->assertEquals('select', $color->getLayout());
         $this->assertEquals('green', $color->getValue());
 
@@ -573,7 +578,7 @@ class FormCreationTest extends TestCase
             'Allemagne' => 'de',
             'Belgique' => 'be',
             'France' => 'fr'
-        ], $country->getOptions('choices')->format()->get());
+        ], $country->getOption('choices')->format()->get());
         $this->assertEquals('select', $country->getLayout());
 
         $this->assertEquals([
@@ -587,7 +592,7 @@ class FormCreationTest extends TestCase
                 'United States' => 'us',
                 'Mexico' => 'mx'
             ]
-        ], $groupedCountry->getOptions('choices')->format()->get());
+        ], $groupedCountry->getOption('choices')->format()->get());
         $this->assertEquals('radio', $groupedCountry->getLayout());
 
         $this->assertEquals([
@@ -601,7 +606,7 @@ class FormCreationTest extends TestCase
                 'Us' => 'us',
                 'Mx' => 'mx'
             ]
-        ], $anotherGroupCountry->getOptions('choices')->format()->get());
+        ], $anotherGroupCountry->getOption('choices')->format()->get());
         $this->assertEquals('select', $anotherGroupCountry->getLayout());
         $this->assertTrue(in_array('multiple', $anotherGroupCountry->getAttributes()));
 
@@ -609,13 +614,13 @@ class FormCreationTest extends TestCase
             'Title 1' => 24,
             'Title 2' => 456,
             'Title XYZ' => 10
-        ], $article->getOptions('choices')->format()->get());
+        ], $article->getOption('choices')->format()->get());
 
         $this->assertEquals([
             '35' => 35,
             '7' => 7,
             '986' => 986
-        ], $post->getOptions('choices')->format()->get());
+        ], $post->getOption('choices')->format()->get());
 
         $this->assertEquals([
             'Politics' => [
@@ -626,7 +631,7 @@ class FormCreationTest extends TestCase
                 'Article 67' => 89,
                 'Article 12' => 17
             ]
-        ], $featured->getOptions('choices')->format()->get());
+        ], $featured->getOption('choices')->format()->get());
         $this->assertEquals('checkbox', $featured->getLayout());
     }
 
@@ -768,9 +773,9 @@ class FormCreationTest extends TestCase
                 'errors' => false
             ]))->get();
 
-        $this->assertTrue($firstname->getOptions('errors'));
-        $this->assertTrue($email->getOptions('errors'));
-        $this->assertFalse($message->getOptions('errors'));
+        $this->assertTrue($firstname->getOption('errors'));
+        $this->assertTrue($email->getOption('errors'));
+        $this->assertFalse($message->getOption('errors'));
     }
 
     public function testFormTheming()
@@ -823,14 +828,14 @@ class FormCreationTest extends TestCase
         $form = $factory->make()
             ->get();
 
-        $this->assertTrue($form->getOptions('tags'));
+        $this->assertTrue($form->getOption('tags'));
 
         $form = $factory->make([
             'tags' => false
         ])
             ->get();
 
-        $this->assertFalse($form->getOptions('tags'));
+        $this->assertFalse($form->getOption('tags'));
     }
 
     public function testFormHiddenFieldType()
@@ -917,9 +922,9 @@ class FormCreationTest extends TestCase
             ]))
             ->get();
 
-        $this->assertEmpty($form->repository()->getField('name')->getOptions('info'));
-        $this->assertEquals('Insert a valid email address.', $form->repository()->getField('email')->getOptions('info'));
-        $this->assertEquals('<strong>HTML</strong>', $form->repository()->getField('message')->getOptions('info'));
+        $this->assertEmpty($form->repository()->getField('name')->getOption('info'));
+        $this->assertEquals('Insert a valid email address.', $form->repository()->getField('email')->getOption('info'));
+        $this->assertEquals('<strong>HTML</strong>', $form->repository()->getField('message')->getOption('info'));
     }
 
     public function testFormFieldsTypeProperty()
@@ -944,16 +949,8 @@ class FormCreationTest extends TestCase
             ]))
             ->get();
 
-        $this->assertTrue(is_array($name->getOptions('data_type')));
-        $this->assertEquals('string', $email->getOptions('data_type'));
-        $this->assertEquals('array', $colors->getOptions('data_type'));
-    }
-
-    public function testFormFieldTextTypeToJSON()
-    {
-        $fields = $this->getFieldsFactory();
-
-        $name = $fields->text('name')
-            ->toJSON();
+        $this->assertTrue(is_null($name->getOption('data_type')));
+        $this->assertEquals('string', $email->getOption('data_type'));
+        $this->assertEquals('array', $colors->getOption('data_type'));
     }
 }

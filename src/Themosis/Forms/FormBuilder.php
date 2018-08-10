@@ -55,22 +55,23 @@ class FormBuilder implements FormBuilderInterface
     {
         /** @var BaseType $field */
         $opts = $this->validateOptions(array_merge([
-            'errors' => $this->form->getOptions('errors'),
-            'theme' => $this->form->getOptions('theme')
+            'errors' => $this->form->getOption('errors'),
+            'theme' => $this->form->getOption('theme')
         ], $field->getOptions()), $field);
         $field->setLocale($this->form->getLocale());
         $field->setOptions($opts);
         $field->setForm($this->form);
+        $field->setResourceTransformerFactory($this->form->getResourceTransformerFactory());
 
         // Check if section instance already exists on the form.
         // If not, create a new section instance.
-        if ($this->form->repository()->hasGroup($field->getOptions('group'))) {
+        if ($this->form->repository()->hasGroup($field->getOption('group'))) {
             // The section/group instance is already registered, just fetch it.
-            $section = $this->form->repository()->getGroup($field->getOptions('group'));
+            $section = $this->form->repository()->getGroup($field->getOption('group'));
         } else {
             // No defined group. Let's create an instance so we can attach
             // the field to it right after.
-            $section = new Section($field->getOptions('group'));
+            $section = new Section($field->getOption('group'));
         }
 
         // Setup group/section default view.

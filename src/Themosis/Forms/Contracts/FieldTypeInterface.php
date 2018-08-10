@@ -4,6 +4,7 @@ namespace Themosis\Forms\Contracts;
 
 use Illuminate\Contracts\Support\MessageBag;
 use League\Fractal\Manager;
+use Themosis\Forms\Resources\Factory;
 
 interface FieldTypeInterface
 {
@@ -24,13 +25,20 @@ interface FieldTypeInterface
     public function setOptions(array $options): FieldTypeInterface;
 
     /**
-     * Get field type options.
+     * Return field options.
      *
-     * @param string $optionKey
-     *
-     * @return mixed
+     * @return array
      */
-    public function getOptions(string $optionKey = '');
+    public function getOptions(): array;
+
+    /**
+     * Get field type option defined by key.
+     *
+     * @param string $key
+     *
+     * @return string|array|null
+     */
+    public function getOption(string $key);
 
     /**
      * Set a field prefix. Mainly applied to field name to avoid conflict
@@ -243,9 +251,31 @@ interface FieldTypeInterface
     public function setManager(Manager $manager): FieldTypeInterface;
 
     /**
+     * Return the transformer factory.
+     *
+     * @return Factory
+     */
+    public function getResourceTransformerFactory(): Factory;
+
+    /**
+     * Set the transformer factory.
+     *
+     * @param Factory $factory
+     * @return FieldTypeInterface
+     */
+    public function setResourceTransformerFactory(Factory $factory): FieldTypeInterface;
+
+    /**
      * Return a JSON representation of the field.
      *
      * @return string
      */
     public function toJSON(): string;
+
+    /**
+     * Return an associative array representation of the field.
+     *
+     * @return array
+     */
+    public function toArray(): array;
 }

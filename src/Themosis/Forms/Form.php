@@ -15,6 +15,7 @@ use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Contracts\FormRepositoryInterface;
 use Themosis\Forms\Fields\Types\BaseType;
+use Themosis\Forms\Resources\Factory as TransformerFactory;
 use Themosis\Html\HtmlBuilder;
 use Themosis\Support\Contracts\SectionInterface;
 
@@ -130,6 +131,11 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     protected $manager;
 
+    /**
+     * @var TransformerFactory
+     */
+    protected $factory;
+
     public function __construct(
         FormRepositoryInterface $repository,
         ValidationFactoryInterface $validation,
@@ -192,7 +198,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     public function getTheme(): string
     {
-        return $this->getOptions('theme');
+        return $this->getOption('theme');
     }
 
     /**
@@ -251,7 +257,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
             // By default, if the form is not valid, we keep populating fields values.
             // In the case of a valid form, by default, values are flushed except if
             // the "flush" option for the form has been set to true.
-            if ($this->validator->fails() || false === $this->getOptions('flush')) {
+            if ($this->validator->fails() || false === $this->getOption('flush')) {
                 $field->setValue(Arr::get($data, $field->getName()));
                 if ($field->error()) {
                     // Add invalid CSS classes.
@@ -279,7 +285,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
         foreach ($fields as $field) {
             /** @var FieldTypeInterface $field */
-            $rules[$field->getName()] = $field->getOptions('rules');
+            $rules[$field->getName()] = $field->getOption('rules');
         }
 
         return $rules;
@@ -301,7 +307,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
         foreach ($fields as $field) {
             /** @var FieldTypeInterface $field */
-            foreach ($field->getOptions('messages') as $attr => $message) {
+            foreach ($field->getOption('messages') as $attr => $message) {
                 $messages[$field->getName().'.'.$attr] = $message;
             }
         }
@@ -322,7 +328,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
         foreach ($fields as $field) {
             /** @var FieldTypeInterface $field */
-            $attributes[$field->getName()] = $field->getOptions('placeholder');
+            $attributes[$field->getName()] = $field->getOption('placeholder');
         }
 
         return $attributes;
@@ -570,13 +576,23 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Return form options.
      *
-     * @param string $optionKey
-     *
-     * @return string|array
+     * @return array
      */
-    public function getOptions(string $optionKey = '')
+    public function getOptions(): array
     {
-        return $this->options[$optionKey] ?? $this->options;
+        return $this->options;
+    }
+
+    /**
+     * Return form options.
+     *
+     * @param string $key
+     *
+     * @return string|array|null
+     */
+    public function getOption(string $key)
+    {
+        return $this->options[$key] ?? null;
     }
 
     /**
@@ -606,7 +622,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     public function getAttributes()
     {
-        return $this->getOptions('attributes');
+        return $this->getOption('attributes');
     }
 
     /**
@@ -760,6 +776,29 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     }
 
     /**
+     * Return the transformer factory.
+     *
+     * @return TransformerFactory
+     */
+    public function getResourceTransformerFactory(): TransformerFactory
+    {
+        return $this->factory;
+    }
+
+    /**
+     * Set the transformer factory.
+     *
+     * @param TransformerFactory $factory
+     * @return FieldTypeInterface
+     */
+    public function setResourceTransformerFactory(TransformerFactory $factory): FieldTypeInterface
+    {
+        $this->factory = $factory;
+
+        return $this;
+    }
+
+    /**
      * Return a JSON representation of the form instance.
      *
      * @return string
@@ -767,5 +806,14 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function toJSON(): string
     {
         return '';
+    }
+
+    /**
+     * Return an associative array representation of the field.
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [];
     }
 }

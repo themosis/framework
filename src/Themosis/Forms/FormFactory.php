@@ -7,6 +7,7 @@ use Illuminate\Contracts\View\Factory as ViewFactoryInterface;
 use League\Fractal\Manager;
 use Themosis\Forms\Contracts\FormBuilderInterface;
 use Themosis\Forms\Contracts\FormFactoryInterface;
+use Themosis\Forms\Resources\Factory;
 
 class FormFactory implements FormFactoryInterface
 {
@@ -26,6 +27,11 @@ class FormFactory implements FormFactoryInterface
     protected $manager;
 
     /**
+     * @var Factory
+     */
+    protected $factory;
+
+    /**
      * Form generator/builder.
      *
      * @var FormBuilderInterface
@@ -41,11 +47,16 @@ class FormFactory implements FormFactoryInterface
         'method' => 'post'
     ];
 
-    public function __construct(ValidationFactoryInterface $validation, ViewFactoryInterface $viewer, Manager $manager)
-    {
+    public function __construct(
+        ValidationFactoryInterface $validation,
+        ViewFactoryInterface $viewer,
+        Manager $manager,
+        Factory $factory
+    ) {
         $this->validation = $validation;
         $this->viewer = $viewer;
         $this->manager = $manager;
+        $this->factory = $factory;
     }
 
     /**
@@ -61,6 +72,7 @@ class FormFactory implements FormFactoryInterface
     {
         $form = new Form(new FormRepository(), $this->validation, $this->viewer);
         $form->setManager($this->manager);
+        $form->setResourceTransformerFactory($this->factory);
         $form->setAttributes($this->attributes);
         $form->setOptions($options);
 

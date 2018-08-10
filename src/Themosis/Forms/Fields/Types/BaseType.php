@@ -4,11 +4,15 @@ namespace Themosis\Forms\Fields\Types;
 
 use Illuminate\Contracts\Support\MessageBag;
 use League\Fractal\Manager;
+use League\Fractal\Resource\Item;
+use League\Fractal\Resource\ResourceInterface;
+use League\Fractal\Serializer\ArraySerializer;
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\FormHelper;
 use Themosis\Forms\NullMessageBag;
+use Themosis\Forms\Resources\Factory;
 use Themosis\Html\HtmlBuilder;
 
 abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable, FieldTypeInterface
@@ -154,6 +158,18 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     protected $manager;
 
     /**
+     * @var string
+     */
+    protected $resourceTransformer = 'FieldTransformer';
+
+    /**
+     * Resource factory.
+     *
+     * @var Factory
+     */
+    protected $factory;
+
+    /**
      * BaseType constructor.
      *
      * @param string $name
@@ -254,13 +270,23 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Return field options.
      *
-     * @param string $optionKey Optional. Retrieve all options by default or the value based on given option key.
-     *
-     * @return string|array
+     * @return array
      */
-    public function getOptions(string $optionKey = '')
+    public function getOptions(): array
     {
-        return $this->options[$optionKey] ?? $this->options;
+        return $this->options;
+    }
+
+    /**
+     * Return field options.
+     *
+     * @param string $key
+     *
+     * @return string|array|null
+     */
+    public function getOption(string $key)
+    {
+        return $this->options[$key] ?? null;
     }
 
     /**
@@ -294,7 +320,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function getTheme(): string
     {
-        $theme = $this->getOptions('theme');
+        $theme = $this->getOption('theme');
 
         if (is_array($theme)) {
             return '';
@@ -344,7 +370,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function getAttributes()
     {
-        return $this->getOptions('attributes');
+        return $this->getOption('attributes');
     }
 
     /**
@@ -467,7 +493,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     public function getView(bool $prefixed = true): string
     {
         if ($prefixed) {
-            return $this->buildViewPath($this->getOptions('theme'), $this->view);
+            return $this->buildViewPath($this->getOption('theme'), $this->view);
         }
 
         return $this->view;
@@ -651,13 +677,67 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     }
 
     /**
+     * Return the transformer factory.
+     *
+     * @return Factory
+     */
+    public function getResourceTransformerFactory(): Factory
+    {
+        return $this->factory;
+    }
+
+    /**
+     * Set the transformer factory.
+     *
+     * @param Factory $factory
+     * @return FieldTypeInterface
+     */
+    public function setResourceTransformerFactory(Factory $factory): FieldTypeInterface
+    {
+        $this->factory = $factory;
+
+        return $this;
+    }
+
+    /**
+     * Define the Fractal resource used by the field.
+     *
+     * @return ResourceInterface
+     */
+    protected function resource(): ResourceInterface
+    {
+        return new Item($this, $this->getResourceTransformerFactory()->make($this->resourceTransformer));
+    }
+
+    /**
+     * Define the serialization for the field resource.
+     *
+     * @return FieldTypeInterface
+     */
+    protected function serialize(): FieldTypeInterface
+    {
+        $this->manager->setSerializer(new ArraySerializer());
+
+        return $this;
+    }
+
+    /**
+     * Return an associative array representation of the field.
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->serialize()->getManager()->createData($this->resource())->toArray();
+    }
+
+    /**
      * Return a JSON representation of the field.
      *
      * @return string
      */
     public function toJSON(): string
     {
-        return '';
+        return $this->serialize()->getManager()->createData($this->resource())->toJson();
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Themosis\Forms;
 
 use Illuminate\Support\ServiceProvider;
 use League\Fractal\Manager;
+use Themosis\Forms\Resources\Factory;
 
 class FormServiceProvider extends ServiceProvider
 {
@@ -18,7 +19,12 @@ class FormServiceProvider extends ServiceProvider
             $view = $app['view'];
             $view->addLocation(__DIR__.'/views');
 
-            return new FormFactory($app['validator'], $view, $app['league.fractal']);
+            return new FormFactory(
+                $app['validator'],
+                $view,
+                $app['league.fractal'],
+                new Factory()
+            );
         });
     }
 
