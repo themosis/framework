@@ -86,26 +86,44 @@ class FieldsTest extends TestCase
         $this->assertEquals('submit', $submit->getType());
     }
 
+    protected function expected(array $expected)
+    {
+        return array_merge([
+            'attributes' => [],
+            'basename' => '',
+            'data_type' => '',
+            'default' => '',
+            'name' => '',
+            'options' => [
+                'group' => 'default',
+                'info' => ''
+            ],
+            'label' => [],
+            'type' => 'input',
+            'validation' => [
+                'errors' => true,
+                'messages' => [],
+                'placeholder' => '',
+                'rules' => ''
+            ],
+            'value' => null
+        ], $expected);
+    }
+
     public function testFormFieldTextTypeToJSON()
     {
         $fields = $this->getFieldsFactory();
 
         $name = $fields->text('name')
             ->setManager(new Manager())
-            ->setResourceTransformerFactory(new \Themosis\Forms\Resources\Factory());
+            ->setResourceTransformerFactory(new Factory());
 
-        $expected = [
+        $expected = $this->expected([
             'attributes' => [
                 'id' => 'th_name_field'
             ],
             'basename' => 'name',
-            'data_type' => '',
-            'default' => '',
             'name' => 'th_name',
-            'options' => [
-                'group' => 'default',
-                'info' => ''
-            ],
             'label' => [
                 'inner' => 'Name',
                 'attributes' => [
@@ -118,11 +136,87 @@ class FieldsTest extends TestCase
                 'messages' => [],
                 'placeholder' => 'name',
                 'rules' => ''
-            ],
-            'value' => null
-        ];
+            ]
+        ]);
 
         $this->assertEquals($expected, $name->toArray());
         $this->assertEquals(json_encode($expected), $name->toJSON());
+    }
+
+    public function testFormFieldTextareaTypeToJSON()
+    {
+        $fields = $this->getFieldsFactory();
+
+        $message = $fields->textarea('message')
+            ->setManager(new Manager())
+            ->setResourceTransformerFactory(new Factory());
+
+        $expected = $this->expected([
+            'attributes' => [
+                'id' => 'th_message_field'
+            ],
+            'basename' => 'message',
+            'name' => 'th_message',
+            'label' => [
+                'inner' => 'Message',
+                'attributes' => [
+                    'for' => 'th_message_field'
+                ]
+            ],
+            'type' => 'textarea',
+            'validation' => [
+                'errors' => true,
+                'messages' => [],
+                'placeholder' => 'message',
+                'rules' => ''
+            ]
+        ]);
+
+        $this->assertEquals($expected, $message->toArray());
+        $this->assertEquals(json_encode($expected), $message->toJSON());
+    }
+
+    public function testFormFieldChoiceTypeToJSON()
+    {
+        $fields = $this->getFieldsFactory();
+
+        $colors = $fields->choice('colors', [
+            'choices' => [
+                'red',
+                'green',
+                'blue'
+            ]
+        ])
+            ->setManager(new Manager())
+            ->setResourceTransformerFactory(new Factory());
+
+        $expected = $this->expected([
+            'attributes' => [
+                'id' => 'th_colors_field'
+            ],
+            'basename' => 'colors',
+            'choices' => [
+                'Red' => 'red',
+                'Green' => 'green',
+                'Blue' => 'blue'
+            ],
+            'name' => 'th_colors',
+            'label' => [
+                'inner' => 'Colors',
+                'attributes' => [
+                    'for' => 'th_colors_field'
+                ]
+            ],
+            'type' => 'choice',
+            'validation' => [
+                'errors' => true,
+                'messages' => [],
+                'placeholder' => 'colors',
+                'rules' => ''
+            ]
+        ]);
+
+        $this->assertEquals($expected, $colors->toArray());
+        $this->assertEquals(json_encode($expected), $colors->toJSON());
     }
 }
