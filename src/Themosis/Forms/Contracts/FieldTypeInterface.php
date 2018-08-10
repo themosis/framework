@@ -279,4 +279,11 @@ interface FieldTypeInterface
      * @return array
      */
     public function toArray(): array;
+
+    /**
+     * Return the field type.
+     *
+     * @return string
+     */
+    public function getType(): string;
 }

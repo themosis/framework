@@ -10,4 +10,11 @@ class HiddenType extends TextType
      * @var string
      */
     protected $view = 'types.hidden';
+
+    /**
+     * Field type.
+     *
+     * @var string
+     */
+    protected $type = 'hidden';
 }

@@ -10,4 +10,11 @@ class SubmitType extends ButtonType
      * @var string
      */
     protected $view = 'types.submit';
+
+    /**
+     * Field type.
+     *
+     * @var string
+     */
+    protected $type = 'submit';
 }

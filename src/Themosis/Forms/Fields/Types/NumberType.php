@@ -14,6 +14,13 @@ class NumberType extends BaseType
     protected $view = 'types.number';
 
     /**
+     * Field type.
+     *
+     * @var string
+     */
+    protected $type = 'number';
+
+    /**
      * Parse and setup default options.
      *
      * @param array $options

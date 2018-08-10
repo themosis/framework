@@ -136,6 +136,13 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     protected $factory;
 
+    /**
+     * Form type.
+     *
+     * @var string
+     */
+    protected $type = 'form';
+
     public function __construct(
         FormRepositoryInterface $repository,
         ValidationFactoryInterface $validation,
@@ -816,5 +823,15 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function toArray(): array
     {
         return [];
+    }
+
+    /**
+     * Return the form type.
+     *
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
     }
 }

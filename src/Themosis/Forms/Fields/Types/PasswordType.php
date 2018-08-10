@@ -10,4 +10,11 @@ class PasswordType extends TextType
      * @var string
      */
     protected $view = 'types.password';
+
+    /**
+     * Field type.
+     *
+     * @var string
+     */
+    protected $type = 'password';
 }

@@ -14,6 +14,13 @@ class ButtonType extends BaseType implements DataTransformerInterface
     protected $view = 'types.button';
 
     /**
+     * Field type.
+     *
+     * @var string
+     */
+    protected $type = 'button';
+
+    /**
      * Get default button options.
      *
      * @return array

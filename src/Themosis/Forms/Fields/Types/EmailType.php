@@ -10,4 +10,11 @@ class EmailType extends TextType
      * @var string
      */
     protected $view = 'types.email';
+
+    /**
+     * Field type.
+     *
+     * @var string
+     */
+    protected $type = 'email';
 }

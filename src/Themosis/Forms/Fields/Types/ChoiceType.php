@@ -23,6 +23,13 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
      */
     protected $view = 'types.choice';
 
+    /**
+     * Field type.
+     *
+     * @var string
+     */
+    protected $type = 'choice';
+
     public function __construct(string $name)
     {
         parent::__construct($name);

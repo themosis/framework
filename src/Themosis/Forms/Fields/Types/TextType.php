@@ -14,6 +14,13 @@ class TextType extends BaseType implements DataTransformerInterface
     protected $view = 'types.text';
 
     /**
+     * Field type.
+     *
+     * @var string
+     */
+    protected $type = 'text';
+
+    /**
      * Parse and setup default options.
      *
      * @param array $options

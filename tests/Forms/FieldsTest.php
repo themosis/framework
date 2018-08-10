@@ -57,6 +57,35 @@ class FieldsTest extends TestCase
         );
     }
 
+    public function testFieldsType()
+    {
+        $fields = $this->getFieldsFactory();
+
+        $text = $fields->text('name');
+        $textarea = $fields->textarea('message');
+        $button = $fields->button('clickme');
+        $checkbox = $fields->checkbox('activate');
+        $choice = $fields->choice('chooseme');
+        $email = $fields->email('email');
+        $hidden = $fields->hidden('secret');
+        $integer = $fields->integer('count');
+        $number = $fields->number('surface');
+        $password = $fields->password('hideme');
+        $submit = $fields->submit('send');
+
+        $this->assertEquals('text', $text->getType());
+        $this->assertEquals('textarea', $textarea->getType());
+        $this->assertEquals('button', $button->getType());
+        $this->assertEquals('checkbox', $checkbox->getType());
+        $this->assertEquals('choice', $choice->getType());
+        $this->assertEquals('email', $email->getType());
+        $this->assertEquals('hidden', $hidden->getType());
+        $this->assertEquals('integer', $integer->getType());
+        $this->assertEquals('number', $number->getType());
+        $this->assertEquals('password', $password->getType());
+        $this->assertEquals('submit', $submit->getType());
+    }
+
     public function testFormFieldTextTypeToJSON()
     {
         $fields = $this->getFieldsFactory();
@@ -83,6 +112,7 @@ class FieldsTest extends TestCase
                     'for' => 'th_name_field'
                 ]
             ],
+            'type' => 'text',
             'validation' => [
                 'errors' => true,
                 'messages' => [],

@@ -170,6 +170,13 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     protected $factory;
 
     /**
+     * The field type.
+     *
+     * @var string
+     */
+    protected $type = 'input';
+
+    /**
      * BaseType constructor.
      *
      * @param string $name
@@ -733,6 +740,16 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     public function toJSON(): string
     {
         return $this->serialize()->getManager()->createData($this->resource())->toJson();
+    }
+
+    /**
+     * Return the field type.
+     *
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     /**

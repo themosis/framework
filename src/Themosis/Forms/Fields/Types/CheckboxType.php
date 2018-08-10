@@ -15,6 +15,13 @@ class CheckboxType extends BaseType
     protected $view = 'types.checkbox';
 
     /**
+     * Field type.
+     *
+     * @var string
+     */
+    protected $type = 'checkbox';
+
+    /**
      * Parse field options.
      *
      * @param array $options

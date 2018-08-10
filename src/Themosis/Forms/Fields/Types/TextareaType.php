@@ -14,6 +14,13 @@ class TextareaType extends BaseType implements DataTransformerInterface
     protected $view = 'types.textarea';
 
     /**
+     * Field type.
+     *
+     * @var string
+     */
+    protected $type = 'textarea';
+
+    /**
      * Parse and setup default options.
      *
      * @param array $options
