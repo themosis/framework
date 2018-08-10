@@ -31,8 +31,8 @@ class FieldTransformer extends TransformerAbstract
                 'attributes' => $field->getOption('label_attr')
             ],
             'validation' => [
-                'errors' => $field->errors()->toArray(),
-                'messages' => $field->getOption('messages'),
+                'errors' => $field->getOption('errors'),
+                'messages' => $field->errors()->toArray(),
                 'placeholder' => $field->getOption('placeholder'),
                 'rules' => $field->getOption('rules')
             ],

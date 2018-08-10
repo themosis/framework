@@ -1,9 +1,9 @@
-<label for="{{ $field->getAttribute('id') }}">{{ $field->getOptions('label') }}</label>
+<label {!! $field->attributes($field->getOption('label_attr')) !!}>{{ $field->getOption('label') }}</label>
 @php
-    $name = $field->getOptions('multiple') ? $field->getName().'[]' : $field->getName();
+    $name = $field->getOption('multiple') ? $field->getName().'[]' : $field->getName();
 @endphp
 <select name="{{ $name }}" id="{{ $field->getAttribute('id') }}" {!! $field->attributes($field->getAttributes()) !!}>
-    @foreach($field->getOptions('choices')->format()->get() as $group => $choices)
+    @foreach($field->getOption('choices')->format()->get() as $group => $choices)
         @if(is_array($choices))
             <optgroup label="{{ $group }}">
                 @foreach($choices as $label => $choice)

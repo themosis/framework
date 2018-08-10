@@ -1,4 +1,4 @@
-@if(! empty($info = $field->getOptions('info')))
+@if(! empty($info = $field->getOption('info')))
     <div class="th-description-bootstrap">
         {!! $info !!}
     </div>
