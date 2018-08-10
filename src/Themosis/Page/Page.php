@@ -559,7 +559,7 @@ class Page implements PageInterface
                 // Display the setting.
                 add_settings_field(
                     $setting->getName(),
-                    $setting->getOptions('label'),
+                    $setting->getOption('label'),
                     [$this, 'renderSettings'],
                     $this->getSlug(),
                     $slug,
@@ -590,10 +590,8 @@ class Page implements PageInterface
 
         $setting->setPrefix($this->getPrefix());
         $setting->setOptions([
-            'label' => $setting->getOptions('label') ?
-                $setting->getOptions('label') : ucfirst($setting->getBaseName()),
-            'placeholder' => ! is_array($setting->getOptions('placeholder')) ?
-                $setting->getOptions('placeholder') : $setting->getBaseName()
+            'label' => $setting->getOption('label', ucfirst($setting->getBaseName())),
+            'placeholder' => $setting->getOption('placeholder', $setting->getBaseName())
         ]);
 
         $attributes = array_merge([
@@ -644,7 +642,7 @@ class Page implements PageInterface
 
         $validator = $this->validator->make(
             $data->all(),
-            [$setting->getName() => $setting->getOptions('rules')],
+            [$setting->getName() => $setting->getOption('rules')],
             $this->getSettingMessages($setting),
             $this->getSettingPlaceholder($setting)
         );
@@ -689,7 +687,7 @@ class Page implements PageInterface
     {
         $messages = [];
 
-        foreach ($setting->getOptions('messages') as $attr => $message) {
+        foreach ($setting->getOption('messages', []) as $attr => $message) {
             $messages[$setting->getName().'.'.$attr] = $message;
         }
 
@@ -705,9 +703,9 @@ class Page implements PageInterface
      */
     protected function getSettingPlaceholder(FieldTypeInterface $setting): array
     {
-        $placeholder = $setting->getOptions('placeholder');
+        $placeholder = $setting->getOption('placeholder');
 
-        if (is_array($placeholder)) {
+        if (is_null($placeholder)) {
             return [];
         }
 

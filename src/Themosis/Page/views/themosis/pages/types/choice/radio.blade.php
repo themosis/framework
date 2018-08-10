@@ -1,5 +1,5 @@
 <div class="th-form-input-choice th-form-input-choice-radio">
-    @foreach($field->getOptions('choices')->format()->get() as $group => $choices)
+    @foreach($field->getOption('choices')->format()->get() as $group => $choices)
         @if(is_array($choices))
             <div class="th-form-input-group">
                 <span class="th-group-label">{{ $group }}</span>

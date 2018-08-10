@@ -587,12 +587,13 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * Return form options.
      *
      * @param string $key
+     * @param mixed $default
      *
      * @return string|array|null
      */
-    public function getOption(string $key)
+    public function getOption(string $key, $default = null)
     {
-        return $this->options[$key] ?? null;
+        return $this->options[$key] ?? $default;
     }
 
     /**

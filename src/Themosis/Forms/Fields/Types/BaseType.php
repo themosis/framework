@@ -281,12 +281,13 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * Return field options.
      *
      * @param string $key
+     * @param mixed $default
      *
      * @return string|array|null
      */
-    public function getOption(string $key)
+    public function getOption(string $key, $default = null)
     {
-        return $this->options[$key] ?? null;
+        return $this->options[$key] ?? $default;
     }
 
     /**
@@ -320,13 +321,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function getTheme(): string
     {
-        $theme = $this->getOption('theme');
-
-        if (is_array($theme)) {
-            return '';
-        }
-
-        return $theme;
+        return $this->getOption('theme', '');
     }
 
     /**

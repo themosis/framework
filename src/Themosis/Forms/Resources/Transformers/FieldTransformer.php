@@ -19,22 +19,22 @@ class FieldTransformer extends TransformerAbstract
         return [
             'attributes' => $field->getAttributes(),
             'basename' => $field->getBaseName(),
-            'data_type' => $field->getOption('data_type'),
-            'default' => $field->getOption('data'),
+            'data_type' => $field->getOption('data_type', ''),
+            'default' => $field->getOption('data', ''),
             'name' => $field->getName(),
             'options' => [
-                'group' => $field->getOption('group'),
-                'info' => $field->getOption('info')
+                'group' => $field->getOption('group', 'default'),
+                'info' => $field->getOption('info', '')
             ],
             'label' => [
                 'inner' => $field->getOption('label'),
-                'attributes' => $field->getOption('label_attr')
+                'attributes' => $field->getOption('label_attr', [])
             ],
             'validation' => [
-                'errors' => $field->getOption('errors'),
+                'errors' => $field->getOption('errors', true),
                 'messages' => $field->errors()->toArray(),
                 'placeholder' => $field->getOption('placeholder'),
-                'rules' => $field->getOption('rules')
+                'rules' => $field->getOption('rules', '')
             ],
             'value' => $field->getValue(),
         ];

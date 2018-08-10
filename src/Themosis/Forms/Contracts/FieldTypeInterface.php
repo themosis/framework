@@ -35,10 +35,11 @@ interface FieldTypeInterface
      * Get field type option defined by key.
      *
      * @param string $key
+     * @param mixed $default
      *
      * @return string|array|null
      */
-    public function getOption(string $key);
+    public function getOption(string $key, $default = null);
 
     /**
      * Set a field prefix. Mainly applied to field name to avoid conflict

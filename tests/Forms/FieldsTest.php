@@ -70,8 +70,8 @@ class FieldsTest extends TestCase
                 'id' => 'th_name_field'
             ],
             'basename' => 'name',
-            'data_type' => null,
-            'default' => null,
+            'data_type' => '',
+            'default' => '',
             'name' => 'th_name',
             'options' => [
                 'group' => 'default',
@@ -84,7 +84,7 @@ class FieldsTest extends TestCase
                 ]
             ],
             'validation' => [
-                'errors' => [],
+                'errors' => true,
                 'messages' => [],
                 'placeholder' => 'name',
                 'rules' => ''
