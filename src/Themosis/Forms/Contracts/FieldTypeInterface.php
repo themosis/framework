@@ -35,7 +35,7 @@ interface FieldTypeInterface
      * Get field type option defined by key.
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
      *
      * @return string|array|null
      */
@@ -262,6 +262,7 @@ interface FieldTypeInterface
      * Set the transformer factory.
      *
      * @param Factory $factory
+     *
      * @return FieldTypeInterface
      */
     public function setResourceTransformerFactory(Factory $factory): FieldTypeInterface;

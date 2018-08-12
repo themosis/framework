@@ -288,7 +288,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * Return field options.
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
      *
      * @return string|array|null
      */
@@ -692,6 +692,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * Set the transformer factory.
      *
      * @param Factory $factory
+     *
      * @return FieldTypeInterface
      */
     public function setResourceTransformerFactory(Factory $factory): FieldTypeInterface
@@ -725,6 +726,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
 
     /**
      * Return an associative array representation of the field.
+     *
      * @return array
      */
     public function toArray(): array

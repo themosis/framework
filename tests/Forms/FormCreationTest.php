@@ -953,4 +953,18 @@ class FormCreationTest extends TestCase
         $this->assertEquals('string', $email->getOption('data_type'));
         $this->assertEquals('array', $colors->getOption('data_type'));
     }
+
+    public function testFormWithoutFieldsToJSON()
+    {
+        $factory = $this->getFormFactory();
+
+        /** @var FieldTypeInterface $form */
+        $form = $factory->make()->get();
+
+        $expected = [
+            'attributes' => []
+        ];
+
+        $this->assertEquals($expected, $form->toArray());
+    }
 }

@@ -63,7 +63,7 @@ class FieldTransformer extends TransformerAbstract
      * Attach properties to transformed output.
      *
      * @param FieldTypeInterface $field
-     * @param \Closure $callback
+     * @param \Closure           $callback
      *
      * @return array
      */

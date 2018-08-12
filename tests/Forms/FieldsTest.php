@@ -16,7 +16,7 @@ class FieldsTest extends TestCase
 
     protected function getApplication()
     {
-        if (!is_null($this->application)) {
+        if (! is_null($this->application)) {
             return $this->application;
         }
 

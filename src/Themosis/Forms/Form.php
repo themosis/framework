@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Factory;
 use League\Fractal\Manager;
+use League\Fractal\Resource\Item;
+use League\Fractal\Resource\ResourceInterface;
+use League\Fractal\Serializer\ArraySerializer;
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
@@ -135,6 +138,13 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * @var TransformerFactory
      */
     protected $factory;
+
+    /**
+     * The resource transformer class.
+     *
+     * @var string
+     */
+    protected $resourceTransformer = 'FormTransformer';
 
     /**
      * Form type.
@@ -594,7 +604,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * Return form options.
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed  $default
      *
      * @return string|array|null
      */
@@ -797,6 +807,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * Set the transformer factory.
      *
      * @param TransformerFactory $factory
+     *
      * @return FieldTypeInterface
      */
     public function setResourceTransformerFactory(TransformerFactory $factory): FieldTypeInterface
@@ -807,6 +818,38 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     }
 
     /**
+     * Define the Fractal resource used by the form.
+     *
+     * @return ResourceInterface
+     */
+    protected function resource(): ResourceInterface
+    {
+        return new Item($this, $this->getResourceTransformerFactory()->make($this->resourceTransformer));
+    }
+
+    /**
+     * Define the serialization for the form resource.
+     *
+     * @return Form
+     */
+    protected function serialize(): Form
+    {
+        $this->manager->setSerializer(new ArraySerializer());
+
+        return $this;
+    }
+
+    /**
+     * Return an associative array representation of the field.
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->serialize()->getManager()->createData($this->resource())->toArray();
+    }
+
+    /**
      * Return a JSON representation of the form instance.
      *
      * @return string
@@ -814,15 +857,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function toJSON(): string
     {
         return '';
-    }
-
-    /**
-     * Return an associative array representation of the field.
-     * @return array
-     */
-    public function toArray(): array
-    {
-        return [];
     }
 
     /**
