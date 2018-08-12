@@ -998,4 +998,101 @@ class FormCreationTest extends TestCase
             ]
         ])), $form->toJSON());
     }
+
+    public function testFormWithFieldsToJSON()
+    {
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+
+        $form = $factory->make()
+            ->add($fields->text('firstname'))
+            ->get();
+
+        $this->assertEquals($this->expected([
+            'fields' => [
+                'data' => [
+                    [
+                        'attributes' => [
+                            'id' => 'th_firstname_field'
+                        ],
+                        'basename' => 'firstname',
+                        'data_type' => '',
+                        'default' => '',
+                        'name' => 'th_firstname',
+                        'options' => [
+                            'group' => 'default',
+                            'info' => ''
+                        ],
+                        'label' => [
+                            'inner' => 'Firstname',
+                            'attributes' => [
+                                'for' => 'th_firstname_field'
+                            ]
+                        ],
+                        'theme' => 'themosis',
+                        'type' => 'text',
+                        'validation' => [
+                            'errors' => true,
+                            'messages' => [],
+                            'placeholder' => 'firstname',
+                            'rules' => ''
+                        ],
+                        'value' => null
+                    ]
+                ]
+            ],
+            'groups' => [
+                'data' => [
+                    [
+                        'id' => 'default',
+                        'theme' => 'themosis',
+                        'title' => ''
+                    ]
+                ]
+            ]
+        ]), $form->toArray());
+        $this->assertEquals(json_encode($this->expected([
+            'fields' => [
+                'data' => [
+                    [
+                        'attributes' => [
+                            'id' => 'th_firstname_field'
+                        ],
+                        'basename' => 'firstname',
+                        'data_type' => '',
+                        'default' => '',
+                        'name' => 'th_firstname',
+                        'options' => [
+                            'group' => 'default',
+                            'info' => ''
+                        ],
+                        'label' => [
+                            'inner' => 'Firstname',
+                            'attributes' => [
+                                'for' => 'th_firstname_field'
+                            ]
+                        ],
+                        'theme' => 'themosis',
+                        'type' => 'text',
+                        'validation' => [
+                            'errors' => true,
+                            'messages' => [],
+                            'placeholder' => 'firstname',
+                            'rules' => ''
+                        ],
+                        'value' => null
+                    ]
+                ]
+            ],
+            'groups' => [
+                'data' => [
+                    [
+                        'id' => 'default',
+                        'theme' => 'themosis',
+                        'title' => ''
+                    ]
+                ]
+            ]
+        ])), $form->toJSON());
+    }
 }

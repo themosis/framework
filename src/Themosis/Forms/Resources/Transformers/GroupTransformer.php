@@ -11,7 +11,8 @@ class GroupTransformer extends TransformerAbstract
     {
         return [
             'id' => $group->getId(),
-            'theme' => $group->getTheme()
+            'theme' => $group->getTheme(),
+            'title' => $group->getTitle()
         ];
     }
 }
