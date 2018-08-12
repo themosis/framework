@@ -99,6 +99,7 @@ class FieldsTest extends TestCase
                 'info' => ''
             ],
             'label' => [],
+            'theme' => '',
             'type' => 'input',
             'validation' => [
                 'errors' => true,

@@ -954,6 +954,26 @@ class FormCreationTest extends TestCase
         $this->assertEquals('array', $colors->getOption('data_type'));
     }
 
+    protected function expected(array $data = [])
+    {
+        return array_merge([
+            'attributes' => [
+                'method' => 'post'
+            ],
+            'flush' => true,
+            'locale' => 'en_US',
+            'nonce' => '_themosisnonce',
+            'referer' => true,
+            'tags' => true,
+            'theme' => 'themosis',
+            'type' => 'form',
+            'validation' => [
+                'errors' => true,
+                'isValid' => false
+            ]
+        ], $data);
+    }
+
     public function testFormWithoutFieldsToJSON()
     {
         $factory = $this->getFormFactory();
@@ -961,10 +981,21 @@ class FormCreationTest extends TestCase
         /** @var FieldTypeInterface $form */
         $form = $factory->make()->get();
 
-        $expected = [
-            'attributes' => []
-        ];
-
-        $this->assertEquals($expected, $form->toArray());
+        $this->assertEquals($this->expected([
+            'fields' => [
+                'data' => []
+            ],
+            'groups' => [
+                'data' => []
+            ]
+        ]), $form->toArray());
+        $this->assertEquals(json_encode($this->expected([
+            'fields' => [
+                'data' => []
+            ],
+            'groups' => [
+                'data' => []
+            ]
+        ])), $form->toJSON());
     }
 }
