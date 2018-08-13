@@ -1095,4 +1095,55 @@ class FormCreationTest extends TestCase
             ]
         ])), $form->toJSON());
     }
+
+    public function testFormWithValidationToJSON()
+    {
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+
+        $form = $factory->make([
+            'flush' => false
+        ])
+            ->add($fields->text('firstname'))
+            ->add($fields->email('email'))
+            ->add($fields->textarea('message'))
+            ->add($fields->choice('colors', [
+                'choices' => [
+                    'red',
+                    'green',
+                    'blue'
+                ]
+            ]))
+            ->add($fields->choice('sizes', [
+                'choices' => [
+                    'Small' => 10,
+                    'Medium' => 20,
+                    'Large' => 30
+                ],
+                'multiple' => true
+            ]))
+            ->add($fields->submit('register', [
+                'data' => 'Contact us'
+            ]))
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_firstname' => 'Nathan',
+            'th_email' => 'nathan@example.org',
+            'th_message' => 'Marco Polo',
+            'th_colors' => 'green',
+            'th_sizes' => [20, 30]
+        ]);
+
+        $form->handleRequest($request);
+
+        $resource = $form->toArray();
+
+        $this->assertTrue($resource['validation']['isValid']);
+        $this->assertEquals('Nathan', $resource['fields']['data'][0]['value']);
+        $this->assertEquals('nathan@example.org', $resource['fields']['data'][1]['value']);
+        $this->assertEquals('Marco Polo', $resource['fields']['data'][2]['value']);
+        $this->assertEquals('green', $resource['fields']['data'][3]['value']);
+        $this->assertEquals([20, 30], $resource['fields']['data'][4]['value']);
+    }
 }
