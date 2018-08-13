@@ -2,7 +2,7 @@
 
 namespace Themosis\Asset;
 
-use Themosis\Foundation\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class AssetServiceProvider extends ServiceProvider
 {
