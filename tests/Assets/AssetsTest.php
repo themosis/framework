@@ -206,4 +206,52 @@ class AssetsTest extends TestCase
         $asset->setType('css');
         $this->assertEquals('style', $asset->getType());
     }
+
+    public function testAddAssetsWithCustomArgument()
+    {
+        $factory = $this->getFactory();
+
+        // Local JS - Default
+        $asset = $factory->add('theme', '/theme.min.js');
+        $this->assertTrue($asset->getArgument());
+
+        // Local JS - Defined for footer
+        $asset = $factory->add('theme', 'theme.min.js', false, false, true);
+        $this->assertTrue($asset->getArgument());
+
+        // Local JS - Defined for head
+        $asset = $factory->add('carousel', 'js/carousel.js', false, false, false);
+        $this->assertFalse($asset->getArgument());
+
+        // Local CSS - Default
+        $asset = $factory->add('theme', 'theme.css');
+        $this->assertEquals('all', $asset->getArgument());
+
+        // Local CSS - Custom
+        $asset = $factory->add('theme', 'theme.css', false, false, 'screen');
+        $this->assertEquals('screen', $asset->getArgument());
+
+        // External JS - With Extension
+        $asset = $factory->add('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js');
+        $this->assertTrue($asset->getArgument());
+
+        // External JS - Without extension (default)
+        $asset = $factory->add('custom', '//api.domain.com/awesomescript');
+        $this->assertNull($asset->getArgument());
+
+        // External JS - Without extension for the footer.
+        $asset = $factory->add('custom', '//api.domain.com/somescript', false, 2.0, true);
+        $this->assertTrue($asset->getArgument());
+
+        // Extermal CSS - Without extension.
+        $asset = $factory->add(
+            'bootstrap',
+            'https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap',
+            false,
+            4.1
+        );
+        $this->assertNull($asset->getArgument());
+        $asset->setArgument('screen');
+        $this->assertEquals('screen', $asset->getArgument());
+    }
 }

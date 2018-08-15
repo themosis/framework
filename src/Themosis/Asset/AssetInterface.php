@@ -88,4 +88,20 @@ interface AssetInterface
      * @return AssetInterface
      */
     public function setType(string $type): AssetInterface;
+
+    /**
+     * Get the asset argument.
+     *
+     * @return string|bool
+     */
+    public function getArgument();
+
+    /**
+     * Set the asset argument.
+     *
+     * @param string|bool $arg
+     *
+     * @return AssetInterface
+     */
+    public function setArgument($arg = null): AssetInterface;
 }

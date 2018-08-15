@@ -24,6 +24,11 @@ class Asset implements AssetInterface
      */
     protected $version;
 
+    /**
+     * @var string|bool
+     */
+    protected $argument;
+
     public function __construct(AssetFileInterface $file)
     {
         $this->file = $file;
@@ -156,5 +161,43 @@ class Asset implements AssetInterface
     public function getType()
     {
         return $this->file->getType();
+    }
+
+    /**
+     * Return the asset argument.
+     *
+     * @return bool|string
+     */
+    public function getArgument()
+    {
+        return $this->argument;
+    }
+
+    /**
+     * Set the asset argument.
+     *
+     * @param bool|string $arg
+     *
+     * @return AssetInterface
+     */
+    public function setArgument($arg = null): AssetInterface
+    {
+        if (! is_null($arg)) {
+            $this->argument = $arg;
+
+            return $this;
+        }
+
+        // If no argument is passed but we have its type
+        // then let's define some defaults.
+        if ('style' === $this->getType()) {
+            $this->argument = 'all';
+        }
+
+        if ('script' === $this->getType()) {
+            $this->argument = true;
+        }
+
+        return $this;
     }
 }

@@ -21,12 +21,13 @@ class Factory
      * @param string            $path
      * @param bool|string|array $dependencies
      * @param null|string|bool  $version
+     * @param null|string|bool  $arg
      *
      * @throws AssetException
      *
-     * @return Asset
+     * @return AssetInterface
      */
-    public function add(string $handle, string $path, $dependencies = false, $version = null)
+    public function add(string $handle, string $path, $dependencies = false, $version = null, $arg = null)
     {
         if (empty($handle) || empty($path)) {
             throw new \InvalidArgumentException('The asset instance expects a handle name and a path or URL.');
@@ -34,11 +35,10 @@ class Factory
 
         $file = $this->finder->find($path);
 
-        $asset = new Asset($file);
-        $asset->setHandle($handle);
-        $asset->setDependencies($dependencies);
-        $asset->setVersion($version);
-
-        return $asset;
+        return (new Asset($file))
+            ->setHandle($handle)
+            ->setDependencies($dependencies)
+            ->setVersion($version)
+            ->setArgument($arg);
     }
 }
