@@ -148,13 +148,6 @@ class AssetsTest extends TestCase
         $this->assertFalse($asset->getDependencies());
         $this->assertNull($asset->getVersion());
         $this->assertEquals('style', $asset->getType());
-
-        // External - no extension
-        $asset = $factory->add('font', 'https://fonts.googleapis.com/css?family=Roboto');
-
-        $this->assertNull($asset->getType());
-        $asset->setType('css');
-        $this->assertEquals('style', $asset->getType());
     }
 
     public function testAddAssetsWithDependencies()
@@ -184,5 +177,33 @@ class AssetsTest extends TestCase
         $asset = $factory->add('carousel', 'js/carousel.js', false, false);
 
         $this->assertFalse($asset->getVersion());
+    }
+
+    public function testAddAssetsAndDiscoverOrSetFileType()
+    {
+        $factory = $this->getFactory();
+
+        // Local js
+        $asset = $factory->add('theme', 'theme.min.js');
+        $this->assertEquals('script', $asset->getType());
+
+        // Local css
+        $asset = $factory->add('products', 'css/products.min.css');
+        $this->assertEquals('style', $asset->getType());
+
+        // External js
+        $asset = $factory->add('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js');
+        $this->assertEquals('script', $asset->getType());
+
+        // External css
+        $asset = $factory->add('typekit', 'https://use.typekit.net/xxxxxxx.css');
+        $this->assertEquals('style', $asset->getType());
+
+        // External - Defined
+        $asset = $factory->add('font', 'https://fonts.googleapis.com/css?family=Roboto');
+
+        $this->assertNull($asset->getType());
+        $asset->setType('css');
+        $this->assertEquals('style', $asset->getType());
     }
 }
