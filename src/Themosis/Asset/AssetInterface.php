@@ -40,4 +40,52 @@ interface AssetInterface
      * @return string
      */
     public function getUrl(): string;
+
+    /**
+     * Set the asset dependencies.
+     *
+     * @param bool|string|array $dependencies
+     *
+     * @return AssetInterface
+     */
+    public function setDependencies($dependencies): AssetInterface;
+
+    /**
+     * Return the asset dependencies.
+     *
+     * @return mixed
+     */
+    public function getDependencies();
+
+    /**
+     * Set the asset version.
+     *
+     * @param null|string|bool $version
+     *
+     * @return AssetInterface
+     */
+    public function setVersion($version): AssetInterface;
+
+    /**
+     * Return the asset version.
+     *
+     * @return mixed
+     */
+    public function getVersion();
+
+    /**
+     * Return the asset type.
+     *
+     * @return mixed
+     */
+    public function getType();
+
+    /**
+     * Set the asset type.
+     *
+     * @param string $type
+     *
+     * @return AssetInterface
+     */
+    public function setType(string $type): AssetInterface;
 }

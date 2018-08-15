@@ -83,14 +83,22 @@ class Finder
     public function find(string $path): AssetFileInterface
     {
         if ($this->isExternal($path)) {
-            return new File('', $path, true);
+            return (new File($this->files))
+                ->setPath('')
+                ->setUrl($path)
+                ->setExternal(true)
+                ->setType($path);
         }
 
         $path = trim($path, '\/');
 
         foreach ($this->locations as $dir => $url) {
             if ($this->files->exists($fullPath = $dir.'/'.$path)) {
-                return new File($fullPath, $url.'/'.$path, false);
+                return (new File($this->files))
+                    ->setPath($fullPath)
+                    ->setUrl($url.'/'.$path)
+                    ->setExternal(false)
+                    ->setType($fullPath);
             }
         }
 

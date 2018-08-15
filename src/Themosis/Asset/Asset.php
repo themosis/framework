@@ -14,6 +14,16 @@ class Asset implements AssetInterface
      */
     protected $file;
 
+    /**
+     * @var bool|string|array
+     */
+    protected $dependencies;
+
+    /**
+     * @var null|string|bool
+     */
+    protected $version;
+
     public function __construct(AssetFileInterface $file)
     {
         $this->file = $file;
@@ -71,5 +81,80 @@ class Asset implements AssetInterface
     public function getUrl(): string
     {
         return $this->file->getUrl();
+    }
+
+    /**
+     * Set the asset dependencies.
+     *
+     * @param array|bool|string $dependencies
+     *
+     * @return AssetInterface
+     */
+    public function setDependencies($dependencies): AssetInterface
+    {
+        $this->dependencies = $dependencies;
+
+        return $this;
+    }
+
+    /**
+     * Return the asset dependencies.
+     *
+     * @return array|bool|mixed|string
+     */
+    public function getDependencies()
+    {
+        return $this->dependencies;
+    }
+
+    /**
+     * Set the asset version.
+     *
+     * @param bool|null|string $version
+     *
+     * @return AssetInterface
+     */
+    public function setVersion($version): AssetInterface
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    /**
+     * Return the asset version.
+     *
+     * @return null|string|bool
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * Set the asset type.
+     * Override the auto-discovered type if any.
+     *
+     * @param string $type
+     *
+     * @return AssetInterface
+     */
+    public function setType(string $type): AssetInterface
+    {
+        $path = $this->file->isExternal() ? $this->getUrl() : $this->getPath();
+
+        $this->file->setType($path, $type);
+
+        return $this;
+    }
+
+    /**
+     * Return the asset type.
+     *
+     * @return null|string
+     */
+    public function getType()
+    {
+        return $this->file->getType();
     }
 }

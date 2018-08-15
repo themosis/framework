@@ -123,17 +123,66 @@ class AssetsTest extends TestCase
         );
     }
 
-    public function testAddNewAssetsOnFrontEnd()
+    public function testAddAssetWithDefaults()
     {
         $factory = $this->getFactory();
 
+        // Local
         $asset = $factory->add('theme', 'theme.min.js');
 
         $this->assertEquals('theme', $asset->getHandle());
         $this->assertFalse($asset->file()->isExternal());
         $this->assertEquals(__DIR__.'/files/theme.min.js', $asset->getPath());
         $this->assertEquals('https://www.domain.com/dist/theme.min.js', $asset->getUrl());
+        $this->assertFalse($asset->getDependencies());
+        $this->assertNull($asset->getVersion());
+        $this->assertEquals('script', $asset->getType());
 
-        //Asset::add('handle', 'relative/path.css', false, 2.0, 'all')->to();
+        // External
+        $asset = $factory->add('typekit', 'https://use.typekit.net/xxxxxxx.css');
+
+        $this->assertEquals('typekit', $asset->getHandle());
+        $this->assertTrue($asset->file()->isExternal());
+        $this->assertEmpty($asset->getPath());
+        $this->assertEquals('https://use.typekit.net/xxxxxxx.css', $asset->getUrl());
+        $this->assertFalse($asset->getDependencies());
+        $this->assertNull($asset->getVersion());
+        $this->assertEquals('style', $asset->getType());
+
+        // External - no extension
+        $asset = $factory->add('font', 'https://fonts.googleapis.com/css?family=Roboto');
+
+        $this->assertNull($asset->getType());
+        $asset->setType('css');
+        $this->assertEquals('style', $asset->getType());
+    }
+
+    public function testAddAssetsWithDependencies()
+    {
+        $factory = $this->getFactory();
+
+        $asset = $factory->add('theme', 'theme.min.js', 'jquery');
+
+        $this->assertEquals('jquery', $asset->getDependencies());
+
+        $asset = $factory->add('products', 'css/products.min.css', ['bootstrap', 'jqueryui']);
+
+        $this->assertEquals([
+            'bootstrap',
+            'jqueryui'
+        ], $asset->getDependencies());
+    }
+
+    public function testAddAssetsWithVersioning()
+    {
+        $factory = $this->getFactory();
+
+        $asset = $factory->add('theme', 'theme.css', false, '1.0');
+
+        $this->assertEquals('1.0', $asset->getVersion());
+
+        $asset = $factory->add('carousel', 'js/carousel.js', false, false);
+
+        $this->assertFalse($asset->getVersion());
     }
 }
