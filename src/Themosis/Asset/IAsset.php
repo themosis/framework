@@ -11,7 +11,7 @@ interface IAsset
      *
      * @param string $area Specify where to load the asset: 'admin', 'login' or 'customizer'.
      *
-     * @return Asset
+     * @return AssetDeprecated
      */
     public function to($area);
 
@@ -22,14 +22,14 @@ interface IAsset
      * @param string $objectName The name of the JS variable that will hold the data.
      * @param mixed  $data       Any data to attach to the JS variable: string, boolean, object, array, ...
      *
-     * @return Asset
+     * @return AssetDeprecated
      */
     public function localize($objectName, $data);
 
     /**
      * Remove a declared asset.
      *
-     * @return Asset
+     * @return AssetDeprecated
      */
     public function remove();
 
@@ -45,7 +45,7 @@ interface IAsset
      *
      * @param array $atts The asset attributes to add.
      *
-     * @return Asset
+     * @return AssetDeprecated
      */
     public function addAttributes(array $atts);
 }

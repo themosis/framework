@@ -35,7 +35,7 @@ class AssetTest extends TestCase
         $asset = $this->factory->add('project-css', 'css/project-test.css', false, '1.0.0', 'screen');
 
         // Check we're dealing with the right instance.
-        $this->assertInstanceOf('Themosis\Asset\Asset', $asset);
+        $this->assertInstanceOf('Themosis\Asset\AssetDeprecated', $asset);
         $this->assertEquals('style', $asset->getType());
         $this->assertEquals('screen', $asset->getArgs('mixed'));
         // Check css asset is loaded on front-end.
@@ -77,11 +77,11 @@ class AssetTest extends TestCase
     {
         $this->factory->add('some-css', 'css/project-test.css');
 
-        $this->assertTrue($this->container['asset.some-css'] instanceof \Themosis\Asset\Asset);
+        $this->assertTrue($this->container['asset.some-css'] instanceof \Themosis\Asset\AssetDeprecated);
 
         $this->factory->add('some-js', 'js/project-main.js');
 
-        $this->assertTrue($this->container['asset.some-js'] instanceof \Themosis\Asset\Asset);
+        $this->assertTrue($this->container['asset.some-js'] instanceof \Themosis\Asset\AssetDeprecated);
     }
 
     public function testAssetIsRemoved()
@@ -157,7 +157,7 @@ class AssetTest extends TestCase
             'version' => '1.2.3',
             'mixed' => 'screen',
         ];
-        $asset = new \Themosis\Asset\Asset('style', $args, $this->container['action'], $this->container['html'], $this->container['filter']);
+        $asset = new \Themosis\Asset\AssetDeprecated('style', $args, $this->container['action'], $this->container['html'], $this->container['filter']);
 
         // Check get all arguments back.
         $this->assertEquals($args, $asset->getArgs());
@@ -180,7 +180,7 @@ class AssetTest extends TestCase
 
     public function testAssetVersion()
     {
-        $asset = new \Themosis\Asset\Asset('style', [
+        $asset = new \Themosis\Asset\AssetDeprecated('style', [
             'handle' => 'css-handle',
             'path' => 'some/path/to/custom.css',
             'deps' => false,
@@ -191,7 +191,7 @@ class AssetTest extends TestCase
         // Check version is null.
         $this->assertNull($asset->getArgs('version'));
 
-        $asset = new \Themosis\Asset\Asset('style', [
+        $asset = new \Themosis\Asset\AssetDeprecated('style', [
             'handle' => 'css-handle',
             'path' => 'some/path/to/custom.css',
             'deps' => false,
@@ -202,7 +202,7 @@ class AssetTest extends TestCase
         // Check version is null.
         $this->assertNull($asset->getArgs('version'));
 
-        $asset = new \Themosis\Asset\Asset('style', [
+        $asset = new \Themosis\Asset\AssetDeprecated('style', [
             'handle' => 'css-handle',
             'path' => 'some/path/to/custom.css',
             'deps' => false,

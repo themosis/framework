@@ -63,7 +63,7 @@ class AssetFactory
      *
      * @throws AssetException
      *
-     * @return Asset|\WP_Error
+     * @return AssetDeprecated|\WP_Error
      */
     public function add($handle, $path, $deps = [], $version = '1.0', $mixed = null, $type = '')
     {
@@ -103,7 +103,7 @@ class AssetFactory
         // into the container.
         // Assets are registered using the 'asset' prefix followed
         // by their unique asset handle: 'asset.unique-handle'
-        $asset = new Asset($t, $args, $this->container['action'], $this->container['html'], $this->container['filter']);
+        $asset = new AssetDeprecated($t, $args, $this->container['action'], $this->container['html'], $this->container['filter']);
         $this->container->instance($this->aliasPrefix.'.'.$handle, $asset);
 
         return $asset;
