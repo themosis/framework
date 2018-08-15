@@ -2,6 +2,8 @@
 
 namespace Themosis\Asset;
 
+use Themosis\Hook\IHook;
+
 class Asset implements AssetInterface
 {
     /**
@@ -29,9 +31,25 @@ class Asset implements AssetInterface
      */
     protected $argument;
 
-    public function __construct(AssetFileInterface $file)
+    /**
+     * @var IHook
+     */
+    protected $action;
+
+    /**
+     * @var array
+     */
+    protected $locations = [
+        'wp_enqueue_scripts' => 'front',
+        'admin_enqueue_scripts' => 'admin',
+        'login_enqueue_scripts' => 'login',
+        'customize_preview_init' => 'customizer'
+    ];
+
+    public function __construct(AssetFileInterface $file, IHook $action)
     {
         $this->file = $file;
+        $this->action = $action;
     }
 
     /**
@@ -199,5 +217,83 @@ class Asset implements AssetInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Load the asset on the defined area. Default to front-end.
+     *
+     * @param string|array $locations
+     *
+     * @return AssetInterface
+     */
+    public function to($locations = 'front'): AssetInterface
+    {
+        if (is_string($locations)) {
+            $locations = [$locations];
+        }
+
+        foreach ($locations as $location) {
+            $hook = array_search($location, $this->locations, true);
+
+            if ($hook) {
+                $this->install($hook);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Register the asset with appropriate action hook.
+     *
+     * @param string $hook
+     */
+    protected function install(string $hook)
+    {
+        $this->action->add($hook, [$this, 'enqueue']);
+    }
+
+    /**
+     * Enqueue asset.
+     */
+    public function enqueue()
+    {
+        if (is_null($this->getType())) {
+            throw new AssetException('The asset must have a type defined. Null given.');
+        }
+
+        if ('script' === $this->getType()) {
+            $this->enqueueScript();
+        } else {
+            $this->enqueueStyle();
+        }
+    }
+
+    /**
+     * Enqueue a script asset.
+     */
+    protected function enqueueScript()
+    {
+        wp_enqueue_script(
+            $this->getHandle(),
+            $this->getUrl(),
+            $this->getDependencies(),
+            $this->getVersion(),
+            $this->getArgument()
+        );
+    }
+
+    /**
+     * Enqueue a style asset.
+     */
+    protected function enqueueStyle()
+    {
+        wp_enqueue_style(
+            $this->getHandle(),
+            $this->getUrl(),
+            $this->getDependencies(),
+            $this->getVersion(),
+            $this->getArgument()
+        );
     }
 }

@@ -104,4 +104,13 @@ interface AssetInterface
      * @return AssetInterface
      */
     public function setArgument($arg = null): AssetInterface;
+
+    /**
+     * Load the asset on defined area.
+     *
+     * @param string|array $locations
+     *
+     * @return AssetInterface
+     */
+    public function to($locations = 'front'): AssetInterface;
 }

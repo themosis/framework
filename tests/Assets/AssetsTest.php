@@ -8,6 +8,8 @@ use Themosis\Asset\Asset;
 use Themosis\Asset\AssetInterface;
 use Themosis\Asset\Factory;
 use Themosis\Asset\Finder;
+use Themosis\Core\Application;
+use Themosis\Hook\ActionBuilder;
 
 class AssetsTest extends TestCase
 {
@@ -25,7 +27,8 @@ class AssetsTest extends TestCase
     public function getFactory()
     {
         return new Factory(
-            $this->getFinder()
+            $this->getFinder(),
+            new ActionBuilder(new Application())
         );
     }
 

@@ -2,6 +2,8 @@
 
 namespace Themosis\Asset;
 
+use Themosis\Hook\IHook;
+
 class Factory
 {
     /**
@@ -9,9 +11,15 @@ class Factory
      */
     protected $finder;
 
-    public function __construct(Finder $finder)
+    /**
+     * @var IHook
+     */
+    protected $action;
+
+    public function __construct(Finder $finder, IHook $action)
     {
         $this->finder = $finder;
+        $this->action = $action;
     }
 
     /**
@@ -33,9 +41,7 @@ class Factory
             throw new \InvalidArgumentException('The asset instance expects a handle name and a path or URL.');
         }
 
-        $file = $this->finder->find($path);
-
-        return (new Asset($file))
+        return (new Asset($this->finder->find($path), $this->action))
             ->setHandle($handle)
             ->setDependencies($dependencies)
             ->setVersion($version)
