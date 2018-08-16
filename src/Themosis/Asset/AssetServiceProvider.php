@@ -8,11 +8,13 @@ class AssetServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton('asset.finder', function () {
-            return new AssetFinder();
+        $this->app->singleton('asset.finder', function ($app) {
+            return (new Finder($app['files']))
+                ->addLocations($app['config']['assets.paths']);
         });
-        $this->app->singleton('asset', function ($container) {
-            return new AssetFactory($container['asset.finder'], $container);
+
+        $this->app->singleton('asset', function ($app) {
+            return new Factory($app['asset.finder'], $app['action']);
         });
     }
 }

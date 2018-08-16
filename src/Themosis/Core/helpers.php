@@ -65,6 +65,20 @@ if (! function_exists('base_path')) {
     }
 }
 
+if (! function_exists('web_path')) {
+    /**
+     * Get the public web path.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    function web_path($path = '')
+    {
+        return app()->webPath($path);
+    }
+}
+
 if (! function_exists('database_path')) {
     /**
      * Get the database path.

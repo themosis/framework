@@ -172,6 +172,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
                 \Illuminate\Contracts\Foundation\Application::class,
                 \Psr\Container\ContainerInterface::class
             ],
+            'asset' => [
+                \Themosis\Asset\Factory::class,
+            ],
             'config' => [
                 \Illuminate\Config\Repository::class,
                 \Illuminate\Contracts\Config\Repository::class
