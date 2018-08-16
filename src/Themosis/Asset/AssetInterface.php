@@ -113,4 +113,14 @@ interface AssetInterface
      * @return AssetInterface
      */
     public function to($locations = 'front'): AssetInterface;
+
+    /**
+     * Localize the asset.
+     *
+     * @param string $name
+     * @param array  $data
+     *
+     * @return AssetInterface
+     */
+    public function localize(string $name, array $data): AssetInterface;
 }

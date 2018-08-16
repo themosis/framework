@@ -46,6 +46,13 @@ class Asset implements AssetInterface
         'customize_preview_init' => 'customizer'
     ];
 
+    /**
+     * Asset localized data.
+     *
+     * @var array
+     */
+    protected $localize = [];
+
     public function __construct(AssetFileInterface $file, IHook $action)
     {
         $this->file = $file;
@@ -281,6 +288,12 @@ class Asset implements AssetInterface
             $this->getVersion(),
             $this->getArgument()
         );
+
+        if (! empty($this->localize)) {
+            foreach ($this->localize as $name => $data) {
+                wp_localize_script($this->getHandle(), $name, $data);
+            }
+        }
     }
 
     /**
@@ -295,5 +308,20 @@ class Asset implements AssetInterface
             $this->getVersion(),
             $this->getArgument()
         );
+    }
+
+    /**
+     * Localize the asset.
+     *
+     * @param string $name
+     * @param array  $data
+     *
+     * @return AssetInterface
+     */
+    public function localize(string $name, array $data): AssetInterface
+    {
+        $this->localize[$name] = $data;
+
+        return $this;
     }
 }
