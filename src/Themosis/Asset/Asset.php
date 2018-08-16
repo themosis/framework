@@ -3,6 +3,7 @@
 namespace Themosis\Asset;
 
 use Themosis\Hook\IHook;
+use Themosis\Html\HtmlBuilder;
 
 class Asset implements AssetInterface
 {
@@ -37,6 +38,16 @@ class Asset implements AssetInterface
     protected $action;
 
     /**
+     * @var IHook
+     */
+    protected $filter;
+
+    /**
+     * @var HtmlBuilder
+     */
+    protected $html;
+
+    /**
      * @var array
      */
     protected $locations = [
@@ -60,10 +71,12 @@ class Asset implements AssetInterface
      */
     protected $inline = [];
 
-    public function __construct(AssetFileInterface $file, IHook $action)
+    public function __construct(AssetFileInterface $file, IHook $action, IHook $filter, HtmlBuilder $html)
     {
         $this->file = $file;
         $this->action = $action;
+        $this->filter = $filter;
+        $this->html = $html;
     }
 
     /**
@@ -358,6 +371,36 @@ class Asset implements AssetInterface
             'code' => $code,
             'position' => $after ? 'after' : 'before'
         ];
+
+        return $this;
+    }
+
+    /**
+     * Add asset attributes.
+     *
+     * @param array $attributes
+     *
+     * @throws AssetException
+     *
+     * @return AssetInterface
+     */
+    public function attributes(array $attributes): AssetInterface
+    {
+        if (is_null($this->getType())) {
+            throw new AssetException('The asset must have a type.');
+        }
+
+        $hook = 'script' === $this->getType() ? 'script_loader_tag' : 'style_loader_tag';
+        $key = strtolower(trim($this->getHandle()));
+        $attributes = $this->html->attributes($attributes);
+
+        $this->filter->add($hook, function ($tag, $handle) use ($attributes, $key) {
+            if ($key !== $handle) {
+                return $tag;
+            }
+
+            return preg_replace('/(src|href)(.+>)/', $attributes.'$1$2', $tag);
+        });
 
         return $this;
     }

@@ -10,6 +10,8 @@ use Themosis\Asset\Factory;
 use Themosis\Asset\Finder;
 use Themosis\Core\Application;
 use Themosis\Hook\ActionBuilder;
+use Themosis\Hook\FilterBuilder;
+use Themosis\Html\HtmlBuilder;
 
 class AssetsTest extends TestCase
 {
@@ -26,9 +28,13 @@ class AssetsTest extends TestCase
 
     public function getFactory()
     {
+        $app = new Application();
+
         return new Factory(
             $this->getFinder(),
-            new ActionBuilder(new Application())
+            new ActionBuilder($app),
+            new FilterBuilder($app),
+            new HtmlBuilder()
         );
     }
 

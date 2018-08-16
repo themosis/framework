@@ -133,4 +133,13 @@ interface AssetInterface
      * @return AssetInterface
      */
     public function inline(string $code, bool $after = true): AssetInterface;
+
+    /**
+     * Add asset attributes.
+     *
+     * @param array $attributes
+     *
+     * @return AssetInterface
+     */
+    public function attributes(array $attributes): AssetInterface;
 }

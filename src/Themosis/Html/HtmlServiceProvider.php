@@ -2,12 +2,14 @@
 
 namespace Themosis\Html;
 
-use Themosis\Foundation\ServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
 class HtmlServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind('html', 'Themosis\Html\HtmlBuilder');
+        $this->app->bind('html', function () {
+            return new HtmlBuilder();
+        });
     }
 }

@@ -187,7 +187,10 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
                 \Themosis\Hook\FilterBuilder::class
             ],
             'form' => [
-                \Themosis\Forms\FormFactory::class,
+                \Themosis\Forms\FormFactory::class
+            ],
+            'html' => [
+                \Themosis\Html\HtmlBuilder::class
             ],
             'log' => [
                 \Illuminate\Log\LogManager::class,

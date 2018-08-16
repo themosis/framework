@@ -14,7 +14,7 @@ class AssetServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('asset', function ($app) {
-            return new Factory($app['asset.finder'], $app['action']);
+            return new Factory($app['asset.finder'], $app['action'], $app['filter'], $app['html']);
         });
     }
 }
