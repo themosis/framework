@@ -123,4 +123,14 @@ interface AssetInterface
      * @return AssetInterface
      */
     public function localize(string $name, array $data): AssetInterface;
+
+    /**
+     * Add asset inline code.
+     *
+     * @param string $code
+     * @param bool   $after
+     *
+     * @return AssetInterface
+     */
+    public function inline(string $code, bool $after = true): AssetInterface;
 }

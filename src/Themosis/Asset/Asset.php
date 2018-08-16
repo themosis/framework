@@ -53,6 +53,13 @@ class Asset implements AssetInterface
      */
     protected $localize = [];
 
+    /**
+     * Asset inline code.
+     *
+     * @var array
+     */
+    protected $inline = [];
+
     public function __construct(AssetFileInterface $file, IHook $action)
     {
         $this->file = $file;
@@ -294,6 +301,12 @@ class Asset implements AssetInterface
                 wp_localize_script($this->getHandle(), $name, $data);
             }
         }
+
+        if (! empty($this->inline)) {
+            foreach ($this->inline as $code) {
+                wp_add_inline_script($this->getHandle(), $code['code'], $code['position']);
+            }
+        }
     }
 
     /**
@@ -308,6 +321,12 @@ class Asset implements AssetInterface
             $this->getVersion(),
             $this->getArgument()
         );
+
+        if (! empty($this->inline)) {
+            foreach ($this->inline as $code) {
+                wp_add_inline_style($this->getHandle(), $code['code']);
+            }
+        }
     }
 
     /**
@@ -321,6 +340,24 @@ class Asset implements AssetInterface
     public function localize(string $name, array $data): AssetInterface
     {
         $this->localize[$name] = $data;
+
+        return $this;
+    }
+
+    /**
+     * Add asset inline code.
+     *
+     * @param string $code
+     * @param bool   $after
+     *
+     * @return AssetInterface
+     */
+    public function inline(string $code, bool $after = true): AssetInterface
+    {
+        $this->inline[] = [
+            'code' => $code,
+            'position' => $after ? 'after' : 'before'
+        ];
 
         return $this;
     }
