@@ -183,6 +183,19 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
                 \Illuminate\Events\Dispatcher::class,
                 \Illuminate\Contracts\Events\Dispatcher::class
             ],
+            'files' => [
+                \Illuminate\Filesystem\Filesystem::class
+            ],
+            'filesystem' => [
+                \Illuminate\Filesystem\FilesystemManager::class,
+                \Illuminate\Contracts\Filesystem\Factory::class
+            ],
+            'filesystem.disk' => [
+                \Illuminate\Contracts\Filesystem\Filesystem::class
+            ],
+            'filesystem.cloud' => [
+                \Illuminate\Contracts\Filesystem\Cloud::class
+            ],
             'filter' => [
                 \Themosis\Hook\FilterBuilder::class
             ],
