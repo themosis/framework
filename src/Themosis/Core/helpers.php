@@ -65,6 +65,20 @@ if (! function_exists('base_path')) {
     }
 }
 
+if (! function_exists('content_path')) {
+    /**
+     * Get the path to the content public directory.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    function content_path($path = '')
+    {
+        return app()->contentPath($path);
+    }
+}
+
 if (! function_exists('web_path')) {
     /**
      * Get the public web path.
