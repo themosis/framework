@@ -130,4 +130,18 @@ interface MetaboxInterface
      * @return MetaboxInterface
      */
     public function set(): MetaboxInterface;
+
+    /**
+     * Return the metabox as an array resource.
+     *
+     * @return array
+     */
+    public function toArray(): array;
+
+    /**
+     * Return the metabox as a JSON resource.
+     *
+     * @return string
+     */
+    public function toJson(): string;
 }

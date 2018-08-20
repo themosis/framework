@@ -739,7 +739,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      *
      * @return string
      */
-    public function toJSON(): string
+    public function toJson(): string
     {
         return $this->serialize()->getManager()->createData($this->resource())->toJson();
     }

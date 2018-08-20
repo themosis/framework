@@ -321,4 +321,24 @@ class Metabox implements MetaboxInterface
     {
         echo 'Handled by Themosis';
     }
+
+    /**
+     * Return the metabox as an array resource.
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [];
+    }
+
+    /**
+     * Return the metabox as a JSON resource.
+     *
+     * @return string
+     */
+    public function toJson(): string
+    {
+        return '';
+    }
 }

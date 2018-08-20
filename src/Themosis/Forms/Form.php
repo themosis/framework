@@ -854,7 +854,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      *
      * @return string
      */
-    public function toJSON(): string
+    public function toJson(): string
     {
         return $this->serialize()->getManager()->createData($this->resource())->toJson();
     }

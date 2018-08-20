@@ -37,4 +37,13 @@ class MetaboxTest extends TestCase
         $this->assertTrue(empty($box->getArguments()));
         $this->assertEquals('default', $box->getLayout());
     }
+
+    public function testCreateMetaboxResource()
+    {
+        $factory = $this->getFactory();
+
+        $box = $factory->make('infos');
+
+        $this->assertEquals([], $box->toArray());
+    }
 }

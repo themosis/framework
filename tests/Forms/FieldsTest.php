@@ -141,7 +141,7 @@ class FieldsTest extends TestCase
         ]);
 
         $this->assertEquals($expected, $name->toArray());
-        $this->assertEquals(json_encode($expected), $name->toJSON());
+        $this->assertEquals(json_encode($expected), $name->toJson());
     }
 
     public function testFormFieldTextareaTypeToJSON()
@@ -174,7 +174,7 @@ class FieldsTest extends TestCase
         ]);
 
         $this->assertEquals($expected, $message->toArray());
-        $this->assertEquals(json_encode($expected), $message->toJSON());
+        $this->assertEquals(json_encode($expected), $message->toJson());
     }
 
     public function testFormFieldChoiceTypeToJSON()
@@ -218,6 +218,6 @@ class FieldsTest extends TestCase
         ]);
 
         $this->assertEquals($expected, $colors->toArray());
-        $this->assertEquals(json_encode($expected), $colors->toJSON());
+        $this->assertEquals(json_encode($expected), $colors->toJson());
     }
 }

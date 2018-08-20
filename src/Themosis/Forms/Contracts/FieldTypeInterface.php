@@ -272,7 +272,7 @@ interface FieldTypeInterface
      *
      * @return string
      */
-    public function toJSON(): string;
+    public function toJson(): string;
 
     /**
      * Return an associative array representation of the field.

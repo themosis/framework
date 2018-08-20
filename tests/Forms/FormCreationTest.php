@@ -996,7 +996,7 @@ class FormCreationTest extends TestCase
             'groups' => [
                 'data' => []
             ]
-        ])), $form->toJSON());
+        ])), $form->toJson());
     }
 
     public function testFormWithFieldsToJSON()
@@ -1093,7 +1093,7 @@ class FormCreationTest extends TestCase
                     ]
                 ]
             ]
-        ])), $form->toJSON());
+        ])), $form->toJson());
     }
 
     public function testFormWithValidationToJSON()
