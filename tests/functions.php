@@ -199,3 +199,18 @@ function is_custom($num)
 
     return false;
 }
+
+/*
+|--------------------------------------------------------------------------
+| Callback Handler
+|--------------------------------------------------------------------------
+|
+*/
+function themosis_callback_helper($args = [])
+{
+    if (! empty($args) && isset($args['params'])) {
+        return $args['params'];
+    }
+
+    return true;
+}

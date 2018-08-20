@@ -86,6 +86,13 @@ interface MetaboxInterface
     public function setCallback($callback): MetaboxInterface;
 
     /**
+     * Return the metabox callback.
+     *
+     * @return string|callable|array
+     */
+    public function getCallback();
+
+    /**
      * Set the metabox controller arguments.
      *
      * @param array $args
@@ -93,4 +100,34 @@ interface MetaboxInterface
      * @return MetaboxInterface
      */
     public function setArguments(array $args): MetaboxInterface;
+
+    /**
+     * Return the metabox arguments.
+     *
+     * @return array
+     */
+    public function getArguments(): array;
+
+    /**
+     * Set the metabox layout.
+     *
+     * @param string $layout
+     *
+     * @return MetaboxInterface
+     */
+    public function setLayout(string $layout): MetaboxInterface;
+
+    /**
+     * Return the metabox layout.
+     *
+     * @return string
+     */
+    public function getLayout(): string;
+
+    /**
+     * Set the metabox for display.
+     *
+     * @return MetaboxInterface
+     */
+    public function set(): MetaboxInterface;
 }

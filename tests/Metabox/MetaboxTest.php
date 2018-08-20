@@ -3,6 +3,8 @@
 namespace Themosis\Tests\Metabox;
 
 use PHPUnit\Framework\TestCase;
+use Themosis\Core\Application;
+use Themosis\Hook\ActionBuilder;
 use Themosis\Metabox\Factory;
 use Themosis\Metabox\MetaboxInterface;
 
@@ -10,10 +12,15 @@ class MetaboxTest extends TestCase
 {
     public function getFactory()
     {
-        return new Factory();
+        $app = new Application();
+
+        return new Factory(
+            $app,
+            new ActionBuilder($app)
+        );
     }
 
-    public function testCreateEmptyMetabox()
+    public function testCreateEmptyMetaboxWithDefaultArguments()
     {
         $factory = $this->getFactory();
 
@@ -25,5 +32,9 @@ class MetaboxTest extends TestCase
         $this->assertEquals('post', $box->getScreen());
         $this->assertEquals('advanced', $box->getContext());
         $this->assertEquals('default', $box->getPriority());
+        $this->assertEquals([$box, 'handle'], $box->getCallback());
+        $this->assertTrue(is_array($box->getArguments()));
+        $this->assertTrue(empty($box->getArguments()));
+        $this->assertEquals('default', $box->getLayout());
     }
 }

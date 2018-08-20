@@ -29,25 +29,26 @@ trait CallbackHandler
      * Handle the callback to execute.
      *
      * @param string|array|callable $callback
+     * @param array                 $args
      *
      * @return mixed|string
      */
-    protected function handleCallback($callback)
+    protected function handleCallback($callback, array $args = [])
     {
         $response = null;
 
         // Check if $callback is a closure.
         if ($callback instanceof \Closure || is_array($callback)) {
-            $response = call_user_func($callback);
+            $response = call_user_func($callback, $args);
         } elseif (is_string($callback)) {
             if (is_callable($callback)) {
                 // Used as a classic callback function.
-                $response = call_user_func($callback);
+                $response = call_user_func($callback, $args);
             } else {
                 // We use a "ClassName@method" syntax.
                 // Let's get a class instance and call its method.
                 $callbackArray = $this->handleClassCallback($callback);
-                $response = call_user_func($callbackArray);
+                $response = call_user_func($callbackArray, $args);
             }
         }
 

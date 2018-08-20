@@ -209,6 +209,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
                 \Illuminate\Log\LogManager::class,
                 \Psr\Log\LoggerInterface::class
             ],
+            'metabox' => [
+                \Themosis\Metabox\Factory::class
+            ],
             'redirect' => [
                 \Illuminate\Routing\Redirector::class
             ],
