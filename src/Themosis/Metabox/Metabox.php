@@ -6,6 +6,7 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\Renderable;
 use Symfony\Component\HttpFoundation\Response;
 use Themosis\Hook\IHook;
+use Themosis\Metabox\Resources\MetaboxResourceInterface;
 use Themosis\Support\CallbackHandler;
 
 class Metabox implements MetaboxInterface
@@ -61,6 +62,11 @@ class Metabox implements MetaboxInterface
      * @var IHook
      */
     protected $action;
+
+    /**
+     * @var MetaboxResourceInterface
+     */
+    protected $resource;
 
     public function __construct(string $id, IHook $action)
     {
@@ -323,13 +329,37 @@ class Metabox implements MetaboxInterface
     }
 
     /**
+     * Set the metabox resource abstraction layer/manager.
+     *
+     * @param MetaboxResourceInterface $resource
+     *
+     * @return MetaboxInterface
+     */
+    public function setResource(MetaboxResourceInterface $resource): MetaboxInterface
+    {
+        $this->resource = $resource;
+
+        return $this;
+    }
+
+    /**
+     * Return the metabox resource manager.
+     *
+     * @return MetaboxResourceInterface
+     */
+    public function getResource(): MetaboxResourceInterface
+    {
+        return $this->resource;
+    }
+
+    /**
      * Return the metabox as an array resource.
      *
      * @return array
      */
     public function toArray(): array
     {
-        return [];
+        return $this->getResource()->setSource($this)->toArray();
     }
 
     /**
@@ -339,6 +369,6 @@ class Metabox implements MetaboxInterface
      */
     public function toJson(): string
     {
-        return '';
+        return $this->getResource()->setSource($this)->toJson();
     }
 }

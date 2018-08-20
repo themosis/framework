@@ -2,22 +2,32 @@
 
 namespace Themosis\Tests\Metabox;
 
+use League\Fractal\Manager;
+use League\Fractal\Serializer\ArraySerializer;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
 use Themosis\Hook\ActionBuilder;
 use Themosis\Metabox\Factory;
 use Themosis\Metabox\MetaboxInterface;
+use Themosis\Metabox\Resources\MetaboxResource;
+use Themosis\Metabox\Resources\Transformers\MetaboxTransformer;
 
 class MetaboxTest extends TestCase
 {
-    public function getFactory()
+    protected function getFactory()
     {
         $app = new Application();
 
         return new Factory(
             $app,
-            new ActionBuilder($app)
+            new ActionBuilder($app),
+            $this->getMetaboxResource()
         );
+    }
+
+    protected function getMetaboxResource()
+    {
+        return new MetaboxResource(new Manager(), new ArraySerializer(), new MetaboxTransformer());
     }
 
     public function testCreateEmptyMetaboxWithDefaultArguments()
@@ -44,6 +54,15 @@ class MetaboxTest extends TestCase
 
         $box = $factory->make('infos');
 
-        $this->assertEquals([], $box->toArray());
+        $this->assertEquals([
+            'id' => 'infos',
+            'title' => 'Infos',
+            'screen' => [
+                'id' => 'post',
+                'post_type' => 'post'
+            ],
+            'context' => 'advanced',
+            'priority' => 'default'
+        ], $box->toArray());
     }
 }

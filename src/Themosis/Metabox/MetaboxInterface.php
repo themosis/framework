@@ -2,6 +2,8 @@
 
 namespace Themosis\Metabox;
 
+use Themosis\Metabox\Resources\MetaboxResourceInterface;
+
 interface MetaboxInterface
 {
     /**
@@ -130,6 +132,22 @@ interface MetaboxInterface
      * @return MetaboxInterface
      */
     public function set(): MetaboxInterface;
+
+    /**
+     * Set the metabox resource abstraction layer/manager.
+     *
+     * @param MetaboxResourceInterface $resource
+     *
+     * @return MetaboxInterface
+     */
+    public function setResource(MetaboxResourceInterface $resource): MetaboxInterface;
+
+    /**
+     * Return the metabox resource manager.
+     *
+     * @return MetaboxResourceInterface
+     */
+    public function getResource(): MetaboxResourceInterface;
 
     /**
      * Return the metabox as an array resource.

@@ -4,6 +4,7 @@ namespace Themosis\Metabox;
 
 use Illuminate\Contracts\Container\Container;
 use Themosis\Hook\IHook;
+use Themosis\Metabox\Resources\MetaboxResourceInterface;
 
 class Factory
 {
@@ -17,10 +18,16 @@ class Factory
      */
     protected $action;
 
-    public function __construct(Container $container, IHook $action)
+    /**
+     * @var MetaboxResourceInterface
+     */
+    protected $resource;
+
+    public function __construct(Container $container, IHook $action, MetaboxResourceInterface $resource)
     {
         $this->container = $container;
         $this->action = $action;
+        $this->resource = $resource;
     }
 
     /**
@@ -38,7 +45,8 @@ class Factory
             ->setTitle($this->setDefaultTitle($id))
             ->setScreen($screen)
             ->setContext('advanced')
-            ->setPriority('default');
+            ->setPriority('default')
+            ->setResource($this->resource);
     }
 
     /**
