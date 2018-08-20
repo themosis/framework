@@ -45,7 +45,7 @@ class MetaboxTransformer extends TransformerAbstract
             ];
         }
 
-        // Screen is a string.
+        // Screen is still a string.
         return [
             'id' => $screen,
             'post_type' => $screen
