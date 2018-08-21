@@ -4,7 +4,7 @@ namespace Themosis\Forms\Contracts;
 
 use Themosis\Support\Contracts\SectionInterface;
 
-interface FormRepositoryInterface
+interface FieldsRepositoryInterface
 {
     /**
      * Return the list of all attached fields.
@@ -19,9 +19,9 @@ interface FormRepositoryInterface
      * @param FieldTypeInterface $field
      * @param SectionInterface   $group
      *
-     * @return FormRepositoryInterface
+     * @return FieldsRepositoryInterface
      */
-    public function addField(FieldTypeInterface $field, SectionInterface $group): FormRepositoryInterface;
+    public function addField(FieldTypeInterface $field, SectionInterface $group): FieldsRepositoryInterface;
 
     /**
      * Return the defined field instance based on its basename property.

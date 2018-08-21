@@ -2,6 +2,8 @@
 
 namespace Themosis\Metabox;
 
+use Themosis\Forms\Contracts\FieldsRepositoryInterface;
+use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Metabox\Resources\MetaboxResourceInterface;
 
 interface MetaboxInterface
@@ -162,4 +164,52 @@ interface MetaboxInterface
      * @return string
      */
     public function toJson(): string;
+
+    /**
+     * Set the metabox locale.
+     *
+     * @param string $locale
+     *
+     * @return MetaboxInterface
+     */
+    public function setLocale(string $locale): MetaboxInterface;
+
+    /**
+     * Return the metabox locale.
+     *
+     * @return string
+     */
+    public function getLocale(): string;
+
+    /**
+     * Set the metabox prefix.
+     *
+     * @param string $prefix
+     *
+     * @return MetaboxInterface
+     */
+    public function setPrefix(string $prefix): MetaboxInterface;
+
+    /**
+     * Return the metabox prefix.
+     *
+     * @return string
+     */
+    public function getPrefix(): string;
+
+    /**
+     * Return the metabox fields repository instance.
+     *
+     * @return FieldsRepositoryInterface
+     */
+    public function repository(): FieldsRepositoryInterface;
+
+    /**
+     * Add a field to the metabox.
+     *
+     * @param FieldTypeInterface $field
+     *
+     * @return MetaboxInterface
+     */
+    public function add(FieldTypeInterface $field): MetaboxInterface;
 }

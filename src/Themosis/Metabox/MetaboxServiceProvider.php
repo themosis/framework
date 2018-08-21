@@ -5,6 +5,7 @@ namespace Themosis\Metabox;
 use Illuminate\Support\ServiceProvider;
 use League\Fractal\Manager;
 use League\Fractal\Serializer\ArraySerializer;
+use Themosis\Forms\Fields\FieldsRepository;
 use Themosis\Metabox\Resources\MetaboxResource;
 use Themosis\Metabox\Resources\Transformers\MetaboxTransformer;
 
@@ -19,7 +20,7 @@ class MetaboxServiceProvider extends ServiceProvider
                 new MetaboxTransformer()
             );
 
-            return new Factory($app, $app['action'], $resource);
+            return new Factory($app, $app['action'], $resource, new FieldsRepository());
         });
     }
 }

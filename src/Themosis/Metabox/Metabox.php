@@ -5,9 +5,12 @@ namespace Themosis\Metabox;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\Renderable;
 use Symfony\Component\HttpFoundation\Response;
+use Themosis\Forms\Contracts\FieldsRepositoryInterface;
+use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Hook\IHook;
 use Themosis\Metabox\Resources\MetaboxResourceInterface;
 use Themosis\Support\CallbackHandler;
+use Themosis\Support\Section;
 
 class Metabox implements MetaboxInterface
 {
@@ -68,10 +71,26 @@ class Metabox implements MetaboxInterface
      */
     protected $resource;
 
-    public function __construct(string $id, IHook $action)
+    /**
+     * @var FieldsRepositoryInterface
+     */
+    protected $repository;
+
+    /**
+     * @var string
+     */
+    protected $locale;
+
+    /**
+     * @var string
+     */
+    protected $prefix = 'th_';
+
+    public function __construct(string $id, IHook $action, FieldsRepositoryInterface $repository)
     {
         $this->id = $id;
         $this->action = $action;
+        $this->repository = $repository;
     }
 
     /**
@@ -370,5 +389,87 @@ class Metabox implements MetaboxInterface
     public function toJson(): string
     {
         return $this->getResource()->setSource($this)->toJson();
+    }
+
+    /**
+     * Set the metabox locale.
+     *
+     * @param string $locale
+     *
+     * @return MetaboxInterface
+     */
+    public function setLocale(string $locale): MetaboxInterface
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Return the metabox locale.
+     *
+     * @return string
+     */
+    public function getLocale(): string
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set the metabox prefix.
+     *
+     * @param string $prefix
+     *
+     * @return MetaboxInterface
+     */
+    public function setPrefix(string $prefix): MetaboxInterface
+    {
+        $this->prefix = $prefix;
+
+        return $this;
+    }
+
+    /**
+     * Return the metabox prefix.
+     *
+     * @return string
+     */
+    public function getPrefix(): string
+    {
+        return $this->prefix;
+    }
+
+    /**
+     * Return the metabox fields repository instance.
+     *
+     * @return FieldsRepositoryInterface
+     */
+    public function repository(): FieldsRepositoryInterface
+    {
+        return $this->repository;
+    }
+
+    /**
+     * Add a field to the metabox.
+     *
+     * @param FieldTypeInterface $field
+     *
+     * @return MetaboxInterface
+     */
+    public function add(FieldTypeInterface $field): MetaboxInterface
+    {
+        $field->setLocale($this->getLocale());
+        $field->setPrefix($this->getPrefix());
+
+        if ($this->repository()->hasGroup($field->getOption('group'))) {
+            $section = $this->repository()->getGroup($field->getOption('group'));
+        } else {
+            $section = new Section($field->getOption('group'));
+        }
+
+        $section->addItem($field);
+        $this->repository()->addField($field, $section);
+
+        return $this;
     }
 }

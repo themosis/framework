@@ -14,9 +14,9 @@ use League\Fractal\Resource\Item;
 use League\Fractal\Resource\ResourceInterface;
 use League\Fractal\Serializer\ArraySerializer;
 use Themosis\Forms\Contracts\DataTransformerInterface;
+use Themosis\Forms\Contracts\FieldsRepositoryInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
-use Themosis\Forms\Contracts\FormRepositoryInterface;
 use Themosis\Forms\Fields\Types\BaseType;
 use Themosis\Forms\Resources\Factory as TransformerFactory;
 use Themosis\Html\HtmlBuilder;
@@ -44,7 +44,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     protected $groups = [];
 
     /**
-     * @var FormRepositoryInterface
+     * @var FieldsRepositoryInterface
      */
     protected $repository;
 
@@ -154,7 +154,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     protected $type = 'form';
 
     public function __construct(
-        FormRepositoryInterface $repository,
+        FieldsRepositoryInterface $repository,
         ValidationFactoryInterface $validation,
         ViewFactoryInterface $viewer
     ) {
@@ -170,9 +170,9 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Get the form repository instance.
      *
-     * @return FormRepositoryInterface
+     * @return FieldsRepositoryInterface
      */
-    public function repository(): FormRepositoryInterface
+    public function repository(): FieldsRepositoryInterface
     {
         return $this->repository;
     }

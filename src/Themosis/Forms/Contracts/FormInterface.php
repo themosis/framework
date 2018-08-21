@@ -12,9 +12,9 @@ interface FormInterface
     /**
      * Return the form repository instance.
      *
-     * @return FormRepositoryInterface
+     * @return FieldsRepositoryInterface
      */
-    public function repository(): FormRepositoryInterface;
+    public function repository(): FieldsRepositoryInterface;
 
     /**
      * Handle request in order to validate form data.

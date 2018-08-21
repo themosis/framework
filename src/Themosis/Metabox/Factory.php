@@ -2,14 +2,15 @@
 
 namespace Themosis\Metabox;
 
-use Illuminate\Contracts\Container\Container;
+use Themosis\Core\Application;
+use Themosis\Forms\Contracts\FieldsRepositoryInterface;
 use Themosis\Hook\IHook;
 use Themosis\Metabox\Resources\MetaboxResourceInterface;
 
 class Factory
 {
     /**
-     * @var Container
+     * @var Application
      */
     protected $container;
 
@@ -23,11 +24,21 @@ class Factory
      */
     protected $resource;
 
-    public function __construct(Container $container, IHook $action, MetaboxResourceInterface $resource)
-    {
+    /**
+     * @var FieldsRepositoryInterface
+     */
+    protected $repository;
+
+    public function __construct(
+        Application $container,
+        IHook $action,
+        MetaboxResourceInterface $resource,
+        FieldsRepositoryInterface $repository
+    ) {
         $this->container = $container;
         $this->action = $action;
         $this->resource = $resource;
+        $this->repository = $repository;
     }
 
     /**
@@ -40,13 +51,14 @@ class Factory
      */
     public function make(string $id, $screen = 'post'): MetaboxInterface
     {
-        return (new Metabox($id, $this->action))
+        return (new Metabox($id, $this->action, $this->repository))
             ->setContainer($this->container)
             ->setTitle($this->setDefaultTitle($id))
             ->setScreen($screen)
             ->setContext('advanced')
             ->setPriority('default')
-            ->setResource($this->resource);
+            ->setResource($this->resource)
+            ->setLocale($this->container->getLocale());
     }
 
     /**

@@ -7,6 +7,7 @@ use Illuminate\Contracts\View\Factory as ViewFactoryInterface;
 use League\Fractal\Manager;
 use Themosis\Forms\Contracts\FormBuilderInterface;
 use Themosis\Forms\Contracts\FormFactoryInterface;
+use Themosis\Forms\Fields\FieldsRepository;
 use Themosis\Forms\Resources\Factory;
 
 class FormFactory implements FormFactoryInterface
@@ -70,7 +71,7 @@ class FormFactory implements FormFactoryInterface
      */
     public function make($options = [], $data = null, $builder = FormBuilder::class): FormBuilderInterface
     {
-        $form = new Form(new FormRepository(), $this->validation, $this->viewer);
+        $form = new Form(new FieldsRepository(), $this->validation, $this->viewer);
         $form->setManager($this->manager);
         $form->setResourceTransformerFactory($this->factory);
         $form->setAttributes($this->attributes);

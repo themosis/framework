@@ -1,12 +1,12 @@
 <?php
 
-namespace Themosis\Forms;
+namespace Themosis\Forms\Fields;
 
+use Themosis\Forms\Contracts\FieldsRepositoryInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
-use Themosis\Forms\Contracts\FormRepositoryInterface;
 use Themosis\Support\Contracts\SectionInterface;
 
-class FormRepository implements FormRepositoryInterface
+class FieldsRepository implements FieldsRepositoryInterface
 {
     /**
      * Fields organized by group.
@@ -36,9 +36,9 @@ class FormRepository implements FormRepositoryInterface
      * @param FieldTypeInterface $field
      * @param SectionInterface   $group
      *
-     * @return FormRepositoryInterface
+     * @return FieldsRepositoryInterface
      */
-    public function addField(FieldTypeInterface $field, SectionInterface $group): FormRepositoryInterface
+    public function addField(FieldTypeInterface $field, SectionInterface $group): FieldsRepositoryInterface
     {
         // We store all fields together
         // as well as per group. On each form,
