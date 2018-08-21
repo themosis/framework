@@ -99,21 +99,97 @@ class MetaboxTest extends TestCase
         $this->assertEquals('secondary', $fieldEmail->getOption('group'));
     }
 
-    public function testCreateMetaboxResource()
+    public function testCreateMetaboxResourceWithNoFields()
     {
         $factory = $this->getFactory();
 
         $box = $factory->make('infos');
 
-        $this->assertEquals([
+        $expected = [
             'id' => 'infos',
-            'title' => 'Infos',
+            'context' => 'advanced',
+            'locale' => 'en_US',
+            'priority' => 'default',
             'screen' => [
                 'id' => 'post',
                 'post_type' => 'post'
             ],
+            'title' => 'Infos',
+            'fields' => [
+                'data' => []
+            ],
+            'groups' => [
+                'data' => []
+            ]
+        ];
+
+        $this->assertEquals($expected, $box->toArray());
+        $this->assertEquals(json_encode($expected), $box->toJson());
+    }
+
+    public function testCreateMetaboxResourceWithCustomFields()
+    {
+        $factory = $this->getFactory();
+        $fields = $this->getFieldsFactory();
+
+        $box = $factory->make('properties', 'page')
+            ->setTitle('Book Properties')
+            ->add($fields->text('author'));
+
+        $expected = [
+            'id' => 'properties',
             'context' => 'advanced',
-            'priority' => 'default'
-        ], $box->toArray());
+            'locale' => 'en_US',
+            'priority' => 'default',
+            'screen' => [
+                'id' => 'page',
+                'post_type' => 'page'
+            ],
+            'title' => 'Book Properties',
+            'fields' => [
+                'data' => [
+                    [
+                        'attributes' => [
+                            'id' => 'th_author_field'
+                        ],
+                        'basename' => 'author',
+                        'data_type' => '',
+                        'default' => '',
+                        'name' => 'th_author',
+                        'options' => [
+                            'group' => 'default',
+                            'info' => ''
+                        ],
+                        'label' => [
+                            'inner' => 'Author',
+                            'attributes' => [
+                                'for' => 'th_author_field'
+                            ]
+                        ],
+                        'theme' => '',
+                        'type' => 'text',
+                        'validation' => [
+                            'errors' => true,
+                            'messages' => [],
+                            'placeholder' => 'author',
+                            'rules' => ''
+                        ],
+                        'value' => null
+                    ]
+                ]
+            ],
+            'groups' => [
+                'data' => [
+                    [
+                        'id' => 'default',
+                        'theme' => '',
+                        'title' => ''
+                    ]
+                ]
+            ]
+        ];
+
+        $this->assertEquals($expected, $box->toArray());
+        $this->assertEquals(json_encode($expected), $box->toJson());
     }
 }
