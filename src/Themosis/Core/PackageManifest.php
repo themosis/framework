@@ -43,6 +43,8 @@ class PackageManifest
     /**
      * Get aliases of all the packages.
      *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     *
      * @return array
      */
     public function aliases()
@@ -52,6 +54,8 @@ class PackageManifest
 
     /**
      * Get providers of all the packages.
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
      * @return array
      */
@@ -65,6 +69,8 @@ class PackageManifest
      *
      * @param string $key
      *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     *
      * @return array
      */
     public function get($key = 'aliases')
@@ -76,6 +82,8 @@ class PackageManifest
 
     /**
      * Get the current packages manifest.
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
      * @return array
      */
