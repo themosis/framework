@@ -18,8 +18,8 @@ class EnvironmentLoader
         'DATABASE_USER',
         'DATABASE_PASSWORD',
         'DATABASE_HOST',
-        'WP_HOME',
-        'WP_SITEURL'
+        'APP_URL',
+        'WP_URL'
     ];
 
     /**

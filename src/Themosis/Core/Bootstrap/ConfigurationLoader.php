@@ -15,13 +15,6 @@ class ConfigurationLoader
      */
     protected $app;
 
-    /**
-     * WordPress  directory name.
-     *
-     * @var string
-     */
-    protected $dir = 'wordpress';
-
     public function bootstrap(Application $app)
     {
         $this->app = $app;
@@ -79,8 +72,6 @@ class ConfigurationLoader
         foreach ($files as $key => $path) {
             $repository->set($key, require $path);
         }
-
-        $this->loadWordPressConfiguration();
     }
 
     /**
@@ -122,19 +113,5 @@ class ConfigurationLoader
         }
 
         return $nested;
-    }
-
-    /**
-     * Load WordPress configuration file.
-     *
-     * @param string $name
-     */
-    protected function loadWordPressConfiguration($name = 'wordpress')
-    {
-        $filename = sprintf('%s.php', $name);
-
-        if (file_exists($file = $this->app->configPath($filename))) {
-            require $file;
-        }
     }
 }
