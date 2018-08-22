@@ -180,6 +180,21 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             'asset' => [
                 \Themosis\Asset\Factory::class,
             ],
+            'auth' => [
+                \Illuminate\Auth\AuthManager::class,
+                \Illuminate\Contracts\Auth\Factory::class
+            ],
+            'auth.driver' => [
+                \Illuminate\Contracts\Auth\Guard::class
+            ],
+            'auth.password' => [
+                \Illuminate\Auth\Passwords\PasswordBrokerManager::class,
+                \Illuminate\Contracts\Auth\PasswordBrokerFactory::class
+            ],
+            'auth.password.broker' => [
+                \Illuminate\Auth\Passwords\PasswordBroker::class,
+                \Illuminate\Contracts\Auth\PasswordBroker::class
+            ],
             'config' => [
                 \Illuminate\Config\Repository::class,
                 \Illuminate\Contracts\Config\Repository::class

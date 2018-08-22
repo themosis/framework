@@ -27,6 +27,35 @@ class FormRequestTest extends TestCase
         $this->assertEquals(['name' => 'something'], $request->validated());
     }
 
+    /**
+     * @expectedException \Illuminate\Validation\ValidationException
+     */
+    public function testValidateThrowsWhenValidationFails()
+    {
+        $request = $this->createRequest(['no' => 'name']);
+
+        $this->mocks['redirect']->expects($this->any())->method('withInput');
+        $this->mocks['redirect']->expects($this->any())->method('withErrors');
+
+        $request->validateResolved();
+    }
+
+    /**
+     * @expectedException \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function testValidateMethodThrowsWhenAuthorizationFails()
+    {
+        $this->createRequest([], CoreTestFormRequestForbiddenStub::class)->validateResolved();
+    }
+
+    public function testPrepareForValidationRunsBeforeValidation()
+    {
+        $request = $this->createRequest([], CoreTestFormRequestHooks::class);
+        $request->validateResolved();
+
+        $this->assertEquals(['name' => 'Themosis'], $request->validated());
+    }
+
     protected function createRequest($payload = [], $class = CoreTestFormRequestStub::class)
     {
         $container = tap(new Container(), function ($container) {
@@ -52,7 +81,7 @@ class FormRequestTest extends TestCase
     protected function createValidationFactory($container)
     {
         $translator = $this->getMockBuilder(Translator::class)
-            ->setMethods(['trans', 'transChoice', 'getLocale', 'setLocale'])
+            ->setMethods(['trans', 'transChoice', 'getLocale', 'setLocale', 'rules'])
             ->getMock();
 
         $translator->expects($this->any())->method('trans')->willReturn('error');
@@ -105,6 +134,7 @@ class FormRequestTest extends TestCase
     {
         return $this->mocks['redirect'] = $this->getMockBuilder(RedirectResponse::class)
             ->disableOriginalConstructor()
+            ->setMethods(['withInput', 'WithErrors'])
             ->getMock();
     }
 }
@@ -119,5 +149,36 @@ class CoreTestFormRequestStub extends FormRequest
     public function authorize()
     {
         return true;
+    }
+}
+
+class CoreTestFormRequestForbiddenStub extends FormRequest
+{
+    public function rules()
+    {
+        return [];
+    }
+
+    public function authorize()
+    {
+        return false;
+    }
+}
+
+class CoreTestFormRequestHooks extends FormRequest
+{
+    public function rules()
+    {
+        return ['name' => 'required'];
+    }
+
+    public function authorize()
+    {
+        return true;
+    }
+
+    public function prepareForValidation()
+    {
+        $this->replace(['name' => 'Themosis']);
     }
 }

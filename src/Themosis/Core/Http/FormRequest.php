@@ -2,13 +2,16 @@
 
 namespace Themosis\Core\Http;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Validation\ValidatesWhenResolved;
-use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Validation\Factory as ValidationFactory;
 use Illuminate\Validation\ValidatesWhenResolvedTrait;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Validator;
 
 class FormRequest extends Request implements ValidatesWhenResolved
 {
@@ -55,7 +58,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
     /**
      * Get the validator instance for the request.
      *
-     * @return Validator
+     * @return ValidatorContract
      */
     protected function getValidatorInstance()
     {
@@ -133,6 +136,66 @@ class FormRequest extends Request implements ValidatesWhenResolved
         return $this->only(collect($rules)->keys()->map(function ($rule) {
             return str_contains($rule, '.') ? explode('.', $rule)[0] : $rule;
         })->unique()->toArray());
+    }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param Validator $validator
+     *
+     * @throws ValidationException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        throw (new ValidationException($validator))
+            ->errorBag($this->errorBag)
+            ->redirectTo($this->getRedirectUrl());
+    }
+
+    /**
+     * Get the URL to redirect to on a validation error.
+     *
+     * @return string
+     */
+    protected function getRedirectUrl()
+    {
+        $url = $this->redirector->getUrlGenerator();
+
+        if ($this->redirect) {
+            return $url->to($this->redirect);
+        } elseif ($this->redirectRoute) {
+            return $url->route($this->redirectRoute);
+        } elseif ($this->redirectAction) {
+            return $url->action($this->redirectAction);
+        }
+
+        return $url->previous();
+    }
+
+    /**
+     * Determine if the request passes the authorization check.
+     *
+     * @return bool
+     */
+    protected function passesAuthorization()
+    {
+        if (method_exists($this, 'authorize')) {
+            return $this->container->call([$this, 'authorize']);
+        }
+
+        return false;
+    }
+
+    /**
+     * Handle a failed authorization attempt.
+     *
+     * @throws AuthorizationException
+     *
+     * @return AuthorizationException
+     */
+    protected function failedAuthorization()
+    {
+        throw new AuthorizationException('This action is unauthorized.');
     }
 
     /**
