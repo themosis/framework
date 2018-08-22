@@ -195,6 +195,14 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
                 \Illuminate\Auth\Passwords\PasswordBroker::class,
                 \Illuminate\Contracts\Auth\PasswordBroker::class
             ],
+            'cache' => [
+                \Illuminate\Cache\CacheManager::class,
+                \Illuminate\Contracts\Cache\Factory::class
+            ],
+            'cache.store' => [
+                \Illuminate\Cache\Repository::class,
+                \Illuminate\Contracts\Cache\Repository::class
+            ],
             'config' => [
                 \Illuminate\Config\Repository::class,
                 \Illuminate\Contracts\Config\Repository::class
