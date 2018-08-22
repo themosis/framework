@@ -26,7 +26,8 @@ class Kernel implements KernelContract
         \Themosis\Core\Bootstrap\EnvironmentLoader::class,
         \Themosis\Core\Bootstrap\ConfigurationLoader::class,
         \Themosis\Core\Bootstrap\ExceptionHandler::class,
-        \Themosis\Core\Bootstrap\RegisterFacades::class
+        \Themosis\Core\Bootstrap\RegisterFacades::class,
+        \Themosis\Core\Bootstrap\SetRequestForConsole::class
     ];
 
     public function __construct(Application $app, Dispatcher $events)
