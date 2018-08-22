@@ -16,6 +16,8 @@ trait ValidatesRequests
      * @param Validator|array $validator
      * @param Request|null    $request
      *
+     * @throws ValidationException
+     *
      * @return array
      */
     public function validateWith($validator, Request $request = null)

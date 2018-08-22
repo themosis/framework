@@ -111,6 +111,11 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     protected $terminatingCallbacks = [];
 
+    /**
+     * @var string
+     */
+    protected $namespace;
+
     public function __construct($basePath = null)
     {
         if ($basePath) {
@@ -225,9 +230,17 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
                 \Illuminate\Contracts\Routing\Registrar::class,
                 \Illuminate\Contracts\Routing\BindingRegistrar::class
             ],
+            'translator' => [
+                \Illuminate\Translation\Translator::class,
+                \Illuminate\Contracts\Translation\Translator::class
+            ],
             'url' => [
                 \Illuminate\Routing\UrlGenerator::class,
                 \Illuminate\Contracts\Routing\UrlGenerator::class
+            ],
+            'validator' => [
+                \Illuminate\Validation\Factory::class,
+                \Illuminate\Contracts\Validation\Factory::class
             ],
             'view' => [
                 \Illuminate\View\Factory::class,
@@ -969,6 +982,21 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
+     * Load and boot all of the remaining deferred providers.
+     */
+    public function loadDeferredProviders()
+    {
+        // We will simply spin through each of the deferred providers and register each
+        // one and boot them if the application has booted. This should make each of
+        // the remaining services available to this application for immediate use.
+        foreach ($this->deferredServices as $service => $provider) {
+            $this->loadDeferredProvider($service);
+        }
+
+        $this->deferredServices = [];
+    }
+
+    /**
      * Load the provider for a deferred service.
      *
      * @param string $service
@@ -1277,5 +1305,31 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function isLocale($locale)
     {
         return $this->getLocale() == $locale;
+    }
+
+    /**
+     * Return the application namespace.
+     *
+     * @throws \RuntimeException
+     *
+     * @return string
+     */
+    public function getNamespace()
+    {
+        if (! is_null($this->namespace)) {
+            return $this->namespace;
+        }
+
+        $composer = json_decode(file_get_contents(base_path('composer.json')), true);
+
+        foreach ((array) data_get($composer, 'autoload.psr-4') as $namespace => $path) {
+            foreach ((array) $path as $pathChoice) {
+                if (realpath(app_path()) == realpath(base_path($pathChoice))) {
+                    return $this->namespace = $namespace;
+                }
+            }
+        }
+
+        throw new \RuntimeException('Unable to detect application namespace.');
     }
 }

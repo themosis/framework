@@ -2,6 +2,7 @@
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Http\Request;
 
@@ -51,6 +52,20 @@ if (! function_exists('config')) {
     }
 }
 
+if (! function_exists('app_path')) {
+    /**
+     * Get the application path.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    function app_path($path = '')
+    {
+        return app()->path($path);
+    }
+}
+
 if (! function_exists('base_path')) {
     /**
      * Get the path to the base of the install.
@@ -61,7 +76,7 @@ if (! function_exists('base_path')) {
      */
     function base_path($path = '')
     {
-        return app()->basePath().($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return app()->basePath($path);
     }
 }
 
@@ -168,6 +183,30 @@ if (! function_exists('response')) {
         }
 
         return $factory->make($content, $status, $headers);
+    }
+}
+
+if (! function_exists('validator')) {
+    /**
+     * Create a new validator instance.
+     *
+     * @param array $data
+     * @param array $rules
+     * @param array $messages
+     * @param array $customAttributes
+     *
+     * @return ValidationFactory|\Illuminate\Validation\Validator
+     */
+    function validator(array $data = [], array $rules = [], array $messages = [], array $customAttributes = [])
+    {
+        /** @var ValidationFactory $factory */
+        $factory = app(ValidationFactory::class);
+
+        if (func_num_args() === 0) {
+            return $factory;
+        }
+
+        return $factory->make($data, $rules, $messages, $customAttributes);
     }
 }
 

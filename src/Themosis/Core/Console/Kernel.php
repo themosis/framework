@@ -10,7 +10,7 @@ use Illuminate\Contracts\Foundation\Application;
 class Kernel implements KernelContract
 {
     /**
-     * @var Application
+     * @var Application|\Themosis\Core\Application
      */
     protected $app;
 
@@ -27,8 +27,17 @@ class Kernel implements KernelContract
         \Themosis\Core\Bootstrap\ConfigurationLoader::class,
         \Themosis\Core\Bootstrap\ExceptionHandler::class,
         \Themosis\Core\Bootstrap\RegisterFacades::class,
-        \Themosis\Core\Bootstrap\SetRequestForConsole::class
+        \Themosis\Core\Bootstrap\SetRequestForConsole::class,
+        \Themosis\Core\Bootstrap\RegisterProviders::class,
+        \Themosis\Core\Bootstrap\BootProviders::class
     ];
+
+    /**
+     * Indicates if the Closure commands have been loaded.
+     *
+     * @var bool
+     */
+    protected $commandsLoaded = false;
 
     public function __construct(Application $app, Dispatcher $events)
     {
@@ -81,6 +90,8 @@ class Kernel implements KernelContract
         try {
             $this->bootstrap();
         } catch (\Exception $e) {
+            var_dump($e->getMessage());
+
             return 1;
         }
     }
@@ -94,7 +105,21 @@ class Kernel implements KernelContract
             $this->app->bootstrapWith($this->bootstrappers());
         }
 
-        // @TODO Current work...
+        $this->app->loadDeferredProviders();
+
+        if (! $this->commandsLoaded) {
+            $this->commands();
+
+            $this->commandsLoaded = true;
+        }
+    }
+
+    /**
+     * Register the Closure based commands for the application.
+     */
+    protected function commands()
+    {
+        //
     }
 
     /**
@@ -105,6 +130,28 @@ class Kernel implements KernelContract
     protected function bootstrappers()
     {
         return $this->bootstrappers;
+    }
+
+    /**
+     * Register all of the commands in the given directory.
+     *
+     * @param array|string $paths
+     */
+    protected function load($paths)
+    {
+        $paths = array_unique(is_array($paths) ? $paths : (array) $paths);
+
+        $paths = array_filter($paths, function ($path) {
+            return is_dir($path);
+        });
+
+        if (empty($paths)) {
+            return;
+        }
+
+        $namespace = $this->app->getNamespace();
+
+        // @TODO Continue here...
     }
 
     public function call($command, array $parameters = [], $outputBuffer = null)
