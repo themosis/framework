@@ -8,6 +8,7 @@ use Illuminate\Routing\Console\ControllerMakeCommand;
 use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Support\ServiceProvider;
 use Themosis\Core\Console\ConsoleMakeCommand;
+use Themosis\Core\Console\FormMakeCommand;
 use Themosis\Core\Console\ModelMakeCommand;
 use Themosis\Core\Console\ProviderMakeCommand;
 use Themosis\Core\Console\VendorPublishCommand;
@@ -37,6 +38,7 @@ class ConsoleServiceProvider extends ServiceProvider
         'ConsoleMake' => 'command.console.make',
         'ControllerMake' => 'command.controller.make',
         'FactoryMake' => 'command.factory.make',
+        'FormMake' => 'command.form.make',
         'MiddlewareMake' => 'command.middleware.make',
         'MigrateMake' => 'command.migrate.make',
         'ModelMake' => 'command.model.make',
@@ -102,6 +104,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new FactoryMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the make:form command.
+     *
+     * @param string $abstract
+     */
+    protected function registerFormMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new FormMakeCommand($app['files']);
         });
     }
 

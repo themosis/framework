@@ -18,7 +18,7 @@ trait FormHelper
      */
     public function form(Formidable $formClass)
     {
-        return $formClass->build($this->getFormFactory(), $this->getFieldsFactory())->get();
+        return $formClass->build($this->getFormFactory(), $this->getFieldsFactory());
     }
 
     /**

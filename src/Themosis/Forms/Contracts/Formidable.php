@@ -12,14 +12,7 @@ interface Formidable
      * @param FormFactoryInterface  $factory
      * @param FieldFactoryInterface $fields
      *
-     * @return Formidable
-     */
-    public function build(FormFactoryInterface $factory, FieldFactoryInterface $fields): Formidable;
-
-    /**
-     * Get the generated form instance.
-     *
      * @return FormInterface
      */
-    public function get(): FormInterface;
+    public function build(FormFactoryInterface $factory, FieldFactoryInterface $fields): FormInterface;
 }
