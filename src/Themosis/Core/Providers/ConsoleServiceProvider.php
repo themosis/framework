@@ -5,6 +5,7 @@ namespace Themosis\Core\Providers;
 use Illuminate\Routing\Console\ControllerMakeCommand;
 use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Support\ServiceProvider;
+use Themosis\Core\Console\ConsoleMakeCommand;
 use Themosis\Core\Console\ProviderMakeCommand;
 use Themosis\Core\Console\VendorPublishCommand;
 
@@ -30,6 +31,7 @@ class ConsoleServiceProvider extends ServiceProvider
      * @var array
      */
     protected $devCommands = [
+        'ConsoleMake' => 'command.console.make',
         'ControllerMake' => 'command.controller.make',
         'MiddlewareMake' => 'command.middleware.make',
         'ProviderMake' => 'command.provider.make',
@@ -59,6 +61,18 @@ class ConsoleServiceProvider extends ServiceProvider
         }
 
         $this->commands(array_values($commands));
+    }
+
+    /**
+     * Register the make:command command.
+     *
+     * @param string $abstract
+     */
+    protected function registerConsoleMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ConsoleMakeCommand($app['files']);
+        });
     }
 
     /**
