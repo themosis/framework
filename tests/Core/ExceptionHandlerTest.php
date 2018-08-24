@@ -80,9 +80,7 @@ class ExceptionHandlerTest extends TestCase
             ->with(
                 $this->equalTo('Exception message'),
                 [
-                    'exception' => $exception,
-                    'userId' => null,
-                    'email' => null
+                    'exception' => $exception
                 ]
             );
 

@@ -3,6 +3,8 @@
 namespace Themosis\Core\Exceptions;
 
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Support\Responsable;
@@ -10,14 +12,20 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Router;
+use Illuminate\Session\TokenMismatchException;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\Debug\ExceptionHandler as SymfonyExceptionHandler;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -44,8 +52,23 @@ class Handler implements ExceptionHandler
      * @var array
      */
     protected $internalDontReport = [
+        AuthenticationException::class,
+        AuthorizationException::class,
         HttpException::class,
-        HttpResponseException::class
+        HttpResponseException::class,
+        ModelNotFoundException::class,
+        TokenMismatchException::class,
+        ValidationException::class
+    ];
+
+    /**
+     * A list of inputs that are never flashed for validation exceptions.
+     *
+     * @var array
+     */
+    protected $dontFlash = [
+        'password',
+        'password_confirmation'
     ];
 
     public function __construct(Container $container)
@@ -109,10 +132,11 @@ class Handler implements ExceptionHandler
 
         if ($e instanceof HttpResponseException) {
             return $e->getResponse();
+        } elseif ($e instanceof AuthenticationException) {
+            return $this->unauthenticated($request, $e);
+        } elseif ($e instanceof ValidationException) {
+            return $this->convertValidationExceptionToResponse($e, $request);
         }
-
-        // TODO: Implement Authentication Exception ?
-        // TODO: Implement Validation Exception
 
         return $request->expectsJson() ?
             $this->prepareJsonResponse($request, $e) :
@@ -127,7 +151,7 @@ class Handler implements ExceptionHandler
      */
     public function renderForConsole($output, Exception $e)
     {
-        // TODO: Implement renderForConsole() method.
+        (new ConsoleApplication())->renderException($e, $output);
     }
 
     /**
@@ -141,12 +165,92 @@ class Handler implements ExceptionHandler
     {
         if ($e instanceof ModelNotFoundException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
+        } elseif ($e instanceof AuthorizationException) {
+            $e = new AccessDeniedHttpException($e->getMessage(), $e);
+        } elseif ($e instanceof TokenMismatchException) {
+            $e = new HttpException(419, $e->getMessage(), $e);
         }
 
-        // TODO: Implement AuthorizationException
-        // TODO: Implement TokenMismatchException
-
         return $e;
+    }
+
+    /**
+     * Convert an authentication exception into a response.
+     *
+     * @param Request                 $request
+     * @param AuthenticationException $e
+     *
+     * @return Response
+     */
+    protected function unauthenticated($request, AuthenticationException $e)
+    {
+        return $request->expectsJson()
+            ? response()->json(['message' => $e->getMessage()], 401)
+            : redirect()->guest(route('/'));
+    }
+
+    /**
+     * Create a response instance from the given validation exception.
+     *
+     * @param ValidationException $e
+     * @param Request             $request
+     *
+     * @return SymfonyResponse
+     */
+    protected function convertValidationExceptionToResponse(ValidationException $e, $request)
+    {
+        if ($e->response) {
+            return $e->response;
+        }
+
+        return $request->expectsJson()
+            ? $this->invalidJson($request, $e)
+            : $this->invalid($request, $e);
+    }
+
+    /**
+     * Convert a validation exception into a response.
+     *
+     * @param Request             $request
+     * @param ValidationException $e
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    protected function invalid($request, ValidationException $e)
+    {
+        $url = $e->redirectTo ?? url()->previous();
+
+        return redirect($url)
+            ->withInput($request->except($this->dontFlash))
+            ->withErrors($e->errors(), $e->errorBag);
+    }
+
+    /**
+     * Convert a validation exception into a JSON response.
+     *
+     * @param Request             $request
+     * @param ValidationException $e
+     *
+     * @return JsonResponse
+     */
+    protected function invalidJson($request, ValidationException $e)
+    {
+        return response()->json([
+            'message' => $e->getMessage(),
+            'errors' => $e->errors()
+        ], $e->status);
+    }
+
+    /**
+     * Determine if the exception handler should be reported.
+     *
+     * @param Exception $e
+     *
+     * @return bool
+     */
+    public function shouldReport(Exception $e)
+    {
+        return ! $this->shouldntReport($e);
     }
 
     /**
@@ -404,10 +508,9 @@ class Handler implements ExceptionHandler
     protected function context()
     {
         try {
-            // TODO: Provide authentication variables. Verify Auth implementation with WordPress.
             return [
-                'userId' => null,
-                'email' => null
+                'userId' => Auth::id(),
+                'email' => Auth::user() ? Auth::user()->email : null
             ];
         } catch (Throwable $e) {
             return [];

@@ -2,9 +2,12 @@
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 
 if (! function_exists('app')) {
     /**
@@ -22,33 +25,6 @@ if (! function_exists('app')) {
         }
 
         return Container::getInstance()->make($abstract, $parameters);
-    }
-}
-
-if (! function_exists('config')) {
-    /**
-     * Get / set the specified configuration value.
-     *
-     * If an array is passed as the key, we will assume you want to set an array of values.
-     *
-     * @param array|string $key
-     * @param mixed        $default
-     *
-     * @throws \Illuminate\Container\EntryNotFoundException
-     *
-     * @return mixed|\Illuminate\Config\Repository
-     */
-    function config($key = null, $default = null)
-    {
-        if (is_null($key)) {
-            return app('config');
-        }
-
-        if (is_array($key)) {
-            return app('config')->set($key);
-        }
-
-        return app('config')->get($key, $default);
     }
 }
 
@@ -80,6 +56,33 @@ if (! function_exists('base_path')) {
     }
 }
 
+if (! function_exists('config')) {
+    /**
+     * Get / set the specified configuration value.
+     *
+     * If an array is passed as the key, we will assume you want to set an array of values.
+     *
+     * @param array|string $key
+     * @param mixed        $default
+     *
+     * @throws \Illuminate\Container\EntryNotFoundException
+     *
+     * @return mixed|\Illuminate\Config\Repository
+     */
+    function config($key = null, $default = null)
+    {
+        if (is_null($key)) {
+            return app('config');
+        }
+
+        if (is_array($key)) {
+            return app('config')->set($key);
+        }
+
+        return app('config')->get($key, $default);
+    }
+}
+
 if (! function_exists('content_path')) {
     /**
      * Get the path to the content public directory.
@@ -91,20 +94,6 @@ if (! function_exists('content_path')) {
     function content_path($path = '')
     {
         return app()->contentPath($path);
-    }
-}
-
-if (! function_exists('web_path')) {
-    /**
-     * Get the public web path.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    function web_path($path = '')
-    {
-        return app()->webPath($path);
     }
 }
 
@@ -122,6 +111,52 @@ if (! function_exists('database_path')) {
     }
 }
 
+if (! function_exists('redirect')) {
+    /**
+     * Get a redirector instance.
+     *
+     * @param null  $to
+     * @param int   $status
+     * @param array $headers
+     * @param null  $secure
+     *
+     * @return Redirector|RedirectResponse
+     */
+    function redirect($to = null, $status = 302, $headers = [], $secure = null)
+    {
+        if (is_null($to)) {
+            return app('redirect');
+        }
+
+        return app('redirect')->to($to, $status, $headers, $secure);
+    }
+}
+
+if (! function_exists('request')) {
+    /**
+     * Get an instance of the current request or an input item from the request.
+     *
+     * @param array|string $key
+     * @param mixed        $default
+     *
+     * @return Request|string|array
+     */
+    function request($key = null, $default = null)
+    {
+        if (is_null($key)) {
+            return app('request');
+        }
+
+        if (is_array($key)) {
+            return app('request')->only($key);
+        }
+
+        $value = app('request')->__get($key);
+
+        return is_null($value) ? value($default) : $value;
+    }
+}
+
 if (! function_exists('resource_path')) {
     /**
      * Get the path to the resources folder.
@@ -133,6 +168,44 @@ if (! function_exists('resource_path')) {
     function resource_path($path = '')
     {
         return app()->resourcePath($path);
+    }
+}
+
+if (! function_exists('response')) {
+    /**
+     * Return a new response from the application.
+     *
+     * @param string $content
+     * @param int    $status
+     * @param array  $headers
+     *
+     * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     */
+    function response($content = '', $status = 200, array $headers = [])
+    {
+        $factory = app(ResponseFactory::class);
+
+        if (func_num_args() === 0) {
+            return $factory;
+        }
+
+        return $factory->make($content, $status, $headers);
+    }
+}
+
+if (! function_exists('route')) {
+    /**
+     * Generate the URL to a named route.
+     *
+     * @param $name
+     * @param array $parameters
+     * @param bool  $absolute
+     *
+     * @return string
+     */
+    function route($name, $parameters = [], $absolute = true)
+    {
+        return app('url')->route($name, $parameters, $absolute);
     }
 }
 
@@ -164,25 +237,23 @@ if (! function_exists('themes_path')) {
     }
 }
 
-if (! function_exists('response')) {
+if (! function_exists('url')) {
     /**
-     * Return a new response from the application.
+     * Return a URL for the application.
      *
-     * @param string $content
-     * @param int    $status
-     * @param array  $headers
+     * @param string $path
+     * @param array  $parameters
+     * @param bool   $secure
      *
-     * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     * @return UrlGenerator|string
      */
-    function response($content = '', $status = 200, array $headers = [])
+    function url($path = null, $parameters = [], $secure = null)
     {
-        $factory = app(ResponseFactory::class);
-
-        if (func_num_args() === 0) {
-            return $factory;
+        if (is_null($path)) {
+            return app(UrlGenerator::class);
         }
 
-        return $factory->make($content, $status, $headers);
+        return app(UrlGenerator::class)->to($path, $parameters, $secure);
     }
 }
 
@@ -232,27 +303,16 @@ if (! function_exists('view')) {
     }
 }
 
-if (! function_exists('request')) {
+if (! function_exists('web_path')) {
     /**
-     * Get an instance of the current request or an input item from the request.
+     * Get the public web path.
      *
-     * @param array|string $key
-     * @param mixed        $default
+     * @param string $path
      *
-     * @return Request|string|array
+     * @return string
      */
-    function request($key = null, $default = null)
+    function web_path($path = '')
     {
-        if (is_null($key)) {
-            return app('request');
-        }
-
-        if (is_array($key)) {
-            return app('request')->only($key);
-        }
-
-        $value = app('request')->__get($key);
-
-        return is_null($value) ? value($default) : $value;
+        return app()->webPath($path);
     }
 }
