@@ -363,7 +363,7 @@ class FormCreationTest extends TestCase
     public function testCreateFormFromAClass()
     {
         $class = new ContactForm();
-        $form = $class->build($this->getFormFactory(), $this->getFieldsFactory())->get();
+        $form = $class->build($this->getFormFactory(), $this->getFieldsFactory());
 
         $this->assertInstanceOf(FormInterface::class, $form);
         $this->assertEquals(1, count($form->repository()->getGroups()));

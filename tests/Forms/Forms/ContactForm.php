@@ -14,23 +14,11 @@ class ContactForm implements Formidable
      */
     protected $form;
 
-    public function build(FormFactoryInterface $factory, FieldFactoryInterface $fields): Formidable
+    public function build(FormFactoryInterface $factory, FieldFactoryInterface $fields): FormInterface
     {
-        $this->form = $factory->make()
+        return $factory->make()
             ->add($fields->text('name'))
             ->add($fields->email('email'))
             ->get();
-
-        return $this;
-    }
-
-    /**
-     * Get the form.
-     *
-     * @return FormInterface
-     */
-    public function get(): FormInterface
-    {
-        return $this->form;
     }
 }

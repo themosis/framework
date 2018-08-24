@@ -8,9 +8,11 @@ use Illuminate\Routing\Console\ControllerMakeCommand;
 use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Support\ServiceProvider;
 use Themosis\Core\Console\ConsoleMakeCommand;
+use Themosis\Core\Console\DownCommand;
 use Themosis\Core\Console\FormMakeCommand;
 use Themosis\Core\Console\ModelMakeCommand;
 use Themosis\Core\Console\ProviderMakeCommand;
+use Themosis\Core\Console\UpCommand;
 use Themosis\Core\Console\VendorPublishCommand;
 
 class ConsoleServiceProvider extends ServiceProvider
@@ -27,7 +29,10 @@ class ConsoleServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $commands = [];
+    protected $commands = [
+        'Down' => 'command.down',
+        'Up' => 'command.up'
+    ];
 
     /**
      * Development commands to register.
@@ -92,6 +97,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new ControllerMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the down command.
+     *
+     * @param string $abstract
+     */
+    protected function registerDownCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new DownCommand();
         });
     }
 
@@ -170,6 +187,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new ProviderMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the up command.
+     *
+     * @param string $abstract
+     */
+    public function registerUpCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new UpCommand();
         });
     }
 
