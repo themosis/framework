@@ -2,6 +2,8 @@
 
 namespace Themosis\Core\Providers;
 
+use Illuminate\Routing\Console\ControllerMakeCommand;
+use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Support\ServiceProvider;
 use Themosis\Core\Console\VendorPublishCommand;
 
@@ -27,6 +29,8 @@ class ConsoleServiceProvider extends ServiceProvider
      * @var array
      */
     protected $devCommands = [
+        'ControllerMake' => 'command.controller.make',
+        'MiddlewareMake' => 'command.middleware.make',
         'VendorPublish' => 'command.vendor.publish'
     ];
 
@@ -56,9 +60,33 @@ class ConsoleServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the make:controller command.
+     *
+     * @param string $abstract
+     */
+    protected function registerControllerMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ControllerMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the make:middleware command.
+     *
+     * @param string $abstract
+     */
+    protected function registerMiddlewareMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new MiddlewareMakeCommand($app['files']);
+        });
+    }
+
+    /**
      * Register the vendor:publish command.
      *
-     * @param mixed $abstract
+     * @param string $abstract
      */
     protected function registerVendorPublishCommand($abstract)
     {
