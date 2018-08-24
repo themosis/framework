@@ -2,10 +2,13 @@
 
 namespace Themosis\Core\Providers;
 
+use Illuminate\Database\Console\Factories\FactoryMakeCommand;
+use Illuminate\Database\Console\Migrations\MigrateMakeCommand;
 use Illuminate\Routing\Console\ControllerMakeCommand;
 use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Support\ServiceProvider;
 use Themosis\Core\Console\ConsoleMakeCommand;
+use Themosis\Core\Console\ModelMakeCommand;
 use Themosis\Core\Console\ProviderMakeCommand;
 use Themosis\Core\Console\VendorPublishCommand;
 
@@ -33,7 +36,10 @@ class ConsoleServiceProvider extends ServiceProvider
     protected $devCommands = [
         'ConsoleMake' => 'command.console.make',
         'ControllerMake' => 'command.controller.make',
+        'FactoryMake' => 'command.factory.make',
         'MiddlewareMake' => 'command.middleware.make',
+        'MigrateMake' => 'command.migrate.make',
+        'ModelMake' => 'command.model.make',
         'ProviderMake' => 'command.provider.make',
         'VendorPublish' => 'command.vendor.publish'
     ];
@@ -88,6 +94,18 @@ class ConsoleServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the make:factory command.
+     *
+     * @param string $abstract
+     */
+    protected function registerFactoryMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new FactoryMakeCommand($app['files']);
+        });
+    }
+
+    /**
      * Register the make:middleware command.
      *
      * @param string $abstract
@@ -96,6 +114,36 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new MiddlewareMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the make:migration command.
+     *
+     * @param string $abstract
+     */
+    protected function registerMigrateMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            // Once we have the migration creator registered, we will create the command
+            // and inject the creator. The creator is responsible for the actual file
+            // creation of the migrations, and may be extended by these developers.
+            $creator = $app['migration.creator'];
+            $composer = $app['composer'];
+
+            return new MigrateMakeCommand($creator, $composer);
+        });
+    }
+
+    /**
+     * Register the make:model command.
+     *
+     * @param string $abstract
+     */
+    protected function registerModelMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ModelMakeCommand($app['files']);
         });
     }
 
