@@ -3,12 +3,9 @@
 namespace Themosis\Core\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\InteractsWithTime;
 
 class DownCommand extends Command
 {
-    use InteractsWithTime;
-
     /**
      * The console command signature.
      *
