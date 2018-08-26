@@ -39,4 +39,14 @@ class CoreServiceProvider extends AggregateServiceProvider
             })->unique()->toArray());
         });
     }
+
+    /**
+     * Publish core assets.
+     */
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__.'/../../../../dist' => web_path('dist')
+        ], 'themosis');
+    }
 }

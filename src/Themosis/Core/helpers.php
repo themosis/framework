@@ -7,7 +7,9 @@ use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Log\LogManager;
 use Illuminate\Routing\Redirector;
+use Psr\Log\LoggerInterface;
 
 if (! function_exists('app')) {
     /**
@@ -108,6 +110,39 @@ if (! function_exists('database_path')) {
     function database_path($path = '')
     {
         return app()->databasePath($path);
+    }
+}
+
+if (! function_exists('logger')) {
+    /**
+     * Log a debug message to the logs.
+     *
+     * @param string $message
+     * @param array  $context
+     *
+     * @return LogManager
+     */
+    function logger($message = null, array $context = [])
+    {
+        if (is_null($message)) {
+            return app('log');
+        }
+
+        return app('log')->debug($message, $context);
+    }
+}
+
+if (! function_exists('logs')) {
+    /**
+     * Get a log driver instance.
+     *
+     * @param string $driver
+     *
+     * @return LogManager|LoggerInterface
+     */
+    function logs($driver = null)
+    {
+        return $driver ? app('log')->driver($driver) : app('log');
     }
 }
 
