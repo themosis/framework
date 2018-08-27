@@ -4,9 +4,12 @@ namespace Themosis\Core;
 
 use Composer\Autoload\ClassLoader;
 use Illuminate\Config\Repository;
+use Themosis\Core\Support\WordPressFileHeaders;
 
 class ThemeManager
 {
+    use WordPressFileHeaders;
+
     /**
      * @var Application
      */
@@ -37,6 +40,21 @@ class ThemeManager
      */
     protected $routesPath;
 
+    /**
+     * @var array
+     */
+    public $headers = [
+        'name' => 'Theme Name',
+        'theme_uri' => 'Theme URI',
+        'author' => 'Author',
+        'author_uri' => 'Author URI',
+        'description' => 'Description',
+        'version' => 'Version',
+        'license' => 'License',
+        'license_uri' => 'License URI',
+        'text_domain' => 'Text Domain'
+    ];
+
     public function __construct(Application $app, string $dirPath, ClassLoader $loader)
     {
         $this->app = $app;
@@ -54,12 +72,10 @@ class ThemeManager
      */
     public function load(string $path): ThemeManager
     {
+        $this->setThemeConstants();
         $this->loadThemeConfiguration($path);
-
         $this->setThemeAutoloading();
-
         $this->registerThemeServicesProviders();
-
         $this->setThemeViews();
 
         return $this;
@@ -121,5 +137,17 @@ class ThemeManager
             $dir = trim($path, '\/');
             $factory->addLocation($this->dirPath.'/'.$dir);
         }
+    }
+
+    /**
+     * Register theme constants.
+     */
+    protected function setThemeConstants()
+    {
+        $headers = $this->headers($this->dirPath.'/style.css', $this->headers);
+
+        // Theme text domain.
+        $textdomain = $headers['text_domain'] ?? 'themosis_theme';
+        defined('THEME_TD') ? THEME_TD : define('THEME_TD', $textdomain);
     }
 }

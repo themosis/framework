@@ -5,9 +5,12 @@ namespace Themosis\Core;
 use Exception;
 use Illuminate\Filesystem\Filesystem;
 use Themosis\Core\Events\PluginLoaded;
+use Themosis\Core\Support\WordPressFileHeaders;
 
 class PluginsRepository
 {
+    use WordPressFileHeaders;
+
     /**
      * @var Application
      */
@@ -33,7 +36,7 @@ class PluginsRepository
      *
      * @var array
      */
-    protected $headers = [
+    public $headers = [
         'name' => 'Plugin Name',
         'plugin_uri' => 'Plugin URI',
         'version' => 'Version',
@@ -116,55 +119,13 @@ class PluginsRepository
         $files = $this->files->files($this->app->mupluginsPath($directory));
 
         foreach ($files as $file) {
-            $headers = $this->getPluginHeaders($file->getRealPath());
+            $headers = $this->headers($file->getRealPath(), $this->headers);
 
             if (! empty($headers['name'])) {
                 return array_merge(['root' => $file->getFilename()], $headers);
                 break;
             }
         }
-    }
-
-    /**
-     * Retrieve file headers if any.
-     *
-     * @param string $path
-     *
-     * @return array
-     *
-     * @see get_file_data() located in wp-includes/functions.php for more information.
-     */
-    public function getPluginHeaders(string $path): array
-    {
-        $data = $this->getFileContent($path);
-        $headers = [];
-
-        foreach ($this->headers as $field => $regex) {
-            if (preg_match('/^[ \t\/*#@]*'.preg_quote($regex, '/').':(.*)$/mi', $data, $match) && $match[1]) {
-                $headers[$field] = trim(preg_replace("/\s*(?:\*\/|\?>).*/", '', $match[1]));
-            } else {
-                $headers[$field] = '';
-            }
-        }
-
-        return $headers;
-    }
-
-    /**
-     * Get a partial content of given file.
-     *
-     * @param string $path
-     * @param int    $length
-     *
-     * @return string
-     */
-    public function getFileContent(string $path, int $length = 8192): string
-    {
-        $handle = fopen($path, 'r');
-        $content = fread($handle, $length);
-        fclose($handle);
-
-        return str_replace("\r", "\n", $content);
     }
 
     /**

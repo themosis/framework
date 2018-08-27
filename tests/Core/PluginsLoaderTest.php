@@ -67,8 +67,9 @@ class PluginsLoaderTest extends TestCase
             ''
         );
 
-        $headers = $loader->getPluginHeaders(
-            realpath(__DIR__.'/../htdocs/content/mu-plugins/fake-plugin/fakeplugin.php')
+        $headers = $loader->headers(
+            realpath(__DIR__.'/../htdocs/content/mu-plugins/fake-plugin/fakeplugin.php'),
+            $loader->headers
         );
 
         $this->assertTrue(is_array($headers));
