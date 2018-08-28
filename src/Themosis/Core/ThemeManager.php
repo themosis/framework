@@ -59,6 +59,11 @@ class ThemeManager
     ];
 
     /**
+     * @var array
+     */
+    protected $parsedHeaders = [];
+
+    /**
      * @var ImageSize
      */
     protected $images;
@@ -157,10 +162,10 @@ class ThemeManager
      */
     protected function setThemeConstants()
     {
-        $headers = $this->headers($this->dirPath.'/style.css', $this->headers);
+        $this->parsedHeaders = $this->headers($this->dirPath.'/style.css', $this->headers);
 
         // Theme text domain.
-        $textdomain = $headers['text_domain'] ?? 'themosis_theme';
+        $textdomain = $this->parsedHeaders['text_domain'] ?? 'themosis_theme';
         defined('THEME_TD') ? THEME_TD : define('THEME_TD', $textdomain);
     }
 
