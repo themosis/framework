@@ -117,7 +117,7 @@ class ThemeManager
      */
     public function assets(array $locations)
     {
-        $finder = $this->app->bound('assets.finder') ? $this->app['assets.finder'] : null;
+        $finder = $this->app->bound('asset.finder') ? $this->app['asset.finder'] : null;
 
         if (! is_null($finder)) {
             /** @var Finder $finder */
@@ -171,7 +171,12 @@ class ThemeManager
     public function getUrl(string $path = '')
     {
         if (is_multisite() && defined(SUBDOMAIN_INSTALL) && SUBDOMAIN_INSTALL) {
-            return get_home_url().'/'.CONTENT_DIR.'/themes/'.$this->getDirectory().($path ? DIRECTORY_SEPARATOR.$path : $path);
+            return sprintf(
+                '%s/%s/themes/%s',
+                get_home_url(),
+                CONTENT_DIR,
+                $this->getDirectory()
+            ).($path ? DIRECTORY_SEPARATOR.$path : $path);
         }
 
         return get_template_directory_uri().($path ? DIRECTORY_SEPARATOR.$path : $path);
