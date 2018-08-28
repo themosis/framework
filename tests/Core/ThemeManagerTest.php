@@ -3,17 +3,47 @@
 namespace Themosis\Tests\Core;
 
 use Composer\Autoload\ClassLoader;
+use Illuminate\Config\Repository;
 use PHPUnit\Framework\TestCase;
 use Theme\Providers\RouteServiceProvider;
 use Themosis\Core\Application;
 use Themosis\Core\ThemeManager;
+use Themosis\Hook\FilterBuilder;
 
 class ThemeManagerTest extends TestCase
 {
+    protected $app;
+
+    protected function getApplication()
+    {
+        if (! is_null($this->app)) {
+            return $this->app;
+        }
+
+        $app = new Application();
+
+        $app->singleton('config', function () {
+            return new Repository();
+        });
+
+        $app->bind('filter', function ($app) {
+            return new FilterBuilder($app);
+        });
+
+        return $this->app = $app;
+    }
+
+    protected function getThemeManager()
+    {
+        $app = $this->getApplication();
+
+        return new ThemeManager($app, $app->themesPath('underscore'), new ClassLoader());
+    }
+
     public function testManagerBootstrapTheme()
     {
-        $app = new Application();
-        $theme = new ThemeManager($app, $app->themesPath('underscore'), new ClassLoader());
+        $app = $this->getApplication();
+        $theme = $this->getThemeManager();
         $theme->load($app->themesPath('underscore/config'));
 
         $this->assertInstanceOf(RouteServiceProvider::class, $app->getProvider('Theme\Providers\RouteServiceProvider'));
@@ -21,8 +51,8 @@ class ThemeManagerTest extends TestCase
 
     public function testThemeManagerCanStoreThemeHeaders()
     {
-        $app = new Application();
-        $theme = new ThemeManager($app, $app->themesPath('underscore'), new ClassLoader());
+        $app = $this->getApplication();
+        $theme = $this->getThemeManager();
 
         $headers = $theme->headers($app->themesPath('underscore/style.css'), $theme->headers);
 
@@ -33,12 +63,43 @@ class ThemeManagerTest extends TestCase
 
     public function testThemeManagerSetThemeTextdomainConstant()
     {
-        $app = new Application();
-        $theme = new ThemeManager($app, $app->themesPath('underscore'), new ClassLoader());
+        $app = $this->getApplication();
+        $theme = $this->getThemeManager();
 
         $theme->load($app->themesPath('underscore/config'));
 
         $this->assertTrue(defined('THEME_TD'));
         $this->assertEquals('_s', THEME_TD);
+    }
+
+    public function testThemeManagerRegisterImageSizes()
+    {
+        $app = $this->getApplication();
+        $theme = $this->getThemeManager();
+        $theme->load($app->themesPath('underscore/config'));
+
+        $sizes = $theme->images()->getSizes();
+
+        $this->assertEquals(6, count($sizes));
+        $this->assertEquals([
+            'width' => 50,
+            'height' => 50,
+            'crop' => false,
+            'label' => false
+        ], $sizes['square']);
+
+        $this->assertEquals([
+            'width' => 200,
+            'height' => 200,
+            'crop' => true,
+            'label' => 'Working Sample'
+        ], $sizes['working-sample']);
+
+        $this->assertEquals([
+            'width' => 200,
+            'height' => 200,
+            'crop' => false,
+            'label' => false
+        ], $sizes['no-dropdown']);
     }
 }

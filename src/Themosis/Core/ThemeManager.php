@@ -5,6 +5,7 @@ namespace Themosis\Core;
 use Composer\Autoload\ClassLoader;
 use Illuminate\Config\Repository;
 use Themosis\Core\Support\WordPressFileHeaders;
+use Themosis\Core\Theme\ImageSize;
 
 class ThemeManager
 {
@@ -55,6 +56,11 @@ class ThemeManager
         'text_domain' => 'Text Domain'
     ];
 
+    /**
+     * @var ImageSize
+     */
+    protected $images;
+
     public function __construct(Application $app, string $dirPath, ClassLoader $loader)
     {
         $this->app = $app;
@@ -77,6 +83,7 @@ class ThemeManager
         $this->setThemeAutoloading();
         $this->registerThemeServicesProviders();
         $this->setThemeViews();
+        $this->setThemeImages();
 
         return $this;
     }
@@ -149,5 +156,24 @@ class ThemeManager
         // Theme text domain.
         $textdomain = $headers['text_domain'] ?? 'themosis_theme';
         defined('THEME_TD') ? THEME_TD : define('THEME_TD', $textdomain);
+    }
+
+    /**
+     * Register theme image sizes.
+     */
+    protected function setThemeImages()
+    {
+        $this->images = (new ImageSize($this->config->get('images'), $this->app['filter']))
+            ->register();
+    }
+
+    /**
+     * Return the theme images sizes.
+     *
+     * @return ImageSize
+     */
+    public function images()
+    {
+        return $this->images;
     }
 }
