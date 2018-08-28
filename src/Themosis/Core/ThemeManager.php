@@ -84,6 +84,7 @@ class ThemeManager
         $this->registerThemeServicesProviders();
         $this->setThemeViews();
         $this->setThemeImages();
+        $this->setThemeMenus();
 
         return $this;
     }
@@ -175,5 +176,15 @@ class ThemeManager
     public function images()
     {
         return $this->images;
+    }
+
+    /**
+     * Register theme menus locations.
+     */
+    protected function setThemeMenus()
+    {
+        if (function_exists('register_nav_menus') && $this->config->has('menus')) {
+            register_nav_menus($this->config->get('menus'));
+        }
     }
 }
