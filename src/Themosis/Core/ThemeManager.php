@@ -6,6 +6,7 @@ use Composer\Autoload\ClassLoader;
 use Illuminate\Config\Repository;
 use Themosis\Core\Support\WordPressFileHeaders;
 use Themosis\Core\Theme\ImageSize;
+use Themosis\Core\Theme\Support;
 
 class ThemeManager
 {
@@ -86,6 +87,7 @@ class ThemeManager
         $this->setThemeImages();
         $this->setThemeMenus();
         $this->setThemeSidebars();
+        $this->setThemeSupport();
 
         return $this;
     }
@@ -205,5 +207,13 @@ class ThemeManager
                 register_sidebar($sidebar);
             }
         }
+    }
+
+    /**
+     * Register theme support features.
+     */
+    protected function setThemeSupport()
+    {
+        (new Support($this->config->get('support', [])))->register();
     }
 }
