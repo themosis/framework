@@ -85,6 +85,7 @@ class ThemeManager
         $this->setThemeViews();
         $this->setThemeImages();
         $this->setThemeMenus();
+        $this->setThemeSidebars();
 
         return $this;
     }
@@ -185,6 +186,24 @@ class ThemeManager
     {
         if (function_exists('register_nav_menus') && $this->config->has('menus')) {
             register_nav_menus($this->config->get('menus'));
+        }
+    }
+
+    /**
+     * Register theme sidebars.
+     */
+    protected function setThemeSidebars()
+    {
+        if (! function_exists('register_sidebar')) {
+            return;
+        }
+
+        $sidebars = $this->config->get('sidebars', []);
+
+        if (! empty($sidebars)) {
+            foreach ($sidebars as $sidebar) {
+                register_sidebar($sidebar);
+            }
         }
     }
 }
