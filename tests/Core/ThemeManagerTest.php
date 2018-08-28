@@ -102,4 +102,13 @@ class ThemeManagerTest extends TestCase
             'label' => false
         ], $sizes['no-dropdown']);
     }
+
+    public function testThemeManagerSetTheThemeDirectoryProperty()
+    {
+        $app = $this->getApplication();
+        $theme = $this->getThemeManager();
+        $theme = $theme->load($app->themesPath('underscore/config'));
+
+        $this->assertEquals('underscore', $theme->getDirectory());
+    }
 }

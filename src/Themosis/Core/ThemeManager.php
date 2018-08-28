@@ -4,6 +4,7 @@ namespace Themosis\Core;
 
 use Composer\Autoload\ClassLoader;
 use Illuminate\Config\Repository;
+use Themosis\Asset\Finder;
 use Themosis\Core\Support\WordPressFileHeaders;
 use Themosis\Core\Theme\ImageSize;
 use Themosis\Core\Theme\Support;
@@ -68,6 +69,13 @@ class ThemeManager
      */
     protected $images;
 
+    /**
+     * The theme directory name.
+     *
+     * @var string
+     */
+    protected $directory;
+
     public function __construct(Application $app, string $dirPath, ClassLoader $loader)
     {
         $this->app = $app;
@@ -85,6 +93,7 @@ class ThemeManager
      */
     public function load(string $path): ThemeManager
     {
+        $this->setThemeDirectory();
         $this->setThemeConstants();
         $this->loadThemeConfiguration($path);
         $this->setThemeAutoloading();
@@ -97,6 +106,85 @@ class ThemeManager
         $this->setThemeTemplates();
 
         return $this;
+    }
+
+    /**
+     * Define theme assets directories.
+     *
+     * @param array $locations
+     *
+     * @return $this
+     */
+    public function assets(array $locations)
+    {
+        $finder = $this->app->bound('assets.finder') ? $this->app['assets.finder'] : null;
+
+        if (! is_null($finder)) {
+            /** @var Finder $finder */
+            $finder->addLocations($locations);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Return a theme header property.
+     *
+     * @param string $header
+     *
+     * @return string|null
+     */
+    public function getHeader(string $header)
+    {
+        return $this->parsedHeaders[$header] ?? null;
+    }
+
+    /**
+     * Return the theme directory name.
+     *
+     * @return string
+     */
+    public function getDirectory()
+    {
+        return $this->directory;
+    }
+
+    /**
+     * Return the theme root path.
+     *
+     * @param string $path Path to append to the theme base path.
+     *
+     * @return string
+     */
+    public function getPath(string $path = '')
+    {
+        return get_template_directory().($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Return the theme root URL.
+     *
+     * @param string $path Path to append to the theme base URL.
+     *
+     * @return string
+     */
+    public function getUrl(string $path = '')
+    {
+        if (is_multisite() && defined(SUBDOMAIN_INSTALL) && SUBDOMAIN_INSTALL) {
+            return get_home_url().'/'.CONTENT_DIR.'/themes/'.$this->getDirectory().($path ? DIRECTORY_SEPARATOR.$path : $path);
+        }
+
+        return get_template_directory_uri().($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Set the theme directory name property.
+     */
+    protected function setThemeDirectory()
+    {
+        $pos = strrpos($this->dirPath, '/');
+
+        $this->directory = substr($this->dirPath, $pos + 1);
     }
 
     /**

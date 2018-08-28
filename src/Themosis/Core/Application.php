@@ -1152,10 +1152,12 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param string $dirPath    The theme directory path.
      * @param string $configPath The theme relative configuration folder path.
+     *
+     * @return ThemeManager
      */
     public function loadTheme(string $dirPath, string $configPath)
     {
-        (new ThemeManager($this, $dirPath, new ClassLoader()))
+        return (new ThemeManager($this, $dirPath, new ClassLoader()))
             ->load($dirPath.'/'.trim($configPath, '\/'));
     }
 
