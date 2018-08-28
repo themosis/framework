@@ -7,6 +7,7 @@ use Illuminate\Config\Repository;
 use Themosis\Core\Support\WordPressFileHeaders;
 use Themosis\Core\Theme\ImageSize;
 use Themosis\Core\Theme\Support;
+use Themosis\Core\Theme\Templates;
 
 class ThemeManager
 {
@@ -88,6 +89,7 @@ class ThemeManager
         $this->setThemeMenus();
         $this->setThemeSidebars();
         $this->setThemeSupport();
+        $this->setThemeTemplates();
 
         return $this;
     }
@@ -215,5 +217,14 @@ class ThemeManager
     protected function setThemeSupport()
     {
         (new Support($this->config->get('support', [])))->register();
+    }
+
+    /**
+     * Register theme templates.
+     */
+    protected function setThemeTemplates()
+    {
+        (new Templates($this->config->get('templates', []), $this->app['filter']))
+            ->register();
     }
 }
