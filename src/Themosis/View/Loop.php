@@ -21,7 +21,7 @@ class Loop
      *
      * @return string The title of the current post.
      */
-    public function title($post = 0)
+    public function title($post = null)
     {
         return get_the_title($post);
     }
@@ -80,14 +80,11 @@ class Loop
     /**
      * Get the post thumbnail of the current post.
      *
-     * @param string|array The size of the current post thumbnail.
-     * @param string|array The attributes of the current post thumbnail.
-     * @param int|\WP_Post The post ID or WP_Post object.
-     * @param mixed      $size
-     * @param mixed      $attr
-     * @param null|mixed $post
+     * @param string|array $size The size of the current post thumbnail.
+     * @param string|array $attr The attributes of the current post thumbnail.
+     * @param int|\WP_Post $post The post ID or WP_Post object.
      *
-     * @return string The thumbnail of the current post.
+     * @return string
      */
     public function thumbnail($size = 'post-thumbnail', $attr = '', $post = null)
     {
@@ -220,7 +217,7 @@ class Loop
      *
      * @param string $label Link content
      *
-     * @return string|void
+     * @return string
      */
     public function previousPage($label = null)
     {
