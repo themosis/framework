@@ -13,6 +13,8 @@ use Themosis\Core\Console\FormMakeCommand;
 use Themosis\Core\Console\HookMakeCommand;
 use Themosis\Core\Console\ModelMakeCommand;
 use Themosis\Core\Console\ProviderMakeCommand;
+use Themosis\Core\Console\RouteCacheCommand;
+use Themosis\Core\Console\RouteClearCommand;
 use Themosis\Core\Console\UpCommand;
 use Themosis\Core\Console\VendorPublishCommand;
 use Themosis\Core\Console\ViewClearCommand;
@@ -34,6 +36,8 @@ class ConsoleServiceProvider extends ServiceProvider
     protected $commands = [
         'Down' => 'command.down',
         'Up' => 'command.up',
+        'RouteCache' => 'command.route.cache',
+        'RouteClear' => 'command.route.clear',
         'ViewClear' => 'command.view.clear'
     ];
 
@@ -207,6 +211,30 @@ class ConsoleServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the route:cache command.
+     *
+     * @param string $abstract
+     */
+    protected function registerRouteCacheCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new RouteCacheCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the route:clear command.
+     *
+     * @param string $abstract
+     */
+    protected function registerRouteClearCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new RouteClearCommand($app['files']);
+        });
+    }
+
+    /**
      * Register the up command.
      *
      * @param string $abstract
@@ -230,6 +258,11 @@ class ConsoleServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * Register the view:clear command.
+     *
+     * @param string $abstract
+     */
     protected function registerViewClearCommand($abstract)
     {
         $this->app->singleton($abstract, function ($app) {
