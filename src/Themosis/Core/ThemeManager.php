@@ -243,10 +243,12 @@ class ThemeManager
         }
 
         $factory = $this->app->make('view');
+        $twigLoader = $this->app->make('twig.loader');
 
         foreach ($paths as $path) {
-            $dir = trim($path, '\/');
-            $factory->addLocation($this->dirPath.'/'.$dir);
+            $uri = $this->dirPath.'/'.trim($path, '\/');
+            $factory->addLocation($uri);
+            $twigLoader->addPath($uri);
         }
     }
 

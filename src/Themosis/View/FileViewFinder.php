@@ -2,12 +2,12 @@
 
 namespace Themosis\View;
 
-use Illuminate\View\FileViewFinder;
+use Illuminate\View\FileViewFinder as IlluminateFileViewFinder;
 
-class ViewFinder extends FileViewFinder
+class FileViewFinder extends IlluminateFileViewFinder
 {
     /**
-     * Return a list of found views.
+     * Return located views.
      *
      * @return array
      */
