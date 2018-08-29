@@ -1357,4 +1357,24 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
 
         throw new \RuntimeException('Unable to detect application namespace.');
     }
+
+    /**
+     * Determine if the application routes are cached.
+     *
+     * @return bool
+     */
+    public function routesAreCached()
+    {
+        return $this['files']->exists($this->getCachedRoutesPath());
+    }
+
+    /**
+     * Get the path to the routes cache file.
+     *
+     * @return string
+     */
+    public function getCachedRoutesPath()
+    {
+        return $this->bootstrapPath('cache/routes.php');
+    }
 }

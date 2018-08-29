@@ -22,7 +22,16 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->setControllerNamespace();
 
-        $this->loadRoutes();
+        if ($this->app->routesAreCached()) {
+            $this->loadCachedRoutes();
+        } else {
+            $this->loadRoutes();
+
+            $this->app->booted(function () {
+                $this->app['router']->getRoutes()->refreshNameLookups();
+                $this->app['router']->getRoutes()->refreshActionLookups();
+            });
+        }
     }
 
     /**
@@ -33,6 +42,16 @@ class RouteServiceProvider extends ServiceProvider
         if (! is_null($this->namespace)) {
             $this->app[UrlGenerator::class]->setRootControllerNamespace($this->namespace);
         }
+    }
+
+    /**
+     * Load the cached routes for the application.
+     */
+    protected function loadCachedRoutes()
+    {
+        $this->app->booted(function () {
+            require $this->app->getCachedRoutesPath();
+        });
     }
 
     /**
