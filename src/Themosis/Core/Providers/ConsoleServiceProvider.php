@@ -15,6 +15,7 @@ use Themosis\Core\Console\ModelMakeCommand;
 use Themosis\Core\Console\ProviderMakeCommand;
 use Themosis\Core\Console\UpCommand;
 use Themosis\Core\Console\VendorPublishCommand;
+use Themosis\Core\Console\ViewClearCommand;
 
 class ConsoleServiceProvider extends ServiceProvider
 {
@@ -32,7 +33,8 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected $commands = [
         'Down' => 'command.down',
-        'Up' => 'command.up'
+        'Up' => 'command.up',
+        'ViewClear' => 'command.view.clear'
     ];
 
     /**
@@ -225,6 +227,13 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new VendorPublishCommand($app['files']);
+        });
+    }
+
+    protected function registerViewClearCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ViewClearCommand($app['files']);
         });
     }
 
