@@ -70,6 +70,11 @@ class ConfigurationLoader
         }
 
         foreach ($files as $key => $path) {
+            // Avoid duplicate constant definitions.
+            if ('wordpress' === $key && defined('AUTH_KEY')) {
+                continue;
+            }
+
             $repository->set($key, require $path);
         }
     }
