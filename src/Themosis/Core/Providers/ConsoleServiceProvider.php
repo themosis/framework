@@ -15,6 +15,7 @@ use Themosis\Core\Console\ModelMakeCommand;
 use Themosis\Core\Console\ProviderMakeCommand;
 use Themosis\Core\Console\RouteCacheCommand;
 use Themosis\Core\Console\RouteClearCommand;
+use Themosis\Core\Console\RouteListCommand;
 use Themosis\Core\Console\UpCommand;
 use Themosis\Core\Console\VendorPublishCommand;
 use Themosis\Core\Console\ViewClearCommand;
@@ -38,6 +39,7 @@ class ConsoleServiceProvider extends ServiceProvider
         'Up' => 'command.up',
         'RouteCache' => 'command.route.cache',
         'RouteClear' => 'command.route.clear',
+        'RouteList' => 'command.route.list',
         'ViewClear' => 'command.view.clear'
     ];
 
@@ -231,6 +233,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new RouteClearCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the route:list command.
+     *
+     * @param string $abstract
+     */
+    protected function registerRouteListCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new RouteListCommand($app['router']);
         });
     }
 
