@@ -5,6 +5,7 @@ namespace Themosis\Core;
 use Composer\Autoload\ClassLoader;
 use Illuminate\Config\Repository;
 use Themosis\Asset\Finder;
+use Themosis\Core\Support\IncludesFiles;
 use Themosis\Core\Support\WordPressFileHeaders;
 use Themosis\Core\Theme\ImageSize;
 use Themosis\Core\Theme\Support;
@@ -12,7 +13,7 @@ use Themosis\Core\Theme\Templates;
 
 class ThemeManager
 {
-    use WordPressFileHeaders;
+    use WordPressFileHeaders, IncludesFiles;
 
     /**
      * @var Application

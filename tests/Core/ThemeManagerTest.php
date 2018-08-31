@@ -111,4 +111,16 @@ class ThemeManagerTest extends TestCase
 
         $this->assertEquals('underscore', $theme->getDirectory());
     }
+
+    public function testThemeManagerCanAutoIncludesFiles()
+    {
+        $app = $this->getApplication();
+        $theme = $this->getThemeManager();
+        $theme = $theme->load($app->themesPath('underscore/config'));
+
+        $theme->includes(__DIR__.'/../samples/inc');
+
+        $this->assertTrue(defined('THEME_MANAGER_INC'));
+        $this->assertTrue(defined('THEME_MANAGER_NESTED_INC'));
+    }
 }
