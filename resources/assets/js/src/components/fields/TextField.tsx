@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Text input field.
+ * Text field component.
  */
 class TextField extends React.Component
 {

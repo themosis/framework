@@ -1,11 +1,17 @@
 import React from 'react';
 
+/**
+ * Metabox container component.
+ */
 class Metabox extends React.Component {
-
     /**
-     * Render the component.
+     * Render component UI.
      */
     render() {
-        return ('Metabox');
+        return (
+            <div>
+                {this.props.children}
+            </div>
+        );
     }
 }
