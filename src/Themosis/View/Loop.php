@@ -74,7 +74,7 @@ class Loop
      */
     public function excerpt($post = null)
     {
-        return get_the_excerpt($post);
+        return apply_filters('the_excerpt', get_the_excerpt($post));
     }
 
     /**
