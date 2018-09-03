@@ -41,4 +41,5 @@ mix.webpackConfig(webpack => {
  |
  */
 
-mix.react('resources/assets/js/index.ts', 'dist/js/themosis.core.js');
+mix.react('resources/assets/js/index.ts', 'dist/js/themosis.core.js')
+    .react('resources/assets/js/testing.tsx', 'dist/js/testing.js');

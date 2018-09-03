@@ -344,7 +344,7 @@ class Metabox implements MetaboxInterface
      */
     public function handle()
     {
-        echo 'Handled by Themosis';
+        //echo 'Handled by Themosis';
     }
 
     /**

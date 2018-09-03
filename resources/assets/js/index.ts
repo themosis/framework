@@ -1,9 +1,15 @@
 import Manager from './src/components/Manager';
+import TextField from './src/components/fields/TextField';
 
 /*
  * Initialize the components Manager.
  */
 const manager = new Manager();
+
+/**
+ * Register Themosis core fields components.
+ */
+manager.addComponent('themosis.text', TextField);
 
 /**
  * Themosis Library Public API.
