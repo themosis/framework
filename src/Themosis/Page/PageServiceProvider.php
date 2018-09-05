@@ -7,6 +7,13 @@ use Illuminate\View\Factory;
 
 class PageServiceProvider extends ServiceProvider
 {
+    /**
+     * Defer page factory.
+     *
+     * @var bool
+     */
+    protected $defer = true;
+
     public function register()
     {
         $this->app->bind('page', function ($app) {
@@ -16,5 +23,15 @@ class PageServiceProvider extends ServiceProvider
 
             return new PageFactory($app['action'], $app['filter'], $app['view'], $app['validator']);
         });
+    }
+
+    /**
+     * Return list of registered bindings.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return ['page'];
     }
 }

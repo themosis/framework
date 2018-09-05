@@ -47,11 +47,13 @@ class Factory
      * @param string                  $id
      * @param string|array|\WP_Screen $screen
      *
+     * @throws MetaboxException
+     *
      * @return MetaboxInterface
      */
     public function make(string $id, $screen = 'post'): MetaboxInterface
     {
-        return (new Metabox($id, $this->action, $this->repository))
+        $metabox = (new Metabox($id, $this->action, $this->repository))
             ->setContainer($this->container)
             ->setTitle($this->setDefaultTitle($id))
             ->setScreen($screen)
@@ -59,6 +61,16 @@ class Factory
             ->setPriority('default')
             ->setResource($this->resource)
             ->setLocale($this->container->getLocale());
+
+        $abstract = sprintf('themosis.metabox.%s', $id);
+
+        if (! $this->container->bound($abstract)) {
+            $this->container->instance($abstract, $metabox);
+        } else {
+            throw new MetaboxException('The metabox with an ID of ['.$id.'] is already bound.');
+        }
+
+        return $metabox;
     }
 
     /**
