@@ -4,12 +4,18 @@ namespace Themosis\Metabox\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class MetaboxApiController extends Controller
 {
     /**
      * GET /metabox/{id} API route
+     *
+     * @param Request $request
+     * @param string  $id
+     *
+     * @return JsonResponse
      */
     public function show(Request $request, $id)
     {

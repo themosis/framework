@@ -1377,4 +1377,31 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     {
         return $this->bootstrapPath('cache/routes.php');
     }
+
+    /**
+     * Return a Javascript Global variable.
+     *
+     * @param string $name
+     * @param array  $data
+     *
+     * @return string
+     */
+    public function outputJavascriptGlobal(string $name, array $data)
+    {
+        $output = "<script type=\"text/javascript\">\n\r";
+        $output .= "/* <![CDATA[ */\n\r";
+        $output .= "var {$name} = {\n\r";
+
+        if (! empty($data) && is_array($data)) {
+            foreach ($data as $key => $value) {
+                $output .= $key.': '.json_encode($value).",\n\r";
+            }
+        }
+
+        $output .= "};\n\r";
+        $output .= "/* ]]> */\n\r";
+        $output .= '</script>';
+
+        return $output;
+    }
 }

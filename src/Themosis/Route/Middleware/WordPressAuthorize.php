@@ -10,9 +10,9 @@ class WordPressAuthorize
     /**
      * Handle incoming request.
      *
-     * @param Request $request
+     * @param Request  $request
      * @param \Closure $next
-     * @param string $capability
+     * @param string   $capability
      *
      * @throws HttpException
      *
