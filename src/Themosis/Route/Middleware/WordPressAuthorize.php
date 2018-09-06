@@ -2,8 +2,8 @@
 
 namespace Themosis\Route\Middleware;
 
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class WordPressAuthorize
 {
@@ -14,7 +14,7 @@ class WordPressAuthorize
      * @param \Closure $next
      * @param string $capability
      *
-     * @throws AuthenticationException
+     * @throws HttpException
      *
      * @return mixed
      */
@@ -27,6 +27,6 @@ class WordPressAuthorize
             return $next($request);
         }
 
-        throw new AuthenticationException('Unauthorized request.');
+        throw new HttpException(404);
     }
 }

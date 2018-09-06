@@ -1,5 +1,5 @@
 <?php
 
-Route::get('metabox', function () {
-    return 'Metabox route';
-});
+Route::apiResource('metabox', 'MetaboxApiController')->only([
+    'show'
+]);
