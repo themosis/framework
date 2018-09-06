@@ -20,6 +20,10 @@ class MetaboxRoutingServiceProvider extends RouteServiceProvider
         Route::middleware('wpapi')
             ->namespace('Themosis\Metabox\Controllers')
             ->prefix('wp-api/themosis/v1')
-            ->group(__DIR__.'/routes.php');
+            ->group(function () {
+                Route::apiResource('metabox', 'MetaboxApiController')->only([
+                    'show'
+                ]);
+            });
     }
 }

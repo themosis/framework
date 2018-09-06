@@ -67,6 +67,11 @@ class Metabox implements MetaboxInterface
     protected $action;
 
     /**
+     * @var IHook
+     */
+    protected $filter;
+
+    /**
      * @var MetaboxResourceInterface
      */
     protected $resource;
@@ -86,10 +91,11 @@ class Metabox implements MetaboxInterface
      */
     protected $prefix = 'th_';
 
-    public function __construct(string $id, IHook $action, FieldsRepositoryInterface $repository)
+    public function __construct(string $id, IHook $action, IHook $filter, FieldsRepositoryInterface $repository)
     {
         $this->id = $id;
         $this->action = $action;
+        $this->filter = $filter;
         $this->repository = $repository;
     }
 
@@ -344,7 +350,15 @@ class Metabox implements MetaboxInterface
      */
     public function handle()
     {
-        //echo 'Handled by Themosis';
+        $this->filter->add('themosis_admin_global', function ($data) {
+            if (! isset($data['metabox'])) {
+                $data['metabox'] = [$this->id];
+            } elseif (isset($data['metabox'])) {
+                $data['metabox'][] = $this->id;
+            }
+
+            return $data;
+        });
     }
 
     /**

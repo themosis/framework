@@ -20,6 +20,11 @@ class Factory
     protected $action;
 
     /**
+     * @var IHook
+     */
+    protected $filter;
+
+    /**
      * @var MetaboxResourceInterface
      */
     protected $resource;
@@ -32,11 +37,13 @@ class Factory
     public function __construct(
         Application $container,
         IHook $action,
+        IHook $filter,
         MetaboxResourceInterface $resource,
         FieldsRepositoryInterface $repository
     ) {
         $this->container = $container;
         $this->action = $action;
+        $this->filter = $filter;
         $this->resource = $resource;
         $this->repository = $repository;
     }
@@ -53,7 +60,7 @@ class Factory
      */
     public function make(string $id, $screen = 'post'): MetaboxInterface
     {
-        $metabox = (new Metabox($id, $this->action, $this->repository))
+        $metabox = (new Metabox($id, $this->action, $this->filter, $this->repository))
             ->setContainer($this->container)
             ->setTitle($this->setDefaultTitle($id))
             ->setScreen($screen)

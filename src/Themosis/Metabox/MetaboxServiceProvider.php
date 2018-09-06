@@ -27,7 +27,7 @@ class MetaboxServiceProvider extends ServiceProvider
                 new MetaboxTransformer()
             );
 
-            return new Factory($app, $app['action'], $resource, new FieldsRepository());
+            return new Factory($app, $app['action'], $app['filter'], $resource, new FieldsRepository());
         });
     }
 

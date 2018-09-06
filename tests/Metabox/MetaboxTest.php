@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
 use Themosis\Forms\Fields\FieldsRepository;
 use Themosis\Hook\ActionBuilder;
+use Themosis\Hook\FilterBuilder;
 use Themosis\Metabox\Factory;
 use Themosis\Metabox\MetaboxInterface;
 use Themosis\Metabox\Resources\MetaboxResource;
@@ -41,6 +42,7 @@ class MetaboxTest extends TestCase
         return new Factory(
             $this->getApplication(),
             new ActionBuilder($this->getApplication()),
+            new FilterBuilder($this->getApplication()),
             $this->getMetaboxResource(),
             new FieldsRepository()
         );
