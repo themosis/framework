@@ -91,6 +91,7 @@ class FieldsTest extends TestCase
         return array_merge([
             'attributes' => [],
             'basename' => '',
+            'component' => null,
             'data_type' => '',
             'default' => '',
             'name' => '',
@@ -124,6 +125,7 @@ class FieldsTest extends TestCase
                 'id' => 'th_name_field'
             ],
             'basename' => 'name',
+            'component' => 'themosis.fields.text',
             'name' => 'th_name',
             'label' => [
                 'inner' => 'Name',
@@ -157,6 +159,7 @@ class FieldsTest extends TestCase
                 'id' => 'th_message_field'
             ],
             'basename' => 'message',
+            'component' => 'themosis.fields.textarea',
             'name' => 'th_message',
             'label' => [
                 'inner' => 'Message',
@@ -196,6 +199,7 @@ class FieldsTest extends TestCase
                 'id' => 'th_colors_field'
             ],
             'basename' => 'colors',
+            'component' => 'themosis.fields.choice',
             'choices' => [
                 'Red' => 'red',
                 'Green' => 'green',
@@ -219,5 +223,16 @@ class FieldsTest extends TestCase
 
         $this->assertEquals($expected, $colors->toArray());
         $this->assertEquals(json_encode($expected), $colors->toJson());
+    }
+
+    public function testFieldsHaveComponentsNames()
+    {
+        $fields = $this->getFieldsFactory();
+
+        $text = $fields->text('name');
+        $email = $fields->email('email');
+
+        $this->assertEquals('themosis.fields.text', $text->getComponent());
+        $this->assertEquals('themosis.fields.email', $email->getComponent());
     }
 }

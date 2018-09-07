@@ -287,4 +287,11 @@ interface FieldTypeInterface
      * @return string
      */
     public function getType(): string;
+
+    /**
+     * Return the field component name.
+     *
+     * @return string
+     */
+    public function getComponent(): string;
 }

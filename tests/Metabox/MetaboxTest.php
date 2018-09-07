@@ -155,6 +155,7 @@ class MetaboxTest extends TestCase
                             'id' => 'th_author_field'
                         ],
                         'basename' => 'author',
+                        'component' => 'themosis.fields.text',
                         'data_type' => '',
                         'default' => '',
                         'name' => 'th_author',

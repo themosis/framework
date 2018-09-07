@@ -17,4 +17,11 @@ class EmailType extends TextType
      * @var string
      */
     protected $type = 'email';
+
+    /**
+     * The component name.
+     *
+     * @var string
+     */
+    protected $component = 'themosis.fields.email';
 }

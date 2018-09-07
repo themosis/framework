@@ -16,19 +16,10 @@ class MetaboxFactory implements MetaboxFactoryInterface {
      */
     make(list: string[]): MetaboxFactoryInterface {
         for (let idx in list) {
-            let selector = '#' + list[idx] + ' .inside';
-                //url = themosisGlobal.api.base_url + 'metabox/' + list[idx] + '?post_id=25';
+            let id = list[idx],
+                selector = '#' + id + ' .inside';
 
-            ReactDOM.render(<Metabox />, document.querySelector(selector));
-
-            /*axios.get(url)
-                .then((response: any) => {
-                    let box = response.data;
-                    console.log(box);
-                })
-                .catch((error: any) => {
-                    console.log(error);
-                });*/
+            ReactDOM.render(<Metabox id={id} />, document.querySelector(selector));
         }
 
         return this;

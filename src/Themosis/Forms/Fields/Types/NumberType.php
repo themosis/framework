@@ -21,6 +21,13 @@ class NumberType extends BaseType
     protected $type = 'number';
 
     /**
+     * The component name.
+     *
+     * @var string
+     */
+    protected $component = 'themosis.fields.number';
+
+    /**
      * Parse and setup default options.
      *
      * @param array $options

@@ -21,6 +21,13 @@ class TextType extends BaseType implements DataTransformerInterface
     protected $type = 'text';
 
     /**
+     * The component name.
+     *
+     * @var string
+     */
+    protected $component = 'themosis.fields.text';
+
+    /**
      * Parse and setup default options.
      *
      * @param array $options

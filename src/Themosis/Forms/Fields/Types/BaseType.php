@@ -177,6 +177,13 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     protected $type = 'input';
 
     /**
+     * The JS component abstract name.
+     *
+     * @var string
+     */
+    protected $component;
+
+    /**
      * BaseType constructor.
      *
      * @param string $name
@@ -752,6 +759,16 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     public function getType(): string
     {
         return $this->type;
+    }
+
+    /**
+     * Return the field component name.
+     *
+     * @return string
+     */
+    public function getComponent(): string
+    {
+        return $this->component;
     }
 
     /**

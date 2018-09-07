@@ -21,6 +21,13 @@ class IntegerType extends BaseType
     protected $type = 'integer';
 
     /**
+     * The component name.
+     *
+     * @var string
+     */
+    protected $component = 'themosis.fields.integer';
+
+    /**
      * Parse and setup default options.
      *
      * @param array $options

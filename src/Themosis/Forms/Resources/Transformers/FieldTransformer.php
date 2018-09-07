@@ -20,6 +20,7 @@ class FieldTransformer extends TransformerAbstract
         $default = [
             'attributes' => $field->getAttributes(),
             'basename' => $field->getBaseName(),
+            'component' => $field->getComponent(),
             'data_type' => $field->getOption('data_type', ''),
             'default' => $field->getOption('data', ''),
             'name' => $field->getName(),

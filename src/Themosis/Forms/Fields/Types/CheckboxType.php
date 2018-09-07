@@ -22,6 +22,13 @@ class CheckboxType extends BaseType
     protected $type = 'checkbox';
 
     /**
+     * The component name.
+     *
+     * @var string
+     */
+    protected $component = 'themosis.fields.checkbox';
+
+    /**
      * Parse field options.
      *
      * @param array $options

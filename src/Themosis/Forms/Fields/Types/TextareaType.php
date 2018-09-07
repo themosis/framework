@@ -21,6 +21,13 @@ class TextareaType extends BaseType implements DataTransformerInterface
     protected $type = 'textarea';
 
     /**
+     * The component name.
+     *
+     * @var string
+     */
+    protected $component = 'themosis.fields.textarea';
+
+    /**
      * Parse and setup default options.
      *
      * @param array $options

@@ -17,4 +17,11 @@ class SubmitType extends ButtonType
      * @var string
      */
     protected $type = 'submit';
+
+    /**
+     * The component name.
+     *
+     * @var string
+     */
+    protected $component = 'themosis.fields.submit';
 }

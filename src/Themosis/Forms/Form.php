@@ -153,6 +153,13 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     protected $type = 'form';
 
+    /**
+     * The JS component name.
+     *
+     * @var string
+     */
+    protected $component;
+
     public function __construct(
         FieldsRepositoryInterface $repository,
         ValidationFactoryInterface $validation,
@@ -867,5 +874,15 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function getType(): string
     {
         return $this->type;
+    }
+
+    /**
+     * Return the form component name.
+     *
+     * @return string
+     */
+    public function getComponent(): string
+    {
+        return $this->component;
     }
 }

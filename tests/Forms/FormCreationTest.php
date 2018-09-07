@@ -1016,6 +1016,7 @@ class FormCreationTest extends TestCase
                             'id' => 'th_firstname_field'
                         ],
                         'basename' => 'firstname',
+                        'component' => 'themosis.fields.text',
                         'data_type' => '',
                         'default' => '',
                         'name' => 'th_firstname',
@@ -1059,6 +1060,7 @@ class FormCreationTest extends TestCase
                             'id' => 'th_firstname_field'
                         ],
                         'basename' => 'firstname',
+                        'component' => 'themosis.fields.text',
                         'data_type' => '',
                         'default' => '',
                         'name' => 'th_firstname',

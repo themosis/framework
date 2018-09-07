@@ -1,2 +1,7 @@
-declare const Themosis: any;
-declare const themosisGlobal: any;
+declare namespace themosisGlobal {
+    const metabox: Array<string>;
+}
+
+declare namespace themosisGlobal.api {
+    const base_url: string;
+}

@@ -17,4 +17,11 @@ class PasswordType extends TextType
      * @var string
      */
     protected $type = 'password';
+
+    /**
+     * The component name.
+     *
+     * @var string
+     */
+    protected $component = 'themosis.fields.password';
 }

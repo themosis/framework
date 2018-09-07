@@ -17,4 +17,11 @@ class HiddenType extends TextType
      * @var string
      */
     protected $type = 'hidden';
+
+    /**
+     * The component name.
+     *
+     * @var string
+     */
+    protected $component = 'themosis.fields.hidden';
 }

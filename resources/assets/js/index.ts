@@ -14,6 +14,8 @@ const manager = new Manager();
 manager.addComponent('themosis.fields.text', TextField);
 manager.addComponent('themosis.fields.textarea', TextareaField);
 
+export { manager as Manager };
+
 /**
  * Initialize the Metabox Factory.
  */

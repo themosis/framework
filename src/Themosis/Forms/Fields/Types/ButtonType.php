@@ -21,6 +21,13 @@ class ButtonType extends BaseType implements DataTransformerInterface
     protected $type = 'button';
 
     /**
+     * The component name.
+     *
+     * @var string
+     */
+    protected $component = 'themosis.fields.button';
+
+    /**
      * Get default button options.
      *
      * @return array
