@@ -25,7 +25,8 @@ class Button extends React.Component <ButtonProps> {
      */
     render() {
         return (
-            <button className={ classNames(this.props.className, {'button-primary': this.props.primary}) }>
+            <button className={ classNames(this.props.className, {'button-primary': this.props.primary}) }
+                    type="button">
                 {this.props.text}
             </button>
         );

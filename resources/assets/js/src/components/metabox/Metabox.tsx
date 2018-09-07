@@ -3,20 +3,20 @@ import axios from 'axios';
 import MetaboxBody from './MetaboxBody';
 import MetaboxFooter from './MetaboxFooter';
 
-interface Props {
+interface MetaboxProps {
     id: string;
 }
 
-interface State {
-    fields: Array<{}>;
+interface MetaboxState {
+    fields: Array<FieldType>;
     groups: Array<{}>;
 }
 
 /**
  * Metabox container component.
  */
-class Metabox extends React.Component <Props, State> {
-    constructor(props: Props) {
+class Metabox extends React.Component <MetaboxProps, MetaboxState> {
+    constructor(props: MetaboxProps) {
         super(props);
         this.state = {
             fields: [],

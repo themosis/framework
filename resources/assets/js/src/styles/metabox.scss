@@ -1,8 +1,32 @@
+@import "vars";
+
+.themosis__metabox {
+  &__footer {
+    display: flex;
+    background: #F5F5F5;
+    border-top: 1px solid #E5E5E5;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    padding: $paddingV $paddingH;
+  }
+}
+
 .themosis__field {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: flex-start;
+  padding: $paddingV $paddingH;
+  border-bottom: 1px solid #EEEEEE;
+
+  &:last-child {
+    border: none;
+  }
+
+  &__label {
+    font-weight: 600;
+  }
 }
 
 .themosis__column {

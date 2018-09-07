@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Manager} from '../../../index';
 
 interface Props {
-    fields: Array<{}>;
+    fields: Array<FieldType>;
     groups: Array<{}>;
 }
 
@@ -37,7 +37,7 @@ class MetaboxBody extends React.Component <Props> {
         return this.props.fields.map((data:any) => {
             const Field = Manager.getComponent(data.component);
             return (
-                <Field key={data.name} />
+                <Field key={data.name} field={data} />
             );
         });
     }

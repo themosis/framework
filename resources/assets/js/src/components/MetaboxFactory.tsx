@@ -17,9 +17,22 @@ class MetaboxFactory implements MetaboxFactoryInterface {
     make(list: string[]): MetaboxFactoryInterface {
         for (let idx in list) {
             let id = list[idx],
-                selector = '#' + id + ' .inside';
+                selector = '#' + id + ' .inside',
+                elem = document.querySelector(selector);
 
-            ReactDOM.render(<Metabox id={id} />, document.querySelector(selector));
+            /**
+             * If element exists:
+             * - Reset the styles of the container.
+             * - Render the root component.
+             */
+            if (elem) {
+                elem.setAttribute(
+                    'style',
+                    'margin: 0; padding: 0;'
+                );
+
+                ReactDOM.render(<Metabox id={id} />, elem);
+            }
         }
 
         return this;
