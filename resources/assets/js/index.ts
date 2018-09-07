@@ -2,6 +2,7 @@ import Manager from './src/components/Manager';
 import MetaboxFactory from './src/components/MetaboxFactory';
 import TextField from './src/components/fields/TextField';
 import TextareaField from './src/components/fields/TextareaField';
+import './src/styles/metabox.scss';
 
 /*
  * Initialize the components Manager.

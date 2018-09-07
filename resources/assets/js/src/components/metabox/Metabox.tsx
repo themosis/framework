@@ -1,6 +1,7 @@
 import * as React from 'react';
 import axios from 'axios';
-import { Manager } from '../../../index';
+import MetaboxBody from './MetaboxBody';
+import MetaboxFooter from './MetaboxFooter';
 
 interface Props {
     id: string;
@@ -27,25 +28,12 @@ class Metabox extends React.Component <Props, State> {
      * Render component UI.
      */
     render() {
-        if (1 < this.state.groups.length) {
-            return ('Tabbed metabox');
-        }
-
         return (
-            <div>{ this.renderDefaultMetabox() }</div>
+            <div className="themosis__metabox">
+                <MetaboxBody fields={this.state.fields} groups={this.state.groups}/>
+                <MetaboxFooter/>
+            </div>
         );
-    }
-
-    /**
-     * Render a default metabox.
-     */
-    renderDefaultMetabox() {
-        return this.state.fields.map((data:any) => {
-            const Field = Manager.getComponent(data.component);
-            return (
-                <Field key={data.name} />
-            );
-        });
     }
 
     /**

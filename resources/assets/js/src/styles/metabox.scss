@@ -1,0 +1,16 @@
+.themosis__field {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+}
+
+.themosis__column {
+  &__label {
+    width: 33.33%;
+  }
+
+  &__content {
+    width: 66.66%;
+  }
+}

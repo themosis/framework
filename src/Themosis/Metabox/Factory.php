@@ -3,7 +3,7 @@
 namespace Themosis\Metabox;
 
 use Themosis\Core\Application;
-use Themosis\Forms\Contracts\FieldsRepositoryInterface;
+use Themosis\Forms\Fields\FieldsRepository;
 use Themosis\Hook\IHook;
 use Themosis\Metabox\Resources\MetaboxResourceInterface;
 
@@ -29,23 +29,16 @@ class Factory
      */
     protected $resource;
 
-    /**
-     * @var FieldsRepositoryInterface
-     */
-    protected $repository;
-
     public function __construct(
         Application $container,
         IHook $action,
         IHook $filter,
-        MetaboxResourceInterface $resource,
-        FieldsRepositoryInterface $repository
+        MetaboxResourceInterface $resource
     ) {
         $this->container = $container;
         $this->action = $action;
         $this->filter = $filter;
         $this->resource = $resource;
-        $this->repository = $repository;
     }
 
     /**
@@ -60,7 +53,7 @@ class Factory
      */
     public function make(string $id, $screen = 'post'): MetaboxInterface
     {
-        $metabox = (new Metabox($id, $this->action, $this->filter, $this->repository))
+        $metabox = (new Metabox($id, $this->action, $this->filter, new FieldsRepository()))
             ->setContainer($this->container)
             ->setTitle($this->setDefaultTitle($id))
             ->setScreen($screen)

@@ -10,7 +10,14 @@ class TextField extends React.Component
      */
     render() {
         return (
-            <div>Text Field</div>
+            <div className="themosis__field">
+                <div className="themosis__column__label">
+                    <label>Label</label>
+                </div>
+                <div className="themosis__column__content">
+                    <input type="text"/>
+                </div>
+            </div>
         );
     }
 }
