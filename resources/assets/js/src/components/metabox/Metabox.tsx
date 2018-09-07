@@ -1,17 +1,18 @@
-import React from 'react';
+import * as React from 'react';
+
+export interface Props {
+}
 
 /**
  * Metabox container component.
  */
-class Metabox extends React.Component {
+class Metabox extends React.Component <{}> {
     /**
      * Render component UI.
      */
     render() {
-        return (
-            <div>
-                {this.props.children}
-            </div>
-        );
+        return (<div>Metabox</div>);
     }
 }
+
+export default Metabox;

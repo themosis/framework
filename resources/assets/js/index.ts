@@ -1,4 +1,5 @@
 import Manager from './src/components/Manager';
+import MetaboxFactory from './src/components/MetaboxFactory';
 import TextField from './src/components/fields/TextField';
 import TextareaField from './src/components/fields/TextareaField';
 
@@ -12,6 +13,12 @@ const manager = new Manager();
  */
 manager.addComponent('themosis.fields.text', TextField);
 manager.addComponent('themosis.fields.textarea', TextareaField);
+
+/**
+ * Initialize the Metabox Factory.
+ */
+const factory = new MetaboxFactory();
+factory.make(themosisGlobal.metabox);
 
 /**
  * Themosis Library Public API.
