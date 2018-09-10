@@ -8,6 +8,15 @@ import Label from '../labels/Label';
 class TextField extends React.Component <FieldProps> {
     constructor(props: FieldProps) {
         super(props);
+
+        this.onChange = this.onChange.bind(this);
+    }
+
+    /**
+     * Handle input value changes.
+     */
+    onChange(e: any) {
+        this.props.changeHandler(e.target.name, e.target.value);
     }
 
     /**
@@ -17,10 +26,15 @@ class TextField extends React.Component <FieldProps> {
         return (
             <Field>
                 <div className="themosis__column__label">
-                    <Label text={this.props.field.label.inner} />
+                    <Label for={this.props.field.attributes.id} text={this.props.field.label.inner} />
                 </div>
                 <div className="themosis__column__content">
-                    <input type="text"/>
+                    <input id={this.props.field.attributes.id}
+                           className="themosis__input"
+                           type="text"
+                           name={this.props.field.name}
+                           value={this.props.field.value}
+                           onChange={this.onChange}/>
                 </div>
             </Field>
         );

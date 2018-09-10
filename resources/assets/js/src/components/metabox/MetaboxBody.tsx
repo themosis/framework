@@ -4,6 +4,7 @@ import {Manager} from '../../../index';
 interface Props {
     fields: Array<FieldType>;
     groups: Array<{}>;
+    changeHandler: any;
 }
 
 /**
@@ -37,7 +38,9 @@ class MetaboxBody extends React.Component <Props> {
         return this.props.fields.map((data:any) => {
             const Field = Manager.getComponent(data.component);
             return (
-                <Field key={data.name} field={data} />
+                <Field key={data.name}
+                       field={data}
+                       changeHandler={this.props.changeHandler} />
             );
         });
     }

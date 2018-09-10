@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Button from '../buttons/Button';
 
 /**
  * Metabox footer.
@@ -11,7 +10,7 @@ class MetaboxFooter extends React.Component {
     render() {
         return (
             <div className="themosis__metabox__footer">
-                <Button text="Save Changes" primary={true} />
+                {this.props.children}
             </div>
         );
     }

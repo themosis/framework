@@ -38,3 +38,19 @@
     width: 66.66%;
   }
 }
+
+.themosis__input {
+  min-width: 260px;
+  border: 1px solid $borderColor;
+  border-radius: $borderRadius;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
+  padding: $paddingH / 2;
+}
+
+.themosis__textarea {
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid $borderColor;
+  border-radius: $borderRadius;
+  padding: $paddingH / 2;
+}

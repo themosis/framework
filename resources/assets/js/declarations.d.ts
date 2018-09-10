@@ -19,7 +19,9 @@ declare namespace themosisGlobal.api {
 |
 */
 declare interface FieldType {
-    attributes: object;
+    attributes: {
+        id: string
+    };
     basename: string;
     component: string;
     data_type: string;
@@ -49,4 +51,5 @@ declare interface FieldType {
 // Field {field} component property.
 declare interface FieldProps {
     field: FieldType;
+    changeHandler: any;
 }
