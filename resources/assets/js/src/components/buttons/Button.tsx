@@ -6,6 +6,7 @@ interface ButtonProps {
     clickHandler: any;
     className?: string;
     primary?: boolean;
+    disabled?: boolean;
 }
 
 /**
@@ -26,7 +27,7 @@ class Button extends React.Component <ButtonProps> {
      */
     render() {
         return (
-            <button className={ classNames(this.props.className, {'button-primary': this.props.primary}) }
+            <button className={ classNames(this.props.className, {'button-primary': this.props.primary, 'disabled': this.props.disabled}) }
                     type="button"
                     onClick={this.props.clickHandler}>
                 {this.props.text}

@@ -35,6 +35,11 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     const VERSION = '1.4.0';
 
     /**
+     * Application textdomain.
+     */
+    const TEXTDOMAIN = 'themosis';
+
+    /**
      * Base path of the framework.
      *
      * @var string

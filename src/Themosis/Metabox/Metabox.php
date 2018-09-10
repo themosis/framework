@@ -5,6 +5,7 @@ namespace Themosis\Metabox;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Support\Renderable;
 use Symfony\Component\HttpFoundation\Response;
+use Themosis\Core\Application;
 use Themosis\Forms\Contracts\FieldsRepositoryInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Hook\IHook;
@@ -359,7 +360,19 @@ class Metabox implements MetaboxInterface
                 $data['metabox'][] = $this->id;
             }
 
+            /*
+             * Provides WP_Post data.
+             */
             $data['post'] = $args['post'];
+
+            /**
+             * Metabox interface localization.
+             */
+            $data['l10n']['metabox'] = [
+                'done' => __('Saved', Application::TEXTDOMAIN),
+                'saving' => __('Saving', Application::TEXTDOMAIN),
+                'submit' => __('Save Changes', Application::TEXTDOMAIN)
+            ];
 
             return $data;
         });

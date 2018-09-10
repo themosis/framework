@@ -21983,6 +21983,7 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__MetaboxBody__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__MetaboxFooter__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__buttons_Button__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__MetaboxStatus__ = __webpack_require__(56);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -22001,6 +22002,7 @@ var __extends = (this && this.__extends) || (function () {
 
 
 
+
 /**
  * Metabox container component.
  */
@@ -22011,10 +22013,11 @@ var Metabox = /** @class */ (function (_super) {
         _this.state = {
             fields: [],
             groups: [],
-            status: ''
+            status: 'default'
         };
         _this.change = _this.change.bind(_this);
         _this.save = _this.save.bind(_this);
+        _this.clearStatus = _this.clearStatus.bind(_this);
         return _this;
     }
     /**
@@ -22024,7 +22027,8 @@ var Metabox = /** @class */ (function (_super) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__metabox" },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__MetaboxBody__["a" /* default */], { fields: this.state.fields, groups: this.state.groups, changeHandler: this.change }),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__MetaboxFooter__["a" /* default */], null,
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__buttons_Button__["a" /* default */], { text: "Save Changes", primary: true, clickHandler: this.save }))));
+                'default' !== this.state.status && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__MetaboxStatus__["a" /* default */], { status: this.state.status, label: themosisGlobal.l10n.metabox[this.state.status] }),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__buttons_Button__["a" /* default */], { text: themosisGlobal.l10n.metabox['submit'], primary: true, disabled: 'saving' === this.state.status, clickHandler: this.save }))));
     };
     /**
      * Handle onChange events for each field.
@@ -22045,16 +22049,35 @@ var Metabox = /** @class */ (function (_super) {
      * Save metabox fields data.
      */
     Metabox.prototype.save = function () {
+        var _this = this;
         var url = themosisGlobal.api.base_url + 'metabox/' + this.props.id + '?post_id=' + themosisGlobal.post.ID;
+        /*
+         * Change current status to "saving"
+         */
+        this.setState({
+            status: 'saving'
+        });
         __WEBPACK_IMPORTED_MODULE_1_axios___default.a.put(url, {
             fields: this.state.fields
         })
-            .then(function (response) {
-            console.log(response);
+            .then(function () {
+            _this.setState({
+                status: 'done'
+            });
+            _this.timer = setTimeout(_this.clearStatus, 3000);
         })
             .catch(function (error) {
             console.log(error);
         });
+    };
+    /**
+     * Clear metabox footer status.
+     */
+    Metabox.prototype.clearStatus = function () {
+        this.setState({
+            status: 'default'
+        });
+        clearTimeout(this.timer);
     };
     /**
      * Fetch metabox data.
@@ -23290,7 +23313,7 @@ var Button = /** @class */ (function (_super) {
      * Render the component.
      */
     Button.prototype.render = function () {
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: __WEBPACK_IMPORTED_MODULE_1_classnames___default()(this.props.className, { 'button-primary': this.props.primary }), type: "button", onClick: this.props.clickHandler }, this.props.text));
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: __WEBPACK_IMPORTED_MODULE_1_classnames___default()(this.props.className, { 'button-primary': this.props.primary, 'disabled': this.props.disabled }), type: "button", onClick: this.props.clickHandler }, this.props.text));
     };
     Button.defaultProps = {
         className: 'button',
@@ -23512,7 +23535,7 @@ exports = module.exports = __webpack_require__(53)(false);
 
 
 // module
-exports.push([module.i, ".themosis__metabox__footer {\n  display: flex;\n  background: #EDEFF0;\n  border-top: 1px solid #E5E5E5;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-end;\n  padding: 16px 12px; }\n\n.themosis__field {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n  border-bottom: 1px solid #EEEEEE; }\n  .themosis__field:last-child {\n    border: none; }\n  .themosis__field__label {\n    font-weight: 600; }\n\n.themosis__column__label {\n  width: 33.33%; }\n\n.themosis__column__content {\n  width: 66.66%; }\n\n.themosis__input {\n  min-width: 260px;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  padding: 6px; }\n\n.themosis__textarea {\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  padding: 6px; }\n", ""]);
+exports.push([module.i, "@keyframes turning {\n  0% {\n    transform-origin: center center;\n    transform: rotate(0deg); }\n  100% {\n    transform: rotate(360deg); } }\n\n.themosis__metabox__footer {\n  display: flex;\n  background: #EDEFF0;\n  border-top: 1px solid #E5E5E5;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-end;\n  padding: 16px 12px; }\n\n.themosis__metabox__status {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  margin-right: 12px; }\n  .themosis__metabox__status__icon {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    align-items: center;\n    width: 22px;\n    height: 22px; }\n    .themosis__metabox__status__icon svg.icon__saving {\n      animation: turning 1s linear infinite; }\n  .themosis__metabox__status__text {\n    display: inline;\n    margin: 0 0 0 8px;\n    padding: 0; }\n\n.themosis__field {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n  border-bottom: 1px solid #EEEEEE; }\n  .themosis__field:last-child {\n    border: none; }\n  .themosis__field__label {\n    font-weight: 600; }\n\n.themosis__column__label {\n  width: 33.33%; }\n\n.themosis__column__content {\n  width: 66.66%; }\n\n.themosis__input {\n  min-width: 260px;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  padding: 6px; }\n\n.themosis__textarea {\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  padding: 6px; }\n", ""]);
 
 // exports
 
@@ -24051,6 +24074,98 @@ module.exports = function (css) {
 	// send back the fixed css
 	return fixedCss;
 };
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__icons_Icon__ = __webpack_require__(57);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+/**
+ * Metabox status component.
+ */
+var MetaboxStatus = /** @class */ (function (_super) {
+    __extends(MetaboxStatus, _super);
+    function MetaboxStatus(props) {
+        return _super.call(this, props) || this;
+    }
+    /**
+     * Render the component.
+     */
+    MetaboxStatus.prototype.render = function () {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__metabox__status" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "themosis__metabox__status__icon" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__icons_Icon__["a" /* default */], { name: this.props.status })),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("p", { className: "themosis__metabox__status__text" }, this.props.label)));
+    };
+    return MetaboxStatus;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
+/* harmony default export */ __webpack_exports__["a"] = (MetaboxStatus);
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+/**
+ * Icon component.
+ */
+var Icon = /** @class */ (function (_super) {
+    __extends(Icon, _super);
+    function Icon(props) {
+        return _super.call(this, props) || this;
+    }
+    /**
+     * Render the component.
+     */
+    Icon.prototype.render = function () {
+        switch (this.props.name) {
+            case 'done':
+                return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("svg", { width: "22", height: "16", viewBox: "0 0 22 16", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("path", { d: "M19.1221 0L21.9535 1.61373L9.67728 16H6.84594L0 8.20601L2.83134 6.06009L8.26161 10.1803L19.1221 0Z", fill: "#46B450" })));
+            default:
+                return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("svg", { className: "icon__saving", width: "22", height: "16", viewBox: "0 0 22 16", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("path", { d: "M11.2154 0C15.4271 0 18.8872 3.10714 19.4718 7.14286H21.9535L17.7776 11.9048L13.6016 7.14286H16.3697C15.8328 4.79762 13.7329 3.03571 11.2154 3.03571C9.48534 3.03571 7.95814 3.88095 6.99171 5.15476L4.95147 2.83333C6.47866 1.09524 8.72174 0 11.2154 0ZM10.7381 16C6.53832 16 3.06633 12.8929 2.4817 8.85714H0L4.17594 4.09524C5.57189 5.67857 6.95591 7.27381 8.35187 8.85714H5.58382C6.12073 11.2024 8.22063 12.9643 10.7381 12.9643C12.4681 12.9643 13.9953 12.119 14.9618 10.8452L17.002 13.1667C15.4748 14.9048 13.2437 16 10.7381 16Z", fill: "#0085BA" })));
+        }
+    };
+    return Icon;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
+/* harmony default export */ __webpack_exports__["a"] = (Icon);
 
 
 /***/ })

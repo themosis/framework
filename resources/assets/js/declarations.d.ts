@@ -39,6 +39,12 @@ declare namespace themosisGlobal.post {
     const filter: string;
 }
 
+declare namespace themosisGlobal.l10n.metabox {
+    const done: string;
+    const saving: string;
+    const submit: string;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Fields Declarations

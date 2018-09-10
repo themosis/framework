@@ -3,6 +3,7 @@ import axios, {AxiosError, AxiosResponse} from 'axios';
 import MetaboxBody from './MetaboxBody';
 import MetaboxFooter from './MetaboxFooter';
 import Button from "../buttons/Button";
+import MetaboxStatus from './MetaboxStatus';
 
 interface MetaboxProps {
     id: string;
@@ -18,16 +19,22 @@ interface MetaboxState {
  * Metabox container component.
  */
 class Metabox extends React.Component <MetaboxProps, MetaboxState> {
+    /**
+     * Status timeout reference.
+     */
+    protected timer: any;
+
     constructor(props: MetaboxProps) {
         super(props);
         this.state = {
             fields: [],
             groups: [],
-            status: ''
+            status: 'default'
         };
 
         this.change = this.change.bind(this);
         this.save = this.save.bind(this);
+        this.clearStatus = this.clearStatus.bind(this);
     }
 
     /**
@@ -40,7 +47,11 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
                              groups={this.state.groups}
                              changeHandler={this.change}/>
                 <MetaboxFooter>
-                    <Button text="Save Changes" primary={true} clickHandler={this.save} />
+                    { 'default' !== this.state.status && <MetaboxStatus status={this.state.status} label={themosisGlobal.l10n.metabox[this.state.status]}/> }
+                    <Button text={themosisGlobal.l10n.metabox['submit']}
+                            primary={true}
+                            disabled={'saving' === this.state.status}
+                            clickHandler={this.save} />
                 </MetaboxFooter>
             </div>
         );
@@ -70,15 +81,37 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
     save() {
         let url = themosisGlobal.api.base_url + 'metabox/' + this.props.id + '?post_id=' + themosisGlobal.post.ID;
 
+        /*
+         * Change current status to "saving"
+         */
+        this.setState({
+            status: 'saving'
+        });
+
         axios.put(url, {
             fields: this.state.fields
         })
-            .then((response:AxiosResponse) => {
-                console.log(response);
+            .then(() => {
+                this.setState({
+                    status: 'done'
+                });
+
+                this.timer = setTimeout(this.clearStatus, 3000);
             })
             .catch((error: AxiosError) => {
                 console.log(error);
             });
+    }
+
+    /**
+     * Clear metabox footer status.
+     */
+    clearStatus() {
+        this.setState({
+            status: 'default'
+        });
+
+        clearTimeout(this.timer);
     }
 
     /**
