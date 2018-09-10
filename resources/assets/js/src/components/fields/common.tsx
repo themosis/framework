@@ -12,4 +12,17 @@ export function Field (props: any) {
             {props.children}
         </div>
     );
-};
+}
+
+/**
+ * Description - Render a field description.
+ */
+interface DescriptionProps {
+    content: string;
+}
+
+export function Description (props: DescriptionProps) {
+    return (
+        <div className="themosis__description" dangerouslySetInnerHTML={{__html: props.content}}/>
+    );
+}

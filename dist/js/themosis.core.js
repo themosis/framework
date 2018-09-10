@@ -1058,7 +1058,8 @@ module.exports = Cancel;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = Field;
+/* harmony export (immutable) */ __webpack_exports__["b"] = Field;
+/* harmony export (immutable) */ __webpack_exports__["a"] = Description;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 
@@ -1071,7 +1072,9 @@ module.exports = Cancel;
 function Field(props) {
     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__field" }, props.children));
 }
-;
+function Description(props) {
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__description", dangerouslySetInnerHTML: { __html: props.content } }));
+}
 
 
 /***/ }),
@@ -23428,11 +23431,12 @@ var TextField = /** @class */ (function (_super) {
      * Render component UI.
      */
     TextField.prototype.render = function () {
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["a" /* Field */], null,
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["b" /* Field */], null,
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { for: this.props.field.attributes.id, text: this.props.field.label.inner })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { id: this.props.field.attributes.id, className: "themosis__input", type: "text", name: this.props.field.name, value: this.props.field.value, onChange: this.onChange }))));
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { id: this.props.field.attributes.id, className: "themosis__input", type: "text", name: this.props.field.name, value: this.props.field.value, onChange: this.onChange }),
+                this.props.field.options.info && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["a" /* Description */], { content: this.props.field.options.info }))));
     };
     return TextField;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
@@ -23484,11 +23488,12 @@ var TextareaField = /** @class */ (function (_super) {
      * Render component UI.
      */
     TextareaField.prototype.render = function () {
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["a" /* Field */], null,
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["b" /* Field */], null,
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { for: this.props.field.attributes.id, text: this.props.field.label.inner })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("textarea", { id: this.props.field.attributes.id, name: this.props.field.name, className: "themosis__textarea", value: this.props.field.value, onChange: this.onChange }))));
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("textarea", { id: this.props.field.attributes.id, name: this.props.field.name, className: "themosis__textarea", value: this.props.field.value, onChange: this.onChange }),
+                this.props.field.options.info && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["a" /* Description */], { content: this.props.field.options.info }))));
     };
     return TextareaField;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
@@ -23535,7 +23540,7 @@ exports = module.exports = __webpack_require__(53)(false);
 
 
 // module
-exports.push([module.i, "@keyframes turning {\n  0% {\n    transform-origin: center center;\n    transform: rotate(0deg); }\n  100% {\n    transform: rotate(360deg); } }\n\n.themosis__metabox__footer {\n  display: flex;\n  background: #EDEFF0;\n  border-top: 1px solid #E5E5E5;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-end;\n  padding: 16px 12px; }\n\n.themosis__metabox__status {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  margin-right: 12px; }\n  .themosis__metabox__status__icon {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    align-items: center;\n    width: 22px;\n    height: 22px; }\n    .themosis__metabox__status__icon svg.icon__saving {\n      animation: turning 1s linear infinite; }\n  .themosis__metabox__status__text {\n    display: inline;\n    margin: 0 0 0 8px;\n    padding: 0; }\n\n.themosis__field {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n  border-bottom: 1px solid #EEEEEE; }\n  .themosis__field:last-child {\n    border: none; }\n  .themosis__field__label {\n    font-weight: 600; }\n\n.themosis__column__label {\n  width: 33.33%; }\n\n.themosis__column__content {\n  width: 66.66%; }\n\n.themosis__input {\n  min-width: 260px;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  padding: 6px; }\n\n.themosis__textarea {\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  padding: 6px; }\n", ""]);
+exports.push([module.i, "@keyframes turning {\n  0% {\n    transform-origin: center center;\n    transform: rotate(0deg); }\n  100% {\n    transform: rotate(360deg); } }\n\n.themosis__metabox__footer {\n  display: flex;\n  background: #EDEFF0;\n  border-top: 1px solid #E5E5E5;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-end;\n  padding: 16px 12px; }\n\n.themosis__metabox__status {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  margin-right: 12px; }\n  .themosis__metabox__status__icon {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    align-items: center;\n    width: 22px;\n    height: 22px; }\n    .themosis__metabox__status__icon svg.icon__saving {\n      animation: turning 1s linear infinite; }\n  .themosis__metabox__status__text {\n    display: inline;\n    margin: 0 0 0 8px;\n    padding: 0; }\n\n.themosis__field {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n  border-bottom: 1px solid #EEEEEE; }\n  .themosis__field:last-child {\n    border: none; }\n  .themosis__field__label {\n    font-weight: 600; }\n\n.themosis__column__label {\n  width: 33.33%; }\n\n.themosis__column__content {\n  width: 66.66%; }\n\n.themosis__description {\n  margin-top: 8px;\n  color: #666666; }\n\n.themosis__input {\n  min-width: 260px;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  padding: 6px; }\n\n.themosis__textarea {\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  padding: 6px; }\n", ""]);
 
 // exports
 

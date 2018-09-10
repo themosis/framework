@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Field} from './common';
+import {Description, Field} from './common';
 import Label from '../labels/Label';
 
 /**
@@ -34,6 +34,7 @@ class TextareaField extends React.Component <FieldProps> {
                               className="themosis__textarea"
                               value={this.props.field.value}
                               onChange={this.onChange}/>
+                    { this.props.field.options.info && <Description content={this.props.field.options.info}/> }
                 </div>
             </Field>
         );
