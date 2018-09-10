@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Themosis\Metabox\MetaboxException;
 use Themosis\Metabox\MetaboxManagerInterface;
 
 class MetaboxApiController extends Controller
@@ -33,13 +32,13 @@ class MetaboxApiController extends Controller
     {
         $abstract = sprintf('themosis.metabox.%s', $id);
 
-        if (app()->bound($abstract)) {
+        try {
             $metabox = $this->manager->getFields(app($abstract), $request);
-        } else {
+        } catch (\Exception $e) {
             throw new HttpResponseException(response()->json([
-                'message' => 'The metabox with ID ['.$id.'] does not exist.',
+                'message' => $e->getMessage(),
                 'errors' => true
-            ], 404));
+            ], 500));
         }
 
         return response()->json($metabox->toArray());
@@ -58,20 +57,13 @@ class MetaboxApiController extends Controller
     {
         $abstract = sprintf('themosis.metabox.%s', $id);
 
-        if (! app()->bound($abstract)) {
-            throw new HttpResponseException(response()->json([
-                'message' => 'Unable to save data. Metabox not found.',
-                'errors' => true
-            ], 400));
-        }
-
         try {
             $this->manager->saveFields(app($abstract), $request);
-        } catch (MetaboxException $exception) {
+        } catch (\Exception $exception) {
             return response()->json([
                 'message' => $exception->getMessage(),
                 'errors' => true
-            ], 400);
+            ], 500);
         }
 
         return response()->json([
