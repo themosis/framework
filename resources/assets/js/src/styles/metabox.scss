@@ -69,7 +69,25 @@
 
 .themosis__description {
   margin-top: 8px;
-  color: $grey6;
+  color: $grey;
+}
+
+.themosis__field__errors {
+  margin-top: 8px;
+
+  ul {
+    display: inline-block;
+    background-color: $redLight;
+    border-radius: $borderRadius;
+    padding: $paddingH / 2;
+    margin: 0;
+    color: $red;
+
+    li {
+      color: $red;
+      margin: 0;
+    }
+  }
 }
 
 .themosis__input {

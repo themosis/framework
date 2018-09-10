@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {Description, Field} from './common';
 import Label from '../labels/Label';
+import {getErrorsMessages, hasErrors} from '../../helpers';
+import Error from '../errors/Error';
 
 /**
  * Textarea field component.
@@ -34,6 +36,7 @@ class TextareaField extends React.Component <FieldProps> {
                               className="themosis__textarea"
                               value={this.props.field.value}
                               onChange={this.onChange}/>
+                    { hasErrors(this.props.field) && <Error messages={getErrorsMessages(this.props.field)}/> }
                     { this.props.field.options.info && <Description content={this.props.field.options.info}/> }
                 </div>
             </Field>

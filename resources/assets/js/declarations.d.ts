@@ -74,7 +74,7 @@ declare interface FieldType {
     type: string;
     validation: {
         errors: boolean;
-        messages: Array<string>;
+        messages: object;
         placeholder: string;
         rules: string;
     };

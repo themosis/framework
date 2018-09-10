@@ -91,15 +91,24 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
         axios.put(url, {
             fields: this.state.fields
         })
-            .then(() => {
+            .then((response: AxiosResponse) => {
                 this.setState({
+                    fields: response.data.fields.data,
                     status: 'done'
                 });
 
                 this.timer = setTimeout(this.clearStatus, 3000);
             })
             .catch((error: AxiosError) => {
-                console.log(error);
+                /*
+                 * Reset metabox status to default
+                 * and log the error to the console.
+                 */
+                this.setState({
+                    status: 'default'
+                });
+
+                console.log(error.message);
             });
     }
 
@@ -123,10 +132,9 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
 
         axios.get(url)
             .then((response: AxiosResponse) => {
-                let box = response.data;
                 this.setState({
-                    fields: box.fields.data,
-                    groups: box.groups.data
+                    fields: response.data.fields.data,
+                    groups: response.data.groups.data
                 });
             })
             .catch((error: AxiosError) => {

@@ -83,21 +83,19 @@ class TextType extends BaseType implements DataTransformerInterface, CanHandleMe
      *
      * @param string $value
      * @param int    $post_id
-     *
-     * @return bool
      */
     public function metaboxSave($value, int $post_id)
     {
-        if (is_null($value) || empty($value)) {
-            return delete_post_meta($post_id, $this->getName());
-        }
-
         $previous = get_post_meta($post_id, $this->getName(), true);
 
-        if (empty($previous)) {
-            return add_post_meta($post_id, $this->getName(), $value, true);
+        if (is_null($value) || empty($value)) {
+            delete_post_meta($post_id, $this->getName());
+        } elseif (empty($previous)) {
+            add_post_meta($post_id, $this->getName(), $value, true);
+        } else {
+            update_post_meta($post_id, $this->getName(), $value, $previous);
         }
 
-        return update_post_meta($post_id, $this->getName(), $value, $previous);
+        $this->setValue($value);
     }
 }

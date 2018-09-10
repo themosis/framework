@@ -58,7 +58,7 @@ class MetaboxApiController extends Controller
         $abstract = sprintf('themosis.metabox.%s', $id);
 
         try {
-            $this->manager->saveFields(app($abstract), $request);
+            $metabox = $this->manager->saveFields(app($abstract), $request);
         } catch (\Exception $exception) {
             return response()->json([
                 'message' => $exception->getMessage(),
@@ -66,9 +66,6 @@ class MetaboxApiController extends Controller
             ], 500);
         }
 
-        return response()->json([
-            'message' => 'Metabox data saved.',
-            'errors' => false
-        ]);
+        return response()->json($metabox->toArray());
     }
 }

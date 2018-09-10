@@ -23,7 +23,7 @@ interface MetaboxManagerInterface
      * @param MetaboxInterface $metabox
      * @param Request          $request
      *
-     * @return bool
+     * @return MetaboxInterface
      */
-    public function saveFields(MetaboxInterface $metabox, Request $request): bool;
+    public function saveFields(MetaboxInterface $metabox, Request $request): MetaboxInterface;
 }

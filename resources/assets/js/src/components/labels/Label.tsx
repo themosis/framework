@@ -18,10 +18,9 @@ class Label extends React.Component <LabelProps> {
      */
     render() {
         return (
-            <label className="themosis__field__label" htmlFor={this.props.for}>
-                {this.props.text}
-                {this.props.children}
-            </label>
+            <label className="themosis__field__label"
+                   htmlFor={this.props.for}
+                   dangerouslySetInnerHTML={{__html:this.props.text}} />
         );
     }
 }

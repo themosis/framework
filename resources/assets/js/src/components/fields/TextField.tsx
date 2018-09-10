@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {Description, Field} from './common';
+import {getErrorsMessages, hasErrors} from '../../helpers';
 import Label from '../labels/Label';
+import Error from '../errors/Error';
 
 /**
  * Text field component.
@@ -35,6 +37,7 @@ class TextField extends React.Component <FieldProps> {
                            name={this.props.field.name}
                            value={this.props.field.value}
                            onChange={this.onChange}/>
+                    { hasErrors(this.props.field) && <Error messages={getErrorsMessages(this.props.field)}/> }
                     { this.props.field.options.info && <Description content={this.props.field.options.info}/> }
                 </div>
             </Field>

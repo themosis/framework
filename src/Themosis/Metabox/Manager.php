@@ -2,12 +2,26 @@
 
 namespace Themosis\Metabox;
 
+use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Validation\Validator;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
+use Themosis\Forms\Fields\Types\BaseType;
 
 class Manager implements MetaboxManagerInterface
 {
+    /**
+     * @var ValidationFactory
+     */
+    protected $factory;
+
+    public function __construct(ValidationFactory $factory)
+    {
+        $this->factory = $factory;
+    }
+
     /**
      * Handle metabox initialization.
      * Set the metabox fields value and return the metabox instance.
@@ -36,24 +50,116 @@ class Manager implements MetaboxManagerInterface
      *
      * @throws MetaboxException
      *
-     * @return bool
+     * @return MetaboxInterface
      */
-    public function saveFields(MetaboxInterface $metabox, Request $request): bool
+    public function saveFields(MetaboxInterface $metabox, Request $request): MetaboxInterface
     {
         $post_id = $request->query('post_id');
-        $fields = collect($request->get('fields'));
+        $data = $this->getMetaboxData(collect($request->get('fields')));
+        $fields = $metabox->repository()->all();
 
-        foreach ($fields as $data) {
-            /** @var FieldTypeInterface|CanHandleMetabox $field */
-            $field = $metabox->repository()->getField($data['basename'], $data['options']['group']);
+        /** @var $validator Validator */
+        $validator = $this->factory->make(
+            $data,
+            $this->getMetaboxRules($fields),
+            $this->getMetaboxMessages($fields),
+            $this->getMetaboxPlaceholders($fields)
+        );
+
+        $validatedData = $validator->valid();
+
+        foreach ($fields as $field) {
+            /** @var FieldTypeInterface|CanHandleMetabox|BaseType $field */
+            $field->setErrorMessageBag($validator->errors());
 
             if (method_exists($field, 'metaboxSave')) {
-                $field->metaboxSave($data['value'], $post_id);
+                $value = isset($validatedData[$field->getName()]) ? $validatedData[$field->getName()] : null;
+                $field->metaboxSave($value, $post_id);
             } else {
                 throw new MetaboxException('Unable to save ['.$field->getName().']. The [metabox] method is missing.');
             }
         }
 
-        return true;
+        return $metabox;
+    }
+
+    /**
+     * Return the metabox data for validation.
+     *
+     * @param Collection $fields
+     *
+     * @return array
+     */
+    protected function getMetaboxData(Collection $fields)
+    {
+        $data = [];
+
+        foreach ($fields as $field) {
+            $data[$field['name']] = $field['value'];
+        }
+
+        return $data;
+    }
+
+    /**
+     * Return the metabox rules for validation.
+     *
+     * @param array $fields
+     *
+     * @return array
+     */
+    protected function getMetaboxRules(array $fields)
+    {
+        $rules = [];
+
+        foreach ($fields as $field) {
+            /** @var FieldTypeInterface $field */
+            $rules[$field->getName()] = $field->getOption('rules');
+        }
+
+        return $rules;
+    }
+
+    /**
+     * Return the metabox validation messages.
+     *
+     * @param array $fields
+     *
+     * @return array
+     */
+    protected function getMetaboxMessages(array $fields)
+    {
+        // Each message is defined by field and its own rules.
+        // In our case, we need to prepend the field name (attribute)
+        // using a "dot" notation. Ex.: email.required
+        $messages = [];
+
+        foreach ($fields as $field) {
+            /** @var FieldTypeInterface $field */
+            foreach ($field->getOption('messages') as $attr => $message) {
+                $messages[$field->getName().'.'.$attr] = $message;
+            }
+        }
+
+        return $messages;
+    }
+
+    /**
+     * Return the metabox messages placeholders.
+     *
+     * @param array $fields
+     *
+     * @return array
+     */
+    protected function getMetaboxPlaceholders(array $fields)
+    {
+        $placeholders = [];
+
+        foreach ($fields as $field) {
+            /** @var FieldTypeInterface $field */
+            $placeholders[$field->getName()] = $field->getOption('placeholder');
+        }
+
+        return $placeholders;
     }
 }
