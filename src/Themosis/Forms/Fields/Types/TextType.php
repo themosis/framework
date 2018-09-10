@@ -3,8 +3,9 @@
 namespace Themosis\Forms\Fields\Types;
 
 use Themosis\Forms\Contracts\DataTransformerInterface;
+use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
 
-class TextType extends BaseType implements DataTransformerInterface
+class TextType extends BaseType implements DataTransformerInterface, CanHandleMetabox
 {
     /**
      * TextType field view.
@@ -61,5 +62,42 @@ class TextType extends BaseType implements DataTransformerInterface
     public function reverseTransform($data)
     {
         return $this->transform($data);
+    }
+
+    /**
+     * Initialize text field post meta value.
+     *
+     * @param int $post_id
+     */
+    public function metaboxGet(int $post_id)
+    {
+        $value = get_post_meta($post_id, $this->getName(), true);
+
+        if (! empty($value)) {
+            $this->setValue($value);
+        }
+    }
+
+    /**
+     * Handle text field post meta registration.
+     *
+     * @param string $value
+     * @param int    $post_id
+     *
+     * @return bool
+     */
+    public function metaboxSave($value, int $post_id)
+    {
+        if (is_null($value) || empty($value)) {
+            return delete_post_meta($post_id, $this->getName());
+        }
+
+        $previous = get_post_meta($post_id, $this->getName(), true);
+
+        if (empty($previous)) {
+            return add_post_meta($post_id, $this->getName(), $value, true);
+        }
+
+        return update_post_meta($post_id, $this->getName(), $value, $previous);
     }
 }

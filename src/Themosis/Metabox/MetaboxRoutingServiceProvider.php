@@ -22,7 +22,7 @@ class MetaboxRoutingServiceProvider extends RouteServiceProvider
             ->prefix('wp-api/themosis/v1')
             ->group(function () {
                 Route::apiResource('metabox', 'MetaboxApiController')->only([
-                    'show'
+                    'show', 'update'
                 ]);
             });
     }

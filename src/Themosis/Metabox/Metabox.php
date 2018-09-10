@@ -347,15 +347,19 @@ class Metabox implements MetaboxInterface
 
     /**
      * Core framework metabox management. Default callback.
+     *
+     * @param array $args
      */
-    public function handle()
+    public function handle(array $args)
     {
-        $this->filter->add('themosis_admin_global', function ($data) {
+        $this->filter->add('themosis_admin_global', function ($data) use ($args) {
             if (! isset($data['metabox'])) {
                 $data['metabox'] = [$this->id];
             } elseif (isset($data['metabox'])) {
                 $data['metabox'][] = $this->id;
             }
+
+            $data['post'] = $args['post'];
 
             return $data;
         });

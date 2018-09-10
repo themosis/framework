@@ -19,6 +19,15 @@ class MetaboxServiceProvider extends ServiceProvider
 
     public function register()
     {
+        $this->registerMetabox();
+        $this->registerMetaboxInterface();
+    }
+
+    /**
+     * Register the metabox factory.
+     */
+    public function registerMetabox()
+    {
         $this->app->bind('metabox', function ($app) {
             $resource = new MetaboxResource(
                 $app->bound('league.fractal') ? $app['league.fractal'] : new Manager(),
@@ -28,6 +37,14 @@ class MetaboxServiceProvider extends ServiceProvider
 
             return new Factory($app, $app['action'], $app['filter'], $resource);
         });
+    }
+
+    /**
+     * Register the metabox manager interface.
+     */
+    public function registerMetaboxInterface()
+    {
+        $this->app->bind('Themosis\Metabox\MetaboxManagerInterface', 'Themosis\Metabox\Manager');
     }
 
     /**

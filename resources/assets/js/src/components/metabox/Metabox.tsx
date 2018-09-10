@@ -1,5 +1,5 @@
 import * as React from 'react';
-import axios from 'axios';
+import axios, {AxiosError, AxiosResponse} from 'axios';
 import MetaboxBody from './MetaboxBody';
 import MetaboxFooter from './MetaboxFooter';
 import Button from "../buttons/Button";
@@ -11,6 +11,7 @@ interface MetaboxProps {
 interface MetaboxState {
     fields: Array<FieldType>;
     groups: Array<{}>;
+    status: string;
 }
 
 /**
@@ -21,7 +22,8 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
         super(props);
         this.state = {
             fields: [],
-            groups: []
+            groups: [],
+            status: ''
         };
 
         this.change = this.change.bind(this);
@@ -66,7 +68,17 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
      * Save metabox fields data.
      */
     save() {
-        console.log("Save");
+        let url = themosisGlobal.api.base_url + 'metabox/' + this.props.id + '?post_id=' + themosisGlobal.post.ID;
+
+        axios.put(url, {
+            fields: this.state.fields
+        })
+            .then((response:AxiosResponse) => {
+                console.log(response);
+            })
+            .catch((error: AxiosError) => {
+                console.log(error);
+            });
     }
 
     /**
@@ -74,17 +86,17 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
      * Initialize fields.
      */
     componentDidMount() {
-        let url = themosisGlobal.api.base_url + 'metabox/' + this.props.id + '?post_id=25';
+        let url = themosisGlobal.api.base_url + 'metabox/' + this.props.id + '?post_id=' + themosisGlobal.post.ID;
 
         axios.get(url)
-            .then((response: any) => {
+            .then((response: AxiosResponse) => {
                 let box = response.data;
                 this.setState({
                     fields: box.fields.data,
                     groups: box.groups.data
                 });
             })
-            .catch((error: any) => {
+            .catch((error: AxiosError) => {
                 console.log(error);
             });
     }
