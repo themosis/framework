@@ -47,4 +47,32 @@ class SectionTest extends TestCase
 
         $this->assertEquals('Another Title', $section->getTitle());
     }
+
+    public function testSectionCanHaveItemAtConstruction()
+    {
+        $section = new Section('special', 'Special', [
+            'item 1',
+            'item 2'
+        ]);
+
+        $this->assertEquals([
+            'item 1',
+            'item 2'
+        ], $section->getItems());
+        $this->assertEquals('special', $section->getId());
+        $this->assertEquals('Special', $section->getTitle());
+    }
+
+    public function testSectionHaveItems()
+    {
+        $section = new Section('empty');
+        $this->assertFalse($section->hasItems());
+
+        $section = new Section('custom', 'Custom', [1,2]);
+        $this->assertTrue($section->hasItems());
+
+        $section = new Section('panel');
+        $section->setItems([3,4]);
+        $this->assertTrue($section->hasItems());
+    }
 }

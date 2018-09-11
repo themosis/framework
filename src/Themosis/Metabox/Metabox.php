@@ -11,6 +11,7 @@ use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Hook\IHook;
 use Themosis\Metabox\Resources\MetaboxResourceInterface;
 use Themosis\Support\CallbackHandler;
+use Themosis\Support\Contracts\SectionInterface;
 use Themosis\Support\Section;
 
 class Metabox implements MetaboxInterface
@@ -484,22 +485,42 @@ class Metabox implements MetaboxInterface
     /**
      * Add a field to the metabox.
      *
-     * @param FieldTypeInterface $field
+     * @param FieldTypeInterface|SectionInterface $field
+     * @param SectionInterface                    $section
      *
      * @return MetaboxInterface
      */
-    public function add(FieldTypeInterface $field): MetaboxInterface
+    public function add($field, SectionInterface $section = null): MetaboxInterface
     {
+        if ($field instanceof SectionInterface) {
+            $section = $field;
+
+            if ($section->hasItems()) {
+                foreach ($section->getItems() as $item) {
+                    /** @var FieldTypeInterface $item */
+                    $item->setOptions([
+                        'group' => $section->getId()
+                    ]);
+
+                    $this->add($item, $section);
+                }
+            }
+
+            return $this;
+        }
+
         $field->setLocale($this->getLocale());
         $field->setPrefix($this->getPrefix());
 
-        if ($this->repository()->hasGroup($field->getOption('group'))) {
-            $section = $this->repository()->getGroup($field->getOption('group'));
-        } else {
-            $section = new Section($field->getOption('group'));
+        if (is_null($section)) {
+            if ($this->repository()->hasGroup($field->getOption('group'))) {
+                $section = $this->repository()->getGroup($field->getOption('group'));
+            } else {
+                $section = new Section($field->getOption('group'));
+            }
+            $section->addItem($field);
         }
 
-        $section->addItem($field);
         $this->repository()->addField($field, $section);
 
         return $this;

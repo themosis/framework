@@ -87,6 +87,13 @@ interface SectionInterface
     public function addItem($item): SectionInterface;
 
     /**
+     * Check if the section contains items.
+     *
+     * @return bool
+     */
+    public function hasItems(): bool;
+
+    /**
      * Set the section title.
      *
      * @param string $title

@@ -5,6 +5,7 @@ namespace Themosis\Metabox;
 use Themosis\Forms\Contracts\FieldsRepositoryInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Metabox\Resources\MetaboxResourceInterface;
+use Themosis\Support\Contracts\SectionInterface;
 
 interface MetaboxInterface
 {
@@ -205,11 +206,12 @@ interface MetaboxInterface
     public function repository(): FieldsRepositoryInterface;
 
     /**
-     * Add a field to the metabox.
+     * Add a field or section of fields to the metabox.
      *
-     * @param FieldTypeInterface $field
+     * @param FieldTypeInterface|SectionInterface $field
+     * @param SectionInterface                    $section
      *
      * @return MetaboxInterface
      */
-    public function add(FieldTypeInterface $field): MetaboxInterface;
+    public function add($field, SectionInterface $section = null): MetaboxInterface;
 }

@@ -57,10 +57,11 @@ class Section implements SectionInterface, Iterator, Countable
      */
     private $position = 0;
 
-    public function __construct(string $id, string $title = '')
+    public function __construct(string $id, string $title = '', array $items = [])
     {
         $this->id = $id;
         $this->title = $title;
+        $this->items = $items;
     }
 
     /**
@@ -218,6 +219,16 @@ class Section implements SectionInterface, Iterator, Countable
         $this->items[] = $item;
 
         return $this;
+    }
+
+    /**
+     * Check if the section contains items.
+     *
+     * @return bool
+     */
+    public function hasItems(): bool
+    {
+        return ! empty($this->items);
     }
 
     /**

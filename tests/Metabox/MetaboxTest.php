@@ -14,6 +14,7 @@ use Themosis\Metabox\Factory;
 use Themosis\Metabox\MetaboxInterface;
 use Themosis\Metabox\Resources\MetaboxResource;
 use Themosis\Metabox\Resources\Transformers\MetaboxTransformer;
+use Themosis\Support\Section;
 
 class MetaboxTest extends TestCase
 {
@@ -194,5 +195,36 @@ class MetaboxTest extends TestCase
 
         $this->assertEquals($expected, $box->toArray());
         $this->assertEquals(json_encode($expected), $box->toJson());
+    }
+
+    public function testAddSectionsAndFieldsToMetabox()
+    {
+        $factory = $this->getFactory();
+        $fields = $this->getFieldsFactory();
+
+        $box = $factory->make('options')
+            ->add($fields->text('anything'))
+            ->add(
+                new Section('general', 'General', [
+                    $fields->text('firstname'),
+                    $fields->email('email')
+                ])
+            )
+            ->add(
+                new Section('social', 'Social', [
+                    $fields->text('facebook'),
+                    $fields->text('twitter')
+                ])
+            );
+
+        $this->assertEquals(3, count($box->repository()->getGroups()));
+        $this->assertEquals('default', $box->repository()->getGroup('default')->getId());
+        $this->assertEquals('general', $box->repository()->getGroup('general')->getId());
+        $this->assertEquals('social', $box->repository()->getGroup('social')->getId());
+
+        $this->assertEquals(5, count($box->repository()->all()));
+        $this->assertEquals(1, count($box->repository()->getGroup('default')->getItems()));
+        $this->assertEquals(2, count($box->repository()->getGroup('general')->getItems()));
+        $this->assertEquals(2, count($box->repository()->getGroup('social')->getItems()));
     }
 }
