@@ -108,7 +108,7 @@ class FieldsTest extends TestCase
                 'placeholder' => '',
                 'rules' => ''
             ],
-            'value' => null
+            'value' => ''
         ], $expected);
     }
 

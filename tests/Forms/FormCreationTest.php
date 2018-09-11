@@ -1038,7 +1038,7 @@ class FormCreationTest extends TestCase
                             'placeholder' => 'firstname',
                             'rules' => ''
                         ],
-                        'value' => null
+                        'value' => ''
                     ]
                 ]
             ],
@@ -1082,7 +1082,7 @@ class FormCreationTest extends TestCase
                             'placeholder' => 'firstname',
                             'rules' => ''
                         ],
-                        'value' => null
+                        'value' => ''
                     ]
                 ]
             ],

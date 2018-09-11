@@ -214,4 +214,30 @@ interface MetaboxInterface
      * @return MetaboxInterface
      */
     public function add($field, SectionInterface $section = null): MetaboxInterface;
+
+    /**
+     * Return the metabox translations.
+     *
+     * @return array
+     */
+    public function getTranslations(): array;
+
+    /**
+     * Return the translation if exists.
+     *
+     * @param string $key
+     *
+     * @return string
+     */
+    public function getTranslation(string $key): string;
+
+    /**
+     * Add metabox translation.
+     *
+     * @param string $key
+     * @param string $translation
+     *
+     * @return MetaboxInterface
+     */
+    public function addTranslation(string $key, string $translation): MetaboxInterface;
 }

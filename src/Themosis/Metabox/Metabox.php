@@ -92,6 +92,11 @@ class Metabox implements MetaboxInterface
      */
     protected $prefix = 'th_';
 
+    /**
+     * @var array
+     */
+    protected $l10n;
+
     public function __construct(string $id, IHook $action, IHook $filter, FieldsRepositoryInterface $repository)
     {
         $this->id = $id;
@@ -511,6 +516,48 @@ class Metabox implements MetaboxInterface
         }
 
         $this->repository()->addField($field, $section);
+
+        return $this;
+    }
+
+    /**
+     * Return metabox all translations.
+     *
+     * @return array
+     */
+    public function getTranslations(): array
+    {
+        if (is_null($this->l10n)) {
+            return [];
+        }
+
+        return $this->l10n;
+    }
+
+    /**
+     * Return the translation based on given key.
+     * Return empty string if not defined.
+     *
+     * @param string $key
+     *
+     * @return string
+     */
+    public function getTranslation(string $key): string
+    {
+        return $this->l10n[$key] ?? '';
+    }
+
+    /**
+     * Add metabox translation.
+     *
+     * @param string $key
+     * @param string $translation
+     *
+     * @return MetaboxInterface
+     */
+    public function addTranslation(string $key, string $translation): MetaboxInterface
+    {
+        $this->l10n[$key] = $translation;
 
         return $this;
     }

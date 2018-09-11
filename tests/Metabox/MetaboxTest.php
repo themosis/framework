@@ -111,6 +111,7 @@ class MetaboxTest extends TestCase
         $expected = [
             'id' => 'infos',
             'context' => 'advanced',
+            'l10n' => [],
             'locale' => 'en_US',
             'priority' => 'default',
             'screen' => [
@@ -142,6 +143,7 @@ class MetaboxTest extends TestCase
         $expected = [
             'id' => 'properties',
             'context' => 'advanced',
+            'l10n' => [],
             'locale' => 'en_US',
             'priority' => 'default',
             'screen' => [
@@ -178,7 +180,7 @@ class MetaboxTest extends TestCase
                             'placeholder' => 'author',
                             'rules' => ''
                         ],
-                        'value' => null
+                        'value' => ''
                     ]
                 ]
             ],
@@ -226,5 +228,19 @@ class MetaboxTest extends TestCase
         $this->assertEquals(1, count($box->repository()->getGroup('default')->getItems()));
         $this->assertEquals(2, count($box->repository()->getGroup('general')->getItems()));
         $this->assertEquals(2, count($box->repository()->getGroup('social')->getItems()));
+    }
+
+    public function testAddTranslationsToMetabox()
+    {
+        $factory = $this->getFactory();
+
+        $box = $factory->make('stuff');
+
+        $box->addTranslation('hello', 'Hello World');
+
+        $this->assertEquals('Hello World', $box->getTranslation('hello'));
+        $this->assertEquals([
+            'hello' => 'Hello World'
+        ], $box->getTranslations());
     }
 }

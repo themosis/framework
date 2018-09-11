@@ -62,6 +62,8 @@ class Factory
             ->setResource($this->resource)
             ->setLocale($this->container->getLocale());
 
+        $this->setMetaboxTranslations($metabox);
+
         $abstract = sprintf('themosis.metabox.%s', $id);
 
         if (! $this->container->bound($abstract)) {
@@ -83,5 +85,26 @@ class Factory
     protected function setDefaultTitle(string $name): string
     {
         return ucfirst(str_replace(['_', '-', '.'], ' ', $name));
+    }
+
+    /**
+     * Set metabox translations strings.
+     *
+     * @param MetaboxInterface $metabox
+     *
+     * @return $this
+     */
+    protected function setMetaboxTranslations(MetaboxInterface $metabox)
+    {
+        if (! function_exists('__')) {
+            return $this;
+        }
+
+        $metabox->addTranslation('done', __('Saved', Application::TEXTDOMAIN));
+        $metabox->addTranslation('error', __('Saved with errors', Application::TEXTDOMAIN));
+        $metabox->addTranslation('saving', __('Saving', Application::TEXTDOMAIN));
+        $metabox->addTranslation('submit', sprintf('%s %s', __('Save', Application::TEXTDOMAIN), $metabox->getTitle()));
+
+        return $this;
     }
 }
