@@ -1,13 +1,13 @@
 import * as React from "react";
 import {Description, Field} from "./common";
-import {getErrorsMessages, hasErrors, isRequired} from "../../helpers";
 import Label from "../labels/Label";
+import {getErrorsMessages, hasErrors, isRequired} from "../../helpers";
 import Error from "../errors/Error";
 
 /**
- * Text field component.
+ * Email field component.
  */
-class TextField extends React.Component <FieldProps> {
+class EmailField extends React.Component <FieldProps> {
     constructor(props: FieldProps) {
         super(props);
 
@@ -15,14 +15,14 @@ class TextField extends React.Component <FieldProps> {
     }
 
     /**
-     * Handle input value changes.
+     * Handle input value change.
      */
     onChange(e: any) {
         this.props.changeHandler(e.target.name, e.target.value);
     }
 
     /**
-     * Render component UI.
+     * Render the component.
      */
     render() {
         return (
@@ -30,14 +30,14 @@ class TextField extends React.Component <FieldProps> {
                 <div className="themosis__column__label">
                     <Label required={isRequired(this.props.field)}
                            for={this.props.field.attributes.id}
-                           text={this.props.field.label.inner} />
+                           text={this.props.field.label.inner}/>
                 </div>
                 <div className="themosis__column__content">
                     <input id={this.props.field.attributes.id}
                            className="themosis__input"
-                           type="text"
                            name={this.props.field.name}
                            value={this.props.field.value}
+                           type="email"
                            onChange={this.onChange}/>
                     { hasErrors(this.props.field) && <Error messages={getErrorsMessages(this.props.field)}/> }
                     { this.props.field.options.info && <Description content={this.props.field.options.info}/> }
@@ -47,4 +47,4 @@ class TextField extends React.Component <FieldProps> {
     }
 }
 
-export default TextField;
+export default EmailField;

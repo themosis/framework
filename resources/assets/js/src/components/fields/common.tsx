@@ -1,6 +1,6 @@
-import * as React from 'react';
-import {hasErrors} from '../../helpers';
-import classNames from 'classnames';
+import * as React from "react";
+import {hasErrors} from "../../helpers";
+import classNames from "classnames";
 
 /**
  * Field - Simple wrapper for custom fields.

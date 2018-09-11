@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 import Icon from "../icons/Icon";
 
 interface MetaboxStatusProps {

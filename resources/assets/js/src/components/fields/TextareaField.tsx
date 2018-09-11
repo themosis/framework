@@ -1,8 +1,8 @@
-import * as React from 'react';
-import {Description, Field} from './common';
-import Label from '../labels/Label';
-import {getErrorsMessages, hasErrors, isRequired} from '../../helpers';
-import Error from '../errors/Error';
+import * as React from "react";
+import {Description, Field} from "./common";
+import Label from "../labels/Label";
+import {getErrorsMessages, hasErrors, isRequired} from "../../helpers";
+import Error from "../errors/Error";
 
 /**
  * Textarea field component.

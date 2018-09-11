@@ -1,8 +1,9 @@
-import Manager from './src/components/Manager';
-import MetaboxFactory from './src/components/MetaboxFactory';
-import TextField from './src/components/fields/TextField';
-import TextareaField from './src/components/fields/TextareaField';
-import './src/styles/metabox.scss';
+import Manager from "./src/components/Manager";
+import MetaboxFactory from "./src/components/MetaboxFactory";
+import TextField from "./src/components/fields/TextField";
+import TextareaField from "./src/components/fields/TextareaField";
+import EmailField from "./src/components/fields/EmailField";
+import "./src/styles/metabox.scss";
 
 /*
  * Initialize the components Manager.
@@ -14,6 +15,7 @@ const manager = new Manager();
  */
 manager.addComponent('themosis.fields.text', TextField);
 manager.addComponent('themosis.fields.textarea', TextareaField);
+manager.addComponent('themosis.fields.email', EmailField);
 
 export { manager as Manager };
 

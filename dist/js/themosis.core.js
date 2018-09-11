@@ -503,8 +503,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_components_MetaboxFactory__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_components_fields_TextField__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_components_fields_TextareaField__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_styles_metabox_scss__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_styles_metabox_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__src_styles_metabox_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_components_fields_EmailField__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_styles_metabox_scss__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_styles_metabox_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__src_styles_metabox_scss__);
+
 
 
 
@@ -519,6 +521,7 @@ var manager = new __WEBPACK_IMPORTED_MODULE_0__src_components_Manager__["a" /* d
  */
 manager.addComponent('themosis.fields.text', __WEBPACK_IMPORTED_MODULE_2__src_components_fields_TextField__["a" /* default */]);
 manager.addComponent('themosis.fields.textarea', __WEBPACK_IMPORTED_MODULE_3__src_components_fields_TextareaField__["a" /* default */]);
+manager.addComponent('themosis.fields.email', __WEBPACK_IMPORTED_MODULE_4__src_components_fields_EmailField__["a" /* default */]);
 
 /**
  * Initialize the Metabox Factory.
@@ -24454,6 +24457,68 @@ var Tabs = /** @class */ (function (_super) {
     return Tabs;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
 /* harmony default export */ __webpack_exports__["a"] = (Tabs);
+
+
+/***/ }),
+/* 61 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__labels_Label__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__errors_Error__ = __webpack_require__(53);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+
+/**
+ * Email field component.
+ */
+var EmailField = /** @class */ (function (_super) {
+    __extends(EmailField, _super);
+    function EmailField(props) {
+        var _this = _super.call(this, props) || this;
+        _this.onChange = _this.onChange.bind(_this);
+        return _this;
+    }
+    /**
+     * Handle input value change.
+     */
+    EmailField.prototype.onChange = function (e) {
+        this.props.changeHandler(e.target.name, e.target.value);
+    };
+    /**
+     * Render the component.
+     */
+    EmailField.prototype.render = function () {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["b" /* Field */], { field: this.props.field },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { required: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["c" /* isRequired */])(this.props.field), for: this.props.field.attributes.id, text: this.props.field.label.inner })),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { id: this.props.field.attributes.id, className: "themosis__input", name: this.props.field.name, value: this.props.field.value, type: "email", onChange: this.onChange }),
+                Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["b" /* hasErrors */])(this.props.field) && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__errors_Error__["a" /* default */], { messages: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["a" /* getErrorsMessages */])(this.props.field) }),
+                this.props.field.options.info && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["a" /* Description */], { content: this.props.field.options.info }))));
+    };
+    return EmailField;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
+/* harmony default export */ __webpack_exports__["a"] = (EmailField);
 
 
 /***/ })

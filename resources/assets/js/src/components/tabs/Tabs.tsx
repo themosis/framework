@@ -1,6 +1,6 @@
-import * as React from 'react';
-import Button from '../buttons/Button';
-import classNames from 'classnames';
+import * as React from "react";
+import Button from "../buttons/Button";
+import classNames from "classnames";
 
 interface TabMenuItem {
     id: string;

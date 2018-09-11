@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import Metabox from './metabox/Metabox';
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import Metabox from "./metabox/Metabox";
 
 interface MetaboxFactoryInterface {
     make(list: string[]): MetaboxFactoryInterface;

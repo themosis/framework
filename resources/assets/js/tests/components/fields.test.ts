@@ -1,5 +1,5 @@
-import Manager from './../../src/components/Manager';
-import TextField from './../../src/components/fields/TextField';
+import Manager from "./../../src/components/Manager";
+import TextField from "./../../src/components/fields/TextField";
 
 test('Text field can be registered to components Manager', () => {
     let manager = new Manager();

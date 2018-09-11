@@ -1,4 +1,4 @@
-import Manager from '../../src/components/Manager';
+import Manager from "../../src/components/Manager";
 
 test('Components manager is instance of Manager', () => {
     let manager = new Manager();

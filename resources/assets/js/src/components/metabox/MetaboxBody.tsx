@@ -1,7 +1,7 @@
-import * as React from 'react';
-import {Manager} from '../../../index';
-import Tabs from '../tabs/Tabs';
-import {hasErrors} from '../../helpers';
+import * as React from "react";
+import {Manager} from "../../../index";
+import Tabs from "../tabs/Tabs";
+import {hasErrors} from "../../helpers";
 
 interface Props {
     fields: Array<FieldType>;

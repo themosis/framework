@@ -1,9 +1,9 @@
-import * as React from 'react';
-import axios, {AxiosError, AxiosResponse} from 'axios';
-import MetaboxBody from './MetaboxBody';
-import MetaboxFooter from './MetaboxFooter';
+import * as React from "react";
+import axios, {AxiosError, AxiosResponse} from "axios";
+import MetaboxBody from "./MetaboxBody";
+import MetaboxFooter from "./MetaboxFooter";
 import Button from "../buttons/Button";
-import MetaboxStatus from './MetaboxStatus';
+import MetaboxStatus from "./MetaboxStatus";
 import {hasErrors} from "../../helpers";
 
 interface MetaboxProps {
