@@ -3,6 +3,7 @@ import MetaboxFactory from "./src/components/MetaboxFactory";
 import TextField from "./src/components/fields/TextField";
 import TextareaField from "./src/components/fields/TextareaField";
 import EmailField from "./src/components/fields/EmailField";
+import PasswordField from "./src/components/fields/PasswordField";
 import "./src/styles/metabox.scss";
 
 /*
@@ -16,6 +17,7 @@ const manager = new Manager();
 manager.addComponent('themosis.fields.text', TextField);
 manager.addComponent('themosis.fields.textarea', TextareaField);
 manager.addComponent('themosis.fields.email', EmailField);
+manager.addComponent('themosis.fields.password', PasswordField);
 
 export { manager as Manager };
 
