@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Manager} from '../../../index';
 import Tabs from '../tabs/Tabs';
+import {hasErrors} from '../../helpers';
 
 interface Props {
     fields: Array<FieldType>;
@@ -27,7 +28,7 @@ class MetaboxBody extends React.Component <Props> {
         if (1 < this.props.groups.length) {
             return (
                 <div className="themosis__metabox__body">
-                    <Tabs items={[{id: 'general', title: 'General'}, {id: 'social', title: 'Social'}]}>
+                    <Tabs items={this.getTabsList()}>
                         { (groupId: string) => {
                             let fields = this.props.fields.filter((field: FieldType) => {
                                 return field.options.group === groupId;
@@ -69,6 +70,36 @@ class MetaboxBody extends React.Component <Props> {
                        field={data}
                        changeHandler={this.props.changeHandler} />
             );
+        });
+    }
+
+    /**
+     * Return a formatted tabs list.
+     *
+     * @return {Array<TabMenuItem>}
+     */
+    getTabsList() {
+        return this.props.groups.map((group: GroupType) => {
+            let groupHasError = false;
+
+            let fields = this.props.fields.filter((field: FieldType) => {
+                return group.id === field.options.group;
+            });
+
+            for (let idx in fields) {
+                if (hasErrors(fields[idx])) {
+                    groupHasError = true;
+                }
+            }
+
+            /**
+             * Match <TabMenuItem> definition defined in "Tabs.tsx".
+             */
+            return {
+                id: group.id,
+                title: group.title,
+                hasError: groupHasError
+            };
         });
     }
 }

@@ -55,7 +55,7 @@
       display: block;
       width: 100%;
       padding: $paddingH $paddingH $paddingH ($paddingH - 4px);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       background-color: #F5F5F5;
       color: $grey;
@@ -76,6 +76,11 @@
       background-color: $white;
       color: $blue;
       border-left: 4px solid $blue;
+    }
+
+    button.tab__has__errors {
+      color: $red;
+      border-left: 4px solid $red;
     }
   }
 

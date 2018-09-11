@@ -1,9 +1,11 @@
 import * as React from 'react';
 import Button from '../buttons/Button';
+import classNames from 'classnames';
 
 interface TabMenuItem {
     id: string;
     title: string;
+    hasError?: boolean;
 }
 
 interface TabsProps {
@@ -50,7 +52,7 @@ class Tabs extends React.Component <TabsProps, TabsState> {
                         return (
                             <Button text={item.title}
                                     key={item.id}
-                                    className={this.state.selected === item.id ? 'tab__active' : ''}
+                                    className={classNames({'tab__active': this.state.selected === item.id, 'tab__has__errors': item.hasError})}
                                     clickHandler={() => this.handleClick(item.id)}/>
                         );
                     }) }
