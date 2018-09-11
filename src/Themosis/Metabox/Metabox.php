@@ -370,6 +370,7 @@ class Metabox implements MetaboxInterface
              */
             $data['l10n']['metabox'] = [
                 'done' => __('Saved', Application::TEXTDOMAIN),
+                'error' => __('Saved with errors', Application::TEXTDOMAIN),
                 'saving' => __('Saving', Application::TEXTDOMAIN),
                 'submit' => __('Save Changes', Application::TEXTDOMAIN)
             ];

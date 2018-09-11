@@ -25,6 +25,31 @@ export const hasErrors = (field: FieldType): boolean => {
 };
 
 /**
+ * Field utility. Check if a field has a "required" validation rule.
+ *
+ * @param field
+ */
+export const isRequired = (field: FieldType): boolean => {
+    let rules = field.validation.rules;
+
+    /*
+     * Case where rules is an array.
+     */
+    if (Array.isArray(rules)) {
+        for (let idx in rules) {
+            if ('required' === rules[idx]) {
+                return true;
+            }
+        }
+    }
+
+    /*
+     * Default rules is a string.
+     */
+    return -1 !== rules.indexOf('required');
+};
+
+/**
  * Javascript version of PHP ucfirst() function.
  * Capitalize first letter of a string.
  *

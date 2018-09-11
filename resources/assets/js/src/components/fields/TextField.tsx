@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Description, Field} from './common';
-import {getErrorsMessages, hasErrors} from '../../helpers';
+import {getErrorsMessages, hasErrors, isRequired} from '../../helpers';
 import Label from '../labels/Label';
 import Error from '../errors/Error';
 
@@ -26,9 +26,11 @@ class TextField extends React.Component <FieldProps> {
      */
     render() {
         return (
-            <Field>
+            <Field field={this.props.field}>
                 <div className="themosis__column__label">
-                    <Label for={this.props.field.attributes.id} text={this.props.field.label.inner} />
+                    <Label required={isRequired(this.props.field)}
+                           for={this.props.field.attributes.id}
+                           text={this.props.field.label.inner} />
                 </div>
                 <div className="themosis__column__content">
                     <input id={this.props.field.attributes.id}

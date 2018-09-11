@@ -14,6 +14,7 @@ class Icon extends React.Component <IconProps> {
 
     /**
      * Render the component.
+     * Default icon is the "saving" one.
      */
     render() {
         switch (this.props.name) {
@@ -21,6 +22,12 @@ class Icon extends React.Component <IconProps> {
                 return (
                     <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M19.1221 0L21.9535 1.61373L9.67728 16H6.84594L0 8.20601L2.83134 6.06009L8.26161 10.1803L19.1221 0Z" fill="#46B450"/>
+                    </svg>
+                );
+            case 'error':
+                return (
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 2.84848L12.8485 10L20 17.1515L17.1515 20L10 12.8687L2.86869 20L0 17.1313L7.13131 10L0 2.86869L2.86869 0L10 7.13131L17.1515 0L20 2.84848Z" fill="#BE1414"/>
                     </svg>
                 );
             default:

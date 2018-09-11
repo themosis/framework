@@ -1062,15 +1062,14 @@ module.exports = Cancel;
 /* harmony export (immutable) */ __webpack_exports__["a"] = Description;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_classnames__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_classnames___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_classnames__);
 
-/**
- * Field - Simple wrapper for custom fields.
- *
- * @param props
- * @constructor
- */
+
+
 function Field(props) {
-    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__field" }, props.children));
+    return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: __WEBPACK_IMPORTED_MODULE_2_classnames___default()('themosis__field', { 'has__errors': Object(__WEBPACK_IMPORTED_MODULE_1__helpers__["b" /* hasErrors */])(props.field) }) }, props.children));
 }
 function Description(props) {
     return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__description", dangerouslySetInnerHTML: { __html: props.content } }));
@@ -1110,7 +1109,13 @@ var Label = /** @class */ (function (_super) {
      * Render the component.
      */
     Label.prototype.render = function () {
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("label", { className: "themosis__field__label", htmlFor: this.props.for, dangerouslySetInnerHTML: { __html: this.props.text } }));
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("label", { className: "themosis__field__label", htmlFor: this.props.for },
+            this.props.text,
+            " ",
+            this.props.required && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", { className: "required" }, "*")));
+    };
+    Label.defaultProps = {
+        required: false
     };
     return Label;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
@@ -21985,6 +21990,7 @@ exports.unstable_unsubscribe = unstable_unsubscribe;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__MetaboxFooter__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__buttons_Button__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__MetaboxStatus__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__helpers__ = __webpack_require__(52);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -21998,6 +22004,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
 
 
 
@@ -22062,11 +22069,23 @@ var Metabox = /** @class */ (function (_super) {
             fields: this.state.fields
         })
             .then(function (response) {
-            _this.setState({
-                fields: response.data.fields.data,
-                status: 'done'
-            });
-            _this.timer = setTimeout(_this.clearStatus, 3000);
+            /*
+             * First check if there are any errors. Some fields
+             * might have failed the validation.
+             */
+            if (_this.hasErrors(response.data.fields.data)) {
+                _this.setState({
+                    fields: response.data.fields.data,
+                    status: 'error'
+                });
+            }
+            else {
+                _this.setState({
+                    fields: response.data.fields.data,
+                    status: 'done'
+                });
+            }
+            _this.timer = setTimeout(_this.clearStatus, 5000);
         })
             .catch(function (error) {
             /*
@@ -22087,6 +22106,18 @@ var Metabox = /** @class */ (function (_super) {
             status: 'default'
         });
         clearTimeout(this.timer);
+    };
+    /**
+     * Check if the metabox has errors.
+     */
+    Metabox.prototype.hasErrors = function (fields) {
+        for (var idx in fields) {
+            var field = fields[idx];
+            if (Object(__WEBPACK_IMPORTED_MODULE_6__helpers__["b" /* hasErrors */])(field)) {
+                return true;
+            }
+        }
+        return false;
     };
     /**
      * Fetch metabox data.
@@ -23467,12 +23498,16 @@ var Icon = /** @class */ (function (_super) {
     }
     /**
      * Render the component.
+     * Default icon is the "saving" one.
      */
     Icon.prototype.render = function () {
         switch (this.props.name) {
             case 'done':
                 return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("svg", { width: "22", height: "16", viewBox: "0 0 22 16", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("path", { d: "M19.1221 0L21.9535 1.61373L9.67728 16H6.84594L0 8.20601L2.83134 6.06009L8.26161 10.1803L19.1221 0Z", fill: "#46B450" })));
+            case 'error':
+                return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("svg", { width: "20", height: "20", viewBox: "0 0 20 20", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
+                    __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("path", { d: "M20 2.84848L12.8485 10L20 17.1515L17.1515 20L10 12.8687L2.86869 20L0 17.1313L7.13131 10L0 2.86869L2.86869 0L10 7.13131L17.1515 0L20 2.84848Z", fill: "#BE1414" })));
             default:
                 return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("svg", { className: "icon__saving", width: "22", height: "16", viewBox: "0 0 22 16", fill: "none", xmlns: "http://www.w3.org/2000/svg" },
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("path", { d: "M11.2154 0C15.4271 0 18.8872 3.10714 19.4718 7.14286H21.9535L17.7776 11.9048L13.6016 7.14286H16.3697C15.8328 4.79762 13.7329 3.03571 11.2154 3.03571C9.48534 3.03571 7.95814 3.88095 6.99171 5.15476L4.95147 2.83333C6.47866 1.09524 8.72174 0 11.2154 0ZM10.7381 16C6.53832 16 3.06633 12.8929 2.4817 8.85714H0L4.17594 4.09524C5.57189 5.67857 6.95591 7.27381 8.35187 8.85714H5.58382C6.12073 11.2024 8.22063 12.9643 10.7381 12.9643C12.4681 12.9643 13.9953 12.119 14.9618 10.8452L17.002 13.1667C15.4748 14.9048 13.2437 16 10.7381 16Z", fill: "#0085BA" })));
@@ -23532,9 +23567,9 @@ var TextField = /** @class */ (function (_super) {
      * Render component UI.
      */
     TextField.prototype.render = function () {
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["b" /* Field */], null,
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["b" /* Field */], { field: this.props.field },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__labels_Label__["a" /* default */], { for: this.props.field.attributes.id, text: this.props.field.label.inner })),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__labels_Label__["a" /* default */], { required: Object(__WEBPACK_IMPORTED_MODULE_2__helpers__["c" /* isRequired */])(this.props.field), for: this.props.field.attributes.id, text: this.props.field.label.inner })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { id: this.props.field.attributes.id, className: "themosis__input", type: "text", name: this.props.field.name, value: this.props.field.value, onChange: this.onChange }),
                 Object(__WEBPACK_IMPORTED_MODULE_2__helpers__["b" /* hasErrors */])(this.props.field) && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__errors_Error__["a" /* default */], { messages: Object(__WEBPACK_IMPORTED_MODULE_2__helpers__["a" /* getErrorsMessages */])(this.props.field) }),
@@ -23552,6 +23587,7 @@ var TextField = /** @class */ (function (_super) {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getErrorsMessages; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return hasErrors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isRequired; });
 /* unused harmony export ucfirst */
 /**
  * Return field errors messages.
@@ -23575,6 +23611,28 @@ var getErrorsMessages = function (field) {
  */
 var hasErrors = function (field) {
     return !!field.validation.messages[field.name];
+};
+/**
+ * Field utility. Check if a field has a "required" validation rule.
+ *
+ * @param field
+ */
+var isRequired = function (field) {
+    var rules = field.validation.rules;
+    /*
+     * Case where rules is an array.
+     */
+    if (Array.isArray(rules)) {
+        for (var idx in rules) {
+            if ('required' === rules[idx]) {
+                return true;
+            }
+        }
+    }
+    /*
+     * Default rules is a string.
+     */
+    return -1 !== rules.indexOf('required');
 };
 /**
  * Javascript version of PHP ucfirst() function.
@@ -23687,9 +23745,9 @@ var TextareaField = /** @class */ (function (_super) {
      * Render component UI.
      */
     TextareaField.prototype.render = function () {
-        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["b" /* Field */], null,
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["b" /* Field */], { field: this.props.field },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { for: this.props.field.attributes.id, text: this.props.field.label.inner })),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { required: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["c" /* isRequired */])(this.props.field), for: this.props.field.attributes.id, text: this.props.field.label.inner })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("textarea", { id: this.props.field.attributes.id, name: this.props.field.name, className: "themosis__textarea", value: this.props.field.value, onChange: this.onChange }),
                 Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["b" /* hasErrors */])(this.props.field) && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__errors_Error__["a" /* default */], { messages: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["a" /* getErrorsMessages */])(this.props.field) }),
@@ -23740,7 +23798,7 @@ exports = module.exports = __webpack_require__(57)(false);
 
 
 // module
-exports.push([module.i, "@keyframes turning {\n  0% {\n    transform-origin: center center;\n    transform: rotate(0deg); }\n  100% {\n    transform: rotate(360deg); } }\n\n.themosis__metabox__footer {\n  display: flex;\n  background: #EDEFF0;\n  border-top: 1px solid #E5E5E5;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-end;\n  padding: 16px 12px; }\n\n.themosis__metabox__status {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  margin-right: 12px; }\n  .themosis__metabox__status__icon {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    align-items: center;\n    width: 22px;\n    height: 22px; }\n    .themosis__metabox__status__icon svg.icon__saving {\n      animation: turning 1s linear infinite; }\n  .themosis__metabox__status__text {\n    display: inline;\n    margin: 0 0 0 8px;\n    padding: 0; }\n\n.themosis__field {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n  border-bottom: 1px solid #EEEEEE; }\n  .themosis__field:last-child {\n    border: none; }\n  .themosis__field__label {\n    font-weight: 600; }\n\n.themosis__column__label {\n  width: 33.33%; }\n\n.themosis__column__content {\n  width: 66.66%; }\n\n.themosis__description {\n  margin-top: 8px;\n  color: #666666; }\n\n.themosis__field__errors {\n  margin-top: 8px; }\n  .themosis__field__errors ul {\n    display: inline-block;\n    background-color: #F2DADA;\n    border-radius: 4px;\n    padding: 6px;\n    margin: 0;\n    color: #BE1414; }\n    .themosis__field__errors ul li {\n      color: #BE1414;\n      margin: 0; }\n\n.themosis__input {\n  min-width: 260px;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  padding: 6px; }\n\n.themosis__textarea {\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  padding: 6px; }\n", ""]);
+exports.push([module.i, "@keyframes turning {\n  0% {\n    transform-origin: center center;\n    transform: rotate(0deg); }\n  100% {\n    transform: rotate(360deg); } }\n\n.themosis__metabox__footer {\n  display: flex;\n  background: #EDEFF0;\n  border-top: 1px solid #E5E5E5;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-end;\n  padding: 16px 12px; }\n\n.themosis__metabox__status {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  margin-right: 12px; }\n  .themosis__metabox__status__icon {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    align-items: center;\n    width: 22px;\n    height: 22px; }\n    .themosis__metabox__status__icon svg.icon__saving {\n      animation: turning 1s linear infinite; }\n  .themosis__metabox__status__text {\n    display: inline;\n    margin: 0 0 0 8px;\n    padding: 0; }\n\n.themosis__field {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n  border-bottom: 1px solid #EEEEEE; }\n  .themosis__field:last-child {\n    border: none; }\n  .themosis__field__label {\n    font-weight: 600; }\n\n.themosis__column__label {\n  width: 33.33%; }\n\n.themosis__column__content {\n  width: 66.66%; }\n\n.themosis__description {\n  margin-top: 8px;\n  color: #666666; }\n\n.themosis__field__errors {\n  margin-top: 8px; }\n  .themosis__field__errors ul {\n    display: inline-block;\n    background-color: #F2DADA;\n    border-radius: 4px;\n    padding: 6px;\n    margin: 0;\n    color: #BE1414; }\n    .themosis__field__errors ul li {\n      color: #BE1414;\n      margin: 0; }\n\n.themosis__input {\n  min-width: 260px;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  padding: 6px; }\n\n.themosis__textarea {\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  padding: 6px; }\n\n.has__errors .themosis__input {\n  border-color: #BE1414; }\n\n.has__errors .themosis__textarea {\n  border-color: #BE1414; }\n", ""]);
 
 // exports
 

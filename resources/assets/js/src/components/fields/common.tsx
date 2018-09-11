@@ -1,4 +1,6 @@
 import * as React from 'react';
+import {hasErrors} from '../../helpers';
+import classNames from 'classnames';
 
 /**
  * Field - Simple wrapper for custom fields.
@@ -6,9 +8,14 @@ import * as React from 'react';
  * @param props
  * @constructor
  */
-export function Field (props: any) {
+interface FieldWrapperProps {
+    field: FieldType;
+    children: any;
+}
+
+export function Field (props: FieldWrapperProps) {
     return (
-        <div className="themosis__field">
+        <div className={classNames('themosis__field', {'has__errors': hasErrors(props.field)})}>
             {props.children}
         </div>
     );

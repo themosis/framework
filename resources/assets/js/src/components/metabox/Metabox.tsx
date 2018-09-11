@@ -4,6 +4,7 @@ import MetaboxBody from './MetaboxBody';
 import MetaboxFooter from './MetaboxFooter';
 import Button from "../buttons/Button";
 import MetaboxStatus from './MetaboxStatus';
+import {hasErrors} from "../../helpers";
 
 interface MetaboxProps {
     id: string;
@@ -92,12 +93,23 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
             fields: this.state.fields
         })
             .then((response: AxiosResponse) => {
-                this.setState({
-                    fields: response.data.fields.data,
-                    status: 'done'
-                });
+                /*
+                 * First check if there are any errors. Some fields
+                 * might have failed the validation.
+                 */
+                if (this.hasErrors(response.data.fields.data)) {
+                    this.setState({
+                        fields: response.data.fields.data,
+                        status: 'error'
+                    });
+                } else {
+                    this.setState({
+                        fields: response.data.fields.data,
+                        status: 'done'
+                    });
+                }
 
-                this.timer = setTimeout(this.clearStatus, 3000);
+                this.timer = setTimeout(this.clearStatus, 5000);
             })
             .catch((error: AxiosError) => {
                 /*
@@ -121,6 +133,21 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
         });
 
         clearTimeout(this.timer);
+    }
+
+    /**
+     * Check if the metabox has errors.
+     */
+    hasErrors(fields: Array<FieldType>): boolean {
+        for (let idx in fields) {
+            let field = fields[idx];
+
+            if (hasErrors(field)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

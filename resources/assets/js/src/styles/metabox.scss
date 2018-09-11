@@ -105,3 +105,13 @@
   border-radius: $borderRadius;
   padding: $paddingH / 2;
 }
+
+.has__errors {
+  .themosis__input {
+    border-color: $red;
+  }
+
+  .themosis__textarea {
+    border-color: $red;
+  }
+}

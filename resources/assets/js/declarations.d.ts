@@ -41,6 +41,7 @@ declare namespace themosisGlobal.post {
 
 declare namespace themosisGlobal.l10n.metabox {
     const done: string;
+    const error: string;
     const saving: string;
     const submit: string;
 }
@@ -76,7 +77,7 @@ declare interface FieldType {
         errors: boolean;
         messages: object;
         placeholder: string;
-        rules: string;
+        rules: string | Array<string>;
     };
     value: string | Array<string>
 }
