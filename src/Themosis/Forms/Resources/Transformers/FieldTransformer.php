@@ -40,7 +40,7 @@ class FieldTransformer extends TransformerAbstract
                 'placeholder' => $field->getOption('placeholder'),
                 'rules' => $field->getOption('rules', '')
             ],
-            'value' => $field->getValue(),
+            'value' => $field->getValue(''),
         ];
 
         return $this->with($field, function (FieldTypeInterface $field) use ($default) {

@@ -1,9 +1,10 @@
 import * as React from 'react';
 import {Manager} from '../../../index';
+import Tabs from '../tabs/Tabs';
 
 interface Props {
     fields: Array<FieldType>;
-    groups: Array<{}>;
+    groups: Array<GroupType>;
     changeHandler: any;
 }
 
@@ -20,10 +21,36 @@ class MetaboxBody extends React.Component <Props> {
      * Render the component.
      */
     render() {
+        /*
+         * Render tabbed fields.
+         */
         if (1 < this.props.groups.length) {
-            return ('Tabbed metabox');
+            return (
+                <div className="themosis__metabox__body">
+                    <Tabs items={[{id: 'general', title: 'General'}, {id: 'social', title: 'Social'}]}>
+                        { (groupId: string) => {
+                            let fields = this.props.fields.filter((field: FieldType) => {
+                                return field.options.group === groupId;
+                            });
+
+                            return fields.map((field: FieldType) => {
+                                const Field = Manager.getComponent(field.component);
+
+                                return (
+                                    <Field key={field.name}
+                                           field={field}
+                                           changeHandler={this.props.changeHandler}/>
+                                );
+                            });
+                        } }
+                    </Tabs>
+                </div>
+            );
         }
 
+        /*
+         * Render default metabox (no tabs).
+         */
         return (
             <div className="themosis__metabox__body">
                 { this.renderDefaultMetabox() }
@@ -35,7 +62,7 @@ class MetaboxBody extends React.Component <Props> {
      * Render a default metabox.
      */
     renderDefaultMetabox() {
-        return this.props.fields.map((data:any) => {
+        return this.props.fields.map((data:FieldType) => {
             const Field = Manager.getComponent(data.component);
             return (
                 <Field key={data.name}

@@ -569,10 +569,16 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Retrieve the field "normalized" value.
      *
+     * @param mixed $default
+     *
      * @return mixed
      */
-    public function getValue()
+    public function getValue($default = null)
     {
+        if (is_null($this->value) && ! is_null($default)) {
+            return $default;
+        }
+
         return $this->value;
     }
 

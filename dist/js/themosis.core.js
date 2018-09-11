@@ -22021,6 +22021,12 @@ var Metabox = /** @class */ (function (_super) {
         _this.state = {
             fields: [],
             groups: [],
+            l10n: {
+                done: 'Saved',
+                error: 'Errors',
+                saving: 'Saving',
+                submit: 'Save'
+            },
             status: 'default'
         };
         _this.change = _this.change.bind(_this);
@@ -22035,8 +22041,8 @@ var Metabox = /** @class */ (function (_super) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__metabox" },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__MetaboxBody__["a" /* default */], { fields: this.state.fields, groups: this.state.groups, changeHandler: this.change }),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_3__MetaboxFooter__["a" /* default */], null,
-                'default' !== this.state.status && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__MetaboxStatus__["a" /* default */], { status: this.state.status, label: themosisGlobal.l10n.metabox[this.state.status] }),
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__buttons_Button__["a" /* default */], { text: themosisGlobal.l10n.metabox['submit'], primary: true, disabled: 'saving' === this.state.status, clickHandler: this.save }))));
+                'default' !== this.state.status && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__MetaboxStatus__["a" /* default */], { status: this.state.status, label: this.state.l10n[this.state.status] }),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__buttons_Button__["a" /* default */], { text: this.state.l10n.submit, primary: true, disabled: 'saving' === this.state.status, clickHandler: this.save }))));
     };
     /**
      * Handle onChange events for each field.
@@ -22130,7 +22136,8 @@ var Metabox = /** @class */ (function (_super) {
             .then(function (response) {
             _this.setState({
                 fields: response.data.fields.data,
-                groups: response.data.groups.data
+                groups: response.data.groups.data,
+                l10n: response.data.l10n
             });
         })
             .catch(function (error) {
@@ -23228,6 +23235,7 @@ module.exports = function spread(callback) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__index__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__tabs_Tabs__ = __webpack_require__(60);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -23243,6 +23251,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 
 
+
 /**
  * Metabox body.
  * Handle the UI for the main section of the metabox.
@@ -23256,9 +23265,25 @@ var MetaboxBody = /** @class */ (function (_super) {
      * Render the component.
      */
     MetaboxBody.prototype.render = function () {
+        var _this = this;
+        /*
+         * Render tabbed fields.
+         */
         if (1 < this.props.groups.length) {
-            return ('Tabbed metabox');
+            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__metabox__body" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__tabs_Tabs__["a" /* default */], { items: [{ id: 'general', title: 'General' }, { id: 'social', title: 'Social' }] }, function (groupId) {
+                    var fields = _this.props.fields.filter(function (field) {
+                        return field.options.group === groupId;
+                    });
+                    return fields.map(function (field) {
+                        var Field = __WEBPACK_IMPORTED_MODULE_1__index__["Manager"].getComponent(field.component);
+                        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](Field, { key: field.name, field: field, changeHandler: _this.props.changeHandler }));
+                    });
+                })));
         }
+        /*
+         * Render default metabox (no tabs).
+         */
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__metabox__body" }, this.renderDefaultMetabox()));
     };
     /**
@@ -23798,7 +23823,7 @@ exports = module.exports = __webpack_require__(57)(false);
 
 
 // module
-exports.push([module.i, "@keyframes turning {\n  0% {\n    transform-origin: center center;\n    transform: rotate(0deg); }\n  100% {\n    transform: rotate(360deg); } }\n\n.themosis__metabox__footer {\n  display: flex;\n  background: #EDEFF0;\n  border-top: 1px solid #E5E5E5;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-end;\n  padding: 16px 12px; }\n\n.themosis__metabox__status {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  margin-right: 12px; }\n  .themosis__metabox__status__icon {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    align-items: center;\n    width: 22px;\n    height: 22px; }\n    .themosis__metabox__status__icon svg.icon__saving {\n      animation: turning 1s linear infinite; }\n  .themosis__metabox__status__text {\n    display: inline;\n    margin: 0 0 0 8px;\n    padding: 0; }\n\n.themosis__field {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n  border-bottom: 1px solid #EEEEEE; }\n  .themosis__field:last-child {\n    border: none; }\n  .themosis__field__label {\n    font-weight: 600; }\n\n.themosis__column__label {\n  width: 33.33%; }\n\n.themosis__column__content {\n  width: 66.66%; }\n\n.themosis__description {\n  margin-top: 8px;\n  color: #666666; }\n\n.themosis__field__errors {\n  margin-top: 8px; }\n  .themosis__field__errors ul {\n    display: inline-block;\n    background-color: #F2DADA;\n    border-radius: 4px;\n    padding: 6px;\n    margin: 0;\n    color: #BE1414; }\n    .themosis__field__errors ul li {\n      color: #BE1414;\n      margin: 0; }\n\n.themosis__input {\n  min-width: 260px;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  padding: 6px; }\n\n.themosis__textarea {\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  padding: 6px; }\n\n.has__errors .themosis__input {\n  border-color: #BE1414; }\n\n.has__errors .themosis__textarea {\n  border-color: #BE1414; }\n", ""]);
+exports.push([module.i, "@keyframes turning {\n  0% {\n    transform-origin: center center;\n    transform: rotate(0deg); }\n  100% {\n    transform: rotate(360deg); } }\n\n.themosis__metabox__footer {\n  display: flex;\n  background: #F5F5F5;\n  border-top: 1px solid #E5E5E5;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-end;\n  padding: 16px 12px; }\n\n.themosis__metabox__status {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  margin-right: 12px; }\n  .themosis__metabox__status__icon {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    align-items: center;\n    width: 22px;\n    height: 22px; }\n    .themosis__metabox__status__icon svg.icon__saving {\n      animation: turning 1s linear infinite; }\n  .themosis__metabox__status__text {\n    display: inline;\n    margin: 0 0 0 8px;\n    padding: 0; }\n\n.themosis__tabs {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap; }\n  .themosis__tabs__menu {\n    width: 25%;\n    max-width: 260px;\n    background-color: #E5E5E5;\n    padding-right: 1px; }\n    .themosis__tabs__menu button {\n      display: block;\n      width: 100%;\n      padding: 12px 12px 12px 8px;\n      font-size: 14px;\n      font-weight: 600;\n      background-color: #F5F5F5;\n      color: #666666;\n      border: none;\n      border-left: 4px solid #F5F5F5;\n      margin-bottom: 1px;\n      text-align: left;\n      cursor: pointer;\n      box-sizing: border-box; }\n      .themosis__tabs__menu button:hover {\n        background-color: #FFFFFF;\n        border-left: 4px solid #FFFFFF; }\n    .themosis__tabs__menu button.tab__active {\n      background-color: #FFFFFF;\n      color: #0085BA;\n      border-left: 4px solid #0085BA; }\n  .themosis__tabs__body {\n    background-color: #FFFFFF;\n    flex: 1 1 auto; }\n\n.themosis__field {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n  border-bottom: 1px solid #EEEEEE; }\n  .themosis__field:last-child {\n    border: none; }\n  .themosis__field__label {\n    font-weight: 600; }\n\n.themosis__column__label {\n  width: 33.33%; }\n\n.themosis__column__content {\n  width: 66.66%; }\n\n.themosis__description {\n  margin-top: 8px;\n  color: #666666; }\n\n.themosis__field__errors {\n  margin-top: 8px; }\n  .themosis__field__errors ul {\n    display: inline-block;\n    background-color: #F2DADA;\n    border-radius: 4px;\n    padding: 6px;\n    margin: 0;\n    color: #BE1414; }\n    .themosis__field__errors ul li {\n      color: #BE1414;\n      margin: 0; }\n\n.themosis__input {\n  min-width: 260px;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  padding: 6px; }\n\n.themosis__textarea {\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  padding: 6px; }\n\n.has__errors .themosis__input {\n  border-color: #BE1414; }\n\n.has__errors .themosis__textarea {\n  border-color: #BE1414; }\n\n/* Gutenberg styles */\n.gutenberg-editor-page .themosis__metabox__footer {\n  background: #EDEFF0;\n  padding: 16px; }\n\n.gutenberg-editor-page .themosis__tabs__menu button {\n  padding: 12px; }\n\n.gutenberg-editor-page .themosis__field {\n  padding: 16px; }\n", ""]);
 
 // exports
 
@@ -24337,6 +24362,66 @@ module.exports = function (css) {
 	// send back the fixed css
 	return fixedCss;
 };
+
+
+/***/ }),
+/* 60 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__buttons_Button__ = __webpack_require__(47);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+/**
+ * Tabs component.
+ */
+var Tabs = /** @class */ (function (_super) {
+    __extends(Tabs, _super);
+    function Tabs(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            selected: props.defaultTab || props.items.length > 0 ? props.items[0].id : ''
+        };
+        _this.handleClick = _this.handleClick.bind(_this);
+        return _this;
+    }
+    /**
+     * Handle tabs change.
+     */
+    Tabs.prototype.handleClick = function (id) {
+        this.setState({
+            selected: id
+        });
+    };
+    /**
+     * Render the component.
+     */
+    Tabs.prototype.render = function () {
+        var _this = this;
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__tabs" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__tabs__menu" }, this.props.items.map(function (item) {
+                return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__buttons_Button__["a" /* default */], { text: item.title, key: item.id, className: _this.state.selected === item.id ? 'tab__active' : '', clickHandler: function () { return _this.handleClick(item.id); } }));
+            })),
+            this.props.children && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__tabs__body" }, this.props.children(this.state.selected))));
+    };
+    return Tabs;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
+/* harmony default export */ __webpack_exports__["a"] = (Tabs);
 
 
 /***/ })

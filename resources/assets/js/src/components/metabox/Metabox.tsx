@@ -12,7 +12,13 @@ interface MetaboxProps {
 
 interface MetaboxState {
     fields: Array<FieldType>;
-    groups: Array<{}>;
+    groups: Array<GroupType>;
+    l10n: {
+        done: string;
+        error: string;
+        saving: string;
+        submit: string;
+    };
     status: string;
 }
 
@@ -30,6 +36,12 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
         this.state = {
             fields: [],
             groups: [],
+            l10n: {
+                done: 'Saved',
+                error: 'Errors',
+                saving: 'Saving',
+                submit: 'Save'
+            },
             status: 'default'
         };
 
@@ -48,8 +60,9 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
                              groups={this.state.groups}
                              changeHandler={this.change}/>
                 <MetaboxFooter>
-                    { 'default' !== this.state.status && <MetaboxStatus status={this.state.status} label={themosisGlobal.l10n.metabox[this.state.status]}/> }
-                    <Button text={themosisGlobal.l10n.metabox['submit']}
+                    { 'default' !== this.state.status && <MetaboxStatus status={this.state.status}
+                                                                        label={this.state.l10n[this.state.status]}/> }
+                    <Button text={this.state.l10n.submit}
                             primary={true}
                             disabled={'saving' === this.state.status}
                             clickHandler={this.save} />
@@ -161,7 +174,8 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
             .then((response: AxiosResponse) => {
                 this.setState({
                     fields: response.data.fields.data,
-                    groups: response.data.groups.data
+                    groups: response.data.groups.data,
+                    l10n: response.data.l10n
                 });
             })
             .catch((error: AxiosError) => {

@@ -4,7 +4,7 @@
 .themosis__metabox {
   &__footer {
     display: flex;
-    background: #EDEFF0;
+    background: $greyLighter;
     border-top: 1px solid #E5E5E5;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -37,6 +37,51 @@
       margin: 0 0 0 8px;
       padding: 0;
     }
+  }
+}
+
+.themosis__tabs {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  &__menu {
+    width: 25%;
+    max-width: $max;
+    background-color: #E5E5E5;
+    padding-right: 1px;
+
+    button {
+      display: block;
+      width: 100%;
+      padding: $paddingH $paddingH $paddingH ($paddingH - 4px);
+      font-size: 14px;
+      font-weight: 600;
+      background-color: #F5F5F5;
+      color: $grey;
+      border: none;
+      border-left: 4px solid #F5F5F5;
+      margin-bottom: 1px;
+      text-align: left;
+      cursor: pointer;
+      box-sizing: border-box;
+
+      &:hover {
+        background-color: $white;
+        border-left: 4px solid $white;
+      }
+    }
+
+    button.tab__active {
+      background-color: $white;
+      color: $blue;
+      border-left: 4px solid $blue;
+    }
+  }
+
+  &__body {
+    background-color: $white;
+    flex: 1 1 auto;
   }
 }
 
@@ -91,7 +136,7 @@
 }
 
 .themosis__input {
-  min-width: 260px;
+  min-width: $max;
   border: 1px solid $borderColor;
   border-radius: $borderRadius;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
@@ -113,5 +158,27 @@
 
   .themosis__textarea {
     border-color: $red;
+  }
+}
+
+/* Gutenberg styles */
+.gutenberg-editor-page {
+  .themosis__metabox {
+    &__footer {
+      background: $blueLightest;
+      padding: $paddingV;
+    }
+  }
+
+  .themosis__tabs {
+    &__menu {
+      button {
+        padding: $paddingH;
+      }
+    }
+  }
+
+  .themosis__field {
+    padding: $paddingV;
   }
 }

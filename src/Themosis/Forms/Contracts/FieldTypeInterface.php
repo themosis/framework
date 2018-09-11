@@ -182,9 +182,11 @@ interface FieldTypeInterface
     /**
      * Retrieve the field "normalized" value.
      *
+     * @param mixed $default
+     *
      * @return mixed
      */
-    public function getValue();
+    public function getValue($default = null);
 
     /**
      * Return an error message bag instance.

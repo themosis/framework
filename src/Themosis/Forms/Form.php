@@ -769,9 +769,11 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * @inheritdoc
      *
+     * @param mixed $default
+     *
      * @return mixed|null
      */
-    public function getValue()
+    public function getValue($default = null)
     {
         return null;
     }

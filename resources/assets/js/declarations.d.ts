@@ -39,13 +39,6 @@ declare namespace themosisGlobal.post {
     const filter: string;
 }
 
-declare namespace themosisGlobal.l10n.metabox {
-    const done: string;
-    const error: string;
-    const saving: string;
-    const submit: string;
-}
-
 /*
 |--------------------------------------------------------------------------
 | Fields Declarations
@@ -86,4 +79,10 @@ declare interface FieldType {
 declare interface FieldProps {
     field: FieldType;
     changeHandler: any;
+}
+
+declare interface GroupType {
+    id: string;
+    theme?: string;
+    title: string;
 }
