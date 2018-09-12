@@ -58,6 +58,7 @@ declare interface FieldType {
     options: {
         group: string;
         info: string;
+        precision: number;
     };
     label: {
         inner: string;

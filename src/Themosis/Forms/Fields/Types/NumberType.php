@@ -69,7 +69,7 @@ class NumberType extends BaseType implements CanHandleMetabox
      */
     protected function parseOptions(array $options): array
     {
-        $this->setTransformer(new NumberToLocalizedStringTransformer($this->getLocale()));
+        $this->setTransformer(new NumberToLocalizedStringTransformer($this->getLocale(), $this));
 
         return parent::parseOptions($options);
     }

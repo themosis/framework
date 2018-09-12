@@ -37,7 +37,7 @@ class IntegerType extends BaseType implements CanHandleMetabox
      */
     protected function parseOptions(array $options): array
     {
-        $this->setTransformer(new IntegerToLocalizedStringTransformer($this->getLocale()));
+        $this->setTransformer(new IntegerToLocalizedStringTransformer($this->getLocale(), $this));
 
         return parent::parseOptions($options);
     }

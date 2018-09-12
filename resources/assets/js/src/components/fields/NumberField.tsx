@@ -37,7 +37,7 @@ class NumberField extends React.Component <FieldProps> {
                     <InputNumber changeHandler={this.onChange}
                                  name={this.props.field.name}
                                  step={this.props.field.attributes.step}
-                                 precision={2}
+                                 precision={this.props.field.options.precision}
                                  id={this.props.field.attributes.id}
                                  value={this.props.field.value}/>
                     { hasErrors(this.props.field) && <Error messages={getErrorsMessages(this.props.field)}/> }

@@ -3,6 +3,7 @@
 namespace Themosis\Forms\Transformers;
 
 use Themosis\Forms\Contracts\DataTransformerInterface;
+use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Transformers\Exceptions\DataTransformerException;
 
 class NumberToLocalizedStringTransformer implements DataTransformerInterface
@@ -14,9 +15,15 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
      */
     protected $locale;
 
-    public function __construct(string $locale)
+    /**
+     * @var FieldTypeInterface
+     */
+    protected $field;
+
+    public function __construct(string $locale, FieldTypeInterface $field)
     {
         $this->locale = $locale;
+        $this->field = $field;
     }
 
     /**
@@ -84,6 +91,11 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
     protected function getFormatter()
     {
         $formatter = new \NumberFormatter($this->locale, \NumberFormatter::DECIMAL);
+        $precision = $this->field->getOption('precision', 0);
+
+        if ($precision) {
+            $formatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, $precision);
+        }
 
         return $formatter;
     }
