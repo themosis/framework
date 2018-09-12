@@ -200,17 +200,24 @@ class FieldsTest extends TestCase
             ],
             'basename' => 'colors',
             'component' => 'themosis.fields.choice',
-            'choices' => [
-                'Red' => 'red',
-                'Green' => 'green',
-                'Blue' => 'blue'
-            ],
             'name' => 'th_colors',
             'label' => [
                 'inner' => 'Colors',
                 'attributes' => [
                     'for' => 'th_colors_field'
                 ]
+            ],
+            'options' => [
+                'group' => 'default',
+                'info' => '',
+                'expanded' => false,
+                'multiple' => false,
+                'choices' => [
+                    'Red' => 'red',
+                    'Green' => 'green',
+                    'Blue' => 'blue'
+                ],
+                'layout' => 'select'
             ],
             'type' => 'choice',
             'validation' => [
@@ -234,5 +241,20 @@ class FieldsTest extends TestCase
 
         $this->assertEquals('themosis.fields.text', $text->getComponent());
         $this->assertEquals('themosis.fields.email', $email->getComponent());
+    }
+
+    public function testNumberFieldOptions()
+    {
+        $fields = $this->getFieldsFactory();
+
+        $price = $fields->number('price');
+
+        $this->assertEquals(0, $price->getOption('precision'));
+
+        $price = $fields->number('other', [
+            'precision' => 4
+        ]);
+
+        $this->assertEquals(4, $price->getOption('precision'));
     }
 }

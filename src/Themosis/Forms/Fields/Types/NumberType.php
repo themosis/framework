@@ -28,6 +28,38 @@ class NumberType extends BaseType implements CanHandleMetabox
      */
     protected $component = 'themosis.fields.number';
 
+    public function __construct(string $name)
+    {
+        parent::__construct($name);
+
+        $this->allowedOptions = $this->setAllowedOptions();
+        $this->defaultOptions = $this->setDefaultOptions();
+    }
+
+    /**
+     * Set field specific allowed options.
+     *
+     * @return array
+     */
+    protected function setAllowedOptions(): array
+    {
+        return array_merge($this->allowedOptions, [
+            'precision'
+        ]);
+    }
+
+    /**
+     * Set field options default values.
+     *
+     * @return array
+     */
+    protected function setDefaultOptions(): array
+    {
+        return array_merge($this->defaultOptions, [
+            'precision' => 0
+        ]);
+    }
+
     /**
      * Parse and setup default options.
      *
@@ -46,7 +78,7 @@ class NumberType extends BaseType implements CanHandleMetabox
      * Handle metabox post meta registration.
      *
      * @param mixed $value
-     * @param int $post_id
+     * @param int   $post_id
      */
     public function metaboxSave($value, int $post_id)
     {

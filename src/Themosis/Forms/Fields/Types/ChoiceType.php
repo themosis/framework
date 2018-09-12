@@ -5,6 +5,7 @@ namespace Themosis\Forms\Fields\Types;
 use Themosis\Forms\Contracts\CheckableInterface;
 use Themosis\Forms\Contracts\SelectableInterface;
 use Themosis\Forms\Fields\ChoiceList\ChoiceList;
+use Themosis\Forms\Fields\ChoiceList\ChoiceListInterface;
 use Themosis\Forms\Transformers\ChoiceToValueTransformer;
 
 class ChoiceType extends BaseType implements CheckableInterface, SelectableInterface
@@ -50,12 +51,13 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
      *
      * @return array
      */
-    protected function setAllowedOptions()
+    protected function setAllowedOptions(): array
     {
         return array_merge($this->allowedOptions, [
             'choices',
             'expanded',
-            'multiple'
+            'multiple',
+            'layout'
         ]);
     }
 
@@ -64,7 +66,7 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
      *
      * @return array
      */
-    protected function setDefaultOptions()
+    protected function setDefaultOptions(): array
     {
         return array_merge($this->defaultOptions, [
             'expanded' => false,
@@ -124,6 +126,33 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
         }
 
         return $this;
+    }
+
+    /**
+     * Return choice type field options.
+     *
+     * @param array|null $excludes
+     *
+     * @return array
+     */
+    public function getOptions(array $excludes = null): array
+    {
+        $options = parent::getOptions($excludes);
+
+        /*
+         * Let's add the choices in a readable format as
+         * well as the layout property.
+         */
+        $choices = $this->getOption('choices', []);
+
+        if ($choices instanceof ChoiceListInterface) {
+            $choices = $choices->format()->get();
+        }
+
+        return array_merge($options, [
+            'choices' => $choices,
+            'layout' => $this->getLayout()
+        ]);
     }
 
     /**

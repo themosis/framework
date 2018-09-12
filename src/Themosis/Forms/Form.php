@@ -600,10 +600,18 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Return form options.
      *
+     * @param array $excludes
+     *
      * @return array
      */
-    public function getOptions(): array
+    public function getOptions(array $excludes = null): array
     {
+        if (! is_null($excludes)) {
+            return array_filter($this->options, function ($key) use ($excludes) {
+                return ! in_array($key, $excludes, true);
+            }, ARRAY_FILTER_USE_KEY);
+        }
+
         return $this->options;
     }
 
