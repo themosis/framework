@@ -88,16 +88,16 @@ class TextareaType extends BaseType implements DataTransformerInterface, CanHand
      */
     public function metaboxSave($value, int $post_id)
     {
+        $this->setValue($value);
+
         $previous = get_post_meta($post_id, $this->getName(), true);
 
-        if (is_null($value) || empty($value)) {
+        if (is_null($this->getValue()) || empty($this->getValue())) {
             delete_post_meta($post_id, $this->getName());
         } elseif (empty($previous)) {
-            add_post_meta($post_id, $this->getName(), $value, true);
+            add_post_meta($post_id, $this->getName(), $this->getValue(), true);
         } else {
-            update_post_meta($post_id, $this->getName(), $value, $previous);
+            update_post_meta($post_id, $this->getName(), $this->getValue(), $previous);
         }
-
-        $this->setValue($value);
     }
 }

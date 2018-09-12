@@ -18,7 +18,7 @@ class TextField extends React.Component <FieldProps> {
      * Handle input value changes.
      */
     onChange(e: any) {
-        this.props.changeHandler(e.target.name, e.target.value);
+        this.props.changeHandler(this.props.field.name, e.target.value);
     }
 
     /**

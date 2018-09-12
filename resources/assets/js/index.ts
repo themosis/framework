@@ -4,6 +4,7 @@ import TextField from "./src/components/fields/TextField";
 import TextareaField from "./src/components/fields/TextareaField";
 import EmailField from "./src/components/fields/EmailField";
 import PasswordField from "./src/components/fields/PasswordField";
+import IntegerField from "./src/components/fields/IntegerField";
 import "./src/styles/metabox.scss";
 
 /*
@@ -18,6 +19,7 @@ manager.addComponent('themosis.fields.text', TextField);
 manager.addComponent('themosis.fields.textarea', TextareaField);
 manager.addComponent('themosis.fields.email', EmailField);
 manager.addComponent('themosis.fields.password', PasswordField);
+manager.addComponent('themosis.fields.integer', IntegerField);
 
 export { manager as Manager };
 

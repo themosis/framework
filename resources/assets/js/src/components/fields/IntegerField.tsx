@@ -2,12 +2,13 @@ import * as React from "react";
 import {Description, Field} from "./common";
 import Label from "../labels/Label";
 import {getErrorsMessages, hasErrors, isRequired} from "../../helpers";
+import InputNumber from "../inputs/InputNumber";
 import Error from "../errors/Error";
 
 /**
- * Textarea field component.
+ * Integer field component.
  */
-class TextareaField extends React.Component <FieldProps> {
+class IntegerField extends React.Component <FieldProps> {
     constructor(props: FieldProps) {
         super(props);
 
@@ -15,14 +16,14 @@ class TextareaField extends React.Component <FieldProps> {
     }
 
     /**
-     * Handle textarea value changes.
+     * Handle input value changes.
      */
-    onChange(e: any) {
-        this.props.changeHandler(this.props.field.name, e.target.value);
+    onChange(value: any) {
+        this.props.changeHandler(this.props.field.name, value);
     }
 
     /**
-     * Render component UI.
+     * Render the component.
      */
     render() {
         return (
@@ -30,14 +31,15 @@ class TextareaField extends React.Component <FieldProps> {
                 <div className="themosis__column__label">
                     <Label required={isRequired(this.props.field)}
                            for={this.props.field.attributes.id}
-                           text={this.props.field.label.inner} />
+                           text={this.props.field.label.inner}/>
                 </div>
                 <div className="themosis__column__content">
-                    <textarea id={this.props.field.attributes.id}
-                              name={this.props.field.name}
-                              className="themosis__textarea"
-                              value={this.props.field.value}
-                              onChange={this.onChange}/>
+                    <InputNumber changeHandler={this.onChange}
+                                 name={this.props.field.name}
+                                 step={1}
+                                 precision={0}
+                                 id={this.props.field.attributes.id}
+                                 value={this.props.field.value}/>
                     { hasErrors(this.props.field) && <Error messages={getErrorsMessages(this.props.field)}/> }
                     { this.props.field.options.info && <Description content={this.props.field.options.info}/> }
                 </div>
@@ -46,4 +48,4 @@ class TextareaField extends React.Component <FieldProps> {
     }
 }
 
-export default TextareaField;
+export default IntegerField;

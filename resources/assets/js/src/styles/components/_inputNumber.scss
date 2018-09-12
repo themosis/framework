@@ -1,0 +1,62 @@
+.themosis__input__number {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  button {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+    background-color: $blueLightest;
+    border: 1px solid $borderColor;
+    box-sizing: border-box;
+    margin: 0;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $blue;
+      border: 1px solid $blueDark;
+
+      .themosis__svg path,
+      .themosis__svg rect {
+        fill: $white;
+      }
+    }
+
+    &:active {
+      background-color: $blueLight;
+      border: 1px solid $blueDark;
+
+      .themosis__svg path,
+      .themosis__svg rect {
+        fill: $white;
+      }
+    }
+  }
+
+  .button__minus {
+    border-bottom-left-radius: $borderRadius;
+    border-top-left-radius: $borderRadius;
+  }
+
+  .button__plus {
+    border-bottom-right-radius: $borderRadius;
+    border-top-right-radius: $borderRadius;
+  }
+
+  input {
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    box-sizing: border-box;
+    width: 196px;
+    height: 32px;
+    margin: 0;
+    text-align: center;
+  }
+}
