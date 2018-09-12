@@ -506,8 +506,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_components_fields_EmailField__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_components_fields_PasswordField__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_components_fields_IntegerField__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_styles_metabox_scss__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_styles_metabox_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__src_styles_metabox_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_components_fields_NumberField__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_styles_metabox_scss__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_styles_metabox_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__src_styles_metabox_scss__);
+
 
 
 
@@ -528,6 +530,7 @@ manager.addComponent('themosis.fields.textarea', __WEBPACK_IMPORTED_MODULE_3__sr
 manager.addComponent('themosis.fields.email', __WEBPACK_IMPORTED_MODULE_4__src_components_fields_EmailField__["a" /* default */]);
 manager.addComponent('themosis.fields.password', __WEBPACK_IMPORTED_MODULE_5__src_components_fields_PasswordField__["a" /* default */]);
 manager.addComponent('themosis.fields.integer', __WEBPACK_IMPORTED_MODULE_6__src_components_fields_IntegerField__["a" /* default */]);
+manager.addComponent('themosis.fields.number', __WEBPACK_IMPORTED_MODULE_7__src_components_fields_NumberField__["a" /* default */]);
 
 /**
  * Initialize the Metabox Factory.
@@ -23657,6 +23660,7 @@ var TextField = /** @class */ (function (_super) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getErrorsMessages; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return hasErrors; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return isRequired; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return isUndefined; });
 /* unused harmony export ucfirst */
 /**
  * Return field errors messages.
@@ -23702,6 +23706,16 @@ var isRequired = function (field) {
      * Default rules is a string.
      */
     return -1 !== rules.indexOf('required');
+};
+/**
+ * General utility. Check if a value is undefined or not.
+ *
+ * @param value
+ *
+ * @return {boolean}
+ */
+var isUndefined = function (value) {
+    return 'undefined' === typeof value;
 };
 /**
  * Javascript version of PHP ucfirst() function.
@@ -24650,7 +24664,7 @@ var IntegerField = /** @class */ (function (_super) {
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { required: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["c" /* isRequired */])(this.props.field), for: this.props.field.attributes.id, text: this.props.field.label.inner })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__inputs_InputNumber__["a" /* default */], { changeHandler: this.onChange, name: this.props.field.name, step: 1, precision: 0, id: this.props.field.attributes.id, value: this.props.field.value }),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__inputs_InputNumber__["a" /* default */], { changeHandler: this.onChange, name: this.props.field.name, step: this.props.field.attributes.step, precision: 0, id: this.props.field.attributes.id, value: this.props.field.value }),
                 Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["b" /* hasErrors */])(this.props.field) && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__errors_Error__["a" /* default */], { messages: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["a" /* getErrorsMessages */])(this.props.field) }),
                 this.props.field.options.info && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["a" /* Description */], { content: this.props.field.options.info }))));
     };
@@ -24667,6 +24681,7 @@ var IntegerField = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__icons_Icon__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers__ = __webpack_require__(52);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -24680,6 +24695,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
 
 
 /**
@@ -24736,20 +24752,91 @@ var InputNumber = /** @class */ (function (_super) {
         return num.toFixed(precision);
     };
     /**
+     * Return the step property.
+     */
+    InputNumber.prototype.getStep = function () {
+        var step = this.props.step;
+        return Object(__WEBPACK_IMPORTED_MODULE_2__helpers__["d" /* isUndefined */])(step) ? 1 : step;
+    };
+    /**
      * Render the component.
      */
     InputNumber.prototype.render = function () {
         var _this = this;
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__input__number" },
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "button__minus", onClick: function () { _this.onClick(-1 * _this.props.step); }, type: "button" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "button__minus", onClick: function () { _this.onClick(-1 * _this.getStep()); }, type: "button" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__icons_Icon__["a" /* default */], { name: "minus" })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { onChange: this.onChange, onBlur: this.onBlur, name: this.props.name, value: this.props.value, id: this.props.id, type: "text" }),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "button__plus", onClick: function () { _this.onClick(_this.props.step); }, type: "button" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("button", { className: "button__plus", onClick: function () { _this.onClick(_this.getStep()); }, type: "button" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__icons_Icon__["a" /* default */], { name: "plus" }))));
     };
     return InputNumber;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
 /* harmony default export */ __webpack_exports__["a"] = (InputNumber);
+
+
+/***/ }),
+/* 65 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__labels_Label__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__inputs_InputNumber__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__errors_Error__ = __webpack_require__(53);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+
+
+/**
+ * The number field component.
+ */
+var NumberField = /** @class */ (function (_super) {
+    __extends(NumberField, _super);
+    function NumberField(props) {
+        var _this = _super.call(this, props) || this;
+        _this.onChange = _this.onChange.bind(_this);
+        return _this;
+    }
+    /**
+     * Handle input value changes.
+     */
+    NumberField.prototype.onChange = function (value) {
+        this.props.changeHandler(this.props.field.name, value);
+    };
+    /**
+     * Render the component.
+     */
+    NumberField.prototype.render = function () {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["b" /* Field */], { field: this.props.field },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { required: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["c" /* isRequired */])(this.props.field), for: this.props.field.attributes.id, text: this.props.field.label.inner })),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__inputs_InputNumber__["a" /* default */], { changeHandler: this.onChange, name: this.props.field.name, step: this.props.field.attributes.step, precision: 2, id: this.props.field.attributes.id, value: this.props.field.value }),
+                Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["b" /* hasErrors */])(this.props.field) && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__errors_Error__["a" /* default */], { messages: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["a" /* getErrorsMessages */])(this.props.field) }),
+                this.props.field.options.info && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["a" /* Description */], { content: this.props.field.options.info }))));
+    };
+    return NumberField;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
+/* harmony default export */ __webpack_exports__["a"] = (NumberField);
 
 
 /***/ })

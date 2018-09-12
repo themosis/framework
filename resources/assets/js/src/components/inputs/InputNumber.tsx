@@ -1,5 +1,6 @@
 import * as React from "react";
 import Icon from "../icons/Icon";
+import {isUndefined} from "../../helpers";
 
 interface InputNumberProps {
     value: any;
@@ -73,13 +74,21 @@ class InputNumber extends React.Component <InputNumberProps> {
     }
 
     /**
+     * Return the step property.
+     */
+    getStep(): number {
+        let step = this.props.step;
+        return isUndefined(step) ? 1 : step;
+    }
+
+    /**
      * Render the component.
      */
     render() {
         return (
             <div className="themosis__input__number">
                 <button className="button__minus"
-                        onClick={() => { this.onClick(-1 * this.props.step) }}
+                        onClick={() => { this.onClick(-1 * this.getStep()) }}
                         type="button">
                     <Icon name="minus"/>
                 </button>
@@ -90,7 +99,7 @@ class InputNumber extends React.Component <InputNumberProps> {
                        id={this.props.id}
                        type="text"/>
                 <button className="button__plus"
-                        onClick={() => { this.onClick(this.props.step) }}
+                        onClick={() => { this.onClick(this.getStep()) }}
                         type="button">
                     <Icon name="plus"/>
                 </button>

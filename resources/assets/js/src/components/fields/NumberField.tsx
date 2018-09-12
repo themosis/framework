@@ -6,9 +6,9 @@ import InputNumber from "../inputs/InputNumber";
 import Error from "../errors/Error";
 
 /**
- * Integer field component.
+ * The number field component.
  */
-class IntegerField extends React.Component <FieldProps> {
+class NumberField extends React.Component <FieldProps> {
     constructor(props: FieldProps) {
         super(props);
 
@@ -37,7 +37,7 @@ class IntegerField extends React.Component <FieldProps> {
                     <InputNumber changeHandler={this.onChange}
                                  name={this.props.field.name}
                                  step={this.props.field.attributes.step}
-                                 precision={0}
+                                 precision={2}
                                  id={this.props.field.attributes.id}
                                  value={this.props.field.value}/>
                     { hasErrors(this.props.field) && <Error messages={getErrorsMessages(this.props.field)}/> }
@@ -48,4 +48,4 @@ class IntegerField extends React.Component <FieldProps> {
     }
 }
 
-export default IntegerField;
+export default NumberField;

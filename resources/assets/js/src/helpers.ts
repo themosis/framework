@@ -50,6 +50,17 @@ export const isRequired = (field: FieldType): boolean => {
 };
 
 /**
+ * General utility. Check if a value is undefined or not.
+ *
+ * @param value
+ *
+ * @return {boolean}
+ */
+export const isUndefined = (value:any): boolean => {
+    return 'undefined' === typeof value;
+};
+
+/**
  * Javascript version of PHP ucfirst() function.
  * Capitalize first letter of a string.
  *
