@@ -7,6 +7,7 @@ import PasswordField from "./src/components/fields/PasswordField";
 import IntegerField from "./src/components/fields/IntegerField";
 import NumberField from "./src/components/fields/NumberField";
 import CheckboxField from "./src/components/fields/CheckboxField";
+import HiddenField from "./src/components/fields/HiddenField";
 import "./src/styles/metabox.scss";
 
 /*
@@ -24,6 +25,7 @@ manager.addComponent('themosis.fields.password', PasswordField);
 manager.addComponent('themosis.fields.integer', IntegerField);
 manager.addComponent('themosis.fields.number', NumberField);
 manager.addComponent('themosis.fields.checkbox', CheckboxField);
+manager.addComponent('themosis.fields.hidden', HiddenField);
 
 export { manager as Manager };
 

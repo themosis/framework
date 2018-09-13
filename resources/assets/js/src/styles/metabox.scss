@@ -149,6 +149,14 @@
   padding: $paddingH / 2;
 }
 
+.themosis__input__hidden {
+  padding: $paddingH / 2 $paddingH;
+  background-color: $greyLighter;
+  border: 1px solid $borderColor;
+  text-shadow: 0 1px 0 $white;
+  border-radius: $borderRadius;
+}
+
 .themosis__textarea {
   width: 100%;
   max-width: 100%;

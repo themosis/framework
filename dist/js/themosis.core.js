@@ -508,8 +508,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_components_fields_IntegerField__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_components_fields_NumberField__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_components_fields_CheckboxField__ = __webpack_require__(66);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_styles_metabox_scss__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_styles_metabox_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__src_styles_metabox_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_components_fields_HiddenField__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_styles_metabox_scss__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_styles_metabox_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__src_styles_metabox_scss__);
+
 
 
 
@@ -534,6 +536,7 @@ manager.addComponent('themosis.fields.password', __WEBPACK_IMPORTED_MODULE_5__sr
 manager.addComponent('themosis.fields.integer', __WEBPACK_IMPORTED_MODULE_6__src_components_fields_IntegerField__["a" /* default */]);
 manager.addComponent('themosis.fields.number', __WEBPACK_IMPORTED_MODULE_7__src_components_fields_NumberField__["a" /* default */]);
 manager.addComponent('themosis.fields.checkbox', __WEBPACK_IMPORTED_MODULE_8__src_components_fields_CheckboxField__["a" /* default */]);
+manager.addComponent('themosis.fields.hidden', __WEBPACK_IMPORTED_MODULE_9__src_components_fields_HiddenField__["a" /* default */]);
 
 /**
  * Initialize the Metabox Factory.
@@ -23884,7 +23887,7 @@ exports = module.exports = __webpack_require__(57)(false);
 
 
 // module
-exports.push([module.i, "@keyframes turning {\n  0% {\n    transform-origin: center center;\n    transform: rotate(0deg); }\n  100% {\n    transform: rotate(360deg); } }\n\n.themosis__input__number {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center; }\n  .themosis__input__number button {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    justify-content: center;\n    align-items: center;\n    width: 32px;\n    height: 32px;\n    background-color: #EDEFF0;\n    border: 1px solid #DDDDDD;\n    box-sizing: border-box;\n    margin: 0;\n    cursor: pointer; }\n    .themosis__input__number button:hover {\n      background-color: #0085BA;\n      border: 1px solid #006799; }\n      .themosis__input__number button:hover .themosis__svg path,\n      .themosis__input__number button:hover .themosis__svg rect {\n        fill: #FFFFFF; }\n    .themosis__input__number button:active {\n      background-color: #008EC2;\n      border: 1px solid #006799; }\n      .themosis__input__number button:active .themosis__svg path,\n      .themosis__input__number button:active .themosis__svg rect {\n        fill: #FFFFFF; }\n  .themosis__input__number .button__minus {\n    border-bottom-left-radius: 4px;\n    border-top-left-radius: 4px; }\n  .themosis__input__number .button__plus {\n    border-bottom-right-radius: 4px;\n    border-top-right-radius: 4px; }\n  .themosis__input__number input {\n    border-left: none;\n    border-right: none;\n    border-radius: 0;\n    box-sizing: border-box;\n    width: 196px;\n    height: 32px;\n    margin: 0;\n    text-align: center; }\n\n.themosis__metabox__footer {\n  display: flex;\n  background: #F5F5F5;\n  border-top: 1px solid #E5E5E5;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-end;\n  padding: 16px 12px; }\n\n.themosis__metabox__status {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  margin-right: 12px; }\n  .themosis__metabox__status__icon {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    align-items: center;\n    width: 22px;\n    height: 22px; }\n    .themosis__metabox__status__icon svg.icon__saving {\n      animation: turning 1s linear infinite; }\n  .themosis__metabox__status__text {\n    display: inline;\n    margin: 0 0 0 8px;\n    padding: 0; }\n\n.themosis__tabs {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap; }\n  .themosis__tabs__menu {\n    width: 25%;\n    max-width: 260px;\n    background-color: #E5E5E5;\n    padding-right: 1px; }\n    .themosis__tabs__menu button {\n      display: block;\n      width: 100%;\n      padding: 12px 12px 12px 8px;\n      font-size: 13px;\n      font-weight: 600;\n      background-color: #F5F5F5;\n      color: #666666;\n      border: none;\n      border-left: 4px solid #F5F5F5;\n      margin-bottom: 1px;\n      text-align: left;\n      cursor: pointer;\n      box-sizing: border-box; }\n      .themosis__tabs__menu button:hover {\n        background-color: #FFFFFF;\n        border-left: 4px solid #FFFFFF; }\n    .themosis__tabs__menu button.tab__active {\n      background-color: #FFFFFF;\n      color: #0085BA;\n      border-left: 4px solid #0085BA; }\n    .themosis__tabs__menu button.tab__has__errors {\n      color: #BE1414;\n      border-left: 4px solid #BE1414; }\n  .themosis__tabs__body {\n    background-color: #FFFFFF;\n    flex: 1 1 auto; }\n\n.themosis__field {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n  border-bottom: 1px solid #EEEEEE; }\n  .themosis__field:last-child {\n    border: none; }\n  .themosis__field__label {\n    font-weight: 600; }\n\n.themosis__column__label {\n  width: 33.33%; }\n\n.themosis__column__content {\n  width: 66.66%; }\n\n.themosis__description {\n  margin-top: 8px;\n  color: #666666; }\n\n.themosis__field__errors {\n  margin-top: 8px; }\n  .themosis__field__errors ul {\n    display: inline-block;\n    background-color: #F2DADA;\n    border-radius: 4px;\n    padding: 6px;\n    margin: 0;\n    color: #BE1414; }\n    .themosis__field__errors ul li {\n      color: #BE1414;\n      margin: 0; }\n\n.themosis__input {\n  min-width: 260px;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  padding: 6px; }\n\n.themosis__textarea {\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  padding: 6px; }\n\n.has__errors .themosis__input {\n  border-color: #BE1414; }\n\n.has__errors .themosis__textarea {\n  border-color: #BE1414; }\n\n/* Gutenberg styles */\n.gutenberg-editor-page .themosis__metabox__footer {\n  background: #EDEFF0;\n  padding: 16px; }\n\n.gutenberg-editor-page .themosis__tabs__menu button {\n  padding: 12px; }\n\n.gutenberg-editor-page .themosis__field {\n  padding: 16px; }\n", ""]);
+exports.push([module.i, "@keyframes turning {\n  0% {\n    transform-origin: center center;\n    transform: rotate(0deg); }\n  100% {\n    transform: rotate(360deg); } }\n\n.themosis__input__number {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center; }\n  .themosis__input__number button {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    justify-content: center;\n    align-items: center;\n    width: 32px;\n    height: 32px;\n    background-color: #EDEFF0;\n    border: 1px solid #DDDDDD;\n    box-sizing: border-box;\n    margin: 0;\n    cursor: pointer; }\n    .themosis__input__number button:hover {\n      background-color: #0085BA;\n      border: 1px solid #006799; }\n      .themosis__input__number button:hover .themosis__svg path,\n      .themosis__input__number button:hover .themosis__svg rect {\n        fill: #FFFFFF; }\n    .themosis__input__number button:active {\n      background-color: #008EC2;\n      border: 1px solid #006799; }\n      .themosis__input__number button:active .themosis__svg path,\n      .themosis__input__number button:active .themosis__svg rect {\n        fill: #FFFFFF; }\n  .themosis__input__number .button__minus {\n    border-bottom-left-radius: 4px;\n    border-top-left-radius: 4px; }\n  .themosis__input__number .button__plus {\n    border-bottom-right-radius: 4px;\n    border-top-right-radius: 4px; }\n  .themosis__input__number input {\n    border-left: none;\n    border-right: none;\n    border-radius: 0;\n    box-sizing: border-box;\n    width: 196px;\n    height: 32px;\n    margin: 0;\n    text-align: center; }\n\n.themosis__metabox__footer {\n  display: flex;\n  background: #F5F5F5;\n  border-top: 1px solid #E5E5E5;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-end;\n  padding: 16px 12px; }\n\n.themosis__metabox__status {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  margin-right: 12px; }\n  .themosis__metabox__status__icon {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    align-items: center;\n    width: 22px;\n    height: 22px; }\n    .themosis__metabox__status__icon svg.icon__saving {\n      animation: turning 1s linear infinite; }\n  .themosis__metabox__status__text {\n    display: inline;\n    margin: 0 0 0 8px;\n    padding: 0; }\n\n.themosis__tabs {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap; }\n  .themosis__tabs__menu {\n    width: 25%;\n    max-width: 260px;\n    background-color: #E5E5E5;\n    padding-right: 1px; }\n    .themosis__tabs__menu button {\n      display: block;\n      width: 100%;\n      padding: 12px 12px 12px 8px;\n      font-size: 13px;\n      font-weight: 600;\n      background-color: #F5F5F5;\n      color: #666666;\n      border: none;\n      border-left: 4px solid #F5F5F5;\n      margin-bottom: 1px;\n      text-align: left;\n      cursor: pointer;\n      box-sizing: border-box; }\n      .themosis__tabs__menu button:hover {\n        background-color: #FFFFFF;\n        border-left: 4px solid #FFFFFF; }\n    .themosis__tabs__menu button.tab__active {\n      background-color: #FFFFFF;\n      color: #0085BA;\n      border-left: 4px solid #0085BA; }\n    .themosis__tabs__menu button.tab__has__errors {\n      color: #BE1414;\n      border-left: 4px solid #BE1414; }\n  .themosis__tabs__body {\n    background-color: #FFFFFF;\n    flex: 1 1 auto; }\n\n.themosis__field {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n  border-bottom: 1px solid #EEEEEE; }\n  .themosis__field:last-child {\n    border: none; }\n  .themosis__field__label {\n    font-weight: 600; }\n\n.themosis__column__label {\n  width: 33.33%; }\n\n.themosis__column__content {\n  width: 66.66%; }\n\n.themosis__description {\n  margin-top: 8px;\n  color: #666666; }\n\n.themosis__field__errors {\n  margin-top: 8px; }\n  .themosis__field__errors ul {\n    display: inline-block;\n    background-color: #F2DADA;\n    border-radius: 4px;\n    padding: 6px;\n    margin: 0;\n    color: #BE1414; }\n    .themosis__field__errors ul li {\n      color: #BE1414;\n      margin: 0; }\n\n.themosis__input {\n  min-width: 260px;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  padding: 6px; }\n\n.themosis__input__hidden {\n  padding: 6px 12px;\n  background-color: #F5F5F5;\n  border: 1px solid #DDDDDD;\n  text-shadow: 0 1px 0 #FFFFFF;\n  border-radius: 4px; }\n\n.themosis__textarea {\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  padding: 6px; }\n\n.has__errors .themosis__input {\n  border-color: #BE1414; }\n\n.has__errors .themosis__textarea {\n  border-color: #BE1414; }\n\n/* Gutenberg styles */\n.gutenberg-editor-page .themosis__metabox__footer {\n  background: #EDEFF0;\n  padding: 16px; }\n\n.gutenberg-editor-page .themosis__tabs__menu button {\n  padding: 12px; }\n\n.gutenberg-editor-page .themosis__field {\n  padding: 16px; }\n", ""]);
 
 // exports
 
@@ -24903,6 +24906,57 @@ var CheckboxField = /** @class */ (function (_super) {
     return CheckboxField;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
 /* harmony default export */ __webpack_exports__["a"] = (CheckboxField);
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__labels_Label__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers__ = __webpack_require__(52);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+/**
+ * The hidden field component.
+ */
+var HiddenField = /** @class */ (function (_super) {
+    __extends(HiddenField, _super);
+    function HiddenField(props) {
+        return _super.call(this, props) || this;
+    }
+    /**
+     * Render the component.
+     */
+    HiddenField.prototype.render = function () {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["b" /* Field */], { field: this.props.field },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { required: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["c" /* isRequired */])(this.props.field), for: this.props.field.attributes.id, text: this.props.field.label.inner })),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { id: this.props.field.attributes.id, className: "themosis__input__hidden" }, this.props.field.value),
+                this.props.field.options.info && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["a" /* Description */], { content: this.props.field.options.info }))));
+    };
+    return HiddenField;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
+/* harmony default export */ __webpack_exports__["a"] = (HiddenField);
 
 
 /***/ })
