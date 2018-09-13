@@ -509,8 +509,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_components_fields_NumberField__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_components_fields_CheckboxField__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_components_fields_HiddenField__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_styles_metabox_scss__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_styles_metabox_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__src_styles_metabox_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_components_fields_ChoiceField__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_styles_metabox_scss__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_styles_metabox_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__src_styles_metabox_scss__);
+
 
 
 
@@ -537,6 +539,7 @@ manager.addComponent('themosis.fields.integer', __WEBPACK_IMPORTED_MODULE_6__src
 manager.addComponent('themosis.fields.number', __WEBPACK_IMPORTED_MODULE_7__src_components_fields_NumberField__["a" /* default */]);
 manager.addComponent('themosis.fields.checkbox', __WEBPACK_IMPORTED_MODULE_8__src_components_fields_CheckboxField__["a" /* default */]);
 manager.addComponent('themosis.fields.hidden', __WEBPACK_IMPORTED_MODULE_9__src_components_fields_HiddenField__["a" /* default */]);
+manager.addComponent('themosis.fields.choice', __WEBPACK_IMPORTED_MODULE_10__src_components_fields_ChoiceField__["a" /* default */]);
 
 /**
  * Initialize the Metabox Factory.
@@ -25029,6 +25032,55 @@ var Checkbox = /** @class */ (function (_super) {
     return Checkbox;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
 /* harmony default export */ __webpack_exports__["a"] = (Checkbox);
+
+
+/***/ }),
+/* 69 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__labels_Label__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers__ = __webpack_require__(52);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+/**
+ * The choice field component.
+ */
+var ChoiceField = /** @class */ (function (_super) {
+    __extends(ChoiceField, _super);
+    function ChoiceField(props) {
+        return _super.call(this, props) || this;
+    }
+    /**
+     * Render the component.
+     */
+    ChoiceField.prototype.render = function () {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["b" /* Field */], { field: this.props.field },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { required: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["c" /* isRequired */])(this.props.field), text: this.props.field.label.inner })),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" }, "Choices")));
+    };
+    return ChoiceField;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
+/* harmony default export */ __webpack_exports__["a"] = (ChoiceField);
 
 
 /***/ })

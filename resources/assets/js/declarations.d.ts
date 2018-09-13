@@ -60,6 +60,7 @@ declare interface FieldType {
         group: string;
         info: string;
         precision: number;
+        choices: object;
     };
     label: {
         inner: string;
