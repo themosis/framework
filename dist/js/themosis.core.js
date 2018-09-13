@@ -507,8 +507,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_components_fields_PasswordField__ = __webpack_require__(62);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_components_fields_IntegerField__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_components_fields_NumberField__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_styles_metabox_scss__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_styles_metabox_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__src_styles_metabox_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_components_fields_CheckboxField__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_styles_metabox_scss__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_styles_metabox_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__src_styles_metabox_scss__);
+
 
 
 
@@ -531,6 +533,7 @@ manager.addComponent('themosis.fields.email', __WEBPACK_IMPORTED_MODULE_4__src_c
 manager.addComponent('themosis.fields.password', __WEBPACK_IMPORTED_MODULE_5__src_components_fields_PasswordField__["a" /* default */]);
 manager.addComponent('themosis.fields.integer', __WEBPACK_IMPORTED_MODULE_6__src_components_fields_IntegerField__["a" /* default */]);
 manager.addComponent('themosis.fields.number', __WEBPACK_IMPORTED_MODULE_7__src_components_fields_NumberField__["a" /* default */]);
+manager.addComponent('themosis.fields.checkbox', __WEBPACK_IMPORTED_MODULE_8__src_components_fields_CheckboxField__["a" /* default */]);
 
 /**
  * Initialize the Metabox Factory.
@@ -24837,6 +24840,69 @@ var NumberField = /** @class */ (function (_super) {
     return NumberField;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
 /* harmony default export */ __webpack_exports__["a"] = (NumberField);
+
+
+/***/ }),
+/* 66 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__labels_Label__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__errors_Error__ = __webpack_require__(53);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+
+/**
+ * The checkbox field component (single).
+ */
+var CheckboxField = /** @class */ (function (_super) {
+    __extends(CheckboxField, _super);
+    function CheckboxField(props) {
+        var _this = _super.call(this, props) || this;
+        _this.onChange = _this.onChange.bind(_this);
+        return _this;
+    }
+    /**
+     * Handle input value changes.
+     */
+    CheckboxField.prototype.onChange = function (e) {
+        var value = e.target.checked ? 'on' : 'off';
+        this.props.changeHandler(this.props.field.name, value);
+    };
+    /**
+     * Render the component.
+     */
+    CheckboxField.prototype.render = function () {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["b" /* Field */], { field: this.props.field },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { required: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["c" /* isRequired */])(this.props.field), for: this.props.field.attributes.id, text: this.props.field.label.inner })),
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" },
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { id: this.props.field.attributes.id, value: this.props.field.value, name: this.props.field.name, defaultChecked: !!this.props.field.attributes.checked, onChange: this.onChange, type: "checkbox" }),
+                Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["b" /* hasErrors */])(this.props.field) && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__errors_Error__["a" /* default */], { messages: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["a" /* getErrorsMessages */])(this.props.field) }),
+                this.props.field.options.info && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["a" /* Description */], { content: this.props.field.options.info }))));
+    };
+    return CheckboxField;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
+/* harmony default export */ __webpack_exports__["a"] = (CheckboxField);
 
 
 /***/ })

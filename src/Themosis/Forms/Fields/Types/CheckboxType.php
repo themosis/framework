@@ -3,9 +3,10 @@
 namespace Themosis\Forms\Fields\Types;
 
 use Themosis\Forms\Contracts\FieldTypeInterface;
+use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
 use Themosis\Forms\Transformers\StringToBooleanTransformer;
 
-class CheckboxType extends BaseType
+class CheckboxType extends BaseType implements CanHandleMetabox
 {
     /**
      * CheckboxType field view.
@@ -67,9 +68,44 @@ class CheckboxType extends BaseType
             // The value is only set on the field when it fails
             // or when the option "flush" is set to "false".
             // If true, let's automatically add the "checked" attribute.
-            $this->options['attributes'][] = 'checked';
+            $this->options['attributes']['checked'] = 'checked';
         }
 
         return $this;
+    }
+
+    /**
+     * Handle checkbox field post meta registration.
+     *
+     * @param mixed $value
+     * @param int   $post_id
+     */
+    public function metaboxSave($value, int $post_id)
+    {
+        $this->setValue($value);
+
+        $previous = get_post_meta($post_id, $this->getName(), true);
+
+        if (is_null($this->getValue()) || empty($this->getValue())) {
+            delete_post_meta($post_id, $this->getName());
+        } elseif (empty($previous)) {
+            add_post_meta($post_id, $this->getName(), $this->getValue(), true);
+        } else {
+            update_post_meta($post_id, $this->getName(), $this->getValue(), $previous);
+        }
+    }
+
+    /**
+     * Initialize the checkbox field post meta value.
+     *
+     * @param int $post_id
+     */
+    public function metaboxGet(int $post_id)
+    {
+        $value = get_post_meta($post_id, $this->getName(), true);
+
+        if (! empty($value)) {
+            $this->setValue($value);
+        }
     }
 }

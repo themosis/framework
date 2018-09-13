@@ -49,6 +49,7 @@ declare interface FieldType {
     attributes: {
         id: string;
         step: number;
+        checked: string;
     };
     basename: string;
     component: string;
