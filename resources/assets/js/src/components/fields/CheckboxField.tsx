@@ -1,8 +1,9 @@
 import * as React from "react";
 import {Description, Field} from "./common";
 import Label from "../labels/Label";
-import {getErrorsMessages, hasErrors, isRequired} from "../../helpers";
+import {getErrorsMessages, hasErrors, isRequired, isUndefined} from "../../helpers";
 import Error from "../errors/Error";
+import Checkbox from "../inputs/Checkbox";
 
 /**
  * The checkbox field component (single).
@@ -17,9 +18,23 @@ class CheckboxField extends React.Component <FieldProps> {
     /**
      * Handle input value changes.
      */
-    onChange(e:any) {
-        let value = e.target.checked ? 'on' : 'off';
+    onChange(checked: boolean) {
+        let value = checked ? 'on' : 'off';
         this.props.changeHandler(this.props.field.name, value);
+    }
+
+    /**
+     * Check if field has a checked attribute.
+     */
+    isChecked():boolean {
+        return 'checked' === this.props.field.attributes.checked;
+    }
+
+    /*
+     * Get the field value if any defined.
+     */
+    getValue(): string {
+        return isUndefined(this.props.field.value) ? '' : this.props.field.value.toString();
     }
 
     /**
@@ -34,12 +49,10 @@ class CheckboxField extends React.Component <FieldProps> {
                            text={this.props.field.label.inner}/>
                 </div>
                 <div className="themosis__column__content">
-                    <input id={this.props.field.attributes.id}
-                           value={this.props.field.value}
-                           name={this.props.field.name}
-                           defaultChecked={!!this.props.field.attributes.checked}
-                           onChange={this.onChange}
-                           type="checkbox"/>
+                    <Checkbox changeHandler={this.onChange}
+                              id={this.props.field.attributes.id}
+                              value={this.getValue()}
+                              checked={this.isChecked()}/>
                     { hasErrors(this.props.field) && <Error messages={getErrorsMessages(this.props.field)}/> }
                     { this.props.field.options.info && <Description content={this.props.field.options.info}/> }
                 </div>

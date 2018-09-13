@@ -24856,6 +24856,7 @@ var NumberField = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__labels_Label__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__errors_Error__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__inputs_Checkbox__ = __webpack_require__(68);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -24874,6 +24875,7 @@ var __extends = (this && this.__extends) || (function () {
 
 
 
+
 /**
  * The checkbox field component (single).
  */
@@ -24887,9 +24889,21 @@ var CheckboxField = /** @class */ (function (_super) {
     /**
      * Handle input value changes.
      */
-    CheckboxField.prototype.onChange = function (e) {
-        var value = e.target.checked ? 'on' : 'off';
+    CheckboxField.prototype.onChange = function (checked) {
+        var value = checked ? 'on' : 'off';
         this.props.changeHandler(this.props.field.name, value);
+    };
+    /**
+     * Check if field has a checked attribute.
+     */
+    CheckboxField.prototype.isChecked = function () {
+        return 'checked' === this.props.field.attributes.checked;
+    };
+    /*
+     * Get the field value if any defined.
+     */
+    CheckboxField.prototype.getValue = function () {
+        return Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["d" /* isUndefined */])(this.props.field.value) ? '' : this.props.field.value.toString();
     };
     /**
      * Render the component.
@@ -24899,7 +24913,7 @@ var CheckboxField = /** @class */ (function (_super) {
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { required: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["c" /* isRequired */])(this.props.field), for: this.props.field.attributes.id, text: this.props.field.label.inner })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { id: this.props.field.attributes.id, value: this.props.field.value, name: this.props.field.name, defaultChecked: !!this.props.field.attributes.checked, onChange: this.onChange, type: "checkbox" }),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__inputs_Checkbox__["a" /* default */], { changeHandler: this.onChange, id: this.props.field.attributes.id, value: this.getValue(), checked: this.isChecked() }),
                 Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["b" /* hasErrors */])(this.props.field) && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__errors_Error__["a" /* default */], { messages: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["a" /* getErrorsMessages */])(this.props.field) }),
                 this.props.field.options.info && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["a" /* Description */], { content: this.props.field.options.info }))));
     };
@@ -24957,6 +24971,64 @@ var HiddenField = /** @class */ (function (_super) {
     return HiddenField;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
 /* harmony default export */ __webpack_exports__["a"] = (HiddenField);
+
+
+/***/ }),
+/* 68 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    }
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+/**
+ * The checkbox input component.
+ */
+var Checkbox = /** @class */ (function (_super) {
+    __extends(Checkbox, _super);
+    function Checkbox(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            checked: props.checked || false
+        };
+        _this.onChange = _this.onChange.bind(_this);
+        return _this;
+    }
+    /**
+     * Handle checkbox value change event.
+     */
+    Checkbox.prototype.onChange = function () {
+        var _this = this;
+        this.setState(function (state, props) {
+            _this.props.changeHandler(!state.checked, props.value);
+            return {
+                checked: !state.checked
+            };
+        });
+    };
+    /**
+     * Render the component.
+     */
+    Checkbox.prototype.render = function () {
+        return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__input__checkbox" },
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("input", { onChange: this.onChange, checked: this.state.checked, value: this.props.value, id: this.props.id, type: "checkbox" })));
+    };
+    return Checkbox;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
+/* harmony default export */ __webpack_exports__["a"] = (Checkbox);
 
 
 /***/ })
