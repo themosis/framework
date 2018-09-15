@@ -17,6 +17,7 @@ interface SelectState {
     focus: boolean;
     value: Array<string>;
     selected: Array<string>;
+    options: Array<SelectOption>
 }
 
 /**
@@ -30,11 +31,13 @@ class Select extends React.Component <SelectProps, SelectState> {
             focus: false,
             open: false,
             value: [],
-            selected: []
+            selected: [],
+            options: props.options
         };
 
         this.onBlur = this.onBlur.bind(this);
         this.onFocus = this.onFocus.bind(this);
+        this.onInput = this.onInput.bind(this);
     }
 
     /**
@@ -50,24 +53,61 @@ class Select extends React.Component <SelectProps, SelectState> {
     /**
      * Handle input blue event. May close the select list.
      */
-    onBlur() {
+    onBlur(e:any) {
+        // Clear input value if any and reset options list to default.
+        e.target.value = '';
+
         this.setState({
             focus: false,
-            open: false
+            open: false,
+            options: this.props.options
         });
     }
 
     /**
-     * Handle input key down event. Filter the options list.
+     * Handle input event.
+     * Filter the options list.
      */
-    onKeyDown() {
+    onInput(e: any) {
+        let options = this.props.options.filter((option: SelectOption) => {
+            return option.key.toLowerCase().indexOf(e.target.value.toLowerCase()) !== -1;
+        });
 
+        this.setState((prevState, props) => {
+            return {
+                options: options,
+                selected: props.multiple ? prevState.selected : []
+            };
+        });
     }
 
     /**
      * Handle value.
      */
     onItemSelected(key: string, val: string) {
+        /*
+         * Handle if value is falsy.
+         */
+        if (! val) {
+            return this.setState((prevState, props) => {
+                let values:Array<string> = [],
+                    selected:Array<string> = [];
+
+                if (props.multiple && prevState.value.length) {
+                    values = prevState.value;
+                    selected = prevState.selected;
+                }
+
+                return {
+                    value: values,
+                    selected: selected
+                };
+            });
+        }
+
+        /*
+         * Handle truthy value.
+         */
         this.setState((prevState, props) => {
             let values = prevState.value.slice();
             let selected = prevState.selected.slice();
@@ -107,10 +147,16 @@ class Select extends React.Component <SelectProps, SelectState> {
 
         let selection = this.state.selected;
 
-        if (selection && !this.props.multiple) {
+        /*
+         * Handle single value selection.
+         */
+        if (selection.length && !this.props.multiple) {
             return selection.toString();
         }
 
+        /*
+         * If "multiple", the selection text is always empty.
+         */
         return '';
     }
 
@@ -131,7 +177,7 @@ class Select extends React.Component <SelectProps, SelectState> {
      * Render the list options.
      */
     renderOptions() {
-        return this.props.options.map((option: SelectOption) => {
+        return this.state.options.map((option: SelectOption) => {
             return (
                 <div key={option.key}
                      onMouseDown={() => { this.onItemSelected(option.key, option.value) }}
@@ -153,7 +199,7 @@ class Select extends React.Component <SelectProps, SelectState> {
                            className={classNames('themosis__select__input')}
                            onFocus={this.onFocus}
                            onBlur={this.onBlur}
-                           onKeyDown={this.onKeyDown}
+                           onInput={this.onInput}
                            autoComplete="off"/>
                     <div className={classNames('themosis__select__output', {'default': this.shouldShowPlaceholder(), 'open': this.state.open, 'selection': this.hasSelection()})}>
                         {this.getSelection()}
