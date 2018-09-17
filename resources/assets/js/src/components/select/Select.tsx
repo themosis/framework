@@ -1,5 +1,6 @@
 import * as React from "react";
 import classNames from "classnames";
+import Icon from "../icons/Icon";
 
 interface SelectOption {
     key: string;
@@ -244,16 +245,19 @@ class Select extends React.Component <SelectProps, SelectState> {
         return (
             <div className="themosis__select">
                 <div className="themosis__select__body">
-                    <input type="text"
-                           id={this.props.id}
-                           className={classNames('themosis__select__input')}
-                           onFocus={this.onFocus}
-                           onBlur={this.onBlur}
-                           onInput={this.onInput}
-                           onKeyDown={this.onKeyDown}
-                           autoComplete="off"/>
-                    <div className={classNames('themosis__select__output', {'default': this.shouldShowPlaceholder(), 'open': this.state.open, 'selection': this.hasSelection()})}>
-                        {this.getSelection()}
+                    <div className="themosis__select__field">
+                        <input type="text"
+                               id={this.props.id}
+                               className={classNames('themosis__select__input')}
+                               onFocus={this.onFocus}
+                               onBlur={this.onBlur}
+                               onInput={this.onInput}
+                               onKeyDown={this.onKeyDown}
+                               autoComplete="off"/>
+                        <div className={classNames('themosis__select__output', {'default': this.shouldShowPlaceholder(), 'open': this.state.open, 'selection': this.hasSelection()})}>
+                            {this.getSelection()}
+                        </div>
+                        <Icon name="arrow_down"/>
                     </div>
                     <div className={classNames('themosis__select__list', {'open': this.state.open})}>
                         { this.renderOptions() }

@@ -18,6 +18,12 @@ class Icon extends React.Component <IconProps> {
      */
     render() {
         switch (this.props.name) {
+            case 'arrow_down':
+                return (
+                    <svg className="themosis__svg icon__arrow__down" width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.71429 0L6 4.28571L10.2857 0L12 0.857143L6 6.85714L0 0.857143L1.71429 0Z" fill="#555555"/>
+                    </svg>
+                );
             case 'done':
                 return (
                     <svg className="themosis__svg icon__done" width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
