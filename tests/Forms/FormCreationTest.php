@@ -1022,7 +1022,8 @@ class FormCreationTest extends TestCase
                         'name' => 'th_firstname',
                         'options' => [
                             'group' => 'default',
-                            'info' => ''
+                            'info' => '',
+                            'l10n' => []
                         ],
                         'label' => [
                             'inner' => 'Firstname',
@@ -1066,7 +1067,8 @@ class FormCreationTest extends TestCase
                         'name' => 'th_firstname',
                         'options' => [
                             'group' => 'default',
-                            'info' => ''
+                            'info' => '',
+                            'l10n' => []
                         ],
                         'label' => [
                             'inner' => 'Firstname',

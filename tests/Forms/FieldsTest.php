@@ -97,7 +97,8 @@ class FieldsTest extends TestCase
             'name' => '',
             'options' => [
                 'group' => 'default',
-                'info' => ''
+                'info' => '',
+                'l10n' => []
             ],
             'label' => [],
             'theme' => '',
@@ -210,6 +211,7 @@ class FieldsTest extends TestCase
             'options' => [
                 'group' => 'default',
                 'info' => '',
+                'l10n' => [],
                 'expanded' => false,
                 'multiple' => false,
                 'choices' => [

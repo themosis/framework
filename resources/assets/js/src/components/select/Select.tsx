@@ -6,11 +6,16 @@ interface SelectOption {
     value: string;
 }
 
+interface SelectL10n {
+    placeholder?: string;
+    not_found?: string;
+}
+
 interface SelectProps {
     options: Array<SelectOption>;
     id?: string;
     multiple?: boolean;
-    placeholder?: string;
+    l10n?: SelectL10n;
 }
 
 interface SelectState {
@@ -174,8 +179,8 @@ class Select extends React.Component <SelectProps, SelectState> {
         /*
          * If there is no value, let's check after the placeholder.
          */
-        if (this.shouldShowPlaceholder()) {
-            return this.props.placeholder ? this.props.placeholder : '';
+        if (this.shouldShowPlaceholder() && this.props.l10n) {
+            return this.props.l10n.placeholder ? this.props.l10n.placeholder : '';
         }
 
         let selection = this.state.selected;
@@ -203,7 +208,7 @@ class Select extends React.Component <SelectProps, SelectState> {
             return false;
         }
 
-        return !!(!this.state.value.length && this.props.placeholder);
+        return !!(!this.state.value.length && this.props.l10n && this.props.l10n.placeholder);
     }
 
     /**
@@ -216,7 +221,7 @@ class Select extends React.Component <SelectProps, SelectState> {
         if (! this.state.options.length) {
             return (
                 <div className="themosis__select__item notfound">
-                    <span>Nothing found.</span>
+                    <span>{ (this.props.l10n && this.props.l10n.not_found) ? this.props.l10n.not_found : 'Nothing found'}</span>
                 </div>
             );
         }

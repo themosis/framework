@@ -2,6 +2,7 @@
 
 namespace Themosis\Forms\Fields\Types;
 
+use Themosis\Core\Application;
 use Themosis\Forms\Contracts\CheckableInterface;
 use Themosis\Forms\Contracts\SelectableInterface;
 use Themosis\Forms\Fields\ChoiceList\ChoiceList;
@@ -68,11 +69,20 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
      */
     protected function setDefaultOptions(): array
     {
-        return array_merge($this->defaultOptions, [
+        $default = [
             'expanded' => false,
             'multiple' => false,
             'choices' => null
-        ]);
+        ];
+
+        if (function_exists('_x')) {
+            $default['l10n'] = [
+                'not_found' => _x('Nothing found', 'field', Application::TEXTDOMAIN),
+                'placeholder' => _x('Select an option...', 'field', Application::TEXTDOMAIN)
+            ];
+        }
+
+        return array_merge($this->defaultOptions, $default);
     }
 
     /**

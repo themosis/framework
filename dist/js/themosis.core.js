@@ -24498,7 +24498,10 @@ var ChoiceField = /** @class */ (function (_super) {
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { required: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["c" /* isRequired */])(this.props.field), for: this.props.field.attributes.id, text: this.props.field.label.inner })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__select_Select__["a" /* default */], { placeholder: 'Select a color...', id: this.props.field.attributes.id, options: [
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__select_Select__["a" /* default */], { l10n: {
+                        placeholder: this.props.field.options.l10n.placeholder,
+                        not_found: this.props.field.options.l10n.not_found
+                    }, id: this.props.field.attributes.id, options: [
                         { key: 'None', value: '' },
                         { key: 'Red', value: 'red' },
                         { key: 'Green', value: 'green' },
@@ -25257,8 +25260,8 @@ var Select = /** @class */ (function (_super) {
         /*
          * If there is no value, let's check after the placeholder.
          */
-        if (this.shouldShowPlaceholder()) {
-            return this.props.placeholder ? this.props.placeholder : '';
+        if (this.shouldShowPlaceholder() && this.props.l10n) {
+            return this.props.l10n.placeholder ? this.props.l10n.placeholder : '';
         }
         var selection = this.state.selected;
         /*
@@ -25281,7 +25284,7 @@ var Select = /** @class */ (function (_super) {
         if (this.state.open) {
             return false;
         }
-        return !!(!this.state.value.length && this.props.placeholder);
+        return !!(!this.state.value.length && this.props.l10n && this.props.l10n.placeholder);
     };
     /**
      * Render the list options.
@@ -25293,7 +25296,7 @@ var Select = /** @class */ (function (_super) {
          */
         if (!this.state.options.length) {
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__select__item notfound" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", null, "Nothing found.")));
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", null, (this.props.l10n && this.props.l10n.not_found) ? this.props.l10n.not_found : 'Nothing found')));
         }
         return this.state.options.map(function (option) {
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: option.key, onMouseDown: function () { _this.onItemSelected(option.key, option.value); }, className: "themosis__select__item" },

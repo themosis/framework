@@ -164,7 +164,8 @@ class MetaboxTest extends TestCase
                         'name' => 'th_author',
                         'options' => [
                             'group' => 'default',
-                            'info' => ''
+                            'info' => '',
+                            'l10n' => []
                         ],
                         'label' => [
                             'inner' => 'Author',
