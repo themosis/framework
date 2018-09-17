@@ -8,6 +8,7 @@ interface SelectOption {
 
 interface SelectProps {
     options: Array<SelectOption>;
+    id?: string;
     multiple?: boolean;
     placeholder?: string;
 }
@@ -51,16 +52,36 @@ class Select extends React.Component <SelectProps, SelectState> {
     }
 
     /**
-     * Handle input blue event. May close the select list.
+     * Handle input blur event. May close the select list.
      */
     onBlur(e:any) {
         // Clear input value if any and reset options list to default.
         e.target.value = '';
 
-        this.setState({
-            focus: false,
-            open: false,
-            options: this.props.options
+        this.setState((prevState, props) => {
+            let selected:Array<string> = [];
+
+            /*
+             * If nothing is selected but there was an initial value, let's
+             * bring back the selection.
+             */
+            if (prevState.value.length && ! prevState.selected.length) {
+                // Loop through all values and bring back selected keys.
+                selected = prevState.value.map((value) => {
+                    let opt = props.options.filter((option:SelectOption) => {
+                        return option.value === value;
+                    }).shift();
+
+                    return opt ? opt.key : '';
+                }).filter(key => key);
+            }
+
+            return {
+                focus: false,
+                open: false,
+                options: this.props.options,
+                selected: selected.length ? selected : prevState.selected
+            };
         });
     }
 
@@ -82,7 +103,19 @@ class Select extends React.Component <SelectProps, SelectState> {
     }
 
     /**
-     * Handle value.
+     * Handle input key down event.
+     */
+    onKeyDown(e: any) {
+        /*
+         * Check if user is pressing the "ESC" key.
+         */
+        if ('Escape' === e.key) {
+            e.target.blur();
+        }
+    }
+
+    /**
+     * Handle value when an item is selected/clicked.
      */
     onItemSelected(key: string, val: string) {
         /*
@@ -177,6 +210,17 @@ class Select extends React.Component <SelectProps, SelectState> {
      * Render the list options.
      */
     renderOptions() {
+        /*
+         * Handle no found options.
+         */
+        if (! this.state.options.length) {
+            return (
+                <div className="themosis__select__item notfound">
+                    <span>Nothing found.</span>
+                </div>
+            );
+        }
+
         return this.state.options.map((option: SelectOption) => {
             return (
                 <div key={option.key}
@@ -196,10 +240,12 @@ class Select extends React.Component <SelectProps, SelectState> {
             <div className="themosis__select">
                 <div className="themosis__select__body">
                     <input type="text"
+                           id={this.props.id}
                            className={classNames('themosis__select__input')}
                            onFocus={this.onFocus}
                            onBlur={this.onBlur}
                            onInput={this.onInput}
+                           onKeyDown={this.onKeyDown}
                            autoComplete="off"/>
                     <div className={classNames('themosis__select__output', {'default': this.shouldShowPlaceholder(), 'open': this.state.open, 'selection': this.hasSelection()})}>
                         {this.getSelection()}

@@ -70,3 +70,12 @@
     color: $white;
   }
 }
+
+.themosis__select__item.notfound {
+  cursor: default;
+
+  &:hover {
+    background: none;
+    color: inherit;
+  }
+}

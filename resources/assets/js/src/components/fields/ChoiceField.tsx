@@ -20,10 +20,13 @@ class ChoiceField extends React.Component <FieldProps> {
             <Field field={this.props.field}>
                 <div className="themosis__column__label">
                     <Label required={isRequired(this.props.field)}
+                           for={this.props.field.attributes.id}
                            text={this.props.field.label.inner}/>
                 </div>
                 <div className="themosis__column__content">
-                    <Select placeholder={'Select a color...'} options={[
+                    <Select placeholder={'Select a color...'}
+                            id={this.props.field.attributes.id}
+                            options={[
                         {key: 'None', value: ''},
                         {key: 'Red',value: 'red'},
                         {key: 'Green',value: 'green'},
