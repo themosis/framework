@@ -24499,7 +24499,27 @@ var ChoiceField = /** @class */ (function (_super) {
      * Handle value changes.
      */
     ChoiceField.prototype.onChange = function (value) {
-        this.props.changeHandler(this.props.field.name, value);
+        this.props.changeHandler(this.props.field.name, this.parseValue(value));
+    };
+    /**
+     * Format value based on field configuration.
+     *
+     * @return {string|array}
+     */
+    ChoiceField.prototype.parseValue = function (value) {
+        if (!value.length) {
+            return '';
+        }
+        switch (this.props.field.options.layout) {
+            case 'select':
+                if (!this.props.field.options.multiple && Array.isArray(value)) {
+                    // We handle an array for a single value. Let's return the first element of value.
+                    return value.shift();
+                }
+                // Multiple selection.
+                return value;
+        }
+        return value;
     };
     /**
      * Render the component.
@@ -25224,13 +25244,12 @@ var Select = /** @class */ (function (_super) {
      * Handle value when an item is selected/clicked.
      */
     Select.prototype.onItemSelected = function (key, val) {
+        var _this = this;
         /*
-         * Handle if value is falsy.
+         * Handle falsy value.
          */
         if (!val) {
-            // Value can be empty.
-            this.props.changeHandler(val);
-            return this.setState(function (prevState, props) {
+            this.setState(function (prevState, props) {
                 var values = [], selected = [];
                 if (props.multiple && prevState.value.length) {
                     values = prevState.value;
@@ -25241,28 +25260,40 @@ var Select = /** @class */ (function (_super) {
                     selected: selected
                 };
             });
+            // Value can be empty.
+            this.props.changeHandler([]);
+            return;
         }
         /*
          * Handle truthy value.
          */
         this.setState(function (prevState, props) {
-            var values = prevState.value.slice();
-            var selected = prevState.selected.slice();
-            if (props.multiple) {
-                values.push(val);
-                selected.push(key);
-            }
-            else {
-                values.splice(0, values.length, val);
-                selected.splice(0, selected.length, key);
-            }
-            // Send values to higher component.
-            props.changeHandler(values);
             return {
-                value: values,
-                selected: selected
+                value: _this.parse(prevState.value.slice(), val, !!props.multiple),
+                selected: _this.parse(prevState.selected.slice(), key, !!props.multiple)
             };
         });
+        // Send the value to higher component.
+        this.props.changeHandler(this.parse(this.state.value.slice(), val, !!this.props.multiple));
+    };
+    /**
+     * Parse value and selection.
+     * Returned a modified source array with correct added value.
+     *
+     * @param {Array} source
+     * @param {string} val
+     * @param {multiple} multiple
+     *
+     * @return {Array}
+     */
+    Select.prototype.parse = function (source, val, multiple) {
+        if (multiple) {
+            source.push(val);
+        }
+        else {
+            source.splice(0, source.length, val);
+        }
+        return source;
     };
     /**
      * Check if there is a selection.

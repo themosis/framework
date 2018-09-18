@@ -7,9 +7,10 @@ use Themosis\Forms\Contracts\CheckableInterface;
 use Themosis\Forms\Contracts\SelectableInterface;
 use Themosis\Forms\Fields\ChoiceList\ChoiceList;
 use Themosis\Forms\Fields\ChoiceList\ChoiceListInterface;
+use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
 use Themosis\Forms\Transformers\ChoiceToValueTransformer;
 
-class ChoiceType extends BaseType implements CheckableInterface, SelectableInterface
+class ChoiceType extends BaseType implements CheckableInterface, SelectableInterface, CanHandleMetabox
 {
     /**
      * Field layout.
@@ -199,5 +200,26 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
     public function selected(callable $callback, array $args): string
     {
         return call_user_func_array($callback, $args);
+    }
+
+    /**
+     * Handle metabox field value registration.
+     *
+     * @param string|array $value
+     * @param int          $post_id
+     */
+    public function metaboxSave($value, int $post_id)
+    {
+        // TODO: Implement metaboxSave() method.
+    }
+
+    /**
+     * Initialize metabox field value.
+     *
+     * @param int $post_id
+     */
+    public function metaboxGet(int $post_id)
+    {
+        // TODO: Implement metaboxGet() method.
     }
 }

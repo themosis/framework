@@ -18,7 +18,31 @@ class ChoiceField extends React.Component <FieldProps> {
      * Handle value changes.
      */
     onChange(value: any) {
-        this.props.changeHandler(this.props.field.name, value);
+        this.props.changeHandler(this.props.field.name, this.parseValue(value));
+    }
+
+    /**
+     * Format value based on field configuration.
+     *
+     * @return {string|array}
+     */
+    parseValue(value: string|Array<string>) {
+        if (! value.length) {
+            return '';
+        }
+
+        switch (this.props.field.options.layout) {
+            case 'select':
+                if (! this.props.field.options.multiple && Array.isArray(value)) {
+                    // We handle an array for a single value. Let's return the first element of value.
+                    return value.shift();
+                }
+
+                // Multiple selection.
+                return value;
+        }
+
+        return value;
     }
 
     /**

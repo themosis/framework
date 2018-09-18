@@ -5,6 +5,7 @@ import Icon from "../icons/Icon";
 interface SelectOption {
     key: string;
     value: string;
+    selected?: boolean;
 }
 
 interface SelectL10n {
@@ -126,13 +127,10 @@ class Select extends React.Component <SelectProps, SelectState> {
      */
     onItemSelected(key: string, val: string) {
         /*
-         * Handle if value is falsy.
+         * Handle falsy value.
          */
         if (! val) {
-            // Value can be empty.
-            this.props.changeHandler(val);
-
-            return this.setState((prevState, props) => {
+            this.setState((prevState, props) => {
                 let values:Array<string> = [],
                     selected:Array<string> = [];
 
@@ -146,31 +144,44 @@ class Select extends React.Component <SelectProps, SelectState> {
                     selected: selected
                 };
             });
+
+            // Value can be empty.
+            this.props.changeHandler([]);
+            return;
         }
 
         /*
          * Handle truthy value.
          */
         this.setState((prevState, props) => {
-            let values = prevState.value.slice();
-            let selected = prevState.selected.slice();
-
-            if (props.multiple) {
-                values.push(val);
-                selected.push(key);
-            } else {
-                values.splice(0, values.length, val);
-                selected.splice(0, selected.length, key);
-            }
-
-            // Send values to higher component.
-            props.changeHandler(values);
-
             return {
-                value: values,
-                selected: selected
+                value: this.parse(prevState.value.slice(), val, !!props.multiple),
+                selected: this.parse(prevState.selected.slice(), key, !!props.multiple)
             };
         });
+
+        // Send the value to higher component.
+        this.props.changeHandler(this.parse(this.state.value.slice(), val, !!this.props.multiple));
+    }
+
+    /**
+     * Parse value and selection.
+     * Returned a modified source array with correct added value.
+     *
+     * @param {Array} source
+     * @param {string} val
+     * @param {multiple} multiple
+     *
+     * @return {Array}
+     */
+    parse(source: Array<string>, val: string, multiple: boolean): Array<string> {
+        if (multiple) {
+            source.push(val);
+        } else {
+            source.splice(0, source.length, val);
+        }
+
+        return source;
     }
 
     /**

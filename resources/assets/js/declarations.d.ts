@@ -57,11 +57,14 @@ declare interface FieldType {
     default: string;
     name: string;
     options: {
+        choices: object;
+        expanded?: boolean;
         group: string;
         info: string;
-        precision: number;
-        choices: object;
         l10n: any;
+        layout?: string;
+        multiple?: boolean;
+        precision: number;
     };
     label: {
         inner: string;
