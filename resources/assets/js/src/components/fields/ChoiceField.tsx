@@ -10,6 +10,15 @@ import Select from "../select/Select";
 class ChoiceField extends React.Component <FieldProps> {
     constructor(props: FieldProps) {
         super(props);
+
+        this.onChange = this.onChange.bind(this);
+    }
+
+    /**
+     * Handle value changes.
+     */
+    onChange(value: any) {
+        this.props.changeHandler(this.props.field.name, value);
     }
 
     /**
@@ -28,6 +37,7 @@ class ChoiceField extends React.Component <FieldProps> {
                                 placeholder: this.props.field.options.l10n.placeholder,
                                 not_found: this.props.field.options.l10n.not_found
                             }}
+                            changeHandler={this.onChange}
                             id={this.props.field.attributes.id}
                             options={[
                         {key: 'None', value: ''},

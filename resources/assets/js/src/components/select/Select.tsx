@@ -14,6 +14,7 @@ interface SelectL10n {
 
 interface SelectProps {
     options: Array<SelectOption>;
+    changeHandler?: any;
     id?: string;
     multiple?: boolean;
     l10n?: SelectL10n;
@@ -128,6 +129,9 @@ class Select extends React.Component <SelectProps, SelectState> {
          * Handle if value is falsy.
          */
         if (! val) {
+            // Value can be empty.
+            this.props.changeHandler(val);
+
             return this.setState((prevState, props) => {
                 let values:Array<string> = [],
                     selected:Array<string> = [];
@@ -158,6 +162,9 @@ class Select extends React.Component <SelectProps, SelectState> {
                 values.splice(0, values.length, val);
                 selected.splice(0, selected.length, key);
             }
+
+            // Send values to higher component.
+            props.changeHandler(values);
 
             return {
                 value: values,
