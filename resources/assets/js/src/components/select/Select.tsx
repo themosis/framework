@@ -26,7 +26,8 @@ interface SelectState {
     focus: boolean;
     value: Array<string>;
     selected: Array<string>;
-    options: Array<SelectOption>
+    options: Array<SelectOption>;
+    listItems: Array<SelectOption>;
 }
 
 /**
@@ -46,13 +47,29 @@ class Select extends React.Component <SelectProps, SelectState> {
             open: false,
             value: [],
             selected: [],
-            options: props.options
+            options: this.defaultOptions(props.options),
+            listItems: this.defaultOptions(props.options)
         };
 
         this.onBlur = this.onBlur.bind(this);
         this.onFocus = this.onFocus.bind(this);
         this.onInput = this.onInput.bind(this);
         this.onFieldClick = this.onFieldClick.bind(this);
+    }
+
+    /**
+     * Setup default state options.
+     * Add a "selected" value.
+     *
+     * @param options
+     *
+     * @return {Array<SelectOption>}
+     */
+    defaultOptions(options: Array<SelectOption>) {
+        return options.map((option) => {
+            option.selected = false;
+            return option;
+        });
     }
 
     /**
@@ -93,7 +110,8 @@ class Select extends React.Component <SelectProps, SelectState> {
             return {
                 focus: false,
                 open: false,
-                options: this.props.options,
+                options: this.state.options,
+                listItems: this.state.options,
                 selected: selected.length ? selected : prevState.selected
             };
         });
@@ -104,13 +122,13 @@ class Select extends React.Component <SelectProps, SelectState> {
      * Filter the options list.
      */
     onInput(e: any) {
-        let options = this.props.options.filter((option: SelectOption) => {
+        let items = this.props.options.filter((option: SelectOption) => {
             return option.key.toLowerCase().indexOf(e.target.value.toLowerCase()) !== -1;
         });
 
         this.setState((prevState, props) => {
             return {
-                options: options,
+                listItems: items,
                 selected: props.multiple ? prevState.selected : []
             };
         });
@@ -164,9 +182,18 @@ class Select extends React.Component <SelectProps, SelectState> {
             return val !== item.value;
         });
 
+        let options = this.state.options.map((option: SelectOption) => {
+            if (option.value === item.value) {
+                option.selected = false;
+            }
+
+            return option;
+        });
+
         this.setState({
             selected: selected,
-            value: value
+            value: value,
+            options: options
         });
     }
 
@@ -174,42 +201,39 @@ class Select extends React.Component <SelectProps, SelectState> {
      * Handle value when an item is selected/clicked.
      */
     onItemSelected(key: string, val: string) {
-        /*
-         * Handle falsy value.
-         */
-        if (! val) {
-            this.setState((prevState, props) => {
-                let values:Array<string> = [],
-                    selected:Array<string> = [];
+        let values: Array<string> = this.state.value,
+            selected: Array<string> = this.state.selected,
+            options: Array<SelectOption> = this.state.options;
 
-                if (props.multiple && prevState.value.length) {
-                    values = prevState.value;
-                    selected = prevState.selected;
+        if (! val) {
+            if (! this.props.multiple) {
+                values = [];
+                selected = [];
+                options = this.defaultOptions(options);
+            }
+        } else {
+            values = this.parse(this.state.value.slice(), val, !!this.props.multiple);
+            selected = this.parse(this.state.selected.slice(), key, !!this.props.multiple);
+            options = options.map((option: SelectOption) => {
+                if (val === option.value) {
+                    option.selected = true;
                 }
 
-                return {
-                    value: values,
-                    selected: selected
-                };
+                return option;
             });
-
-            // Value can be empty.
-            this.props.changeHandler([]);
-            return;
         }
 
         /*
          * Handle truthy value.
          */
-        this.setState((prevState, props) => {
-            return {
-                value: this.parse(prevState.value.slice(), val, !!props.multiple),
-                selected: this.parse(prevState.selected.slice(), key, !!props.multiple)
-            };
+        this.setState({
+            value: values,
+            selected: selected,
+            options: options
         });
 
         // Send the value to higher component.
-        this.props.changeHandler(this.parse(this.state.value.slice(), val, !!this.props.multiple));
+        this.props.changeHandler(values);
     }
 
     /**
@@ -220,7 +244,7 @@ class Select extends React.Component <SelectProps, SelectState> {
      * @return {SelectOption}
      */
     findOptionByKey(key: string): SelectOption {
-        let options = this.props.options.filter((option) => {
+        let options = this.state.options.filter((option) => {
             return option.key === key;
         });
 
@@ -232,7 +256,8 @@ class Select extends React.Component <SelectProps, SelectState> {
 
         return {
             key: '',
-            value: ''
+            value: '',
+            selected: false
         };
     }
 
@@ -309,7 +334,7 @@ class Select extends React.Component <SelectProps, SelectState> {
         /*
          * Handle no found options.
          */
-        if (! this.state.options.length) {
+        if (! this.state.listItems.length) {
             return (
                 <div className="themosis__select__item notfound">
                     <span>{ (this.props.l10n && this.props.l10n.not_found) ? this.props.l10n.not_found : 'Nothing found'}</span>
@@ -317,11 +342,11 @@ class Select extends React.Component <SelectProps, SelectState> {
             );
         }
 
-        return this.state.options.map((option: SelectOption) => {
+        return this.state.listItems.map((option: SelectOption) => {
             return (
                 <div key={option.key}
-                     onMouseDown={() => { this.onItemSelected(option.key, option.value) }}
-                     className="themosis__select__item">
+                     onMouseDown={() => { if (! option.selected) { this.onItemSelected(option.key, option.value) } }}
+                     className={classNames('themosis__select__item', {'selected': option.selected})}>
                     <span>{option.key}</span>
                 </div>
             );

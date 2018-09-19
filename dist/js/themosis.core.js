@@ -24592,7 +24592,7 @@ exports = module.exports = __webpack_require__(67)(false);
 
 
 // module
-exports.push([module.i, "@keyframes turning {\n  0% {\n    transform-origin: center center;\n    transform: rotate(0deg); }\n  100% {\n    transform: rotate(360deg); } }\n\n.themosis__input__number {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center; }\n  .themosis__input__number button {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    justify-content: center;\n    align-items: center;\n    width: 32px;\n    height: 32px;\n    background-color: #EDEFF0;\n    border: 1px solid #DDDDDD;\n    box-sizing: border-box;\n    margin: 0;\n    cursor: pointer; }\n    .themosis__input__number button:hover {\n      background-color: #0085BA;\n      border: 1px solid #006799; }\n      .themosis__input__number button:hover .themosis__svg path,\n      .themosis__input__number button:hover .themosis__svg rect {\n        fill: #FFFFFF; }\n    .themosis__input__number button:active {\n      background-color: #008EC2;\n      border: 1px solid #006799; }\n      .themosis__input__number button:active .themosis__svg path,\n      .themosis__input__number button:active .themosis__svg rect {\n        fill: #FFFFFF; }\n  .themosis__input__number .button__minus {\n    border-bottom-left-radius: 4px;\n    border-top-left-radius: 4px; }\n  .themosis__input__number .button__plus {\n    border-bottom-right-radius: 4px;\n    border-top-right-radius: 4px; }\n  .themosis__input__number input {\n    border-left: none;\n    border-right: none;\n    border-radius: 0;\n    box-sizing: border-box;\n    width: 196px;\n    height: 32px;\n    margin: 0;\n    text-align: center; }\n\n.themosis__select__body {\n  position: relative; }\n\n.themosis__select__field {\n  position: relative;\n  display: inline-block;\n  border-radius: 4px;\n  border: 1px solid #DDDDDD;\n  width: 100%;\n  min-width: 260px;\n  max-width: 100%;\n  margin: 0;\n  padding: 0;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07);\n  box-sizing: border-box;\n  z-index: 3;\n  background-color: #FFFFFF; }\n\n.themosis__select__input {\n  position: absolute;\n  padding: 8px;\n  border-radius: 4px;\n  box-sizing: border-box;\n  width: 100%;\n  min-width: 260px;\n  max-width: 100%;\n  z-index: 2;\n  margin: 0;\n  box-shadow: none !important;\n  border: none !important;\n  background: none !important;\n  top: 0; }\n\n.themosis__select__output {\n  position: relative;\n  display: inline-block;\n  padding: 8px;\n  min-height: 19px;\n  z-index: 3;\n  pointer-events: none;\n  top: 0;\n  left: 0; }\n\n.themosis__select__list {\n  position: absolute;\n  width: 100%;\n  padding: 9px 8px;\n  background-color: #F5F5F5;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  top: 100%;\n  left: 0;\n  box-sizing: border-box;\n  margin-top: -6px;\n  display: none;\n  z-index: 1;\n  max-height: 200px;\n  overflow-y: scroll; }\n\n.themosis__select .icon__arrow__down {\n  position: absolute;\n  width: 12px;\n  height: 7px;\n  right: 8px;\n  top: 15px;\n  z-index: 5; }\n  .themosis__select .icon__arrow__down path {\n    fill: #666666; }\n\n.themosis__select__tag {\n  display: inline-block;\n  padding: 3px 10px 4px;\n  background-color: #0085BA;\n  color: #FFFFFF;\n  margin: 0 6px 6px 0;\n  line-height: 1;\n  border-radius: 20px;\n  cursor: pointer; }\n  .themosis__select__tag:hover {\n    color: #FFFFFF;\n    background-color: #006799; }\n  .themosis__select__tag:active {\n    color: #FFFFFF;\n    background-color: #008EC2; }\n  .themosis__select__tag .icon__close {\n    margin-left: 10px; }\n\n.themosis__select.multiple .themosis__select__field {\n  min-height: 34px;\n  padding: 6px 26px 6px 6px;\n  cursor: text; }\n\n.themosis__select.multiple .themosis__select__input {\n  position: static;\n  padding: 0;\n  width: 2.2em;\n  min-width: auto;\n  max-width: 100%; }\n\n.themosis__select.multiple .icon__arrow__down {\n  top: 13px; }\n\n.themosis__select.multiple.selection .themosis__select__field {\n  padding: 6px 26px 0 6px; }\n\n.themosis__select__output.open {\n  min-height: 15px; }\n\n.themosis__select__output.default {\n  color: #b3b3b3; }\n\n.themosis__select__output.open.selection {\n  color: #b3b3b3;\n  min-height: 19px; }\n\n.themosis__select__output.multiple {\n  position: absolute;\n  top: 6px;\n  left: 8px;\n  padding: 0; }\n\n.themosis__select__output.selection.multiple {\n  display: none; }\n\n.themosis__select__list.open {\n  display: block; }\n\n.themosis__select__item {\n  border-radius: 4px;\n  padding: 8px 10px;\n  cursor: pointer; }\n  .themosis__select__item:hover {\n    background-color: #0085BA;\n    color: #FFFFFF; }\n\n.themosis__select__item.notfound {\n  cursor: default; }\n  .themosis__select__item.notfound:hover {\n    background: none;\n    color: inherit; }\n\n.themosis__metabox__footer {\n  display: flex;\n  background: #F5F5F5;\n  border-top: 1px solid #E5E5E5;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-end;\n  padding: 16px 12px; }\n\n.themosis__metabox__status {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  margin-right: 12px; }\n  .themosis__metabox__status__icon {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    align-items: center;\n    width: 22px;\n    height: 22px; }\n    .themosis__metabox__status__icon svg.icon__saving {\n      animation: turning 1s linear infinite; }\n  .themosis__metabox__status__text {\n    display: inline;\n    margin: 0 0 0 8px;\n    padding: 0; }\n\n.themosis__tabs {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap; }\n  .themosis__tabs__menu {\n    width: 25%;\n    max-width: 260px;\n    background-color: #E5E5E5;\n    padding-right: 1px; }\n    .themosis__tabs__menu button {\n      display: block;\n      width: 100%;\n      padding: 12px 12px 12px 8px;\n      font-size: 13px;\n      font-weight: 600;\n      background-color: #F5F5F5;\n      color: #666666;\n      border: none;\n      border-left: 4px solid #F5F5F5;\n      margin-bottom: 1px;\n      text-align: left;\n      cursor: pointer;\n      box-sizing: border-box; }\n      .themosis__tabs__menu button:hover {\n        background-color: #FFFFFF;\n        border-left: 4px solid #FFFFFF; }\n    .themosis__tabs__menu button.tab__active {\n      background-color: #FFFFFF;\n      color: #0085BA;\n      border-left: 4px solid #0085BA; }\n    .themosis__tabs__menu button.tab__has__errors {\n      color: #BE1414;\n      border-left: 4px solid #BE1414; }\n  .themosis__tabs__body {\n    background-color: #FFFFFF;\n    flex: 1 1 auto; }\n\n.themosis__field {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n  border-bottom: 1px solid #EEEEEE; }\n  .themosis__field:last-child {\n    border: none; }\n  .themosis__field__label {\n    font-weight: 600; }\n\n.themosis__column__label {\n  width: 33.33%; }\n\n.themosis__column__content {\n  width: 66.66%; }\n\n.themosis__description {\n  margin-top: 8px;\n  color: #666666; }\n\n.themosis__field__errors {\n  margin-top: 8px; }\n  .themosis__field__errors ul {\n    display: inline-block;\n    background-color: #F2DADA;\n    border-radius: 4px;\n    padding: 6px;\n    margin: 0;\n    color: #BE1414; }\n    .themosis__field__errors ul li {\n      color: #BE1414;\n      margin: 0; }\n\n.themosis__input {\n  min-width: 260px;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  padding: 6px; }\n\n.themosis__input__hidden {\n  padding: 6px 12px;\n  background-color: #F5F5F5;\n  border: 1px solid #DDDDDD;\n  text-shadow: 0 1px 0 #FFFFFF;\n  border-radius: 4px; }\n\n.themosis__textarea {\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  padding: 6px; }\n\n.has__errors .themosis__input {\n  border-color: #BE1414; }\n\n.has__errors .themosis__textarea {\n  border-color: #BE1414; }\n\n/* Gutenberg styles */\n.gutenberg-editor-page .themosis__metabox__footer {\n  background: #EDEFF0;\n  padding: 16px; }\n\n.gutenberg-editor-page .themosis__tabs__menu button {\n  padding: 12px; }\n\n.gutenberg-editor-page .themosis__field {\n  padding: 16px; }\n", ""]);
+exports.push([module.i, "@keyframes turning {\n  0% {\n    transform-origin: center center;\n    transform: rotate(0deg); }\n  100% {\n    transform: rotate(360deg); } }\n\n.themosis__input__number {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center; }\n  .themosis__input__number button {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    justify-content: center;\n    align-items: center;\n    width: 32px;\n    height: 32px;\n    background-color: #EDEFF0;\n    border: 1px solid #DDDDDD;\n    box-sizing: border-box;\n    margin: 0;\n    cursor: pointer; }\n    .themosis__input__number button:hover {\n      background-color: #0085BA;\n      border: 1px solid #006799; }\n      .themosis__input__number button:hover .themosis__svg path,\n      .themosis__input__number button:hover .themosis__svg rect {\n        fill: #FFFFFF; }\n    .themosis__input__number button:active {\n      background-color: #008EC2;\n      border: 1px solid #006799; }\n      .themosis__input__number button:active .themosis__svg path,\n      .themosis__input__number button:active .themosis__svg rect {\n        fill: #FFFFFF; }\n  .themosis__input__number .button__minus {\n    border-bottom-left-radius: 4px;\n    border-top-left-radius: 4px; }\n  .themosis__input__number .button__plus {\n    border-bottom-right-radius: 4px;\n    border-top-right-radius: 4px; }\n  .themosis__input__number input {\n    border-left: none;\n    border-right: none;\n    border-radius: 0;\n    box-sizing: border-box;\n    width: 196px;\n    height: 32px;\n    margin: 0;\n    text-align: center; }\n\n.themosis__select__body {\n  position: relative; }\n\n.themosis__select__field {\n  position: relative;\n  display: inline-block;\n  border-radius: 4px;\n  border: 1px solid #DDDDDD;\n  width: 100%;\n  min-width: 260px;\n  max-width: 100%;\n  margin: 0;\n  padding: 0;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07);\n  box-sizing: border-box;\n  z-index: 3;\n  background-color: #FFFFFF; }\n\n.themosis__select__input {\n  position: absolute;\n  padding: 8px;\n  border-radius: 4px;\n  box-sizing: border-box;\n  width: 100%;\n  min-width: 260px;\n  max-width: 100%;\n  z-index: 2;\n  margin: 0;\n  box-shadow: none !important;\n  border: none !important;\n  background: none !important;\n  top: 0; }\n\n.themosis__select__output {\n  position: relative;\n  display: inline-block;\n  padding: 8px;\n  min-height: 19px;\n  z-index: 3;\n  pointer-events: none;\n  top: 0;\n  left: 0; }\n\n.themosis__select__list {\n  position: absolute;\n  width: 100%;\n  padding: 9px 8px 8px;\n  background-color: #F5F5F5;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  top: 100%;\n  left: 0;\n  box-sizing: border-box;\n  margin-top: -6px;\n  display: none;\n  z-index: 1;\n  max-height: 200px;\n  overflow-y: scroll; }\n\n.themosis__select .icon__arrow__down {\n  position: absolute;\n  width: 12px;\n  height: 7px;\n  right: 8px;\n  top: 15px;\n  z-index: 5; }\n  .themosis__select .icon__arrow__down path {\n    fill: #666666; }\n\n.themosis__select__tag {\n  display: inline-block;\n  padding: 3px 10px 4px;\n  background-color: #0085BA;\n  color: #FFFFFF;\n  margin: 0 6px 6px 0;\n  line-height: 1;\n  border-radius: 20px;\n  cursor: pointer; }\n  .themosis__select__tag:hover {\n    color: #FFFFFF;\n    background-color: #006799; }\n  .themosis__select__tag:active {\n    color: #FFFFFF;\n    background-color: #008EC2; }\n  .themosis__select__tag .icon__close {\n    margin-left: 10px; }\n\n.themosis__select.multiple .themosis__select__field {\n  min-height: 34px;\n  padding: 6px 26px 6px 6px;\n  cursor: text; }\n\n.themosis__select.multiple .themosis__select__input {\n  position: static;\n  padding: 0;\n  width: 2.2em;\n  min-width: auto;\n  max-width: 100%; }\n\n.themosis__select.multiple .icon__arrow__down {\n  top: 13px; }\n\n.themosis__select.multiple.selection .themosis__select__field {\n  padding: 6px 26px 0 6px; }\n\n.themosis__select__output.open {\n  min-height: 15px; }\n\n.themosis__select__output.default {\n  color: #b3b3b3; }\n\n.themosis__select__output.open.selection {\n  color: #b3b3b3;\n  min-height: 19px; }\n\n.themosis__select__output.multiple {\n  position: absolute;\n  top: 6px;\n  left: 8px;\n  padding: 0; }\n\n.themosis__select__output.selection.multiple {\n  display: none; }\n\n.themosis__select__list.open {\n  display: block; }\n\n.themosis__select__item {\n  border-radius: 4px;\n  padding: 8px 10px;\n  margin-bottom: 1px;\n  cursor: pointer; }\n  .themosis__select__item:hover {\n    background-color: #0085BA;\n    color: #FFFFFF; }\n\n.themosis__select__item.selected {\n  background-color: #46B450;\n  color: #FFFFFF;\n  cursor: default; }\n  .themosis__select__item.selected:hover {\n    background-color: #46B450;\n    color: #FFFFFF; }\n\n.themosis__select__item.notfound {\n  cursor: default; }\n  .themosis__select__item.notfound:hover {\n    background: none;\n    color: inherit; }\n\n.themosis__metabox__footer {\n  display: flex;\n  background: #F5F5F5;\n  border-top: 1px solid #E5E5E5;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-end;\n  padding: 16px 12px; }\n\n.themosis__metabox__status {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  margin-right: 12px; }\n  .themosis__metabox__status__icon {\n    display: flex;\n    flex-direction: row;\n    flex-wrap: nowrap;\n    align-items: center;\n    width: 22px;\n    height: 22px; }\n    .themosis__metabox__status__icon svg.icon__saving {\n      animation: turning 1s linear infinite; }\n  .themosis__metabox__status__text {\n    display: inline;\n    margin: 0 0 0 8px;\n    padding: 0; }\n\n.themosis__tabs {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap; }\n  .themosis__tabs__menu {\n    width: 25%;\n    max-width: 260px;\n    background-color: #E5E5E5;\n    padding-right: 1px; }\n    .themosis__tabs__menu button {\n      display: block;\n      width: 100%;\n      padding: 12px 12px 12px 8px;\n      font-size: 13px;\n      font-weight: 600;\n      background-color: #F5F5F5;\n      color: #666666;\n      border: none;\n      border-left: 4px solid #F5F5F5;\n      margin-bottom: 1px;\n      text-align: left;\n      cursor: pointer;\n      box-sizing: border-box; }\n      .themosis__tabs__menu button:hover {\n        background-color: #FFFFFF;\n        border-left: 4px solid #FFFFFF; }\n    .themosis__tabs__menu button.tab__active {\n      background-color: #FFFFFF;\n      color: #0085BA;\n      border-left: 4px solid #0085BA; }\n    .themosis__tabs__menu button.tab__has__errors {\n      color: #BE1414;\n      border-left: 4px solid #BE1414; }\n  .themosis__tabs__body {\n    background-color: #FFFFFF;\n    flex: 1 1 auto; }\n\n.themosis__field {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n  border-bottom: 1px solid #EEEEEE; }\n  .themosis__field:last-child {\n    border: none; }\n  .themosis__field__label {\n    font-weight: 600; }\n\n.themosis__column__label {\n  width: 33.33%; }\n\n.themosis__column__content {\n  width: 66.66%; }\n\n.themosis__description {\n  margin-top: 8px;\n  color: #666666; }\n\n.themosis__field__errors {\n  margin-top: 8px; }\n  .themosis__field__errors ul {\n    display: inline-block;\n    background-color: #F2DADA;\n    border-radius: 4px;\n    padding: 6px;\n    margin: 0;\n    color: #BE1414; }\n    .themosis__field__errors ul li {\n      color: #BE1414;\n      margin: 0; }\n\n.themosis__input {\n  min-width: 260px;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  padding: 6px; }\n\n.themosis__input__hidden {\n  padding: 6px 12px;\n  background-color: #F5F5F5;\n  border: 1px solid #DDDDDD;\n  text-shadow: 0 1px 0 #FFFFFF;\n  border-radius: 4px; }\n\n.themosis__textarea {\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #DDDDDD;\n  border-radius: 4px;\n  padding: 6px; }\n\n.has__errors .themosis__input {\n  border-color: #BE1414; }\n\n.has__errors .themosis__textarea {\n  border-color: #BE1414; }\n\n/* Gutenberg styles */\n.gutenberg-editor-page .themosis__metabox__footer {\n  background: #EDEFF0;\n  padding: 16px; }\n\n.gutenberg-editor-page .themosis__tabs__menu button {\n  padding: 12px; }\n\n.gutenberg-editor-page .themosis__field {\n  padding: 16px; }\n", ""]);
 
 // exports
 
@@ -25175,7 +25175,8 @@ var Select = /** @class */ (function (_super) {
             open: false,
             value: [],
             selected: [],
-            options: props.options
+            options: _this.defaultOptions(props.options),
+            listItems: _this.defaultOptions(props.options)
         };
         _this.onBlur = _this.onBlur.bind(_this);
         _this.onFocus = _this.onFocus.bind(_this);
@@ -25183,6 +25184,20 @@ var Select = /** @class */ (function (_super) {
         _this.onFieldClick = _this.onFieldClick.bind(_this);
         return _this;
     }
+    /**
+     * Setup default state options.
+     * Add a "selected" value.
+     *
+     * @param options
+     *
+     * @return {Array<SelectOption>}
+     */
+    Select.prototype.defaultOptions = function (options) {
+        return options.map(function (option) {
+            option.selected = false;
+            return option;
+        });
+    };
     /**
      * Handle input focus event. Open the select list.
      */
@@ -25217,7 +25232,8 @@ var Select = /** @class */ (function (_super) {
             return {
                 focus: false,
                 open: false,
-                options: _this.props.options,
+                options: _this.state.options,
+                listItems: _this.state.options,
                 selected: selected.length ? selected : prevState.selected
             };
         });
@@ -25227,12 +25243,12 @@ var Select = /** @class */ (function (_super) {
      * Filter the options list.
      */
     Select.prototype.onInput = function (e) {
-        var options = this.props.options.filter(function (option) {
+        var items = this.props.options.filter(function (option) {
             return option.key.toLowerCase().indexOf(e.target.value.toLowerCase()) !== -1;
         });
         this.setState(function (prevState, props) {
             return {
-                options: options,
+                listItems: items,
                 selected: props.multiple ? prevState.selected : []
             };
         });
@@ -25278,46 +25294,50 @@ var Select = /** @class */ (function (_super) {
         var value = this.state.value.slice().filter(function (val) {
             return val !== item.value;
         });
+        var options = this.state.options.map(function (option) {
+            if (option.value === item.value) {
+                option.selected = false;
+            }
+            return option;
+        });
         this.setState({
             selected: selected,
-            value: value
+            value: value,
+            options: options
         });
     };
     /**
      * Handle value when an item is selected/clicked.
      */
     Select.prototype.onItemSelected = function (key, val) {
-        var _this = this;
-        /*
-         * Handle falsy value.
-         */
+        var values = this.state.value, selected = this.state.selected, options = this.state.options;
         if (!val) {
-            this.setState(function (prevState, props) {
-                var values = [], selected = [];
-                if (props.multiple && prevState.value.length) {
-                    values = prevState.value;
-                    selected = prevState.selected;
+            if (!this.props.multiple) {
+                values = [];
+                selected = [];
+                options = this.defaultOptions(options);
+            }
+        }
+        else {
+            values = this.parse(this.state.value.slice(), val, !!this.props.multiple);
+            selected = this.parse(this.state.selected.slice(), key, !!this.props.multiple);
+            options = options.map(function (option) {
+                if (val === option.value) {
+                    option.selected = true;
                 }
-                return {
-                    value: values,
-                    selected: selected
-                };
+                return option;
             });
-            // Value can be empty.
-            this.props.changeHandler([]);
-            return;
         }
         /*
          * Handle truthy value.
          */
-        this.setState(function (prevState, props) {
-            return {
-                value: _this.parse(prevState.value.slice(), val, !!props.multiple),
-                selected: _this.parse(prevState.selected.slice(), key, !!props.multiple)
-            };
+        this.setState({
+            value: values,
+            selected: selected,
+            options: options
         });
         // Send the value to higher component.
-        this.props.changeHandler(this.parse(this.state.value.slice(), val, !!this.props.multiple));
+        this.props.changeHandler(values);
     };
     /**
      * Find an option object based on its key.
@@ -25327,7 +25347,7 @@ var Select = /** @class */ (function (_super) {
      * @return {SelectOption}
      */
     Select.prototype.findOptionByKey = function (key) {
-        var options = this.props.options.filter(function (option) {
+        var options = this.state.options.filter(function (option) {
             return option.key === key;
         });
         var result = options.shift();
@@ -25336,7 +25356,8 @@ var Select = /** @class */ (function (_super) {
         }
         return {
             key: '',
-            value: ''
+            value: '',
+            selected: false
         };
     };
     /**
@@ -25405,12 +25426,14 @@ var Select = /** @class */ (function (_super) {
         /*
          * Handle no found options.
          */
-        if (!this.state.options.length) {
+        if (!this.state.listItems.length) {
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__select__item notfound" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", null, (this.props.l10n && this.props.l10n.not_found) ? this.props.l10n.not_found : 'Nothing found')));
         }
-        return this.state.options.map(function (option) {
-            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: option.key, onMouseDown: function () { _this.onItemSelected(option.key, option.value); }, className: "themosis__select__item" },
+        return this.state.listItems.map(function (option) {
+            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { key: option.key, onMouseDown: function () { if (!option.selected) {
+                    _this.onItemSelected(option.key, option.value);
+                } }, className: __WEBPACK_IMPORTED_MODULE_1_classnames___default()('themosis__select__item', { 'selected': option.selected }) },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("span", null, option.key)));
         });
     };

@@ -49,7 +49,7 @@
   &__list {
     position: absolute;
     width: 100%;
-    padding: 9px 8px;
+    padding: 9px 8px 8px;
     background-color: $greyLighter;
     border: 1px solid $borderColor;
     border-radius: $borderRadius;
@@ -159,10 +159,22 @@
 .themosis__select__item {
   border-radius: $borderRadius;
   padding: 8px 10px;
+  margin-bottom: 1px;
   cursor: pointer;
 
   &:hover {
     background-color: $blue;
+    color: $white;
+  }
+}
+
+.themosis__select__item.selected {
+  background-color: $green;
+  color: $white;
+  cursor: default;
+
+  &:hover {
+    background-color: $green;
     color: $white;
   }
 }
