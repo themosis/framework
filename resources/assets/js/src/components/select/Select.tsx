@@ -23,7 +23,6 @@ interface SelectProps {
 
 interface SelectState {
     open: boolean;
-    focus: boolean;
     value: Array<string>;
     selected: Array<string>;
     options: Array<SelectOption>;
@@ -43,7 +42,6 @@ class Select extends React.Component <SelectProps, SelectState> {
         super(props);
 
         this.state = {
-            focus: false,
             open: false,
             value: [],
             selected: [],
@@ -77,7 +75,6 @@ class Select extends React.Component <SelectProps, SelectState> {
      */
     onFocus() {
         this.setState({
-            focus: true,
             open: true
         });
     }
@@ -108,7 +105,6 @@ class Select extends React.Component <SelectProps, SelectState> {
             }
 
             return {
-                focus: false,
                 open: false,
                 options: this.state.options,
                 listItems: this.state.options,
@@ -161,7 +157,6 @@ class Select extends React.Component <SelectProps, SelectState> {
         if (input) {
             input.focus();
             this.setState({
-                focus: true,
                 open: true
             });
         }
@@ -219,13 +214,15 @@ class Select extends React.Component <SelectProps, SelectState> {
                     option.selected = true;
                 }
 
+                // Handle single value option selected state.
+                if (val !== option.value && !this.props.multiple) {
+                    option.selected = false;
+                }
+
                 return option;
             });
         }
 
-        /*
-         * Handle truthy value.
-         */
         this.setState({
             value: values,
             selected: selected,
@@ -233,7 +230,7 @@ class Select extends React.Component <SelectProps, SelectState> {
         });
 
         // Send the value to higher component.
-        this.props.changeHandler(values);
+        //this.props.changeHandler(values);
     }
 
     /**

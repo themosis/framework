@@ -24535,7 +24535,7 @@ var ChoiceField = /** @class */ (function (_super) {
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__select_Select__["a" /* default */], { l10n: {
                         placeholder: this.props.field.options.l10n.placeholder,
                         not_found: this.props.field.options.l10n.not_found
-                    }, id: this.props.field.attributes.id, multiple: true, options: [
+                    }, id: this.props.field.attributes.id, multiple: false, options: [
                         { key: 'None', value: '' },
                         { key: 'Red', value: 'red' },
                         { key: 'Green', value: 'green' },
@@ -25171,7 +25171,6 @@ var Select = /** @class */ (function (_super) {
          */
         _this.inputRef = __WEBPACK_IMPORTED_MODULE_0_react__["createRef"]();
         _this.state = {
-            focus: false,
             open: false,
             value: [],
             selected: [],
@@ -25203,7 +25202,6 @@ var Select = /** @class */ (function (_super) {
      */
     Select.prototype.onFocus = function () {
         this.setState({
-            focus: true,
             open: true
         });
     };
@@ -25230,7 +25228,6 @@ var Select = /** @class */ (function (_super) {
                 }).filter(function (key) { return key; });
             }
             return {
-                focus: false,
                 open: false,
                 options: _this.state.options,
                 listItems: _this.state.options,
@@ -25276,7 +25273,6 @@ var Select = /** @class */ (function (_super) {
         if (input) {
             input.focus();
             this.setState({
-                focus: true,
                 open: true
             });
         }
@@ -25310,6 +25306,7 @@ var Select = /** @class */ (function (_super) {
      * Handle value when an item is selected/clicked.
      */
     Select.prototype.onItemSelected = function (key, val) {
+        var _this = this;
         var values = this.state.value, selected = this.state.selected, options = this.state.options;
         if (!val) {
             if (!this.props.multiple) {
@@ -25325,19 +25322,20 @@ var Select = /** @class */ (function (_super) {
                 if (val === option.value) {
                     option.selected = true;
                 }
+                // Handle single value option selected state.
+                if (val !== option.value && !_this.props.multiple) {
+                    option.selected = false;
+                }
                 return option;
             });
         }
-        /*
-         * Handle truthy value.
-         */
         this.setState({
             value: values,
             selected: selected,
             options: options
         });
         // Send the value to higher component.
-        this.props.changeHandler(values);
+        //this.props.changeHandler(values);
     };
     /**
      * Find an option object based on its key.
