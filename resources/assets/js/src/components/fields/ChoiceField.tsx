@@ -58,22 +58,22 @@ class ChoiceField extends React.Component <FieldProps> {
                 </div>
                 <div className="themosis__column__content">
                     <Select l10n={{
-                                placeholder: this.props.field.options.l10n.placeholder,
-                                not_found: this.props.field.options.l10n.not_found
-                            }}
-                            changeHandler={this.onChange}
+                        placeholder: this.props.field.options.l10n.placeholder,
+                        not_found: this.props.field.options.l10n.not_found
+                    }}
                             id={this.props.field.attributes.id}
+                            multiple={true}
                             options={[
-                        {key: 'None', value: ''},
-                        {key: 'Red',value: 'red'},
-                        {key: 'Green',value: 'green'},
-                        {key: 'Blue',value: 'blue'},
-                        {key: 'Cyan',value: 'cyan'},
-                        {key: 'Magenta',value: 'magenta'},
-                        {key: 'Yellow',value: 'yellow'},
-                        {key: 'Black',value: 'black'},
-                        {key: 'White',value: 'white'}
-                        ]}/>
+                                {key: 'None', value: ''},
+                                {key: 'Red',value: 'red'},
+                                {key: 'Green',value: 'green'},
+                                {key: 'Blue',value: 'blue'},
+                                {key: 'Cyan',value: 'cyan'},
+                                {key: 'Magenta',value: 'magenta'},
+                                {key: 'Yellow',value: 'yellow'},
+                                {key: 'Black',value: 'black'},
+                                {key: 'White',value: 'white'}
+                            ]}/>
                 </div>
             </Field>
         );

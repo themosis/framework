@@ -24,6 +24,12 @@ class Icon extends React.Component <IconProps> {
                         <path d="M1.71429 0L6 4.28571L10.2857 0L12 0.857143L6 6.85714L0 0.857143L1.71429 0Z" fill="#555555"/>
                     </svg>
                 );
+            case 'close':
+                return (
+                    <svg className="themosis__svg icon__close" width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 1.13939L5.13939 4L8 6.86061L6.86061 8L4 5.14747L1.14747 8L0 6.85253L2.85253 4L0 1.14747L1.14747 0L4 2.85253L6.86061 0L8 1.13939Z" fill="white"/>
+                    </svg>
+                );
             case 'done':
                 return (
                     <svg className="themosis__svg icon__done" width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">

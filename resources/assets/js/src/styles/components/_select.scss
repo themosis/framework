@@ -31,7 +31,8 @@
     margin: 0;
     box-shadow: none !important;
     border: none !important;
-    background: none;
+    background: none !important;
+    top: 0;
   }
 
   &__output {
@@ -74,6 +75,57 @@
       fill: $grey;
     }
   }
+
+  &__tag {
+    display: inline-block;
+    padding: $paddingH / 4 10px $paddingH / 3;
+    background-color: $blue;
+    color: $white;
+    margin: 0 6px 6px 0;
+    line-height: 1;
+    border-radius: 20px;
+    cursor: pointer;
+
+    &:hover {
+      color: $white;
+      background-color: $blueDark;
+    }
+
+    &:active {
+      color: $white;
+      background-color: $blueLight;
+    }
+
+    .icon__close {
+      margin-left: 10px;
+    }
+  }
+}
+
+.themosis__select.multiple {
+  .themosis__select__field {
+    min-height: 34px;
+    padding: $paddingH / 2 26px $paddingH / 2 $paddingH / 2;
+    cursor: text;
+  }
+
+  .themosis__select__input {
+    position: static;
+    padding: 0;
+    width: 2.2em;
+    min-width: auto;
+    max-width: 100%;
+  }
+
+  .icon__arrow__down {
+    top: $paddingH + 1;
+  }
+}
+
+.themosis__select.multiple.selection {
+  .themosis__select__field {
+    padding: $paddingH / 2 26px 0 $paddingH / 2;
+  }
 }
 
 .themosis__select__output.open {
@@ -87,6 +139,17 @@
 .themosis__select__output.open.selection {
   color: lighten($grey, 30%);
   min-height: 19px;
+}
+
+.themosis__select__output.multiple {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  padding: 0;
+}
+
+.themosis__select__output.selection.multiple {
+  display: none;
 }
 
 .themosis__select__list.open {

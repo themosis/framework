@@ -33,6 +33,11 @@ interface SelectState {
  * The select component.
  */
 class Select extends React.Component <SelectProps, SelectState> {
+    /**
+     * Input ref
+     */
+    private inputRef = React.createRef<HTMLInputElement>();
+
     constructor(props: SelectProps) {
         super(props);
 
@@ -47,6 +52,7 @@ class Select extends React.Component <SelectProps, SelectState> {
         this.onBlur = this.onBlur.bind(this);
         this.onFocus = this.onFocus.bind(this);
         this.onInput = this.onInput.bind(this);
+        this.onFieldClick = this.onFieldClick.bind(this);
     }
 
     /**
@@ -123,6 +129,48 @@ class Select extends React.Component <SelectProps, SelectState> {
     }
 
     /**
+     * Handle field overall focus for the input.
+     */
+    onFieldClick(e: any) {
+        let input = this.inputRef.current,
+            target = e.target;
+
+        // Do not focus if we hit a selection tag...
+        if (target.classList.contains('themosis__select__tag')) {
+            return;
+        }
+
+        if (input) {
+            input.focus();
+            this.setState({
+                focus: true,
+                open: true
+            });
+        }
+    }
+
+    /**
+     * Handle click event on tags. Remove tag from
+     * selection and list of values.
+     *
+     * @param {SelectOption} item
+     */
+    onTagClick(item: SelectOption) {
+        let selected = this.state.selected.slice().filter((selection) => {
+            return selection !== item.key;
+        });
+
+        let value = this.state.value.slice().filter((val) => {
+            return val !== item.value;
+        });
+
+        this.setState({
+            selected: selected,
+            value: value
+        });
+    }
+
+    /**
      * Handle value when an item is selected/clicked.
      */
     onItemSelected(key: string, val: string) {
@@ -162,6 +210,30 @@ class Select extends React.Component <SelectProps, SelectState> {
 
         // Send the value to higher component.
         this.props.changeHandler(this.parse(this.state.value.slice(), val, !!this.props.multiple));
+    }
+
+    /**
+     * Find an option object based on its key.
+     *
+     * @param {string} key
+     *
+     * @return {SelectOption}
+     */
+    findOptionByKey(key: string): SelectOption {
+        let options = this.props.options.filter((option) => {
+            return option.key === key;
+        });
+
+        let result = options.shift();
+
+        if (result) {
+            return result;
+        }
+
+        return {
+            key: '',
+            value: ''
+        };
     }
 
     /**
@@ -257,13 +329,40 @@ class Select extends React.Component <SelectProps, SelectState> {
     }
 
     /**
+     * Render selected options on a "multiple" select component.
+     */
+    renderMultipleSelection() {
+        if (! this.props.multiple) {
+            return;
+        }
+
+        return this.state.selected.map((item: string) => {
+            let option = this.findOptionByKey(item);
+
+            if (! option) {
+                return;
+            }
+
+            return (
+                <a className="themosis__select__tag"
+                   onClick={() => { this.onTagClick(option) }}
+                   key={option.key}>
+                    {option.key}
+                    <Icon name="close"/>
+                </a>
+            );
+        });
+    }
+
+    /**
      * Render the component.
      */
     render() {
         return (
-            <div className="themosis__select">
+            <div className={classNames('themosis__select', {'multiple': this.props.multiple, 'selection': this.hasSelection()})}>
                 <div className="themosis__select__body">
-                    <div className="themosis__select__field">
+                    <div className="themosis__select__field" onClick={this.onFieldClick}>
+                        { this.renderMultipleSelection() }
                         <input type="text"
                                id={this.props.id}
                                className={classNames('themosis__select__input')}
@@ -271,8 +370,9 @@ class Select extends React.Component <SelectProps, SelectState> {
                                onBlur={this.onBlur}
                                onInput={this.onInput}
                                onKeyDown={this.onKeyDown}
+                               ref={this.inputRef}
                                autoComplete="off"/>
-                        <div className={classNames('themosis__select__output', {'default': this.shouldShowPlaceholder(), 'open': this.state.open, 'selection': this.hasSelection()})}>
+                        <div className={classNames('themosis__select__output', {'default': this.shouldShowPlaceholder(), 'open': this.state.open, 'selection': this.hasSelection(), 'multiple': this.props.multiple})}>
                             {this.getSelection()}
                         </div>
                         <Icon name="arrow_down"/>
