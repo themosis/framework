@@ -345,6 +345,7 @@ class Select extends React.Component <SelectProps, SelectState> {
                      onMouseDown={() => { if (! option.selected) { this.onItemSelected(option.key, option.value) } }}
                      className={classNames('themosis__select__item', {'selected': option.selected})}>
                     <span>{option.key}</span>
+                    <Icon name="yes"/>
                 </div>
             );
         });
@@ -353,7 +354,7 @@ class Select extends React.Component <SelectProps, SelectState> {
     /**
      * Render selected options on a "multiple" select component.
      */
-    renderMultipleSelection() {
+    renderTags() {
         if (! this.props.multiple) {
             return;
         }
@@ -381,10 +382,10 @@ class Select extends React.Component <SelectProps, SelectState> {
      */
     render() {
         return (
-            <div className={classNames('themosis__select', {'multiple': this.props.multiple, 'selection': this.hasSelection()})}>
+            <div className={classNames('themosis__select', {'multiple': this.props.multiple, 'selection': this.hasSelection(), 'open': this.state.open})}>
                 <div className="themosis__select__body">
                     <div className="themosis__select__field" onClick={this.onFieldClick}>
-                        { this.renderMultipleSelection() }
+                        { this.renderTags() }
                         <input type="text"
                                id={this.props.id}
                                className={classNames('themosis__select__input')}

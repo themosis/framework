@@ -70,6 +70,8 @@
     right: $paddingV / 2;
     top: 15px;
     z-index: 5;
+    transform: rotate(0deg);
+    transition: transform .3s ease-in-out;
 
     path {
       fill: $grey;
@@ -99,6 +101,12 @@
     .icon__close {
       margin-left: 10px;
     }
+  }
+}
+
+.themosis__select.open {
+  .icon__arrow__down {
+    transform: rotate(-180deg);
   }
 }
 
@@ -157,6 +165,7 @@
 }
 
 .themosis__select__item {
+  position: relative;
   border-radius: $borderRadius;
   padding: 8px 10px;
   margin-bottom: 1px;
@@ -165,6 +174,10 @@
   &:hover {
     background-color: $blue;
     color: $white;
+  }
+
+  .themosis__svg {
+    display: none;
   }
 }
 
@@ -176,6 +189,14 @@
   &:hover {
     background-color: $green;
     color: $white;
+  }
+
+  .themosis__svg {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    margin-top: -5.5px;
   }
 }
 

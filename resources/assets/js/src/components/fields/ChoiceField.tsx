@@ -62,7 +62,7 @@ class ChoiceField extends React.Component <FieldProps> {
                         not_found: this.props.field.options.l10n.not_found
                     }}
                             id={this.props.field.attributes.id}
-                            multiple={false}
+                            multiple={true}
                             options={[
                                 {key: 'None', value: ''},
                                 {key: 'Red',value: 'red'},

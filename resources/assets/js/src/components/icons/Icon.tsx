@@ -54,6 +54,12 @@ class Icon extends React.Component <IconProps> {
                         <path d="M7 5V0H5V5H0V7H5V12H7V7H12V5H7Z" fill="#444444"/>
                     </svg>
                 );
+            case 'yes':
+                return (
+                    <svg className="themosis__svg icon__yes" width="12" height="11" viewBox="0 0 12 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.4524 0L12 1.08566L5.2897 10.7642H3.74206L0 5.52069L1.54764 4.077L4.51588 6.84889L10.4524 0Z" fill="white"/>
+                    </svg>
+                );
             default:
                 return (
                     <svg className="themosis__svg icon__saving" width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
