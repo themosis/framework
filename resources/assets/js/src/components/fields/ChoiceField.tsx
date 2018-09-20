@@ -45,6 +45,54 @@ class ChoiceField extends React.Component <FieldProps> {
         return value;
     }
 
+    getComponent(field: FieldType) {
+        // Select component with multiple options.
+        if ('select' === field.options.layout && field.options.multiple) {
+            return (
+                <Select l10n={{
+                    placeholder: this.props.field.options.l10n.placeholder,
+                    not_found: this.props.field.options.l10n.not_found
+                }}
+                        id={this.props.field.attributes.id}
+                        multiple={true}
+                        options={[
+                            {key: 'None', value: ''},
+                            {key: 'Europe', value: '', type: 'group'},
+                            {key: 'Belgium', value: 'be', type: 'option'},
+                            {key: 'Italy', value: 'it', type: 'option'},
+                            {key: 'Portugal', value: 'pt', type: 'option'},
+                            {key: 'Spain', value: 'es', type: 'option'},
+                            {key: 'America', value: '', type: 'group'},
+                            {key: 'Brazil', value: 'br', type: 'option'},
+                            {key: 'Canada', value: 'ca', type: 'option'},
+                            {key: 'Chile', value: 'cl', type: 'option'},
+                            {key: 'United States', value: 'us', type: 'option'}
+                        ]}/>
+            );
+        }
+
+        // Default to "select" component with single option.
+        return (
+            <Select l10n={{
+                placeholder: this.props.field.options.l10n.placeholder,
+                not_found: this.props.field.options.l10n.not_found
+            }}
+                    id={this.props.field.attributes.id}
+                    multiple={false}
+                    options={[
+                        {key: 'None', value: ''},
+                        {key: 'Red',value: 'red'},
+                        {key: 'Green',value: 'green'},
+                        {key: 'Blue',value: 'blue'},
+                        {key: 'Cyan',value: 'cyan'},
+                        {key: 'Magenta',value: 'magenta'},
+                        {key: 'Yellow',value: 'yellow'},
+                        {key: 'Black',value: 'black'},
+                        {key: 'White',value: 'white'}
+                    ]}/>
+        );
+    }
+
     /**
      * Render the component.
      */
@@ -57,23 +105,7 @@ class ChoiceField extends React.Component <FieldProps> {
                            text={this.props.field.label.inner}/>
                 </div>
                 <div className="themosis__column__content">
-                    <Select l10n={{
-                        placeholder: this.props.field.options.l10n.placeholder,
-                        not_found: this.props.field.options.l10n.not_found
-                    }}
-                            id={this.props.field.attributes.id}
-                            multiple={true}
-                            options={[
-                                {key: 'None', value: ''},
-                                {key: 'Red',value: 'red'},
-                                {key: 'Green',value: 'green'},
-                                {key: 'Blue',value: 'blue'},
-                                {key: 'Cyan',value: 'cyan'},
-                                {key: 'Magenta',value: 'magenta'},
-                                {key: 'Yellow',value: 'yellow'},
-                                {key: 'Black',value: 'black'},
-                                {key: 'White',value: 'white'}
-                            ]}/>
+                    { this.getComponent(this.props.field) }
                 </div>
             </Field>
         );

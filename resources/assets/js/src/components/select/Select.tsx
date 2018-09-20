@@ -6,6 +6,7 @@ interface SelectOption {
     key: string;
     value: string;
     selected?: boolean;
+    type?: string;
 }
 
 interface SelectL10n {
@@ -119,6 +120,10 @@ class Select extends React.Component <SelectProps, SelectState> {
      */
     onInput(e: any) {
         let items = this.props.options.filter((option: SelectOption) => {
+            if (option.type && 'group' === option.type) {
+                return false;
+            }
+
             return option.key.toLowerCase().indexOf(e.target.value.toLowerCase()) !== -1;
         });
 
@@ -340,6 +345,15 @@ class Select extends React.Component <SelectProps, SelectState> {
         }
 
         return this.state.listItems.map((option: SelectOption) => {
+            if (option.type && 'group' === option.type) {
+                return (
+                    <div className={classNames('themosis__select__group')}
+                         key={option.key}>
+                        <span>{option.key}</span>
+                    </div>
+                );
+            }
+
             return (
                 <div key={option.key}
                      onMouseDown={() => { if (! option.selected) { this.onItemSelected(option.key, option.value) } }}

@@ -108,6 +108,22 @@
   .icon__arrow__down {
     transform: rotate(-180deg);
   }
+
+  .themosis__select__field {
+    z-index: 9999;
+  }
+
+  .themosis__select__output {
+    z-index: 9999;
+  }
+
+  .themosis__select__input {
+    z-index: 9998;
+  }
+
+  .themosis__select__list {
+    z-index: 9997;
+  }
 }
 
 .themosis__select.multiple {
@@ -162,6 +178,16 @@
 
 .themosis__select__list.open {
   display: block;
+}
+
+.themosis__select__group {
+  padding: 8px 0;
+  font-weight: 600;
+  color: $blue;
+
+  &:not(:first-child) {
+    margin-top: $paddingV;
+  }
 }
 
 .themosis__select__item {
