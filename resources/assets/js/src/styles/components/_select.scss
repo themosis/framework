@@ -38,8 +38,8 @@
   &__output {
     position: relative;
     display: inline-block;
-    padding: $paddingV / 2;
-    min-height: 19px;
+    padding: $paddingH / 2 $paddingV / 2;
+    min-height: 20px;
     z-index: 3;
     pointer-events: none;
     top: 0;
@@ -68,7 +68,7 @@
     width: 12px;
     height: 7px;
     right: $paddingV / 2;
-    top: 15px;
+    top: 13px;
     z-index: 5;
     transform: rotate(0deg);
     transition: transform .3s ease-in-out;
@@ -140,10 +140,6 @@
     min-width: auto;
     max-width: 100%;
   }
-
-  .icon__arrow__down {
-    top: $paddingH + 1;
-  }
 }
 
 .themosis__select.multiple.selection {
@@ -153,7 +149,7 @@
 }
 
 .themosis__select__output.open {
-  min-height: 15px;
+  min-height: 16px;
 }
 
 .themosis__select__output.default {
@@ -162,7 +158,7 @@
 
 .themosis__select__output.open.selection {
   color: lighten($grey, 30%);
-  min-height: 19px;
+  min-height: 20px;
 }
 
 .themosis__select__output.multiple {
