@@ -1,8 +1,8 @@
 import * as React from "react";
 
 interface CheckboxProps {
-    checked: boolean;
-    changeHandler: any;
+    checked?: boolean;
+    changeHandler?: any;
     value?: string;
     id?: string;
 }
@@ -30,7 +30,9 @@ class Checkbox extends React.Component <CheckboxProps, CheckboxState> {
      */
     onChange() {
         this.setState((state, props) => {
-            this.props.changeHandler(! state.checked, props.value);
+            if (props.changeHandler) {
+                props.changeHandler(! state.checked, props.value);
+            }
 
             return {
                 checked: ! state.checked

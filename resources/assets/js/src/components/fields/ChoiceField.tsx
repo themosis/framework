@@ -3,6 +3,8 @@ import {Field} from "./common";
 import Label from "../labels/Label";
 import {isRequired} from "../../helpers";
 import Select from "../select/Select";
+import Checkboxes from "../inputs/Checkboxes";
+import Radio from "../inputs/Radio";
 
 /**
  * The choice field component.
@@ -68,6 +70,33 @@ class ChoiceField extends React.Component <FieldProps> {
                             {key: 'Chile', value: 'cl', type: 'option'},
                             {key: 'United States', value: 'us', type: 'option'}
                         ]}/>
+            );
+        }
+
+        if ('checkbox' === field.options.layout) {
+            return (
+                <Checkboxes choices={[
+                    {key: 'T-Shirts', value: '', type: 'group'},
+                    {key: 'Small', value: 'small'},
+                    {key: 'Medium', value: 'medium'},
+                    {key: 'Large', value: 'large'},
+                    {key: 'Pants', value: '', type: 'group'},
+                    {key: 'Skinny', value: 'skinny'},
+                    {key: 'Straight', value: 'straight'},
+                    {key: 'Loose', value: 'loose'}
+                ]}/>
+            );
+        }
+
+        if ('radio' === field.options.layout) {
+            return (
+                <Radio choices={[
+                    {key: 'Magazine', value: '', type: 'group'},
+                    {key: 'Cars', value: 'cars'},
+                    {key: 'Culture', value: 'culture'},
+                    {key: 'Design', value: 'design'},
+                    {key: 'Politics', value: 'politics'}
+                ]}/>
             );
         }
 
