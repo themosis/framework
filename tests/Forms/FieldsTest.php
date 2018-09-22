@@ -215,9 +215,9 @@ class FieldsTest extends TestCase
                 'expanded' => false,
                 'multiple' => false,
                 'choices' => [
-                    'Red' => 'red',
-                    'Green' => 'green',
-                    'Blue' => 'blue'
+                    ['key' => 'Red', 'value' => 'red', 'type' => 'option'],
+                    ['key' => 'Green', 'value' => 'green', 'type' => 'option'],
+                    ['key' => 'Blue', 'value' => 'blue', 'type' => 'option']
                 ],
                 'layout' => 'select'
             ],

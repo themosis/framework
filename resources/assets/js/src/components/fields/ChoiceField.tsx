@@ -47,6 +47,11 @@ class ChoiceField extends React.Component <FieldProps> {
         return value;
     }
 
+    /**
+     * Render the right component based on field layout.
+     *
+     * @param field
+     */
     getComponent(field: FieldType) {
         // Select component with multiple options.
         if ('select' === field.options.layout && field.options.multiple) {

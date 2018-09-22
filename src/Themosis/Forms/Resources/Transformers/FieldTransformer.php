@@ -8,6 +8,22 @@ use Themosis\Forms\Contracts\FieldTypeInterface;
 class FieldTransformer extends TransformerAbstract
 {
     /**
+     * @var array
+     */
+    protected $excludedOptions = [
+        'attributes',
+        'data',
+        'data_type',
+        'errors',
+        'label',
+        'label_attr',
+        'messages',
+        'placeholder',
+        'rules',
+        'theme'
+    ];
+
+    /**
      * Transform single field.
      *
      * @param FieldTypeInterface $field
@@ -23,18 +39,7 @@ class FieldTransformer extends TransformerAbstract
             'data_type' => $field->getOption('data_type', ''),
             'default' => $field->getOption('data', ''),
             'name' => $field->getName(),
-            'options' => $field->getOptions([
-                'attributes',
-                'data',
-                'data_type',
-                'errors',
-                'label',
-                'label_attr',
-                'messages',
-                'placeholder',
-                'rules',
-                'theme'
-            ]),
+            'options' => $this->getOptions($field),
             'label' => [
                 'inner' => $field->getOption('label'),
                 'attributes' => $field->getOption('label_attr', [])
@@ -52,15 +57,44 @@ class FieldTransformer extends TransformerAbstract
     }
 
     /**
-     * Attach properties to transformed output.
+     * Return field options.
      *
      * @param FieldTypeInterface $field
-     * @param \Closure           $callback
      *
      * @return array
      */
-    protected function with(FieldTypeInterface $field, \Closure $callback): array
+    protected function getOptions(FieldTypeInterface $field)
     {
-        return $callback($field);
+        $options = $field->getOptions($this->excludedOptions);
+
+        if ('choice' === $field->getType() && ! empty($options['choices'])) {
+            $options['choices'] = $this->parseChoices($options['choices']);
+        }
+
+        return $options;
+    }
+
+    /**
+     * Parse field choices.
+     *
+     * @param array $choices
+     *
+     * @return array
+     */
+    protected function parseChoices(array $choices)
+    {
+        $items = [];
+
+        foreach ($choices as $key => $value) {
+            if (is_array($value)) {
+                // Handle options groups data.
+                $items[] = ['key' => $key, 'value' => '', 'type' => 'group'];
+                $items = array_merge($items, $this->parseChoices($value));
+            } else {
+                $items[] = ['key' => $key, 'value' => $value, 'type' => 'option'];
+            }
+        }
+
+        return $items;
     }
 }

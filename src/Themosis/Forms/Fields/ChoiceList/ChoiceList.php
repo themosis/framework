@@ -55,7 +55,7 @@ class ChoiceList implements ChoiceListInterface
                 $items[$key] = $this->parse($value);
             } else {
                 if (is_int($key)) {
-                    $label = ucfirst($value);
+                    $label = ucfirst(str_replace(['-', '_'], ' ', $value));
                 } else {
                     $label = $key;
                 }
