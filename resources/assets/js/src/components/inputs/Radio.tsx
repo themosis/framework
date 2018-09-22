@@ -1,15 +1,8 @@
 import * as React from "react";
 import Label from "../labels/Label";
 
-interface RadioChoice {
-    key: string;
-    value: string;
-    selected?: boolean;
-    type?: string;
-}
-
 interface RadioProps {
-    choices: Array<RadioChoice>;
+    choices: Array<OptionType>;
 }
 
 interface RadioState {
@@ -43,7 +36,7 @@ class Radio extends React.Component <RadioProps, RadioState> {
      * Render radio choices.
      */
     renderChoices() {
-        return this.props.choices.map((choice: RadioChoice) => {
+        return this.props.choices.map((choice: OptionType) => {
             if (choice.type && 'group' === choice.type) {
                 return (
                     <div className="themosis__choice__group" key={choice.key}>

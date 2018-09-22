@@ -24543,56 +24543,19 @@ var ChoiceField = /** @class */ (function (_super) {
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__select_Select__["a" /* default */], { l10n: {
                     placeholder: this.props.field.options.l10n.placeholder,
                     not_found: this.props.field.options.l10n.not_found
-                }, id: this.props.field.attributes.id, multiple: true, options: [
-                    { key: 'None', value: '' },
-                    { key: 'Europe', value: '', type: 'group' },
-                    { key: 'Belgium', value: 'be', type: 'option' },
-                    { key: 'Italy', value: 'it', type: 'option' },
-                    { key: 'Portugal', value: 'pt', type: 'option' },
-                    { key: 'Spain', value: 'es', type: 'option' },
-                    { key: 'America', value: '', type: 'group' },
-                    { key: 'Brazil', value: 'br', type: 'option' },
-                    { key: 'Canada', value: 'ca', type: 'option' },
-                    { key: 'Chile', value: 'cl', type: 'option' },
-                    { key: 'United States', value: 'us', type: 'option' }
-                ] }));
+                }, id: this.props.field.attributes.id, multiple: true, options: this.props.field.options.choices }));
         }
         if ('checkbox' === field.options.layout) {
-            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__inputs_Checkboxes__["a" /* default */], { choices: [
-                    { key: 'T-Shirts', value: '', type: 'group' },
-                    { key: 'Small', value: 'small' },
-                    { key: 'Medium', value: 'medium' },
-                    { key: 'Large', value: 'large' },
-                    { key: 'Pants', value: '', type: 'group' },
-                    { key: 'Skinny', value: 'skinny' },
-                    { key: 'Straight', value: 'straight' },
-                    { key: 'Loose', value: 'loose' }
-                ] }));
+            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__inputs_Checkboxes__["a" /* default */], { choices: this.props.field.options.choices }));
         }
         if ('radio' === field.options.layout) {
-            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__inputs_Radio__["a" /* default */], { choices: [
-                    { key: 'Magazine', value: '', type: 'group' },
-                    { key: 'Cars', value: 'cars' },
-                    { key: 'Culture', value: 'culture' },
-                    { key: 'Design', value: 'design' },
-                    { key: 'Politics', value: 'politics' }
-                ] }));
+            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__inputs_Radio__["a" /* default */], { choices: this.props.field.options.choices }));
         }
         // Default to "select" component with single option.
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__select_Select__["a" /* default */], { l10n: {
                 placeholder: this.props.field.options.l10n.placeholder,
                 not_found: this.props.field.options.l10n.not_found
-            }, id: this.props.field.attributes.id, multiple: false, options: [
-                { key: 'None', value: '' },
-                { key: 'Red', value: 'red' },
-                { key: 'Green', value: 'green' },
-                { key: 'Blue', value: 'blue' },
-                { key: 'Cyan', value: 'cyan' },
-                { key: 'Magenta', value: 'magenta' },
-                { key: 'Yellow', value: 'yellow' },
-                { key: 'Black', value: 'black' },
-                { key: 'White', value: 'white' }
-            ] }));
+            }, id: this.props.field.attributes.id, multiple: false, options: this.props.field.options.choices }));
     };
     /**
      * Render the component.
@@ -24664,7 +24627,7 @@ var Select = /** @class */ (function (_super) {
      *
      * @param options
      *
-     * @return {Array<SelectOption>}
+     * @return {Array<OptionType>}
      */
     Select.prototype.defaultOptions = function (options) {
         return options.map(function (option) {
@@ -24820,7 +24783,7 @@ var Select = /** @class */ (function (_super) {
      *
      * @param {string} key
      *
-     * @return {SelectOption}
+     * @return {OptionType}
      */
     Select.prototype.findOptionByKey = function (key) {
         var options = this.state.options.filter(function (option) {

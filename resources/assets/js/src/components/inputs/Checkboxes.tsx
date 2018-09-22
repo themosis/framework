@@ -2,15 +2,8 @@ import * as React from "react";
 import Checkbox from "./Checkbox";
 import Label from "../labels/Label";
 
-interface CheckboxChoice {
-    key: string;
-    value: string;
-    selected?: boolean;
-    type?: string;
-}
-
 interface CheckboxesProps {
-    choices: Array<CheckboxChoice>;
+    choices: Array<OptionType>;
 }
 
 /**
@@ -25,7 +18,7 @@ class Checkboxes extends React.Component <CheckboxesProps> {
      * Render the choices.
      */
     renderChoices() {
-        return this.props.choices.map((choice: CheckboxChoice) => {
+        return this.props.choices.map((choice: OptionType) => {
             if (choice.type && 'group' === choice.type) {
                 return (
                     <div className="themosis__choice__group" key={choice.key}>

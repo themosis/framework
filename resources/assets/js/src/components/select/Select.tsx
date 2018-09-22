@@ -2,20 +2,13 @@ import * as React from "react";
 import classNames from "classnames";
 import Icon from "../icons/Icon";
 
-interface SelectOption {
-    key: string;
-    value: string;
-    selected?: boolean;
-    type?: string;
-}
-
 interface SelectL10n {
     placeholder?: string;
     not_found?: string;
 }
 
 interface SelectProps {
-    options: Array<SelectOption>;
+    options: Array<OptionType>;
     changeHandler?: any;
     id?: string;
     multiple?: boolean;
@@ -26,8 +19,8 @@ interface SelectState {
     open: boolean;
     value: Array<string>;
     selected: Array<string>;
-    options: Array<SelectOption>;
-    listItems: Array<SelectOption>;
+    options: Array<OptionType>;
+    listItems: Array<OptionType>;
 }
 
 /**
@@ -62,9 +55,9 @@ class Select extends React.Component <SelectProps, SelectState> {
      *
      * @param options
      *
-     * @return {Array<SelectOption>}
+     * @return {Array<OptionType>}
      */
-    defaultOptions(options: Array<SelectOption>) {
+    defaultOptions(options: Array<OptionType>) {
         return options.map((option) => {
             option.selected = false;
             return option;
@@ -97,7 +90,7 @@ class Select extends React.Component <SelectProps, SelectState> {
             if (prevState.value.length && ! prevState.selected.length) {
                 // Loop through all values and bring back selected keys.
                 selected = prevState.value.map((value) => {
-                    let opt = props.options.filter((option:SelectOption) => {
+                    let opt = props.options.filter((option:OptionType) => {
                         return option.value === value;
                     }).shift();
 
@@ -119,7 +112,7 @@ class Select extends React.Component <SelectProps, SelectState> {
      * Filter the options list.
      */
     onInput(e: any) {
-        let items = this.props.options.filter((option: SelectOption) => {
+        let items = this.props.options.filter((option: OptionType) => {
             if (option.type && 'group' === option.type) {
                 return false;
             }
@@ -173,7 +166,7 @@ class Select extends React.Component <SelectProps, SelectState> {
      *
      * @param {SelectOption} item
      */
-    onTagClick(item: SelectOption) {
+    onTagClick(item: OptionType) {
         let selected = this.state.selected.slice().filter((selection) => {
             return selection !== item.key;
         });
@@ -182,7 +175,7 @@ class Select extends React.Component <SelectProps, SelectState> {
             return val !== item.value;
         });
 
-        let options = this.state.options.map((option: SelectOption) => {
+        let options = this.state.options.map((option: OptionType) => {
             if (option.value === item.value) {
                 option.selected = false;
             }
@@ -203,7 +196,7 @@ class Select extends React.Component <SelectProps, SelectState> {
     onItemSelected(key: string, val: string) {
         let values: Array<string> = this.state.value,
             selected: Array<string> = this.state.selected,
-            options: Array<SelectOption> = this.state.options;
+            options: Array<OptionType> = this.state.options;
 
         if (! val) {
             if (! this.props.multiple) {
@@ -214,7 +207,7 @@ class Select extends React.Component <SelectProps, SelectState> {
         } else {
             values = this.parse(this.state.value.slice(), val, !!this.props.multiple);
             selected = this.parse(this.state.selected.slice(), key, !!this.props.multiple);
-            options = options.map((option: SelectOption) => {
+            options = options.map((option: OptionType) => {
                 if (val === option.value) {
                     option.selected = true;
                 }
@@ -243,9 +236,9 @@ class Select extends React.Component <SelectProps, SelectState> {
      *
      * @param {string} key
      *
-     * @return {SelectOption}
+     * @return {OptionType}
      */
-    findOptionByKey(key: string): SelectOption {
+    findOptionByKey(key: string): OptionType {
         let options = this.state.options.filter((option) => {
             return option.key === key;
         });
@@ -344,7 +337,7 @@ class Select extends React.Component <SelectProps, SelectState> {
             );
         }
 
-        return this.state.listItems.map((option: SelectOption) => {
+        return this.state.listItems.map((option: OptionType) => {
             if (option.type && 'group' === option.type) {
                 return (
                     <div className={classNames('themosis__select__group')}

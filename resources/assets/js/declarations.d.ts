@@ -57,7 +57,7 @@ declare interface FieldType {
     default: string;
     name: string;
     options: {
-        choices: object;
+        choices: Array<OptionType>;
         expanded?: boolean;
         group: string;
         info: string;
@@ -93,4 +93,11 @@ declare interface GroupType {
     id: string;
     theme?: string;
     title: string;
+}
+
+declare interface OptionType {
+    key: string;
+    value: string;
+    selected?: boolean;
+    type?: string;
 }

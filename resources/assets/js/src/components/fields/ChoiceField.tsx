@@ -62,46 +62,19 @@ class ChoiceField extends React.Component <FieldProps> {
                 }}
                         id={this.props.field.attributes.id}
                         multiple={true}
-                        options={[
-                            {key: 'None', value: ''},
-                            {key: 'Europe', value: '', type: 'group'},
-                            {key: 'Belgium', value: 'be', type: 'option'},
-                            {key: 'Italy', value: 'it', type: 'option'},
-                            {key: 'Portugal', value: 'pt', type: 'option'},
-                            {key: 'Spain', value: 'es', type: 'option'},
-                            {key: 'America', value: '', type: 'group'},
-                            {key: 'Brazil', value: 'br', type: 'option'},
-                            {key: 'Canada', value: 'ca', type: 'option'},
-                            {key: 'Chile', value: 'cl', type: 'option'},
-                            {key: 'United States', value: 'us', type: 'option'}
-                        ]}/>
+                        options={this.props.field.options.choices}/>
             );
         }
 
         if ('checkbox' === field.options.layout) {
             return (
-                <Checkboxes choices={[
-                    {key: 'T-Shirts', value: '', type: 'group'},
-                    {key: 'Small', value: 'small'},
-                    {key: 'Medium', value: 'medium'},
-                    {key: 'Large', value: 'large'},
-                    {key: 'Pants', value: '', type: 'group'},
-                    {key: 'Skinny', value: 'skinny'},
-                    {key: 'Straight', value: 'straight'},
-                    {key: 'Loose', value: 'loose'}
-                ]}/>
+                <Checkboxes choices={this.props.field.options.choices}/>
             );
         }
 
         if ('radio' === field.options.layout) {
             return (
-                <Radio choices={[
-                    {key: 'Magazine', value: '', type: 'group'},
-                    {key: 'Cars', value: 'cars'},
-                    {key: 'Culture', value: 'culture'},
-                    {key: 'Design', value: 'design'},
-                    {key: 'Politics', value: 'politics'}
-                ]}/>
+                <Radio choices={this.props.field.options.choices}/>
             );
         }
 
@@ -113,17 +86,7 @@ class ChoiceField extends React.Component <FieldProps> {
             }}
                     id={this.props.field.attributes.id}
                     multiple={false}
-                    options={[
-                        {key: 'None', value: ''},
-                        {key: 'Red',value: 'red'},
-                        {key: 'Green',value: 'green'},
-                        {key: 'Blue',value: 'blue'},
-                        {key: 'Cyan',value: 'cyan'},
-                        {key: 'Magenta',value: 'magenta'},
-                        {key: 'Yellow',value: 'yellow'},
-                        {key: 'Black',value: 'black'},
-                        {key: 'White',value: 'white'}
-                    ]}/>
+                    options={this.props.field.options.choices}/>
         );
     }
 
