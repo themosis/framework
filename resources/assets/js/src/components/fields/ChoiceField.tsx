@@ -1,10 +1,11 @@
 import * as React from "react";
-import {Field} from "./common";
+import {Description, Field} from "./common";
 import Label from "../labels/Label";
-import {isRequired} from "../../helpers";
+import {getErrorsMessages, hasErrors, isRequired} from "../../helpers";
 import Select from "../select/Select";
 import Checkboxes from "../inputs/Checkboxes";
 import Radio from "../inputs/Radio";
+import Error from "../errors/Error";
 
 /**
  * The choice field component.
@@ -72,6 +73,8 @@ class ChoiceField extends React.Component <FieldProps> {
                 </div>
                 <div className="themosis__column__content">
                     { this.getComponent(this.props.field) }
+                    { hasErrors(this.props.field) && <Error messages={getErrorsMessages(this.props.field)}/> }
+                    { this.props.field.options.info && <Description content={this.props.field.options.info}/> }
                 </div>
             </Field>
         );

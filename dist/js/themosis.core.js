@@ -24482,6 +24482,7 @@ var HiddenField = /** @class */ (function (_super) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__select_Select__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__inputs_Checkboxes__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__inputs_Radio__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__errors_Error__ = __webpack_require__(5);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -24495,6 +24496,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+
 
 
 
@@ -24543,7 +24545,10 @@ var ChoiceField = /** @class */ (function (_super) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["b" /* Field */], { field: this.props.field },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { required: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["c" /* isRequired */])(this.props.field), for: this.props.field.attributes.id, text: this.props.field.label.inner })),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" }, this.getComponent(this.props.field))));
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" },
+                this.getComponent(this.props.field),
+                Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["b" /* hasErrors */])(this.props.field) && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_7__errors_Error__["a" /* default */], { messages: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["a" /* getErrorsMessages */])(this.props.field) }),
+                this.props.field.options.info && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["a" /* Description */], { content: this.props.field.options.info }))));
     };
     return ChoiceField;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));
