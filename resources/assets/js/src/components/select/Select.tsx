@@ -84,7 +84,7 @@ class Select extends React.Component <SelectProps, SelectState> {
         return values.map((value: string) => {
             let option = this.findOptionByValue(value, options);
 
-            return option ? option.value : '';
+            return option ? option.key : '';
         }).filter((selection: string) => {
             return selection.length;
         });

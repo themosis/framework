@@ -24629,7 +24629,7 @@ var Select = /** @class */ (function (_super) {
         }
         return values.map(function (value) {
             var option = _this.findOptionByValue(value, options);
-            return option ? option.value : '';
+            return option ? option.key : '';
         }).filter(function (selection) {
             return selection.length;
         });
