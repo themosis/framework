@@ -75,7 +75,7 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
      * Handle onChange events for each field.
      * This updates the "state" of our metabox fields values.
      */
-    change(name: string, value: any) {
+    change(name: string, value: string|Array<string>) {
         const fields:Array<FieldType> = this.state.fields.map((field: FieldType): FieldType => {
             if (name === field.name) {
                 field.value = value;

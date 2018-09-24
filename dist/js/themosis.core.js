@@ -24510,27 +24510,7 @@ var ChoiceField = /** @class */ (function (_super) {
      * Handle value changes.
      */
     ChoiceField.prototype.onChange = function (value) {
-        this.props.changeHandler(this.props.field.name, this.parseValue(value));
-    };
-    /**
-     * Format value based on field configuration.
-     *
-     * @return {string|array}
-     */
-    ChoiceField.prototype.parseValue = function (value) {
-        if (!value.length) {
-            return '';
-        }
-        switch (this.props.field.options.layout) {
-            case 'select':
-                if (!this.props.field.options.multiple && Array.isArray(value)) {
-                    // We handle an array for a single value. Let's return the first element of value.
-                    return value.shift();
-                }
-                // Multiple selection.
-                return value;
-        }
-        return value;
+        this.props.changeHandler(this.props.field.name, value);
     };
     /**
      * Render the right component based on field layout.
@@ -24543,7 +24523,7 @@ var ChoiceField = /** @class */ (function (_super) {
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__select_Select__["a" /* default */], { l10n: {
                     placeholder: this.props.field.options.l10n.placeholder,
                     not_found: this.props.field.options.l10n.not_found
-                }, id: this.props.field.attributes.id, multiple: true, options: this.props.field.options.choices }));
+                }, id: this.props.field.attributes.id, multiple: true, changeHandler: this.onChange, value: this.props.field.value, options: this.props.field.options.choices }));
         }
         if ('checkbox' === field.options.layout) {
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__inputs_Checkboxes__["a" /* default */], { choices: this.props.field.options.choices }));
@@ -24555,7 +24535,7 @@ var ChoiceField = /** @class */ (function (_super) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__select_Select__["a" /* default */], { l10n: {
                 placeholder: this.props.field.options.l10n.placeholder,
                 not_found: this.props.field.options.l10n.not_found
-            }, id: this.props.field.attributes.id, multiple: false, options: this.props.field.options.choices }));
+            }, id: this.props.field.attributes.id, multiple: false, value: this.props.field.value, changeHandler: this.onChange, options: this.props.field.options.choices }));
     };
     /**
      * Render the component.
@@ -24608,12 +24588,13 @@ var Select = /** @class */ (function (_super) {
          * Input ref
          */
         _this.inputRef = __WEBPACK_IMPORTED_MODULE_0_react__["createRef"]();
+        var defaultValues = _this.defaultValues(props.value), defaultOptions = _this.defaultOptions(props.options, defaultValues);
         _this.state = {
             open: false,
-            value: [],
-            selected: [],
-            options: _this.defaultOptions(props.options),
-            listItems: _this.defaultOptions(props.options)
+            value: defaultValues,
+            selected: _this.defaultSelection(defaultValues, defaultOptions),
+            options: defaultOptions,
+            listItems: defaultOptions
         };
         _this.onBlur = _this.onBlur.bind(_this);
         _this.onFocus = _this.onFocus.bind(_this);
@@ -24622,16 +24603,61 @@ var Select = /** @class */ (function (_super) {
         return _this;
     }
     /**
+     * Set default values.
+     *
+     * @param {string|Array<string>} value
+     *
+     * @return {Array<string>}
+     */
+    Select.prototype.defaultValues = function (value) {
+        if (!value) {
+            return [];
+        }
+        return Array.isArray(value) ? value : [value];
+    };
+    /**
+     * Set default selection.
+     *
+     * @param {Array<string>} values
+     * @param {Array<OptionType>} options
+     *
+     * @return {Array<string>}
+     */
+    Select.prototype.defaultSelection = function (values, options) {
+        var _this = this;
+        if (!values.length) {
+            return [];
+        }
+        return values.map(function (value) {
+            var option = _this.findOptionByValue(value, options);
+            return option ? option.value : '';
+        }).filter(function (selection) {
+            return selection.length;
+        });
+    };
+    /**
      * Setup default state options.
      * Add a "selected" value.
      *
-     * @param options
+     * @param {Array<OptionType>} options
+     * @param {Array<string>} values
      *
      * @return {Array<OptionType>}
      */
-    Select.prototype.defaultOptions = function (options) {
+    Select.prototype.defaultOptions = function (options, values) {
+        if (values === void 0) { values = []; }
         return options.map(function (option) {
-            option.selected = false;
+            var foundValue = null;
+            if (values.length) {
+                for (var idx in values) {
+                    var value = values[idx];
+                    if (option.value === value) {
+                        foundValue = value;
+                        break;
+                    }
+                }
+            }
+            option.selected = option.value === foundValue;
             return option;
         });
     };
@@ -24722,9 +24748,12 @@ var Select = /** @class */ (function (_super) {
      * Handle click event on tags. Remove tag from
      * selection and list of values.
      *
-     * @param {SelectOption} item
+     * @param {OptionType} item
      */
     Select.prototype.onTagClick = function (item) {
+        if (!item) {
+            return;
+        }
         var selected = this.state.selected.slice().filter(function (selection) {
             return selection !== item.key;
         });
@@ -24742,6 +24771,10 @@ var Select = /** @class */ (function (_super) {
             value: value,
             options: options
         });
+        // Update value on higher component.
+        if (this.props.changeHandler) {
+            this.props.changeHandler(value);
+        }
     };
     /**
      * Handle value when an item is selected/clicked.
@@ -24776,7 +24809,18 @@ var Select = /** @class */ (function (_super) {
             options: options
         });
         // Send the value to higher component.
-        //this.props.changeHandler(values);
+        if (this.props.changeHandler) {
+            // Single value.
+            if (!this.props.multiple) {
+                // Make sure to use a copy of values to avoid overriding them in memory
+                // as state is async.
+                this.props.changeHandler(values.slice().shift());
+            }
+            else {
+                // Multiple values.
+                this.props.changeHandler(values);
+            }
+        }
     };
     /**
      * Find an option object based on its key.
@@ -24786,18 +24830,27 @@ var Select = /** @class */ (function (_super) {
      * @return {OptionType}
      */
     Select.prototype.findOptionByKey = function (key) {
-        var options = this.state.options.filter(function (option) {
+        var result = this.state.options.filter(function (option) {
             return option.key === key;
-        });
-        var result = options.shift();
-        if (result) {
-            return result;
+        }).shift();
+        return result ? result : null;
+    };
+    /**
+     * Find an option object based on its value.
+     *
+     * @param {string} value
+     * @param {Array<OptionType>} options
+     *
+     * @return {OptionType}
+     */
+    Select.prototype.findOptionByValue = function (value, options) {
+        if (!options.length) {
+            return null;
         }
-        return {
-            key: '',
-            value: '',
-            selected: false
-        };
+        var found = options.filter(function (option) {
+            return option.value === value;
+        }).shift();
+        return found ? found : null;
     };
     /**
      * Parse value and selection.

@@ -9,10 +9,11 @@ interface SelectL10n {
 
 interface SelectProps {
     options: Array<OptionType>;
+    value: string|Array<string>;
     changeHandler?: any;
     id?: string;
-    multiple?: boolean;
     l10n?: SelectL10n;
+    multiple?: boolean;
 }
 
 interface SelectState {
@@ -35,12 +36,15 @@ class Select extends React.Component <SelectProps, SelectState> {
     constructor(props: SelectProps) {
         super(props);
 
+        let defaultValues = this.defaultValues(props.value),
+            defaultOptions = this.defaultOptions(props.options, defaultValues);
+
         this.state = {
             open: false,
-            value: [],
-            selected: [],
-            options: this.defaultOptions(props.options),
-            listItems: this.defaultOptions(props.options)
+            value: defaultValues,
+            selected: this.defaultSelection(defaultValues, defaultOptions),
+            options: defaultOptions,
+            listItems: defaultOptions
         };
 
         this.onBlur = this.onBlur.bind(this);
@@ -50,16 +54,68 @@ class Select extends React.Component <SelectProps, SelectState> {
     }
 
     /**
+     * Set default values.
+     *
+     * @param {string|Array<string>} value
+     *
+     * @return {Array<string>}
+     */
+    defaultValues(value: string|Array<string>) {
+        if (! value) {
+            return [];
+        }
+
+        return Array.isArray(value) ? value : [value];
+    }
+
+    /**
+     * Set default selection.
+     *
+     * @param {Array<string>} values
+     * @param {Array<OptionType>} options
+     *
+     * @return {Array<string>}
+     */
+    defaultSelection(values: Array<string>, options: Array<OptionType>) {
+        if (! values.length) {
+            return [];
+        }
+
+        return values.map((value: string) => {
+            let option = this.findOptionByValue(value, options);
+
+            return option ? option.value : '';
+        }).filter((selection: string) => {
+            return selection.length;
+        });
+    }
+
+    /**
      * Setup default state options.
      * Add a "selected" value.
      *
-     * @param options
+     * @param {Array<OptionType>} options
+     * @param {Array<string>} values
      *
      * @return {Array<OptionType>}
      */
-    defaultOptions(options: Array<OptionType>) {
+    defaultOptions(options: Array<OptionType>, values: Array<string> = []) {
         return options.map((option) => {
-            option.selected = false;
+            let foundValue = null;
+
+            if (values.length) {
+                for (let idx in values) {
+                    let value = values[idx];
+
+                    if (option.value === value) {
+                       foundValue = value;
+                       break;
+                    }
+                }
+            }
+
+            option.selected = option.value === foundValue;
+
             return option;
         });
     }
@@ -164,9 +220,13 @@ class Select extends React.Component <SelectProps, SelectState> {
      * Handle click event on tags. Remove tag from
      * selection and list of values.
      *
-     * @param {SelectOption} item
+     * @param {OptionType} item
      */
-    onTagClick(item: OptionType) {
+    onTagClick(item: OptionType|null) {
+        if (! item) {
+            return;
+        }
+
         let selected = this.state.selected.slice().filter((selection) => {
             return selection !== item.key;
         });
@@ -188,6 +248,11 @@ class Select extends React.Component <SelectProps, SelectState> {
             value: value,
             options: options
         });
+
+        // Update value on higher component.
+        if (this.props.changeHandler) {
+            this.props.changeHandler(value);
+        }
     }
 
     /**
@@ -228,7 +293,17 @@ class Select extends React.Component <SelectProps, SelectState> {
         });
 
         // Send the value to higher component.
-        //this.props.changeHandler(values);
+        if (this.props.changeHandler) {
+            // Single value.
+            if (! this.props.multiple) {
+                // Make sure to use a copy of values to avoid overriding them in memory
+                // as state is async.
+                this.props.changeHandler(values.slice().shift());
+            } else {
+                // Multiple values.
+                this.props.changeHandler(values);
+            }
+        }
     }
 
     /**
@@ -238,22 +313,32 @@ class Select extends React.Component <SelectProps, SelectState> {
      *
      * @return {OptionType}
      */
-    findOptionByKey(key: string): OptionType {
-        let options = this.state.options.filter((option) => {
+    findOptionByKey(key: string): OptionType|null {
+        let result = this.state.options.filter((option) => {
             return option.key === key;
-        });
+        }).shift();
 
-        let result = options.shift();
+        return result ? result : null;
+    }
 
-        if (result) {
-            return result;
+    /**
+     * Find an option object based on its value.
+     *
+     * @param {string} value
+     * @param {Array<OptionType>} options
+     *
+     * @return {OptionType}
+     */
+    findOptionByValue(value: string, options: Array<OptionType>): OptionType|null {
+        if (! options.length) {
+            return null;
         }
 
-        return {
-            key: '',
-            value: '',
-            selected: false
-        };
+        let found = options.filter((option: OptionType) => {
+            return option.value === value;
+        }).shift();
+
+        return found ? found : null;
     }
 
     /**
@@ -299,7 +384,7 @@ class Select extends React.Component <SelectProps, SelectState> {
         /*
          * Handle single value selection.
          */
-        if (selection.length && !this.props.multiple) {
+        if (selection.length && ! this.props.multiple) {
             return selection.toString();
         }
 
