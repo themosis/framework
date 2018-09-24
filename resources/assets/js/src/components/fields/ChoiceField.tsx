@@ -32,6 +32,7 @@ class ChoiceField extends React.Component <FieldProps> {
         if ('checkbox' === field.options.layout) {
             return (
                 <Checkboxes choices={this.props.field.options.choices}
+                            value={Array.isArray(this.props.field.value) ? this.props.field.value : []}
                             changeHandler={this.onChange}/>
             );
         }

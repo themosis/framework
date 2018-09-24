@@ -24525,7 +24525,7 @@ var ChoiceField = /** @class */ (function (_super) {
      */
     ChoiceField.prototype.getComponent = function (field) {
         if ('checkbox' === field.options.layout) {
-            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__inputs_Checkboxes__["a" /* default */], { choices: this.props.field.options.choices, changeHandler: this.onChange }));
+            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__inputs_Checkboxes__["a" /* default */], { choices: this.props.field.options.choices, value: Array.isArray(this.props.field.value) ? this.props.field.value : [], changeHandler: this.onChange }));
         }
         if ('radio' === field.options.layout) {
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__inputs_Radio__["a" /* default */], { choices: this.props.field.options.choices, changeHandler: this.onChange }));
