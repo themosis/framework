@@ -25002,7 +25002,7 @@ var Checkboxes = /** @class */ (function (_super) {
     function Checkboxes(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            value: []
+            value: props.value ? props.value : []
         };
         _this.onChange = _this.onChange.bind(_this);
         return _this;
@@ -25030,6 +25030,20 @@ var Checkboxes = /** @class */ (function (_super) {
         }
     };
     /**
+     * Check if a checkbox value is checked.
+     *
+     * @param val
+     * @param values
+     *
+     * @return {boolean}
+     */
+    Checkboxes.prototype.isChecked = function (val, values) {
+        var result = values.find(function (value) {
+            return value === val;
+        });
+        return !!result;
+    };
+    /**
      * Render the choices.
      */
     Checkboxes.prototype.renderChoices = function () {
@@ -25039,7 +25053,7 @@ var Checkboxes = /** @class */ (function (_super) {
                 return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__choice__group", key: choice.key }, choice.key));
             }
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__choice__item", key: choice.key },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__Checkbox__["a" /* default */], { value: choice.value, id: choice.key, changeHandler: _this.onChange }),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__Checkbox__["a" /* default */], { value: choice.value, id: choice.key, checked: _this.isChecked(choice.value, _this.state.value), changeHandler: _this.onChange }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { text: choice.key, for: choice.key })));
         });
     };

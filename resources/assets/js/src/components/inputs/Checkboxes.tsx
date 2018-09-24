@@ -20,7 +20,7 @@ class Checkboxes extends React.Component <CheckboxesProps, CheckboxesState> {
         super(props);
 
         this.state = {
-            value: []
+            value: props.value ? props.value : []
         };
 
         this.onChange = this.onChange.bind(this);
@@ -53,6 +53,22 @@ class Checkboxes extends React.Component <CheckboxesProps, CheckboxesState> {
     }
 
     /**
+     * Check if a checkbox value is checked.
+     *
+     * @param val
+     * @param values
+     *
+     * @return {boolean}
+     */
+    isChecked(val: string, values: Array<string>): boolean {
+        let result = values.find((value) => {
+            return value === val;
+        });
+
+        return !!result;
+    }
+
+    /**
      * Render the choices.
      */
     renderChoices() {
@@ -69,6 +85,7 @@ class Checkboxes extends React.Component <CheckboxesProps, CheckboxesState> {
                 <div className="themosis__choice__item" key={choice.key}>
                     <Checkbox value={choice.value}
                               id={choice.key}
+                              checked={this.isChecked(choice.value, this.state.value)}
                               changeHandler={this.onChange}/>
                     <Label text={choice.key} for={choice.key}/>
                 </div>
