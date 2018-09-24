@@ -24528,7 +24528,7 @@ var ChoiceField = /** @class */ (function (_super) {
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__inputs_Checkboxes__["a" /* default */], { choices: this.props.field.options.choices, value: Array.isArray(this.props.field.value) ? this.props.field.value : [], changeHandler: this.onChange }));
         }
         if ('radio' === field.options.layout) {
-            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__inputs_Radio__["a" /* default */], { choices: this.props.field.options.choices, changeHandler: this.onChange }));
+            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__inputs_Radio__["a" /* default */], { choices: this.props.field.options.choices, value: 'string' === typeof this.props.field.value ? this.props.field.value : '', changeHandler: this.onChange }));
         }
         // Default to "select" component.
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__select_Select__["a" /* default */], { l10n: {
@@ -25099,7 +25099,7 @@ var Radio = /** @class */ (function (_super) {
     function Radio(props) {
         var _this = _super.call(this, props) || this;
         _this.state = {
-            value: ''
+            value: props.value ? props.value : ''
         };
         _this.onChange = _this.onChange.bind(_this);
         return _this;

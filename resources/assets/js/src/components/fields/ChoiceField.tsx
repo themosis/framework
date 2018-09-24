@@ -40,6 +40,7 @@ class ChoiceField extends React.Component <FieldProps> {
         if ('radio' === field.options.layout) {
             return (
                 <Radio choices={this.props.field.options.choices}
+                       value={'string' === typeof this.props.field.value ? this.props.field.value : ''}
                        changeHandler={this.onChange}/>
             );
         }

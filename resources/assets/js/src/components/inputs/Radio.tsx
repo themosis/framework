@@ -4,6 +4,7 @@ import Label from "../labels/Label";
 interface RadioProps {
     choices: Array<OptionType>;
     changeHandler?: any;
+    value?: string;
 }
 
 interface RadioState {
@@ -18,7 +19,7 @@ class Radio extends React.Component <RadioProps, RadioState> {
         super(props);
 
         this.state = {
-            value: ''
+            value: props.value ? props.value : ''
         };
 
         this.onChange = this.onChange.bind(this);
