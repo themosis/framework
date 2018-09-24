@@ -57,7 +57,7 @@ class Factory
             ->setContainer($this->container)
             ->setTitle($this->setDefaultTitle($id))
             ->setScreen($screen)
-            ->setContext('advanced')
+            ->setContext('normal')
             ->setPriority('default')
             ->setResource($this->resource)
             ->setLocale($this->container->getLocale());

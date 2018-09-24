@@ -69,7 +69,7 @@ class MetaboxTest extends TestCase
         $this->assertEquals('properties', $box->getId());
         $this->assertEquals('Properties', $box->getTitle());
         $this->assertEquals('post', $box->getScreen());
-        $this->assertEquals('advanced', $box->getContext());
+        $this->assertEquals('normal', $box->getContext());
         $this->assertEquals('default', $box->getPriority());
         $this->assertEquals([$box, 'handle'], $box->getCallback());
         $this->assertTrue(is_array($box->getArguments()));
@@ -110,7 +110,7 @@ class MetaboxTest extends TestCase
 
         $expected = [
             'id' => 'infos',
-            'context' => 'advanced',
+            'context' => 'normal',
             'l10n' => [],
             'locale' => 'en_US',
             'priority' => 'default',
@@ -142,7 +142,7 @@ class MetaboxTest extends TestCase
 
         $expected = [
             'id' => 'properties',
-            'context' => 'advanced',
+            'context' => 'normal',
             'l10n' => [],
             'locale' => 'en_US',
             'priority' => 'default',
