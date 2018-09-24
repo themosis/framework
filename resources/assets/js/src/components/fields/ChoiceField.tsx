@@ -29,41 +29,28 @@ class ChoiceField extends React.Component <FieldProps> {
      * @param field
      */
     getComponent(field: FieldType) {
-        // Select component with multiple options.
-        if ('select' === field.options.layout && field.options.multiple) {
-            return (
-                <Select l10n={{
-                    placeholder: this.props.field.options.l10n.placeholder,
-                    not_found: this.props.field.options.l10n.not_found
-                }}
-                        id={this.props.field.attributes.id}
-                        multiple={true}
-                        changeHandler={this.onChange}
-                        value={this.props.field.value}
-                        options={this.props.field.options.choices}/>
-            );
-        }
-
         if ('checkbox' === field.options.layout) {
             return (
-                <Checkboxes choices={this.props.field.options.choices}/>
+                <Checkboxes choices={this.props.field.options.choices}
+                            changeHandler={this.onChange}/>
             );
         }
 
         if ('radio' === field.options.layout) {
             return (
-                <Radio choices={this.props.field.options.choices}/>
+                <Radio choices={this.props.field.options.choices}
+                       changeHandler={this.onChange}/>
             );
         }
 
-        // Default to "select" component with single option.
+        // Default to "select" component.
         return (
             <Select l10n={{
                 placeholder: this.props.field.options.l10n.placeholder,
                 not_found: this.props.field.options.l10n.not_found
             }}
                     id={this.props.field.attributes.id}
-                    multiple={false}
+                    multiple={this.props.field.options.multiple}
                     value={this.props.field.value}
                     changeHandler={this.onChange}
                     options={this.props.field.options.choices}/>

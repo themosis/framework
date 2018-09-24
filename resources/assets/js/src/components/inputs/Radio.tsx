@@ -3,6 +3,7 @@ import Label from "../labels/Label";
 
 interface RadioProps {
     choices: Array<OptionType>;
+    changeHandler?: any;
 }
 
 interface RadioState {
@@ -30,6 +31,10 @@ class Radio extends React.Component <RadioProps, RadioState> {
         this.setState({
             value: e.target.value
         });
+
+        if (this.props.changeHandler) {
+            this.props.changeHandler(e.target.value);
+        }
     }
 
     /**

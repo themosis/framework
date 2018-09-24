@@ -4,14 +4,52 @@ import Label from "../labels/Label";
 
 interface CheckboxesProps {
     choices: Array<OptionType>;
+    changeHandler?: any;
+    value?: Array<string>;
+}
+
+interface CheckboxesState {
+    value: Array<string>;
 }
 
 /**
  * Choice "checkbox" component.
  */
-class Checkboxes extends React.Component <CheckboxesProps> {
+class Checkboxes extends React.Component <CheckboxesProps, CheckboxesState> {
     constructor(props: CheckboxesProps) {
         super(props);
+
+        this.state = {
+            value: []
+        };
+
+        this.onChange = this.onChange.bind(this);
+    }
+
+    /**
+     * Handle checkbox change/checked status.
+     */
+    onChange(checked: boolean, value: string) {
+        let values = this.state.value.slice();
+
+        if (checked) {
+            // Add the value.
+            values.push(value);
+        } else {
+            // Remove the value if already defined.
+            values = values.filter((val: string) => {
+                return val !== value;
+            });
+        }
+
+
+        this.setState({
+            value: values
+        });
+
+        if (this.props.changeHandler) {
+            this.props.changeHandler(values);
+        }
     }
 
     /**
@@ -29,7 +67,9 @@ class Checkboxes extends React.Component <CheckboxesProps> {
 
             return (
                 <div className="themosis__choice__item" key={choice.key}>
-                    <Checkbox value={choice.value} id={choice.key} />
+                    <Checkbox value={choice.value}
+                              id={choice.key}
+                              changeHandler={this.onChange}/>
                     <Label text={choice.key} for={choice.key}/>
                 </div>
             );

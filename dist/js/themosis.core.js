@@ -24518,24 +24518,17 @@ var ChoiceField = /** @class */ (function (_super) {
      * @param field
      */
     ChoiceField.prototype.getComponent = function (field) {
-        // Select component with multiple options.
-        if ('select' === field.options.layout && field.options.multiple) {
-            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__select_Select__["a" /* default */], { l10n: {
-                    placeholder: this.props.field.options.l10n.placeholder,
-                    not_found: this.props.field.options.l10n.not_found
-                }, id: this.props.field.attributes.id, multiple: true, changeHandler: this.onChange, value: this.props.field.value, options: this.props.field.options.choices }));
-        }
         if ('checkbox' === field.options.layout) {
-            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__inputs_Checkboxes__["a" /* default */], { choices: this.props.field.options.choices }));
+            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__inputs_Checkboxes__["a" /* default */], { choices: this.props.field.options.choices, changeHandler: this.onChange }));
         }
         if ('radio' === field.options.layout) {
-            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__inputs_Radio__["a" /* default */], { choices: this.props.field.options.choices }));
+            return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_6__inputs_Radio__["a" /* default */], { choices: this.props.field.options.choices, changeHandler: this.onChange }));
         }
-        // Default to "select" component with single option.
+        // Default to "select" component.
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__select_Select__["a" /* default */], { l10n: {
                 placeholder: this.props.field.options.l10n.placeholder,
                 not_found: this.props.field.options.l10n.not_found
-            }, id: this.props.field.attributes.id, multiple: false, value: this.props.field.value, changeHandler: this.onChange, options: this.props.field.options.choices }));
+            }, id: this.props.field.attributes.id, multiple: this.props.field.options.multiple, value: this.props.field.value, changeHandler: this.onChange, options: this.props.field.options.choices }));
     };
     /**
      * Render the component.
@@ -25001,18 +24994,46 @@ var __extends = (this && this.__extends) || (function () {
 var Checkboxes = /** @class */ (function (_super) {
     __extends(Checkboxes, _super);
     function Checkboxes(props) {
-        return _super.call(this, props) || this;
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            value: []
+        };
+        _this.onChange = _this.onChange.bind(_this);
+        return _this;
     }
+    /**
+     * Handle checkbox change/checked status.
+     */
+    Checkboxes.prototype.onChange = function (checked, value) {
+        var values = this.state.value.slice();
+        if (checked) {
+            // Add the value.
+            values.push(value);
+        }
+        else {
+            // Remove the value if already defined.
+            values = values.filter(function (val) {
+                return val !== value;
+            });
+        }
+        this.setState({
+            value: values
+        });
+        if (this.props.changeHandler) {
+            this.props.changeHandler(values);
+        }
+    };
     /**
      * Render the choices.
      */
     Checkboxes.prototype.renderChoices = function () {
+        var _this = this;
         return this.props.choices.map(function (choice) {
             if (choice.type && 'group' === choice.type) {
                 return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__choice__group", key: choice.key }, choice.key));
             }
             return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__choice__item", key: choice.key },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__Checkbox__["a" /* default */], { value: choice.value, id: choice.key }),
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__Checkbox__["a" /* default */], { value: choice.value, id: choice.key, changeHandler: _this.onChange }),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { text: choice.key, for: choice.key })));
         });
     };
@@ -25070,6 +25091,9 @@ var Radio = /** @class */ (function (_super) {
         this.setState({
             value: e.target.value
         });
+        if (this.props.changeHandler) {
+            this.props.changeHandler(e.target.value);
+        }
     };
     /**
      * Render radio choices.
