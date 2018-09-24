@@ -34,7 +34,16 @@ class CheckboxField extends React.Component <FieldProps> {
      * Get the field value if any defined.
      */
     getValue(): string {
-        return isUndefined(this.props.field.value) ? '' : this.props.field.value.toString();
+        if (isUndefined(this.props.field.value)) {
+            return '';
+        }
+
+        if (this.props.field.value) {
+            return 'on';
+        }
+
+
+        return  'off';
     }
 
     /**

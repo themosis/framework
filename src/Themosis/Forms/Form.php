@@ -787,6 +787,16 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     }
 
     /**
+     * @inheritdoc
+     *
+     * @return mixed
+     */
+    public function getRawValue()
+    {
+        return null;
+    }
+
+    /**
      * Set the Fractal manager.
      *
      * @param Manager $manager

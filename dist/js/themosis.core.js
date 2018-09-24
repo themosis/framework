@@ -24393,7 +24393,13 @@ var CheckboxField = /** @class */ (function (_super) {
      * Get the field value if any defined.
      */
     CheckboxField.prototype.getValue = function () {
-        return Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["d" /* isUndefined */])(this.props.field.value) ? '' : this.props.field.value.toString();
+        if (Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["d" /* isUndefined */])(this.props.field.value)) {
+            return '';
+        }
+        if (this.props.field.value) {
+            return 'on';
+        }
+        return 'off';
     };
     /**
      * Render the component.

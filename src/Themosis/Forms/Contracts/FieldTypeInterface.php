@@ -191,6 +191,13 @@ interface FieldTypeInterface
     public function getValue($default = null);
 
     /**
+     * Retrieve the field original value (reverse transformed).
+     *
+     * @return mixed
+     */
+    public function getRawValue();
+
+    /**
      * Return an error message bag instance.
      *
      * @return MessageBag

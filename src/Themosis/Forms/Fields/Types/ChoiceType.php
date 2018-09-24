@@ -210,7 +210,15 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
      */
     public function metaboxSave($value, int $post_id)
     {
-        // TODO: Implement metaboxSave() method.
+        $this->setValue($value);
+
+        if (! $this->getOption('multiple', false)) {
+            // Store single value.
+            $this->saveSingleValue($this->getValue(), $post_id);
+        } else {
+            // Store multiple values.
+            $this->saveMultipleValue($this->getValue(), $post_id);
+        }
     }
 
     /**
@@ -220,6 +228,54 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
      */
     public function metaboxGet(int $post_id)
     {
-        // TODO: Implement metaboxGet() method.
+        $value = get_post_meta($post_id, $this->getName(), ! $this->getOption('multiple', false));
+
+        if (! empty($value)) {
+            $this->setValue($value);
+        }
+    }
+
+    /**
+     * Save a single value.
+     *
+     * @param string $value
+     * @param int    $post_id
+     */
+    protected function saveSingleValue($value, int $post_id)
+    {
+        $previous = get_post_meta($post_id, $this->getName(), true);
+
+        if (is_null($value) || empty($value)) {
+            delete_post_meta($post_id, $this->getName());
+        } elseif (empty($previous)) {
+            add_post_meta($post_id, $this->getName(), $value, true);
+        } else {
+            update_post_meta($post_id, $this->getName(), $value, $previous);
+        }
+    }
+
+    /**
+     * Save multiple values.
+     *
+     * @param array $value
+     * @param int   $post_id
+     */
+    protected function saveMultipleValue($value, int $post_id)
+    {
+        $previous = get_post_meta($post_id, $this->getName(), false);
+
+        if (is_null($value) || empty($value)) {
+            delete_post_meta($post_id, $this->getName());
+        } elseif (empty($previous) && is_array($value)) {
+            array_walk($value, function ($val) use ($post_id) {
+                add_post_meta($post_id, $this->getName(), $val, false);
+            });
+        } else {
+            delete_post_meta($post_id, $this->getName());
+
+            array_walk($value, function ($val) use ($post_id, $previous) {
+                add_post_meta($post_id, $this->getName(), $val, false);
+            });
+        }
     }
 }
