@@ -74,6 +74,14 @@
         background-color: $white;
         border-left: 4px solid $white;
       }
+
+      span.shortname {
+        display: none;
+      }
+
+      span.fullname {
+        display: inline;
+      }
     }
 
     button.tab__active {
@@ -145,7 +153,9 @@
 }
 
 .themosis__input {
-  min-width: $max;
+  min-width: auto;
+  width: 100%;
+  max-width: 100%;
   border: 1px solid $borderColor;
   border-radius: $borderRadius;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
@@ -216,10 +226,49 @@
       width: 100%;
     }
   }
+}
 
+/* Mobile */
+@media screen and (max-width: 782px) {
+  .themosis__tabs {
+    &__menu {
+      min-width: 50px;
+      width: 50px;
+      max-width: 50px;
+
+      button {
+        span.shortname {
+          display: block;
+          text-align: center;
+          font-size: 15px;
+        }
+
+        span.fullname {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .themosis__field {
+    display: block;
+  }
+
+  .themosis__column {
+    &__label {
+      width: 100%;
+      padding-bottom: $paddingV / 2;
+    }
+
+    &__content {
+      width: 100%;
+    }
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1190px){
   .themosis__input {
-    min-width: auto;
-    width: 100%;
-    max-width: 100%;
+    max-width: $max;
   }
 }

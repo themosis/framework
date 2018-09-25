@@ -1,5 +1,4 @@
 import * as React from "react";
-import Button from "../buttons/Button";
 import classNames from "classnames";
 
 interface TabMenuItem {
@@ -50,11 +49,13 @@ class Tabs extends React.Component <TabsProps, TabsState> {
                 <div className="themosis__tabs__menu">
                     { this.props.items.map((item) => {
                         return (
-                            <Button text={item.title}
-                                    key={item.id}
-                                    className={classNames({'tab__active': this.state.selected === item.id, 'tab__has__errors': item.hasError})}
-                                    clickHandler={() => this.handleClick(item.id)}/>
-                        );
+                            <button key={item.id}
+                                    type="button"
+                                    onClick={() => this.handleClick(item.id)}
+                                    className={classNames({'tab__active': this.state.selected === item.id, 'tab__has__errors': item.hasError})}>
+                                <span className="shortname">{ item.title.charAt(0) }</span>
+                                <span className="fullname">{ item.title }</span>
+                            </button>);
                     }) }
                 </div>
                 { this.props.children && <div className="themosis__tabs__body">

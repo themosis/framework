@@ -54,9 +54,18 @@
     border-right: none;
     border-radius: 0;
     box-sizing: border-box;
-    width: 196px;
+    width: 70%;
     height: 32px;
     margin: 0;
     text-align: center;
+  }
+}
+
+/* Desktop */
+@media screen and (min-width: 1190px) {
+  .themosis__input__number {
+    input {
+      max-width: $max;
+    }
   }
 }
