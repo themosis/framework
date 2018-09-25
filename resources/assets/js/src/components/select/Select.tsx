@@ -101,7 +101,7 @@ class Select extends React.Component <SelectProps, SelectState> {
      */
     defaultOptions(options: Array<OptionType>, values: Array<string> = []) {
         return options.map((option) => {
-            let foundValue = null;
+            let foundValue;
 
             if (values.length) {
                 for (let idx in values) {
