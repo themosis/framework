@@ -97,6 +97,11 @@ class Metabox implements MetaboxInterface
      */
     protected $l10n;
 
+    /**
+     * @var string
+     */
+    protected $capability;
+
     public function __construct(string $id, IHook $action, IHook $filter, FieldsRepositoryInterface $repository)
     {
         $this->id = $id;
@@ -317,6 +322,10 @@ class Metabox implements MetaboxInterface
      */
     public function display($post_type, $post)
     {
+        if (! is_null($this->capability) && ! current_user_can($this->capability)) {
+            return;
+        }
+
         add_meta_box(
             $this->getId(),
             $this->getTitle(),
@@ -560,5 +569,29 @@ class Metabox implements MetaboxInterface
         $this->l10n[$key] = $translation;
 
         return $this;
+    }
+
+    /**
+     * Set the metabox capability.
+     *
+     * @param string $cap
+     *
+     * @return MetaboxInterface
+     */
+    public function setCapability(string $cap): MetaboxInterface
+    {
+        $this->capability = $cap;
+
+        return $this;
+    }
+
+    /**
+     * Return the metabox capability.
+     *
+     * @return string
+     */
+    public function getCapability(): string
+    {
+        return $this->capability;
     }
 }

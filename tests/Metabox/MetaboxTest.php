@@ -244,4 +244,15 @@ class MetaboxTest extends TestCase
             'hello' => 'Hello World'
         ], $box->getTranslations());
     }
+
+    public function testAddCapabilityToMetabox()
+    {
+        $factory = $this->getFactory();
+
+        $box = $factory->make('anything');
+
+        $box->setCapability('edit_posts');
+
+        $this->assertEquals('edit_posts', $box->getCapability());
+    }
 }

@@ -240,4 +240,20 @@ interface MetaboxInterface
      * @return MetaboxInterface
      */
     public function addTranslation(string $key, string $translation): MetaboxInterface;
+
+    /**
+     * Set the metabox capability.
+     *
+     * @param string $cap
+     *
+     * @return MetaboxInterface
+     */
+    public function setCapability(string $cap): MetaboxInterface;
+
+    /**
+     * Return the metabox capability.
+     *
+     * @return string
+     */
+    public function getCapability(): string;
 }
