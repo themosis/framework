@@ -102,6 +102,11 @@ class Metabox implements MetaboxInterface
      */
     protected $capability;
 
+    /**
+     * @var array
+     */
+    protected $template;
+
     public function __construct(string $id, IHook $action, IHook $filter, FieldsRepositoryInterface $repository)
     {
         $this->id = $id;
@@ -323,6 +328,10 @@ class Metabox implements MetaboxInterface
     public function display($post_type, $post)
     {
         if (! is_null($this->capability) && ! current_user_can($this->capability)) {
+            return;
+        }
+
+        if (! $this->hasTemplateForPost($post)) {
             return;
         }
 
@@ -593,5 +602,52 @@ class Metabox implements MetaboxInterface
     public function getCapability(): string
     {
         return $this->capability;
+    }
+
+    /**
+     * Set the metabox template.
+     *
+     * @param array|string $template
+     * @param string       $screen
+     *
+     * @return MetaboxInterface
+     */
+    public function setTemplate($template, string $screen = 'page'): MetaboxInterface
+    {
+        $this->template[$screen] = (array) $template;
+
+        return $this;
+    }
+
+    /**
+     * Return the metabox template.
+     *
+     * @return array
+     */
+    public function getTemplate(): array
+    {
+        return $this->template;
+    }
+
+    /**
+     * Check if given post should use the template.
+     *
+     * @param \WP_Post $post
+     *
+     * @return bool
+     */
+    private function hasTemplateForPost(\WP_Post $post): bool
+    {
+        $postTemplate = get_post_meta($post->ID, '_wp_page_template', true);
+
+        $templates = isset($this->template[$post->post_type]) ? $this->template[$post->post_type] : [];
+
+        if (empty($templates)) {
+            // No templates exist for the current post type so we let
+            // pass through either in order to display the metabox.
+            return true;
+        }
+
+        return in_array($postTemplate, $templates, true);
     }
 }

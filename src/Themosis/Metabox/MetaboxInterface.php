@@ -256,4 +256,21 @@ interface MetaboxInterface
      * @return string
      */
     public function getCapability(): string;
+
+    /**
+     * Set the metabox template.
+     *
+     * @param string|array $template
+     * @param string       $screen
+     *
+     * @return MetaboxInterface
+     */
+    public function setTemplate($template, string $screen = 'page'): MetaboxInterface;
+
+    /**
+     * Return the metabox template.
+     *
+     * @return array
+     */
+    public function getTemplate(): array;
 }

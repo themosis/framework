@@ -255,4 +255,27 @@ class MetaboxTest extends TestCase
 
         $this->assertEquals('edit_posts', $box->getCapability());
     }
+
+    public function testAddTemplatesToMetabox()
+    {
+        $factory = $this->getFactory();
+
+        $box = $factory->make('properties')
+                ->setTemplate('fullwidth');
+
+        $this->assertEquals(['page' => ['fullwidth']], $box->getTemplate());
+
+        $box->setTemplate(['custom', 'left-sidebar', 'two-third']);
+
+        $this->assertEquals(['page' => ['custom', 'left-sidebar', 'two-third']], $box->getTemplate());
+
+        $box = $factory->make('shared', ['post', 'page', 'products'])
+            ->setTemplate('fullwidth', 'post')
+            ->setTemplate(['one', 'two'], 'custom');
+
+        $this->assertEquals([
+            'custom' => ['one', 'two'],
+            'post' => ['fullwidth']
+        ], $box->getTemplate());
+    }
 }
