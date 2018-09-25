@@ -1146,8 +1146,15 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         // Build a "Hookable" instance.
         // Hookable instances must extend the "Hookable" class.
         $instance = new $hook($this);
+        $hooks = (array) $instance->hook;
 
-        if (method_exists($instance, 'register')) {
+        if (! method_exists($instance, 'register')) {
+            return;
+        }
+
+        if (! empty($hooks)) {
+            $this['action']->add($hooks, [$instance, 'register'], $instance->priority);
+        } else {
             $instance->register();
         }
     }

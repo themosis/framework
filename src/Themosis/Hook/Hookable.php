@@ -11,6 +11,16 @@ class Hookable
      */
     protected $app;
 
+    /**
+     * @var string|array
+     */
+    public $hook;
+
+    /**
+     * @var int
+     */
+    public $priority = 10;
+
     public function __construct(Application $app)
     {
         $this->app = $app;
