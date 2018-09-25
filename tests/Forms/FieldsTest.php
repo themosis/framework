@@ -259,4 +259,19 @@ class FieldsTest extends TestCase
 
         $this->assertEquals(4, $price->getOption('precision'));
     }
+
+    public function testFieldCanBeShownInRest()
+    {
+        $fields = $this->getFieldsFactory();
+
+        $name = $fields->text('name');
+
+        $this->assertFalse($name->getOption('show_in_rest'));
+
+        $email = $fields->email('email', [
+            'show_in_rest' => true
+        ]);
+
+        $this->assertTrue($email->getOption('show_in_rest'));
+    }
 }

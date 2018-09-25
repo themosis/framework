@@ -20,6 +20,7 @@ class FieldTransformer extends TransformerAbstract
         'messages',
         'placeholder',
         'rules',
+        'show_in_rest',
         'theme'
     ];
 

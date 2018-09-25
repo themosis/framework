@@ -259,4 +259,17 @@ class PageTest extends TestCase
 
         $this->assertTrue($page->hasParent());
     }
+
+    public function testPageCanShowSettingsInRest()
+    {
+        $factory = $this->getFactory($this->getActionMock());
+
+        $page = $factory->make('some-page', 'Title');
+
+        $this->assertFalse($page->isShownInRest());
+
+        $page->showInRest();
+
+        $this->assertTrue($page->isShownInRest());
+    }
 }

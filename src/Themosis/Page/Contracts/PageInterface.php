@@ -127,6 +127,25 @@ interface PageInterface
     public function hasParent(): bool;
 
     /**
+     * Set the global page property show in rest.
+     * Automatically set all attached settings to this global value.
+     * Each setting can override individually this option using an
+     * option "show_in_rest".
+     *
+     * @param bool $show
+     *
+     * @return PageInterface
+     */
+    public function showInRest($show = true): PageInterface;
+
+    /**
+     * Return the page show in rest property value.
+     *
+     * @return bool
+     */
+    public function isShownInRest(): bool;
+
+    /**
      * Set the page for network display.
      *
      * @param bool $network

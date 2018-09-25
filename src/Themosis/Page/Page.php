@@ -114,6 +114,11 @@ class Page implements PageInterface
      */
     protected $titles = [];
 
+    /**
+     * @var bool
+     */
+    protected $showInRest = false;
+
     public function __construct(
         IHook $action,
         IHook $filter,
@@ -319,6 +324,30 @@ class Page implements PageInterface
     public function isNetwork(): bool
     {
         return $this->network;
+    }
+
+    /**
+     * Set page settings global show in rest property.
+     *
+     * @param bool $show
+     *
+     * @return PageInterface
+     */
+    public function showInRest($show = true): PageInterface
+    {
+        $this->showInRest = $show;
+
+        return $this;
+    }
+
+    /**
+     * Return the global page property show in rest.
+     *
+     * @return bool
+     */
+    public function isShownInRest(): bool
+    {
+        return $this->showInRest;
     }
 
     /**
@@ -567,9 +596,17 @@ class Page implements PageInterface
                 );
 
                 // Validate setting.
+                $showInRest = $this->isShownInRest();
+
+                if ($setting->getOption('show_in_rest', false)) {
+                    $showInRest = true;
+                }
+
                 register_setting($this->getSlug(), $setting->getName(), [
                     'sanitize_callback' => [$this, 'sanitizeSetting'],
-                    'default' => $setting->getOption('data', '')
+                    'default' => $setting->getOption('data', ''),
+                    'show_in_rest' => $showInRest,
+                    'type' => $setting->getOption('data_type', 'string')
                 ]);
             }
         }
