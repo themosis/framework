@@ -568,7 +568,8 @@ class Page implements PageInterface
 
                 // Validate setting.
                 register_setting($this->getSlug(), $setting->getName(), [
-                    'sanitize_callback' => [$this, 'sanitizeSetting']
+                    'sanitize_callback' => [$this, 'sanitizeSetting'],
+                    'default' => $setting->getOption('data', '')
                 ]);
             }
         }

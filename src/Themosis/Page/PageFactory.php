@@ -16,6 +16,9 @@ class PageFactory implements PageFactoryInterface
      */
     protected $action;
 
+    /**
+     * @var IHook
+     */
     protected $filter;
 
     /**

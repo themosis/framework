@@ -19,7 +19,7 @@
         @else
             <?php
                 $checked = $field->checked(function ($choices, $value) {
-                    return ! is_null($choices) && in_array($value, $choices, true) ? 'checked' : '';
+                    return ! is_null($choices) && is_array($choices) && in_array($value, $choices, true) ? 'checked' : '';
                 }, [$field->getValue(), $choices]);
             ?>
             <label>
