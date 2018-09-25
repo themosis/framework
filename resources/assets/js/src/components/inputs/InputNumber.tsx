@@ -8,6 +8,8 @@ interface InputNumberProps {
     step: number;
     precision: number;
     id?: string;
+    min?: string;
+    max?: string;
     changeHandler(value: any): void;
 }
 
@@ -37,7 +39,7 @@ class InputNumber extends React.Component <InputNumberProps> {
             value = this.parseValue(rawValue);
         }
 
-        this.props.changeHandler(value);
+        this.props.changeHandler(this.parseRange(value));
     }
 
     /**
@@ -46,7 +48,27 @@ class InputNumber extends React.Component <InputNumberProps> {
      */
     onBlur(e:any) {
         let value = this.parseValue(e.target.value);
-        this.props.changeHandler(this.setPrecision(value, this.props.precision));
+
+        this.props.changeHandler(this.parseRange(this.setPrecision(value, this.props.precision)));
+    }
+
+    /**
+     * Check if a given value is in the range.
+     *
+     * @param {string|number} value
+     *
+     * @return {string|number}
+     */
+    parseRange(value: string|number): string|number {
+        if ('undefined' !== typeof this.props.min && value < this.props.min) {
+            value = this.props.min;
+        }
+
+        if ('undefined' !== typeof this.props.max && value > this.props.max) {
+            value = this.props.max;
+        }
+
+        return value;
     }
 
     /**
@@ -54,7 +76,8 @@ class InputNumber extends React.Component <InputNumberProps> {
      */
     onClick(num: number) {
         let value = this.parseValue(this.props.value) + num;
-        this.props.changeHandler(this.setPrecision(value, this.props.precision));
+
+        this.props.changeHandler(this.parseRange(this.setPrecision(value, this.props.precision)));
     }
 
     /*

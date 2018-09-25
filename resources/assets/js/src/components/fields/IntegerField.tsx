@@ -39,6 +39,8 @@ class IntegerField extends React.Component <FieldProps> {
                                  step={this.props.field.attributes.step}
                                  precision={0}
                                  id={this.props.field.attributes.id}
+                                 min={this.props.field.attributes.min}
+                                 max={this.props.field.attributes.max}
                                  value={this.props.field.value}/>
                     { hasErrors(this.props.field) && <Error messages={getErrorsMessages(this.props.field)}/> }
                     { this.props.field.options.info && <Description content={this.props.field.options.info}/> }

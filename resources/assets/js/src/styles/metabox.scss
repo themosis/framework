@@ -39,6 +39,7 @@
       display: inline;
       margin: 0 0 0 8px;
       padding: 0;
+      line-height: 1;
     }
   }
 }
@@ -196,5 +197,29 @@
 
   .themosis__field {
     padding: $paddingV;
+  }
+}
+
+/* Side context */
+#side-sortables {
+  .themosis__field {
+    display: block;
+  }
+
+  .themosis__column {
+    &__label {
+      width: 100%;
+      padding-bottom: $paddingV / 2;
+    }
+
+    &__content {
+      width: 100%;
+    }
+  }
+
+  .themosis__input {
+    min-width: auto;
+    width: 100%;
+    max-width: 100%;
   }
 }

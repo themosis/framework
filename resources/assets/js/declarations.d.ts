@@ -47,9 +47,11 @@ declare namespace themosisGlobal.post {
 */
 declare interface FieldType {
     attributes: {
-        id: string;
-        step: number;
         checked: string;
+        id: string;
+        max: string;
+        min: string;
+        step: number;
     };
     basename: string;
     component: string;
