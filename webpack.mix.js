@@ -27,6 +27,10 @@ mix.webpackConfig(webpack => {
                     exclude: /node_modules/
                 }
             ]
+        },
+        externals: {
+            lodash: 'lodash',
+            'lodash-es': 'lodash'
         }
     };
 });

@@ -8,6 +8,7 @@ use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Fields\Types\ButtonType;
 use Themosis\Forms\Fields\Types\CheckboxType;
 use Themosis\Forms\Fields\Types\ChoiceType;
+use Themosis\Forms\Fields\Types\ColorType;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\HiddenType;
 use Themosis\Forms\Fields\Types\IntegerType;
@@ -252,23 +253,18 @@ class Factory implements FieldFactoryInterface
     }
 
     /**
-     * Define a ColorField instance.
+     * Return a color type instance.
      *
-     * @param string $name       The name attribute.
-     * @param array  $features   Custom field features - title, info.
-     * @param array  $attributes Input html attributes.
+     * @param string $name
+     * @param array $options
      *
-     * @return \Themosis\Field\Fields\ColorField
+     * @return FieldTypeInterface
      */
-    public function color($name, array $features = [], array $attributes = [])
+    public function color($name, array $options = []): FieldTypeInterface
     {
-        $properties = [
-            'features' => $features,
-            'atts' => array_merge($attributes, ['class' => 'themosis-color-field', 'data-field' => 'text']),
-            'name' => $name,
-        ];
-
-        return $this->make('Themosis\\Field\\Fields\\ColorField', $properties);
+        return (new ColorType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
     }
 
     /**
