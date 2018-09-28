@@ -1,7 +1,8 @@
 @import "vars/index";
-@import "components/inputNumber";
 @import "components/select";
-@import "components/choice";
+@import "fields/choiceField";
+@import "fields/colorField";
+@import "fields/numberField";
 @import "modules/metabox";
 
 /* WordPress Components Styles */

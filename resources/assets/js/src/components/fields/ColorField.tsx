@@ -2,7 +2,7 @@ import * as React from "react";
 import {Field} from "./common";
 import Label from "../labels/Label";
 import {isRequired} from "../../helpers";
-import {ColorPalette} from "../color-palette/ColorPalette";
+import {ColorPalette} from "@wordpress/components";
 
 /**
  * Color field component.
@@ -24,7 +24,7 @@ class ColorField extends React.Component <FieldProps> {
                            text={this.props.field.label.inner}/>
                 </div>
                 <div className="themosis__column__content">
-                    <ColorPalette/>
+                    <ColorPalette colors={[{name: 'Something', color: '#45f'}]}/>
                 </div>
             </Field>
         );
