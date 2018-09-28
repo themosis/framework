@@ -12,15 +12,15 @@
     align-items: center;
     width: 32px;
     height: 32px;
-    background-color: $blueLightest;
-    border: 1px solid $borderColor;
+    background-color: $blue-medium-100;
+    border: 1px solid $light-gray-600;
     box-sizing: border-box;
     margin: 0;
     cursor: pointer;
 
     &:hover {
-      background-color: $blue;
-      border: 1px solid $blueDark;
+      background-color: $blue-medium-600;
+      border: 1px solid $blue-wordpress-700;
 
       .themosis__svg path,
       .themosis__svg rect {
@@ -29,8 +29,8 @@
     }
 
     &:active {
-      background-color: $blueLight;
-      border: 1px solid $blueDark;
+      background-color: $blue-medium-500;
+      border: 1px solid $blue-wordpress-700;
 
       .themosis__svg path,
       .themosis__svg rect {
@@ -40,13 +40,13 @@
   }
 
   .button__minus {
-    border-bottom-left-radius: $borderRadius;
-    border-top-left-radius: $borderRadius;
+    border-bottom-left-radius: $radius-round-rectangle;
+    border-top-left-radius: $radius-round-rectangle;
   }
 
   .button__plus {
-    border-bottom-right-radius: $borderRadius;
-    border-top-right-radius: $borderRadius;
+    border-bottom-right-radius: $radius-round-rectangle;
+    border-top-right-radius: $radius-round-rectangle;
   }
 
   input {

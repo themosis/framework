@@ -6,8 +6,8 @@
   &__field {
     position: relative;
     display: inline-block;
-    border-radius: $borderRadius;
-    border: 1px solid $borderColor;
+    border-radius: $radius-round-rectangle;
+    border: 1px solid $light-gray-600;
     width: 100%;
     min-width: auto;
     max-width: 100%;
@@ -22,7 +22,7 @@
   &__input {
     position: absolute;
     padding: $paddingV / 2;
-    border-radius: $borderRadius;
+    border-radius: $radius-round-rectangle;
     box-sizing: border-box;
     width: 100%;
     min-width: $max;
@@ -50,9 +50,9 @@
     position: absolute;
     width: 100%;
     padding: 9px 8px 8px;
-    background-color: $greyLighter;
-    border: 1px solid $borderColor;
-    border-radius: $borderRadius;
+    background-color: $light-gray-200;
+    border: 1px solid $light-gray-600;
+    border-radius: $radius-round-rectangle;
     top: 100%;
     left: 0;
     box-sizing: border-box;
@@ -74,14 +74,14 @@
     transition: transform .3s ease-in-out;
 
     path {
-      fill: $grey;
+      fill: $dark-gray-400;
     }
   }
 
   &__tag {
     display: inline-block;
     padding: $paddingH / 4 10px $paddingH / 3;
-    background-color: $blue;
+    background-color: $blue-medium-600;
     color: $white;
     margin: 0 6px 6px 0;
     line-height: 1;
@@ -90,12 +90,12 @@
 
     &:hover {
       color: $white;
-      background-color: $blueDark;
+      background-color: $blue-wordpress-700;
     }
 
     &:active {
       color: $white;
-      background-color: $blueLight;
+      background-color: $blue-medium-500;
     }
 
     .icon__close {
@@ -153,11 +153,11 @@
 }
 
 .themosis__select__output.default {
-  color: lighten($grey, 30%);
+  color: lighten($dark-gray-400, 30%);
 }
 
 .themosis__select__output.open.selection {
-  color: lighten($grey, 30%);
+  color: lighten($dark-gray-400, 30%);
   min-height: 20px;
 }
 
@@ -179,7 +179,7 @@
 .themosis__select__group {
   padding: 8px 0;
   font-weight: 600;
-  color: $blue;
+  color: $blue-medium-600;
 
   &:not(:first-child) {
     margin-top: $paddingV;
@@ -188,13 +188,13 @@
 
 .themosis__select__item {
   position: relative;
-  border-radius: $borderRadius;
+  border-radius: $radius-round-rectangle;
   padding: 8px 10px;
   margin-bottom: 1px;
   cursor: pointer;
 
   &:hover {
-    background-color: $blue;
+    background-color: $blue-medium-600;
     color: $white;
   }
 
@@ -204,12 +204,12 @@
 }
 
 .themosis__select__item.selected {
-  background-color: $green;
+  background-color: $green-medium-500;
   color: $white;
   cursor: default;
 
   &:hover {
-    background-color: $green;
+    background-color: $green-medium-500;
     color: $white;
   }
 

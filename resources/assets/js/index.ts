@@ -10,7 +10,7 @@ import CheckboxField from "./src/components/fields/CheckboxField";
 import HiddenField from "./src/components/fields/HiddenField";
 import ChoiceField from "./src/components/fields/ChoiceField";
 import ColorField from "./src/components/fields/ColorField";
-import "./src/styles/metabox.scss";
+import '../sass/index.scss';
 
 /*
  * Initialize the components Manager.

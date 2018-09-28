@@ -1,0 +1,8 @@
+@import "vars/index";
+@import "components/inputNumber";
+@import "components/select";
+@import "components/choice";
+@import "modules/metabox";
+
+/* WordPress Components Styles */
+@import '~@wordpress/components/src/color-palette/style.scss';

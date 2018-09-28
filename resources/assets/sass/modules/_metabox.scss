@@ -1,15 +1,8 @@
-@import "vars";
-@import "animations";
-@import "components/inputNumber";
-@import "components/select";
-@import "components/choice";
-@import "components/colorPalette";
-
 .themosis__metabox {
   &__footer {
     display: flex;
-    background: $greyLighter;
-    border-top: 1px solid #E5E5E5;
+    background: $light-gray-200;
+    border-top: 1px solid $light-gray-500;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: flex-end;
@@ -32,7 +25,7 @@
       height: 22px;
 
       svg.icon__saving {
-        animation: turning 1s linear infinite;
+        @include animate_rotation;
       }
     }
 
@@ -53,7 +46,7 @@
   &__menu {
     width: 25%;
     max-width: $max;
-    background-color: #E5E5E5;
+    background-color: $light-gray-500;
     padding-right: 1px;
 
     button {
@@ -63,7 +56,7 @@
       font-size: 13px;
       font-weight: 600;
       background-color: #F5F5F5;
-      color: $grey;
+      color: $dark-gray-400;
       border: none;
       border-left: 4px solid #F5F5F5;
       margin-bottom: 1px;
@@ -87,13 +80,13 @@
 
     button.tab__active {
       background-color: $white;
-      color: $blue;
-      border-left: 4px solid $blue;
+      color: $blue-medium-600;
+      border-left: 4px solid $blue-medium-600;
     }
 
     button.tab__has__errors {
-      color: $red;
-      border-left: 4px solid $red;
+      color: $red-medium-500;
+      border-left: 4px solid $red-medium-500;
     }
   }
 
@@ -132,7 +125,7 @@
 
 .themosis__description {
   margin-top: 8px;
-  color: $grey;
+  color: $dark-gray-400;
 }
 
 .themosis__field__errors {
@@ -140,14 +133,14 @@
 
   ul {
     display: inline-block;
-    background-color: $redLight;
-    border-radius: $borderRadius;
+    background-color: $red-medium-100;
+    border-radius: $radius-round-rectangle;
     padding: $paddingH / 2;
     margin: 0;
-    color: $red;
+    color: $red-medium-500;
 
     li {
-      color: $red;
+      color: $red-medium-500;
       margin: 0;
     }
   }
@@ -157,35 +150,35 @@
   min-width: auto;
   width: 100%;
   max-width: 100%;
-  border: 1px solid $borderColor;
-  border-radius: $borderRadius;
+  border: 1px solid $light-gray-600;
+  border-radius: $radius-round-rectangle;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
   padding: $paddingH / 2;
 }
 
 .themosis__input__hidden {
   padding: $paddingH / 2 $paddingH;
-  background-color: $greyLighter;
-  border: 1px solid $borderColor;
+  background-color: $light-gray-200;
+  border: 1px solid $light-gray-600;
   text-shadow: 0 1px 0 $white;
-  border-radius: $borderRadius;
+  border-radius: $radius-round-rectangle;
 }
 
 .themosis__textarea {
   width: 100%;
   max-width: 100%;
-  border: 1px solid $borderColor;
-  border-radius: $borderRadius;
+  border: 1px solid $light-gray-600;
+  border-radius: $radius-round-rectangle;
   padding: $paddingH / 2;
 }
 
 .has__errors {
   .themosis__input {
-    border-color: $red;
+    border-color: $red-medium-500;
   }
 
   .themosis__textarea {
-    border-color: $red;
+    border-color: $red-medium-500;
   }
 }
 
@@ -193,7 +186,7 @@
 .gutenberg-editor-page {
   .themosis__metabox {
     &__footer {
-      background: $blueLightest;
+      background: $light-gray-200;
       padding: $paddingV;
     }
   }
@@ -230,7 +223,7 @@
 }
 
 /* Mobile */
-@media screen and (max-width: 782px) {
+@media screen and (max-width: $break-medium) {
   .themosis__tabs {
     &__menu {
       min-width: 50px;
@@ -268,7 +261,7 @@
 }
 
 /* Desktop */
-@media screen and (min-width: 1190px){
+@media screen and (min-width: $break-wide){
   .themosis__input {
     max-width: $max;
   }
