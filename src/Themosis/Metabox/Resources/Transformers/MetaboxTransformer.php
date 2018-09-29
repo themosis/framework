@@ -3,6 +3,8 @@
 namespace Themosis\Metabox\Resources\Transformers;
 
 use League\Fractal\TransformerAbstract;
+use Themosis\Forms\Contracts\FieldTypeInterface;
+use Themosis\Forms\Resources\Factory;
 use Themosis\Forms\Resources\Transformers\FieldTransformer;
 use Themosis\Forms\Resources\Transformers\GroupTransformer;
 use Themosis\Metabox\MetaboxInterface;
@@ -75,7 +77,13 @@ class MetaboxTransformer extends TransformerAbstract
     {
         return $this->collection(
             $metabox->repository()->all(),
-            new FieldTransformer()
+            function (FieldTypeInterface $field) {
+                $field = $field->setResourceTransformerFactory(new Factory());
+                $transformer = $field->getResourceTransformerFactory()->make($field->getResourceTransformer());
+
+                /** @var FieldTransformer $transformer */
+                return $transformer->transform($field);
+            }
         );
     }
 

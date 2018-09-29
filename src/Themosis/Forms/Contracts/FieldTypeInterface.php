@@ -279,6 +279,13 @@ interface FieldTypeInterface
     public function setResourceTransformerFactory(Factory $factory): FieldTypeInterface;
 
     /**
+     * Return the resource transformer.
+     *
+     * @return string
+     */
+    public function getResourceTransformer(): string;
+
+    /**
      * Return a JSON representation of the field.
      *
      * @return string

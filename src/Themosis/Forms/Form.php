@@ -845,6 +845,16 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     }
 
     /**
+     * Return form resource transformer class name.
+     *
+     * @return string
+     */
+    public function getResourceTransformer(): string
+    {
+        return $this->resourceTransformer;
+    }
+
+    /**
      * Define the Fractal resource used by the form.
      *
      * @return ResourceInterface

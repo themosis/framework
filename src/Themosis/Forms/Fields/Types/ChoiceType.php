@@ -40,6 +40,13 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
      */
     protected $component = 'themosis.fields.choice';
 
+    /**
+     * The choice field resource transformer.
+     *
+     * @var string
+     */
+    protected $resourceTransformer = 'ChoiceFieldTransformer';
+
     public function __construct(string $name)
     {
         parent::__construct($name);

@@ -256,7 +256,7 @@ class Factory implements FieldFactoryInterface
      * Return a color type instance.
      *
      * @param string $name
-     * @param array $options
+     * @param array  $options
      *
      * @return FieldTypeInterface
      */

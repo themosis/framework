@@ -68,34 +68,6 @@ class FieldTransformer extends TransformerAbstract
     {
         $options = $field->getOptions($this->excludedOptions);
 
-        if ('choice' === $field->getType() && ! empty($options['choices'])) {
-            $options['choices'] = $this->parseChoices($options['choices']);
-        }
-
         return $options;
-    }
-
-    /**
-     * Parse field choices.
-     *
-     * @param array $choices
-     *
-     * @return array
-     */
-    protected function parseChoices(array $choices)
-    {
-        $items = [];
-
-        foreach ($choices as $key => $value) {
-            if (is_array($value)) {
-                // Handle options groups data.
-                $items[] = ['key' => $key, 'value' => '', 'type' => 'group'];
-                $items = array_merge($items, $this->parseChoices($value));
-            } else {
-                $items[] = ['key' => $key, 'value' => $value, 'type' => 'option'];
-            }
-        }
-
-        return $items;
     }
 }

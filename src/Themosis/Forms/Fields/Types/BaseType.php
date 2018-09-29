@@ -728,6 +728,16 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     }
 
     /**
+     * Return the field resource transformer class name.
+     *
+     * @return string
+     */
+    public function getResourceTransformer(): string
+    {
+        return $this->resourceTransformer;
+    }
+
+    /**
      * Define the Fractal resource used by the field.
      *
      * @return ResourceInterface
