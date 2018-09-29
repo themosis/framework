@@ -50232,8 +50232,16 @@ var __extends = (this && this.__extends) || (function () {
 var ColorField = /** @class */ (function (_super) {
     __extends(ColorField, _super);
     function ColorField(props) {
-        return _super.call(this, props) || this;
+        var _this = _super.call(this, props) || this;
+        _this.onChange = _this.onChange.bind(_this);
+        return _this;
     }
+    /**
+     * Handle field value changes.
+     */
+    ColorField.prototype.onChange = function (color) {
+        this.props.changeHandler(this.props.field.name, color);
+    };
     /**
      * Render the component.
      */
@@ -50242,7 +50250,7 @@ var ColorField = /** @class */ (function (_super) {
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { required: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["c" /* isRequired */])(this.props.field), for: this.props.field.attributes.id, text: this.props.field.label.inner })),
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" },
-                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__wordpress_components__["c" /* ColorPalette */], { colors: [{ name: 'Something', color: '#45f' }] }))));
+                __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__wordpress_components__["c" /* ColorPalette */], { onChange: this.onChange, disableCustomColors: this.props.field.options.disableCustomColors, value: Array.isArray(this.props.field.value) ? this.props.field.value.shift() : this.props.field.value, colors: this.props.field.options.colors }))));
     };
     return ColorField;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]));

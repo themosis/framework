@@ -60,6 +60,8 @@ declare interface FieldType {
     name: string;
     options: {
         choices: Array<OptionType>;
+        colors?: Array<Color>;
+        disableCustomColors?: boolean;
         expanded?: boolean;
         group: string;
         info: string;
@@ -83,6 +85,11 @@ declare interface FieldType {
         rules: string | Array<string>;
     };
     value: string | Array<string>
+}
+
+declare interface Color {
+    name: string;
+    color: string;
 }
 
 // Field {field} component property.

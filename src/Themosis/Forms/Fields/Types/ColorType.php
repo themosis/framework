@@ -2,6 +2,8 @@
 
 namespace Themosis\Forms\Fields\Types;
 
+use Themosis\Core\Application;
+
 class ColorType extends TextType
 {
     /**
@@ -24,4 +26,108 @@ class ColorType extends TextType
      * @var string
      */
     protected $component = 'themosis.fields.color';
+
+    public function __construct(string $name)
+    {
+        parent::__construct($name);
+
+        $this->allowedOptions = $this->setAllowedOptions();
+        $this->defaultOptions = $this->setDefaultOptions();
+    }
+
+    /**
+     * Define the field allowed options.
+     *
+     * @return array
+     */
+    protected function setAllowedOptions()
+    {
+        return array_merge($this->allowedOptions, [
+            'colors',
+            'disableCustomColors'
+        ]);
+    }
+
+    /**
+     * Define the field default options values.
+     *
+     * @return array
+     */
+    protected function setDefaultOptions()
+    {
+        $default = [
+            'colors' => $this->getDefaultColors(),
+            'disableCustomColors' => false
+        ];
+
+        if (function_exists('_x')) {
+            $default['l10n'] = [
+                'clear' => _x('Clear', 'field', Application::TEXTDOMAIN)
+            ];
+        }
+
+        return array_merge($this->defaultOptions, $default);
+    }
+
+    /**
+     * Return a list of default colors for the field.
+     *
+     * @return array
+     */
+    protected function getDefaultColors()
+    {
+        $colors = [
+            [
+                'name' => 'Pale pink',
+                'color' => '#f78da7'
+            ],
+            [
+                'name' => 'Vivid red',
+                'color' => '#cf2e2e'
+            ],
+            [
+                'name' => 'Luminous vivid orange',
+                'color' => '#ff6900'
+            ],
+            [
+                'name' => 'Luminous vivid amber',
+                'color' => '#fcb900'
+            ],
+            [
+                'name' => 'Light green cyan',
+                'color' => '#7bdcb5'
+            ],
+            [
+                'name' => 'Vivid green cyan',
+                'color' => '#00d084'
+            ],
+            [
+                'name' => 'Pale cyan blue',
+                'color' => '#8ed1fc'
+            ],
+            [
+                'name' => 'Vivid cyan blue',
+                'color' => '#0693e3'
+            ],
+            [
+                'name' => 'Very light gray',
+                'color' => '#eeeeee'
+            ],
+            [
+                'name' => 'Cyan bluish gray',
+                'color' => '#abb8c3'
+            ],
+            [
+                'name' => 'Very dark gray',
+                'color' => '#313131'
+            ]
+        ];
+
+        return array_map(function (array $color) {
+            return [
+                'name' => function_exists('__') ? __($color['name'], Application::TEXTDOMAIN) : $color['name'],
+                'color' => $color['color']
+            ];
+        }, $colors);
+    }
 }

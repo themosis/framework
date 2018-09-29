@@ -10,6 +10,15 @@ import {ColorPalette} from "@wordpress/components";
 class ColorField extends React.Component <FieldProps> {
     constructor(props: FieldProps) {
         super(props);
+
+        this.onChange = this.onChange.bind(this);
+    }
+
+    /**
+     * Handle field value changes.
+     */
+    onChange(color: string) {
+        this.props.changeHandler(this.props.field.name, color);
     }
 
     /**
@@ -24,7 +33,10 @@ class ColorField extends React.Component <FieldProps> {
                            text={this.props.field.label.inner}/>
                 </div>
                 <div className="themosis__column__content">
-                    <ColorPalette  colors={[{name: 'Something', color: '#45f'}]}/>
+                    <ColorPalette onChange={this.onChange}
+                                  disableCustomColors={this.props.field.options.disableCustomColors}
+                                  value={Array.isArray(this.props.field.value) ? this.props.field.value.shift() : this.props.field.value}
+                                  colors={this.props.field.options.colors}/>
                 </div>
             </Field>
         );

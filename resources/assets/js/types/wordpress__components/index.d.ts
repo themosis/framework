@@ -4,7 +4,7 @@ declare module '@wordpress/components' {
         color: string;
     }
 
-    type ColorPaletteChangeHandler = (color: string | undefined) => void;
+    type ColorPaletteChangeHandler = (color: string) => void;
 
     interface ColorPaletteProps {
         colors?: Array<Color>;
