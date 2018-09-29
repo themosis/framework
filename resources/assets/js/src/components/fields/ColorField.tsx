@@ -24,7 +24,7 @@ class ColorField extends React.Component <FieldProps> {
                            text={this.props.field.label.inner}/>
                 </div>
                 <div className="themosis__column__content">
-                    <ColorPalette colors={[{name: 'Something', color: '#45f'}]}/>
+                    <ColorPalette  colors={[{name: 'Something', color: '#45f'}]}/>
                 </div>
             </Field>
         );

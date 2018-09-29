@@ -4,10 +4,14 @@ declare module '@wordpress/components' {
         color: string;
     }
 
+    type ColorPaletteChangeHandler = (color: string | undefined) => void;
+
     interface ColorPaletteProps {
-        colors?: Array<Color>
+        colors?: Array<Color>;
+        disableCustomColors?: boolean;
         value?: string;
-        onChange?: any;
+        onChange?: ColorPaletteChangeHandler;
+        className?: string | object;
     }
 
     export const ColorPalette:React.SFC<ColorPaletteProps>;
