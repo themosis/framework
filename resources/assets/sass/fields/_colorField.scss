@@ -6,17 +6,17 @@
       display: flex;
       flex-wrap: nowrap;
 
-      .components-popover {
+      .components-color-palette__picker {
         position: fixed;
         left: -194px !important;
       }
 
-      .components-popover.is-bottom {
+      .components-color-palette__picker.is-bottom {
         top: 44px !important;
       }
 
-      .components-popover:not(.is-without-arrow):not(.is-mobile):before,
-      .components-popover:not(.is-without-arrow):not(.is-mobile):after {
+      .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile):before,
+      .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile):after {
         content: '';
         position: absolute;
         height: 0;
@@ -24,28 +24,28 @@
         line-height: 0;
       }
 
-      .components-popover:not(.is-without-arrow):not(.is-mobile):before {
+      .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile):before {
         border: 11px solid $light-gray-500;
       }
 
-      .components-popover:not(.is-without-arrow):not(.is-mobile):after {
+      .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile):after {
         border: 8px solid $white;
       }
 
-      .components-popover:not(.is-without-arrow):not(.is-mobile).is-bottom:before,
-      .components-popover:not(.is-without-arrow):not(.is-mobile).is-bottom:after {
+      .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:before,
+      .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:after {
         border-bottom-style: solid;
         border-left-color: transparent;
         border-right-color: transparent;
         border-top: none;
       }
 
-      .components-popover:not(.is-without-arrow):not(.is-mobile).is-bottom:before {
+      .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:before {
         top: -10px;
         margin-left: 197px;
       }
 
-      .components-popover:not(.is-without-arrow):not(.is-mobile).is-bottom:after {
+      .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:after {
         top: -8px;
         margin-left: 200px;
       }
@@ -58,7 +58,7 @@
       }
     }
 
-    .components-popover:not(.is-without-arrow):not(.is-mobile).components-tooltip {
+    .components-tooltip:not(.is-without-arrow):not(.is-mobile) {
       position: fixed;
       width: 160px;
       background-color: $dark-gray-700;
@@ -68,31 +68,34 @@
       padding: $paddingH / 2 $paddingH;
     }
 
-    .components-popover:not(.is-without-arrow):not(.is-mobile).components-tooltip.is-top {
+    .components-tooltip:not(.is-without-arrow):not(.is-mobile).is-top {
       top: -32px !important;
     }
 
-    .components-popover:not(.is-without-arrow):not(.is-mobile).components-tooltip:before,
-    .components-popover:not(.is-without-arrow):not(.is-mobile).components-tooltip:after {
+    .components-tooltip:before,
+    .components-tooltip:after {
+      content: '';
+      display: block;
+      position: absolute;
       border: 8px solid $dark-gray-700;
       top: 26px;
     }
 
-    .components-popover:not(.is-without-arrow):not(.is-mobile).components-tooltip.is-bottom:before {
+    .components-tooltip.is-bottom:before {
       border-bottom-style: solid;
       border-left-color: transparent;
       border-right-color: transparent;
       border-top: none;
     }
 
-    .components-popover:not(.is-without-arrow):not(.is-mobile).components-tooltip.is-top:before {
+    .components-tooltip.is-top:before {
       border-top-style: solid;
       border-left-color: transparent;
       border-right-color: transparent;
       border-bottom: none;
     }
 
-    .components-popover:not(.is-without-arrow):not(.is-mobile).components-tooltip.is-top:after {
+    .components-tooltip.is-top:after {
       content: '';
       display: none;
     }
@@ -101,7 +104,7 @@
       left: -80px !important;
     }
 
-    .components-popover:not(.is-without-arrow):not(.is-mobile).components-tooltip.is-center:before {
+    .components-tooltip:not(.is-without-arrow):not(.is-mobile).is-center:before {
       left: 50%;
       margin-left: -6px;
     }
