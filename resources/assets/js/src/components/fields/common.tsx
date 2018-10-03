@@ -11,11 +11,12 @@ import classNames from "classnames";
 interface FieldWrapperProps {
     field: FieldType;
     children: any;
+    className?: string | object;
 }
 
 export function Field (props: FieldWrapperProps) {
     return (
-        <div className={classNames('themosis__field', {'has__errors': hasErrors(props.field)})}>
+        <div className={classNames('themosis__field', {'has__errors': hasErrors(props.field)}, props.className)}>
             {props.children}
         </div>
     );

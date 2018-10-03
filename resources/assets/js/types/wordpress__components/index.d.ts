@@ -15,4 +15,11 @@ declare module '@wordpress/components' {
     }
 
     export const ColorPalette:React.SFC<ColorPaletteProps>;
+
+    interface ColorIndicatorProps {
+        className?: string | object;
+        colorValue?: string;
+    }
+
+    export const ColorIndicator:React.SFC<ColorIndicatorProps>;
 }

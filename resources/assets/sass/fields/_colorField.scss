@@ -1,5 +1,94 @@
 .themosis__field {
-  .components-color-palette__item-wrapper {
-    box-sizing: border-box;
+  .color__picker {
+    display: block;
+
+    @media screen and (min-width: $break-wide) {
+      display: flex;
+      flex-wrap: nowrap;
+
+      .components-popover {
+        position: fixed;
+        top: 36px !important;
+        left: 0 !important;
+        z-index: 99991;
+      }
+    }
+  }
+
+  .component-color-indicator,
+  .components-color-indicator {
+    display: block;
+    width: 100%;
+    height: 44px;
+    border: 1px solid $light-gray-600;
+    margin-bottom: $paddingV;
+
+    @media screen and (min-width: $break-wide) {
+      max-width: 70px;
+      height: 70px;
+      margin-left: $paddingV;
+      order: 2;
+    }
+  }
+
+  .components-color-palette {
+    width: 100%;
+
+    @media screen and (min-width: $break-wide) {
+      max-width: 260px;
+      order: 1;
+    }
+
+    &__item-wrapper {
+      box-sizing: border-box;
+    }
+
+    &__custom-color {
+      transform: scale(1);
+      z-index: 5;
+      transition: none;
+
+      .components-color-palette__item {
+        transform: scale(1);
+        transition: .1s transform ease;
+
+        &:hover {
+          transform: scale(1.2);
+        }
+      }
+
+      &:hover {
+        transform: scale(1);
+      }
+
+      .components-color-palette__custom-color-gradient:before {
+        /*width: 200%;
+        height: 100%;*/
+      }
+    }
+
+    &__clear {
+      background: none;
+      border: none;
+      display: block;
+      color: $blue-wordpress-700;
+      text-decoration: underline;
+      box-shadow: none;
+      padding: 0;
+      font-size: $default-font-size;
+
+      &:hover {
+        color: $blue-medium-500;
+        box-shadow: none;
+        border: none;
+        background: none;
+        font-size: $default-font-size;
+      }
+    }
+
+    .components-color-palette__clear {
+      float: none;
+      margin: 0;
+    }
   }
 }
