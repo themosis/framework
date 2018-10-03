@@ -15,6 +15,11 @@
         top: 44px !important;
       }
 
+      .components-color-palette__picker.is-top {
+        top: inherit !important;
+        bottom: 44px !important;
+      }
+
       .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile):before,
       .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile):after {
         content: '';
@@ -40,6 +45,14 @@
         border-top: none;
       }
 
+      .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:before,
+      .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:after {
+        border-top-style: solid;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        border-bottom: none;
+      }
+
       .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:before {
         top: -10px;
         margin-left: 197px;
@@ -48,6 +61,17 @@
       .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:after {
         top: -8px;
         margin-left: 200px;
+      }
+
+      .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:before {
+        bottom: -11px;
+        margin-left: 197px;
+      }
+
+      .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:after {
+        bottom: -9px;
+        margin-left: 199px;
+        border-width: 9px;
       }
     }
 
@@ -197,6 +221,23 @@
 /* Gutenberg Styles */
 .gutenberg {
   .themosis__field {
+    .color__picker {
+      @media screen and (min-width: $break-wide) {
+        .components-color-palette__picker {
+          left: -84px !important;
+        }
+
+        .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:before {
+          margin-left: 85px;
+        }
+
+        .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:after {
+          top: -8px;
+          margin-left: 88px;
+        }
+      }
+    }
+
     .components-color-palette {
       .components-color-palette__custom-color-gradient:before {
         height: 200%;
