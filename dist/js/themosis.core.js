@@ -50456,7 +50456,6 @@ var ColorField = /** @class */ (function (_super) {
      */
     ColorField.prototype.onChange = function (color) {
         var value = 'undefined' === typeof color ? '' : color;
-        console.log(value);
         this.props.changeHandler(this.props.field.name, value);
     };
     /**

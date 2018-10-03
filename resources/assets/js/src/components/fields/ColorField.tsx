@@ -19,7 +19,6 @@ class ColorField extends React.Component <FieldProps> {
      */
     onChange(color: string) {
         let value = 'undefined' === typeof color ? '' : color;
-        console.log(value);
         this.props.changeHandler(this.props.field.name, value);
     }
 
