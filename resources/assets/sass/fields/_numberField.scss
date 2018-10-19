@@ -13,29 +13,24 @@
     width: 32px;
     height: 32px;
     background-color: $blue-medium-100;
-    border: 1px solid $light-gray-600;
+    border: 1px solid $blue-medium-200;
     box-sizing: border-box;
     margin: 0;
     cursor: pointer;
 
-    &:hover {
-      background-color: $blue-medium-600;
-      border: 1px solid $blue-wordpress-700;
-
-      .themosis__svg path,
-      .themosis__svg rect {
-        fill: $white;
+    .themosis__svg {
+      rect,
+      path {
+        fill: $blue-medium-900;
       }
     }
 
-    &:active {
-      background-color: $blue-medium-500;
-      border: 1px solid $blue-wordpress-700;
+    &:hover {
+      background-color: darken($blue-medium-100, 5%);
+    }
 
-      .themosis__svg path,
-      .themosis__svg rect {
-        fill: $white;
-      }
+    &:active {
+      background-color: lighten($blue-medium-100, 5%);
     }
   }
 
@@ -66,6 +61,18 @@
   .themosis__input__number {
     input {
       max-width: $max;
+    }
+  }
+}
+
+/* Side Metabox */
+.is-side {
+  .themosis__input__number {
+    input {
+      border-left: none;
+      border-right: none;
+      border-radius: 0;
+      border-color: $light-gray-600;
     }
   }
 }

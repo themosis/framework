@@ -228,6 +228,10 @@
           left: -84px !important;
         }
 
+        .components-color-palette__picker.is-bottom {
+          top: 38px !important;
+        }
+
         .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:before {
           margin-left: 85px;
         }

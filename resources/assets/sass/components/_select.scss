@@ -81,25 +81,29 @@
   &__tag {
     display: inline-block;
     padding: $paddingH / 4 10px $paddingH / 3;
-    background-color: $blue-medium-600;
-    color: $white;
+    background-color: $blue-medium-100;
+    color: $blue-medium-900;
     margin: 0 6px 6px 0;
     line-height: 1;
     border-radius: 20px;
     cursor: pointer;
 
     &:hover {
-      color: $white;
-      background-color: $blue-wordpress-700;
+      background-color: darken($blue-medium-100, 5%);
+      color: $blue-medium-900;
     }
 
     &:active {
-      color: $white;
-      background-color: $blue-medium-500;
+      background-color: lighten($blue-medium-100, 5%);
+      color: $blue-medium-900;
     }
 
     .icon__close {
       margin-left: 10px;
+
+      path {
+        fill: $blue-medium-900;
+      }
     }
   }
 }
@@ -179,7 +183,7 @@
 .themosis__select__group {
   padding: 8px 0;
   font-weight: 600;
-  color: $blue-medium-600;
+  color: $blue-medium-900;
 
   &:not(:first-child) {
     margin-top: $paddingV;
@@ -194,8 +198,8 @@
   cursor: pointer;
 
   &:hover {
-    background-color: $blue-medium-600;
-    color: $white;
+    background-color: $blue-medium-100;
+    color: $blue-medium-900;
   }
 
   .themosis__svg {
@@ -204,13 +208,13 @@
 }
 
 .themosis__select__item.selected {
-  background-color: $green-medium-500;
-  color: $white;
+  background-color: $green-medium-100;
+  color: $green-medium-900;
   cursor: default;
 
   &:hover {
-    background-color: $green-medium-500;
-    color: $white;
+    background-color: $green-medium-100;
+    color: $green-medium-900;
   }
 
   .themosis__svg {
@@ -219,6 +223,10 @@
     top: 50%;
     right: 8px;
     margin-top: -5.5px;
+
+    path {
+      fill: $green-medium-500;
+    }
   }
 }
 
