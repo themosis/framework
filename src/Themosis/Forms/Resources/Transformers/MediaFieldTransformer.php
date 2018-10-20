@@ -18,10 +18,9 @@ class MediaFieldTransformer extends FieldTransformer
         $options = parent::getOptions($field);
 
         $options['media'] = [
-            'id' => $field->getValue(),
             'name' => get_the_title($field->getValue()),
-            'thumbnail' => wp_get_attachment_image_src($field->getValue()),
-            'filesize' => '250kb'
+            'thumbnail' => wp_get_attachment_image_url($field->getValue()),
+            'filesize' => round(filesize(get_attached_file($field->getValue())) / 1024).' KB'
         ];
 
         return $options;

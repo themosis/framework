@@ -83364,6 +83364,7 @@ module.exports = function (css) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__labels_Label__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__buttons_Button__ = __webpack_require__(313);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__errors_Error__ = __webpack_require__(31);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -83382,6 +83383,7 @@ var __extends = (this && this.__extends) || (function () {
 
 
 
+
 /**
  * Media Field Component.
  */
@@ -83391,10 +83393,9 @@ var MediaField = /** @class */ (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.state = {
             frame: null,
-            thumbnail: '',
-            name: '',
-            filesize: '',
-            id: 0
+            thumbnail: props.field.options.media.thumbnail,
+            name: props.field.options.media.name,
+            filesize: props.field.options.media.filesize
         };
         _this.openMediaLibrary = _this.openMediaLibrary.bind(_this);
         _this.delete = _this.delete.bind(_this);
@@ -83419,8 +83420,7 @@ var MediaField = /** @class */ (function (_super) {
         this.setState({
             thumbnail: thumbnail,
             name: media.get('filename'),
-            filesize: media.get('filesizeHumanReadable'),
-            id: media.get('id')
+            filesize: media.get('filesizeHumanReadable')
         });
         this.props.changeHandler(this.props.field.name, media.get('id'));
     };
@@ -83434,7 +83434,7 @@ var MediaField = /** @class */ (function (_super) {
      * Check if there is a media file.
      */
     MediaField.prototype.hasMedia = function () {
-        return this.state.id !== 0;
+        return this.props.field.value !== '';
     };
     /**
      * Remove the media file.
@@ -83443,7 +83443,6 @@ var MediaField = /** @class */ (function (_super) {
         this.setState({
             thumbnail: '',
             name: '',
-            id: 0,
             filesize: ''
         });
         this.props.changeHandler(this.props.field.name, '');
@@ -83455,7 +83454,10 @@ var MediaField = /** @class */ (function (_super) {
         return (__WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["b" /* Field */], { field: this.props.field },
             __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__label" },
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_2__labels_Label__["a" /* default */], { text: this.props.field.label.inner, for: this.props.field.attributes.id, required: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["c" /* isRequired */])(this.props.field) })),
-            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" }, this.renderMedia())));
+            __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("div", { className: "themosis__column__content" },
+                this.renderMedia(),
+                Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["b" /* hasErrors */])(this.props.field) && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_5__errors_Error__["a" /* default */], { messages: Object(__WEBPACK_IMPORTED_MODULE_3__helpers__["a" /* getErrorsMessages */])(this.props.field) }),
+                this.props.field.options.info && __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_1__common__["a" /* Description */], { content: this.props.field.options.info }))));
     };
     /**
      * Render the media.
@@ -83483,7 +83485,7 @@ var MediaField = /** @class */ (function (_super) {
                     __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("li", null,
                         __WEBPACK_IMPORTED_MODULE_0_react__["createElement"]("strong", null, this.props.field.options.l10n.id),
                         " ",
-                        this.state.id)),
+                        this.props.field.value)),
                 __WEBPACK_IMPORTED_MODULE_0_react__["createElement"](__WEBPACK_IMPORTED_MODULE_4__buttons_Button__["a" /* default */], { clickHandler: this.delete }, this.props.field.options.l10n.remove))));
     };
     /**

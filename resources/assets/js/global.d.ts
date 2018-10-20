@@ -45,6 +45,12 @@ declare namespace themosisGlobal.post {
 |--------------------------------------------------------------------------
 |
 */
+declare interface MediaOptions {
+    filesize: string;
+    name: string;
+    thumbnail: string;
+}
+
 declare interface FieldType {
     attributes: {
         checked: string;
@@ -63,12 +69,17 @@ declare interface FieldType {
         colors?: Array<Color>;
         disableCustomColors?: boolean;
         expanded?: boolean;
+        filesize: string;
         group: string;
+        id: number;
         info: string;
         l10n: any;
         layout?: string;
+        media: MediaOptions;
         multiple?: boolean;
+        name: string;
         precision: number;
+        thumbnail: string;
     };
     label: {
         inner: string;

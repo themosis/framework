@@ -1,15 +1,15 @@
 import * as React from 'react';
-import {Field} from "./common";
+import {Description, Field} from "./common";
 import Label from "../labels/Label";
-import {isRequired} from "../../helpers";
+import {getErrorsMessages, hasErrors, isRequired} from "../../helpers";
 import Button from "../buttons/Button";
+import Error from "../errors/Error";
 
 interface MediaState {
     frame: any;
     thumbnail: string;
     name: string;
     filesize: string;
-    id: number;
 }
 
 /**
@@ -21,10 +21,9 @@ class MediaField extends React.Component <FieldProps, MediaState> {
 
         this.state = {
             frame: null,
-            thumbnail: '',
-            name: '',
-            filesize: '',
-            id: 0
+            thumbnail: props.field.options.media.thumbnail,
+            name: props.field.options.media.name,
+            filesize: props.field.options.media.filesize
         };
 
         this.openMediaLibrary = this.openMediaLibrary.bind(this);
@@ -53,8 +52,7 @@ class MediaField extends React.Component <FieldProps, MediaState> {
         this.setState({
             thumbnail: thumbnail,
             name: media.get('filename'),
-            filesize: media.get('filesizeHumanReadable'),
-            id: media.get('id')
+            filesize: media.get('filesizeHumanReadable')
         });
 
         this.props.changeHandler(this.props.field.name, media.get('id'));
@@ -71,7 +69,7 @@ class MediaField extends React.Component <FieldProps, MediaState> {
      * Check if there is a media file.
      */
     hasMedia() {
-        return this.state.id !== 0;
+        return this.props.field.value !== '';
     }
 
     /**
@@ -81,7 +79,6 @@ class MediaField extends React.Component <FieldProps, MediaState> {
         this.setState({
             thumbnail: '',
             name: '',
-            id: 0,
             filesize: ''
         });
 
@@ -100,7 +97,9 @@ class MediaField extends React.Component <FieldProps, MediaState> {
                            required={isRequired(this.props.field)}/>
                 </div>
                 <div className="themosis__column__content">
-                    {this.renderMedia()}
+                    { this.renderMedia() }
+                    { hasErrors(this.props.field) && <Error messages={getErrorsMessages(this.props.field)}/> }
+                    { this.props.field.options.info && <Description content={this.props.field.options.info}/> }
                 </div>
             </Field>
         );
@@ -131,7 +130,7 @@ class MediaField extends React.Component <FieldProps, MediaState> {
                 <div className="themosis__media__content">
                     <ul>
                         <li><strong>{this.props.field.options.l10n.name}</strong> {this.state.name} ({this.state.filesize})</li>
-                        <li><strong>{this.props.field.options.l10n.id}</strong> {this.state.id}</li>
+                        <li><strong>{this.props.field.options.l10n.id}</strong> {this.props.field.value}</li>
                     </ul>
                     <Button clickHandler={this.delete}>{this.props.field.options.l10n.remove}</Button>
                 </div>
