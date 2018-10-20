@@ -1,0 +1,63 @@
+.themosis__field__media {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+
+  .icon--media {
+    font: normal 18px/1 dashicons;
+    display: inline-block;
+    position: relative;
+    top: 5px;
+    margin-right: 3px;
+
+    &:before {
+      color: $dark-gray-300;
+      content: "\f104";
+    }
+  }
+}
+
+.themosis__media {
+  &__preview {
+    padding: 10px;
+    background-color: $light-gray-300;
+    border: 1px solid $light-gray-500
+  }
+
+  &__thumbnail {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    border: 1px solid $light-gray-500;
+    background-color: $white;
+  }
+
+  &__content {
+    padding-left: $paddingV;
+
+    button.button {
+      color: $red-medium-500;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      box-shadow: none;
+      padding: $paddingH / 2 0;
+
+      &:hover {
+        background: none;
+        color: lighten($red-medium-500, 5%);
+      }
+
+      &:active {
+        background: none;
+        color: darken($red-medium-500, 5%);
+        box-shadow: none;
+        transform: none;
+      }
+    }
+  }
+}

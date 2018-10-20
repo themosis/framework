@@ -10,6 +10,7 @@ import CheckboxField from "./src/components/fields/CheckboxField";
 import HiddenField from "./src/components/fields/HiddenField";
 import ChoiceField from "./src/components/fields/ChoiceField";
 import ColorField from "./src/components/fields/ColorField";
+import MediaField from "./src/components/fields/MediaField";
 import '../sass/index.scss';
 
 /*
@@ -30,6 +31,7 @@ manager.addComponent('themosis.fields.checkbox', CheckboxField);
 manager.addComponent('themosis.fields.hidden', HiddenField);
 manager.addComponent('themosis.fields.choice', ChoiceField);
 manager.addComponent('themosis.fields.color', ColorField);
+manager.addComponent('themosis.fields.media', MediaField);
 
 export { manager as Manager };
 

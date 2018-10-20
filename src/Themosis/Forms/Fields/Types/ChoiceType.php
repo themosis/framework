@@ -8,6 +8,7 @@ use Themosis\Forms\Contracts\SelectableInterface;
 use Themosis\Forms\Fields\ChoiceList\ChoiceList;
 use Themosis\Forms\Fields\ChoiceList\ChoiceListInterface;
 use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
+use Themosis\Forms\Resources\Transformers\ChoiceFieldTransformer;
 use Themosis\Forms\Transformers\ChoiceToValueTransformer;
 
 class ChoiceType extends BaseType implements CheckableInterface, SelectableInterface, CanHandleMetabox
@@ -45,7 +46,7 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
      *
      * @var string
      */
-    protected $resourceTransformer = 'ChoiceFieldTransformer';
+    protected $resourceTransformer = ChoiceFieldTransformer::class;
 
     public function __construct(string $name)
     {

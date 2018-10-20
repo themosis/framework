@@ -110,3 +110,34 @@ declare interface OptionType {
     selected?: boolean;
     type?: string;
 }
+
+/*
+|--------------------------------------------------------------------------
+| WordPress Global
+|--------------------------------------------------------------------------
+|
+*/
+declare interface WordPressMediaButton {
+    text: string;
+    close?: boolean;
+}
+
+declare interface WordPressMediaLibrary {
+    type: string|Array<string>;
+}
+
+declare interface WordPressMediaProps {
+    frame?: string;
+    multiple?: boolean;
+    title?: string;
+    button?: WordPressMediaButton;
+    library?: WordPressMediaLibrary;
+}
+
+declare interface WordPressMedia {
+    (options: WordPressMediaProps): any;
+}
+
+declare namespace wp {
+    const media: WordPressMedia;
+}

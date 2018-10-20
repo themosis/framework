@@ -2,7 +2,6 @@ import * as React from "react";
 import classNames from "classnames";
 
 interface ButtonProps {
-    text: string;
     clickHandler: any;
     className?: string;
     primary?: boolean;
@@ -30,7 +29,7 @@ class Button extends React.Component <ButtonProps> {
             <button className={ classNames(this.props.className, {'button-primary': this.props.primary, 'disabled': this.props.disabled}) }
                     type="button"
                     onClick={this.props.clickHandler}>
-                {this.props.text}
+                {this.props.children}
             </button>
         );
     }

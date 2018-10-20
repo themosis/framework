@@ -62,10 +62,11 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
                 <MetaboxFooter>
                     { 'default' !== this.state.status && <MetaboxStatus status={this.state.status}
                                                                         label={this.state.l10n[this.state.status]}/> }
-                    <Button text={this.state.l10n.submit}
-                            primary={true}
+                    <Button primary={true}
                             disabled={'saving' === this.state.status}
-                            clickHandler={this.save} />
+                            clickHandler={this.save}>
+                        {this.state.l10n.submit}
+                    </Button>
                 </MetaboxFooter>
             </div>
         );

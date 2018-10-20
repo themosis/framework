@@ -12,6 +12,7 @@ use Themosis\Forms\Fields\Types\ColorType;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\HiddenType;
 use Themosis\Forms\Fields\Types\IntegerType;
+use Themosis\Forms\Fields\Types\MediaType;
 use Themosis\Forms\Fields\Types\NumberType;
 use Themosis\Forms\Fields\Types\PasswordType;
 use Themosis\Forms\Fields\Types\SubmitType;
@@ -174,22 +175,18 @@ class Factory implements FieldFactoryInterface
     }
 
     /**
-     * Return a MediaField instance.
+     * Return a media type instance.
      *
-     * @param string $name     The name attribute of the hidden input.
-     * @param array  $features Custom field features - title, info, type (image, application, audio, video)
+     * @param string $name
+     * @param array  $options
      *
-     * @return \Themosis\Field\Fields\MediaField
+     * @return FieldTypeInterface
      */
-    public function media($name, array $features = [])
+    public function media($name, array $options = []): FieldTypeInterface
     {
-        $properties = [
-            'features' => $features,
-            'atts' => ['class' => 'themosis-media-input', 'data-field' => 'media'],
-            'name' => $name,
-        ];
-
-        return $this->make('Themosis\\Field\\Fields\\MediaField', $properties);
+        return (new MediaType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
     }
 
     /**
