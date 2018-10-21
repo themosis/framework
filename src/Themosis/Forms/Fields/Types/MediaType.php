@@ -62,9 +62,11 @@ class MediaType extends IntegerType
         if (function_exists('_x')) {
             $default['l10n'] = [
                 'add' => _x('Add Media', 'field', Application::TEXTDOMAIN),
-                'name' => _x('Name:', 'field', Application::TEXTDOMAIN),
+                'button' => _x('Insert', 'field', Application::TEXTDOMAIN),
                 'id' => _x('ID:', 'field', Application::TEXTDOMAIN),
-                'remove' => _x('Remove', 'field', Application::TEXTDOMAIN)
+                'name' => _x('Name:', 'field', Application::TEXTDOMAIN),
+                'remove' => _x('Remove', 'field', Application::TEXTDOMAIN),
+                'title' => _x('Insert Media', 'field', Application::TEXTDOMAIN)
             ];
         }
 

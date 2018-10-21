@@ -239,13 +239,41 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function setOptions(array $options): FieldTypeInterface
     {
-        $this->options = $this->parseOptions(array_merge(
+        $l10n = $this->handleLocalization($options);
+
+        $options = array_merge(
             $this->getDefaultOptions(),
             $this->options,
             $options
-        ));
+        );
+
+        if (isset($options['l10n']) && ! empty($l10n)) {
+            $options['l10n'] = array_merge($options['l10n'], $l10n);
+        }
+
+        $this->options = $this->parseOptions($options);
 
         return $this;
+    }
+
+    /**
+     * Modify field options by extracting its 'l10n' property
+     * and return it.
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function handleLocalization(array &$options)
+    {
+        $l10n = [];
+
+        if (isset($options['l10n'])) {
+            $l10n = $options['l10n'];
+            unset($options['l10n']);
+        }
+
+        return $l10n;
     }
 
     /**

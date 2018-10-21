@@ -145,9 +145,9 @@ class MediaField extends React.Component <FieldProps, MediaState> {
         const frame = wp.media({
             frame: 'select',
             multiple: false,
-            title: 'Insert Media',
+            title: this.props.field.options.l10n.title,
             button: {
-                text: 'Insert',
+                text: this.props.field.options.l10n.button,
                 close: true
             },
             library: {
