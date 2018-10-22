@@ -41,7 +41,7 @@ class MediaType extends IntegerType
      *
      * @return array
      */
-    protected function setAllowedOptions()
+    protected function setAllowedOptions(): array
     {
         return array_merge($this->allowedOptions, [
             'type'
@@ -53,7 +53,7 @@ class MediaType extends IntegerType
      *
      * @return array
      */
-    protected function setDefaultOptions()
+    protected function setDefaultOptions(): array
     {
         $default = [
             'type' => ['image', 'application']
@@ -64,7 +64,7 @@ class MediaType extends IntegerType
                 'add' => _x('Add Media', 'field', Application::TEXTDOMAIN),
                 'button' => _x('Insert', 'field', Application::TEXTDOMAIN),
                 'id' => _x('ID:', 'field', Application::TEXTDOMAIN),
-                'name' => _x('Name:', 'field', Application::TEXTDOMAIN),
+                'name' => _x('File Name:', 'field', Application::TEXTDOMAIN),
                 'remove' => _x('Remove', 'field', Application::TEXTDOMAIN),
                 'title' => _x('Insert Media', 'field', Application::TEXTDOMAIN)
             ];

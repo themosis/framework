@@ -151,7 +151,7 @@ class MediaField extends React.Component <FieldProps, MediaState> {
                 close: true
             },
             library: {
-                type: ['image', 'application']
+                type: this.props.field.options.type
             }
         });
 

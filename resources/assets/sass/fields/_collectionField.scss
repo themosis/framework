@@ -1,0 +1,142 @@
+.themosis__field__collection {
+
+}
+
+.themosis__collection {
+  display: none;
+  background-color: $light-gray-300;
+  border: 1px solid $light-gray-500;
+  padding: 10px;
+  margin-bottom: $paddingH;
+
+  &__list {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  &__item {
+    position: relative;
+    padding: 4px;
+    background: none;
+    cursor: pointer;
+    margin-right: 8px;
+
+    &__thumbnail {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: nowrap;
+      border: 1px solid $light-gray-500;
+      background-color: $white;
+    }
+
+    &__overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, .9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 1;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .2s ease-in-out, visibility .2s ease-in-out;
+
+      p {
+        word-break: break-all;
+      }
+    }
+
+    &__check {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 26px;
+      height: 26px;
+      background-color: $blue-wordpress-700;
+      z-index: 5;
+      border: none;
+      box-shadow: 0 0 0 1px $white, 0 0 0 2px $blue-wordpress-700;
+
+      .icon {
+        font: normal 24px/1 dashicons;
+        display: inline-block;
+        color: $white;
+        position: relative;
+        left: -7px;
+        top: 1px;
+
+        &:before {
+          content: "\f147";
+        }
+      }
+    }
+
+    &:hover {
+      background: $light-gray-500;
+
+      .themosis__collection__item__overlay {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  &__button {
+    &--add {
+      .icon--media {
+        font: normal 18px/1 dashicons;
+        display: inline-block;
+        position: relative;
+        top: 5px;
+        margin-right: 3px;
+
+        &:before {
+          color: $dark-gray-300;
+          content: "\f104";
+        }
+      }
+    }
+
+    &--remove {
+      color: $red-medium-500;
+      background: none;
+      padding: $paddingH / 2 0;
+      box-shadow: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      margin-left: $paddingH;
+
+      &:hover {
+        background: none;
+        color: lighten($red-medium-500, 5%);
+      }
+
+      &:active {
+        background: none;
+        color: darken($red-medium-500, 5%);
+        box-shadow: none;
+        transform: none;
+      }
+    }
+  }
+}
+
+.themosis__collection.show {
+  display: block;
+}

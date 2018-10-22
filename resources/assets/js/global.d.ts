@@ -69,17 +69,18 @@ declare interface FieldType {
         colors?: Array<Color>;
         disableCustomColors?: boolean;
         expanded?: boolean;
-        filesize: string;
         group: string;
         id: number;
         info: string;
         l10n: any;
         layout?: string;
+        limit: number;
         media: MediaOptions;
         multiple?: boolean;
         name: string;
         precision: number;
         thumbnail: string;
+        type: string|Array<string>;
     };
     label: {
         inner: string;

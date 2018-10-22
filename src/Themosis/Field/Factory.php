@@ -8,6 +8,7 @@ use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Fields\Types\ButtonType;
 use Themosis\Forms\Fields\Types\CheckboxType;
 use Themosis\Forms\Fields\Types\ChoiceType;
+use Themosis\Forms\Fields\Types\CollectionType;
 use Themosis\Forms\Fields\Types\ColorType;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\HiddenType;
@@ -232,21 +233,18 @@ class Factory implements FieldFactoryInterface
     }
 
     /**
-     * Define a CollectionField instance.
+     * Return a collection type instance.
      *
-     * @param string $name     The name attribute.
-     * @param array  $features Custom field features - title, info, type, limit.
+     * @param string $name
+     * @param array  $options
      *
-     * @return \Themosis\Field\Fields\CollectionField
+     * @return FieldTypeInterface
      */
-    public function collection($name, array $features = [])
+    public function collection($name, array $options = []): FieldTypeInterface
     {
-        $properties = [
-            'features' => $features,
-            'name' => $name,
-        ];
-
-        return $this->make('Themosis\\Field\\Fields\\CollectionField', $properties);
+        return (new CollectionType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
     }
 
     /**
