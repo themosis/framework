@@ -72,6 +72,7 @@ declare interface FieldType {
         group: string;
         id: number;
         info: string;
+        items: Array<object>;
         l10n: any;
         layout?: string;
         limit: number;

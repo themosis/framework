@@ -4,7 +4,7 @@
 
 .themosis__collection {
   display: none;
-  background-color: $light-gray-300;
+  background: $light-gray-300;
   border: 1px solid $light-gray-500;
   padding: 10px;
   margin-bottom: $paddingH;
@@ -22,6 +22,7 @@
     background: none;
     cursor: pointer;
     margin-right: 8px;
+    transition: background .2s ease-in-out;
 
     &__thumbnail {
       position: relative;
@@ -67,6 +68,8 @@
       z-index: 5;
       border: none;
       box-shadow: 0 0 0 1px $white, 0 0 0 2px $blue-wordpress-700;
+      cursor: pointer;
+      display: none;
 
       .icon {
         font: normal 24px/1 dashicons;
@@ -77,7 +80,15 @@
         top: 1px;
 
         &:before {
-          content: "\f147";
+          content: '\f147';
+        }
+      }
+
+      &:hover {
+        .icon {
+          &:before {
+            content: '\f460';
+          }
         }
       }
     }
@@ -93,6 +104,14 @@
 
     &:last-child {
       margin-right: 0;
+    }
+  }
+
+  &__item.selected {
+    background: $blue-wordpress-700;
+
+    .themosis__collection__item__check {
+      display: block;
     }
   }
 
@@ -113,6 +132,7 @@
     }
 
     &--remove {
+      display: none;
       color: $red-medium-500;
       background: none;
       padding: $paddingH / 2 0;
@@ -133,6 +153,10 @@
         box-shadow: none;
         transform: none;
       }
+    }
+
+    &--remove.show {
+      display: inline-block;
     }
   }
 }

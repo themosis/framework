@@ -5,6 +5,7 @@ namespace Themosis\Forms\Fields\Types;
 use Themosis\Core\Application;
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
+use Themosis\Forms\Resources\Transformers\CollectionFieldTransformer;
 
 /**
  * Class CollectionType
@@ -26,6 +27,13 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
      * @var string
      */
     protected $component = 'themosis.fields.collection';
+
+    /**
+     * Resource transformer class.
+     *
+     * @var string
+     */
+    protected $resourceTransformer = CollectionFieldTransformer::class;
 
     public function __construct(string $name)
     {
@@ -70,6 +78,20 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
         }
 
         return array_merge($this->defaultOptions, $default);
+    }
+
+    /**
+     * Parse and setup default options.
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function parseOptions(array $options): array
+    {
+        $this->setTransformer($this);
+
+        return parent::parseOptions($options);
     }
 
     /**

@@ -19,13 +19,17 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
     constructor(props: FieldProps) {
         super(props);
 
+        // Media library models are BackboneJS based. But when coming from our own
+        // API, it is not. So we should avoid BackboneJS functions when
+        // manipulating the models.
         this.state = {
             frame: null,
-            items: [],
+            items: props.field.options.items.length ? props.field.options.items : [],
             selected: []
         };
 
         this.openMediaLibrary = this.openMediaLibrary.bind(this);
+        this.removeAll = this.removeAll.bind(this);
     }
 
     /**
@@ -51,6 +55,7 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
         const collection = this.getSelection();
         let items = collection.models;
 
+        // Limit selection and total items.
         if (this.props.field.options.limit) {
             let limit = this.props.field.options.limit - this.state.items.length,
                 end = (limit < 0) ? 0 : limit;
@@ -58,16 +63,27 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
             items = items.slice(0, end);
         }
 
-        let selected = items.map((item: any) => {
-            return item.get('id');
+        // Filter selected items. Remove any selected items if already exists in the collection.
+        items = items.filter((item: any) => {
+            let ids = this.state.items.map((item: any) => {
+                return item.id;
+            });
+
+            return -1 === ids.indexOf(item.id);
         });
 
+        // Push new selection to existing list of items.
+        items = this.state.items.slice().concat(items);
+
+        // Update state.
         this.setState({
-            items: items,
-            selected: selected
+            items: items
         });
 
-        this.props.changeHandler(this.props.field.name, selected);
+        // Send value.
+        this.props.changeHandler(this.props.field.name, items.map((item: any) => {
+            return item.id;
+        }));
     }
 
     /**
@@ -77,6 +93,87 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
      */
     getSelection() {
         return this.state.frame.state('library').get('selection');
+    }
+
+    /**
+     * Hightlight an item from the collection.
+     *
+     * @param id
+     */
+    toggleItem(id: number) {
+        let selected = this.state.selected.slice(),
+            item = selected.filter((itemID: number) => {
+                return id === itemID;
+            }).shift();
+
+        if (item) {
+            // Remove it from the selection.
+            selected = selected.filter((itemID: number) => {
+                return id !== itemID;
+            });
+        } else {
+            // Add it to the selection.
+            selected.push(id);
+        }
+
+        this.setState({
+            selected: selected
+        });
+    }
+
+    /**
+     * Check if an item is selected.
+     *
+     * @param id
+     */
+    isSelected(id: number) {
+        let itemID = this.state.selected.filter((itemID: number) => {
+            return id === itemID;
+        }).shift();
+
+        return itemID;
+    }
+
+    /**
+     * Remove a selected item from the collection.
+     *
+     * @param id
+     */
+    removeItem(id: number) {
+        let selected = this.state.selected.filter((itemID: number) => {
+            return id !== itemID;
+        });
+
+        let items = this.state.items.filter((item: any) => {
+            return id !== item.id;
+        });
+
+        this.setState({
+            items: items,
+            selected: selected
+        });
+
+        this.props.changeHandler(this.props.field.name, items.map((item: any) => {
+            return item.id;
+        }));
+    }
+
+    /**
+     * Remove all selected items.
+     */
+    removeAll() {
+        let items = this.state.items.filter((item: any) => {
+            return -1 === this.state.selected.indexOf(item.id);
+        });
+
+        this.setState({
+            items: items,
+            selected: []
+        });
+
+        this.props.changeHandler(this.props.field.name, items.map((item: any) => {
+            return item.id;
+        }));
     }
 
     /**
@@ -114,11 +211,11 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
                     <Button className={classNames('button', 'themosis__collection__button--add')}
                             clickHandler={this.openMediaLibrary}>
                         <span className="icon--media"/>
-                        Add Media
+                        {this.props.field.options.l10n.add}
                     </Button>
-                    <Button className={classNames('themosis__collection__button--remove')}
-                            clickHandler={() => {}}>
-                        Remove Selected
+                    <Button className={classNames('themosis__collection__button--remove', {'show': this.state.selected.length})}
+                            clickHandler={this.removeAll}>
+                        {this.props.field.options.l10n.remove}
                     </Button>
                 </div>
             </div>
@@ -130,23 +227,25 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
      */
     renderItems() {
         return this.state.items.map((item: any) => {
-            let thumbnail = item.get('icon');
+            let thumbnail = item.attributes.icon;
 
-            if ('image' === item.get('type') && 'svg+xml' !== item.get('subtype')) {
-                const sizes = item.get('sizes');
+            if ('image' === item.attributes.type && 'svg+xml' !== item.attributes.subtype) {
+                const sizes = item.attributes.sizes;
                 thumbnail = sizes.thumbnail.url;
             }
 
             return (
-                <div key={item.get('id')} className="themosis__collection__item">
+                <div key={item.id}
+                     className={classNames('themosis__collection__item', {'selected': this.isSelected(item.id)})}
+                     onClick={() => {this.toggleItem(item.id)}}>
                     <div className="themosis__collection__item__thumbnail">
-                        <img src={thumbnail} alt={item.get('filename')}/>
+                        <img src={thumbnail} alt={item.attributes.filename}/>
                         <div className="themosis__collection__item__overlay">
-                            <p>{item.get('filename')}</p>
+                            <p>{item.attributes.filename}</p>
                         </div>
                     </div>
                     <Button className="themosis__collection__item__check"
-                            clickHandler={() => {}}>
+                            clickHandler={() => {this.removeItem(item.id)}}>
                         <span className="icon"/>
                     </Button>
                 </div>
