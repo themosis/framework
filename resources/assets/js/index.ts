@@ -12,6 +12,7 @@ import ChoiceField from "./src/components/fields/ChoiceField";
 import ColorField from "./src/components/fields/ColorField";
 import MediaField from "./src/components/fields/MediaField";
 import CollectionField from "./src/components/fields/CollectionField";
+import EditorField from "./src/components/fields/EditorField";
 import '../sass/index.scss';
 
 /*
@@ -34,6 +35,7 @@ manager.addComponent('themosis.fields.choice', ChoiceField);
 manager.addComponent('themosis.fields.color', ColorField);
 manager.addComponent('themosis.fields.media', MediaField);
 manager.addComponent('themosis.fields.collection', CollectionField);
+manager.addComponent('themosis.fields.editor', EditorField);
 
 export { manager as Manager };
 

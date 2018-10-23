@@ -10,6 +10,7 @@ use Themosis\Forms\Fields\Types\CheckboxType;
 use Themosis\Forms\Fields\Types\ChoiceType;
 use Themosis\Forms\Fields\Types\CollectionType;
 use Themosis\Forms\Fields\Types\ColorType;
+use Themosis\Forms\Fields\Types\EditorType;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\HiddenType;
 use Themosis\Forms\Fields\Types\IntegerType;
@@ -191,45 +192,18 @@ class Factory implements FieldFactoryInterface
     }
 
     /**
-     * Define an InfiniteField instance.
+     * Return an editor type instance.
      *
-     * @param string $name     The name attribute of the infinite inner inputs.
-     * @param array  $fields   The fields to repeat.
-     * @param array  $features Custom field features - title, info, limit.
+     * @param string $name
+     * @param array  $options
      *
-     * @return \Themosis\Field\Fields\InfiniteField
+     * @return FieldTypeInterface
      */
-    public function infinite($name, array $fields, array $features = [])
+    public function editor($name, array $options = []): FieldTypeInterface
     {
-        $properties = [
-            'features' => $features,
-            'fields' => $fields,
-            'name' => $name,
-        ];
-
-        return $this->make('Themosis\\Field\\Fields\\InfiniteField', $properties);
-    }
-
-    /**
-     * Define an EditorField instance.
-     *
-     * @link http://codex.wordpress.org/Function_Reference/wp_editor
-     *
-     * @param string $name     The name attribute if the editor field.
-     * @param array  $features Custom field features - title, info.
-     * @param array  $settings The 'wp_editor' settings.
-     *
-     * @return \Themosis\Field\Fields\EditorField
-     */
-    public function editor($name, array $features = [], array $settings = [])
-    {
-        $properties = [
-            'features' => $features,
-            'settings' => $settings,
-            'name' => strtolower($name), // $name may only contain lower-case characters.
-        ];
-
-        return $this->make('Themosis\\Field\\Fields\\EditorField', $properties);
+        return (new EditorType($name))
+            ->setLocale($this->app->getLocale())
+            ->setOptions($options);
     }
 
     /**

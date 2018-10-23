@@ -80,6 +80,8 @@ declare interface FieldType {
         multiple?: boolean;
         name: string;
         precision: number;
+        settings: object;
+        settings_js: object;
         thumbnail: string;
         type: string|Array<string>;
     };
@@ -130,6 +132,7 @@ declare interface OptionType {
 |--------------------------------------------------------------------------
 |
 */
+// Media API
 declare interface WordPressMediaButton {
     text: string;
     close?: boolean;
@@ -151,6 +154,28 @@ declare interface WordPressMedia {
     (options: WordPressMediaProps): any;
 }
 
+// Editor API
+declare interface WordPressEditorInit {
+    (id: string, settings: object): any;
+}
+
 declare namespace wp {
     const media: WordPressMedia;
+    const editor: {
+        initialize: WordPressEditorInit;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| TinyMCE Global
+|--------------------------------------------------------------------------
+|
+*/
+declare interface TinyMceGet {
+    (id?: string): any;
+}
+
+declare namespace tinyMCE {
+    const get: TinyMceGet;
 }
