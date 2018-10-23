@@ -82,7 +82,7 @@
     display: inline-block;
     padding: $paddingH / 4 10px $paddingH / 3;
     background-color: $blue-medium-100;
-    color: $blue-medium-900;
+    color: darken($blue-medium-900, 20%);
     margin: 0 6px 6px 0;
     line-height: 1;
     border-radius: 20px;
@@ -90,12 +90,12 @@
 
     &:hover {
       background-color: darken($blue-medium-100, 5%);
-      color: $blue-medium-900;
+      color: darken($blue-medium-900, 20%);
     }
 
     &:active {
       background-color: lighten($blue-medium-100, 5%);
-      color: $blue-medium-900;
+      color: darken($blue-medium-900, 20%);
     }
 
     .icon__close {
@@ -199,7 +199,7 @@
 
   &:hover {
     background-color: $blue-medium-100;
-    color: $blue-medium-900;
+    color: darken($blue-medium-900, 20%);
   }
 
   .themosis__svg {
@@ -209,12 +209,12 @@
 
 .themosis__select__item.selected {
   background-color: $green-medium-100;
-  color: $green-medium-900;
+  color: darken($green-medium-900, 10%);
   cursor: default;
 
   &:hover {
     background-color: $green-medium-100;
-    color: $green-medium-900;
+    color: darken($green-medium-900, 10%);
   }
 
   .themosis__svg {
@@ -225,7 +225,7 @@
     margin-top: -5.5px;
 
     path {
-      fill: $green-medium-500;
+      fill: $green-medium-900;
     }
   }
 }
