@@ -5,6 +5,7 @@ import {getErrorsMessages, hasErrors, isRequired} from "../../helpers";
 import Error from "../errors/Error";
 import Button from "../buttons/Button";
 import classNames from "classnames";
+import {arrayMove, SortableContainer, SortableElement} from "react-sortable-hoc";
 
 interface CollectionState {
     frame: any;
@@ -28,6 +29,7 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
             selected: []
         };
 
+        this.onSortEnd = this.onSortEnd.bind(this);
         this.openMediaLibrary = this.openMediaLibrary.bind(this);
         this.removeAll = this.removeAll.bind(this);
     }
@@ -127,11 +129,9 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
      * @param id
      */
     isSelected(id: number) {
-        let itemID = this.state.selected.filter((itemID: number) => {
+        return this.state.selected.filter((itemID: number) => {
             return id === itemID;
         }).shift();
-
-        return itemID;
     }
 
     /**
@@ -177,6 +177,21 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
     }
 
     /**
+     * Update state on sort end event.
+     */
+    onSortEnd({oldIndex, newIndex}: {oldIndex: number, newIndex: number}) {
+        const items = arrayMove(this.state.items, oldIndex, newIndex);
+
+        this.setState({
+            items: items
+        });
+
+        this.props.changeHandler(this.props.field.name, items.map((item: any) => {
+            return item.id;
+        }));
+    }
+
+    /**
      * Render the field.
      */
     render() {
@@ -203,9 +218,7 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
         return (
             <div className="themosis__field__collection">
                 <div className={classNames('themosis__collection', {'show': this.hasItems()})}>
-                    <div className="themosis__collection__list">
-                        {this.renderItems()}
-                    </div>
+                    {this.renderItems()}
                 </div>
                 <div className="themosis__collection__buttons">
                     <Button className={classNames('button', 'themosis__collection__button--add')}
@@ -223,17 +236,10 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
     }
 
     /**
-     * Render individual item.
+     * Render list and individual items.
      */
     renderItems() {
-        return this.state.items.map((item: any) => {
-            let thumbnail = item.attributes.icon;
-
-            if ('image' === item.attributes.type && 'svg+xml' !== item.attributes.subtype) {
-                const sizes = item.attributes.sizes;
-                thumbnail = sizes.thumbnail.url;
-            }
-
+        const SortableItem = SortableElement(({item, thumbnail}: {item: any, thumbnail: string}) => {
             return (
                 <div key={item.id}
                      className={classNames('themosis__collection__item', {'selected': this.isSelected(item.id)})}
@@ -251,6 +257,35 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
                 </div>
             );
         });
+
+        const SortableList = SortableContainer(({items}: {items: Array<any>}) => {
+            return (
+                <div className="themosis__collection__list">
+                    {items.map((item, index) => {
+                        let thumbnail = item.attributes.icon;
+
+                        if ('image' === item.attributes.type && 'svg+xml' !== item.attributes.subtype) {
+                            const sizes = item.attributes.sizes;
+                            thumbnail = sizes.thumbnail.url;
+                        }
+
+                        return (
+                            <SortableItem key={`item-${index}`}
+                                          index={index}
+                                          item={item}
+                                          thumbnail={thumbnail}/>
+                        );
+                    })}
+                </div>
+            );
+        });
+
+        return (
+            <SortableList items={this.state.items}
+                          axis={'xy'}
+                          distance={12}
+                          onSortEnd={this.onSortEnd} />
+        );
     }
 
     componentDidMount() {

@@ -1,4 +1,13 @@
 declare module '@wordpress/components' {
+    // ColorIndicator
+    interface ColorIndicatorProps {
+        className?: string | object;
+        colorValue?: string;
+    }
+
+    export const ColorIndicator:React.SFC<ColorIndicatorProps>;
+
+    // ColorPalette
     interface Color {
         name: string;
         color: string;
@@ -16,10 +25,23 @@ declare module '@wordpress/components' {
 
     export const ColorPalette:React.SFC<ColorPaletteProps>;
 
-    interface ColorIndicatorProps {
-        className?: string | object;
-        colorValue?: string;
+    // Draggable
+    interface onDragCallback {
+        ():void;
     }
 
-    export const ColorIndicator:React.SFC<ColorIndicatorProps>;
+    interface DraggableProps {
+        elementId: string;
+        transferData: object;
+        onDragStart?: onDragCallback;
+        onDragEnd?: onDragCallback;
+    }
+
+    export const Draggable:React.SFC<DraggableProps>;
+
+    // DropZone
+    export const DropZone:React.SFC;
+
+    // DropZoneProvider
+    export const DropZoneProvider:React.SFC;
 }

@@ -22,7 +22,7 @@ class CollectionFieldTransformer extends FieldTransformer
                 'attributes' => wp_prepare_attachment_for_js($id),
                 'id' => $id
             ];
-        }, $field->getValue());
+        }, (array) $field->getValue());
 
         return $options;
     }

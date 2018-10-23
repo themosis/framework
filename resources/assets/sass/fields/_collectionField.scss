@@ -6,7 +6,7 @@
   display: none;
   background: $light-gray-300;
   border: 1px solid $light-gray-500;
-  padding: 10px;
+  padding: 10px 2px 2px 10px;
   margin-bottom: $paddingH;
 
   &__list {
@@ -22,6 +22,7 @@
     background: none;
     cursor: pointer;
     margin-right: 8px;
+    margin-bottom: 8px;
     transition: background .2s ease-in-out;
 
     &__thumbnail {
@@ -70,6 +71,7 @@
       box-shadow: 0 0 0 1px $white, 0 0 0 2px $blue-wordpress-700;
       cursor: pointer;
       display: none;
+      box-sizing: border-box;
 
       .icon {
         font: normal 24px/1 dashicons;
