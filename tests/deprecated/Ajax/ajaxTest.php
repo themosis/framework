@@ -20,7 +20,7 @@ class AjaxTest extends TestCase
 
     public function testAjaxIsListeningUsingClosure()
     {
-        $ajax = new \Themosis\Ajax\AjaxBuilder($this->action);
+        $ajax = new \Themosis\Ajax\Ajax($this->action);
 
         // Listen to an ajax request on logged in and out users (default).
         $ajax->listen('infinite-scroll', function () {
@@ -37,7 +37,7 @@ class AjaxTest extends TestCase
 
     public function testAjaxIsListeningUsingNamedCallback()
     {
-        $ajax = new \Themosis\Ajax\AjaxBuilder($this->action);
+        $ajax = new \Themosis\Ajax\Ajax($this->action);
 
         // Listen to an ajax request on logged in users only.
         $ajax->listen('update-list', 'ajaxCallback', true);
@@ -52,7 +52,7 @@ class AjaxTest extends TestCase
 
     public function testAjaxIsListeningUsingClass()
     {
-        $ajax = new \Themosis\Ajax\AjaxBuilder($this->action);
+        $ajax = new \Themosis\Ajax\Ajax($this->action);
 
         // Listen to an ajac request on logged out users only using a Class.
         $ajax->listen('change-state', 'AjaxCustom@changeState', false);

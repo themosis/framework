@@ -44,11 +44,11 @@ interface AssetInterface
     /**
      * Set the asset dependencies.
      *
-     * @param bool|string|array $dependencies
+     * @param array $dependencies
      *
      * @return AssetInterface
      */
-    public function setDependencies($dependencies): AssetInterface;
+    public function setDependencies(array $dependencies): AssetInterface;
 
     /**
      * Return the asset dependencies.

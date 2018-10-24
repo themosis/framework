@@ -2,14 +2,16 @@
 
 namespace Themosis\Ajax;
 
-interface IAjax
+interface AjaxInterface
 {
     /**
-     * Listen to AJAX API calls.
+     * Listen to AJAX calls.
      *
      * @param string          $action   The AJAX action name.
      * @param \Closure|string $callback
      * @param string|bool     $logged   true, false or 'both' type of users.
+     *
+     * @return AjaxInterface
      */
-    public function listen($action, $callback, $logged = 'both');
+    public function listen($action, $callback, $logged = 'both'): AjaxInterface;
 }

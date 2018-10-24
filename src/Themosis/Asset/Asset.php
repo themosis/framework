@@ -136,11 +136,11 @@ class Asset implements AssetInterface
     /**
      * Set the asset dependencies.
      *
-     * @param array|bool|string $dependencies
+     * @param array $dependencies
      *
      * @return AssetInterface
      */
-    public function setDependencies($dependencies): AssetInterface
+    public function setDependencies(array $dependencies): AssetInterface
     {
         $this->dependencies = $dependencies;
 

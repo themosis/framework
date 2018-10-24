@@ -143,7 +143,7 @@ class AssetsTest extends TestCase
         $this->assertFalse($asset->file()->isExternal());
         $this->assertEquals(__DIR__.'/files/theme.min.js', $asset->getPath());
         $this->assertEquals('https://www.domain.com/dist/theme.min.js', $asset->getUrl());
-        $this->assertFalse($asset->getDependencies());
+        $this->assertEmpty($asset->getDependencies());
         $this->assertNull($asset->getVersion());
         $this->assertEquals('script', $asset->getType());
 
@@ -154,7 +154,7 @@ class AssetsTest extends TestCase
         $this->assertTrue($asset->file()->isExternal());
         $this->assertEmpty($asset->getPath());
         $this->assertEquals('https://use.typekit.net/xxxxxxx.css', $asset->getUrl());
-        $this->assertFalse($asset->getDependencies());
+        $this->assertEmpty($asset->getDependencies());
         $this->assertNull($asset->getVersion());
         $this->assertEquals('style', $asset->getType());
     }
@@ -163,9 +163,9 @@ class AssetsTest extends TestCase
     {
         $factory = $this->getFactory();
 
-        $asset = $factory->add('theme', 'theme.min.js', 'jquery');
+        $asset = $factory->add('theme', 'theme.min.js', ['jquery']);
 
-        $this->assertEquals('jquery', $asset->getDependencies());
+        $this->assertEquals(['jquery'], $asset->getDependencies());
 
         $asset = $factory->add('products', 'css/products.min.css', ['bootstrap', 'jqueryui']);
 
@@ -179,11 +179,11 @@ class AssetsTest extends TestCase
     {
         $factory = $this->getFactory();
 
-        $asset = $factory->add('theme', 'theme.css', false, '1.0');
+        $asset = $factory->add('theme', 'theme.css', [], '1.0');
 
         $this->assertEquals('1.0', $asset->getVersion());
 
-        $asset = $factory->add('carousel', 'js/carousel.js', false, false);
+        $asset = $factory->add('carousel', 'js/carousel.js', [], false);
 
         $this->assertFalse($asset->getVersion());
     }
@@ -225,11 +225,11 @@ class AssetsTest extends TestCase
         $this->assertTrue($asset->getArgument());
 
         // Local JS - Defined for footer
-        $asset = $factory->add('theme', 'theme.min.js', false, false, true);
+        $asset = $factory->add('theme', 'theme.min.js', [], false, true);
         $this->assertTrue($asset->getArgument());
 
         // Local JS - Defined for head
-        $asset = $factory->add('carousel', 'js/carousel.js', false, false, false);
+        $asset = $factory->add('carousel', 'js/carousel.js', [], false, false);
         $this->assertFalse($asset->getArgument());
 
         // Local CSS - Default
@@ -237,7 +237,7 @@ class AssetsTest extends TestCase
         $this->assertEquals('all', $asset->getArgument());
 
         // Local CSS - Custom
-        $asset = $factory->add('theme', 'theme.css', false, false, 'screen');
+        $asset = $factory->add('theme', 'theme.css', [], false, 'screen');
         $this->assertEquals('screen', $asset->getArgument());
 
         // External JS - With Extension
@@ -249,14 +249,14 @@ class AssetsTest extends TestCase
         $this->assertNull($asset->getArgument());
 
         // External JS - Without extension for the footer.
-        $asset = $factory->add('custom', '//api.domain.com/somescript', false, 2.0, true);
+        $asset = $factory->add('custom', '//api.domain.com/somescript', [], 2.0, true);
         $this->assertTrue($asset->getArgument());
 
         // Extermal CSS - Without extension.
         $asset = $factory->add(
             'bootstrap',
             'https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap',
-            false,
+            [],
             4.1
         );
         $this->assertNull($asset->getArgument());
