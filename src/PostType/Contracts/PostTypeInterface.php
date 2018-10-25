@@ -1,0 +1,61 @@
+<?php
+
+namespace Themosis\PostType\Contracts;
+
+interface PostTypeInterface
+{
+    /**
+     * Set the post type labels.
+     *
+     * @param array $labels
+     *
+     * @return PostTypeInterface
+     */
+    public function setLabels(array $labels): PostTypeInterface;
+
+    /**
+     * Return the post type labels.
+     *
+     * @return array
+     */
+    public function getLabels(): array;
+
+    /**
+     * Set the post type arguments.
+     *
+     * @param array $args
+     *
+     * @return PostTypeInterface
+     */
+    public function setArguments(array $args): PostTypeInterface;
+
+    /**
+     * Return the post type arguments.
+     *
+     * @return array
+     */
+    public function getArguments(): array;
+
+    /**
+     * Return a post type argument.
+     *
+     * @param string $property
+     *
+     * @return mixed
+     */
+    public function getArgument(string $property);
+
+    /**
+     * Return the WordPress WP_Post_Type instance.
+     *
+     * @return \WP_Post_Type|null
+     */
+    public function getInstance();
+
+    /**
+     * Register the post type.
+     *
+     * @return PostTypeInterface
+     */
+    public function set(): PostTypeInterface;
+}

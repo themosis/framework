@@ -2,12 +2,12 @@
 
 namespace Themosis\Facades;
 
+use Illuminate\Support\Facades\Facade;
+
 class PostType extends Facade
 {
     /**
-     * Return the service provider key responsible for the posttype class.
-     * The key must be the same as the one used when registering
-     * the service provider.
+     * Get the registered name of the component.
      *
      * @return string
      */
