@@ -1,0 +1,11 @@
+<?php
+
+namespace DummyNamespace;
+
+class DummyClass extends \WP_Widget
+{
+    public function __construct()
+    {
+        //
+    }
+}

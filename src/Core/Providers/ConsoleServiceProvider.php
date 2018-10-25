@@ -19,6 +19,7 @@ use Themosis\Core\Console\RouteListCommand;
 use Themosis\Core\Console\UpCommand;
 use Themosis\Core\Console\VendorPublishCommand;
 use Themosis\Core\Console\ViewClearCommand;
+use Themosis\Core\Console\WidgetMakeCommand;
 
 class ConsoleServiceProvider extends ServiceProvider
 {
@@ -58,7 +59,8 @@ class ConsoleServiceProvider extends ServiceProvider
         'MigrateMake' => 'command.migrate.make',
         'ModelMake' => 'command.model.make',
         'ProviderMake' => 'command.provider.make',
-        'VendorPublish' => 'command.vendor.publish'
+        'VendorPublish' => 'command.vendor.publish',
+        'WidgetMake' => 'command.widget.make'
     ];
 
     /**
@@ -281,6 +283,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new ViewClearCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the make:widget command.
+     *
+     * @param string $abstract
+     */
+    protected function registerWidgetMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new WidgetMakeCommand($app['files']);
         });
     }
 
