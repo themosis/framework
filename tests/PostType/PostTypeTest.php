@@ -6,6 +6,7 @@ use Illuminate\Config\Repository;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
 use Themosis\Hook\ActionBuilder;
+use Themosis\Hook\FilterBuilder;
 use Themosis\PostType\Contracts\PostTypeInterface;
 use Themosis\PostType\Factory;
 
@@ -33,8 +34,12 @@ class PostTypeTest extends TestCase
 
     protected function getFactory()
     {
+        $app = $this->getApplication();
+
         return new Factory(
-            new ActionBuilder($this->getApplication())
+            $app,
+            new ActionBuilder($app),
+            new FilterBuilder($app)
         );
     }
 
@@ -66,5 +71,12 @@ class PostTypeTest extends TestCase
         $this->assertFalse($postType->getArgument('public'));
         $this->assertEquals(35, $postType->getArgument('menu_position'));
         $this->assertFalse($postType->getArgument('has_archive'));
+
+        $postType->setLabels([
+            'add_new_item' => 'Add Me'
+        ]);
+
+        $this->assertEquals('Add Me', $postType->getLabel('add_new_item'));
+        $this->assertEquals('View Product', $postType->getLabel('view_item'));
     }
 }

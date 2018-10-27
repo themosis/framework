@@ -2,19 +2,32 @@
 
 namespace Themosis\PostType;
 
+use Themosis\Core\Application;
 use Themosis\Hook\IHook;
 use Themosis\PostType\Contracts\PostTypeInterface;
 
 class Factory
 {
     /**
+     * @var Application
+     */
+    protected $container;
+
+    /**
      * @var IHook
      */
     protected $action;
 
-    public function __construct(IHook $action)
+    /**
+     * @var IHook
+     */
+    protected $filter;
+
+    public function __construct(Application $container, IHook $action, IHook $filter)
     {
+        $this->container = $container;
         $this->action = $action;
+        $this->filter = $filter;
     }
 
     /**
@@ -24,11 +37,13 @@ class Factory
      * @param string $plural
      * @param string $singular
      *
+     * @throws PostTypeException
+     *
      * @return PostTypeInterface
      */
     public function make(string $slug, string $plural, string $singular): PostTypeInterface
     {
-        return (new PostType($slug, $this->action))
+        $postType = (new PostType($slug, $this->action, $this->filter))
             ->setLabels([
                 'name' => $plural,
                 'singular_name' => $singular,
@@ -57,5 +72,15 @@ class Factory
                 'supports' => ['title'],
                 'has_archive' => true
             ]);
+
+        $abstract = sprintf('themosis.posttype.%s', $slug);
+
+        if (! $this->container->bound($abstract)) {
+            $this->container->instance($abstract, $postType);
+        } else {
+            throw new PostTypeException('The post type with a slug of ['.$slug.'] already exists.');
+        }
+
+        return $postType;
     }
 }

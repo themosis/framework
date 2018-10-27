@@ -21,6 +21,15 @@ interface PostTypeInterface
     public function getLabels(): array;
 
     /**
+     * Return a defined label value.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public function getLabel(string $name): string;
+
+    /**
      * Set the post type arguments.
      *
      * @param array $args
@@ -58,4 +67,13 @@ interface PostTypeInterface
      * @return PostTypeInterface
      */
     public function set(): PostTypeInterface;
+
+    /**
+     * Set the post type title input placeholder.
+     *
+     * @param string $title
+     *
+     * @return PostTypeInterface
+     */
+    public function setTitlePlaceholder(string $title): PostTypeInterface;
 }

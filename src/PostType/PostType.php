@@ -31,10 +31,16 @@ class PostType implements PostTypeInterface
      */
     protected $action;
 
-    public function __construct(string $slug, IHook $action)
+    /**
+     * @var IHook
+     */
+    protected $filter;
+
+    public function __construct(string $slug, IHook $action, IHook $filter)
     {
         $this->slug = $slug;
         $this->action = $action;
+        $this->filter = $filter;
     }
 
     /**
@@ -63,6 +69,20 @@ class PostType implements PostTypeInterface
     public function getLabels(): array
     {
         return $this->args['labels'] ?? [];
+    }
+
+    /**
+     * Return a defined label value.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public function getLabel(string $name): string
+    {
+        $labels = $this->getLabels();
+
+        return $labels[$name] ?? '';
     }
 
     /**
@@ -135,5 +155,27 @@ class PostType implements PostTypeInterface
     public function register()
     {
         $this->instance = register_post_type($this->slug, $this->getArguments());
+    }
+
+    /**
+     * Set the post type title input placeholder.
+     *
+     * @param string $title
+     *
+     * @return PostTypeInterface
+     */
+    public function setTitlePlaceholder(string $title): PostTypeInterface
+    {
+        $this->filter->add('enter_title_here', function ($default) use ($title) {
+            $screen = get_current_screen();
+
+            if ($this->slug === $screen->post_type) {
+                return $title;
+            }
+
+            return $default;
+        });
+
+        return $this;
     }
 }
