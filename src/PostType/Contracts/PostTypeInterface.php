@@ -76,4 +76,14 @@ interface PostTypeInterface
      * @return PostTypeInterface
      */
     public function setTitlePlaceholder(string $title): PostTypeInterface;
+
+    /**
+     * Set post type custom status.
+     *
+     * @param array|string $status
+     * @param array        $args
+     *
+     * @return PostTypeInterface
+     */
+    public function status($status, array $args = []): PostTypeInterface;
 }

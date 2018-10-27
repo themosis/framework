@@ -4,6 +4,7 @@ namespace Themosis\PostType;
 
 use Themosis\Hook\IHook;
 use Themosis\PostType\Contracts\PostTypeInterface;
+use Themosis\Support\Facades\Metabox;
 
 class PostType implements PostTypeInterface
 {
@@ -35,6 +36,11 @@ class PostType implements PostTypeInterface
      * @var IHook
      */
     protected $filter;
+
+    /**
+     * @var array
+     */
+    protected $status;
 
     public function __construct(string $slug, IHook $action, IHook $filter)
     {
@@ -155,6 +161,7 @@ class PostType implements PostTypeInterface
     public function register()
     {
         $this->instance = register_post_type($this->slug, $this->getArguments());
+        $this->registerStatus();
     }
 
     /**
@@ -177,5 +184,159 @@ class PostType implements PostTypeInterface
         });
 
         return $this;
+    }
+
+    /**
+     * Register the custom status if any.
+     */
+    protected function registerStatus()
+    {
+        if (empty($this->status)) {
+            return;
+        }
+
+        foreach ($this->status as $key => $args) {
+            register_post_status($key, $args);
+        }
+
+        Metabox::make('themosis_publish', $this->slug)
+            ->setTitle(__('Publish'))
+            ->setContext('side')
+            ->setPriority('core')
+            ->setCallback(function ($metabox, $post) {
+                echo view('_themosisPublishMetabox', [
+                    'statuses' => $this->status,
+                    '__post' => $post
+                ]);
+            })
+            ->set();
+    }
+
+    /**
+     * Set post type custom status.
+     *
+     * @param array|string $status
+     * @param array        $args
+     *
+     * @return PostTypeInterface
+     */
+    public function status($status, array $args = []): PostTypeInterface
+    {
+        if (is_array($status)) {
+            foreach ($status as $key => $params) {
+                if (is_int($key)) {
+                    $this->status($params);
+                } elseif (is_string($key) && is_array($params)) {
+                    $this->status($key, $params);
+                }
+            }
+
+            return $this;
+        }
+
+        $this->prepareStatus($status, $args);
+
+        return $this;
+    }
+
+    /**
+     * Register custom post type status.
+     *
+     * @param string $status
+     * @param array  $args
+     */
+    protected function prepareStatus(string $status, array $args)
+    {
+        $this->status[$status] = $this->parseStatusArguments($status, $args);
+
+        // Remove default publish metabox.
+        $this->action->add('add_meta_boxes', function () {
+            remove_meta_box('submitdiv', $this->slug, 'side');
+        });
+
+        // Apply selected status on save.
+        $this->filter->add([
+            'pre_post_status',
+            'status_save_pre'
+        ], [$this, 'applyStatus']);
+
+        // Expose post type status for JS use.
+        $this->filter->add('themosis_admin_global', function ($data) {
+            $data['post_types'][$this->slug] = ['statuses' => $this->status];
+
+            return $data;
+        });
+
+        // Reorder the list of statuses on the list table.
+        // Put the "trash" item as the last one.
+        $this->filter->add("views_edit-{$this->slug}", function ($views) {
+            if (array_key_exists('trash', $views)) {
+                $trash = $views['trash'];
+                unset($views['trash']);
+                end($views);
+                $views['trash'] = $trash;
+            }
+
+            return $views;
+        });
+    }
+
+    /**
+     * Parse the status arguments.
+     *
+     * @param string $status
+     * @param array  $args
+     *
+     * @return array
+     */
+    protected function parseStatusArguments(string $status, array $args): array
+    {
+        $name = ucfirst($status);
+
+        return wp_parse_args($args, [
+            'label' => $name,
+            'public' => true,
+            'exclude_from_search' => false,
+            'show_in_admin_all_list' => true,
+            'show_in_admin_status_list' => true,
+            'label_count' => _n_noop(
+                $name.' <span class="count">(%s)</span>',
+                $name.' <span class="count">(%s)</span>'
+            ),
+            'publish_text' => __('Apply Changes')
+        ]);
+    }
+
+    /**
+     * Apply the selected status on post save.
+     *
+     * @param string $value The translated value by WordPress ("publish").
+     *
+     * @return string
+     */
+    public function applyStatus(string $value)
+    {
+        if (isset($_POST['post_type']) && $this->slug === $_POST['post_type'] && ! empty($this->status)) {
+            if ((isset($_POST['post_status']) && 'publish' === $_POST['post_status'])
+            && (isset($_REQUEST['post_status']) && 'draft' === $_REQUEST['post_status'])) {
+                // New post with draft status as default and "publish" button is clicked.
+                // Let's set to first registered status.
+                $statuses = array_keys($this->status);
+
+                return esc_attr(array_shift($statuses));
+            } elseif (isset($_REQUEST['post_status']) && ! empty($_REQUEST['post_status'])) {
+                // In case of a quickedit ajax save call, check the value of the "_status"
+                // select tag before processing default post_status.
+                if (isset($_POST['_status']) && ! empty($_POST['_status'])) {
+                    return esc_attr($_POST['_status']);
+                }
+
+                // Else, simply apply the selected custom status value returned
+                // from the edit screen of the custom post type.
+                return esc_attr($_REQUEST['post_status']);
+            }
+        }
+
+        return esc_attr($value);
     }
 }
