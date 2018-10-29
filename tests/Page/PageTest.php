@@ -181,7 +181,7 @@ class PageTest extends TestCase
     public function testCreateASettingsPage()
     {
         $factory = $this->getFactory($this->getActionMock());
-        $fieldFactory = new \Themosis\Field\Factory($this->getApplication());
+        $fieldFactory = new \Themosis\Field\Factory($this->getApplication(), $this->getViewFactory());
 
         $page = $factory->make('the-settings', 'App Settings')->set();
 

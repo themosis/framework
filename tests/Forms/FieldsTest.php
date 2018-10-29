@@ -34,7 +34,11 @@ class FieldsTest extends TestCase
 
     protected function getFieldsFactory()
     {
-        return new \Themosis\Field\Factory($this->getApplication());
+        $viewFactory = $this->getMockBuilder('Illuminate\View\Factory')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return new \Themosis\Field\Factory($this->getApplication(), $viewFactory);
     }
 
     public function testResourceFactoryReturnFormTransformersInstances()

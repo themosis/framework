@@ -114,7 +114,7 @@ class FormCreationTest extends TestCase
 
     protected function getFieldsFactory()
     {
-        return new \Themosis\Field\Factory($this->getApplication());
+        return new \Themosis\Field\Factory($this->getApplication(), $this->getViewFactory());
     }
 
     public function testCreateNewForm()
