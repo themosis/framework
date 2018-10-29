@@ -3,6 +3,7 @@
 namespace Themosis\Forms\Fields\Types;
 
 use Illuminate\Contracts\Support\MessageBag;
+use Illuminate\Contracts\View\Factory as ViewFactoryInterface;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\Resource\ResourceInterface;
@@ -124,6 +125,11 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * @var bool
      */
     protected $rendered = false;
+
+    /**
+     * @var ViewFactoryInterface
+     */
+    protected $viewFactory;
 
     /**
      * The field view.
@@ -483,9 +489,23 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      *
      * @return FieldTypeInterface
      */
-    public function setForm(FormInterface $form)
+    public function setForm(FormInterface $form): FieldTypeInterface
     {
         $this->form = $form;
+
+        return $this;
+    }
+
+    /**
+     * Set the field view factory instance.
+     *
+     * @param ViewFactoryInterface $factory
+     *
+     * @return FieldTypeInterface
+     */
+    public function setViewFactory(ViewFactoryInterface $factory): FieldTypeInterface
+    {
+        $this->viewFactory = $factory;
 
         return $this;
     }
@@ -497,7 +517,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function render(): string
     {
-        $view = $this->form->getViewer()->make($this->getView(), $this->getFieldData());
+        $view = $this->viewFactory->make($this->getView(), $this->getFieldData());
 
         // Indicates that the form has been rendered at least once.
         // Then return its content.
@@ -541,8 +561,8 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function getView(bool $prefixed = true): string
     {
-        if ($prefixed) {
-            return $this->buildViewPath($this->getOption('theme'), $this->view);
+        if ($prefixed && ! is_null($theme = $this->getOption('theme'))) {
+            return $this->buildViewPath($theme, $this->view);
         }
 
         return $this->view;

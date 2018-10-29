@@ -61,6 +61,7 @@ class FormBuilder implements FormBuilderInterface
         $field->setLocale($this->form->getLocale());
         $field->setOptions($opts);
         $field->setForm($this->form);
+        $field->setViewFactory($this->form->getViewer());
         $field->setResourceTransformerFactory($this->form->getResourceTransformerFactory());
 
         // Check if section instance already exists on the form.

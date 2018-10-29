@@ -109,21 +109,25 @@ $status_keys = array_keys($statuses);
                     } ?>class="edit-post-status hide-if-no-js"><span aria-hidden="true"><?php _e('Edit'); ?></span> <span class="screen-reader-text"><?php _e('Edit status'); ?></span></a>
 
                     <div id="post-status-select" class="hide-if-js">
-                        <input type="hidden" name="hidden_post_status" id="hidden_post_status" value="<?php echo esc_attr(('auto-draft' == $__post->post_status) ? 'draft' : $__post->post_status); ?>" />
+                        <input type="hidden" name="hidden_post_status" id="hidden_post_status" value="<?php echo esc_attr(('auto-draft' === $__post->post_status) ? 'draft' : $__post->post_status); ?>" />
                         <?php
                             $choices = [
-                                'draft' => [
-                                    'text'  => __('Draft'),
-                                    'atts'  => ['data-publish' => __('Save Draft')]
-                                ]
+                                __('Draft') => 'draft'
                             ];
+
                     foreach ($statuses as $key => $status) {
-                        $choices[$key] = [
-                                    'text'  => $status['label'],
-                                    'atts'  => ['data-publish' => $status['publish_text']]
-                                ];
-                    } ?>
-                        {!! \Themosis\Facades\Form::select('post_status', [$choices], $__post->post_status, ['id' => 'post_status']) !!}
+                        $choices[$status['label']] = $key;
+                    }
+
+                    $select =  Field::choice('post_status', [
+                                'attributes' => [
+                                    'id' => 'post_status'
+                                ],
+                                'choices' => $choices,
+                                'data' => $__post->post_status,
+                                'theme' => 'themosis'
+                            ]); ?>
+                        {!! $select->render(); !!}
                         <a href="#post_status" class="save-post-status hide-if-no-js button"><?php _e('OK'); ?></a>
                         <a href="#post_status" class="cancel-post-status hide-if-no-js button-cancel"><?php _e('Cancel'); ?></a>
                     </div>

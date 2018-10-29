@@ -493,6 +493,20 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     }
 
     /**
+     * Set the field view factory instance.
+     *
+     * @param ViewFactoryInterface $factory
+     *
+     * @return FieldTypeInterface
+     */
+    public function setViewFactory(ViewFactoryInterface $factory): FieldTypeInterface
+    {
+        $this->viewer = $factory;
+
+        return $this;
+    }
+
+    /**
      * Return the view path instance used by the form.
      *
      * @param bool $prefixed

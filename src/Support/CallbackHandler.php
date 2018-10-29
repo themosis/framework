@@ -39,16 +39,16 @@ trait CallbackHandler
 
         // Check if $callback is a closure.
         if ($callback instanceof \Closure || is_array($callback)) {
-            $response = call_user_func_array($callback, $args);
+            $response = call_user_func($callback, $args);
         } elseif (is_string($callback)) {
             if (is_callable($callback)) {
                 // Used as a classic callback function.
-                $response = call_user_func_array($callback, $args);
+                $response = call_user_func($callback, $args);
             } else {
                 // We use a "ClassName@method" syntax.
                 // Let's get a class instance and call its method.
                 $callbackArray = $this->handleClassCallback($callback);
-                $response = call_user_func_array($callbackArray, $args);
+                $response = call_user_func($callbackArray, $args);
             }
         }
 

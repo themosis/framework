@@ -2,6 +2,7 @@
 
 namespace Themosis\Field;
 
+use Illuminate\Contracts\View\Factory as ViewFactoryInterface;
 use Themosis\Core\Application;
 use Themosis\Field\Contracts\FieldFactoryInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
@@ -31,9 +32,15 @@ class Factory implements FieldFactoryInterface
      */
     protected $app;
 
-    public function __construct(Application $app)
+    /**
+     * @var ViewFactoryInterface
+     */
+    protected $viewFactory;
+
+    public function __construct(Application $app, ViewFactoryInterface $factory)
     {
         $this->app = $app;
+        $this->viewFactory = $factory;
     }
 
     /**
@@ -48,6 +55,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new TextType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 
@@ -63,6 +71,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new PasswordType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 
@@ -78,6 +87,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new NumberType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 
@@ -93,6 +103,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new IntegerType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 
@@ -108,6 +119,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new EmailType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 
@@ -143,6 +155,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new TextareaType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 
@@ -158,6 +171,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new CheckboxType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 
@@ -173,6 +187,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new ChoiceType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 
@@ -188,6 +203,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new MediaType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 
@@ -203,6 +219,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new EditorType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 
@@ -218,6 +235,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new CollectionType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 
@@ -233,6 +251,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new ColorType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 
@@ -248,6 +267,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new ButtonType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 
@@ -263,6 +283,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new SubmitType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 
@@ -278,6 +299,7 @@ class Factory implements FieldFactoryInterface
     {
         return (new HiddenType($name))
             ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
 }

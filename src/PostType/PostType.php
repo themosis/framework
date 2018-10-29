@@ -203,10 +203,10 @@ class PostType implements PostTypeInterface
             ->setTitle(__('Publish'))
             ->setContext('side')
             ->setPriority('core')
-            ->setCallback(function ($metabox, $post) {
+            ->setCallback(function ($args) {
                 echo view('_themosisPublishMetabox', [
                     'statuses' => $this->status,
-                    '__post' => $post
+                    '__post' => $args['post']
                 ]);
             })
             ->set();

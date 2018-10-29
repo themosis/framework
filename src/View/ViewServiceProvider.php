@@ -21,16 +21,6 @@ class ViewServiceProvider extends IlluminateViewServiceProvider
     }
 
     /**
-     * Register the view finder implementation.
-     */
-    public function registerViewFinder()
-    {
-        $this->app->singleton('view.finder', function ($app) {
-            return new FileViewFinder($app['files'], $app['config']['view.paths']);
-        });
-    }
-
-    /**
      * Register Twig Loader.
      */
     public function registerTwigLoader()

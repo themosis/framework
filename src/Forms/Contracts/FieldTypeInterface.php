@@ -3,6 +3,7 @@
 namespace Themosis\Forms\Contracts;
 
 use Illuminate\Contracts\Support\MessageBag;
+use Illuminate\Contracts\View\Factory as ViewFactoryInterface;
 use League\Fractal\Manager;
 use Themosis\Forms\Resources\Factory;
 
@@ -132,6 +133,15 @@ interface FieldTypeInterface
      * @return FieldTypeInterface
      */
     public function setView(string $view): FieldTypeInterface;
+
+    /**
+     * Set the field view factory instance.
+     *
+     * @param ViewFactoryInterface $factory
+     *
+     * @return FieldTypeInterface
+     */
+    public function setViewFactory(ViewFactoryInterface $factory): FieldTypeInterface;
 
     /**
      * Return the view instance used by the entity.

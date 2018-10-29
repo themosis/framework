@@ -16,11 +16,11 @@ class PageServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->app->bind('page', function ($app) {
-            /** @var Factory $view */
-            $view = $app['view'];
-            $view->addLocation(__DIR__.'/views');
+        /** @var Factory $view */
+        $view = $this->app['view'];
+        $view->addLocation(__DIR__.'/views');
 
+        $this->app->bind('page', function ($app) {
             return new PageFactory($app['action'], $app['filter'], $app['view'], $app['validator']);
         });
     }

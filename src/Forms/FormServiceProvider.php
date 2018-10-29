@@ -15,13 +15,14 @@ class FormServiceProvider extends ServiceProvider
     {
         $this->registerFractalManager();
 
-        $this->app->singleton('form', function ($app) {
-            $view = $app['view'];
-            $view->addLocation(__DIR__.'/views');
+        /** @var \Illuminate\View\Factory $view */
+        $view = $this->app['view'];
+        $view->addLocation(__DIR__.'/views');
 
+        $this->app->singleton('form', function ($app) {
             return new FormFactory(
                 $app['validator'],
-                $view,
+                $app['view'],
                 $app['league.fractal'],
                 new Factory()
             );
