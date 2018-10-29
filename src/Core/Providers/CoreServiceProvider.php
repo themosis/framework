@@ -46,7 +46,7 @@ class CoreServiceProvider extends AggregateServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../../../../dist' => web_path('dist')
+            __DIR__.'/../../../dist' => web_path('dist')
         ], 'themosis');
     }
 }
