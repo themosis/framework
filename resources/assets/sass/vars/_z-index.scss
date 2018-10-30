@@ -5,16 +5,17 @@
 $z-layers: (
         ".editor-block-list__block-edit::before": 0,
         ".editor-block-switcher__arrow": 1,
-        ".editor-block-list__block .wp-block-more::before": -1,
         ".editor-block-list__block {core/image aligned left or right}": 20,
         ".editor-block-list__block {core/image aligned wide or fullwide}": 20,
-        ".freeform-toolbar": 10,
+        ".block-library-classic__toolbar": 10,
         ".editor-block-list__layout .reusable-block-indicator": 1,
         ".editor-block-list__breadcrumb": 2,
         ".components-form-toggle__input": 1,
+        ".components-panel__header.edit-post-sidebar__panel-tabs": 1,
         ".editor-inserter__tabs": 1,
         ".editor-inserter__tab.is-active": 1,
         ".components-panel__header": 1,
+        ".components-modal__header": 10,
         ".edit-post-meta-boxes-area.is-loading::before": 1,
         ".edit-post-meta-boxes-area .spinner": 5,
         ".editor-block-contextual-toolbar": 21,
@@ -27,6 +28,8 @@ $z-layers: (
         ".edit-post-header": 30,
         ".block-library-button__inline-link .editor-url-input__suggestions": 6, // URL suggestions for button block above sibling inserter
         ".block-library-image__resize-handlers": 1, // Resize handlers above sibling inserter
+        ".wp-block-cover.has-background-dim::before": 1, // Overlay area inside block cover need to be higher than the video background.
+        ".wp-block-cover__video-background": 0, // Video background inside cover block.
 
   // Side UI active buttons
         ".editor-block-mover__control": 1,
@@ -75,7 +78,10 @@ $z-layers: (
 
   // Shows adminbar quicklink submenu above bottom popover:
   // #wpadminbar ul li {z-index: 99999;}
-        ".components-popover.is-bottom": 99990,
+        ".components-popover:not(.is-mobile).is-bottom": 99990,
+
+  // Shows above edit post sidebar; Specificity needs to be higher than 3 classes.
+        ".block-editor__container .components-popover.components-color-palette__picker.is-bottom": 100001,
 
         ".components-autocomplete__results": 1000000,
 

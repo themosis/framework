@@ -126,7 +126,8 @@ $status_keys = array_keys($statuses);
                                 'choices' => $choices,
                                 'data' => $__post->post_status,
                                 'theme' => 'themosis'
-                            ]); ?>
+                            ]);
+                    $select->setPrefix(''); ?>
                         {!! $select->render(); !!}
                         <a href="#post_status" class="save-post-status hide-if-no-js button"><?php _e('OK'); ?></a>
                         <a href="#post_status" class="cancel-post-status hide-if-no-js button-cancel"><?php _e('Cancel'); ?></a>

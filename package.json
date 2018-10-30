@@ -47,6 +47,7 @@
     "@types/react-dom": "^16.0.7",
     "@types/react-sortable-hoc": "^0.6.4",
     "@wordpress/components": "^4.0.0",
+    "@wordpress/rich-text": "^2.0.0",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
     "lodash": "^4.17.11",

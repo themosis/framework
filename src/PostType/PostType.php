@@ -262,7 +262,11 @@ class PostType implements PostTypeInterface
 
         // Expose post type status for JS use.
         $this->filter->add('themosis_admin_global', function ($data) {
-            $data['post_types'][$this->slug] = ['statuses' => $this->status];
+            $status['draft'] = $this->parseStatusArguments('draft', [
+                'publish_text' => __('Save Draft')
+            ]);
+
+            $data['post_types'][$this->slug] = ['statuses' => array_merge($status, $this->status)];
 
             return $data;
         });

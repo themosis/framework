@@ -1,17 +1,19 @@
 import $ from 'jquery';
+import '../../sass/deprecated/_poststatus.scss';
 
 //------------------------------------------------
 // Custom publish metabox.
 //------------------------------------------------
 // Handle the custom statuses.
-let submitdiv = $('#themosisSubmitdiv'),
+let submitdiv = $('#themosis_publish'),
     editButton = submitdiv.find('.edit-post-status'),
     selectDiv = submitdiv.find('#post-status-select'),
     selectTag = submitdiv.find('#post_status'),
     statusLabel = submitdiv.find('#post-status-display'),
     statusButtons = submitdiv.find('.save-post-status, .cancel-post-status'),
     originalPublish = submitdiv.find('input#original_publish'),
-    publishButton = submitdiv.find('input#publish');
+    publishButton = submitdiv.find('input#publish'),
+    post_type = $('input#post_type').val();
 
 // Edit button
 editButton.on('click', e =>
@@ -36,7 +38,7 @@ statusButtons.on('click', function(e)
         // Grab selected label.
         let selected = selectTag.find(':selected'),
             label = selected.text(),
-            publishText = selected.data('publish');
+            publishText = themosisGlobal.post_types[post_type]['statuses'][selected.val()].publish_text;
 
         // Update label text.
         statusLabel.text(label);
