@@ -78,7 +78,7 @@ class Factory
         if (! $this->container->bound($abstract)) {
             $this->container->instance($abstract, $postType);
         } else {
-            throw new PostTypeException('The post type with a slug of ['.$slug.'] already exists.');
+            throw new PostTypeException('The post type ['.$slug.'] already exists.');
         }
 
         return $postType;
