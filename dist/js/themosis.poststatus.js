@@ -61,114 +61,12 @@ var Themosis =
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 360);
+/******/ 	return __webpack_require__(__webpack_require__.s = 474);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 2:
-/***/ (function(module, exports) {
-
-module.exports = lodash;
-
-/***/ }),
-
-/***/ 360:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(361);
-
-
-/***/ }),
-
-/***/ 361:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(684);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sass_deprecated_poststatus_scss__ = __webpack_require__(685);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sass_deprecated_poststatus_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__sass_deprecated_poststatus_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__quickedit__ = __webpack_require__(687);
-var _this = this;
-
-
-
-
-//------------------------------------------------
-// Custom publish metabox.
-//------------------------------------------------
-// Handle the custom statuses.
-var submitdiv = __WEBPACK_IMPORTED_MODULE_0_jquery___default()('#themosis_publish'),
-    editButton = submitdiv.find('.edit-post-status'),
-    selectDiv = submitdiv.find('#post-status-select'),
-    selectTag = submitdiv.find('#post_status'),
-    statusLabel = submitdiv.find('#post-status-display'),
-    statusButtons = submitdiv.find('.save-post-status, .cancel-post-status'),
-    originalPublish = submitdiv.find('input#original_publish'),
-    publishButton = submitdiv.find('input#publish'),
-    post_type = __WEBPACK_IMPORTED_MODULE_0_jquery___default()('input#post_type').val();
-
-// Edit button
-editButton.on('click', function (e) {
-    e.preventDefault();
-
-    // Show the select option list.
-    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(_this).hide();
-    selectDiv.slideDown(200);
-});
-
-// Cancel button or OK buttons
-statusButtons.on('click', function (e) {
-    e.preventDefault();
-
-    var button = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this);
-
-    // If 'ok' button, update label span with status label.
-    if (button.hasClass('save-post-status')) {
-        // Grab selected label.
-        var selected = selectTag.find(':selected'),
-            label = selected.text(),
-            publishText = themosisGlobal.post_types[post_type]['statuses'][selected.val()].publish_text;
-
-        // Update label text.
-        statusLabel.text(label);
-
-        // Update publish button.
-        // Check if 'draft'
-        if ('draft' === selected.val()) {
-            // Change value of the "original_publish" input.
-            originalPublish.val('auto-draft');
-            // Change publish button name attribute.
-            publishButton.attr('name', 'save');
-        }
-
-        // Change publish button text.
-        publishButton.val(publishText);
-    }
-
-    // If 'cancel' button, make sure to reset the select tag value.
-    if (button.hasClass('cancel-post-status')) {
-        var _selected = selectTag.find('option[selected="selected"]');
-        selectTag.val(_selected.val());
-    }
-
-    // Show back edit button.
-    editButton.show();
-
-    // Close select statuses.
-    selectDiv.slideUp(200);
-});
-
-//------------------------------------------------
-// Quick edit select tag.
-//------------------------------------------------
-
-
-/***/ }),
-
-/***/ 681:
+/***/ 138:
 /***/ (function(module, exports) {
 
 /*
@@ -251,7 +149,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 682:
+/***/ 139:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -297,7 +195,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(683);
+var	fixUrls = __webpack_require__(140);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -611,7 +509,7 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 
-/***/ 683:
+/***/ 140:
 /***/ (function(module, exports) {
 
 
@@ -707,20 +605,122 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ 684:
+/***/ 3:
+/***/ (function(module, exports) {
+
+module.exports = lodash;
+
+/***/ }),
+
+/***/ 319:
 /***/ (function(module, exports) {
 
 module.exports = jQuery;
 
 /***/ }),
 
-/***/ 685:
+/***/ 474:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(475);
+
+
+/***/ }),
+
+/***/ 475:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(319);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sass_deprecated_poststatus_scss__ = __webpack_require__(476);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sass_deprecated_poststatus_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__sass_deprecated_poststatus_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__quickedit__ = __webpack_require__(478);
+var _this = this;
+
+
+
+
+//------------------------------------------------
+// Custom publish metabox.
+//------------------------------------------------
+// Handle the custom statuses.
+var submitdiv = __WEBPACK_IMPORTED_MODULE_0_jquery___default()('#themosis_publish'),
+    editButton = submitdiv.find('.edit-post-status'),
+    selectDiv = submitdiv.find('#post-status-select'),
+    selectTag = submitdiv.find('#post_status'),
+    statusLabel = submitdiv.find('#post-status-display'),
+    statusButtons = submitdiv.find('.save-post-status, .cancel-post-status'),
+    originalPublish = submitdiv.find('input#original_publish'),
+    publishButton = submitdiv.find('input#publish'),
+    post_type = __WEBPACK_IMPORTED_MODULE_0_jquery___default()('input#post_type').val();
+
+// Edit button
+editButton.on('click', function (e) {
+    e.preventDefault();
+
+    // Show the select option list.
+    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(_this).hide();
+    selectDiv.slideDown(200);
+});
+
+// Cancel button or OK buttons
+statusButtons.on('click', function (e) {
+    e.preventDefault();
+
+    var button = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this);
+
+    // If 'ok' button, update label span with status label.
+    if (button.hasClass('save-post-status')) {
+        // Grab selected label.
+        var selected = selectTag.find(':selected'),
+            label = selected.text(),
+            publishText = themosisGlobal.post_types[post_type]['statuses'][selected.val()].publish_text;
+
+        // Update label text.
+        statusLabel.text(label);
+
+        // Update publish button.
+        // Check if 'draft'
+        if ('draft' === selected.val()) {
+            // Change value of the "original_publish" input.
+            originalPublish.val('auto-draft');
+            // Change publish button name attribute.
+            publishButton.attr('name', 'save');
+        }
+
+        // Change publish button text.
+        publishButton.val(publishText);
+    }
+
+    // If 'cancel' button, make sure to reset the select tag value.
+    if (button.hasClass('cancel-post-status')) {
+        var _selected = selectTag.find('option[selected="selected"]');
+        selectTag.val(_selected.val());
+    }
+
+    // Show back edit button.
+    editButton.show();
+
+    // Close select statuses.
+    selectDiv.slideUp(200);
+});
+
+//------------------------------------------------
+// Quick edit select tag.
+//------------------------------------------------
+
+
+/***/ }),
+
+/***/ 476:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(686);
+var content = __webpack_require__(477);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -728,7 +728,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(682)(content, options);
+var update = __webpack_require__(139)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -746,10 +746,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 686:
+/***/ 477:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(681)(false);
+exports = module.exports = __webpack_require__(138)(false);
 // imports
 
 
@@ -761,13 +761,13 @@ exports.push([module.i, "#poststuff #themosis_publish .inside {\n  margin: 0;\n 
 
 /***/ }),
 
-/***/ 687:
+/***/ 478:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(684);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(319);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
 
 
