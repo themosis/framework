@@ -68,4 +68,41 @@ class Taxonomy implements TaxonomyInterface
 
         return $labels[$name] ?? '';
     }
+
+    /**
+     * Set taxonomy arguments.
+     *
+     * @param array $sargs
+     * @return TaxonomyInterface
+     */
+    public function setArguments(array $sargs): TaxonomyInterface
+    {
+        $this->args = array_merge($this->args, $sargs);
+
+        return $this;
+    }
+
+    /**
+     * Return taxonomy arguments.
+     *
+     * @return array
+     */
+    public function getArguments(): array
+    {
+        return $this->args;
+    }
+
+    /**
+     * Return a taxonomy argument.
+     *
+     * @param string $property
+     *
+     * @return mixed
+     */
+    public function getArgument(string $property)
+    {
+        $args = $this->getArguments();
+
+        return $args[$property] ?? null;
+    }
 }
