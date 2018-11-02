@@ -3,6 +3,7 @@
 namespace Themosis\Taxonomy;
 
 use Themosis\Core\Application;
+use Themosis\Hook\IHook;
 use Themosis\Taxonomy\Contracts\TaxonomyInterface;
 
 class Factory
@@ -12,9 +13,15 @@ class Factory
      */
     protected $container;
 
-    public function __construct(Application $container)
+    /**
+     * @var IHook
+     */
+    protected $action;
+
+    public function __construct(Application $container, IHook $action)
     {
         $this->container = $container;
+        $this->action = $action;
     }
 
     /**
@@ -31,7 +38,7 @@ class Factory
      */
     public function make(string $slug, $objects, string $plural, string $singular): TaxonomyInterface
     {
-        $taxonomy = (new Taxonomy($slug, (array) $objects))
+        $taxonomy = (new Taxonomy($slug, (array) $objects, $this->action))
             ->setLabels([
                 'name' => $plural,
                 'singular_name' => $singular,
@@ -54,6 +61,11 @@ class Factory
                 'items_list' => sprintf('%s list', $plural),
                 'most_used' => 'Most Used',
                 'back_to_items' => sprintf('Back to %s', $plural)
+            ])
+            ->setArguments([
+                'public' => true,
+                'show_in_rest' => false,
+                'show_admin_column' => true
             ]);
 
         $abstract = sprintf('themosis.taxonomy.%s', $slug);

@@ -33,6 +33,7 @@ interface TaxonomyInterface
      * Set taxonomy arguments.
      *
      * @param array $sargs
+     *
      * @return TaxonomyInterface
      */
     public function setArguments(array $sargs): TaxonomyInterface;
@@ -48,7 +49,31 @@ interface TaxonomyInterface
      * Return a taxonomy argument.
      *
      * @param string $property
+     *
      * @return mixed
      */
     public function getArgument(string $property);
+
+    /**
+     * Register the taxonomy.
+     *
+     * @return TaxonomyInterface
+     */
+    public function set(): TaxonomyInterface;
+
+    /**
+     * Set taxonomy objects.
+     *
+     * @param string|array $objects
+     *
+     * @return TaxonomyInterface
+     */
+    public function setObjects($objects): TaxonomyInterface;
+
+    /**
+     * Return taxonomy attached objects.
+     *
+     * @return array
+     */
+    public function getObjects(): array;
 }

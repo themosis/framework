@@ -240,6 +240,16 @@ class PostType implements PostTypeInterface
     }
 
     /**
+     * Check if post type has custom status.
+     *
+     * @return bool
+     */
+    public function hasStatus(): bool
+    {
+        return ! empty($this->status);
+    }
+
+    /**
      * Register custom post type status.
      *
      * @param string $status

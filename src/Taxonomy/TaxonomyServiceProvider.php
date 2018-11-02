@@ -9,7 +9,7 @@ class TaxonomyServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('taxonomy', function ($app) {
-            return new Factory($app);
+            return new Factory($app, $app['action']);
         });
     }
 }

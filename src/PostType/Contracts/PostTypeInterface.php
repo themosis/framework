@@ -86,4 +86,11 @@ interface PostTypeInterface
      * @return PostTypeInterface
      */
     public function status($status, array $args = []): PostTypeInterface;
+
+    /**
+     * Check if post type has custom status.
+     *
+     * @return bool
+     */
+    public function hasStatus(): bool;
 }

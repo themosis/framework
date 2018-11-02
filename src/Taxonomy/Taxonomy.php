@@ -2,6 +2,7 @@
 
 namespace Themosis\Taxonomy;
 
+use Themosis\Hook\IHook;
 use Themosis\Taxonomy\Contracts\TaxonomyInterface;
 
 class Taxonomy implements TaxonomyInterface
@@ -21,10 +22,16 @@ class Taxonomy implements TaxonomyInterface
      */
     protected $args;
 
-    public function __construct(string $slug, array $objects)
+    /**
+     * @var IHook
+     */
+    protected $action;
+
+    public function __construct(string $slug, array $objects, IHook $action)
     {
         $this->slug = $slug;
         $this->objects = $objects;
+        $this->action = $action;
     }
 
     /**
@@ -73,6 +80,7 @@ class Taxonomy implements TaxonomyInterface
      * Set taxonomy arguments.
      *
      * @param array $sargs
+     *
      * @return TaxonomyInterface
      */
     public function setArguments(array $sargs): TaxonomyInterface
@@ -104,5 +112,53 @@ class Taxonomy implements TaxonomyInterface
         $args = $this->getArguments();
 
         return $args[$property] ?? null;
+    }
+
+    /**
+     * Register the taxonomy.
+     *
+     * @return TaxonomyInterface
+     */
+    public function set(): TaxonomyInterface
+    {
+        if (function_exists('current_filter') && 'init' === $hook = current_filter()) {
+            $this->register();
+        } else {
+            $this->action->add('init', [$this, 'register']);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Register taxonomy hook callback.
+     */
+    public function register()
+    {
+        register_taxonomy($this->slug, $this->objects, $this->getArguments());
+    }
+
+    /**
+     * Set taxonomy objects.
+     *
+     * @param array|string $objects
+     *
+     * @return TaxonomyInterface
+     */
+    public function setObjects($objects): TaxonomyInterface
+    {
+        $this->objects = array_merge($this->objects, (array) $objects);
+
+        return $this;
+    }
+
+    /**
+     * Return taxonomy attached objects.
+     *
+     * @return array
+     */
+    public function getObjects(): array
+    {
+        return $this->objects;
     }
 }

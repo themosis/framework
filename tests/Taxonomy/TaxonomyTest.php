@@ -4,6 +4,7 @@ namespace Themosis\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
+use Themosis\Hook\ActionBuilder;
 use Themosis\Taxonomy\Factory;
 
 class TaxonomyTest extends TestCase
@@ -17,7 +18,9 @@ class TaxonomyTest extends TestCase
 
     protected function getFactory()
     {
-        return new Factory($this->getApplication());
+        $app = $this->getApplication();
+
+        return new Factory($app, new ActionBuilder($app));
     }
 
     public function testCreateTaxonomyWithDefaults()
@@ -28,5 +31,29 @@ class TaxonomyTest extends TestCase
 
         $this->assertEquals('Popular Authors', $taxonomy->getLabel('popular_items'));
         $this->assertEmpty($taxonomy->getLabel('not_defined'));
+        $this->assertTrue($taxonomy->getArgument('public'));
+        $this->assertFalse($taxonomy->getArgument('show_in_rest'));
+
+        $taxonomy->setObjects('page');
+
+        $this->assertEquals(['post', 'page'], $taxonomy->getObjects());
+    }
+
+    public function testCreateCustomTaxonomy()
+    {
+        $factory = $this->getFactory();
+
+        $taxonomy = $factory->make('theme', ['projects'], 'Themes', 'Theme')
+            ->setLabels([
+                'popular_items' => 'Best Themes'
+            ])
+            ->setObjects(['post', 'wireframes'])
+            ->setArguments([
+                'show_in_rest' => true,
+                'public' => false
+            ]);
+
+        $this->assertEquals('Best Themes', $taxonomy->getLabel('popular_items'));
+        $this->assertEquals(['projects', 'post', 'wireframes'], $taxonomy->getObjects());
     }
 }
