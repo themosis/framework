@@ -38,7 +38,7 @@ class Factory
      */
     public function make(string $slug, $objects, string $plural, string $singular): TaxonomyInterface
     {
-        $taxonomy = (new Taxonomy($slug, (array) $objects, $this->action))
+        $taxonomy = (new Taxonomy($slug, (array) $objects, $this->container, $this->action))
             ->setLabels([
                 'name' => $plural,
                 'singular_name' => $singular,

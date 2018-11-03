@@ -2,6 +2,7 @@
 
 namespace Themosis\Taxonomy;
 
+use Illuminate\Contracts\Container\Container;
 use Themosis\Hook\IHook;
 use Themosis\Taxonomy\Contracts\TaxonomyInterface;
 
@@ -20,18 +21,26 @@ class Taxonomy implements TaxonomyInterface
     /**
      * @var array
      */
-    protected $args;
+    protected $args = [];
+
+    /**
+     * @var Container
+     */
+    protected $container;
 
     /**
      * @var IHook
      */
     protected $action;
 
-    public function __construct(string $slug, array $objects, IHook $action)
+    public function __construct(string $slug, array $objects, Container $container, IHook $action)
     {
         $this->slug = $slug;
         $this->objects = $objects;
+        $this->container = $container;
         $this->action = $action;
+
+        $this->parseObjectsForCustomStatus($this->objects);
     }
 
     /**
@@ -79,13 +88,13 @@ class Taxonomy implements TaxonomyInterface
     /**
      * Set taxonomy arguments.
      *
-     * @param array $sargs
+     * @param array $args
      *
      * @return TaxonomyInterface
      */
-    public function setArguments(array $sargs): TaxonomyInterface
+    public function setArguments(array $args): TaxonomyInterface
     {
-        $this->args = array_merge($this->args, $sargs);
+        $this->args = array_merge($this->args, $args);
 
         return $this;
     }
@@ -147,7 +156,36 @@ class Taxonomy implements TaxonomyInterface
      */
     public function setObjects($objects): TaxonomyInterface
     {
-        $this->objects = array_merge($this->objects, (array) $objects);
+        $this->objects = array_unique(array_merge($this->objects, (array) $objects));
+
+        // Check if object have custom post status.
+        // If so, change its default update count callback function.
+        $this->parseObjectsForCustomStatus($this->objects);
+
+        return $this;
+    }
+
+    /**
+     * Parse attached objects and set default update count callback.
+     *
+     * @param array $objects
+     *
+     * @return TaxonomyInterface
+     */
+    protected function parseObjectsForCustomStatus(array $objects): TaxonomyInterface
+    {
+        foreach ($objects as $object) {
+            if ($this->container->bound('themosis.posttype.'.$object)) {
+                $postType = $this->container['themosis.posttype.'.$object];
+
+                if ($postType->hasStatus()) {
+                    $this->setArguments([
+                        'update_count_callback' => '_update_generic_term_count'
+                    ]);
+                    break;
+                }
+            }
+        }
 
         return $this;
     }

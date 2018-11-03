@@ -93,4 +93,19 @@ interface PostTypeInterface
      * @return bool
      */
     public function hasStatus(): bool;
+
+    /**
+     * Return the post type slug.
+     *
+     * @return string
+     */
+    public function getSlug(): string;
+
+    /**
+     * Return the post type slug.
+     * Aliased method for getSlug.
+     *
+     * @return string
+     */
+    public function getName(): string;
 }

@@ -176,6 +176,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             'action' => [
                 \Themosis\Hook\ActionBuilder::class
             ],
+            'ajax' => [
+                \Themosis\Ajax\Ajax::class
+            ],
             'app' => [
                 Application::class,
                 \Illuminate\Contracts\Container\Container::class,
@@ -245,6 +248,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             'metabox' => [
                 \Themosis\Metabox\Factory::class
             ],
+            'posttype' => [
+                \Themosis\PostType\Factory::class
+            ],
             'redirect' => [
                 \Illuminate\Routing\Redirector::class
             ],
@@ -257,6 +263,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
                 \Illuminate\Routing\Router::class,
                 \Illuminate\Contracts\Routing\Registrar::class,
                 \Illuminate\Contracts\Routing\BindingRegistrar::class
+            ],
+            'taxonomy' => [
+                \Themosis\Taxonomy\Factory::class
             ],
             'translator' => [
                 \Illuminate\Translation\Translator::class,

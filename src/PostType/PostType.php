@@ -140,6 +140,27 @@ class PostType implements PostTypeInterface
     }
 
     /**
+     * Return the post type slug.
+     *
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Return the post type slug.
+     * Aliased method for getSlug.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->getSlug();
+    }
+
+    /**
      * Register the post type.
      *
      * @return PostTypeInterface

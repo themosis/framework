@@ -32,11 +32,11 @@ interface TaxonomyInterface
     /**
      * Set taxonomy arguments.
      *
-     * @param array $sargs
+     * @param array $args
      *
      * @return TaxonomyInterface
      */
-    public function setArguments(array $sargs): TaxonomyInterface;
+    public function setArguments(array $args): TaxonomyInterface;
 
     /**
      * Return taxonomy arguments.

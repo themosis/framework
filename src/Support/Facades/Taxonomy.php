@@ -2,6 +2,8 @@
 
 namespace Themosis\Support\Facades;
 
+use Illuminate\Support\Facades\Facade;
+
 class Taxonomy extends Facade
 {
     /**
