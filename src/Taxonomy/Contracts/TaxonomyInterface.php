@@ -5,6 +5,21 @@ namespace Themosis\Taxonomy\Contracts;
 interface TaxonomyInterface
 {
     /**
+     * Return the taxonomy slug.
+     *
+     * @return string
+     */
+    public function getSlug(): string;
+
+    /**
+     * Return the taxonomy slug.
+     * Aliased method for getSlug.
+     *
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
      * Set taxonomy labels.
      *
      * @param array $labels

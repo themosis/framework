@@ -32,7 +32,7 @@ class TaxonomyTest extends TestCase
         $this->assertEquals('Popular Authors', $taxonomy->getLabel('popular_items'));
         $this->assertEmpty($taxonomy->getLabel('not_defined'));
         $this->assertTrue($taxonomy->getArgument('public'));
-        $this->assertFalse($taxonomy->getArgument('show_in_rest'));
+        $this->assertTrue($taxonomy->getArgument('show_in_rest'));
 
         $taxonomy->setObjects('page');
 
@@ -49,7 +49,7 @@ class TaxonomyTest extends TestCase
             ])
             ->setObjects(['post', 'wireframes'])
             ->setArguments([
-                'show_in_rest' => true,
+                'show_in_rest' => false,
                 'public' => false
             ]);
 

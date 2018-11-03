@@ -53,7 +53,7 @@ class PostTypeTest extends TestCase
         $this->assertNotEmpty($postType->getLabels());
         $this->assertEquals($postType->getLabels(), $postType->getArguments()['labels']);
         $this->assertTrue($postType->getArgument('public'));
-        $this->assertFalse($postType->getArgument('show_in_rest'));
+        $this->assertTrue($postType->getArgument('show_in_rest'));
         $this->assertEquals(20, $postType->getArgument('menu_position'));
         $this->assertTrue($postType->getArgument('has_archive'));
     }

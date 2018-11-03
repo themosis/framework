@@ -44,6 +44,27 @@ class Taxonomy implements TaxonomyInterface
     }
 
     /**
+     * Return the taxonomy slug.
+     *
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Return the taxonomy slug.
+     * Aliased method for getSlug.
+     *
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->getSlug();
+    }
+
+    /**
      * Set taxonomy labels.
      *
      * @param array $labels
@@ -145,6 +166,18 @@ class Taxonomy implements TaxonomyInterface
     public function register()
     {
         register_taxonomy($this->slug, $this->objects, $this->getArguments());
+        $this->bind();
+    }
+
+    /**
+     * Bind the taxonomy to its custom post type|object. Make sure the taxonomy
+     * can be found in 'parse_query' or 'pre_get_posts' filters.
+     */
+    protected function bind()
+    {
+        foreach ($this->objects as $object) {
+            register_taxonomy_for_object_type($this->slug, $object);
+        }
     }
 
     /**

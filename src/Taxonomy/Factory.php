@@ -64,7 +64,7 @@ class Factory
             ])
             ->setArguments([
                 'public' => true,
-                'show_in_rest' => false,
+                'show_in_rest' => true,
                 'show_admin_column' => true
             ]);
 

@@ -67,7 +67,7 @@ class Factory
             ])
             ->setArguments([
                 'public' => true,
-                'show_in_rest' => false,
+                'show_in_rest' => true,
                 'menu_position' => 20,
                 'supports' => ['title'],
                 'has_archive' => true
