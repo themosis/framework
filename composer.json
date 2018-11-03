@@ -58,9 +58,6 @@
     "phpunit/phpunit": "^7.0",
     "symfony/var-dumper": "^4.1"
   },
-  "replace": {
-    "themosis/hook": "self.version"
-  },
   "scripts": {
     "test": "php ./vendor/bin/phpunit"
   },
