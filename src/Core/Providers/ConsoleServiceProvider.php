@@ -16,6 +16,7 @@ use Themosis\Core\Console\ProviderMakeCommand;
 use Themosis\Core\Console\RouteCacheCommand;
 use Themosis\Core\Console\RouteClearCommand;
 use Themosis\Core\Console\RouteListCommand;
+use Themosis\Core\Console\ThemeInstallCommand;
 use Themosis\Core\Console\UpCommand;
 use Themosis\Core\Console\VendorPublishCommand;
 use Themosis\Core\Console\ViewClearCommand;
@@ -59,6 +60,7 @@ class ConsoleServiceProvider extends ServiceProvider
         'MigrateMake' => 'command.migrate.make',
         'ModelMake' => 'command.model.make',
         'ProviderMake' => 'command.provider.make',
+        'ThemeInstall' => 'command.theme.install',
         'VendorPublish' => 'command.vendor.publish',
         'WidgetMake' => 'command.widget.make'
     ];
@@ -247,6 +249,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new RouteListCommand($app['router']);
+        });
+    }
+
+    /**
+     * Register the theme:install command.
+     *
+     * @param string $abstract
+     */
+    protected function registerThemeInstallCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ThemeInstallCommand($app['files']);
         });
     }
 
