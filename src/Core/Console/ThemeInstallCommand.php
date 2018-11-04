@@ -46,9 +46,14 @@ class ThemeInstallCommand extends Command
     public function handle()
     {
         $name = $this->ask('Please choose a name for your theme!', 'themosis');
+        $theme = strtolower($name);
 
-        $this->installTheme($name);
+        $this->installTheme($theme);
         $this->setupTheme($name);
+
+        if ($this->option('default')) {
+            $this->setAsDefaultTheme($theme);
+        }
 
         $this->info('Theme ['.$name.'] installed.');
     }
@@ -74,7 +79,7 @@ class ThemeInstallCommand extends Command
 
         $this->files->move(
             themes_path($this->option('dir')),
-            themes_path(str_replace(' ', '-', strtolower($name)))
+            themes_path(str_replace(' ', '-', $name))
         );
         $this->files->delete($temp);
     }
@@ -86,14 +91,14 @@ class ThemeInstallCommand extends Command
      */
     protected function setupTheme(string $name)
     {
-        $this->info('Setting up style.css file...');
+        $this->info('Set [style.css] file...');
 
-        $themeName = ucfirst($name);
+        $theme = ucfirst($name);
         $textdomain = str_replace(['-', ' '], '_', strtolower($name));
 
         $content = <<<STYLES
 /*
-Theme Name: $themeName
+Theme Name: $theme
 Theme URI: https://framework.themosis.com/
 Author: Themosis
 Author URI: https://www.themosis.com/
@@ -110,6 +115,33 @@ STYLES;
     }
 
     /**
+     * Set default theme constant in main "wordpress.php" config file.
+     *
+     * @param string $name
+     */
+    protected function setAsDefaultTheme(string $name)
+    {
+        if (! file_exists($file = config_path('wordpress.php'))) {
+            $this->warn('Cannot update default theme configuration.');
+
+            return;
+        }
+
+        $this->info('Set default theme constant...');
+        $lines = file($file);
+
+        $content = array_map(function ($line) use ($name) {
+            if (stristr($line, 'WP_DEFAULT_THEME')) {
+                return "define('WP_DEFAULT_THEME', '{$name}');\r\n";
+            }
+
+            return $line;
+        }, $lines);
+
+        $this->files->put($file, implode('', $content));
+    }
+
+    /**
      * Command options.
      *
      * @return array
@@ -118,7 +150,8 @@ STYLES;
     {
         return [
             ['dir', null, InputOption::VALUE_OPTIONAL, 'ZIP file base directory name.', 'theme-master'],
-            ['url', null, InputOption::VALUE_OPTIONAL, 'Theme ZIP file URL.', 'https://github.com/themosis/theme/archive/master.zip']
+            ['url', null, InputOption::VALUE_OPTIONAL, 'Theme ZIP file URL.', 'https://github.com/themosis/theme/archive/master.zip'],
+            ['default', null, InputOption::VALUE_OPTIONAL, 'Set default theme constant.', true]
         ];
     }
 }

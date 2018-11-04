@@ -85,6 +85,20 @@ if (! function_exists('config')) {
     }
 }
 
+if (! function_exists('config_path')) {
+    /**
+     * Return the root config path.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    function config_path($path = '')
+    {
+        return app()->configPath($path);
+    }
+}
+
 if (! function_exists('content_path')) {
     /**
      * Get the path to the content public directory.
