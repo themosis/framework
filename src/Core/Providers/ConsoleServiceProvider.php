@@ -3,7 +3,14 @@
 namespace Themosis\Core\Providers;
 
 use Illuminate\Database\Console\Factories\FactoryMakeCommand;
+use Illuminate\Database\Console\Migrations\FreshCommand;
+use Illuminate\Database\Console\Migrations\InstallCommand;
+use Illuminate\Database\Console\Migrations\MigrateCommand;
 use Illuminate\Database\Console\Migrations\MigrateMakeCommand;
+use Illuminate\Database\Console\Migrations\RefreshCommand;
+use Illuminate\Database\Console\Migrations\ResetCommand;
+use Illuminate\Database\Console\Migrations\RollbackCommand;
+use Illuminate\Database\Console\Migrations\StatusCommand;
 use Illuminate\Routing\Console\ControllerMakeCommand;
 use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Session\Console\SessionTableCommand;
@@ -40,10 +47,17 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected $commands = [
         'Down' => 'command.down',
-        'Up' => 'command.up',
+        'Migrate' => 'command.migrate',
+        'MigrateFresh' => 'command.migrate.fresh',
+        'MigrateInstall' => 'command.migrate.install',
+        'MigrateRefresh' => 'command.migrate.refresh',
+        'MigrateReset' => 'command.migrate.reset',
+        'MigrateRollback' => 'command.migrate.rollback',
+        'MigrateStatus' => 'command.migrate.status',
         'RouteCache' => 'command.route.cache',
         'RouteClear' => 'command.route.clear',
         'RouteList' => 'command.route.list',
+        'Up' => 'command.up',
         'ViewClear' => 'command.view.clear'
     ];
 
@@ -191,6 +205,42 @@ class ConsoleServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the migrate command.
+     *
+     * @param string $abstract
+     */
+    protected function registerMigrateCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new MigrateCommand($app['migrator']);
+        });
+    }
+
+    /**
+     * Register the migrate:fresh command.
+     *
+     * @param string $abstract
+     */
+    protected function registerMigrateFreshCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new FreshCommand();
+        });
+    }
+
+    /**
+     * Register the migrate:install command.
+     *
+     * @param string $abstract
+     */
+    protected function registerMigrateInstallCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new InstallCommand($app['migration.repository']);
+        });
+    }
+
+    /**
      * Register the make:migration command.
      *
      * @param string $abstract
@@ -205,6 +255,54 @@ class ConsoleServiceProvider extends ServiceProvider
             $composer = $app['composer'];
 
             return new MigrateMakeCommand($creator, $composer);
+        });
+    }
+
+    /**
+     * Register the migrate:refresh command.
+     *
+     * @param string $abstract
+     */
+    protected function registerMigrateRefreshCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new RefreshCommand();
+        });
+    }
+
+    /**
+     * Register the migrate:reset command.
+     *
+     * @param string $abstract
+     */
+    protected function registerMigrateResetCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ResetCommand($app['migrator']);
+        });
+    }
+
+    /**
+     * Register the migrate:rollback command.
+     *
+     * @param string $abstract
+     */
+    protected function registerMigrateRollbackCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new RollbackCommand($app['migrator']);
+        });
+    }
+
+    /**
+     * Register the migrate:status command.
+     *
+     * @param string $abstract
+     */
+    protected function registerMigrateStatusCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new StatusCommand($app['migrator']);
         });
     }
 
