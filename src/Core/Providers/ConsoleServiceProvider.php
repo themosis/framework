@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Factories\FactoryMakeCommand;
 use Illuminate\Database\Console\Migrations\MigrateMakeCommand;
 use Illuminate\Routing\Console\ControllerMakeCommand;
 use Illuminate\Routing\Console\MiddlewareMakeCommand;
+use Illuminate\Session\Console\SessionTableCommand;
 use Illuminate\Support\ServiceProvider;
 use Themosis\Core\Console\ConsoleMakeCommand;
 use Themosis\Core\Console\DownCommand;
@@ -62,6 +63,7 @@ class ConsoleServiceProvider extends ServiceProvider
         'MigrateMake' => 'command.migrate.make',
         'ModelMake' => 'command.model.make',
         'ProviderMake' => 'command.provider.make',
+        'SessionTable' => 'command.session.table',
         'ThemeInstall' => 'command.theme.install',
         'VendorPublish' => 'command.vendor.publish',
         'WidgetMake' => 'command.widget.make'
@@ -263,6 +265,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new RouteListCommand($app['router']);
+        });
+    }
+
+    /**
+     * Register the session:table command.
+     *
+     * @param string $abstract
+     */
+    protected function registerSessionTableCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new SessionTableCommand($app['files'], $app['composer']);
         });
     }
 
