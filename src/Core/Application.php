@@ -203,6 +203,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
                 \Illuminate\Auth\Passwords\PasswordBroker::class,
                 \Illuminate\Contracts\Auth\PasswordBroker::class
             ],
+            'blade.compiler' => [
+                \Illuminate\View\Compilers\BladeCompiler::class
+            ],
             'cache' => [
                 \Illuminate\Cache\CacheManager::class,
                 \Illuminate\Contracts\Cache\Factory::class
@@ -214,6 +217,18 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             'config' => [
                 \Illuminate\Config\Repository::class,
                 \Illuminate\Contracts\Config\Repository::class
+            ],
+            'cookie' => [
+                \Illuminate\Cookie\CookieJar::class,
+                \Illuminate\Contracts\Cookie\Factory::class,
+                \Illuminate\Contracts\Cookie\QueueingFactory::class
+            ],
+            'db' => [
+                \Illuminate\Database\DatabaseManager::class
+            ],
+            'db.connection' => [
+                \Illuminate\Database\Connection::class,
+                \Illuminate\Database\ConnectionInterface::class
             ],
             'events' => [
                 \Illuminate\Events\Dispatcher::class,
@@ -238,12 +253,23 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             'form' => [
                 \Themosis\Forms\FormFactory::class
             ],
+            'hash' => [
+                \Illuminate\Hashing\HashManager::class
+            ],
+            'hash.driver' => [
+                \Illuminate\Contracts\Hashing\Hasher::class
+            ],
             'html' => [
                 \Themosis\Html\HtmlBuilder::class
             ],
             'log' => [
                 \Illuminate\Log\LogManager::class,
                 \Psr\Log\LoggerInterface::class
+            ],
+            'mailer' => [
+                \Illuminate\Mail\Mailer::class,
+                \Illuminate\Contracts\Mail\Mailer::class,
+                \Illuminate\Contracts\Mail\MailQueue::class
             ],
             'metabox' => [
                 \Themosis\Metabox\Factory::class
@@ -264,12 +290,22 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
                 \Illuminate\Contracts\Routing\Registrar::class,
                 \Illuminate\Contracts\Routing\BindingRegistrar::class
             ],
+            'session' => [
+                \Illuminate\Session\SessionManager::class
+            ],
+            'session.store' => [
+                \Illuminate\Session\Store::class,
+                \Illuminate\Contracts\Session\Session::class
+            ],
             'taxonomy' => [
                 \Themosis\Taxonomy\Factory::class
             ],
             'translator' => [
                 \Illuminate\Translation\Translator::class,
                 \Illuminate\Contracts\Translation\Translator::class
+            ],
+            'twig' => [
+                \Twig_Environment::class
             ],
             'url' => [
                 \Illuminate\Routing\UrlGenerator::class,
