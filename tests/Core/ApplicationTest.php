@@ -104,6 +104,11 @@ class ApplicationTest extends TestCase
             $app['path.bootstrap'],
             'Cannot get the bootstrap path'
         );
+        $this->assertEquals(
+            $path.'/htdocs/cms',
+            $app['path.wp'],
+            'Cannot get the WordPress path'
+        );
     }
 
     public function testApplicationBaseBindings()

@@ -392,6 +392,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this->instance('path.database', $this->databasePath());
         // Bootstrap
         $this->instance('path.bootstrap', $this->bootstrapPath());
+        // WordPress
+        $this->instance('path.wp', $this->wordpressPath());
     }
 
     /**
@@ -571,6 +573,20 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
+     * Get the WordPress directory path.
+     *
+     * @param string $path
+     *
+     * @throws \Illuminate\Container\EntryNotFoundException
+     *
+     * @return string
+     */
+    public function wordpressPath($path = '')
+    {
+        return $this->webPath(env('WP_DIR', 'cms')).($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
      * Set the environment file to be loaded during bootstrapping.
      *
      * @param string $file
@@ -667,11 +683,19 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     /**
      * Determine if the application is currently down for maintenance.
      *
+     * @throws \Illuminate\Container\EntryNotFoundException
+     *
      * @return bool
      */
     public function isDownForMaintenance()
     {
-        return file_exists(ABSPATH.'.maintenance') || wp_installing();
+        $filePath = $this->wordpressPath('.maintenance');
+
+        if (function_exists('wp_installing') && ! file_exists($filePath)) {
+            return \wp_installing();
+        }
+
+        return file_exists($filePath);
     }
 
     /**

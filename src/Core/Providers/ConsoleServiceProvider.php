@@ -2,6 +2,8 @@
 
 namespace Themosis\Core\Providers;
 
+use Illuminate\Console\Scheduling\ScheduleFinishCommand;
+use Illuminate\Console\Scheduling\ScheduleRunCommand;
 use Illuminate\Database\Console\Factories\FactoryMakeCommand;
 use Illuminate\Database\Console\Migrations\FreshCommand;
 use Illuminate\Database\Console\Migrations\InstallCommand;
@@ -57,6 +59,8 @@ class ConsoleServiceProvider extends ServiceProvider
         'RouteCache' => 'command.route.cache',
         'RouteClear' => 'command.route.clear',
         'RouteList' => 'command.route.list',
+        'ScheduleFinish' => ScheduleFinishCommand::class,
+        'ScheduleRun' => ScheduleRunCommand::class,
         'Up' => 'command.up',
         'ViewClear' => 'command.view.clear'
     ];
@@ -364,6 +368,22 @@ class ConsoleServiceProvider extends ServiceProvider
         $this->app->singleton($abstract, function ($app) {
             return new RouteListCommand($app['router']);
         });
+    }
+
+    /**
+     * Register the schedule:finish {id} command.
+     */
+    protected function registerScheduleFinishCommand()
+    {
+        $this->app->singleton(ScheduleFinishCommand::class);
+    }
+
+    /**
+     * Register the schedule:run command.
+     */
+    protected function registerScheduleRunCommand()
+    {
+        $this->app->singleton(ScheduleRunCommand::class);
     }
 
     /**
