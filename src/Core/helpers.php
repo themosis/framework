@@ -160,6 +160,20 @@ if (! function_exists('logs')) {
     }
 }
 
+if (! function_exists('plugins_path')) {
+    /**
+     * Return the plugins path.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    function plugins_path($path = '')
+    {
+        return app()->pluginsPath($path);
+    }
+}
+
 if (! function_exists('redirect')) {
     /**
      * Get a redirector instance.

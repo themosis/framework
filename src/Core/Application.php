@@ -1150,6 +1150,19 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
+     * Bootstrap a Themosis like plugin.
+     *
+     * @param string $filePath
+     * @param string $configPath
+     *
+     * @return PluginManager
+     */
+    public function loadPlugin(string $filePath, string $configPath)
+    {
+        return (new PluginManager($this, $filePath, new ClassLoader()))->load($configPath);
+    }
+
+    /**
      * Register the framework core "plugin" and auto-load
      * any found mu-plugins after the framework.
      *
