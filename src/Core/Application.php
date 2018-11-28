@@ -1251,8 +1251,12 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function loadTheme(string $dirPath, string $configPath)
     {
-        return (new ThemeManager($this, $dirPath, new ClassLoader()))
+        $theme = (new ThemeManager($this, $dirPath, new ClassLoader()))
             ->load($dirPath.'/'.trim($configPath, '\/'));
+
+        $this->instance('wp.theme', $theme);
+
+        return $theme;
     }
 
     /**
