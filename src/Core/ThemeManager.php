@@ -68,7 +68,7 @@ class ThemeManager
     /**
      * @var ImageSize
      */
-    protected $images;
+    public $images;
 
     /**
      * The theme directory name.
@@ -98,13 +98,6 @@ class ThemeManager
         $this->setThemeConstants();
         $this->loadThemeConfiguration($path);
         $this->setThemeAutoloading();
-        $this->registerThemeServicesProviders();
-        $this->setThemeViews();
-        $this->setThemeImages();
-        $this->setThemeMenus();
-        $this->setThemeSidebars();
-        $this->setThemeSupport();
-        $this->setThemeTemplates();
 
         return $this;
     }
@@ -218,29 +211,37 @@ class ThemeManager
 
     /**
      * Register theme services providers.
+     *
+     * @param array $providers
+     *
+     * @return $this
      */
-    protected function registerThemeServicesProviders()
+    public function providers(array $providers = [])
     {
-        $providers = $this->config->get('theme.providers', []);
-
         foreach ($providers as $provider) {
             $this->app->register(new $provider($this->app));
         }
+
+        return $this;
     }
 
     /**
      * Register theme views path.
+     *
+     * @param array $paths
+     *
+     * @return $this
      */
-    protected function setThemeViews()
+    public function views($paths = [])
     {
         if (! $this->app->has('view')) {
-            return;
+            return $this;
         }
 
         $paths = $this->config->get('theme.views', []);
 
         if (empty($paths)) {
-            return;
+            return $this;
         }
 
         $factory = $this->app->make('view');
@@ -251,6 +252,8 @@ class ThemeManager
             $factory->addLocation($uri);
             $twigLoader->addPath($uri);
         }
+
+        return $this;
     }
 
     /**
@@ -267,11 +270,31 @@ class ThemeManager
 
     /**
      * Register theme image sizes.
+     *
+     * @param array $sizes
+     *
+     * @return $this
      */
-    protected function setThemeImages()
+    public function images(array $sizes = [])
     {
-        $this->images = (new ImageSize($this->config->get('images'), $this->app['filter']))
+        if (empty($sizes)) {
+            return $this;
+        }
+
+        $this->images = (new ImageSize($sizes, $this->app['filter']))
             ->register();
+
+        return $this;
+    }
+
+    /**
+     * Return the config instance.
+     *
+     * @return Repository
+     */
+    public function config()
+    {
+        return $this->config;
     }
 
     /**
@@ -279,53 +302,79 @@ class ThemeManager
      *
      * @return ImageSize
      */
-    public function images()
+    public function getImages()
     {
         return $this->images;
     }
 
     /**
      * Register theme menus locations.
+     *
+     * @param array $menus
+     *
+     * @return $this
      */
-    protected function setThemeMenus()
+    public function menus(array $menus = [])
     {
-        if (function_exists('register_nav_menus') && $this->config->has('menus')) {
-            register_nav_menus($this->config->get('menus'));
+        if (empty($menus)) {
+            return $this;
         }
+
+        if (function_exists('register_nav_menus')) {
+            register_nav_menus($menus);
+        }
+
+        return $this;
     }
 
     /**
      * Register theme sidebars.
+     *
+     * @param array $sidebars
+     *
+     * @return $this
      */
-    protected function setThemeSidebars()
+    public function sidebars($sidebars = [])
     {
-        if (! function_exists('register_sidebar')) {
-            return;
+        if (empty($sidebars)) {
+            return $this;
         }
 
-        $sidebars = $this->config->get('sidebars', []);
-
-        if (! empty($sidebars)) {
+        if (function_exists('register_sidebar')) {
             foreach ($sidebars as $sidebar) {
                 register_sidebar($sidebar);
             }
         }
+
+        return $this;
     }
 
     /**
      * Register theme support features.
+     *
+     * @param array $features
+     *
+     * @return $this
      */
-    protected function setThemeSupport()
+    public function support($features = [])
     {
-        (new Support($this->config->get('support', [])))->register();
+        (new Support($features))->register();
+
+        return $this;
     }
 
     /**
      * Register theme templates.
+     *
+     * @param array $templates
+     *
+     * @return $this
      */
-    protected function setThemeTemplates()
+    public function templates($templates = [])
     {
-        (new Templates($this->config->get('templates', []), $this->app['filter']))
+        (new Templates($templates, $this->app['filter']))
             ->register();
+
+        return $this;
     }
 }
