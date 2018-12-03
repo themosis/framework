@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Log\LogManager;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\HtmlString;
 use Psr\Log\LoggerInterface;
 
 if (! function_exists('app')) {
@@ -157,6 +158,20 @@ if (! function_exists('logs')) {
     function logs($driver = null)
     {
         return $driver ? app('log')->driver($driver) : app('log');
+    }
+}
+
+if (! function_exists('method_field')) {
+    /**
+     * Generate a form field to spoof the HTTP verb usef by forms.
+     *
+     * @param string $method
+     *
+     * @return HtmlString
+     */
+    function method_field($method)
+    {
+        return new HtmlString('<input type="hidden" name="_method" value="'.$method.'">');
     }
 }
 
