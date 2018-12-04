@@ -20,7 +20,7 @@ class ThemeInstallCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Install the themosis theme.';
+    protected $description = 'Install a Themosis theme boilerplate.';
 
     /**
      * @var Filesystem

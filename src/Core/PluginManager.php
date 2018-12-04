@@ -6,11 +6,12 @@ use Composer\Autoload\ClassLoader;
 use Illuminate\Config\Repository;
 use Themosis\Asset\Finder;
 use Themosis\Core\Support\IncludesFiles;
+use Themosis\Core\Support\PluginHeaders;
 use Themosis\Core\Support\WordPressFileHeaders;
 
 class PluginManager
 {
-    use WordPressFileHeaders, IncludesFiles;
+    use WordPressFileHeaders, IncludesFiles, PluginHeaders;
 
     /**
      * @var Application
@@ -31,25 +32,6 @@ class PluginManager
      * @var string
      */
     protected $directory;
-
-    /**
-     * @var array
-     */
-    public $headers = [
-        'name' => 'Plugin Name',
-        'plugin_uri' => 'Plugin URI',
-        'plugin_prefix' => 'Plugin Prefix',
-        'description' => 'Description',
-        'version' => 'Version',
-        'author' => 'Author',
-        'author_uri' => 'Author URI',
-        'license' => 'License',
-        'license_uri' => 'License URI',
-        'text_domain' => 'Text Domain',
-        'domain_path' => 'Domain Path',
-        'domain_var' => 'Domain Var',
-        'network' => 'Network'
-    ];
 
     /**
      * @var array

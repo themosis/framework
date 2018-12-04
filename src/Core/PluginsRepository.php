@@ -5,11 +5,12 @@ namespace Themosis\Core;
 use Exception;
 use Illuminate\Filesystem\Filesystem;
 use Themosis\Core\Events\PluginLoaded;
+use Themosis\Core\Support\PluginHeaders;
 use Themosis\Core\Support\WordPressFileHeaders;
 
 class PluginsRepository
 {
-    use WordPressFileHeaders;
+    use WordPressFileHeaders, PluginHeaders;
 
     /**
      * @var Application
@@ -30,23 +31,6 @@ class PluginsRepository
      * @var string
      */
     protected $manifestPath;
-
-    /**
-     * Plugin headers.
-     *
-     * @var array
-     */
-    public $headers = [
-        'name' => 'Plugin Name',
-        'plugin_uri' => 'Plugin URI',
-        'version' => 'Version',
-        'description' => 'Description',
-        'author' => 'Author',
-        'author_uri' => 'Author URI',
-        'textdomain' => 'Text Domain',
-        'domainpath' => 'Domain Path',
-        'network' => 'Network'
-    ];
 
     public function __construct(Application $application, Filesystem $files, string $pluginsPath, string $manifestPath)
     {

@@ -23,6 +23,7 @@ use Themosis\Core\Console\FormMakeCommand;
 use Themosis\Core\Console\HookMakeCommand;
 use Themosis\Core\Console\MailMakeCommand;
 use Themosis\Core\Console\ModelMakeCommand;
+use Themosis\Core\Console\PluginInstallCommand;
 use Themosis\Core\Console\ProviderMakeCommand;
 use Themosis\Core\Console\RouteCacheCommand;
 use Themosis\Core\Console\RouteClearCommand;
@@ -80,6 +81,7 @@ class ConsoleServiceProvider extends ServiceProvider
         'MiddlewareMake' => 'command.middleware.make',
         'MigrateMake' => 'command.migrate.make',
         'ModelMake' => 'command.model.make',
+        'PluginInstall' => 'command.plugin.install',
         'ProviderMake' => 'command.provider.make',
         'SessionTable' => 'command.session.table',
         'ThemeInstall' => 'command.theme.install',
@@ -319,6 +321,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new ModelMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the plugin:install command.
+     *
+     * @param string $abstract
+     */
+    protected function registerPluginInstallCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new PluginInstallCommand($app['files'], new \ZipArchive());
         });
     }
 
