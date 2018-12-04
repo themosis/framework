@@ -53,7 +53,7 @@ class PluginManagerTest extends TestCase
         $this->assertEquals('Timeline', $plugin->getHeader('name'));
         $this->assertEquals('TIMELINE_TD', strtoupper($plugin->getHeader('domain_var')));
         $this->assertEquals('1.0.5', $plugin->getHeader('version'));
-        $this->assertEquals('namespace', $plugin->getHeader('plugin_namespace'));
+        $this->assertEquals('namespace', $plugin->getHeader('plugin_prefix'));
     }
 
     public function testPluginConfiguration()
@@ -62,16 +62,17 @@ class PluginManagerTest extends TestCase
 
         $this->assertEquals([
             'Com\\Themosis\\Plugin\\' => 'resources'
-        ], $plugin->getConfig('plugin.autoloading'));
+        ], $plugin->config('plugin.autoloading'));
 
-        $this->assertTrue($plugin->getConfig('plugin.anyvar'));
-        $this->assertEquals(['views'], $plugin->getConfig('plugin.views'));
+        $this->assertTrue($plugin->config('plugin.anyvar'));
+        $this->assertEquals(['views'], $plugin->config('plugin.views'));
     }
 
     public function testPluginRegisterServicesProviders()
     {
         $app = $this->getApplication();
-        $this->getPlugin();
+        $plugin = $this->getPlugin();
+        $plugin->providers($plugin->config('plugin.providers'));
 
         $this->assertInstanceOf(Route::class, $app->getProvider('Com\Themosis\Plugin\Providers\Route'));
     }

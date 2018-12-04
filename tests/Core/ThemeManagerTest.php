@@ -45,7 +45,7 @@ class ThemeManagerTest extends TestCase
         $app = $this->getApplication();
         $theme = $this->getThemeManager();
         $theme->load($app->themesPath('underscore/config'));
-        $theme->providers($theme->config()->get('theme.providers'));
+        $theme->providers($theme->config('theme.providers'));
 
         $this->assertInstanceOf(RouteServiceProvider::class, $app->getProvider('Theme\Providers\RouteServiceProvider'));
     }
@@ -79,7 +79,7 @@ class ThemeManagerTest extends TestCase
         $theme = $this->getThemeManager();
         $theme->load($app->themesPath('underscore/config'));
 
-        $theme->images($theme->config()->get('images'));
+        $theme->images($theme->config('images'));
 
         $sizes = $theme->images->getSizes();
 

@@ -38,7 +38,7 @@ class PluginManager
     public $headers = [
         'name' => 'Plugin Name',
         'plugin_uri' => 'Plugin URI',
-        'plugin_namespace' => 'Plugin Namespace',
+        'plugin_prefix' => 'Plugin Prefix',
         'description' => 'Description',
         'version' => 'Version',
         'author' => 'Author',
@@ -93,11 +93,9 @@ class PluginManager
     {
         $this->setDirectory();
         $this->setConstants();
-        $this->setNamespace();
+        $this->setPrefix();
         $this->loadPluginConfiguration($configPath);
         $this->setPluginAutoloading();
-        $this->setPluginServicesProviders();
-        $this->setPluginViews();
 
         return $this;
     }
@@ -175,7 +173,7 @@ class PluginManager
      *
      * @return mixed
      */
-    public function getConfig(string $key, $default = null)
+    public function config(string $key, $default = null)
     {
         $fullnameKey = $this->getNamespace().'_'.$key;
 
@@ -218,13 +216,13 @@ class PluginManager
     }
 
     /**
-     * Set the plugin configuration files namespace.
+     * Set the plugin prefix.
      */
-    protected function setNamespace()
+    protected function setPrefix()
     {
-        $ns = $this->parsedHeaders['plugin_namespace'] ?? 'tld_domain_plugin';
+        $prefix = $this->parsedHeaders['plugin_prefix'] ?? 'tld_domain_plugin';
 
-        $this->namespace = trim(str_replace(['-', '.', ' '], '_', $ns));
+        $this->namespace = trim(str_replace(['-', '.', ' '], '_', $prefix));
     }
 
     /**
@@ -242,7 +240,7 @@ class PluginManager
      */
     protected function setPluginAutoloading()
     {
-        foreach ($this->getConfig('plugin.autoloading', []) as $ns => $path) {
+        foreach ($this->config('plugin.autoloading', []) as $ns => $path) {
             $path = $this->dirPath.'/'.trim($path, '\/');
             $this->loader->addPsr4($ns, $path);
         }
@@ -252,29 +250,35 @@ class PluginManager
 
     /**
      * Register plugin services providers.
+     *
+     * @param array $providers
+     *
+     * @return $this
      */
-    protected function setPluginServicesProviders()
+    public function providers(array $providers = [])
     {
-        $providers = $this->getConfig('plugin.providers', []);
-
         foreach ($providers as $provider) {
             $this->app->register(new $provider($this->app));
         }
+
+        return $this;
     }
 
     /**
      * Register plugin views.
+     *
+     * @param array $paths
+     *
+     * @return $this
      */
-    protected function setPluginViews()
+    public function views(array $paths = [])
     {
         if (! $this->app->has('view')) {
-            return;
+            return $this;
         }
 
-        $paths = $this->getConfig('plugin.views', []);
-
         if (empty($paths)) {
-            return;
+            return $this;
         }
 
         $factory = $this->app->make('view');
@@ -285,5 +289,7 @@ class PluginManager
             $factory->addLocation($uri);
             $twigLoader->addPath($uri);
         }
+
+        return $this;
     }
 }

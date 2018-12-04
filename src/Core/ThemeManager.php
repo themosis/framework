@@ -232,13 +232,11 @@ class ThemeManager
      *
      * @return $this
      */
-    public function views($paths = [])
+    public function views(array $paths = [])
     {
         if (! $this->app->has('view')) {
             return $this;
         }
-
-        $paths = $this->config->get('theme.views', []);
 
         if (empty($paths)) {
             return $this;
@@ -288,13 +286,16 @@ class ThemeManager
     }
 
     /**
-     * Return the config instance.
+     * Return a configuration value.
      *
-     * @return Repository
+     * @param string $key
+     * @param mixed  $default
+     *
+     * @return mixed
      */
-    public function config()
+    public function config(string $key, $default = null)
     {
-        return $this->config;
+        return $this->config->get($key, $default);
     }
 
     /**
