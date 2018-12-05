@@ -76,12 +76,17 @@ class PluginsLoaderTest extends TestCase
         $this->assertEquals([
             'name' => 'Fake Plugin',
             'plugin_uri' => 'https://framework.themosis.com',
+            'plugin_prefix' => '',
+            'plugin_namespace' => '',
             'version' => '1.0.0',
             'description' => 'A fake plugin used for testing purpose only.',
             'author' => 'Fake Author',
             'author_uri' => '',
-            'textdomain' => '',
-            'domainpath' => '',
+            'license' => '',
+            'license_uri' => '',
+            'text_domain' => '',
+            'domain_path' => '',
+            'domain_var' => '',
             'network' => ''
         ], $headers);
     }
@@ -100,12 +105,17 @@ class PluginsLoaderTest extends TestCase
             'root' => 'fakeplugin.php',
             'name' => 'Fake Plugin',
             'plugin_uri' => 'https://framework.themosis.com',
+            'plugin_prefix' => '',
+            'plugin_namespace' => '',
             'version' => '1.0.0',
             'description' => 'A fake plugin used for testing purpose only.',
             'author' => 'Fake Author',
             'author_uri' => '',
-            'textdomain' => '',
-            'domainpath' => '',
+            'license' => '',
+            'license_uri' => '',
+            'text_domain' => '',
+            'domain_path' => '',
+            'domain_var' => '',
             'network' => ''
         ];
         $this->assertTrue(is_array($allHeaders));

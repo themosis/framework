@@ -13,6 +13,7 @@ trait PluginHeaders
         'name' => 'Plugin Name',
         'plugin_uri' => 'Plugin URI',
         'plugin_prefix' => 'Plugin Prefix',
+        'plugin_namespace' => 'Plugin Namespace',
         'description' => 'Description',
         'version' => 'Version',
         'author' => 'Author',
