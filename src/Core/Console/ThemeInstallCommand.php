@@ -4,6 +4,7 @@ namespace Themosis\Core\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
 class ThemeInstallCommand extends Command
@@ -20,7 +21,7 @@ class ThemeInstallCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Install a Themosis theme boilerplate.';
+    protected $description = 'Install a Themosis theme boilerplate';
 
     /**
      * @var Filesystem
@@ -32,12 +33,18 @@ class ThemeInstallCommand extends Command
      */
     protected $zip;
 
-    public function __construct(Filesystem $files)
+    /**
+     * @var string
+     */
+    protected $temp;
+
+    public function __construct(Filesystem $files, \ZipArchive $zip)
     {
         parent::__construct();
 
         $this->files = $files;
-        $this->zip = new \ZipArchive();
+        $this->zip = $zip;
+        $this->temp = storage_path('theme.zip');
     }
 
     /**
@@ -45,17 +52,16 @@ class ThemeInstallCommand extends Command
      */
     public function handle()
     {
-        $name = $this->ask('Please choose a name for your theme!', 'themosis');
-        $theme = strtolower($name);
+        $theme = strtolower($this->argument('name'));
 
         $this->installTheme($theme);
-        $this->setupTheme($name);
+        $this->setupTheme($theme);
 
         if ($this->option('default')) {
             $this->setAsDefaultTheme($theme);
         }
 
-        $this->info('Theme ['.$name.'] installed.');
+        $this->info('Theme ['.$theme.'] installed.');
     }
 
     /**
@@ -67,10 +73,9 @@ class ThemeInstallCommand extends Command
     {
         $this->info('Downloading theme...');
 
-        $temp = storage_path('theme.zip');
-        $this->files->put($temp, fopen($this->option('url'), 'r'));
+        $this->files->put($this->temp, fopen($this->option('url'), 'r'));
 
-        if (true !== $this->zip->open($temp)) {
+        if (true !== $this->zip->open($this->temp)) {
             $this->error('Cannot open theme zip file.');
         }
 
@@ -81,7 +86,7 @@ class ThemeInstallCommand extends Command
             themes_path($this->option('dir')),
             themes_path(str_replace(' ', '-', $name))
         );
-        $this->files->delete($temp);
+        $this->files->delete($this->temp);
     }
 
     /**
@@ -93,7 +98,7 @@ class ThemeInstallCommand extends Command
     {
         $this->info('Set [style.css] file...');
 
-        $theme = ucfirst($name);
+        $theme = ucwords(str_replace(['-', '_'], ' ', $name));
         $textdomain = str_replace(['-', ' '], '_', strtolower($name));
 
         $content = <<<STYLES
@@ -139,6 +144,18 @@ STYLES;
         }, $lines);
 
         $this->files->put($file, implode('', $content));
+    }
+
+    /**
+     * Command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments()
+    {
+        return [
+            ['name', InputArgument::REQUIRED, 'The theme name.']
+        ];
     }
 
     /**

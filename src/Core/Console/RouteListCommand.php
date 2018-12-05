@@ -23,7 +23,7 @@ class RouteListCommand extends Command
      *
      * @var string
      */
-    protected $description = 'List all registered routes.';
+    protected $description = 'List all registered routes';
 
     /**
      * @var Router

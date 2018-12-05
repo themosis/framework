@@ -420,7 +420,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerThemeInstallCommand($abstract)
     {
         $this->app->singleton($abstract, function ($app) {
-            return new ThemeInstallCommand($app['files']);
+            return new ThemeInstallCommand($app['files'], new \ZipArchive());
         });
     }
 
