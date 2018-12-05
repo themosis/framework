@@ -115,12 +115,12 @@ class PluginInstallCommand extends Command
             return;
         }
 
-        $this->zip->extractTo(plugins_path());
+        $this->zip->extractTo($this->path());
         $this->zip->close();
 
         $this->files->move(
-            plugins_path($this->option('dir')),
-            plugins_path($name)
+            $this->path($this->option('dir')),
+            $this->path($name)
         );
 
         $this->files->delete($this->temp);
@@ -136,7 +136,7 @@ class PluginInstallCommand extends Command
     {
         $this->info('Set plugin headers...');
 
-        $path = plugins_path($name.'/plugin-name.php');
+        $path = $this->path($name.'/plugin-name.php');
         $handle = fopen($path, 'r');
         $content = [];
 
@@ -178,7 +178,7 @@ class PluginInstallCommand extends Command
     protected function setPluginRootFile(string $name)
     {
         $this->info('Set plugin root file...');
-        $this->files->move(plugins_path($name.'/plugin-name.php'), plugins_path($name.'/'.$name.'.php'));
+        $this->files->move($this->path($name.'/plugin-name.php'), $this->path($name.'/'.$name.'.php'));
     }
 
     /**
@@ -194,8 +194,8 @@ class PluginInstallCommand extends Command
         $this->info('Set plugin configuration...');
 
         $prefix = trim($headers['plugin_prefix'], '\/_-');
-        $from = plugins_path($name.'/config/prefix_plugin.php');
-        $to = plugins_path($name.'/config/'.$prefix.'_plugin.php');
+        $from = $this->path($name.'/config/prefix_plugin.php');
+        $to = $this->path($name.'/config/'.$prefix.'_plugin.php');
 
         $this->files->move($from, $to);
         $this->replaceFileContent($to, $headers);
@@ -212,8 +212,8 @@ class PluginInstallCommand extends Command
         $this->info('Set plugin translation file...');
 
         $textdomain = trim($headers['text_domain'], '\/ _-');
-        $from = plugins_path($name.'/languages/plugin-textdomain-en_US.po');
-        $to = plugins_path($name.'/languages/'.$textdomain.'-en_US.po');
+        $from = $this->path($name.'/languages/plugin-textdomain-en_US.po');
+        $to = $this->path($name.'/languages/'.$textdomain.'-en_US.po');
 
         $this->files->move($from, $to);
     }
@@ -231,7 +231,7 @@ class PluginInstallCommand extends Command
         $this->info('Set default route provider...');
 
         $this->replaceFileContent(
-            plugins_path($name.'/resources/Providers/RouteServiceProvider.php'),
+            $this->path($name.'/resources/Providers/RouteServiceProvider.php'),
             $headers
         );
     }
@@ -249,10 +249,12 @@ class PluginInstallCommand extends Command
         $content = $this->files->get($path);
         $this->files->put($path, str_replace([
             'DummyNamespace',
-            'DummyAutoload'
+            'DummyAutoload',
+            'dummy_path'
         ], [
             $this->getNamespace($headers['plugin_namespace']),
-            $this->getAutoloadNamespace($headers['plugin_namespace'])
+            $this->getAutoloadNamespace($headers['plugin_namespace']),
+            $this->getPluginPath()
         ], $content), true);
     }
 
@@ -277,7 +279,19 @@ class PluginInstallCommand extends Command
      */
     protected function getAutoloadNamespace(string $default)
     {
-        return str_replace(["/", "\\"], "\\\\", trim($default, '\/'))."\\\\";
+        return str_replace(["/", "\\"], ["\\", "\\\\"], trim($default, '\/'))."\\\\";
+    }
+
+    /**
+     * Return the plugin base path.
+     */
+    protected function getPluginPath()
+    {
+        if ($this->option('mu')) {
+            return 'muplugins_path';
+        }
+
+        return 'plugins_path';
     }
 
     /**
@@ -290,6 +304,22 @@ class PluginInstallCommand extends Command
     protected function parseNameForDirectory(string $name)
     {
         return str_replace(' ', '-', trim(strtolower($name)));
+    }
+
+    /**
+     * Return the plugin path. Handle -mu case.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    protected function path(string $path = '')
+    {
+        if ($this->option('mu')) {
+            return muplugins_path($path);
+        }
+
+        return plugins_path($path);
     }
 
     /**
@@ -313,7 +343,8 @@ class PluginInstallCommand extends Command
     {
         return [
             ['dir', null, InputOption::VALUE_OPTIONAL, 'ZIP file base directory name.', 'plugin-master'],
-            ['url', null, InputOption::VALUE_OPTIONAL, 'Plugin ZIP file URL.', 'https://github.com/themosis/plugin/archive/master.zip']
+            ['url', null, InputOption::VALUE_OPTIONAL, 'Plugin ZIP file URL.', 'https://github.com/themosis/plugin/archive/master.zip'],
+            ['mu', null, InputOption::VALUE_NONE, 'Install as mu-plugin.']
         ];
     }
 }

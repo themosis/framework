@@ -128,6 +128,20 @@ if (! function_exists('database_path')) {
     }
 }
 
+if (! function_exists('dummy_path')) {
+    /**
+     * Get dummy path.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    function dummy_path($path = '')
+    {
+        return '';
+    }
+}
+
 if (! function_exists('logger')) {
     /**
      * Log a debug message to the logs.
@@ -172,6 +186,20 @@ if (! function_exists('method_field')) {
     function method_field($method)
     {
         return new HtmlString('<input type="hidden" name="_method" value="'.$method.'">');
+    }
+}
+
+if (! function_exists('muplugins_path')) {
+    /**
+     * Return the mu-plugins path.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    function muplugins_path($path = '')
+    {
+        return app()->mupluginsPath($path);
     }
 }
 
