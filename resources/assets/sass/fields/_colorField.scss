@@ -53,6 +53,12 @@
         border-bottom: none;
       }
 
+      .components-popover:not(.is-mobile).is-center {
+        .components-popover__content {
+          transform: translateX(-10%);
+        }
+      }
+
       .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:before {
         top: -10px;
         margin-left: 197px;
@@ -205,6 +211,12 @@
         .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:after {
           top: -1px;
           margin-left: 87px;
+        }
+
+        .components-popover:not(.is-mobile).is-center {
+          .components-popover__content {
+            transform: translateX(-50%);
+          }
         }
       }
 
