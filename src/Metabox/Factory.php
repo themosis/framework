@@ -59,6 +59,10 @@ class Factory
             ->setScreen($screen)
             ->setContext('normal')
             ->setPriority('default')
+            ->setArguments([
+                '__block_editor_compatible_meta_box' => true,
+                '__back_compat_meta_box' => false
+            ])
             ->setResource($this->resource)
             ->setLocale($this->container->getLocale());
 
