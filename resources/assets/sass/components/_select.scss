@@ -118,7 +118,6 @@
   }
 
   .themosis__select__output {
-    min-height: 26px;
     z-index: 9999;
   }
 
@@ -128,6 +127,14 @@
 
   .themosis__select__list {
     z-index: 9997;
+  }
+}
+
+.themosis.wp-editor {
+  .themosis__select.open {
+    .themosis__select__output {
+      min-height: 26px;
+    }
   }
 }
 
