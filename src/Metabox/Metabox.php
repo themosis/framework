@@ -335,6 +335,12 @@ class Metabox implements MetaboxInterface
             return;
         }
 
+        $this->filter->add('admin_body_class', function ($classes) {
+            $classes.= ' themosis-metabox';
+
+            return $classes;
+        });
+
         add_meta_box(
             $this->getId(),
             $this->getTitle(),

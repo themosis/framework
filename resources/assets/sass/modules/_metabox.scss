@@ -183,7 +183,7 @@
 }
 
 /* Gutenberg styles */
-.gutenberg-editor-page {
+.wp-editor {
   .themosis__metabox {
     &__footer {
       background: $light-gray-200;
@@ -201,6 +201,14 @@
 
   .themosis__field {
     padding: $paddingV;
+  }
+}
+
+.themosis-metabox {
+  .edit-post-layout__metaboxes:not(:empty) {
+    .edit-post-meta-boxes-area {
+      margin: auto 0;
+    }
   }
 }
 
