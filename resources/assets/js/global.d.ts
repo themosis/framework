@@ -161,7 +161,7 @@ declare interface WordPressEditorInit {
 
 declare namespace wp {
     const media: WordPressMedia;
-    const editor: {
+    const oldEditor: {
         initialize: WordPressEditorInit;
     }
 }

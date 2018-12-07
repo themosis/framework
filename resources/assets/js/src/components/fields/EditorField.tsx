@@ -43,7 +43,7 @@ class EditorField extends React.Component <FieldProps> {
             }
         }};
 
-        wp.editor.initialize(this.props.field.attributes.id, settings);
+        wp.oldEditor.initialize(this.props.field.attributes.id, settings);
     }
 }
 
