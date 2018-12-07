@@ -82,56 +82,12 @@
       }
     }
 
-    .components-tooltip:not(.is-without-arrow):not(.is-mobile) {
-      position: fixed;
-      width: 160px;
-      background-color: $dark-gray-700;
-      color: $white;
-      text-align: center;
-      border-radius: $radius-round-rectangle;
-      padding: $paddingH / 2 $paddingH;
-    }
-
-    .components-tooltip:not(.is-without-arrow):not(.is-mobile).is-top {
-      top: -32px !important;
-    }
-
-    .components-tooltip:before,
-    .components-tooltip:after {
-      content: '';
-      display: block;
-      position: absolute;
-      border: 8px solid $dark-gray-700;
-      top: 26px;
-    }
-
-    .components-tooltip.is-bottom:before {
-      border-bottom-style: solid;
-      border-left-color: transparent;
-      border-right-color: transparent;
-      border-top: none;
-    }
-
-    .components-tooltip.is-top:before {
-      border-top-style: solid;
-      border-left-color: transparent;
-      border-right-color: transparent;
-      border-bottom: none;
-    }
-
-    .components-tooltip.is-top:after,
-    .components-tooltip.is-bottom:after{
-      content: '';
-      display: none;
+    .components-tooltip.is-top {
+      top: 6px !important;
     }
 
     .components-tooltip.is-center {
-      left: -80px !important;
-    }
-
-    .components-tooltip:not(.is-without-arrow):not(.is-mobile).is-center:before {
-      left: 50%;
-      margin-left: -6px;
+      left: 50% !important;
     }
   }
 
@@ -220,7 +176,7 @@
 }
 
 /* Gutenberg Styles */
-.gutenberg {
+.wp-editor {
   .themosis__field {
     .color__picker {
       @media screen and (min-width: $break-wide) {
@@ -252,56 +208,12 @@
         }
       }
 
-      .components-tooltip:not(.is-without-arrow):not(.is-mobile) {
-        position: fixed;
-        width: 160px;
-        background-color: $dark-gray-700;
-        color: $white;
-        text-align: center;
-        border-radius: $radius-round-rectangle;
-        padding: $paddingH / 2 $paddingH;
-      }
-
-      .components-tooltip:not(.is-without-arrow):not(.is-mobile).is-top {
-        top: -32px !important;
-      }
-
-      .components-tooltip:before,
-      .components-tooltip:after {
-        content: '';
-        display: block;
-        position: absolute;
-        border: 8px solid $dark-gray-700;
-        top: 26px;
-      }
-
-      .components-tooltip.is-bottom:before {
-        border-bottom-style: solid;
-        border-left-color: transparent;
-        border-right-color: transparent;
-        border-top: none;
-      }
-
-      .components-tooltip.is-top:before {
-        border-top-style: solid;
-        border-left-color: transparent;
-        border-right-color: transparent;
-        border-bottom: none;
-      }
-
-      .components-tooltip.is-top:after,
-      .components-tooltip.is-bottom:after{
-        content: '';
-        display: none;
+      .components-tooltip.is-top {
+        top: 6px !important;
       }
 
       .components-tooltip.is-center {
-        left: -80px !important;
-      }
-
-      .components-tooltip:not(.is-without-arrow):not(.is-mobile).is-center:before {
-        left: 50%;
-        margin-left: -6px;
+        left: 50% !important;
       }
     }
 
