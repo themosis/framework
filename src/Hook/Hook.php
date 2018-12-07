@@ -64,31 +64,15 @@ abstract class Hook implements IHook
     }
 
     /**
-     * Return the callback registered with the hook.
-     *
-     * @param string $hook The hook name.
-     *
-     * @return array|null
-     */
-    public function getCallback($hook)
-    {
-        if (array_key_exists($hook, $this->hooks)) {
-            return $this->hooks[$hook];
-        }
-
-        return null;
-    }
-
-    /**
      * Remove a registered action or filter.
      *
      * @param string          $hook
-     * @param int             $priority
      * @param \Closure|string $callback
+     * @param int             $priority
      *
      * @return mixed The Hook instance or false.
      */
-    public function remove($hook, $priority = 10, $callback = null)
+    public function remove($hook, $callback = null, $priority = 10)
     {
         // If $callback is null, it means we have chained the methods to
         // the action/filter instance. If the instance has no callback, return false.
@@ -106,6 +90,22 @@ abstract class Hook implements IHook
         $this->removeAction($hook, $callback, $priority);
 
         return $this;
+    }
+
+    /**
+     * Return the callback registered with the hook.
+     *
+     * @param string $hook The hook name.
+     *
+     * @return array|null
+     */
+    public function getCallback($hook)
+    {
+        if (array_key_exists($hook, $this->hooks)) {
+            return $this->hooks[$hook];
+        }
+
+        return null;
     }
 
     /**

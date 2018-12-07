@@ -48,10 +48,10 @@ interface IHook
      * Remove a defined action or filter.
      *
      * @param string          $hook     The hook name.
-     * @param int             $priority The priority number.
      * @param \Closure|string $callback The callback to remove.
+     * @param int             $priority The priority number.
      *
      * @return mixed
      */
-    public function remove($hook, $priority = 10, $callback = null);
+    public function remove($hook, $callback = null, $priority = 10);
 }
