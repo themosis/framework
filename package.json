@@ -36,7 +36,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-react-app": "^3.1.2",
     "jest": "^23.5.0",
-    "laravel-mix": "^2.1.14",
+    "laravel-mix": "^3.0.0",
     "ts-jest": "^23.1.4",
     "ts-loader": "^3.5.0",
     "typescript": "^3.0.3"
