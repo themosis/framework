@@ -138,12 +138,12 @@ abstract class Hook implements IHook
         if ($callback instanceof \Closure || is_array($callback)) {
             $this->addEventListener($hook, $callback, $priority, $accepted_args);
         } elseif (is_string($callback)) {
-            if (is_callable($callback)) {
-                // Used as a classic callback function.
-                $this->addEventListener($hook, $callback, $priority, $accepted_args);
-            } else {
+            if (false !== strpos($callback, '@') || class_exists($callback)) {
                 // Return the class responsible to handle the action.
                 $callback = $this->addClassEvent($hook, $callback, $priority, $accepted_args);
+            } else {
+                // Used as a classic callback function.
+                $this->addEventListener($hook, $callback, $priority, $accepted_args);
             }
         }
 
