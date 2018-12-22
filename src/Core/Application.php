@@ -1159,7 +1159,11 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function loadPlugin(string $filePath, string $configPath)
     {
-        return (new PluginManager($this, $filePath, new ClassLoader()))->load($configPath);
+        $plugin = (new PluginManager($this, $filePath, new ClassLoader()))->load($configPath);
+
+        $this->instance('wp.plugin.'.$plugin->getDirectory(), $plugin);
+
+        return $plugin;
     }
 
     /**
