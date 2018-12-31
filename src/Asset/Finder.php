@@ -36,7 +36,20 @@ class Finder
      */
     public function addLocation(string $path, string $url): Finder
     {
-        $path = '/'.trim($path, '\/');
+
+        // Checking if the Operating System is windows and remove the prefix /
+
+
+        $path = trim($path, '\/');
+
+        // get environment
+
+        $operating = strtolower(php_uname("s"));
+
+        // if the operating system is not windows it should go ahead and add a prefix /
+        if (strpos($operating, "windows") === false) {
+            $path = "/" . trim($path, '\/');
+        }
         $url = rtrim($url, '\/');
 
         $this->locations[$path] = $url;
@@ -93,16 +106,16 @@ class Finder
         $path = trim($path, '\/');
 
         foreach ($this->locations as $dir => $url) {
-            if ($this->files->exists($fullPath = $dir.'/'.$path)) {
+            if ($this->files->exists($fullPath = $dir . '/' . $path)) {
                 return (new File($this->files))
                     ->setPath($fullPath)
-                    ->setUrl($url.'/'.$path)
+                    ->setUrl($url . '/' . $path)
                     ->setExternal(false)
                     ->setType($fullPath);
             }
         }
 
-        throw new AssetException('Unable to find the asset with the following path: '.$path);
+        throw new AssetException('Unable to find the asset with the following path: ' . $path);
     }
 
     /**
