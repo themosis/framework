@@ -37,6 +37,8 @@ class Finder
     public function addLocation(string $path, string $url): Finder
     {
         $path = rtrim($path, '\/');
+        if( !path_is_absolute($path) )
+            $path = DS.$path;
         $url = rtrim($url, '\/');
 
         $this->locations[$path] = $url;
