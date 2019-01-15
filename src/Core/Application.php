@@ -1179,7 +1179,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     {
         $directories = Collection::make((new Filesystem())->directories($this->mupluginsPath()))
             ->map(function ($directory) {
-                return ltrim(substr($directory, strrpos($directory, '/')), '\/');
+                return ltrim(substr($directory, strrpos($directory, DS)), '\/');
             })->toArray();
 
         (new PluginsRepository($this, new Filesystem(), $pluginsPath, $this->getCachedPluginsPath()))
