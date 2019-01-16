@@ -36,7 +36,10 @@ class Finder
      */
     public function addLocation(string $path, string $url): Finder
     {
-        $path = '/'.trim($path, '\/');
+        $path = trim($path, '\/');
+        // Windows allows absolute paths like this
+        if ( !preg_match('#^[a-zA-Z]:\\\\#', $path) )
+            $path = DS.$path;
         $url = rtrim($url, '\/');
 
         $this->locations[$path] = $url;
