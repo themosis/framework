@@ -181,7 +181,7 @@ class ThemeManager
      */
     protected function setThemeDirectory()
     {
-        $pos = strrpos($this->dirPath, '/');
+        $pos = strrpos($this->dirPath, DS);
 
         $this->directory = substr($this->dirPath, $pos + 1);
     }

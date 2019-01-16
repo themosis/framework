@@ -43,7 +43,7 @@ class PluginManagerTest extends TestCase
         $this->assertEquals($this->getApplication()->pluginsPath('timeline'), $plugin->getPath());
         $this->assertTrue(defined('TIMELINE_TD'));
 
-        $this->assertEquals($this->getApplication()->pluginsPath('timeline/dist'), $plugin->getPath('dist'));
+        $this->assertEquals($this->getApplication()->pluginsPath('timeline'.DS.'dist'), $plugin->getPath('dist'));
     }
 
     public function testPluginHeaders()

@@ -26,7 +26,7 @@ class ApplicationTest extends TestCase
         $app = new Application($path);
 
         $this->assertEquals(
-            $path.'/app',
+            $path.DS.'app',
             $app['path'],
             'Cannot get the default path'
         );
@@ -36,41 +36,41 @@ class ApplicationTest extends TestCase
             'Cannot get the base path'
         );
         $this->assertEquals(
-            $path.'/htdocs/content',
+            $path.DS.'htdocs'.DS.'content',
             $app['path.content'],
             'Cannot get the content path'
         );
         $this->assertEquals(
-            $path.'/htdocs/content/mu-plugins',
+            $path.DS.'htdocs'.DS.'content'.DS.'mu-plugins',
             $app['path.muplugins'],
             'Cannot get the mu-plugins path'
         );
         $this->assertEquals(
-            $path.'/htdocs/content/plugins',
+            $path.DS.'htdocs'.DS.'content'.DS.'plugins',
             $app['path.plugins'],
             'Cannot get the plugins path'
         );
         $this->assertEquals(
-            $path.'/htdocs/content/themes',
+            $path.DS.'htdocs'.DS.'content'.DS.'themes',
             $app['path.themes'],
             'Cannot get the themes path'
         );
         $this->assertEquals(
-            $path.'/app',
+            $path.DS.'app',
             $app['path.application'],
             'Cannot get the app path'
         );
         $this->assertEquals(
-            $path.'/resources',
+            $path.DS.'resources',
             $app['path.resources']
         );
         $this->assertEquals(
-            $path.'/resources/languages',
+            $path.DS.'resources'.DS.'languages',
             $app['path.lang'],
             'Cannot get the languages path'
         );
         $this->assertEquals(
-            $path.'/htdocs',
+            $path.DS.'htdocs',
             $app['path.web'],
             'Cannot get the web path'
         );
@@ -80,32 +80,32 @@ class ApplicationTest extends TestCase
             'Cannot get the root path'
         );
         $this->assertEquals(
-            $path.'/config',
+            $path.DS.'config',
             $app['path.config'],
             'Cannot get the defaut config path'
         );
         $this->assertEquals(
-            $path.'/htdocs',
+            $path.DS.'htdocs',
             $app['path.public'],
             'Cannot get the public path'
         );
         $this->assertEquals(
-            $path.'/storage',
+            $path.DS.'storage',
             $app['path.storage'],
             'Cannot get the storage path'
         );
         $this->assertEquals(
-            $path.'/database',
+            $path.DS.'database',
             $app['path.database'],
             'Cannot get the database path'
         );
         $this->assertEquals(
-            $path.'/bootstrap',
+            $path.DS.'bootstrap',
             $app['path.bootstrap'],
             'Cannot get the bootstrap path'
         );
         $this->assertEquals(
-            $path.'/htdocs/cms',
+            $path.DS.'htdocs'.DS.'cms',
             $app['path.wp'],
             'Cannot get the WordPress path'
         );
