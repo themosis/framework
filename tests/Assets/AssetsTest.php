@@ -43,22 +43,22 @@ class AssetsTest extends TestCase
         $finder = new Finder(new Filesystem());
 
         $finder->addLocation(
-            '/home/www/htdocs/content/themes/themosis/dist',
+            DS.'home'.DS.'www'.DS.'htdocs'.DS.'content'.DS.'themes'.DS.'themosis'.DS.'dist',
             'https://www.website.com/content/themes/themosis/dist'
         );
 
         $finder->addLocations([
-            'www/resources' => 'http://example.com/resources/',
-            'public/assets/' => 'https://wordpress.xyz/assets',
-            '/public/dist' => 'http://sub.domain.com/dist/'
+            'www'.DS.'resources' => 'http://example.com/resources/',
+            'public'.DS.'assets'.DS => 'https://wordpress.xyz/assets',
+            DS.'public'.DS.'dist' => 'http://sub.domain.com/dist/'
         ]);
 
         $this->assertEquals(
             [
-                '/home/www/htdocs/content/themes/themosis/dist',
-                '/www/resources',
-                '/public/assets',
-                '/public/dist'
+                DS.'home'.DS.'www'.DS.'htdocs'.DS.'content'.DS.'themes'.DS.'themosis'.DS.'dist',
+                DS.'www'.DS.'resources',
+                DS.'public'.DS.'assets',
+                DS.'public'.DS.'dist'
             ],
             array_keys($finder->getLocations())
         );
