@@ -79,16 +79,6 @@ class RoutesTest extends TestCase
             'Cannot reach default page.'
         );
 
-        $router->get('page', [30, function () {
-            return 'About page';
-        }]);
-
-        $this->assertEquals(
-            'About page',
-            $router->dispatch(Request::create('about', 'GET'))->getContent(),
-            'Cannot reach the about page.'
-        );
-
         $router->post('page', ['contact', function () {
             return 'Form submitted';
         }]);
@@ -152,24 +142,6 @@ class RoutesTest extends TestCase
         $this->assertEquals(
             'General category',
             $router->dispatch(Request::create('category/uncategorized', 'GET'))->getContent()
-        );
-
-        $router->get('category', [20, function () {
-            return 'Posts attached to category term with ID 20';
-        }]);
-
-        $this->assertEquals(
-            'Posts attached to category term with ID 20',
-            $router->dispatch(Request::create('category/special-20', 'GET'))->getContent()
-        );
-
-        $router->get('category', ['featured', function () {
-            return 'Featured posts';
-        }]);
-
-        $this->assertEquals(
-            'Featured posts',
-            $router->dispatch(Request::create('category/featured', 'GET'))->getContent()
         );
     }
 
@@ -268,15 +240,6 @@ class RoutesTest extends TestCase
         $this->assertEquals(
             'Template page',
             $router->dispatch(Request::create('any-page', 'GET'))->getContent()
-        );
-
-        $router->get('template', ['about', function () {
-            return 'About page template';
-        }]);
-
-        $this->assertEquals(
-            'About page template',
-            $router->dispatch(Request::create('about', 'GET'))->getContent()
         );
     }
 

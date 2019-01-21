@@ -2,6 +2,8 @@
 
 namespace Themosis\Route;
 
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Routing\Router as IlluminateRouter;
 
 class Router extends IlluminateRouter
@@ -12,6 +14,12 @@ class Router extends IlluminateRouter
      * @var array
      */
     protected $conditions = [];
+
+    public function __construct(Dispatcher $events, Container $container = null)
+    {
+        parent::__construct($events, $container);
+        $this->routes = new RouteCollection();
+    }
 
     /**
      * Create a new Route object.
