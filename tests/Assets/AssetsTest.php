@@ -50,15 +50,17 @@ class AssetsTest extends TestCase
         $finder->addLocations([
             'www/resources' => 'http://example.com/resources/',
             'public/assets/' => 'https://wordpress.xyz/assets',
-            '/public/dist' => 'http://sub.domain.com/dist/'
+            '/public/dist' => 'http://sub.domain.com/dist/',
+            'c:\\dev\\sites\\project-x\\public\\dist' => 'http://project-x.com/dist'
         ]);
 
         $this->assertEquals(
             [
                 '/home/www/htdocs/content/themes/themosis/dist',
-                '/www/resources',
-                '/public/assets',
-                '/public/dist'
+                'www/resources',
+                'public/assets',
+                '/public/dist',
+                'c:\\dev\\sites\\project-x\\public\\dist'
             ],
             array_keys($finder->getLocations())
         );
@@ -67,7 +69,8 @@ class AssetsTest extends TestCase
             'https://www.website.com/content/themes/themosis/dist',
             'http://example.com/resources',
             'https://wordpress.xyz/assets',
-            'http://sub.domain.com/dist'
+            'http://sub.domain.com/dist',
+            'http://project-x.com/dist'
         ], array_values($finder->getLocations()));
     }
 
