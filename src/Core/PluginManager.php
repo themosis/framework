@@ -87,7 +87,7 @@ class PluginManager
      */
     public function setDirectory()
     {
-        $pos = strrpos($this->dirPath, '/');
+        $pos = strrpos($this->dirPath, DIRECTORY_SEPARATOR);
         $this->directory = substr($this->dirPath, $pos + 1);
     }
 

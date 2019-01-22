@@ -170,10 +170,10 @@ class ThemeManager
                 get_home_url(),
                 CONTENT_DIR,
                 $this->getDirectory()
-            ).($path ? DIRECTORY_SEPARATOR.$path : $path);
+            ).($path ? '/'.$path : $path);
         }
 
-        return get_template_directory_uri().($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return get_template_directory_uri().($path ? '/'.$path : $path);
     }
 
     /**
@@ -181,7 +181,7 @@ class ThemeManager
      */
     protected function setThemeDirectory()
     {
-        $pos = strrpos($this->dirPath, '/');
+        $pos = strrpos($this->dirPath, DIRECTORY_SEPARATOR);
 
         $this->directory = substr($this->dirPath, $pos + 1);
     }
