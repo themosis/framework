@@ -21,6 +21,16 @@ class ViewServiceProvider extends IlluminateViewServiceProvider
     }
 
     /**
+     * Register Themosis view finder.
+     */
+    public function registerViewFinder()
+    {
+        $this->app->singleton('view.finder', function ($app) {
+            return new FileViewFinder($app['files'], $app['config']['view.paths']);
+        });
+    }
+
+    /**
      * Register Twig Loader.
      */
     public function registerTwigLoader()
