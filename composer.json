@@ -64,7 +64,7 @@
     "symfony/var-dumper": "^4.1"
   },
   "scripts": {
-    "test": "php ./vendor/bin/phpunit"
+    "test": "phpunit"
   },
   "config": {
     "sort-packages": true
