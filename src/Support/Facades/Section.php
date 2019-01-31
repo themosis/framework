@@ -2,6 +2,8 @@
 
 namespace Themosis\Facades;
 
+use Illuminate\Support\Facades\Facade;
+
 class Section extends Facade
 {
     /**
