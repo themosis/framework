@@ -1,6 +1,6 @@
 <?php
 
-namespace Themosis\Facades;
+namespace Themosis\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
