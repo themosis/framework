@@ -152,7 +152,7 @@ class ThemeManager
      */
     public function getPath(string $path = '')
     {
-        return get_template_directory().($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->dirPath.($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
