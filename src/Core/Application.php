@@ -47,7 +47,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     protected $basePath;
 
     /**
-     * Path location of env files.
+     * Path location (directory) of env files.
      *
      * @var string
      */
@@ -601,7 +601,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Return the environment path.
+     * Return the environment path directory.
      *
      * @return string
      */
