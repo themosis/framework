@@ -47,6 +47,7 @@
     "illuminate/http": "5.7.*",
     "illuminate/log": "5.7.*",
     "illuminate/mail": "^5.7",
+    "illuminate/notifications": "^5.7",
     "illuminate/pagination": "^5.7",
     "illuminate/queue": "^5.7",
     "illuminate/routing": "5.7.*",

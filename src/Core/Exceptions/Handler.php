@@ -186,7 +186,7 @@ class Handler implements ExceptionHandler
     {
         return $request->expectsJson()
             ? response()->json(['message' => $e->getMessage()], 401)
-            : redirect()->guest(route('/'));
+            : redirect()->guest($e->redirectTo() ?? route('login'));
     }
 
     /**
