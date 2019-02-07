@@ -302,4 +302,22 @@ class Factory implements FieldFactoryInterface
             ->setViewFactory($this->viewFactory)
             ->setOptions($options);
     }
+
+    /**
+     * Return a hidden CSRF type instance.
+     *
+     * @param string $name
+     * @param array  $options
+     *
+     * @return FieldTypeInterface
+     */
+    public function csrf(string $name = '_token', array $options = []): FieldTypeInterface
+    {
+        return (new HiddenType($name))
+            ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
+            ->setPrefix('')
+            ->setOptions($options)
+            ->setValue(csrf_token());
+    }
 }

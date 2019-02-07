@@ -115,4 +115,14 @@ interface FieldFactoryInterface
      * @return FieldTypeInterface
      */
     public function hidden(string $name, array $options = []): FieldTypeInterface;
+
+    /**
+     * Return a hidden CSRF field instance.
+     *
+     * @param string $name
+     * @param array  $options
+     *
+     * @return FieldTypeInterface
+     */
+    public function csrf(string $name = '_token', array $options = []): FieldTypeInterface;
 }

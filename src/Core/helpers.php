@@ -114,6 +114,36 @@ if (! function_exists('content_path')) {
     }
 }
 
+if (! function_exists('csrf_field')) {
+    /**
+     * Generate a CSRF token form field.
+     *
+     * @return HtmlString
+     */
+    function csrf_field()
+    {
+        return new HtmlString('<input type="hidden" name="_token" value="'.csrf_token().'">');
+    }
+}
+
+if (! function_exists('csrf_token')) {
+    /**
+     * Get the CSRF token value.
+     *
+     * @return string
+     */
+    function csrf_token()
+    {
+        $session = app('session');
+
+        if (isset($session)) {
+            return $session->token();
+        }
+
+        throw new RuntimeException('Application session store not set.');
+    }
+}
+
 if (! function_exists('database_path')) {
     /**
      * Get the database path.
