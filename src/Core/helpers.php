@@ -142,6 +142,20 @@ if (! function_exists('dummy_path')) {
     }
 }
 
+if (! function_exists('event')) {
+    /**
+     * Dispatch an event and call the listeners.
+     *
+     * @param string|object $args
+     *
+     * @return array|null
+     */
+    function event(...$args)
+    {
+        return app('events')->dispatch(...$args);
+    }
+}
+
 if (! function_exists('logger')) {
     /**
      * Log a debug message to the logs.
@@ -367,6 +381,43 @@ if (! function_exists('themes_path')) {
     function themes_path($path = '')
     {
         return app()->themesPath($path);
+    }
+}
+
+if (! function_exists('trans')) {
+    /**
+     * Translate the given message.
+     *
+     * @param string $key
+     * @param array  $replace
+     * @param string $locale
+     *
+     * @return \Illuminate\Contracts\Translation\Translator|string|array|null
+     */
+    function trans($key = null, $replace = [], $locale = null)
+    {
+        if (is_null($key)) {
+            return app('translator');
+        }
+
+        return app('translator')->trans($key, $replace, $locale);
+    }
+}
+
+if (! function_exists('trans_choice')) {
+    /**
+     * Translates the given message based on a count.
+     *
+     * @param string               $key
+     * @param int|array|\Countable $number
+     * @param array                $replace
+     * @param string               $locale
+     *
+     * @return string
+     */
+    function trans_choice($key, $number, array $replace = [], $locale = null)
+    {
+        return app('translator')->transChoice($key, $number, $replace, $locale);
     }
 }
 

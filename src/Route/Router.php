@@ -81,4 +81,34 @@ class Router extends IlluminateRouter
 
         return $route;
     }
+
+    /**
+     * Register the typical authentication routes for an application.
+     * Avoid WordPress default endpoints.
+     *
+     * @param array $options
+     */
+    public function auth(array $options = [])
+    {
+        // Authentication routes.
+        $this->get('auth/login', 'Auth\LoginController@showLoginForm')->name('login');
+        $this->post('auth/login', 'Auth\LoginController@login');
+        $this->post('auth/logout', 'Auth\LoginController@logout')->name('logout');
+
+        // Registration routes.
+        if ($options['register'] ?? true) {
+            $this->get('auth/register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+            $this->post('auth/register', 'Auth\RegisterController@register');
+        }
+
+        // Password reset routes.
+        if ($options['reset'] ?? true) {
+            $this->resetPassword();
+        }
+
+        // Email verifications routes.
+        if ($options['verify'] ?? false) {
+            $this->emailVerification();
+        }
+    }
 }
