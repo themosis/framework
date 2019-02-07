@@ -18,6 +18,7 @@ use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Session\Console\SessionTableCommand;
 use Illuminate\Support\ServiceProvider;
 use Themosis\Core\Console\ConsoleMakeCommand;
+use Themosis\Core\Console\CustomerTableCommand;
 use Themosis\Core\Console\DownCommand;
 use Themosis\Core\Console\FormMakeCommand;
 use Themosis\Core\Console\HookMakeCommand;
@@ -74,6 +75,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected $devCommands = [
         'ConsoleMake' => 'command.console.make',
         'ControllerMake' => 'command.controller.make',
+        'CustomerTable' => 'command.customer.table',
         'FactoryMake' => 'command.factory.make',
         'FormMake' => 'command.form.make',
         'HookMake' => 'command.hook.make',
@@ -135,6 +137,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new ControllerMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the customer:table command.
+     *
+     * @param string $abstract
+     */
+    protected function registerCustomerTableCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new CustomerTableCommand($app['files'], $app['composer']);
         });
     }
 
