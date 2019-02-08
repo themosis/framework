@@ -41,6 +41,7 @@
     "illuminate/container": "5.7.*",
     "illuminate/cookie": "^5.7",
     "illuminate/database": "5.7.*",
+    "illuminate/encryption": "^5.7",
     "illuminate/events": "5.7.*",
     "illuminate/filesystem": "5.7.*",
     "illuminate/hashing": "^5.7",

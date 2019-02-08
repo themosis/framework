@@ -230,6 +230,10 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
                 \Illuminate\Database\Connection::class,
                 \Illuminate\Database\ConnectionInterface::class
             ],
+            'encrypter' => [
+                \Illuminate\Encryption\Encrypter::class,
+                \Illuminate\Contracts\Encryption\Encrypter::class
+            ],
             'events' => [
                 \Illuminate\Events\Dispatcher::class,
                 \Illuminate\Contracts\Events\Dispatcher::class
@@ -632,6 +636,16 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function environmentFile()
     {
         return $this->environmentFile ?: '.env';
+    }
+
+    /**
+     * Return the environment file path.
+     *
+     * @return string
+     */
+    public function environmentFilePath()
+    {
+        return $this->environmentPath().DIRECTORY_SEPARATOR.$this->environmentFile();
     }
 
     /**

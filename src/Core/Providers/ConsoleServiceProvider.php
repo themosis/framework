@@ -22,6 +22,7 @@ use Themosis\Core\Console\CustomerTableCommand;
 use Themosis\Core\Console\DownCommand;
 use Themosis\Core\Console\FormMakeCommand;
 use Themosis\Core\Console\HookMakeCommand;
+use Themosis\Core\Console\KeyGenerateCommand;
 use Themosis\Core\Console\MailMakeCommand;
 use Themosis\Core\Console\ModelMakeCommand;
 use Themosis\Core\Console\PluginInstallCommand;
@@ -51,6 +52,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected $commands = [
         'Down' => 'command.down',
+        'KeyGenerate' => 'command.key.generate',
         'Migrate' => 'command.migrate',
         'MigrateFresh' => 'command.migrate.fresh',
         'MigrateInstall' => 'command.migrate.install',
@@ -197,6 +199,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new HookMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the key:generate command.
+     *
+     * @param string $abstract
+     */
+    protected function registerKeyGenerateCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new KeyGenerateCommand();
         });
     }
 

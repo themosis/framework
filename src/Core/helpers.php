@@ -118,11 +118,13 @@ if (! function_exists('csrf_field')) {
     /**
      * Generate a CSRF token form field.
      *
+     * @param string $name
+     *
      * @return HtmlString
      */
-    function csrf_field()
+    function csrf_field($name = '_token')
     {
-        return new HtmlString('<input type="hidden" name="_token" value="'.csrf_token().'">');
+        return new HtmlString('<input type="hidden" name="'.$name.'" value="'.csrf_token().'">');
     }
 }
 
