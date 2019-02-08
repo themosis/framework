@@ -2,9 +2,11 @@
 
 namespace Themosis\Core\Auth;
 
+use App\Forms\Auth\LoginForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Themosis\Forms\Contracts\FormInterface;
 
 trait AuthenticatesUsers
 {
@@ -17,7 +19,9 @@ trait AuthenticatesUsers
      */
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('auth.login', [
+            'form' => $this->form(new LoginForm())
+        ]);
     }
 
     /**
@@ -31,7 +35,14 @@ trait AuthenticatesUsers
      */
     public function login(Request $request)
     {
-        $this->validateLogin($request);
+        $form = $this->form(new LoginForm());
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            if ($this->attemptLogin($request, $form)) {
+                return $this->sendLoginResponse($request);
+            }
+        }
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
@@ -42,16 +53,39 @@ trait AuthenticatesUsers
             return $this->sendLockoutResponse($request);
         }
 
-        if ($this->attemptLogin($request)) {
-            return $this->sendLoginResponse($request);
-        }
-
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
         // user surpasses their maximum number of attempts they will get locked out.
         $this->incrementLoginAttempts($request);
 
         $this->sendFailedLoginResponse($request);
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function logout(Request $request)
+    {
+        $this->guard()->logout();
+        $request->session()->invalidate();
+
+        return $this->loggedOut($request) ?: redirect('/');
+    }
+
+    /**
+     * The user has logged out of the application.
+     *
+     * @param Request $request
+     *
+     * @return mixed
+     */
+    protected function loggedOut(Request $request)
+    {
+        //
     }
 
     /**
@@ -74,11 +108,16 @@ trait AuthenticatesUsers
      *
      * @return bool
      */
-    protected function attemptLogin(Request $request)
+    protected function attemptLogin(Request $request, FormInterface $form)
     {
+        $repository = $form->repository();
+
         return $this->guard()->attempt(
-            $this->credentials($request),
-            $request->filled('remember')
+            [
+                'email' => $repository->getFieldByName('email')->getValue(),
+                'password' => $repository->getFieldByName('password')->getValue()
+            ],
+            $request->filled($this->remember())
         );
     }
 
@@ -127,25 +166,23 @@ trait AuthenticatesUsers
     }
 
     /**
-     * Get the authorization credentials from the request.
-     *
-     * @param Request $request
-     *
-     * @return array
-     */
-    protected function credentials(Request $request)
-    {
-        return $request->only($this->username(), 'password');
-    }
-
-    /**
      * Get the login username field to be used by the controller.
      *
      * @return string
      */
     public function username()
     {
-        return 'email';
+        return 'th_email';
+    }
+
+    /**
+     * Get the login remember field to be used by the controller.
+     *
+     * @return string
+     */
+    public function remember()
+    {
+        return 'th_remember';
     }
 
     /**
