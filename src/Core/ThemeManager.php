@@ -341,10 +341,8 @@ class ThemeManager
             return $this;
         }
 
-        if (function_exists('register_sidebar')) {
-            foreach ($sidebars as $sidebar) {
-                register_sidebar($sidebar);
-            }
+        if (function_exists('register_sidebars')) {
+            register_sidebars($sidebars);
         }
 
         return $this;
