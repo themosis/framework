@@ -342,7 +342,7 @@ class ThemeManager
         }
 
         if (function_exists('register_sidebars')) {
-            register_sidebars($sidebars);
+            register_sidebars(count($sidebars), $sidebars);
         }
 
         return $this;
