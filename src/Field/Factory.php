@@ -11,6 +11,7 @@ use Themosis\Forms\Fields\Types\CheckboxType;
 use Themosis\Forms\Fields\Types\ChoiceType;
 use Themosis\Forms\Fields\Types\CollectionType;
 use Themosis\Forms\Fields\Types\ColorType;
+use Themosis\Forms\Fields\Types\DateType;
 use Themosis\Forms\Fields\Types\EditorType;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\HiddenType;
@@ -126,28 +127,24 @@ class Factory implements FieldFactoryInterface
     /**
      * Return a DateField instance.
      *
-     * @param string $name       The name attribute of the date input.
-     * @param array  $features   Custom field features - title, info.
-     * @param array  $attributes Input html attributes.
+     * @param string $name
+     * @param array $options
      *
-     * @return \Themosis\Field\Fields\DateField
+     * @return FieldTypeInterface
      */
-    public function date($name, array $features = [], array $attributes = [])
+    public function date($name, array $options = [])
     {
-        $properties = [
-            'features' => $features,
-            'atts' => array_merge(['class' => 'newtag'], $attributes, ['data-field' => 'date']),
-            'name' => $name,
-        ];
-
-        return $this->make('Themosis\\Field\\Fields\\DateField', $properties);
+        return (new DateType($name))
+            ->setLocale($this->app->getLocale())
+            ->setViewFactory($this->viewFactory)
+            ->setOptions($options);
     }
 
     /**
      * Return a textarea type instance.
      *
      * @param string $name
-     * @param array  $options
+     * @param array $options
      *
      * @return FieldTypeInterface
      */
