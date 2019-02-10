@@ -132,7 +132,7 @@ class Factory implements FieldFactoryInterface
      *
      * @return FieldTypeInterface
      */
-    public function date($name, array $options = [])
+    public function date(string $name, array $options = []): FieldTypeInterface
     {
         return (new DateType($name))
             ->setLocale($this->app->getLocale())

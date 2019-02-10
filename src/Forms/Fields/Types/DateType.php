@@ -36,6 +36,18 @@ class DateType extends BaseType implements DataTransformerInterface, CanHandleMe
     }
 
     /**
+     * Set field options default values.
+     *
+     * @return array
+     */
+    protected function setDefaultOptions(): array
+    {
+        return array_merge($this->defaultOptions, [
+            'attributes' => ['type' => 'date']
+        ]);
+    }
+
+    /**
      * Parse and setup default options.
      *
      * @param array $options
@@ -69,18 +81,6 @@ class DateType extends BaseType implements DataTransformerInterface, CanHandleMe
     public function reverseTransform($data)
     {
         return $this->transform($data);
-    }
-
-    /**
-     * Set field options default values.
-     *
-     * @return array
-     */
-    protected function setDefaultOptions(): array
-    {
-        return array_merge($this->defaultOptions, [
-            'attributes' => ['type' => 'date']
-        ]);
     }
 
     /**
