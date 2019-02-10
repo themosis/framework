@@ -8,13 +8,6 @@ import Error from "../errors/Error";
  * Date field component.
  */
 class DateField extends React.Component <FieldProps> {
-    static defaultProps = {
-        field: {
-            attributes: {
-                type: 'date'
-            }
-        },
-    };
 
     constructor(props: FieldProps) {
         super(props);

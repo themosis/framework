@@ -8,7 +8,7 @@ use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
 class DateType extends BaseType implements DataTransformerInterface, CanHandleMetabox
 {
     /**
-     * EmailType field view.
+     * DateType field view.
      *
      * @var string
      */

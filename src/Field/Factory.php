@@ -125,10 +125,10 @@ class Factory implements FieldFactoryInterface
     }
 
     /**
-     * Return a DateField instance.
+     * Return a date type instance.
      *
      * @param string $name
-     * @param array $options
+     * @param array  $options
      *
      * @return FieldTypeInterface
      */
@@ -144,7 +144,7 @@ class Factory implements FieldFactoryInterface
      * Return a textarea type instance.
      *
      * @param string $name
-     * @param array $options
+     * @param array  $options
      *
      * @return FieldTypeInterface
      */

@@ -61,15 +61,8 @@ class Manager implements ManagerInterface {
      * @return {boolean}
      */
     hasComponent(name: string): boolean {
-        const keys = Object.keys(this.components);
 
-        for (let i = 0; i < keys.length; i++) {
-            if (name === keys[i]) {
-                return true;
-            }
-        }
-
-        return false;
+        return name in this.components;
     }
 
     /**
