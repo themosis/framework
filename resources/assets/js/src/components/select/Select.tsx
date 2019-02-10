@@ -81,13 +81,10 @@ class Select extends React.Component <SelectProps, SelectState> {
             return [];
         }
 
-        return values.map((value: string) => {
-            let option = this.findOptionByValue(value, options);
-
-            return option ? option.key : '';
-        }).filter((selection: string) => {
-            return selection.length;
-        });
+        return values.reduce((acc: Array<string>, value: string) => {
+            const option: OptionType | null = this.findOptionByValue(value, options);
+            return [...acc, ...(option ? [option.key] : [])];
+        }, []);
     }
 
     /**
@@ -99,25 +96,12 @@ class Select extends React.Component <SelectProps, SelectState> {
      *
      * @return {Array<OptionType>}
      */
-    defaultOptions(options: Array<OptionType>, values: Array<string> = []) {
-        return options.map((option) => {
-            let foundValue;
+    defaultOptions(options: Array<OptionType>, values: Array<string> = []): Array<OptionType> {
+        if (!values.length) {
+            return options.map((option) => ({...option, selected: false}));
+        }
 
-            if (values.length) {
-                for (let idx in values) {
-                    let value = values[idx];
-
-                    if (option.value === value) {
-                       foundValue = value;
-                       break;
-                    }
-                }
-            }
-
-            option.selected = option.value === foundValue;
-
-            return option;
-        });
+        return options.map((option) => ({...option, selected: values.indexOf(option.value) !== -1}));
     }
 
     /**
@@ -313,12 +297,9 @@ class Select extends React.Component <SelectProps, SelectState> {
      *
      * @return {OptionType}
      */
-    findOptionByKey(key: string): OptionType|null {
-        let result = this.state.options.filter((option) => {
-            return option.key === key;
-        }).shift();
+    findOptionByKey(key: string): OptionType | null {
 
-        return result ? result : null;
+        return this.state.options.find((option) => option.key === key) || null;
     }
 
     /**
@@ -334,11 +315,7 @@ class Select extends React.Component <SelectProps, SelectState> {
             return null;
         }
 
-        let found = options.filter((option: OptionType) => {
-            return option.value === value;
-        }).shift();
-
-        return found ? found : null;
+        return options.find((option: OptionType) => option.value === value) || null;
     }
 
     /**
@@ -376,7 +353,7 @@ class Select extends React.Component <SelectProps, SelectState> {
          * If there is no value, let's check after the placeholder.
          */
         if (this.shouldShowPlaceholder() && this.props.l10n) {
-            return this.props.l10n.placeholder ? this.props.l10n.placeholder : '';
+            return this.props.l10n.placeholder || '';
         }
 
         let selection = this.state.selected;
