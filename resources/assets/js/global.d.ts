@@ -58,6 +58,7 @@ declare interface FieldType {
         max: string;
         min: string;
         step: number;
+        type: string;
     };
     basename: string;
     component: string;
