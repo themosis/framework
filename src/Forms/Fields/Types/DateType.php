@@ -2,10 +2,10 @@
 
 namespace Themosis\Forms\Fields\Types;
 
-use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
+use Themosis\Forms\Transformers\StringToDateTimeTransformer;
 
-class DateType extends BaseType implements DataTransformerInterface, CanHandleMetabox
+class DateType extends BaseType implements CanHandleMetabox
 {
     /**
      * DateType field view.
@@ -28,25 +28,6 @@ class DateType extends BaseType implements DataTransformerInterface, CanHandleMe
      */
     protected $component = 'themosis.fields.date';
 
-    public function __construct(string $name)
-    {
-        parent::__construct($name);
-
-        $this->defaultOptions = $this->setDefaultOptions();
-    }
-
-    /**
-     * Set field options default values.
-     *
-     * @return array
-     */
-    protected function setDefaultOptions(): array
-    {
-        return array_merge($this->defaultOptions, [
-            'attributes' => ['type' => 'date']
-        ]);
-    }
-
     /**
      * Parse and setup default options.
      *
@@ -56,31 +37,9 @@ class DateType extends BaseType implements DataTransformerInterface, CanHandleMe
      */
     protected function parseOptions(array $options): array
     {
-        $this->setTransformer($this);
+        $this->setTransformer(new StringToDateTimeTransformer());
 
         return parent::parseOptions($options);
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @param mixed $data
-     *
-     * @return string
-     */
-    public function transform($data)
-    {
-        return is_null($data) ? '' : (string) $data;
-    }
-
-    /**¨
-     * @inheritdoc
-     * @param string $data
-     * @return string
-     */
-    public function reverseTransform($data)
-    {
-        return $this->transform($data);
     }
 
     /**

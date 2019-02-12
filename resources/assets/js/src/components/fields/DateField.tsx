@@ -1,4 +1,5 @@
 import * as React from "react";
+import {DatePicker} from "@wordpress/components";
 import {Description, Field} from "./common";
 import Label from "../labels/Label";
 import {getErrorsMessages, hasErrors, isRequired} from "../../helpers";
@@ -18,8 +19,18 @@ class DateField extends React.Component <FieldProps> {
     /**
      * Handle input value change.
      */
-    onChange(e: any) {
-        this.props.changeHandler(this.props.field.name, e.target.value);
+    onChange(value: string) {
+        this.props.changeHandler(this.props.field.name, value);
+    }
+
+    /**
+     * Return field value.
+     */
+    getValue(): string {
+        if (!this.props.field.value) {
+            return '';
+        }
+        return Array.isArray(this.props.field.value) ? this.props.field.value[0] : this.props.field.value;
     }
 
     /**
@@ -34,12 +45,7 @@ class DateField extends React.Component <FieldProps> {
                            text={this.props.field.label.inner}/>
                 </div>
                 <div className="themosis__column__content">
-                    <input id={this.props.field.attributes.id}
-                           className="themosis__input"
-                           name={this.props.field.name}
-                           value={this.props.field.value}
-                           type={this.props.field.attributes.type}
-                           onChange={this.onChange}/>
+                    <DatePicker currentDate={this.getValue()} onChange={this.onChange}/>
                     {hasErrors(this.props.field) && <Error messages={getErrorsMessages(this.props.field)}/>}
                     {this.props.field.options.info && <Description content={this.props.field.options.info}/>}
                 </div>
