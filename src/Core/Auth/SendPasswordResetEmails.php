@@ -44,6 +44,8 @@ trait SendPasswordResetEmails
         $response = $this->broker()->sendResetLink([
             'email' => $form->repository()->getFieldByName('email')->getValue()
         ]);
+
+        dd($response);
     }
 
     /**

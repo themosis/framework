@@ -25,6 +25,7 @@ use Themosis\Core\Console\HookMakeCommand;
 use Themosis\Core\Console\KeyGenerateCommand;
 use Themosis\Core\Console\MailMakeCommand;
 use Themosis\Core\Console\ModelMakeCommand;
+use Themosis\Core\Console\PasswordResetTableCommand;
 use Themosis\Core\Console\PluginInstallCommand;
 use Themosis\Core\Console\ProviderMakeCommand;
 use Themosis\Core\Console\RouteCacheCommand;
@@ -85,6 +86,7 @@ class ConsoleServiceProvider extends ServiceProvider
         'MiddlewareMake' => 'command.middleware.make',
         'MigrateMake' => 'command.migrate.make',
         'ModelMake' => 'command.model.make',
+        'PasswordResetTable' => 'command.password.reset.table',
         'PluginInstall' => 'command.plugin.install',
         'ProviderMake' => 'command.provider.make',
         'SessionTable' => 'command.session.table',
@@ -349,6 +351,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new ModelMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the password:table command.
+     *
+     * @param string $abstract
+     */
+    protected function registerPasswordResetTableCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new PasswordResetTableCommand($app['files'], $app['composer']);
         });
     }
 
