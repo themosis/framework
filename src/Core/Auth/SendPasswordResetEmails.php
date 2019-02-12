@@ -36,9 +36,7 @@ trait SendPasswordResetEmails
         $form->handleRequest($request);
 
         if ($form->isNotValid()) {
-            return back()->with([
-                'status' => $form->errors()->first()
-            ]);
+            return back()->withErrors($form->errors()->all());
         }
 
         $response = $this->broker()->sendResetLink([
