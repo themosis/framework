@@ -11,6 +11,7 @@ use Illuminate\Log\LogManager;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\HtmlString;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\VarDumper\VarDumper;
 
 if (! function_exists('app')) {
     /**
@@ -447,5 +448,23 @@ if (! function_exists('web_path')) {
     function web_path($path = '')
     {
         return app()->webPath($path);
+    }
+}
+
+if (! function_exists('dump')) {
+    function dump()
+    {
+        $args = func_get_args();
+        foreach ($args as $arg) {
+            VarDumper::dump($arg);
+        }
+    }
+}
+
+if (! function_exists('dd')) {
+    function dd(...$args)
+    {
+        call_user_func_array('dump', $args);
+        die(1);
     }
 }

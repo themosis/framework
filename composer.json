@@ -56,12 +56,12 @@
     "illuminate/view": "5.7.*",
     "league/flysystem": "^1.0",
     "league/fractal": "^0.17.0",
+    "symfony/var-dumper": "^4.1",
     "twig/twig": " ^2.0",
     "vlucas/phpdotenv": "^2.4"
   },
   "require-dev": {
-    "phpunit/phpunit": "^7.0",
-    "symfony/var-dumper": "^4.1"
+    "phpunit/phpunit": "^7.0"
   },
   "scripts": {
     "test": "phpunit"
