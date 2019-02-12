@@ -36,8 +36,8 @@ trait SendPasswordResetEmails
         $form->handleRequest($request);
 
         if ($form->isNotValid()) {
-            return redirect('password.request')->with([
-                'form' => $form
+            return back()->with([
+                'status' => $form->errors()->first()
             ]);
         }
 
@@ -45,7 +45,35 @@ trait SendPasswordResetEmails
             'email' => $form->repository()->getFieldByName('email')->getValue()
         ]);
 
-        dd($response);
+        return $response == Password::RESET_LINK_SENT
+            ? $this->sendResetLinkResponse($response)
+            : $this->sendResetLinkFailedResponse($response);
+    }
+
+    /**
+     * Get the response for a successful password reset link.
+     *
+     * @param string $response
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function sendResetLinkResponse($response)
+    {
+        return back()->with('status', trans($response));
+    }
+
+    /**
+     * Get the response for a failed password reset link.
+     *
+     * @param string $response
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function sendResetLinkFailedResponse($response)
+    {
+        return back()->withErrors([
+                'email' => trans($response)
+            ]);
     }
 
     /**

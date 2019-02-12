@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
@@ -42,6 +43,40 @@ if (! function_exists('app_path')) {
     function app_path($path = '')
     {
         return app()->path($path);
+    }
+}
+
+if (! function_exists('auth')) {
+    /**
+     * Get the available auth instance.
+     *
+     * @param string|null $guard
+     *
+     * @return \Illuminate\Contracts\Auth\Factory|\Illuminate\Contracts\Auth\Guard
+     */
+    function auth($guard = null)
+    {
+        if (is_null($guard)) {
+            return app(AuthFactory::class);
+        }
+
+        return app(AuthFactory::class)->guard($guard);
+    }
+}
+
+if (! function_exists('back')) {
+    /**
+     * Create a redirect response to the previous location.
+     *
+     * @param int   $status
+     * @param array $headers
+     * @param mixed $fallback
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    function back($status = 302, $headers = [], $fallback = false)
+    {
+        return app('redirect')->back($status, $headers, $fallback);
     }
 }
 
