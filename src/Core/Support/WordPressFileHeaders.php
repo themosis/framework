@@ -21,7 +21,7 @@ trait WordPressFileHeaders
             if (preg_match('/^[ \t\/*#@]*'.preg_quote($regex, '/').':(.*)$/mi', $data, $match) && $match[1]) {
                 $properties[$field] = trim(preg_replace("/\s*(?:\*\/|\?>).*/", '', $match[1]));
             } else {
-                $properties[$field] = null;
+                $properties[$field] = '';
             }
         }
 
