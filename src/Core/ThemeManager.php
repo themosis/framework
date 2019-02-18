@@ -264,10 +264,8 @@ class ThemeManager
 
         // Theme text domain.
         $textdomain = $this->parsedHeaders['text_domain'] ?? 'themosis_theme';
-        $domainpath = $this->parsedHeaders['domain_path'] ?? 'languages';
         
         defined('THEME_TD') ? THEME_TD : define('THEME_TD', $textdomain);
-        defined('THEME_DP') ? THEME_DP : define('THEME_DP', $domainpath);
     }
 
     /**
