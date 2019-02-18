@@ -44,18 +44,19 @@ trait SendPasswordResetEmails
         ]);
 
         return $response == Password::RESET_LINK_SENT
-            ? $this->sendResetLinkResponse($response)
-            : $this->sendResetLinkFailedResponse($response);
+            ? $this->sendResetLinkResponse($request, $response)
+            : $this->sendResetLinkFailedResponse($request, $response);
     }
 
     /**
      * Get the response for a successful password reset link.
      *
-     * @param string $response
+     * @param Request $request
+     * @param string  $response
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function sendResetLinkResponse($response)
+    protected function sendResetLinkResponse(Request $request, $response)
     {
         return back()->with('status', trans($response));
     }
@@ -63,11 +64,12 @@ trait SendPasswordResetEmails
     /**
      * Get the response for a failed password reset link.
      *
-     * @param string $response
+     * @param Request $request
+     * @param string  $response
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function sendResetLinkFailedResponse($response)
+    protected function sendResetLinkFailedResponse(Request $request, $response)
     {
         return back()->withErrors([
                 'email' => trans($response)
