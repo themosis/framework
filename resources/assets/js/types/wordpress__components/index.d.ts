@@ -5,7 +5,7 @@ declare module '@wordpress/components' {
         colorValue?: string;
     }
 
-    export const ColorIndicator:React.SFC<ColorIndicatorProps>;
+    export const ColorIndicator:React.FunctionComponent<ColorIndicatorProps>;
 
     // ColorPalette
     interface Color {
@@ -23,7 +23,7 @@ declare module '@wordpress/components' {
         className?: string | object;
     }
 
-    export const ColorPalette:React.SFC<ColorPaletteProps>;
+    export const ColorPalette:React.FunctionComponent<ColorPaletteProps>;
 
     // Draggable
     interface onDragCallback {
@@ -37,11 +37,21 @@ declare module '@wordpress/components' {
         onDragEnd?: onDragCallback;
     }
 
-    export const Draggable:React.SFC<DraggableProps>;
+    export const Draggable:React.FunctionComponent<DraggableProps>;
 
     // DropZone
-    export const DropZone:React.SFC;
+    export const DropZone:React.FunctionComponent;
 
     // DropZoneProvider
-    export const DropZoneProvider:React.SFC;
+    export const DropZoneProvider:React.FunctionComponent;
+
+    // DatePicker
+    interface onChange {
+        (value:string): void;
+    }
+    interface DatePicker{
+        currentDate?: string;
+        onChange?: onChange;
+    }
+    export const DatePicker:React.ComponentClass<DatePicker>;
 }
