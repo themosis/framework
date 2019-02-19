@@ -56,6 +56,7 @@
     "illuminate/view": "5.7.*",
     "league/flysystem": "^1.0",
     "league/fractal": "^0.17.0",
+    "symfony/property-access": "^4.2",
     "twig/twig": " ^2.0",
     "vlucas/phpdotenv": "^2.4"
   },
