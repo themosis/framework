@@ -1152,7 +1152,7 @@ class FormCreationTest extends TestCase
         $this->assertEquals([20, 30], $resource['fields']['data'][4]['value']);
     }
 
-    public function testFormCanHandleDataObjectWithGettersAndSetters()
+    public function testFormSetDataObjectValuesWithValidRequest()
     {
         $dto = new ContactFormRequestData();
 
@@ -1160,16 +1160,37 @@ class FormCreationTest extends TestCase
         $fields = $this->getFieldsFactory();
 
         $form = $factory->make([], $dto)
-            ->add($fields->text('fullname'))
+            ->add($name = $fields->text('fullname'))
+            ->add($email = $fields->email('email'))
+            ->add($message = $fields->textarea('message'))
+            ->add($checkbox = $fields->checkbox('subscribe'))
+            ->add($follow = $fields->checkbox('follow'))
+            ->add($colors = $fields->choice('colors', [
+                'choices' => [
+                    'red',
+                    'green',
+                    'blue'
+                ],
+                'multiple' => true
+            ]))
             ->get();
 
         $request = Request::create('/', 'POST', [
-            'th_fullname' => 'Dae Doe'
+            'th_fullname' => 'Dae Doe',
+            'th_email' => 'julien@corporation.xyz',
+            'th_message' => 'This is a short message with very little details.',
+            'th_subscribe' => 'on',
+            'th_colors' => ['green', 'blue']
         ]);
 
         $form->handleRequest($request);
 
         $this->assertTrue($form->isValid());
-        $this->assertEquals($request->get('th_fullname'), $dto->getFullname());
+        $this->assertEquals($request->get($name->getName()), $dto->getFullname());
+        $this->assertEquals($request->get($email->getName()), $dto->getEmail());
+        $this->assertEquals($request->get($message->getName()), $dto->getMessage());
+        $this->assertTrue($dto->getSubscribe());
+        $this->assertFalse($dto->getFollow());
+        $this->assertEquals($request->get($colors->getName()), $dto->getColors());
     }
 }
