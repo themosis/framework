@@ -64,6 +64,13 @@ class FormBuilder implements FormBuilderInterface
         $field->setViewFactory($this->form->getViewer());
         $field->setResourceTransformerFactory($this->form->getResourceTransformerFactory());
 
+        // DTO
+        if (! is_null($this->form->getData()) && is_object($this->form->getData())) {
+            $field->setValue(
+                $this->form->getDataMapper()->getAccessor()->getValue($this->form->getData(), $field->getBaseName())
+            );
+        }
+
         // Check if section instance already exists on the form.
         // If not, create a new section instance.
         if ($this->form->repository()->hasGroup($field->getOption('group'))) {

@@ -25,6 +25,7 @@ use Themosis\Support\Contracts\SectionInterface;
 use Themosis\Tests\Forms\Entities\ContactEntity;
 use Themosis\Tests\Forms\Forms\ContactForm;
 use Themosis\Tests\Forms\Resources\Data\ContactFormRequestData;
+use Themosis\Tests\Forms\Resources\Data\CreateArticleData;
 
 class FormCreationTest extends TestCase
 {
@@ -1150,6 +1151,22 @@ class FormCreationTest extends TestCase
         $this->assertEquals('Marco Polo', $resource['fields']['data'][2]['value']);
         $this->assertEquals('green', $resource['fields']['data'][3]['value']);
         $this->assertEquals([20, 30], $resource['fields']['data'][4]['value']);
+    }
+
+    public function testFormGetDataObjectDefaultValues()
+    {
+        $dto = new CreateArticleData();
+        $dto->title = 'Hello World';
+
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+
+        $form = $factory->make([], $dto)
+            ->add($title = $fields->text('title'))
+            ->add($content = $fields->textarea('content'))
+            ->get();
+
+        $this->assertEquals($dto->title, $form->repository()->getFieldByName($title->getBaseName())->getValue());
     }
 
     public function testFormSetDataObjectValuesWithValidRequest()

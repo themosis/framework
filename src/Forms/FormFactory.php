@@ -5,8 +5,10 @@ namespace Themosis\Forms;
 use Illuminate\Contracts\Validation\Factory as ValidationFactoryInterface;
 use Illuminate\Contracts\View\Factory as ViewFactoryInterface;
 use League\Fractal\Manager;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Themosis\Forms\Contracts\FormBuilderInterface;
 use Themosis\Forms\Contracts\FormFactoryInterface;
+use Themosis\Forms\DataMappers\DataMapperManager;
 use Themosis\Forms\Fields\FieldsRepository;
 use Themosis\Forms\Resources\Factory;
 
@@ -71,7 +73,13 @@ class FormFactory implements FormFactoryInterface
      */
     public function make($options = [], $dataClass = null, $builder = FormBuilder::class): FormBuilderInterface
     {
-        $form = new Form($dataClass, new FieldsRepository(), $this->validation, $this->viewer);
+        $form = new Form(
+            $dataClass,
+            new FieldsRepository(),
+            $this->validation,
+            $this->viewer,
+            new DataMapperManager(PropertyAccess::createPropertyAccessor())
+        );
         $form->setManager($this->manager);
         $form->setResourceTransformerFactory($this->factory);
         $form->setAttributes($this->attributes);

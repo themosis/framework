@@ -8,6 +8,23 @@ class ContactEntity
     private $firstname;
     private $lastname;
     private $email;
+    private $company;
+
+    /**
+     * @return mixed
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param mixed $company
+     */
+    public function setCompany($company): void
+    {
+        $this->company = $company;
+    }
 
     /**
      * @return mixed

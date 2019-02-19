@@ -13,7 +13,6 @@ use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\Resource\ResourceInterface;
 use League\Fractal\Serializer\ArraySerializer;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Contracts\FieldsRepositoryInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
@@ -39,6 +38,11 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * @var mixed
      */
     protected $dataClass;
+
+    /**
+     * @var DataMapperManager
+     */
+    protected $dataMapper;
 
     /**
      * @var string
@@ -173,13 +177,15 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         $dataClass,
         FieldsRepositoryInterface $repository,
         ValidationFactoryInterface $validation,
-        ViewFactoryInterface $viewer
+        ViewFactoryInterface $viewer,
+        DataMapperManager $dataMapper
     ) {
         parent::__construct();
         $this->dataClass = $dataClass;
         $this->repository = $repository;
         $this->validation = $validation;
         $this->viewer = $viewer;
+        $this->dataMapper = $dataMapper;
 
         /** @var Factory $validation */
         $this->setLocale($validation->getTranslator()->getLocale());
@@ -283,12 +289,11 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         );
 
         $data = $this->validator->valid();
-        $dataMapperManager = new DataMapperManager(PropertyAccess::createPropertyAccessor());
 
         // Attach the errors message bag to each field.
         // Set each field value.
         // Update the DTO instance with form data if defined.
-        array_walk($fields, function ($field) use ($data, $dataMapperManager) {
+        array_walk($fields, function ($field) use ($data) {
             /** @var $field BaseType */
             $field->setErrorMessageBag($this->errors());
 
@@ -299,7 +304,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
             // DTO
             if (! is_null($this->dataClass) && is_object($this->dataClass)) {
-                $dataMapperManager->getAccessor()
+                $this->dataMapper->getAccessor()
                     ->setValue($this->dataClass, $field->getBaseName(), $field->getValue());
             }
 
@@ -720,6 +725,24 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         $atts = $this->getAttributes();
 
         return $atts[$name] ?? '';
+    }
+
+    /**
+     * Return the data object.
+     *
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->dataClass;
+    }
+
+    /**
+     * @return DataMapperManager
+     */
+    public function getDataMapper()
+    {
+        return $this->dataMapper;
     }
 
     /**
