@@ -24,6 +24,7 @@ use Themosis\Forms\FormFactory;
 use Themosis\Support\Contracts\SectionInterface;
 use Themosis\Tests\Forms\Entities\ContactEntity;
 use Themosis\Tests\Forms\Forms\ContactForm;
+use Themosis\Tests\Forms\Resources\Data\ContactFormRequestData;
 
 class FormCreationTest extends TestCase
 {
@@ -690,8 +691,8 @@ class FormCreationTest extends TestCase
 
         $this->assertTrue($form->isValid());
         $this->assertFalse($form->isNotValid());
-        $this->assertEmpty($firstname->getValue());
-        $this->assertEmpty($email->getValue());
+        $this->assertEquals($request->get($firstname->getName()), $firstname->getValue());
+        $this->assertEquals($request->get($email->getName()), $email->getValue());
 
         $failingRequest = Request::create('/', 'POST', [
             'th_firstname' => 'Gilbert',
@@ -960,7 +961,7 @@ class FormCreationTest extends TestCase
             'attributes' => [
                 'method' => 'post'
             ],
-            'flush' => true,
+            'flush' => false,
             'locale' => 'en_US',
             'nonce' => '_themosisnonce',
             'referer' => true,
@@ -1149,5 +1150,26 @@ class FormCreationTest extends TestCase
         $this->assertEquals('Marco Polo', $resource['fields']['data'][2]['value']);
         $this->assertEquals('green', $resource['fields']['data'][3]['value']);
         $this->assertEquals([20, 30], $resource['fields']['data'][4]['value']);
+    }
+
+    public function testFormCanHandleDataObjectWithGettersAndSetters()
+    {
+        $dto = new ContactFormRequestData();
+
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+
+        $form = $factory->make([], $dto)
+            ->add($fields->text('fullname'))
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_fullname' => 'Dae Doe'
+        ]);
+
+        $form->handleRequest($request);
+
+        $this->assertTrue($form->isValid());
+        $this->assertEquals($request->get('th_fullname'), $dto->getFullname());
     }
 }

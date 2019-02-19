@@ -64,14 +64,14 @@ class FormFactory implements FormFactoryInterface
      * Create a FormBuilderInterface instance.
      *
      * @param array  $options
-     * @param mixed  $data    Data object (DTO).
-     * @param string $builder A FieldBuilderInterface class.
+     * @param mixed  $dataClass Data object (DTO).
+     * @param string $builder   A FieldBuilderInterface class.
      *
      * @return FormBuilderInterface
      */
-    public function make($options = [], $data = null, $builder = FormBuilder::class): FormBuilderInterface
+    public function make($options = [], $dataClass = null, $builder = FormBuilder::class): FormBuilderInterface
     {
-        $form = new Form(new FieldsRepository(), $this->validation, $this->viewer);
+        $form = new Form($dataClass, new FieldsRepository(), $this->validation, $this->viewer);
         $form->setManager($this->manager);
         $form->setResourceTransformerFactory($this->factory);
         $form->setAttributes($this->attributes);

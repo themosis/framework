@@ -13,10 +13,12 @@ use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
 use League\Fractal\Resource\ResourceInterface;
 use League\Fractal\Serializer\ArraySerializer;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Contracts\FieldsRepositoryInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
+use Themosis\Forms\DataMappers\DataMapperManager;
 use Themosis\Forms\Fields\Types\BaseType;
 use Themosis\Forms\Resources\Factory as TransformerFactory;
 use Themosis\Html\HtmlBuilder;
@@ -30,6 +32,13 @@ use Themosis\Support\Contracts\SectionInterface;
 class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 {
     use FormHelper;
+
+    /**
+     * DTO object.
+     *
+     * @var mixed
+     */
+    protected $dataClass;
 
     /**
      * @var string
@@ -107,7 +116,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     protected $defaultOptions = [
         'attributes' => [],
-        'flush' => true,
+        'flush' => false,
         'tags' => true,
         'errors' => true,
         'theme' => 'themosis'
@@ -161,11 +170,13 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     protected $component;
 
     public function __construct(
+        $dataClass,
         FieldsRepositoryInterface $repository,
         ValidationFactoryInterface $validation,
         ViewFactoryInterface $viewer
     ) {
         parent::__construct();
+        $this->dataClass = $dataClass;
         $this->repository = $repository;
         $this->validation = $validation;
         $this->viewer = $viewer;
@@ -272,17 +283,30 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         );
 
         $data = $this->validator->valid();
+        $dataMapperManager = new DataMapperManager(PropertyAccess::createPropertyAccessor());
 
         // Attach the errors message bag to each field.
-        array_walk($fields, function ($field) use ($data) {
+        // Set each field value.
+        // Update the DTO instance with form data if defined.
+        array_walk($fields, function ($field) use ($data, $dataMapperManager) {
             /** @var $field BaseType */
             $field->setErrorMessageBag($this->errors());
+
+            // Set the field value. Each field has its own data transformer so when we
+            // call the field getValue() method later on, we're sure to fetch a correct
+            // formatted value.
+            $field->setValue(Arr::get($data, $field->getName()));
+
+            // DTO
+            if (! is_null($this->dataClass) && is_object($this->dataClass)) {
+                $dataMapperManager->getAccessor()
+                    ->setValue($this->dataClass, $field->getBaseName(), $field->getValue());
+            }
 
             // By default, if the form is not valid, we keep populating fields values.
             // In the case of a valid form, by default, values are flushed except if
             // the "flush" option for the form has been set to true.
-            if ($this->validator->fails() || false === $this->getOption('flush')) {
-                $field->setValue(Arr::get($data, $field->getName()));
+            if ($this->validator->fails()) {
                 if ($field->error()) {
                     // Add invalid CSS classes.
                     $field->addAttribute('class', 'is-invalid');
@@ -290,6 +314,18 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
                     // Add valid CSS classes and validate the field.
                     $field->addAttribute('class', 'is-valid');
                 }
+            }
+
+            /**
+             * Flush
+             * TODO: - Think twice about this flush option... If a data is not valid, the field value
+             *       - is "flushed" anyway. Plus if a form should flush, it is best to flush data at
+             *       - output only so we can still use data from the controller for example.
+             *       - Also perhaps each field should have a flush property so we can check at render
+             *       - time to not call the field value somehow...
+             */
+            if (true === $this->getOption('flush')) {
+                $field->setValue(null);
             }
         });
 
