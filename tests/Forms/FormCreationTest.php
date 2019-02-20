@@ -398,9 +398,9 @@ class FormCreationTest extends TestCase
 
         $this->assertTrue($form->isValid());
         $this->assertEquals('Marcel', $name->getValue());
-        $this->assertEquals('Marcel', $name->getRawValue());
+        $this->assertEquals('', $name->getRawValue());
         $this->assertEquals('marcel@domain.com', $email->getValue());
-        $this->assertEquals('marcel@domain.com', $email->getRawValue());
+        $this->assertEquals('', $email->getRawValue());
     }
 
     public function testFormValuesOnFailingSubmission()
@@ -437,7 +437,9 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory('fr_FR');
         $fields = $this->getFieldsFactory();
 
-        $form = $factory->make()
+        $form = $factory->make(null, [
+            'flush' => false
+        ])
             ->add($name = $fields->text('name'))
             ->add($email = $fields->text('email'))
             ->add($message = $fields->textarea('message'))
@@ -952,7 +954,7 @@ class FormCreationTest extends TestCase
             'attributes' => [
                 'method' => 'post'
             ],
-            'flush' => false,
+            'flush' => true,
             'locale' => 'en_US',
             'nonce' => '_themosisnonce',
             'referer' => true,

@@ -120,7 +120,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     protected $defaultOptions = [
         'attributes' => [],
-        'flush' => false,
+        'flush' => true,
         'tags' => true,
         'errors' => true,
         'theme' => 'themosis'
@@ -319,18 +319,11 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
                     // Add valid CSS classes and validate the field.
                     $field->addAttribute('class', 'is-valid');
                 }
-            }
-
-            /**
-             * Flush
-             * TODO: - Think twice about this flush option... If a data is not valid, the field value
-             *       - is "flushed" anyway. Plus if a form should flush, it is best to flush data at
-             *       - output only so we can still use data from the controller for example.
-             *       - Also perhaps each field should have a flush property so we can check at render
-             *       - time to not call the field value somehow...
-             */
-            if (true === $this->getOption('flush')) {
-                $field->setValue(null);
+            } else {
+                // Validation is successful, we can flush fields value at output.
+                if (true === $this->getOption('flush')) {
+                    $field->flush();
+                }
             }
         });
 
@@ -969,5 +962,15 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function getComponent(): string
     {
         return $this->component;
+    }
+
+    /**
+     * Flush form fields trigger.
+     */
+    public function flush()
+    {
+        $this->setOptions([
+            'flush' => true
+        ]);
     }
 }
