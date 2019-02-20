@@ -7,7 +7,7 @@
                     @foreach($choices as $label => $choice)
                         <?php
                             $checked = $field->checked(function ($choices, $value) {
-                                return ! is_null($choices) && in_array($value, $choices, true) ? 'checked' : '';
+                                return ! empty($choices) && in_array($value, $choices) ? 'checked' : '';
                             }, [$field->getRawValue(), $choice]);
                         ?>
                         <label>
@@ -19,7 +19,7 @@
         @else
             <?php
                 $checked = $field->checked(function ($choices, $value) {
-                    return ! is_null($choices) && is_array($choices) && in_array($value, $choices, true) ? 'checked' : '';
+                    return ! empty($choices) && is_array($choices) && in_array($value, $choices) ? 'checked' : '';
                 }, [$field->getRawValue(), $choices]);
             ?>
             <label>
