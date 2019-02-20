@@ -11,6 +11,7 @@ use Themosis\Forms\Fields\Types\CheckboxType;
 use Themosis\Forms\Fields\Types\ChoiceType;
 use Themosis\Forms\Fields\Types\CollectionType;
 use Themosis\Forms\Fields\Types\ColorType;
+use Themosis\Forms\Fields\Types\CsrfType;
 use Themosis\Forms\Fields\Types\EditorType;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\HiddenType;
@@ -313,7 +314,7 @@ class Factory implements FieldFactoryInterface
      */
     public function csrf(string $name = '_token', array $options = []): FieldTypeInterface
     {
-        return (new HiddenType($name))
+        return (new CsrfType($name))
             ->setLocale($this->app->getLocale())
             ->setViewFactory($this->viewFactory)
             ->setPrefix('')
