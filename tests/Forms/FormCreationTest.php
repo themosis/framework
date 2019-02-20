@@ -1201,4 +1201,64 @@ class FormCreationTest extends TestCase
         $this->assertFalse($dto->getFollow());
         $this->assertEquals($request->get($colors->getName()), $dto->getColors());
     }
+
+    public function testFormUseDataObjectDefaultValuesAndSetRequestValuesOnSuccess()
+    {
+        $dto = new CreateArticleData();
+        $dto->title = 'Hello World';
+
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+
+        $form = $factory->make($dto)
+            ->add($title = $fields->text('title'))
+            ->add($content = $fields->textarea('content'))
+            ->add($author = $fields->text('author'))
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_title' => 'Goodbye World',
+            'th_content' => 'Another short content.',
+            'th_author' => 'Joe Koe'
+        ]);
+
+        $form->handleRequest($request);
+
+        $this->assertEquals($request->get($title->getName()), $dto->title);
+        $this->assertEquals($request->get($content->getName()), $dto->content);
+        $this->assertEquals($request->get($author->getName()), $dto->getAuthor());
+    }
+
+    public function testFormUseDataObjectDefaultValuesAndManageRequestValuesOnFailure()
+    {
+        $dto = new CreateArticleData();
+        $dto->setAuthor('Marcel');
+
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+
+        $form = $factory->make($dto)
+            ->add($fields->text('title', [
+                'rules' => 'required|string'
+            ]))
+            ->add($content = $fields->textarea('content', [
+                'rules' => 'required|min:6'
+            ]))
+            ->add($fields->text('author', [
+                'rules' => 'required|string'
+            ]))
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_title' => '',
+            'th_content' => 'Something',
+            'th_author' => 25
+        ]);
+
+        $form->handleRequest($request);
+
+        $this->assertEmpty($dto->title);
+        $this->assertEquals($request->get($content->getName()), $dto->content);
+        $this->assertEmpty($dto->getAuthor());
+    }
 }
