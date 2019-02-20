@@ -93,9 +93,9 @@ class TextType extends BaseType implements DataTransformerInterface, CanHandleMe
         if (is_null($this->getValue()) || empty($this->getValue())) {
             delete_post_meta($post_id, $this->getName());
         } elseif (empty($previous)) {
-            add_post_meta($post_id, $this->getName(), $this->getValue(), true);
+            add_post_meta($post_id, $this->getName(), $this->getRawValue(), true);
         } else {
-            update_post_meta($post_id, $this->getName(), $this->getValue(), $previous);
+            update_post_meta($post_id, $this->getName(), $this->getRawValue(), $previous);
         }
     }
 }
