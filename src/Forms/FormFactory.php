@@ -50,6 +50,36 @@ class FormFactory implements FormFactoryInterface
         'method' => 'post'
     ];
 
+    /**
+     * Create a FormBuilderInterface instance.
+     *
+     * @param mixed  $dataClass Data object (DTO).
+     * @param array  $options
+     * @param string $builder   A FieldBuilderInterface class.
+     *
+     * @return FormBuilderInterface
+     */
+    public function make($dataClass = null, $options = [], $builder = FormBuilder::class): FormBuilderInterface
+    {
+        $dataMapperManager = new DataMapperManager(PropertyAccess::createPropertyAccessor());
+
+        $form = new Form(
+            $dataClass,
+            new FieldsRepository(),
+            $this->validation,
+            $this->viewer,
+            $dataMapperManager
+        );
+        $form->setManager($this->manager);
+        $form->setResourceTransformerFactory($this->factory);
+        $form->setAttributes($this->attributes);
+        $form->setOptions($options);
+
+        $this->builder = new $builder($form, $dataMapperManager, $dataClass);
+
+        return $this->builder;
+    }
+
     public function __construct(
         ValidationFactoryInterface $validation,
         ViewFactoryInterface $viewer,
@@ -60,33 +90,5 @@ class FormFactory implements FormFactoryInterface
         $this->viewer = $viewer;
         $this->manager = $manager;
         $this->factory = $factory;
-    }
-
-    /**
-     * Create a FormBuilderInterface instance.
-     *
-     * @param array  $options
-     * @param mixed  $dataClass Data object (DTO).
-     * @param string $builder   A FieldBuilderInterface class.
-     *
-     * @return FormBuilderInterface
-     */
-    public function make($options = [], $dataClass = null, $builder = FormBuilder::class): FormBuilderInterface
-    {
-        $form = new Form(
-            $dataClass,
-            new FieldsRepository(),
-            $this->validation,
-            $this->viewer,
-            new DataMapperManager(PropertyAccess::createPropertyAccessor())
-        );
-        $form->setManager($this->manager);
-        $form->setResourceTransformerFactory($this->factory);
-        $form->setAttributes($this->attributes);
-        $form->setOptions($options);
-
-        $this->builder = new $builder($form);
-
-        return $this->builder;
     }
 }

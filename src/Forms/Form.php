@@ -728,24 +728,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     }
 
     /**
-     * Return the data object.
-     *
-     * @return mixed
-     */
-    public function getData()
-    {
-        return $this->dataClass;
-    }
-
-    /**
-     * @return DataMapperManager
-     */
-    public function getDataMapper()
-    {
-        return $this->dataMapper;
-    }
-
-    /**
      * Set the form attributes.
      *
      * @param array $attributes
