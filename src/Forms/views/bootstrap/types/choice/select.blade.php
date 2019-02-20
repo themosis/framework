@@ -11,7 +11,7 @@
                         $selected = $field->selected(function ($option, $value) {
                             $values = (array) $value;
 
-                            return ! is_null($value) && in_array($option, $values, true) ? 'selected' : '';
+                            return ! empty($values) && in_array($option, $values, true) ? 'selected' : '';
                         }, [$choice, $field->getRawValue()]);
                     ?>
                     <option value="{{ $choice }}" {{ $selected }}>{{ $label }}</option>
@@ -22,7 +22,7 @@
                 $selected = $field->selected(function ($option, $value) {
                     $values = (array) $value;
 
-                    return ! is_null($value) && in_array($option, $values, true) ? 'selected' : '';
+                    return ! empty($values) && in_array($option, $values, true) ? 'selected' : '';
                 }, [$choices, $field->getRawValue()]);
             ?>
             <option value="{{ $choices }}" {{ $selected }}>{{ $group }}</option>
