@@ -17,6 +17,7 @@ use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Contracts\FieldsRepositoryInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
+use Themosis\Forms\DataMappers\DataMapperManager;
 use Themosis\Forms\Fields\Types\BaseType;
 use Themosis\Forms\Resources\Factory as TransformerFactory;
 use Themosis\Html\HtmlBuilder;
@@ -30,6 +31,18 @@ use Themosis\Support\Contracts\SectionInterface;
 class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 {
     use FormHelper;
+
+    /**
+     * DTO object.
+     *
+     * @var mixed
+     */
+    protected $dataClass;
+
+    /**
+     * @var DataMapperManager
+     */
+    protected $dataMapper;
 
     /**
      * @var string
@@ -161,14 +174,18 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     protected $component;
 
     public function __construct(
+        $dataClass,
         FieldsRepositoryInterface $repository,
         ValidationFactoryInterface $validation,
-        ViewFactoryInterface $viewer
+        ViewFactoryInterface $viewer,
+        DataMapperManager $dataMapper
     ) {
         parent::__construct();
+        $this->dataClass = $dataClass;
         $this->repository = $repository;
         $this->validation = $validation;
         $this->viewer = $viewer;
+        $this->dataMapper = $dataMapper;
 
         /** @var Factory $validation */
         $this->setLocale($validation->getTranslator()->getLocale());
@@ -274,21 +291,38 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         $data = $this->validator->valid();
 
         // Attach the errors message bag to each field.
+        // Set each field value.
+        // Update the DTO instance with form data if defined.
         array_walk($fields, function ($field) use ($data) {
             /** @var $field BaseType */
             $field->setErrorMessageBag($this->errors());
 
+            // Set the field value. Each field has its own data transformer so when we
+            // call the field getValue() method later on, we're sure to fetch a correct
+            // formatted value.
+            $field->setValue(Arr::get($data, $field->getName()));
+
+            // DTO
+            if (! is_null($this->dataClass) && is_object($this->dataClass)) {
+                $this->dataMapper->getAccessor()
+                    ->setValue($this->dataClass, $field->getBaseName(), $field->getValue());
+            }
+
             // By default, if the form is not valid, we keep populating fields values.
             // In the case of a valid form, by default, values are flushed except if
             // the "flush" option for the form has been set to true.
-            if ($this->validator->fails() || false === $this->getOption('flush')) {
-                $field->setValue(Arr::get($data, $field->getName()));
+            if ($this->validator->fails()) {
                 if ($field->error()) {
                     // Add invalid CSS classes.
                     $field->addAttribute('class', 'is-invalid');
                 } else {
                     // Add valid CSS classes and validate the field.
                     $field->addAttribute('class', 'is-valid');
+                }
+            } else {
+                // Validation is successful, we can flush fields value at output.
+                if (true === $this->getOption('flush')) {
+                    $field->flush();
                 }
             }
         });
@@ -928,5 +962,15 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function getComponent(): string
     {
         return $this->component;
+    }
+
+    /**
+     * Flush form fields trigger.
+     */
+    public function flush()
+    {
+        $this->setOptions([
+            'flush' => true
+        ]);
     }
 }

@@ -9,7 +9,7 @@
                         <?php
                             $checked = $field->checked(function ($value, $choice) {
                                 return ! is_null($value) && $value === $choice ? 'checked' : '';
-                            }, [$field->getValue(), $choice]);
+                            }, [$field->getRawValue(), $choice]);
                         ?>
                         <label>
                             <input type="radio" name="{{ $field->getName() }}" value="{{ $choice }}" {{ $checked }}>{{ $label }}
@@ -21,7 +21,7 @@
             <?php
                 $checked = $field->checked(function ($value, $choice) {
                     return ! is_null($value) && $value === $choice ? 'checked' : '';
-                }, [$field->getValue(), $choices]);
+                }, [$field->getRawValue(), $choices]);
             ?>
             <label>
                 <input type="radio" name="{{ $field->getName() }}" value="{{ $choices }}" {{ $checked }}>{{ $group }}

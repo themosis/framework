@@ -222,10 +222,10 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
 
         if (! $this->getOption('multiple', false)) {
             // Store single value.
-            $this->saveSingleValue($this->getValue(), $post_id);
+            $this->saveSingleValue($this->getRawValue(), $post_id);
         } else {
             // Store multiple values.
-            $this->saveMultipleValue($this->getValue(), $post_id);
+            $this->saveMultipleValue($this->getRawValue(), $post_id);
         }
     }
 

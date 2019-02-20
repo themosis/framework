@@ -5,6 +5,7 @@ namespace Themosis\Forms;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormBuilderInterface;
 use Themosis\Forms\Contracts\FormInterface;
+use Themosis\Forms\DataMappers\DataMapperManager;
 use Themosis\Forms\Fields\Types\BaseType;
 use Themosis\Support\Section;
 
@@ -17,9 +18,23 @@ class FormBuilder implements FormBuilderInterface
      */
     protected $form;
 
-    public function __construct(FormInterface $form)
+    /**
+     * @var DataMapperManager
+     */
+    protected $dataMapperManager;
+
+    /**
+     * DTO instance
+     *
+     * @var mixed
+     */
+    protected $dataClass;
+
+    public function __construct(FormInterface $form, DataMapperManager $dataMapperManager, $dataClass = null)
     {
         $this->form = $form;
+        $this->dataMapperManager = $dataMapperManager;
+        $this->dataClass = $dataClass;
     }
 
     /**
@@ -63,6 +78,13 @@ class FormBuilder implements FormBuilderInterface
         $field->setForm($this->form);
         $field->setViewFactory($this->form->getViewer());
         $field->setResourceTransformerFactory($this->form->getResourceTransformerFactory());
+
+        // DTO
+        if (! is_null($this->dataClass) && is_object($this->dataClass)) {
+            $field->setValue(
+                $this->dataMapperManager->getAccessor()->getValue($this->dataClass, $field->getBaseName())
+            );
+        }
 
         // Check if section instance already exists on the form.
         // If not, create a new section instance.

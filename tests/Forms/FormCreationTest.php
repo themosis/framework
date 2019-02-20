@@ -24,6 +24,8 @@ use Themosis\Forms\FormFactory;
 use Themosis\Support\Contracts\SectionInterface;
 use Themosis\Tests\Forms\Entities\ContactEntity;
 use Themosis\Tests\Forms\Forms\ContactForm;
+use Themosis\Tests\Forms\Resources\Data\ContactFormRequestData;
+use Themosis\Tests\Forms\Resources\Data\CreateArticleData;
 
 class FormCreationTest extends TestCase
 {
@@ -123,7 +125,7 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory();
         $fields = $this->getFieldsFactory();
 
-        $form = $factory->make([], $contact)
+        $form = $factory->make($contact)
             ->add($firstname = $fields->text('firstname'))
             ->add($lastname = $fields->text('lastname'))
             ->add($email = $fields->email('email'))
@@ -149,7 +151,7 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory();
         $fields = $this->getFieldsFactory();
 
-        $formBuilder = $factory->make([], $contact);
+        $formBuilder = $factory->make($contact);
         $this->assertInstanceOf('Themosis\Forms\Contracts\FormBuilderInterface', $formBuilder);
 
         $form = $formBuilder->add($firstname = $fields->text('firstname'))
@@ -174,7 +176,7 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory();
         $fields = $this->getFieldsFactory();
 
-        $form = $factory->make([], $contact)
+        $form = $factory->make($contact)
                 ->add($firstname = $fields->text('firstname'))
                 ->add($lastname = $fields->text('lastname'))
                 ->add($email = $fields->email('email', [
@@ -217,7 +219,7 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory();
         $fields = $this->getFieldsFactory();
 
-        $form = $factory->make([
+        $form = $factory->make(null, [
             'attributes' => [
                 'method' => 'get',
                 'id' => 'get-form'
@@ -294,7 +296,7 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory();
         $fields = $this->getFieldsFactory();
 
-        $form = $factory->make([
+        $form = $factory->make(null, [
             'attributes' => [
                 'id' => 'some-form',
                 'name' => 'formidable'
@@ -376,9 +378,7 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory();
         $fields = $this->getFieldsFactory();
 
-        $form = $factory->make([
-            'flush' => false
-        ])
+        $form = $factory->make()
             ->add($name = $fields->text('name'))
             ->add($email = $fields->email('email'))
             ->get();
@@ -398,9 +398,9 @@ class FormCreationTest extends TestCase
 
         $this->assertTrue($form->isValid());
         $this->assertEquals('Marcel', $name->getValue());
-        $this->assertEquals('Marcel', $name->getRawValue());
+        $this->assertEquals('', $name->getRawValue());
         $this->assertEquals('marcel@domain.com', $email->getValue());
-        $this->assertEquals('marcel@domain.com', $email->getRawValue());
+        $this->assertEquals('', $email->getRawValue());
     }
 
     public function testFormValuesOnFailingSubmission()
@@ -437,7 +437,7 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory('fr_FR');
         $fields = $this->getFieldsFactory();
 
-        $form = $factory->make([
+        $form = $factory->make(null, [
             'flush' => false
         ])
             ->add($name = $fields->text('name'))
@@ -486,9 +486,7 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory();
         $fields = $this->getFieldsFactory();
 
-        $form = $factory->make([
-            'flush' => false
-        ])
+        $form = $factory->make()
             ->add($color = $fields->choice('colors', [
                 'choices' => ['red', 'green', 'blue']
             ]))
@@ -640,9 +638,7 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory();
         $fields = $this->getFieldsFactory();
 
-        $form = $factory->make([
-            'flush' => false
-        ])
+        $form = $factory->make()
             ->add($featured = $fields->choice('featured', [
                 'choices' => [
                     'Politics' => [
@@ -690,8 +686,8 @@ class FormCreationTest extends TestCase
 
         $this->assertTrue($form->isValid());
         $this->assertFalse($form->isNotValid());
-        $this->assertEmpty($firstname->getValue());
-        $this->assertEmpty($email->getValue());
+        $this->assertEquals($request->get($firstname->getName()), $firstname->getValue());
+        $this->assertEquals($request->get($email->getName()), $email->getValue());
 
         $failingRequest = Request::create('/', 'POST', [
             'th_firstname' => 'Gilbert',
@@ -800,7 +796,7 @@ class FormCreationTest extends TestCase
         $this->assertEquals('themosis', $form->getTheme());
 
         // Test custom form theme.
-        $form = $factory->make([
+        $form = $factory->make(null, [
             'theme' => 'bootstrap'
         ])
             ->add($firstname = $fields->text('firstname'))
@@ -830,7 +826,7 @@ class FormCreationTest extends TestCase
 
         $this->assertTrue($form->getOption('tags'));
 
-        $form = $factory->make([
+        $form = $factory->make(null, [
             'tags' => false
         ])
             ->get();
@@ -861,9 +857,7 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory();
         $fields = $this->getFieldsFactory();
 
-        $form = $factory->make([
-            'flush' => false
-        ])
+        $form = $factory->make()
             ->add($firstname = ($fields->text('firstname'))->setPrefix('wp_')->setView('custom'))
             ->add($email = $fields->email('email', [
                 'data' => 'me@example.com'
@@ -1105,9 +1099,7 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory();
         $fields = $this->getFieldsFactory();
 
-        $form = $factory->make([
-            'flush' => false
-        ])
+        $form = $factory->make()
             ->add($fields->text('firstname'))
             ->add($fields->email('email'))
             ->add($fields->textarea('message'))
@@ -1149,5 +1141,126 @@ class FormCreationTest extends TestCase
         $this->assertEquals('Marco Polo', $resource['fields']['data'][2]['value']);
         $this->assertEquals('green', $resource['fields']['data'][3]['value']);
         $this->assertEquals([20, 30], $resource['fields']['data'][4]['value']);
+    }
+
+    public function testFormGetDataObjectDefaultValues()
+    {
+        $dto = new CreateArticleData();
+        $dto->title = 'Hello World';
+        $dto->setAuthor('Marcel Proust');
+
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+
+        $form = $factory->make($dto)
+            ->add($title = $fields->text('title'))
+            ->add($content = $fields->textarea('content'))
+            ->add($author = $fields->text('author'))
+            ->get();
+
+        $this->assertEquals($dto->title, $form->repository()->getFieldByName($title->getBaseName())->getValue());
+        $this->assertEquals($dto->getAuthor(), $form->repository()->getFieldByName($author->getBaseName())->getValue());
+    }
+
+    public function testFormSetDataObjectValuesWithValidRequest()
+    {
+        $dto = new ContactFormRequestData();
+
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+
+        $form = $factory->make($dto)
+            ->add($name = $fields->text('fullname'))
+            ->add($email = $fields->email('email'))
+            ->add($message = $fields->textarea('message'))
+            ->add($checkbox = $fields->checkbox('subscribe'))
+            ->add($follow = $fields->checkbox('follow'))
+            ->add($colors = $fields->choice('colors', [
+                'choices' => [
+                    'red',
+                    'green',
+                    'blue'
+                ],
+                'multiple' => true
+            ]))
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_fullname' => 'Dae Doe',
+            'th_email' => 'julien@corporation.xyz',
+            'th_message' => 'This is a short message with very little details.',
+            'th_subscribe' => 'on',
+            'th_colors' => ['green', 'blue']
+        ]);
+
+        $form->handleRequest($request);
+
+        $this->assertTrue($form->isValid());
+        $this->assertEquals($request->get($name->getName()), $dto->getFullname());
+        $this->assertEquals($request->get($email->getName()), $dto->getEmail());
+        $this->assertEquals($request->get($message->getName()), $dto->getMessage());
+        $this->assertTrue($dto->getSubscribe());
+        $this->assertFalse($dto->getFollow());
+        $this->assertEquals($request->get($colors->getName()), $dto->getColors());
+    }
+
+    public function testFormUseDataObjectDefaultValuesAndSetRequestValuesOnSuccess()
+    {
+        $dto = new CreateArticleData();
+        $dto->title = 'Hello World';
+
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+
+        $form = $factory->make($dto)
+            ->add($title = $fields->text('title'))
+            ->add($content = $fields->textarea('content'))
+            ->add($author = $fields->text('author'))
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_title' => 'Goodbye World',
+            'th_content' => 'Another short content.',
+            'th_author' => 'Joe Koe'
+        ]);
+
+        $form->handleRequest($request);
+
+        $this->assertEquals($request->get($title->getName()), $dto->title);
+        $this->assertEquals($request->get($content->getName()), $dto->content);
+        $this->assertEquals($request->get($author->getName()), $dto->getAuthor());
+    }
+
+    public function testFormUseDataObjectDefaultValuesAndManageRequestValuesOnFailure()
+    {
+        $dto = new CreateArticleData();
+        $dto->setAuthor('Marcel');
+
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+
+        $form = $factory->make($dto)
+            ->add($fields->text('title', [
+                'rules' => 'required|string'
+            ]))
+            ->add($content = $fields->textarea('content', [
+                'rules' => 'required|min:6'
+            ]))
+            ->add($fields->text('author', [
+                'rules' => 'required|string'
+            ]))
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_title' => '',
+            'th_content' => 'Something',
+            'th_author' => 25
+        ]);
+
+        $form->handleRequest($request);
+
+        $this->assertEmpty($dto->title);
+        $this->assertEquals($request->get($content->getName()), $dto->content);
+        $this->assertEmpty($dto->getAuthor());
     }
 }

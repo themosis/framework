@@ -57,7 +57,8 @@ class ThemeManager
         'version' => 'Version',
         'license' => 'License',
         'license_uri' => 'License URI',
-        'text_domain' => 'Text Domain'
+        'text_domain' => 'Text Domain',
+        'domain_path' => 'Domain Path',
     ];
 
     /**
@@ -262,7 +263,10 @@ class ThemeManager
         $this->parsedHeaders = $this->headers($this->dirPath.'/style.css', $this->headers);
 
         // Theme text domain.
-        $textdomain = $this->parsedHeaders['text_domain'] ?? 'themosis_theme';
+        $textdomain = (isset($this->parsedHeaders['text_domain']) && ! empty($this->parsedHeaders['text_domain']))
+            ? $this->parsedHeaders['text_domain']
+            : 'themosis_theme';
+
         defined('THEME_TD') ? THEME_TD : define('THEME_TD', $textdomain);
     }
 

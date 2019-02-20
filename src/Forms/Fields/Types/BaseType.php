@@ -194,6 +194,11 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     protected $component;
 
     /**
+     * @var bool
+     */
+    protected $flush = false;
+
+    /**
      * BaseType constructor.
      *
      * @param string $name
@@ -649,7 +654,13 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function getRawValue()
     {
-        return $this->transformer->reverseTransform($this->value);
+        $value = $this->transformer->reverseTransform($this->value);
+
+        if ($this->flush) {
+            return '';
+        }
+
+        return $value;
     }
 
     /**
@@ -845,6 +856,14 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     public function getComponent(): string
     {
         return $this->component;
+    }
+
+    /**
+     * Flush the field value at output (getRawValue method).
+     */
+    public function flush()
+    {
+        $this->flush = true;
     }
 
     /**

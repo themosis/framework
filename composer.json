@@ -59,6 +59,7 @@
     "league/flysystem": "^1.0",
     "league/fractal": "^0.17.0",
     "ramsey/uuid": "^3.8",
+    "symfony/property-access": "^4.2",
     "twig/twig": " ^2.0",
     "vlucas/phpdotenv": "^2.4"
   },
