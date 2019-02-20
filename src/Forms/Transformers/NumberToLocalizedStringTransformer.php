@@ -68,7 +68,7 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
      */
     public function reverseTransform($data)
     {
-        if (is_null($data)) {
+        if (is_null($data) || empty($data)) {
             return '';
         }
 
