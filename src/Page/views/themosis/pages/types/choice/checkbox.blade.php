@@ -8,7 +8,7 @@
                         <?php
                             $checked = $field->checked(function ($choices, $value) {
                                 return ! is_null($choices) && in_array($value, $choices, true) ? 'checked' : '';
-                            }, [$field->getValue(), $choice]);
+                            }, [$field->getRawValue(), $choice]);
                         ?>
                         <label>
                             <input type="checkbox" name="{{ $field->getName() }}[]" value="{{ $choice }}" {{ $checked }}>{{ $label }}
@@ -20,7 +20,7 @@
             <?php
                 $checked = $field->checked(function ($choices, $value) {
                     return ! is_null($choices) && is_array($choices) && in_array($value, $choices, true) ? 'checked' : '';
-                }, [$field->getValue(), $choices]);
+                }, [$field->getRawValue(), $choices]);
             ?>
             <label>
                 <input type="checkbox" name="{{ $field->getName() }}[]" value="{{ $choices }}" {{ $checked }}>{{ $group }}
