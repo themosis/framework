@@ -17,6 +17,7 @@ class FieldTransformer extends TransformerAbstract
         'errors',
         'label',
         'label_attr',
+        'mapped',
         'messages',
         'placeholder',
         'rules',

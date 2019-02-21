@@ -11,7 +11,6 @@ use Themosis\Forms\Fields\Types\CheckboxType;
 use Themosis\Forms\Fields\Types\ChoiceType;
 use Themosis\Forms\Fields\Types\CollectionType;
 use Themosis\Forms\Fields\Types\ColorType;
-use Themosis\Forms\Fields\Types\CsrfType;
 use Themosis\Forms\Fields\Types\EditorType;
 use Themosis\Forms\Fields\Types\EmailType;
 use Themosis\Forms\Fields\Types\HiddenType;
@@ -302,23 +301,5 @@ class Factory implements FieldFactoryInterface
             ->setLocale($this->app->getLocale())
             ->setViewFactory($this->viewFactory)
             ->setOptions($options);
-    }
-
-    /**
-     * Return a hidden CSRF type instance.
-     *
-     * @param string $name
-     * @param array  $options
-     *
-     * @return FieldTypeInterface
-     */
-    public function csrf(string $name = '_token', array $options = []): FieldTypeInterface
-    {
-        return (new CsrfType($name))
-            ->setLocale($this->app->getLocale())
-            ->setViewFactory($this->viewFactory)
-            ->setPrefix('')
-            ->setOptions($options)
-            ->setValue(csrf_token());
     }
 }

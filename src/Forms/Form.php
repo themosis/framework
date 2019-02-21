@@ -104,6 +104,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     protected $allowedOptions = [
         'attributes',
+        'csrf',
         'errors',
         'flush',
         'nonce',
@@ -120,6 +121,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     protected $defaultOptions = [
         'attributes' => [],
+        'csrf' => true,
         'flush' => true,
         'tags' => true,
         'errors' => true,
@@ -303,7 +305,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
             $field->setValue(Arr::get($data, $field->getName()));
 
             // DTO
-            if (! is_null($this->dataClass) && is_object($this->dataClass)) {
+            if (! is_null($this->dataClass) && is_object($this->dataClass) && $field->getOption('mapped')) {
                 $this->dataMapper->getAccessor()
                     ->setValue($this->dataClass, $field->getBaseName(), $field->getValue());
             }

@@ -80,7 +80,7 @@ class FormBuilder implements FormBuilderInterface
         $field->setResourceTransformerFactory($this->form->getResourceTransformerFactory());
 
         // DTO
-        if (! is_null($this->dataClass) && is_object($this->dataClass)) {
+        if (! is_null($this->dataClass) && is_object($this->dataClass) && $field->getOption('mapped')) {
             $field->setValue(
                 $this->dataMapperManager->getAccessor()->getValue($this->dataClass, $field->getBaseName())
             );

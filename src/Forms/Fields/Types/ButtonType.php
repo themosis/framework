@@ -42,6 +42,10 @@ class ButtonType extends BaseType implements DataTransformerInterface
             $options['attributes']['type'] = 'submit';
         }
 
+        // By default, disable button field type to be mapped
+        // to a data object.
+        $options['mapped'] = false;
+
         return $options;
     }
 
