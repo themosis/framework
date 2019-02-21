@@ -81,9 +81,7 @@ class FormBuilder implements FormBuilderInterface
 
         // DTO
         if (! is_null($this->dataClass) && is_object($this->dataClass) && $field->getOption('mapped')) {
-            $field->setValue(
-                $this->dataMapperManager->getAccessor()->getValue($this->dataClass, $field->getBaseName())
-            );
+            $this->dataMapperManager->mapFromObjectToField($this->dataClass, $field);
         }
 
         // Check if section instance already exists on the form.

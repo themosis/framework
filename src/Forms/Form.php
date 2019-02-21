@@ -306,8 +306,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
             // DTO
             if (! is_null($this->dataClass) && is_object($this->dataClass) && $field->getOption('mapped')) {
-                $this->dataMapper->getAccessor()
-                    ->setValue($this->dataClass, $field->getBaseName(), $field->getValue());
+                $this->dataMapper->mapFromFieldToObject($field, $this->dataClass);
             }
 
             // By default, if the form is not valid, we keep populating fields values.
