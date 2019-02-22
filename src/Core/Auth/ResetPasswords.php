@@ -9,18 +9,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
-use Themosis\Forms\Contracts\FormInterface;
+use Themosis\Core\Auth\Data\PasswordResetData;
 
 trait ResetPasswords
 {
     use RedirectsUsers;
-
-    /**
-     * The full name of the form token field.
-     *
-     * @var string
-     */
-    protected $token_field = 'th_token';
 
     /**
      * Display the password reset view for the given token.
@@ -34,11 +27,13 @@ trait ResetPasswords
      */
     public function showResetForm(Request $request, $token = null)
     {
-        $form = new PasswordResetForm();
-        $form->setToken($token);
+        $data = new PasswordResetData();
+        $data->setToken($token);
+
+        $form = $this->form(new PasswordResetForm($data));
 
         return view('auth.passwords.reset')->with([
-            'form' => $this->form($form)
+            'form' => $form
         ]);
     }
 
@@ -51,10 +46,9 @@ trait ResetPasswords
      */
     public function reset(Request $request)
     {
-        $resetForm = new PasswordResetForm();
-        $resetForm->setToken($request->get($this->token_field));
+        $data = new PasswordResetData();
 
-        $form = $this->form($resetForm);
+        $form = $this->form(new PasswordResetForm($data));
         $form->handleRequest($request);
 
         if ($form->isNotValid()) {
@@ -62,7 +56,7 @@ trait ResetPasswords
         }
 
         $response = $this->broker()->reset(
-            $this->credentials($form),
+            $this->credentials($data),
             function ($user, $password) {
                 $this->resetPassword($user, $password);
             }
@@ -105,17 +99,17 @@ trait ResetPasswords
     /**
      * Return password broker expected values.
      *
-     * @param FormInterface $form
+     * @param PasswordResetData $data
      *
      * @return array
      */
-    protected function credentials(FormInterface $form): array
+    protected function credentials(PasswordResetData $data): array
     {
         return [
-            'email' => $form->repository()->getFieldByName('email')->getValue(),
-            'password' => $form->repository()->getFieldByName('password')->getValue(),
-            'password_confirmation' => $form->repository()->getFieldByName('password_confirmation')->getValue(),
-            'token' => $form->repository()->getFieldByName('token')->getValue()
+            'email' => $data->getEmail(),
+            'password' => $data->getPassword(),
+            'password_confirmation' => $data->getPasswordConfirmation(),
+            'token' => $data->getToken()
         ];
     }
 

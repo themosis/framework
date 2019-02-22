@@ -2,11 +2,11 @@
 
 namespace Themosis\Core\Auth;
 
-use App\Forms\Auth\Data\LoginUserData;
 use App\Forms\Auth\LoginForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Themosis\Forms\Contracts\FormInterface;
 
 trait AuthenticatesUsers
 {
@@ -35,12 +35,11 @@ trait AuthenticatesUsers
      */
     public function login(Request $request)
     {
-        $data = new LoginUserData();
-        $form = $this->form(new LoginForm($data));
+        $form = $this->form(new LoginForm());
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            if ($this->attemptLogin($request, $data)) {
+            if ($this->attemptLogin($request, $form)) {
                 return $this->sendLoginResponse($request);
             }
         }
@@ -105,16 +104,17 @@ trait AuthenticatesUsers
     /**
      * Attempt to log the user into the application.
      *
-     * @param Request $request
+     * @param Request       $request
+     * @param FormInterface $form
      *
      * @return bool
      */
-    protected function attemptLogin(Request $request, LoginUserData $data)
+    protected function attemptLogin(Request $request, FormInterface $form)
     {
         return $this->guard()->attempt(
             [
-                'email' => $data->getEmail(),
-                'password' => $data->getPassword()
+                'email' => $form->repository()->getFieldByName('email')->getValue(),
+                'password' => $form->repository()->getFieldByName('password')->getValue()
             ],
             $request->filled($this->remember())
         );

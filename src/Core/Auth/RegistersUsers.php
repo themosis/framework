@@ -2,7 +2,6 @@
 
 namespace Themosis\Core\Auth;
 
-use App\Forms\Auth\Data\RegisterUserData;
 use App\Forms\Auth\RegisterForm;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -35,12 +34,11 @@ trait RegistersUsers
      */
     public function register(Request $request)
     {
-        $registerUserData = new RegisterUserData();
-        $form = $this->form(new RegisterForm($registerUserData));
+        $form = $this->form(new RegisterForm());
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            event(new Registered($customer = $this->create($registerUserData)));
+            event(new Registered($customer = $this->create($form)));
             $this->guard()->login($customer);
 
             return $this->registered($request, $customer)
