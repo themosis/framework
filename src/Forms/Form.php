@@ -322,8 +322,8 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
                 }
             } else {
                 // Validation is successful, we can flush fields value at output.
-                if (true === $this->getOption('flush')) {
-                    $field->flush();
+                if ($this->getOption('flush', false)) {
+                    $field['flush'] = true;
                 }
             }
         });
@@ -963,15 +963,5 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function getComponent(): string
     {
         return $this->component;
-    }
-
-    /**
-     * Flush form fields trigger.
-     */
-    public function flush()
-    {
-        $this->setOptions([
-            'flush' => true
-        ]);
     }
 }

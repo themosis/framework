@@ -322,9 +322,4 @@ interface FieldTypeInterface
      * @return string
      */
     public function getComponent(): string;
-
-    /**
-     * Flush field value. Switch the field "flush" status to true.
-     */
-    public function flush();
 }

@@ -15,6 +15,7 @@ class FieldTransformer extends TransformerAbstract
         'data',
         'data_type',
         'errors',
+        'flush',
         'label',
         'label_attr',
         'mapped',

@@ -5,6 +5,9 @@
         @if('post' === $__form->getAttribute('method') && function_exists('wp_nonce_field'))
             {!! wp_nonce_field($__form->getOption('nonce_action'), $__form->getOption('nonce'), $__form->getOption('referer'), false) !!}
         @endif
+        @if($__form->getOption('csrf') && function_exists('csrf_field'))
+            {!! csrf_field() !!}
+        @endif
         @foreach($__form->repository()->getGroups() as $group)
             <div class="th-form-group th-form-group-bootstrap">
                 @each($group->getView(true), $group->getItems(), '__field')
