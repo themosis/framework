@@ -1361,7 +1361,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Handle incoming and request and returned response.
+     * Handle incoming request and return a response.
      * Abstract the implementation from the user for easy
      * theme integration.
      *
@@ -1380,6 +1380,21 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $kernel->terminate($request, $response);
 
         return $this;
+    }
+
+    public function manageWordPressAdmin(string $kernel, $request)
+    {
+        if (! $this->isWordPressAdmin()) {
+            return;
+        }
+
+        $kernel = $this->make($kernel);
+        /** @var Response $response*/
+        $response = $kernel->handle($request);
+        //dd($response);
+        //$response->setContent(null);
+        //$response->setStatusCode(Response::HTTP_OK);
+        $response->sendHeaders();
     }
 
     /**
@@ -1492,6 +1507,22 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     public function getCachedRoutesPath()
     {
         return $this->bootstrapPath('cache/routes.php');
+    }
+
+    /**
+     * Determine if we currently inside the WordPress administration.
+     *
+     * @return bool
+     */
+    public function isWordPressAdmin()
+    {
+        if (isset($GLOBALS['current_screen']) && is_a($GLOBALS['current_screen'], 'WP_Screen')) {
+            return $GLOBALS['current_screen']->in_admin();
+        } elseif (defined('WP_ADMIN')) {
+            return WP_ADMIN;
+        }
+
+        return false;
     }
 
     /**

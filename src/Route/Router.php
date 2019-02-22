@@ -4,6 +4,8 @@ namespace Themosis\Route;
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Router as IlluminateRouter;
 
 class Router extends IlluminateRouter
@@ -43,6 +45,21 @@ class Router extends IlluminateRouter
             ->setRouter($this)
             ->setContainer($this->container)
             ->setConditions($this->conditions);
+    }
+
+    public function dispatchToRoute(Request $request)
+    {
+        if ($this->container->has('app') && $this->container['app']->isWordPressAdmin()) {
+            return $this->runRoute($request, new Route(
+                ['GET', 'POST', 'PUT', 'DELETE'],
+                $request->getUri(),
+                function () {
+                    return new Response();
+                }
+            ));
+        }
+
+        return $this->runRoute($request, $this->findRoute($request));
     }
 
     /**

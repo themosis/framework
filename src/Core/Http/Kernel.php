@@ -4,7 +4,6 @@ namespace Themosis\Core\Http;
 
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response as IlluminateResponse;
 use Illuminate\Routing\Pipeline;
 use Illuminate\Support\Facades\Facade;
