@@ -1382,19 +1382,29 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         return $this;
     }
 
-    public function manageWordPressAdmin(string $kernel, $request)
+    /**
+     * Handle WordPress administration incoming request.
+     * Only send response headers.
+     *
+     * @param string                                    $kernel
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return $this;
+     */
+    public function manageAdmin(string $kernel, $request)
     {
-        if (! $this->isWordPressAdmin()) {
-            return;
+        if (! $this->isWordPressAdmin() && ! $this->has('action')) {
+            return $this;
         }
 
-        $kernel = $this->make($kernel);
-        /** @var Response $response*/
-        $response = $kernel->handle($request);
-        //dd($response);
-        //$response->setContent(null);
-        //$response->setStatusCode(Response::HTTP_OK);
-        $response->sendHeaders();
+        $this['action']->add('admin_init', function () use ($kernel, $request) {
+            $kernel = $this->make($kernel);
+
+            $response = $kernel->handle($request);
+            $response->sendHeaders();
+        });
+
+        return $this;
     }
 
     /**

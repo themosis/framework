@@ -4,8 +4,6 @@ namespace Themosis\Route;
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Router as IlluminateRouter;
 
 class Router extends IlluminateRouter
@@ -47,19 +45,27 @@ class Router extends IlluminateRouter
             ->setConditions($this->conditions);
     }
 
-    public function dispatchToRoute(Request $request)
+    /**
+     * Find the route matching a given request.
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Routing\Route
+     */
+    protected function findRoute($request)
     {
-        if ($this->container->has('app') && $this->container['app']->isWordPressAdmin()) {
-            return $this->runRoute($request, new Route(
-                ['GET', 'POST', 'PUT', 'DELETE'],
-                $request->getUri(),
-                function () {
-                    return new Response();
-                }
-            ));
+        $app = $this->container['app'] ?? null;
+
+        // Verify that we're currently requesting a WordPress administration page.
+        // If so, let's return a catch-all route.
+        if (! is_null($app) && method_exists($app, 'isWordPressAdmin') && $app->isWordPressAdmin()) {
+            $this->current = $route = (new AdminRoute($request, $this))->get();
+            $this->container->instance(Route::class, $route);
+
+            return $route;
         }
 
-        return $this->runRoute($request, $this->findRoute($request));
+        return parent::findRoute($request);
     }
 
     /**
