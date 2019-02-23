@@ -27,11 +27,14 @@ class AdminRoute
     /**
      * Return the catch-all WordPress administration route.
      *
+     * @throws \Illuminate\Container\EntryNotFoundException
+     *
      * @return \Illuminate\Routing\Route
      */
     public function get()
     {
-        $route = $this->router->any('cms/wp-admin/{any?}', function () {
+        $wordpressUri = trim(config('app.wp.dir', 'cms'), '\/');
+        $route = $this->router->any($wordpressUri.'/wp-admin/{any?}', function () {
             return new Response();
         });
 
