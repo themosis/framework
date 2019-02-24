@@ -1397,14 +1397,37 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             return $this;
         }
 
-        $this['action']->add('admin_init', function () use ($kernel, $request) {
-            $kernel = $this->make($kernel);
-
-            $response = $kernel->handle($request);
-            $response->sendHeaders();
-        });
+        $this['action']->add('admin_init', $this->dispatchToAdmin($kernel, $request));
 
         return $this;
+    }
+
+    /**
+     * Manage WordPress Admin Init.
+     * Handle incoming request and return a response.
+     *
+     * @param string $kernel
+     * @param $request
+     *
+     * @return Closure
+     */
+    protected function dispatchToAdmin(string $kernel, $request)
+    {
+        return function () use ($kernel, $request) {
+            $kernel = $this->make($kernel);
+
+            /** @var Response $response */
+            $response = $kernel->handle($request);
+
+            if (500 <= $response->getStatusCode()) {
+                // In case of an internal server error, we stop the process
+                // and send full response back to the user.
+                $response->send();
+            } else {
+                // HTTP OK - Send only the response headers.s
+                $response->sendHeaders();
+            }
+        };
     }
 
     /**
