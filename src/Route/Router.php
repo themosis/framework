@@ -50,6 +50,8 @@ class Router extends IlluminateRouter
      *
      * @param \Illuminate\Http\Request $request
      *
+     * @throws \Illuminate\Container\EntryNotFoundException
+     *
      * @return \Illuminate\Routing\Route
      */
     protected function findRoute($request)
