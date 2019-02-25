@@ -248,7 +248,7 @@ class ThemeManager
 
         foreach ($paths as $path) {
             $uri = $this->dirPath.'/'.trim($path, '\/');
-            $factory->addLocation($uri);
+            $factory->getFinder()->prependLocation($uri);
             $twigLoader->addPath($uri);
         }
 
