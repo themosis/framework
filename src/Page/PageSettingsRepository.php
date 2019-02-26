@@ -4,6 +4,7 @@ namespace Themosis\Page;
 
 use Illuminate\Support\Collection;
 use Themosis\Forms\Contracts\FieldTypeInterface;
+use Themosis\Forms\Fields\Contracts\CanHandlePageSettings;
 use Themosis\Page\Contracts\SettingsRepositoryInterface;
 use Themosis\Support\Contracts\SectionInterface;
 
@@ -52,6 +53,7 @@ class PageSettingsRepository implements SettingsRepositoryInterface
      */
     public function setSettings(array $settings): SettingsRepositoryInterface
     {
+        $this->parseCompatibleSettings($settings);
         $this->settings = $settings;
 
         return $this;
@@ -95,5 +97,26 @@ class PageSettingsRepository implements SettingsRepositoryInterface
             /** @var SectionInterface $section */
             return $name === $section->getId();
         });
+    }
+
+    /**
+     * Parse page settings.
+     * Throw an exception if user is using a field not supported.
+     *
+     * @param array $settings
+     *
+     * @throws \Exception
+     */
+    protected function parseCompatibleSettings(array $settings)
+    {
+        $settings = collect($settings)->collapse()->all();
+
+        foreach ($settings as $setting) {
+            if (! ($setting instanceof CanHandlePageSettings)) {
+                throw new \Exception(
+                    'The field '.get_class($setting).' is not supported on page settings.'
+                );
+            }
+        }
     }
 }

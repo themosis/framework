@@ -4,8 +4,9 @@ namespace Themosis\Forms\Fields\Types;
 
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
+use Themosis\Forms\Fields\Contracts\CanHandlePageSettings;
 
-class TextType extends BaseType implements DataTransformerInterface, CanHandleMetabox
+class TextType extends BaseType implements DataTransformerInterface, CanHandleMetabox, CanHandlePageSettings
 {
     /**
      * TextType field view.
