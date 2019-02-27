@@ -170,7 +170,7 @@ class TaxonomyField
 
             $validation = $validator->valid();
 
-            foreach ($this->repository as $field) {
+            foreach ($this->repository->all() as $field) {
                 /** @var FieldTypeInterface|BaseType|CanHandleTerms $field */
                 $field->setErrorMessageBag($validator->errors());
 
