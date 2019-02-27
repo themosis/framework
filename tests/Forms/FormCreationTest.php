@@ -90,7 +90,7 @@ class FormCreationTest extends TestCase
         $factory = new \Illuminate\View\Factory(
             $resolver,
             $viewFinder = new FileViewFinder($filesystem, [
-                __DIR__.'/../../../framework/src/Themosis/Forms/views/',
+                __DIR__.'/../../../framework/src/Forms/views/',
                 __DIR__.'/views/'
             ], ['blade.php', 'php']),
             new Dispatcher($application)
