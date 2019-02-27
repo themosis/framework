@@ -26,7 +26,7 @@ class DownCommand extends Command
     public function handle()
     {
         file_put_contents(
-            web_path('/cms/.maintenance'),
+            web_path(config('app.wp.dir').'/.maintenance'),
             '<?php $upgrading = '.$this->getDuration().'; ?>'
         );
 
