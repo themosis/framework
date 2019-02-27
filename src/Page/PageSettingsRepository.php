@@ -112,10 +112,8 @@ class PageSettingsRepository implements SettingsRepositoryInterface
         $settings = collect($settings)->collapse()->all();
 
         foreach ($settings as $setting) {
-            if (! ($setting instanceof CanHandlePageSettings)) {
-                throw new \Exception(
-                    'The field '.get_class($setting).' is not supported on page settings.'
-                );
+            if ($setting instanceof CanHandlePageSettings) {
+                $setting->settingGet();
             }
         }
     }

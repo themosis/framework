@@ -5,6 +5,7 @@ namespace Themosis\Forms\Fields\Types;
 use Themosis\Core\Application;
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
+use Themosis\Forms\Fields\Contracts\CanHandlePageSettings;
 use Themosis\Forms\Resources\Transformers\CollectionFieldTransformer;
 
 /**
@@ -12,7 +13,7 @@ use Themosis\Forms\Resources\Transformers\CollectionFieldTransformer;
  *
  * @package Themosis\Forms\Fields\Types
  */
-class CollectionType extends BaseType implements DataTransformerInterface, CanHandleMetabox
+class CollectionType extends BaseType implements DataTransformerInterface, CanHandleMetabox, CanHandlePageSettings
 {
     /**
      * Field type.
@@ -157,5 +158,26 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
         if (! empty($value)) {
             $this->setValue($value);
         }
+    }
+
+    /**
+     * Save the field setting value.
+     *
+     * @param mixed  $value
+     * @param string $name
+     */
+    public function settingSave($value, string $name)
+    {
+        //
+    }
+
+    /**
+     * Return the field setting value.
+     *
+     * @return mixed|void
+     */
+    public function settingGet()
+    {
+        //
     }
 }

@@ -3,6 +3,7 @@
 namespace Themosis\Forms\Fields\Types;
 
 use Themosis\Core\Application;
+use Themosis\Forms\Fields\Exceptions\NotSupportedFieldException;
 use Themosis\Forms\Resources\Transformers\MediaFieldTransformer;
 
 class MediaType extends IntegerType
@@ -71,5 +72,28 @@ class MediaType extends IntegerType
         }
 
         return array_merge($this->defaultOptions, $default);
+    }
+
+    /**
+     * Return the field setting value.
+     *
+     * @throws NotSupportedFieldException
+     *
+     * @return mixed
+     */
+    public function settingGet()
+    {
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on page settings.');
+    }
+
+    /**
+     * Save the field setting value.
+     *
+     * @param mixed  $value
+     * @param string $name
+     */
+    public function settingSave($value, string $name)
+    {
+        //
     }
 }

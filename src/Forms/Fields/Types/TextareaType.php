@@ -4,8 +4,9 @@ namespace Themosis\Forms\Fields\Types;
 
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
+use Themosis\Forms\Fields\Contracts\CanHandlePageSettings;
 
-class TextareaType extends BaseType implements DataTransformerInterface, CanHandleMetabox
+class TextareaType extends BaseType implements DataTransformerInterface, CanHandleMetabox, CanHandlePageSettings
 {
     /**
      * TextareaType field view.
@@ -99,5 +100,27 @@ class TextareaType extends BaseType implements DataTransformerInterface, CanHand
         } else {
             update_post_meta($post_id, $this->getName(), $this->getRawValue(), $previous);
         }
+    }
+
+    /**
+     * Save the field setting value.
+     *
+     * @param mixed  $value
+     * @param string $name
+     */
+    public function settingSave($value, string $name)
+    {
+        //
+    }
+
+
+    /**
+     * Return the field setting value.
+     *
+     * @return mixed|void
+     */
+    public function settingGet()
+    {
+        //
     }
 }

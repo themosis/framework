@@ -99,4 +99,25 @@ class TextType extends BaseType implements DataTransformerInterface, CanHandleMe
             update_post_meta($post_id, $this->getName(), $this->getRawValue(), $previous);
         }
     }
+
+    /**
+     * Save the field setting value.
+     *
+     * @param mixed  $value
+     * @param string $name
+     */
+    public function settingSave($value, string $name)
+    {
+        //
+    }
+
+    /**
+     * Return the field setting value.
+     *
+     * @return mixed|void
+     */
+    public function settingGet()
+    {
+        //
+    }
 }

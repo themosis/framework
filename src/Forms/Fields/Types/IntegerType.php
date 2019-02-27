@@ -3,9 +3,10 @@
 namespace Themosis\Forms\Fields\Types;
 
 use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
+use Themosis\Forms\Fields\Contracts\CanHandlePageSettings;
 use Themosis\Forms\Transformers\IntegerToLocalizedStringTransformer;
 
-class IntegerType extends BaseType implements CanHandleMetabox
+class IntegerType extends BaseType implements CanHandleMetabox, CanHandlePageSettings
 {
     /**
      * IntegerType field view.
@@ -75,5 +76,26 @@ class IntegerType extends BaseType implements CanHandleMetabox
         if (! empty($value)) {
             $this->setValue($value);
         }
+    }
+
+    /**
+     * Save the field setting value.
+     *
+     * @param mixed  $value
+     * @param string $name
+     */
+    public function settingSave($value, string $name)
+    {
+        //
+    }
+
+    /**
+     * Return the field setting value.
+     *
+     * @return mixed|void
+     */
+    public function settingGet()
+    {
+        //
     }
 }

@@ -3,6 +3,7 @@
 namespace Themosis\Forms\Fields\Types;
 
 use Themosis\Core\Application;
+use Themosis\Forms\Fields\Exceptions\NotSupportedFieldException;
 
 class ColorType extends TextType
 {
@@ -129,5 +130,17 @@ class ColorType extends TextType
                 'color' => $color['color']
             ];
         }, $colors);
+    }
+
+    /**
+     * Return the field setting value.
+     *
+     * @throws NotSupportedFieldException
+     *
+     * @return mixed
+     */
+    public function settingGet()
+    {
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on page settings.');
     }
 }

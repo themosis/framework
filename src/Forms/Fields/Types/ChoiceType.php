@@ -8,10 +8,15 @@ use Themosis\Forms\Contracts\SelectableInterface;
 use Themosis\Forms\Fields\ChoiceList\ChoiceList;
 use Themosis\Forms\Fields\ChoiceList\ChoiceListInterface;
 use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
+use Themosis\Forms\Fields\Contracts\CanHandlePageSettings;
 use Themosis\Forms\Resources\Transformers\ChoiceFieldTransformer;
 use Themosis\Forms\Transformers\ChoiceToValueTransformer;
 
-class ChoiceType extends BaseType implements CheckableInterface, SelectableInterface, CanHandleMetabox
+class ChoiceType extends BaseType implements
+    CheckableInterface,
+    SelectableInterface,
+    CanHandleMetabox,
+    CanHandlePageSettings
 {
     /**
      * Field layout.
@@ -285,5 +290,26 @@ class ChoiceType extends BaseType implements CheckableInterface, SelectableInter
                 add_post_meta($post_id, $this->getName(), $val, false);
             });
         }
+    }
+
+    /**
+     * Save the field setting value.
+     *
+     * @param mixed  $value
+     * @param string $name
+     */
+    public function settingSave($value, string $name)
+    {
+        //
+    }
+
+    /**
+     * Return the field setting value.
+     *
+     * @return mixed|void
+     */
+    public function settingGet()
+    {
+        //
     }
 }
