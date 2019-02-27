@@ -60,13 +60,13 @@ class Metabox extends React.Component <MetaboxProps, MetaboxState> {
                              groups={this.state.groups}
                              changeHandler={this.change}/>
                 <MetaboxFooter>
-                    { 'default' !== this.state.status && <MetaboxStatus status={this.state.status}
-                                                                        label={this.state.l10n[this.state.status]}/> }
                     <Button primary={true}
                             disabled={'saving' === this.state.status}
                             clickHandler={this.save}>
                         {this.state.l10n.submit}
                     </Button>
+                    { 'default' !== this.state.status && <MetaboxStatus status={this.state.status}
+                                                                        label={this.state.l10n[this.state.status]}/> }
                 </MetaboxFooter>
             </div>
         );
