@@ -10,17 +10,15 @@ class FilterBuilder extends Hook
      * @param string $hook The filter hook name.
      * @param mixed  $args
      *
-     * @return $this
+     * @return mixed
      */
     public function run($hook, $args = null)
     {
         if (is_array($args)) {
-            $this->applyFiltersRefArray($hook, $args);
-        } else {
-            $this->applyFilters($hook, $args);
+            return $this->applyFiltersRefArray($hook, $args);
         }
 
-        return $this;
+        return $this->applyFilters($hook, $args);
     }
 
     /**
@@ -28,10 +26,12 @@ class FilterBuilder extends Hook
      *
      * @param string $hook The hook name.
      * @param array  $args Filter data passed with the hook as an array.
+     *
+     * @return mixed
      */
     protected function applyFiltersRefArray($hook, array $args)
     {
-        apply_filters_ref_array($hook, $args);
+        return apply_filters_ref_array($hook, $args);
     }
 
     /**
@@ -39,10 +39,12 @@ class FilterBuilder extends Hook
      *
      * @param string $hook The hook name.
      * @param mixed  $args Filter data passed with the hook.
+     *
+     * @return mixed
      */
     protected function applyFilters($hook, $args)
     {
-        apply_filters($hook, $args);
+        return apply_filters($hook, $args);
     }
 
     /**
