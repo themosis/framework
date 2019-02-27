@@ -119,7 +119,8 @@ class TaxonomyField
     {
         return function () {
             foreach ($this->repository as $field) {
-                register_meta('term', $field->getBaseName(), [
+                register_meta('term', $field->getName(), [
+                    'type' => $field->getOption('data_type', 'string'),
                     'single' => ! $field->getOption('multiple', false),
                     'show_in_rest' => $field->getOption('show_in_rest', false),
                     'sanitize_callback' => $this->sanitize($field)
@@ -138,8 +139,16 @@ class TaxonomyField
     protected function sanitize(FieldTypeInterface $field)
     {
         return function ($value, $key, $type) use ($field) {
-            // TODO: RestAPI sanitization...
-            return $value;
+            $validator = $this->validator->make(
+                [$key => $value],
+                $this->getTermRules(),
+                $this->getTermMessages(),
+                $this->getTermPlaceholders()
+            );
+
+            $validation = $validator->valid();
+
+            return $validation[$key] ?? null;
         };
     }
 
