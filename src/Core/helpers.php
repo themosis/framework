@@ -46,6 +46,20 @@ if (! function_exists('app_path')) {
     }
 }
 
+if (! function_exists('asset')) {
+    /**
+     * Generate an asset path for the application.
+     *
+     * @param  string  $path
+     * @param  bool    $secure
+     * @return string
+     */
+    function asset($path, $secure = null)
+    {
+        return app('url')->asset($path, $secure);
+    }
+}
+
 if (! function_exists('auth')) {
     /**
      * Get the available auth instance.
@@ -391,6 +405,19 @@ if (! function_exists('route')) {
     function route($name, $parameters = [], $absolute = true)
     {
         return app('url')->route($name, $parameters, $absolute);
+    }
+}
+
+if (! function_exists('secure_asset')) {
+    /**
+     * Generate an asset path for the application.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    function secure_asset($path)
+    {
+        return asset($path, true);
     }
 }
 
