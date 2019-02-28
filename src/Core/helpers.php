@@ -46,6 +46,20 @@ if (! function_exists('app_path')) {
     }
 }
 
+if (! function_exists('asset')) {
+    /**
+     * Generate an asset path for the application.
+     *
+     * @param  string  $path
+     * @param  bool    $secure
+     * @return string
+     */
+    function asset($path, $secure = null)
+    {
+        return app(UrlGenerator::class)->asset($path, $secure);
+    }
+}
+
 if (! function_exists('auth')) {
     /**
      * Get the available auth instance.
@@ -394,6 +408,19 @@ if (! function_exists('route')) {
     }
 }
 
+if (! function_exists('secure_asset')) {
+    /**
+     * Generate an asset path for the application.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    function secure_asset($path)
+    {
+        return asset($path, true);
+    }
+}
+
 if (! function_exists('session')) {
     /**
      * Get / set the specified session value.
@@ -563,32 +590,5 @@ if (! function_exists('web_path')) {
     function web_path($path = '')
     {
         return app()->webPath($path);
-    }
-}
-
-if (! function_exists('asset')) {
-    /**
-     * Generate an asset path for the application.
-     *
-     * @param  string  $path
-     * @param  bool    $secure
-     * @return string
-     */
-    function asset($path, $secure = null)
-    {
-        return app(UrlGenerator::class)->asset($path, $secure);
-    }
-}
-
-if (! function_exists('secure_asset')) {
-    /**
-     * Generate an asset path for the application.
-     *
-     * @param  string  $path
-     * @return string
-     */
-    function secure_asset($path)
-    {
-        return asset($path, true);
     }
 }
