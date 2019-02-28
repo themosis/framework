@@ -236,6 +236,42 @@ if (! function_exists('event')) {
     }
 }
 
+if (! function_exists('is_subpage')) {
+    /**
+     * Determine if current WordPress condition is a sub-page (of).
+     *
+     * @param int|string|array $parent
+     *
+     * @return bool
+     */
+    function is_subpage($parent)
+    {
+        global $post;
+
+        if (empty($parent)) {
+            if (is_page() && $post->post_parent > 0) {
+                return true;
+            }
+        } else {
+            $parentPost = get_post($post->post_parent);
+
+            if (is_numeric($parent) && is_page() && (int) $parent == $post->post_parent) {
+                return true;
+            } elseif (is_string($parent) && is_page()) {
+                if (is_a($parentPost, 'WP_Post') && $parent === $parentPost->post_name) {
+                    return true;
+                }
+            } elseif (is_array($parent) && is_page()) {
+                if (in_array($parentPost->ID, $parent, true) || in_array($parentPost->post_name, $parent, true)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+}
+
 if (! function_exists('load_application_textdomain')) {
     /**
      * Register the .mo file for the application text domain translations.
