@@ -44,7 +44,7 @@ class MetaboxServiceProvider extends ServiceProvider
      */
     public function registerMetaboxInterface()
     {
-        $this->app->bind('Themosis\Metabox\MetaboxManagerInterface', 'Themosis\Metabox\Manager');
+        $this->app->bind('Themosis\Metabox\Contracts\MetaboxManagerInterface', 'Themosis\Metabox\Manager');
     }
 
     /**

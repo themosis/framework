@@ -1,6 +1,6 @@
 <?php
 
-namespace Themosis\Metabox;
+namespace Themosis\Metabox\Contracts;
 
 use Themosis\Forms\Contracts\FieldsRepositoryInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;

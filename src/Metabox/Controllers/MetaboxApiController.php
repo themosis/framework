@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Themosis\Metabox\MetaboxManagerInterface;
+use Themosis\Metabox\Contracts\MetaboxManagerInterface;
 
 class MetaboxApiController extends Controller
 {

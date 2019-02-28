@@ -7,7 +7,7 @@ use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Resources\Factory;
 use Themosis\Forms\Resources\Transformers\FieldTransformer;
 use Themosis\Forms\Resources\Transformers\GroupTransformer;
-use Themosis\Metabox\MetaboxInterface;
+use Themosis\Metabox\Contracts\MetaboxInterface;
 
 class MetaboxTransformer extends TransformerAbstract
 {

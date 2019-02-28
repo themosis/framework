@@ -9,6 +9,8 @@ use Illuminate\Validation\Validator;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
 use Themosis\Forms\Fields\Types\BaseType;
+use Themosis\Metabox\Contracts\MetaboxInterface;
+use Themosis\Metabox\Contracts\MetaboxManagerInterface;
 
 class Manager implements MetaboxManagerInterface
 {

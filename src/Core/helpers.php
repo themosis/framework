@@ -50,8 +50,9 @@ if (! function_exists('asset')) {
     /**
      * Generate an asset path for the application.
      *
-     * @param  string  $path
-     * @param  bool    $secure
+     * @param string $path
+     * @param bool   $secure
+     *
      * @return string
      */
     function asset($path, $secure = null)
@@ -412,7 +413,8 @@ if (! function_exists('secure_asset')) {
     /**
      * Generate an asset path for the application.
      *
-     * @param  string  $path
+     * @param string $path
+     *
      * @return string
      */
     function secure_asset($path)

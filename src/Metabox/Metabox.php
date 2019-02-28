@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Themosis\Forms\Contracts\FieldsRepositoryInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Hook\IHook;
+use Themosis\Metabox\Contracts\MetaboxInterface;
 use Themosis\Metabox\Resources\MetaboxResourceInterface;
 use Themosis\Support\CallbackHandler;
 use Themosis\Support\Contracts\SectionInterface;

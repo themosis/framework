@@ -1,6 +1,6 @@
 <?php
 
-namespace Themosis\Metabox;
+namespace Themosis\Metabox\Contracts;
 
 use Illuminate\Http\Request;
 
