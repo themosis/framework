@@ -565,3 +565,17 @@ if (! function_exists('web_path')) {
         return app()->webPath($path);
     }
 }
+
+if (! function_exists('asset')) {
+    /**
+     * Generate an asset path for the application.
+     *
+     * @param  string  $path
+     * @param  bool    $secure
+     * @return string
+     */
+    function asset($path, $secure = null)
+    {
+        return app(UrlGenerator::class)->asset($path, $secure);
+    }
+}
