@@ -579,3 +579,16 @@ if (! function_exists('asset')) {
         return app(UrlGenerator::class)->asset($path, $secure);
     }
 }
+
+if (! function_exists('secure_asset')) {
+    /**
+     * Generate an asset path for the application.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    function secure_asset($path)
+    {
+        return asset($path, true);
+    }
+}
