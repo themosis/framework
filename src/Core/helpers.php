@@ -56,7 +56,7 @@ if (! function_exists('asset')) {
      */
     function asset($path, $secure = null)
     {
-        return app(UrlGenerator::class)->asset($path, $secure);
+        return app('url')->asset($path, $secure);
     }
 }
 
