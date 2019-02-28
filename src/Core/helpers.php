@@ -248,6 +248,10 @@ if (! function_exists('is_subpage')) {
     {
         global $post;
 
+        if (is_null($post)) {
+            return false;
+        }
+
         if (empty($parent)) {
             if (is_page() && $post->post_parent > 0) {
                 return true;

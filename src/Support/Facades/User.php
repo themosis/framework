@@ -15,6 +15,6 @@ class User extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'user';
+        return 'themosis.user';
     }
 }

@@ -2,9 +2,7 @@
 
 namespace Themosis\User;
 
-use WP_User;
-
-class User extends WP_User
+class User extends \WP_User
 {
     /**
      * Check if the user has role.
@@ -15,7 +13,7 @@ class User extends WP_User
      */
     public function hasRole($role)
     {
-        return in_array($role, $this->roles);
+        return $this->has_cap($role);
     }
 
     /**
@@ -23,7 +21,7 @@ class User extends WP_User
      *
      * @param string $role
      *
-     * @return \Themosis\User\User
+     * @return User
      */
     public function setRole($role)
     {
@@ -41,7 +39,7 @@ class User extends WP_User
      */
     public function can($cap)
     {
-        return user_can($this, $cap);
+        return $this->has_cap($cap);
     }
 
     /**
