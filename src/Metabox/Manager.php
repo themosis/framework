@@ -76,7 +76,9 @@ class Manager implements MetaboxManagerInterface
                 $value = isset($validatedData[$field->getName()]) ? $validatedData[$field->getName()] : null;
                 $field->metaboxSave($value, $post_id);
             } else {
-                throw new MetaboxException('Unable to save ['.$field->getName().']. The [metabox] method is missing.');
+                throw new MetaboxException(
+                    'Unable to save ['.$field->getName().']. The [metaboxSave] method is missing.'
+                );
             }
         }
 

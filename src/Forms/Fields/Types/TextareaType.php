@@ -5,8 +5,13 @@ namespace Themosis\Forms\Fields\Types;
 use Themosis\Forms\Contracts\DataTransformerInterface;
 use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
 use Themosis\Forms\Fields\Contracts\CanHandlePageSettings;
+use Themosis\Forms\Fields\Contracts\CanHandleTerms;
 
-class TextareaType extends BaseType implements DataTransformerInterface, CanHandleMetabox, CanHandlePageSettings
+class TextareaType extends BaseType implements
+    DataTransformerInterface,
+    CanHandleMetabox,
+    CanHandlePageSettings,
+    CanHandleTerms
 {
     /**
      * TextareaType field view.
@@ -99,6 +104,41 @@ class TextareaType extends BaseType implements DataTransformerInterface, CanHand
             add_post_meta($post_id, $this->getName(), $this->getRawValue(), true);
         } else {
             update_post_meta($post_id, $this->getName(), $this->getRawValue(), $previous);
+        }
+    }
+
+    /**
+     * Handle field term meta registration.
+     *
+     * @param string $value
+     * @param int    $term_id
+     */
+    public function termSave($value, int $term_id)
+    {
+        $this->setValue($value);
+
+        $previous = get_term_meta($term_id, $this->getName(), true);
+
+        if (is_null($this->getValue()) || empty($this->getValue())) {
+            delete_term_meta($term_id, $this->getName());
+        } elseif (empty($previous)) {
+            add_term_meta($term_id, $this->getName(), $this->getRawValue(), true);
+        } else {
+            update_term_meta($term_id, $this->getName(), $this->getRawValue(), $previous);
+        }
+    }
+
+    /**
+     * Handle field term meta initial value.
+     *
+     * @param int $term_id
+     */
+    public function termGet(int $term_id)
+    {
+        $value = get_term_meta($term_id, $this->getName(), true);
+
+        if (! empty($value)) {
+            $this->setValue($value);
         }
     }
 

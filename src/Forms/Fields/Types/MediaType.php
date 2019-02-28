@@ -75,6 +75,31 @@ class MediaType extends IntegerType
     }
 
     /**
+     * Handle field term meta registration.
+     *
+     * @param string $value
+     * @param int    $term_id
+     *
+     * @throws NotSupportedFieldException
+     */
+    public function termSave($value, int $term_id)
+    {
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on term meta.');
+    }
+
+    /**
+     * Handle field term meta initial value.
+     *
+     * @param int $term_id
+     *
+     * @throws NotSupportedFieldException
+     */
+    public function termGet(int $term_id)
+    {
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on term meta.');
+    }
+
+    /**
      * Return the field setting value.
      *
      * @throws NotSupportedFieldException

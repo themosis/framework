@@ -2,25 +2,36 @@
 
 namespace Themosis\Tests;
 
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Translation\FileLoader;
+use Illuminate\Translation\Translator;
 use PHPUnit\Framework\TestCase;
-use Themosis\Core\Application;
 use Themosis\Hook\ActionBuilder;
 use Themosis\Taxonomy\Factory;
+use Themosis\Taxonomy\TaxonomyField;
+use Themosis\Taxonomy\TaxonomyFieldRepository;
 
 class TaxonomyTest extends TestCase
 {
-    protected $application;
-
-    protected function getApplication()
-    {
-        return (new Application());
-    }
+    use Application, ViewFactory;
 
     protected function getFactory()
     {
         $app = $this->getApplication();
 
         return new Factory($app, new ActionBuilder($app));
+    }
+
+    protected function getFieldsFactory()
+    {
+        $app = $this->getApplication();
+
+        return new \Themosis\Field\Factory(
+            $app,
+            $this->getViewFactory($app, [
+                __DIR__.'/../../../framework/src/Forms/views'
+            ])
+        );
     }
 
     public function testCreateTaxonomyWithDefaults()
@@ -55,5 +66,44 @@ class TaxonomyTest extends TestCase
 
         $this->assertEquals('Best Themes', $taxonomy->getLabel('popular_items'));
         $this->assertEquals(['projects', 'post', 'wireframes'], $taxonomy->getObjects());
+    }
+
+    public function testTaxonomyRepositoryCanAddFields()
+    {
+        $repository = new TaxonomyFieldRepository();
+        $fields = $this->getFieldsFactory();
+
+        $repository->add($note = $fields->text('note'));
+
+        $repository->add([
+            $notice = $fields->text('notice'),
+            $email = $fields->email('email')
+        ]);
+
+        $this->assertEquals($note, $repository->getFieldByName('note'));
+
+        $this->assertEquals($notice, $repository->getFieldByName('notice'));
+        $this->assertEquals($email, $repository->getFieldByName('email'));
+    }
+
+    public function testTaxonomyField()
+    {
+        $factory = $this->getFactory();
+        $fields = $this->getFieldsFactory();
+
+        $taxonomy = $factory->make('category', 'post', 'Categories', 'Category');
+
+        $taxonomyField = new TaxonomyField(
+            $repository = new TaxonomyFieldRepository(),
+            $this->getViewFactory($this->getApplication()),
+            new \Illuminate\Validation\Factory(new Translator(new FileLoader(new Filesystem(), ''), 'en_US')),
+            new ActionBuilder($this->getApplication())
+        );
+
+        $taxonomyField->make($taxonomy, ['prefix' => 'wp_'])
+            ->add($fields->text('note'));
+
+        $this->assertEquals('themosis.taxonomy', $repository->getFieldByName('note')->getTheme());
+        $this->assertEquals('wp_', $repository->getFieldByName('note')->getPrefix());
     }
 }
