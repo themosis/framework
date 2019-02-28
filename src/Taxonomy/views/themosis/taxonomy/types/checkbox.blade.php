@@ -1,0 +1,2 @@
+<label><input type="checkbox" name="{{ $__field->getName() }}" {!! $__field->attributes($__field->getAttributes()) !!}></label>
+@include($__field->getTheme().'.types.includes.info', ['field' => $__field])
