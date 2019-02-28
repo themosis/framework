@@ -9,6 +9,7 @@ use Themosis\Forms\Fields\ChoiceList\ChoiceList;
 use Themosis\Forms\Fields\ChoiceList\ChoiceListInterface;
 use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
 use Themosis\Forms\Fields\Contracts\CanHandlePageSettings;
+use Themosis\Forms\Fields\Contracts\CanHandleTerms;
 use Themosis\Forms\Resources\Transformers\ChoiceFieldTransformer;
 use Themosis\Forms\Transformers\ChoiceToValueTransformer;
 
@@ -16,7 +17,8 @@ class ChoiceType extends BaseType implements
     CheckableInterface,
     SelectableInterface,
     CanHandleMetabox,
-    CanHandlePageSettings
+    CanHandlePageSettings,
+    CanHandleTerms
 {
     /**
      * Field layout.
@@ -289,6 +291,81 @@ class ChoiceType extends BaseType implements
             array_walk($value, function ($val) use ($post_id, $previous) {
                 add_post_meta($post_id, $this->getName(), $val, false);
             });
+        }
+    }
+
+    /**
+     * Handle field term meta registration.
+     *
+     * @param string|array $value
+     * @param int          $term_id
+     */
+    public function termSave($value, int $term_id)
+    {
+        $this->setValue($value);
+
+        if (! $this->getOption('multiple', false)) {
+            $this->saveTermSingleValue($this->getRawValue(), $term_id);
+        } else {
+            $this->saveTermMultipleValue($this->getRawValue(), $term_id);
+        }
+    }
+
+    /**
+     * Handle field single term meta registration.
+     *
+     * @param string $value
+     * @param int    $term_id
+     */
+    protected function saveTermSingleValue($value, int $term_id)
+    {
+        $previous = get_term_meta($term_id, $this->getName(), true);
+
+        if (is_null($value) || empty($value)) {
+            delete_term_meta($term_id, $this->getName());
+        } elseif (empty($previous)) {
+            add_term_meta($term_id, $this->getName(), $value, true);
+        } else {
+            update_term_meta($term_id, $this->getName(), $value, $previous);
+        }
+    }
+
+    /**
+     * Handle field multiple term meta registration.
+     *
+     * @param $value
+     * @param int $term_id
+     */
+    protected function saveTermMultipleValue($value, int $term_id)
+    {
+        $previous = get_term_meta($term_id, $this->getName(), false);
+
+        if (is_null($value) || empty($value)) {
+            delete_term_meta($term_id, $this->getName());
+        } elseif (empty($previous) && is_array($value)) {
+            array_walk($value, function ($val) use ($term_id) {
+                add_term_meta($term_id, $this->getName(), $val, false);
+            });
+        } else {
+            delete_term_meta($term_id, $this->getName());
+
+            array_walk($value, function ($val) use ($term_id) {
+                add_term_meta($term_id, $this->getName(), $val, false);
+            });
+        }
+    }
+
+    /**
+     * Handle field term meta initial value.
+     *
+     * @param int $term_id
+     */
+    public function termGet(int $term_id)
+    {
+        $value = get_term_meta($term_id, $this->getName(), ! $this->getOption('multiple', false));
+
+        if (! empty($value)) {
+            $this->setValue($value);
         }
     }
 
