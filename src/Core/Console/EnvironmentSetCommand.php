@@ -81,7 +81,7 @@ class EnvironmentSetCommand extends Command
             $contents = str_replace($old_key_val, "{$key}={$value}", $contents);
             $this->writeFile($env_file_path, $contents);
 
-            return $this->info("Environment variable with key '{$key}' has been changed from {$old_value} to {$value}");
+            return $this->info("Environment variable with key {$key} has been changed from {$old_value} to {$value}");
         }
 
         // add newline if there's not already one
