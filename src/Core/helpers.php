@@ -236,6 +236,31 @@ if (! function_exists('event')) {
     }
 }
 
+if (! function_exists('load_application_textdomain')) {
+    /**
+     * Register the .mo file for the application text domain translations.
+     *
+     * @param string $domain
+     * @param string $locale
+     *
+     * @throws ErrorException
+     */
+    function load_application_textdomain(string $domain, string $locale)
+    {
+        if (! function_exists('load_textdomain')) {
+            throw new ErrorException(
+                'Function called too early. Function depends on the {load_textdomain} WordPress function.'
+            );
+        }
+
+        $path = resource_path('languages'.DS.$locale.DS.$domain.'.mo');
+
+        if (file_exists($path) && is_readable($path)) {
+            load_textdomain($domain, $path);
+        }
+    }
+}
+
 if (! function_exists('logger')) {
     /**
      * Log a debug message to the logs.
