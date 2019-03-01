@@ -67,18 +67,23 @@ class User extends \WP_User
     }
 
     /**
-     * Update user meta data.
+     * Update single user meta data.
      *
      * @param string $key
-     * @param mixed  $value
-     * @param mixed  $previous
+     * @param string $value
      *
      * @throws UserException
      *
      * @return User
      */
-    public function updateMetaData(string $key, $value, $previous = ''): User
+    public function updateMetaData(string $key, string $value): User
     {
+        $previous = get_user_meta($this->ID, $key, true);
+
+        if ($previous === $value) {
+            return $this;
+        }
+
         $update = update_user_meta($this->ID, $key, $value, $previous);
 
         if (false === $update) {
