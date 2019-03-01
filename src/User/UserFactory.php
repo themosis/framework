@@ -8,7 +8,7 @@ use Themosis\Field\Wrapper;
 use Themosis\Hook\IHook;
 use Themosis\Validation\IValidate;
 
-class UserFactory extends Wrapper implements IUser
+class UserFactory extends Wrapper
 {
     /**
      * The user sections.
