@@ -2,6 +2,9 @@
 
 namespace Themosis\Tests\User;
 
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Translation\FileLoader;
+use Illuminate\Translation\Translator;
 use PHPUnit\Framework\TestCase;
 use Themosis\Field\Factory;
 use Themosis\Forms\Fields\FieldsRepository;
@@ -29,7 +32,8 @@ class UserFieldTest extends TestCase
         return new UserField(
             new FieldsRepository(),
             new ActionBuilder($app),
-            $this->getViewFactory($app)
+            $this->getViewFactory($app),
+            new \Illuminate\Validation\Factory(new Translator(new FileLoader(new Filesystem(), ''), 'en_US'))
         );
     }
 
