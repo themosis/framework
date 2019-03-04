@@ -100,6 +100,31 @@ class MediaType extends IntegerType
     }
 
     /**
+     * Handle field user meta initial value.
+     *
+     * @param int $user_id
+     *
+     * @throws NotSupportedFieldException
+     */
+    public function userGet(int $user_id)
+    {
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on user meta.');
+    }
+
+    /**
+     * Handle field user meta registration.
+     *
+     * @param array|string $value
+     * @param int          $user_id
+     *
+     * @throws NotSupportedFieldException
+     */
+    public function userSave($value, int $user_id)
+    {
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on user meta.');
+    }
+
+    /**
      * Return the field setting value.
      *
      * @throws NotSupportedFieldException
