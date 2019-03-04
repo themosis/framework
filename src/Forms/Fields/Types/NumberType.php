@@ -5,12 +5,14 @@ namespace Themosis\Forms\Fields\Types;
 use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
 use Themosis\Forms\Fields\Contracts\CanHandlePageSettings;
 use Themosis\Forms\Fields\Contracts\CanHandleTerms;
+use Themosis\Forms\Fields\Contracts\CanHandleUsers;
 use Themosis\Forms\Transformers\NumberToLocalizedStringTransformer;
 
 class NumberType extends BaseType implements
     CanHandleMetabox,
     CanHandlePageSettings,
-    CanHandleTerms
+    CanHandleTerms,
+    CanHandleUsers
 {
     /**
      * NumberType field view.
@@ -146,6 +148,41 @@ class NumberType extends BaseType implements
 
         if (! empty($value)) {
             $this->setValue($value);
+        }
+    }
+
+    /**
+     * Handle field user meta initial value.
+     *
+     * @param int $user_id
+     */
+    public function userGet(int $user_id)
+    {
+        $value = get_user_meta($user_id, $this->getName(), true);
+
+        if (! empty($value)) {
+            $this->setValue($value);
+        }
+    }
+
+    /**
+     * Handle field user meta registration.
+     *
+     * @param string $value
+     * @param int    $user_id
+     */
+    public function userSave($value, int $user_id)
+    {
+        $this->setValue($value);
+
+        $previous = get_user_meta($user_id, $this->getName(), true);
+
+        if (is_null($this->getValue()) || empty($this->getValue())) {
+            delete_user_meta($user_id, $this->getName());
+        } elseif (empty($previous)) {
+            add_user_meta($user_id, $this->getName(), $this->getRawValue(), true);
+        } else {
+            update_user_meta($user_id, $this->getName(), $this->getRawValue(), $previous);
         }
     }
 
