@@ -1,0 +1,44 @@
+<?php
+
+namespace {{namespace}}Http\Controllers\Auth;
+
+use {{namespace}}Customer;
+use {{namespace}}Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Themosis\Core\Auth\RegistersUsers;
+use Themosis\Forms\Contracts\FormInterface;
+
+class RegisterController extends Controller
+{
+    /**
+     * Register Controller
+     *
+     * This controller handles the registration of new customers as well as their
+     * validation and creation. By default, this controller uses a trait to provide
+     * this functionality without requiring any additional code.
+     */
+    use RegistersUsers;
+
+    /**
+     * Where to redirect users after registration.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/settings';
+
+    /**
+     * Create a new customer instance after a valid registration.
+     *
+     * @param FormInterface $form
+     *
+     * @return \App\Customer
+     */
+    protected function create(FormInterface $form)
+    {
+        return Customer::create([
+            'name' => $form->repository()->getFieldByName('name')->getValue(),
+            'email' => $form->repository()->getFieldByName('email')->getValue(),
+            'password' => Hash::make($form->repository()->getFieldByName('password')->getValue())
+        ]);
+    }
+}

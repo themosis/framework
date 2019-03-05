@@ -17,6 +17,7 @@ use Illuminate\Routing\Console\ControllerMakeCommand;
 use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Session\Console\SessionTableCommand;
 use Illuminate\Support\ServiceProvider;
+use Themosis\Auth\Console\AuthMakeCommand;
 use Themosis\Core\Console\ConsoleMakeCommand;
 use Themosis\Core\Console\CustomerTableCommand;
 use Themosis\Core\Console\DownCommand;
@@ -76,6 +77,7 @@ class ConsoleServiceProvider extends ServiceProvider
      * @var array
      */
     protected $devCommands = [
+        'AuthMake' => 'command.auth.make',
         'ConsoleMake' => 'command.console.make',
         'ControllerMake' => 'command.controller.make',
         'CustomerTable' => 'command.customer.table',
@@ -118,6 +120,18 @@ class ConsoleServiceProvider extends ServiceProvider
         }
 
         $this->commands(array_values($commands));
+    }
+
+    /**
+     * Register the make:auth command.
+     *
+     * @param string $abstract
+     */
+    protected function registerAuthMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new AuthMakeCommand($app['files']);
+        });
     }
 
     /**

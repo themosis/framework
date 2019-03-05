@@ -1,0 +1,42 @@
+<?php
+
+namespace {{namespace}}Forms\Auth;
+
+use Themosis\Field\Contracts\FieldFactoryInterface;
+use Themosis\Forms\Contracts\FormFactoryInterface;
+use Themosis\Forms\Contracts\Formidable;
+use Themosis\Forms\Contracts\FormInterface;
+
+class RegisterForm implements Formidable
+{
+    /**
+     * Build your form.
+     *
+     * @param FormFactoryInterface  $factory
+     * @param FieldFactoryInterface $fields
+     *
+     * @return FormInterface
+     */
+    public function build(FormFactoryInterface $factory, FieldFactoryInterface $fields): FormInterface
+    {
+        return $factory->make()
+            ->add($fields->text('name', [
+                'rules' => 'required|string|max:255'
+            ]))
+            ->add($fields->email('email', [
+                'rules' => 'required|string|email|max:255|unique:customers,email'
+            ]))
+            ->add($fields->password('password', [
+                'rules' => 'required|string|min:6|confirmed'
+            ]))
+            ->add($fields->password('password_confirmation', [
+                'label' => __('Confirm Password'),
+                'rules' => 'required|string|min:6',
+                'mapped' => false
+            ]))
+            ->add($fields->submit('register', [
+                'label' => __('Register')
+            ]))
+            ->get();
+    }
+}

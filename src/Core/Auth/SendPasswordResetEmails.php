@@ -2,7 +2,7 @@
 
 namespace Themosis\Core\Auth;
 
-use App\Forms\Auth\Password\EmailResetForm;
+use App\Forms\Auth\Passwords\EmailResetForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 
