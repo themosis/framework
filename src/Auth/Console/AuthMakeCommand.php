@@ -91,7 +91,7 @@ class AuthMakeCommand extends Command
         if (! $this->option('views')) {
             $this->exportControllers();
             $this->exportForms();
-            $this->files->prepend(
+            $this->files->append(
                 base_path('routes/web.php'),
                 $this->files->get(__DIR__.'/stubs/make/routes.stub')
             );
@@ -192,7 +192,7 @@ class AuthMakeCommand extends Command
     protected function compileStub(string $content)
     {
         return str_replace(
-            '{{namepsace}}',
+            '{{namespace}}',
             $this->getAppNamespace(),
             $content
         );
