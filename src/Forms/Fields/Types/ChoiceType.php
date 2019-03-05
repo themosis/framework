@@ -10,6 +10,7 @@ use Themosis\Forms\Fields\ChoiceList\ChoiceListInterface;
 use Themosis\Forms\Fields\Contracts\CanHandleMetabox;
 use Themosis\Forms\Fields\Contracts\CanHandlePageSettings;
 use Themosis\Forms\Fields\Contracts\CanHandleTerms;
+use Themosis\Forms\Fields\Contracts\CanHandleUsers;
 use Themosis\Forms\Resources\Transformers\ChoiceFieldTransformer;
 use Themosis\Forms\Transformers\ChoiceToValueTransformer;
 
@@ -18,7 +19,8 @@ class ChoiceType extends BaseType implements
     SelectableInterface,
     CanHandleMetabox,
     CanHandlePageSettings,
-    CanHandleTerms
+    CanHandleTerms,
+    CanHandleUsers
 {
     /**
      * Field layout.
@@ -366,6 +368,81 @@ class ChoiceType extends BaseType implements
 
         if (! empty($value)) {
             $this->setValue($value);
+        }
+    }
+
+    /**
+     * Handle field user meta initial value.
+     *
+     * @param int $user_id
+     */
+    public function userGet(int $user_id)
+    {
+        $value = get_user_meta($user_id, $this->getName(), ! $this->getOption('multiple', false));
+
+        if (! empty($value)) {
+            $this->setValue($value);
+        }
+    }
+
+    /**
+     * Handle field user meta registration.
+     *
+     * @param array|string $value
+     * @param int          $user_id
+     */
+    public function userSave($value, int $user_id)
+    {
+        $this->setValue($value);
+
+        if (! $this->getOption('multiple', false)) {
+            $this->saveUserSingleValue($this->getRawValue(), $user_id);
+        } else {
+            $this->saveUserMultipleValue($this->getRawValue(), $user_id);
+        }
+    }
+
+    /**
+     * Handle field user meta single data registration.
+     *
+     * @param string $value
+     * @param int    $user_id
+     */
+    protected function saveUserSingleValue($value, int $user_id)
+    {
+        $previous = get_user_meta($user_id, $this->getName(), true);
+
+        if (is_null($value) || empty($value)) {
+            delete_user_meta($user_id, $this->getName());
+        } elseif (empty($previous)) {
+            add_user_meta($user_id, $this->getName(), $value, true);
+        } else {
+            update_user_meta($user_id, $this->getName(), $value, $previous);
+        }
+    }
+
+    /**
+     * Handle field user meta multiple data registration.
+     *
+     * @param array $value
+     * @param int   $user_id
+     */
+    protected function saveUserMultipleValue($value, int $user_id)
+    {
+        $previous = get_user_meta($user_id, $this->getName(), false);
+
+        if (is_null($value) || empty($value)) {
+            delete_user_meta($user_id, $this->getName());
+        } elseif (empty($previous) && is_array($value)) {
+            array_walk($value, function ($val) use ($user_id) {
+                add_user_meta($user_id, $this->getName(), $val, false);
+            });
+        } else {
+            delete_user_meta($user_id, $this->getName());
+
+            array_walk($value, function ($val) use ($user_id) {
+                add_user_meta($user_id, $this->getName(), $val, false);
+            });
         }
     }
 
