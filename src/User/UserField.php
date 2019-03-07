@@ -12,7 +12,7 @@ use Themosis\Forms\Fields\Types\BaseType;
 use Themosis\Hook\IHook;
 use Themosis\Support\Contracts\SectionInterface;
 use Themosis\Support\Section;
-use Themosis\User\Contacts\UserFieldContract;
+use Themosis\User\Contracts\UserFieldContract;
 use Themosis\User\Exceptions\UserException;
 
 class UserField implements UserFieldContract
