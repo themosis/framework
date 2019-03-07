@@ -3,7 +3,7 @@
 namespace Themosis\User;
 
 use Illuminate\Contracts\Validation\Factory as ValidatorFactory;
-use Themosis\User\Contacts\UserFactoryContract;
+use Themosis\User\Contracts\UserFactoryContract;
 use Themosis\User\Exceptions\DuplicateUserException;
 use Themosis\User\Exceptions\UserException;
 

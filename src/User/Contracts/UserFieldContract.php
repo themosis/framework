@@ -1,6 +1,6 @@
 <?php
 
-namespace Themosis\User\Contacts;
+namespace Themosis\User\Contracts;
 
 use Themosis\Forms\Contracts\FieldsRepositoryInterface;
 use Themosis\Forms\Contracts\FieldTypeInterface;
