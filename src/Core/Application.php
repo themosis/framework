@@ -32,7 +32,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @var string
      */
-    const VERSION = '2.0-beta3';
+    const VERSION = '2.0-RC1';
 
     /**
      * Application textdomain.
