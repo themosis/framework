@@ -284,6 +284,8 @@ if (! function_exists('load_application_textdomain')) {
      * @param string $locale
      *
      * @throws ErrorException
+     *
+     * @return bool
      */
     function load_application_textdomain(string $domain, string $locale)
     {
@@ -296,8 +298,38 @@ if (! function_exists('load_application_textdomain')) {
         $path = resource_path('languages'.DS.$locale.DS.$domain.'.mo');
 
         if (file_exists($path) && is_readable($path)) {
-            load_textdomain($domain, $path);
+            return load_textdomain($domain, $path);
         }
+
+        return false;
+    }
+}
+
+if (! function_exists('load_themosis_plugin_textdomain')) {
+    /**
+     * Register the .mo file for any themosis plugins. Work for extensions
+     * installed inside the "plugins" and "mu-plugins" directories.
+     *
+     * @param string $domain
+     * @param string $path
+     *
+     * @return bool
+     */
+    function load_themosis_plugin_textdomain(string $domain, string $path)
+    {
+        /**
+         * Filters a plugin's locale.
+         *
+         * @since 3.0.0
+         *
+         * @param string $locale The plugin's current locale.
+         * @param string $domain Text domain. Unique identifier for retrieving translated strings.
+         */
+        $locale = apply_filters('plugin_locale', determine_locale(), $domain);
+
+        $mofile = $domain.'-'.$locale.'.mo';
+
+        return load_textdomain($domain, trim($path, '\/').DIRECTORY_SEPARATOR.$mofile);
     }
 }
 
