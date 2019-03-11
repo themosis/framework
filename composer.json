@@ -61,7 +61,7 @@
     "ramsey/uuid": "^3.8",
     "symfony/property-access": "^4.2",
     "twig/twig": " ^2.0",
-    "vlucas/phpdotenv": "^2.4"
+    "vlucas/phpdotenv": "^3.3"
   },
   "require-dev": {
     "phpunit/phpunit": "^7.0",
