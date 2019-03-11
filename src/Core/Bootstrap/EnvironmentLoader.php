@@ -3,8 +3,13 @@
 namespace Themosis\Core\Bootstrap;
 
 use Dotenv\Dotenv;
+use Dotenv\Environment\Adapter\EnvConstAdapter;
+use Dotenv\Environment\Adapter\ServerConstAdapter;
+use Dotenv\Environment\DotenvFactory;
+use Dotenv\Exception\InvalidFileException;
 use Illuminate\Contracts\Foundation\Application;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class EnvironmentLoader
 {
@@ -36,11 +41,11 @@ class EnvironmentLoader
         $this->checkForSpecificEnvironmentFile($app);
 
         try {
-            $dotenv = new Dotenv($app->environmentPath(), $app->environmentFile());
-            $dotenv->load();
+            $dotenv = $this->createDotenv($app);
+            $dotenv->safeLoad();
             $dotenv->required($this->required);
-        } catch (\Exception $e) {
-            error_log($e->getMessage());
+        } catch (InvalidFileException $e) {
+            $this->writeErrorAndDie($e);
         }
     }
 
@@ -87,5 +92,36 @@ class EnvironmentLoader
         }
 
         return false;
+    }
+
+    /**
+     * Create a Dotenv instance.
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     *
+     * @return Dotenv
+     */
+    protected function createDotenv($app)
+    {
+        return Dotenv::create(
+            $app->environmentPath(),
+            $app->environmentFile(),
+            new DotenvFactory([new EnvConstAdapter(), new ServerConstAdapter()])
+        );
+    }
+
+    /**
+     * Write the error information to the screen and exit.
+     *
+     * @param InvalidFileException $e
+     */
+    protected function writeErrorAndDie(InvalidFileException $e)
+    {
+        $output = (new ConsoleOutput())->getErrorOutput();
+
+        $output->writeln('The environment file is invalid!');
+        $output->writeln($e->getMessage());
+
+        die(1);
     }
 }
