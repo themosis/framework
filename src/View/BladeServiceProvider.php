@@ -4,6 +4,7 @@ namespace Themosis\View;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Themosis\Support\Facades\User;
 
 class BladeServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,16 @@ class BladeServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Blade::directive('can', function ($expression) {
+            $capability = substr(substr($expression, 0, -1), 1);
+            $can = User::current()->can($capability);
+            return "<?php if( {$can} ): ?>";
+        });
+
+        Blade::directive('endcan', function () {
+            return '<?php endif; ?>';
+        });
+
         Blade::directive('endloggedin', function () {
             return '<?php endif; ?>';
         });
