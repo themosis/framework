@@ -39,6 +39,10 @@ class BladeServiceProvider extends ServiceProvider
             return '<?php }} ?>';
         });
 
+        Blade::directive('endrole', function () {
+            return '<?php endif; ?>';
+        });
+
         Blade::directive('endquery', function () {
             return '<?php }} wp_reset_postdata(); ?>';
         });
@@ -57,6 +61,10 @@ class BladeServiceProvider extends ServiceProvider
 
         Blade::directive('loop', function () {
             return '<?php if (have_posts()) { while (have_posts()) { the_post(); ?>';
+        });
+
+        Blade::directive('role', function ($expression) {
+            return "<?php if( User::current()->hasRole({$expression}) ): ?>";
         });
 
         Blade::directive('query', function ($expression) {
