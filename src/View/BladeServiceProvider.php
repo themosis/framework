@@ -22,6 +22,10 @@ class BladeServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Blade::directive('endloggedin', function () {
+            return '<?php endif; ?>';
+        });
+
         Blade::directive('endloop', function () {
             return '<?php }} ?>';
         });
@@ -36,6 +40,10 @@ class BladeServiceProvider extends ServiceProvider
 
         Blade::directive('head', function () {
             return '<?php wp_head(); ?>';
+        });
+
+        Blade::directive('loggedin', function () {
+            return '<?php if( is_user_logged_in() ): ?>';
         });
 
         Blade::directive('loop', function () {
