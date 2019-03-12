@@ -35,6 +35,10 @@ class BladeServiceProvider extends ServiceProvider
             return '<?php endif; ?>';
         });
 
+        Blade::directive('endloggedout', function () {
+            return '<?php endif; ?>';
+        });
+
         Blade::directive('endloop', function () {
             return '<?php }} ?>';
         });
@@ -57,6 +61,10 @@ class BladeServiceProvider extends ServiceProvider
 
         Blade::directive('loggedin', function () {
             return '<?php if( is_user_logged_in() ): ?>';
+        });
+
+        Blade::directive('loggedout', function () {
+            return '<?php if( !is_user_logged_in() ): ?>';
         });
 
         Blade::directive('loop', function () {
