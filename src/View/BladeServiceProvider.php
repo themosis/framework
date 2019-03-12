@@ -4,7 +4,6 @@ namespace Themosis\View;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Themosis\Support\Facades\User;
 
 class BladeServiceProvider extends ServiceProvider
 {
