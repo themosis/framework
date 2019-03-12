@@ -24,9 +24,7 @@ class BladeServiceProvider extends ServiceProvider
     public function boot()
     {
         Blade::directive('can', function ($expression) {
-            $capability = substr(substr($expression, 0, -1), 1);
-            $can = User::current()->can($capability);
-            return "<?php if( {$can} ): ?>";
+            return "<?php if( User::current()->can({$expression}) ): ?>";
         });
 
         Blade::directive('endcan', function () {
