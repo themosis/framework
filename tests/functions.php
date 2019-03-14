@@ -202,12 +202,12 @@ function is_custom($num)
 
 function is_multisite()
 {
-	return false;
+    return false;
 }
 
 function get_template_directory_uri()
 {
-	return '/tests/htdocs/content/themes/underscore/';
+    return '/tests/htdocs/content/themes/underscore/';
 }
 
 /*

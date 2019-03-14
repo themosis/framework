@@ -383,45 +383,45 @@ class ThemeManager
         return $this;
     }
 
-	/**
+    /**
      * Register load theme assets dynamically
-	 * $theme->mix('dist/css/app.css');
+     * $theme->mix('dist/css/app.css');
      *
      * @param array $templates
      *
      * @return $this
      */
 
-	function mix($path, $manifest = false, $shouldHotReload = false)
-	{
-		if (! $manifest) static $manifest;
-		if (! $shouldHotReload) static $shouldHotReload;
+    function mix($path, $manifest = false, $shouldHotReload = false)
+    {
+        if (! $manifest) static $manifest;
+        if (! $shouldHotReload) static $shouldHotReload;
 
-		if (! $manifest) {
-			$manifestPath = $this->dirPath . '/mix-manifest.json';
-			$shouldHotReload = file_exists($this->dirPath . '/hot');
+        if (! $manifest) {
+            $manifestPath = $this->dirPath . '/mix-manifest.json';
+            $shouldHotReload = file_exists($this->dirPath . '/hot');
 
-			if (! file_exists($manifestPath)) {
-				throw new \Exception(
-					'The Laravel Mix manifest file does not exist. ' .
-					'Please run "npm run webpack" and try again.'
-				);
-			}
+            if (! file_exists($manifestPath)) {
+                throw new \Exception(
+                    'The Laravel Mix manifest file does not exist. ' .
+                    'Please run "npm run webpack" and try again.'
+                );
+            }
 
-			$manifest = json_decode(file_get_contents($manifestPath), true);
-		}
+            $manifest = json_decode(file_get_contents($manifestPath), true);
+        }
 
-		if (! starts_with($path, '/')) $path = "/{$path}";
+        if (! starts_with($path, '/')) $path = "/{$path}";
 
-		if (! array_key_exists($path, $manifest)) {
-			throw new \Exception(
-				"Unknown Laravel Mix file path: {$path}. Please check your requested " .
-				"webpack.mix.js output path, and try again."
-			);
-		}
+        if (! array_key_exists($path, $manifest)) {
+            throw new \Exception(
+                "Unknown Laravel Mix file path: {$path}. Please check your requested " .
+                "webpack.mix.js output path, and try again."
+            );
+        }
 
-		return $shouldHotReload
-			? "http://localhost:8080{$manifest[$path]}"
-			: $this->getUrl(ltrim($manifest[$path], '/'));
-	}
+        return $shouldHotReload
+            ? "http://localhost:8080{$manifest[$path]}"
+            : $this->getUrl(ltrim($manifest[$path], '/'));
+    }
 }

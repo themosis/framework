@@ -130,11 +130,11 @@ class ThemeManagerTest extends TestCase
     public function testThemeManagerCanHandleMixManifest()
     {
         $app = $this->getApplication();
-		$theme = $this->getThemeManager();
-		$theme = $theme->load($app->themesPath('underscore/config'));
+        $theme = $this->getThemeManager();
+        $theme = $theme->load($app->themesPath('underscore/config'));
 
-		$this->assertEquals(
-			$theme->mix('dist/css/theme.css'), $theme->getUrl('dist/css/theme.css?id=ba9aead02aea5cc7befb')
-		);
+        $this->assertEquals(
+            $theme->mix('dist/css/theme.css'), $theme->getUrl('dist/css/theme.css?id=ba9aead02aea5cc7befb')
+        );
     }
 }
