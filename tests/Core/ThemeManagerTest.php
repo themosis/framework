@@ -126,4 +126,15 @@ class ThemeManagerTest extends TestCase
         $this->assertTrue(defined('THEME_MANAGER_INC'));
         $this->assertTrue(defined('THEME_MANAGER_NESTED_INC'));
     }
+
+    public function testThemeManagerCanHandleMixManifest()
+    {
+        $app = $this->getApplication();
+		$theme = $this->getThemeManager();
+		$theme = $theme->load($app->themesPath('underscore/config'));
+
+		$this->assertEquals(
+			$theme->mix('dist/css/theme.css'), $theme->getUrl('dist/css/theme.css?id=ba9aead02aea5cc7befb')
+		);
+    }
 }

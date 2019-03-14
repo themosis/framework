@@ -200,6 +200,16 @@ function is_custom($num)
     return false;
 }
 
+function is_multisite()
+{
+	return false;
+}
+
+function get_template_directory_uri()
+{
+	return '/tests/htdocs/content/themes/underscore/';
+}
+
 /*
 |--------------------------------------------------------------------------
 | Callback Handler
