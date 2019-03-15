@@ -207,9 +207,9 @@ function wp_get_theme()
     return $theme;
 }
 
-function content_url($path)
+function get_home_url($path)
 {
-    $url = 'http://example.com/content';
+    $url = 'http://example.com';
     if ($path && is_string($path)) {
         $url .= '/' . ltrim($path, '/');
     }

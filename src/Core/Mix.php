@@ -20,15 +20,16 @@ class Mix
     public function __invoke($path, $manifestDirectory = '')
     {
         static $manifests = [];
-
-        if (! $manifestDirectory) $manifestDirectory = 'themes/' . wp_get_theme()->stylesheet;
-
+        
+        if (! $manifestDirectory) $manifestDirectory = 'content/themes/' . wp_get_theme()->stylesheet;
+        
         if (! Str::startsWith($path, '/')) {
             $path = "/{$path}";
         }
-
-        if (file_exists(content_path($manifestDirectory . '/hot'))) {
-            $url = rtrim(file_get_contents(content_path($manifestDirectory . '/hot')));
+        
+        $publicDir = rtrim(THEMOSIS_PUBLIC_DIR, '/\\') . '/' . ltrim($manifestDirectory, '/');
+        if (file_exists(base_path($publicDir . '/hot'))) {
+            $url = rtrim(file_get_contents(base_path($publicDir . '/hot')));
 
             if (Str::startsWith($url, ['http://', 'https://'])) {
                 return new HtmlString(Str::after($url, ':') . $path);
@@ -37,8 +38,7 @@ class Mix
             return new HtmlString("//localhost:8080{$path}");
         }
 
-        $manifestPath = content_path($manifestDirectory . '/mix-manifest.json');
-
+        $manifestPath = base_path($publicDir .'/mix-manifest.json');
         if (! isset($manifests[$manifestPath])) {
             if (! file_exists($manifestPath)) {
                 throw new Exception('The Mix manifest does not exist.');
@@ -50,17 +50,9 @@ class Mix
         $manifest = $manifests[$manifestPath];
 
         if (! isset($manifest[$path])) {
-            $exception = new Exception("Unable to locate Mix file: {$path}.");
-
-            if (! app('config')->get('app.debug')) {
-                report($exception);
-
-                return $path;
-            } else {
-                throw $exception;
-            }
+            throw new Exception("Unable to locate Mix file: {$path}.");
         }
 
-        return new HtmlString(content_url(rtrim($manifestDirectory, '/') . $manifest[$path]));
+        return new HtmlString(get_home_url(rtrim($manifestDirectory, '/') . $manifest[$path]));
     }
 }
