@@ -61,6 +61,6 @@ class Mix
             }
         }
 
-        return new HtmlString(content_url($manifestDirectory) . $manifest[$path]);
+        return new HtmlString(content_url(rtrim($manifestDirectory, '/') . $manifest[$path]));
     }
 }

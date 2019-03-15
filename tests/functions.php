@@ -200,6 +200,23 @@ function is_custom($num)
     return false;
 }
 
+function wp_get_theme()
+{
+    $theme = new stdClass();
+    $theme->stylesheet = "underscore";
+    return $theme;
+}
+
+function content_url($path)
+{
+    $url = 'http://example.com/content';
+    if ($path && is_string($path)) {
+        $url .= '/' . ltrim($path, '/');
+    }
+    print_r($url);
+    return $url;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Callback Handler
