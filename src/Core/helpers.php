@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Mix;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -378,6 +379,22 @@ if (! function_exists('method_field')) {
     {
         return new HtmlString('<input type="hidden" name="_method" value="'.$method.'">');
     }
+}
+
+if (!function_exists('mix')) {
+	/**
+     * Get the path to a versioned Mix file.
+     *
+     * @param  string  $path
+     * @param  string  $manifestDirectory
+     * @return \Illuminate\Support\HtmlString|string
+     *
+     * @throws \Exception
+     */
+	function mix($path, $manifestDirectory = '')
+	{
+		return app(Mix::class)(...func_get_args());
+	}
 }
 
 if (! function_exists('muplugins_path')) {
