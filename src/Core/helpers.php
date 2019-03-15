@@ -381,8 +381,8 @@ if (! function_exists('method_field')) {
     }
 }
 
-if (!function_exists('mix')) {
-	/**
+if (! function_exists('mix')) {
+    /**
      * Get the path to a versioned Mix file.
      *
      * @param  string  $path
@@ -391,10 +391,10 @@ if (!function_exists('mix')) {
      *
      * @throws \Exception
      */
-	function mix($path, $manifestDirectory = '')
-	{
-		return app(Mix::class)(...func_get_args());
-	}
+    function mix($path, $manifestDirectory = '')
+    {
+        return app(Mix::class)(...func_get_args());
+    }
 }
 
 if (! function_exists('muplugins_path')) {

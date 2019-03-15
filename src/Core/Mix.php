@@ -8,7 +8,7 @@ use Illuminate\Support\HtmlString;
 
 class Mix
 {
-	/**
+    /**
      * Get the path to a versioned Mix file.
      *
      * @param  string  $path
@@ -17,50 +17,50 @@ class Mix
      *
      * @throws \Exception
      */
-	public function __invoke($path, $manifestDirectory = '')
-	{
-		static $manifests = [];
+    public function __invoke($path, $manifestDirectory = '')
+    {
+        static $manifests = [];
 
-		if (!$manifestDirectory) $manifestDirectory = 'themes/' . wp_get_theme()->stylesheet;
+        if (! $manifestDirectory) $manifestDirectory = 'themes/' . wp_get_theme()->stylesheet;
 
-		if (!Str::startsWith($path, '/')) {
-			$path = "/{$path}";
-		}
+        if (! Str::startsWith($path, '/')) {
+            $path = "/{$path}";
+        }
 
-		if (file_exists(content_path($manifestDirectory . '/hot'))) {
-			$url = rtrim(file_get_contents(content_path($manifestDirectory . '/hot')));
+        if (file_exists(content_path($manifestDirectory . '/hot'))) {
+            $url = rtrim(file_get_contents(content_path($manifestDirectory . '/hot')));
 
-			if (Str::startsWith($url, ['http://', 'https://'])) {
-				return new HtmlString(Str::after($url, ':') . $path);
-			}
+            if (Str::startsWith($url, ['http://', 'https://'])) {
+                return new HtmlString(Str::after($url, ':') . $path);
+            }
 
-			return new HtmlString("//localhost:8080{$path}");
-		}
+            return new HtmlString("//localhost:8080{$path}");
+        }
 
-		$manifestPath = content_path($manifestDirectory . '/mix-manifest.json');
+        $manifestPath = content_path($manifestDirectory . '/mix-manifest.json');
 
-		if (!isset($manifests[$manifestPath])) {
-			if (!file_exists($manifestPath)) {
-				throw new Exception('The Mix manifest does not exist.');
-			}
+        if (! isset($manifests[$manifestPath])) {
+            if (! file_exists($manifestPath)) {
+                throw new Exception('The Mix manifest does not exist.');
+            }
 
-			$manifests[$manifestPath] = json_decode(file_get_contents($manifestPath), true);
-		}
+            $manifests[$manifestPath] = json_decode(file_get_contents($manifestPath), true);
+        }
 
-		$manifest = $manifests[$manifestPath];
+        $manifest = $manifests[$manifestPath];
 
-		if (!isset($manifest[$path])) {
-			$exception = new Exception("Unable to locate Mix file: {$path}.");
+        if (! isset($manifest[$path])) {
+            $exception = new Exception("Unable to locate Mix file: {$path}.");
 
-			if (!app('config')->get('app.debug')) {
-				report($exception);
+            if (! app('config')->get('app.debug')) {
+                report($exception);
 
-				return $path;
-			} else {
-				throw $exception;
-			}
-		}
+                return $path;
+            } else {
+                throw $exception;
+            }
+        }
 
-		return new HtmlString(content_url($manifestDirectory) . $manifest[$path]);
-	}
+        return new HtmlString(content_url($manifestDirectory) . $manifest[$path]);
+    }
 }
