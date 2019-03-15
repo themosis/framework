@@ -25,7 +25,7 @@ class MixTest extends TestCase
         $mix = app(Mix::class);
         $this->assertEquals(
             $mix('dist/css/theme.css'),
-            get_home_url('content/themes/underscore/dist/css/theme.css?id=ba9aead02aea5cc7befb')
+            get_home_url(null, 'content/themes/underscore/dist/css/theme.css?id=ba9aead02aea5cc7befb')
         );
     }
 
@@ -36,7 +36,7 @@ class MixTest extends TestCase
         $mix = app(Mix::class);
         $this->assertEquals(
             $mix('dist/css/theme.css', 'content/themes/underscore'),
-            get_home_url('content/themes/underscore/dist/css/theme.css?id=ba9aead02aea5cc7befb')
+            get_home_url(null, 'content/themes/underscore/dist/css/theme.css?id=ba9aead02aea5cc7befb')
         );
     }
 
@@ -47,7 +47,7 @@ class MixTest extends TestCase
         $mix = app(Mix::class);
         $this->assertEquals(
             $mix('dist/css/theme.css', 'content/plugins/timeline'),
-            get_home_url('content/plugins/timeline/dist/css/theme.css?id=ba9aead02aea5cc7befb')
+            get_home_url(null, 'content/plugins/timeline/dist/css/theme.css?id=ba9aead02aea5cc7befb')
         );
     }
 
@@ -58,7 +58,7 @@ class MixTest extends TestCase
         $mix = app(Mix::class);
         $this->assertEquals(
             $mix('dist/css/theme.css', '/'),
-            get_home_url('/dist/css/theme.css?id=ba9aead02aea5cc7befb')
+            get_home_url(null, '/dist/css/theme.css?id=ba9aead02aea5cc7befb')
         );
     }
 }

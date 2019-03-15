@@ -27,7 +27,7 @@ class Mix
             $path = "/{$path}";
         }
         
-        $publicDir = rtrim(THEMOSIS_PUBLIC_DIR, '/\\') . '/' . ltrim($manifestDirectory, '/');
+        $publicDir = rtrim(THEMOSIS_PUBLIC_DIR, '/\\') . '/' . trim($manifestDirectory, '/');
         if (file_exists(base_path($publicDir . '/hot'))) {
             $url = rtrim(file_get_contents(base_path($publicDir . '/hot')));
 
@@ -53,6 +53,6 @@ class Mix
             throw new Exception("Unable to locate Mix file: {$path}.");
         }
 
-        return new HtmlString(get_home_url(rtrim($manifestDirectory, '/') . $manifest[$path]));
+        return new HtmlString(get_home_url(null, rtrim($manifestDirectory, '/') . $manifest[$path]));
     }
 }
