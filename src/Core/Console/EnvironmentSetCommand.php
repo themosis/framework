@@ -156,11 +156,19 @@ class EnvironmentSetCommand extends Command
         {
             $parts = explode('=', $key, 2);
 
-            if (count($parts) !== 2)
-                throw new InvalidArgumentException('No value was set');
+            // if key=value syntax is used
+            if (count($parts) === 2)
+            {
+                $key = $parts[0];
+                $value = $parts[1];
+            }
+            // else assume value must be empty
+            else
+            {
+                $key = $key;
+                $value = "";
+            }
 
-            $key = $parts[0];
-            $value = $parts[1];
         }
 
         // throw error if invalid key
