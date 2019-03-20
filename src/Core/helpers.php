@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Foundation\Mix;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Foundation\Mix;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Log\LogManager;
@@ -385,11 +385,12 @@ if (! function_exists('mix')) {
     /**
      * Get the path to a versioned Mix file.
      *
-     * @param  string  $path
-     * @param  string  $manifestDirectory
-     * @return \Illuminate\Support\HtmlString|string
+     * @param string $path
+     * @param string $manifestDirectory
      *
      * @throws \Exception
+     *
+     * @return \Illuminate\Support\HtmlString|string
      */
     function mix($path, $manifestDirectory = '')
     {

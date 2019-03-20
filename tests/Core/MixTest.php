@@ -12,8 +12,9 @@ class MixTest extends TestCase
 
     protected function getApplication()
     {
-        if (! is_null($this->app)) 
+        if (! is_null($this->app)) {
             return $this->app;
+        }
 
         return $this->app = new Application(dirname(__DIR__));
     }

@@ -130,7 +130,8 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Determine if the kernel has a given middleware.
      *
-     * @param  string  $middleware
+     * @param string $middleware
+     *
      * @return bool
      */
     public function hasMiddleware($middleware)
@@ -265,7 +266,8 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Add a new middleware to beginning of the stack if it does not already exist.
      *
-     * @param  string  $middleware
+     * @param string $middleware
+     *
      * @return $this
      */
     public function prependMiddleware($middleware)
@@ -280,7 +282,8 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Add a new middleware to end of the stack if it does not already exist.
      *
-     * @param  string  $middleware
+     * @param string $middleware
+     *
      * @return $this
      */
     public function pushMiddleware($middleware)
@@ -321,7 +324,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     {
         return $this->routeMiddleware;
     }
-    
+
     /**
      * Report the exception to the exception handler.
      *

@@ -33,9 +33,9 @@ class ServeCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return int
-     *
      * @throws \Exception
+     *
+     * @return int
      */
     public function handle()
     {
@@ -59,7 +59,8 @@ class ServeCommand extends Command
      */
     protected function serverCommand()
     {
-        return sprintf('%s -S %s:%s %s',
+        return sprintf(
+            '%s -S %s:%s %s',
             ProcessUtils::escapeArgument((new PhpExecutableFinder)->find(false)),
             $this->host(),
             $this->port(),
