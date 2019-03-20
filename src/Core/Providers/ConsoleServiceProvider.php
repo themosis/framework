@@ -32,6 +32,7 @@ use Themosis\Core\Console\ProviderMakeCommand;
 use Themosis\Core\Console\RouteCacheCommand;
 use Themosis\Core\Console\RouteClearCommand;
 use Themosis\Core\Console\RouteListCommand;
+use Themosis\Core\Console\ServeCommand;
 use Themosis\Core\Console\ThemeInstallCommand;
 use Themosis\Core\Console\UpCommand;
 use Themosis\Core\Console\VendorPublishCommand;
@@ -94,6 +95,7 @@ class ConsoleServiceProvider extends ServiceProvider
         'SessionTable' => 'command.session.table',
         'ThemeInstall' => 'command.theme.install',
         'VendorPublish' => 'command.vendor.publish',
+        'Serve' => 'command.serve',
         'WidgetMake' => 'command.widget.make'
     ];
 
@@ -454,6 +456,18 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerScheduleRunCommand()
     {
         $this->app->singleton(ScheduleRunCommand::class);
+    }
+
+    /**
+     * Register the serve command.
+     *
+     * @param string $abstract
+     */
+    protected function registerServeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new ServeCommand();
+        });
     }
 
     /**
