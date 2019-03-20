@@ -85,7 +85,9 @@ class PluginsRepository
             // As we load the plugins from the mu-plugins directory
             // we do not need to get their header. Only the file
             // that defines them.
-            $manifest[$directory] = $this->getPlugin($directory);
+            if ($payload = $this->getPlugin($directory)) {
+                $manifest[$directory] = $payload;
+            }
         }
 
         return $this->writeManifest($manifest);
