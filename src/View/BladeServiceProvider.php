@@ -22,8 +22,28 @@ class BladeServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Blade::directive('can', function ($expression) {
+            return "<?php if( User::current()->can({$expression}) ): ?>";
+        });
+
+        Blade::directive('endcan', function () {
+            return '<?php endif; ?>';
+        });
+
+        Blade::directive('endloggedin', function () {
+            return '<?php endif; ?>';
+        });
+
+        Blade::directive('endloggedout', function () {
+            return '<?php endif; ?>';
+        });
+
         Blade::directive('endloop', function () {
             return '<?php }} ?>';
+        });
+
+        Blade::directive('endrole', function () {
+            return '<?php endif; ?>';
         });
 
         Blade::directive('endquery', function () {
@@ -38,8 +58,20 @@ class BladeServiceProvider extends ServiceProvider
             return '<?php wp_head(); ?>';
         });
 
+        Blade::directive('loggedin', function () {
+            return '<?php if( is_user_logged_in() ): ?>';
+        });
+
+        Blade::directive('loggedout', function () {
+            return '<?php if( !is_user_logged_in() ): ?>';
+        });
+
         Blade::directive('loop', function () {
             return '<?php if (have_posts()) { while (have_posts()) { the_post(); ?>';
+        });
+
+        Blade::directive('role', function ($expression) {
+            return "<?php if( User::current()->hasRole({$expression}) ): ?>";
         });
 
         Blade::directive('query', function ($expression) {
