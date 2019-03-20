@@ -94,7 +94,8 @@ class PluginInstallCommand extends Command
             'text_domain' => $textdomain,
             'domain_var' => $variable,
             'plugin_prefix' => $prefix,
-            'plugin_namespace' => $namespace
+            'plugin_namespace' => $namespace,
+            'plugin_id' => $name
         ];
     }
 

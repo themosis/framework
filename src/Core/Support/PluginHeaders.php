@@ -14,6 +14,7 @@ trait PluginHeaders
         'plugin_uri' => 'Plugin URI',
         'plugin_prefix' => 'Plugin Prefix',
         'plugin_namespace' => 'Plugin Namespace',
+        'plugin_id' => 'Plugin ID',
         'description' => 'Description',
         'version' => 'Version',
         'author' => 'Author',
