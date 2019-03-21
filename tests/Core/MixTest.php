@@ -8,12 +8,12 @@ use PHPUnit\Framework\TestCase;
 
 class MixTest extends TestCase
 {
-	protected $app;
+    protected $app;
 
-	public function setUp()
+    public function setUp()
     {
-		$this->getApplication();
-	}
+        $this->getApplication();
+    }
 
     protected function getApplication()
     {
@@ -22,7 +22,7 @@ class MixTest extends TestCase
         }
 
         return $this->app = new Application(dirname(__DIR__));
-	}
+    }
 
     public function testDefaultMixUsage()
     {
@@ -53,7 +53,7 @@ class MixTest extends TestCase
 
     public function testCallingFromWebRoot()
     {
-		$mix = app(Mix::class);
+        $mix = app(Mix::class);
         $this->assertEquals(
             $mix('css/theme.css', '/'),
             '/css/theme.css?id=ba9aead02aea5cc7befb'
