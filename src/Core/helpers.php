@@ -330,7 +330,7 @@ if (! function_exists('load_themosis_plugin_textdomain')) {
 
         $mofile = $domain.'-'.$locale.'.mo';
 
-        return load_textdomain($domain, trim($path, '\/').DIRECTORY_SEPARATOR.$mofile);
+        return load_textdomain($domain, rtrim($path, '\/').DIRECTORY_SEPARATOR.$mofile);
     }
 }
 
