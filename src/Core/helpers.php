@@ -1,20 +1,20 @@
 <?php
 
-use Themosis\Core\Mix;
-use Psr\Log\LoggerInterface;
-use Illuminate\Http\Request;
-use Illuminate\Log\LogManager;
-use Illuminate\Support\HtmlString;
-use Illuminate\Routing\Redirector;
 use Illuminate\Container\Container;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Contracts\Auth\Factory as AuthFactory;
-use Illuminate\Contracts\View\Factory as ViewFactory;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
+use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Log\LogManager;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\HtmlString;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Themosis\Core\Mix;
 
 if (! function_exists('app')) {
     /**
@@ -116,7 +116,8 @@ if (! function_exists('public_path')) {
     /**
      * Get the path to the public folder.
      *
-     * @param  string  $path
+     * @param string $path
+     *
      * @return string
      */
     function public_path($path = '')
@@ -466,8 +467,7 @@ if (! function_exists('report')) {
     /**
      * Report an exception.
      *
-     * @param  \Exception  $exception
-     * @return void
+     * @param \Exception $exception
      */
     function report($exception)
     {

@@ -3,8 +3,8 @@
 namespace Themosis\Core;
 
 use Exception;
-use Illuminate\Support\Str;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 
 class Mix
 {
@@ -27,13 +27,15 @@ class Mix
             $manifestDirectory = '/content/themes/'.wp_get_theme()->stylesheet.'/dist';
         }
 
-        if ($manifestDirectory == '/') $manifestDirectory = '';
-        
+        if ($manifestDirectory == '/') {
+            $manifestDirectory = '';
+        }
+
         if (! Str::startsWith($path, '/')) {
             $path = "/{$path}";
         }
-        
-        if ($manifestDirectory && !Str::startsWith($manifestDirectory, '/')) {
+
+        if ($manifestDirectory && ! Str::startsWith($manifestDirectory, '/')) {
             $manifestDirectory = "/{$manifestDirectory}";
         }
 
@@ -48,7 +50,7 @@ class Mix
         }
 
         $manifestPath = public_path($manifestDirectory.'/mix-manifest.json');
-        
+
         if (! isset($manifests[$manifestPath])) {
             if (! file_exists($manifestPath)) {
                 throw new Exception('The Mix manifest does not exist.');
@@ -61,10 +63,10 @@ class Mix
 
         if (! isset($manifest[$path])) {
             $exception = new Exception("Unable to locate Mix file: {$path}.");
-            
+
             if (! app('config')->get('app.debug')) {
                 report($exception);
-                
+
                 return $path;
             } else {
                 throw $exception;

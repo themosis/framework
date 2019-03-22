@@ -2,9 +2,9 @@
 
 namespace Themosis\Tests\Core;
 
-use Themosis\Core\Mix;
-use Themosis\Core\Application;
 use PHPUnit\Framework\TestCase;
+use Themosis\Core\Application;
+use Themosis\Core\Mix;
 
 class MixTest extends TestCase
 {
