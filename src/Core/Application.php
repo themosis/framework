@@ -20,6 +20,8 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Themosis\Core\Bootstrap\EnvironmentLoader;
 use Themosis\Core\Events\LocaleUpdated;
@@ -1330,6 +1332,22 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         }
 
         return $nested;
+    }
+
+    /**
+     * Throw an HttpException with the given data.
+     *
+     * @param int    $code
+     * @param string $message
+     * @param array  $headers
+     */
+    public function abort($code, $message = '', array $headers = [])
+    {
+        if (404 == $code) {
+            throw new NotFoundHttpException($message);
+        }
+
+        throw new HttpException($code, $message, null, $headers);
     }
 
     /**

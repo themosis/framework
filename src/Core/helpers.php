@@ -5,8 +5,10 @@ use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Log\LogManager;
@@ -14,7 +16,34 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\HtmlString;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Themosis\Core\Mix;
+
+if (! function_exists('abort')) {
+    /**
+     * Throw an HttpException with the given data.
+     *
+     * @param Response|Responsable|int $code
+     * @param string                   $message
+     * @param array                    $headers
+     *
+     * @throws HttpResponseException
+     * @throws HttpException
+     * @throws NotFoundHttpException
+     */
+    function abort($code, $message = '', array $headers = [])
+    {
+        if ($code instanceof Response) {
+            throw new HttpResponseException($code);
+        } elseif ($code instanceof Responsable) {
+            throw new HttpResponseException($code->toResponse(\request()));
+        }
+
+        app()->abort($code, $message, $headers);
+    }
+}
 
 if (! function_exists('app')) {
     /**

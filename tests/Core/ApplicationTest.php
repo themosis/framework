@@ -3,10 +3,15 @@
 namespace Themosis\Tests\Core;
 
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Events\EventServiceProvider;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Request;
 use Illuminate\Log\LogServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Themosis\Core\Application;
 use Themosis\Core\PackageManifest;
 use Themosis\Route\RouteServiceProvider;
@@ -346,6 +351,36 @@ class ApplicationTest extends TestCase
             $app['events']->getListeners('bootstrapped: Themosis\Core\Bootstrap\RegisterFacades')
         );
     }
+
+    public function test_application_can_abort()
+    {
+        $app = new Application();
+
+        $this->expectException(HttpException::class);
+
+        $app->abort(500, 'Something is wrong');
+    }
+
+    public function test_abort_helper_handle_response()
+    {
+        new Application();
+
+        $this->expectException(HttpResponseException::class);
+
+        abort(new Response('test', 404));
+    }
+
+    public function test_abort_helper_handle_responsable()
+    {
+        $app = new Application();
+        $app->bind('request', function () {
+            return new Request();
+        });
+
+        $this->expectException(HttpResponseException::class);
+
+        abort(new CustomResponse());
+    }
 }
 
 class ApplicationMultiProvider extends ServiceProvider
@@ -447,4 +482,12 @@ abstract class AbstractClass
 class ConcreteClass extends AbstractClass
 {
     //
+}
+
+class CustomResponse implements Responsable
+{
+    public function toResponse($request)
+    {
+        return new \Illuminate\Http\Response('Something', 500);
+    }
 }
