@@ -89,19 +89,6 @@ trait AuthenticatesUsers
     }
 
     /**
-     * Validate the user login request.
-     *
-     * @param Request $request
-     */
-    protected function validateLogin(Request $request)
-    {
-        $this->validate($request, [
-            $this->username() => 'required|string',
-            'password' => 'required|string'
-        ]);
-    }
-
-    /**
      * Attempt to log the user into the application.
      *
      * @param Request       $request
@@ -113,7 +100,7 @@ trait AuthenticatesUsers
     {
         return $this->guard()->attempt(
             [
-                'email' => $form->repository()->getFieldByName('email')->getValue(),
+                $this->username() => $form->repository()->getFieldByName($this->username())->getValue(),
                 'password' => $form->repository()->getFieldByName('password')->getValue()
             ],
             $request->filled($this->remember())
@@ -171,7 +158,7 @@ trait AuthenticatesUsers
      */
     public function username()
     {
-        return 'th_email';
+        return 'email';
     }
 
     /**
