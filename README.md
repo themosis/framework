@@ -27,24 +27,14 @@ The above command will install a new instance of the Themosis framework under th
 
 ### Learn more
 
-In order to learn more about how to use the framework and its features, please follow the official documentation and read the "Getting started" guide in order to configure your application for your environment:
+In order to learn more about how to use the framework and its features, please follow the official documentation and read the "Getting started" guide:
 
-- [Get started with the Themosis framework](https://framework.themosis.com/docs/1.3/installation/)
+- [Official documentation](https://framework.themosis.com)
 
 Local development
 -----------------
 
-*In progress*
-
-Running the tests
------------------
-
-*In progress*
-
-Deployment
-----------
-
-*In progress*
+The framework is by default bundled with the [Homestead](https://laravel.com/docs/homestead) virtual machine for local development. Read the Themosis framework [installation guide](https://framework.themosis.com/docs/2.0/installation/) for details on how to configure your local Homestead machine for your project.
 
 Contributing
 ------------
@@ -57,7 +47,7 @@ Any help is appreciated. The project is open-source and we encourage you to part
 - Following us on [Twitter](https://twitter.com/Themosis)
 - Sharing the project around your community
 
-For details about contributing to the framework, please check the [contribution guide](http://framework.themosis.com/docs/1.3/contributing).
+For details about contributing to the framework, please check the [contribution guide](http://framework.themosis.com/docs/2.0/contributing).
 
 Versioning
 ----------
