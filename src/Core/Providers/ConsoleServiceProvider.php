@@ -38,6 +38,7 @@ use Themosis\Core\Console\UpCommand;
 use Themosis\Core\Console\VendorPublishCommand;
 use Themosis\Core\Console\ViewClearCommand;
 use Themosis\Core\Console\WidgetMakeCommand;
+use Themosis\Core\Console\RequestMakeCommand;
 
 class ConsoleServiceProvider extends ServiceProvider
 {
@@ -96,7 +97,8 @@ class ConsoleServiceProvider extends ServiceProvider
         'ThemeInstall' => 'command.theme.install',
         'VendorPublish' => 'command.vendor.publish',
         'Serve' => 'command.serve',
-        'WidgetMake' => 'command.widget.make'
+        'WidgetMake' => 'command.widget.make',
+        'RequestMake' => 'command.request.make',
     ];
 
     /**
@@ -539,6 +541,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new WidgetMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the make:request command.
+     *
+     * @param string $abstract
+     */
+    protected function registerRequestMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new RequestMakeCommand($app['files']);
         });
     }
 
