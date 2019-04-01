@@ -93,12 +93,12 @@ class ConsoleServiceProvider extends ServiceProvider
         'PasswordResetTable' => 'command.password.reset.table',
         'PluginInstall' => 'command.plugin.install',
         'ProviderMake' => 'command.provider.make',
+        'RequestMake' => 'command.request.make',
         'SessionTable' => 'command.session.table',
         'ThemeInstall' => 'command.theme.install',
         'VendorPublish' => 'command.vendor.publish',
         'Serve' => 'command.serve',
         'WidgetMake' => 'command.widget.make',
-        'RequestMake' => 'command.request.make',
     ];
 
     /**
@@ -409,6 +409,18 @@ class ConsoleServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the make:request command.
+     *
+     * @param string $abstract
+     */
+    protected function registerRequestMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new RequestMakeCommand($app['files']);
+        });
+    }
+
+    /**
      * Register the route:cache command.
      *
      * @param string $abstract
@@ -541,18 +553,6 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new WidgetMakeCommand($app['files']);
-        });
-    }
-
-    /**
-     * Register the make:request command.
-     *
-     * @param string $abstract
-     */
-    protected function registerRequestMakeCommand($abstract)
-    {
-        $this->app->singleton($abstract, function ($app) {
-            return new RequestMakeCommand($app['files']);
         });
     }
 
