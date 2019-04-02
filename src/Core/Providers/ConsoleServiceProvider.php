@@ -39,6 +39,7 @@ use Themosis\Core\Console\VendorPublishCommand;
 use Themosis\Core\Console\ViewClearCommand;
 use Themosis\Core\Console\WidgetMakeCommand;
 use Themosis\Core\Console\RequestMakeCommand;
+use Themosis\Core\Console\ResourceMakeCommand;
 
 class ConsoleServiceProvider extends ServiceProvider
 {
@@ -94,6 +95,7 @@ class ConsoleServiceProvider extends ServiceProvider
         'PluginInstall' => 'command.plugin.install',
         'ProviderMake' => 'command.provider.make',
         'RequestMake' => 'command.request.make',
+        'ResourceMake' => 'command.resource.make',
         'SessionTable' => 'command.session.table',
         'ThemeInstall' => 'command.theme.install',
         'VendorPublish' => 'command.vendor.publish',
@@ -417,6 +419,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new RequestMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the make:resource command.
+     *
+     * @param string $abstract
+     */
+    protected function registerResourceMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ResourceMakeCommand($app['files']);
         });
     }
 
