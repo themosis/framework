@@ -412,6 +412,23 @@ if (! function_exists('logs')) {
     }
 }
 
+if (! function_exists('meta')) {
+    /**
+     * Retrieve metadata for the specified object.
+     *
+     * @param string    $meta_type 
+     * @param int       $object_id
+     * @param string    $meta_key
+     * @param bool      $single
+     *
+     * @return mixed
+     */
+    function meta($meta_type, $object_id, $meta_key = '', $single = false)
+    {
+        return get_metadata($meta_type, $object_id, $meta_key, $single);
+    }
+}
+
 if (! function_exists('method_field')) {
     /**
      * Generate a form field to spoof the HTTP verb usef by forms.
