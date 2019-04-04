@@ -65,8 +65,8 @@ class WordPress extends \Twig_Extension implements \Twig_Extension_GlobalsInterf
 
                 return call_user_func_array(trim($name), $args);
             }),
-            new \Twig_Function('meta', function ($key, $id = null, $single = false) {
-                return get_post_meta($key, $id, $single);
+            new \Twig_Function('meta', function ($key, $id = null, $context = 'post', $single = true) {
+                return meta($key, $id, $context, $single);
             }),
 
             /**
