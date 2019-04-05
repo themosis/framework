@@ -29,6 +29,8 @@ use Themosis\Core\Console\ModelMakeCommand;
 use Themosis\Core\Console\PasswordResetTableCommand;
 use Themosis\Core\Console\PluginInstallCommand;
 use Themosis\Core\Console\ProviderMakeCommand;
+use Themosis\Core\Console\RequestMakeCommand;
+use Themosis\Core\Console\ResourceMakeCommand;
 use Themosis\Core\Console\RouteCacheCommand;
 use Themosis\Core\Console\RouteClearCommand;
 use Themosis\Core\Console\RouteListCommand;
@@ -38,8 +40,6 @@ use Themosis\Core\Console\UpCommand;
 use Themosis\Core\Console\VendorPublishCommand;
 use Themosis\Core\Console\ViewClearCommand;
 use Themosis\Core\Console\WidgetMakeCommand;
-use Themosis\Core\Console\RequestMakeCommand;
-use Themosis\Core\Console\ResourceMakeCommand;
 
 class ConsoleServiceProvider extends ServiceProvider
 {

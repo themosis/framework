@@ -485,7 +485,7 @@ class Handler implements ExceptionHandler
     {
         $status = $e->getStatusCode();
 
-        $paths = collect(config('view.paths'));
+        $paths = collect(view()->getFinder()->getPaths());
 
         view()->replaceNamespace('errors', $paths->map(function ($path) {
             return "{$path}/errors";

@@ -2,8 +2,8 @@
 
 namespace Themosis\Core\Console;
 
-use Illuminate\Support\Str;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputOption;
 
 class ResourceMakeCommand extends GeneratorCommand
@@ -32,8 +32,9 @@ class ResourceMakeCommand extends GeneratorCommand
     /**
      * Execute the console command.
      *
-     * @return bool|void|null
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     *
+     * @return bool|void|null
      */
     public function handle()
     {
@@ -70,7 +71,8 @@ class ResourceMakeCommand extends GeneratorCommand
     /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
+     * @param string $rootNamespace
+     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)

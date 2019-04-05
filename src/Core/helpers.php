@@ -743,7 +743,7 @@ if (! function_exists('view')) {
      * @param array  $data
      * @param array  $mergeData
      *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\View\Factory
      */
     function view($view = null, $data = [], $mergeData = [])
     {
