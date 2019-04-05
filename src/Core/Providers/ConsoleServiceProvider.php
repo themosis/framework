@@ -38,6 +38,8 @@ use Themosis\Core\Console\UpCommand;
 use Themosis\Core\Console\VendorPublishCommand;
 use Themosis\Core\Console\ViewClearCommand;
 use Themosis\Core\Console\WidgetMakeCommand;
+use Themosis\Core\Console\RequestMakeCommand;
+use Themosis\Core\Console\ResourceMakeCommand;
 
 class ConsoleServiceProvider extends ServiceProvider
 {
@@ -92,11 +94,13 @@ class ConsoleServiceProvider extends ServiceProvider
         'PasswordResetTable' => 'command.password.reset.table',
         'PluginInstall' => 'command.plugin.install',
         'ProviderMake' => 'command.provider.make',
+        'RequestMake' => 'command.request.make',
+        'ResourceMake' => 'command.resource.make',
         'SessionTable' => 'command.session.table',
         'ThemeInstall' => 'command.theme.install',
         'VendorPublish' => 'command.vendor.publish',
         'Serve' => 'command.serve',
-        'WidgetMake' => 'command.widget.make'
+        'WidgetMake' => 'command.widget.make',
     ];
 
     /**
@@ -403,6 +407,30 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new ProviderMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the make:request command.
+     *
+     * @param string $abstract
+     */
+    protected function registerRequestMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new RequestMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the make:resource command.
+     *
+     * @param string $abstract
+     */
+    protected function registerResourceMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ResourceMakeCommand($app['files']);
         });
     }
 

@@ -41,7 +41,7 @@ class User extends \WP_User
      */
     public function can($cap)
     {
-        return $this->has_cap($cap);
+        return $this->has_cap(...func_get_args());
     }
 
     /**
