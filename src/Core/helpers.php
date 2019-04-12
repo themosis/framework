@@ -416,10 +416,10 @@ if (! function_exists('meta')) {
     /**
      * Retrieve metadata for the specified object.
      *
-     * @param int       $object_id
-     * @param string    $meta_key
-     * @param bool      $single
-     * @param string    $meta_type 
+     * @param int    $object_id
+     * @param string $meta_key
+     * @param bool   $single
+     * @param string $meta_type
      *
      * @return mixed
      */
