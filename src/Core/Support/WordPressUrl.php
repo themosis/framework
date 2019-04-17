@@ -72,7 +72,7 @@ trait WordPressUrl
         }
 
         /*
-         * All URL past this point should contain the cms subdirectory.
+         * All URLs past this point should contain the cms subdirectory.
          * Let's check if the URL already contains it. If so, return the URL.
          */
         if (strrpos($url, $fragment) !== false) {
