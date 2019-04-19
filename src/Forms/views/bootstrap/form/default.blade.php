@@ -9,7 +9,7 @@
             {!! csrf_field() !!}
         @endif
         @foreach($__form->repository()->getGroups() as $group)
-            <div class="th-form-group th-form-group-bootstrap">
+            <div class="{{ sprintf('th-form-group th-form-group-bootstrap %s', sprintf('th-group-%s', $group->getId())) }}">
                 @each($group->getView(true), $group->getItems(), '__field')
             </div>
         @endforeach

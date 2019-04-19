@@ -45,7 +45,7 @@ trait WordPressUrl
 
         return $url;
     }
-    
+
     /**
      * Format the home URL. Make sure that it does not contain the "/cms" fragment.
      *
@@ -78,7 +78,7 @@ trait WordPressUrl
     {
         if (substr($url, -3) !== $fragment && (is_main_site() || is_subdomain_install())) {
             if (strpos($fragment, '/') === false) {
-                $fragment = '/' . $fragment;
+                $fragment = '/'.$fragment;
             }
 
             $url .= $fragment;
