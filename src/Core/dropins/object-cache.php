@@ -4,7 +4,7 @@
  * Themosis Framework
  * WordPress Object Cache Drop-In
  */
-use Illuminate\Support\Facades\Cache;
+use Themosis\Core\Cache\WordPressCacheWrapper;
 
 if (! defined('ABSPATH')) {
     die();
@@ -19,7 +19,14 @@ if (! defined('ABSPATH')) {
  */
 function wp_cache_init()
 {
-    $GLOBALS['wp_object_cache'] = app('cache.store');
+    $store = app('cache.store');
+    $isMultisite = is_multisite();
+
+    $GLOBALS['wp_object_cache'] = new WordPressCacheWrapper(
+        $store,
+        $isMultisite,
+        $isMultisite ? get_current_blog_id().':' : ''
+    );
 }
 
 /**
@@ -32,12 +39,12 @@ function wp_cache_init()
  *
  * @return bool True on success. False if cache value is already in the store.
  */
-function wp_cache_add($key, $data, $group = '', $expire = 0)
+/*function wp_cache_add($key, $data, $group = '', $expire = 0)
 {
     global $wp_object_cache;
 
     return $wp_object_cache->add($key, $data, $expire);
-}
+}*/
 
 /**
  * Closes the cache.
@@ -55,15 +62,16 @@ function wp_cache_close()
  * @param string|int $key
  * @param int        $offset
  * @param string     $group
+ * @param mixed      $force
  *
  * @return bool|int False on failure. The item's new value on success.
  */
-function wp_cache_decr($key, $offset = 1, $group = '')
+/*function wp_cache_decr($key, $offset = 1, $group = '')
 {
     global $wp_object_cache;
 
     return $wp_object_cache->decrement($key, $offset);
-}
+}*/
 
 /**
  * Increment numeric cache item's value.
@@ -74,12 +82,12 @@ function wp_cache_decr($key, $offset = 1, $group = '')
  *
  * @return bool|int False on failure. The item's new value on success.
  */
-function wp_cache_incr($key, $offset = 1, $group = '')
+/*function wp_cache_incr($key, $offset = 1, $group = '')
 {
     global $wp_object_cache;
 
     return $wp_object_cache->increment($key, $offset);
-}
+}*/
 
 /**
  * Removes the cache contents matching key.
@@ -89,24 +97,24 @@ function wp_cache_incr($key, $offset = 1, $group = '')
  *
  * @return bool True on success. False on failure.
  */
-function wp_cache_delete($key, $group = '')
+/*function wp_cache_delete($key, $group = '')
 {
     global $wp_object_cache;
 
     return $wp_object_cache->delete($key);
-}
+}*/
 
 /**
  * Removes all cache items.
  *
  * @return bool True on success. False on failure.
  */
-function wp_cache_flush()
+/*function wp_cache_flush()
 {
     global $wp_object_cache;
 
     return $wp_object_cache->clear();
-}
+}*/
 
 /**
  * Retrieve the cache content from the cache by key.
@@ -122,7 +130,7 @@ function wp_cache_get($key, $group = '', $force = false, &$found = null)
 {
     global $wp_object_cache;
 
-    return $wp_object_cache->get($key);
+    return $wp_object_cache->get($key, $group, $force, $found);
 }
 
 /**
@@ -132,26 +140,55 @@ function wp_cache_get($key, $group = '', $force = false, &$found = null)
  * @param mixed      $data
  * @param string     $group
  * @param int        $expires
+ * @param mixed      $blog_id
  *
  * @return bool False on failure. True on success.
  */
-function wp_cache_set($key, $data, $group = '', $expires = 0)
+/*function wp_cache_set($key, $data, $group = '', $expires = 0)
 {
     global $wp_object_cache;
 
     return $wp_object_cache->set($key, $data, $expires);
-}
+}*/
 
-function wp_cache_replace($key, $data, $group = '', $expire = 0)
+/*function wp_cache_replace($key, $data, $group = '', $expire = 0)
 {
-}
+}*/
 
+/**
+ * Switches the internal blog ID (prefix).
+ *
+ * @param string|int $blog_id
+ */
 function wp_cache_switch_to_blog($blog_id)
 {
+    global $wp_object_cache;
+
+    $wp_object_cache->switchToBlog((int) $blog_id);
 }
 
+/**
+ * Adds a group or set of groups to the list of global groups.
+ *
+ * @param string|array $groups
+ */
 function wp_cache_add_global_groups($groups)
 {
+    global $wp_object_cache;
+
+    $wp_object_cache->addGlobalGroups($groups);
+}
+
+/**
+ * Adds a group or set of groups to the list of non-persistent groups.
+ *
+ * @param string|array $groups
+ */
+function wp_cache_add_non_persistent_groups($groups)
+{
+    global $wp_object_cache;
+
+    $wp_object_cache->addNonPersistentGroups((array) $groups);
 }
 
 /**
