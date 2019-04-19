@@ -108,12 +108,12 @@ function wp_cache_delete($key, $group = '')
  *
  * @return bool True on success. False on failure.
  */
-/*function wp_cache_flush()
+function wp_cache_flush()
 {
     global $wp_object_cache;
 
-    return $wp_object_cache->clear();
-}*/
+    return $wp_object_cache->flush();
+}
 
 /**
  * Retrieve the cache content from the cache by key.
@@ -149,9 +149,22 @@ function wp_cache_set($key, $data, $group = '', $expire = 0)
     return $wp_object_cache->set($key, $data, $group, (int) $expire);
 }
 
-/*function wp_cache_replace($key, $data, $group = '', $expire = 0)
+/**
+ * Replaces the content of the cache with new data.
+ *
+ * @param string|int $key
+ * @param mixed      $data
+ * @param string     $group
+ * @param int        $expire
+ *
+ * @return bool False if original value does not exists. True if replaced.
+ */
+function wp_cache_replace($key, $data, $group = '', $expire = 0)
 {
-}*/
+    global $wp_object_cache;
+
+    return $wp_object_cache->replace($key, $data, $group, (int) $expire);
+}
 
 /**
  * Switches the internal blog ID (prefix).

@@ -38,4 +38,16 @@ class WordPressCacheWrapperTest extends TestCase
 
         $this->assertFalse($cache->add('socrate', 'everything', 'options'));
     }
+
+    public function test_wrapper_can_flush_cache()
+    {
+        $cache = new WordPressCacheWrapper($this->getCacheStore());
+
+        $cache->set('foo', 'bar', 'plugin', 100);
+        $cache->set('baz', 'zoo', 'plugin', 100);
+
+        $cache->flush();
+
+        $this->assertFalse($cache->get('foo', 'plugin'));
+    }
 }
