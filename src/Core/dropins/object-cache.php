@@ -78,16 +78,15 @@ function wp_cache_decr($key, $offset = 1, $group = '')
  * @param string|int $key
  * @param int        $offset
  * @param string     $group
- * @param mixed      $force
  *
  * @return bool|int False on failure. The item's new value on success.
  */
-/*function wp_cache_incr($key, $offset = 1, $group = '')
+function wp_cache_incr($key, $offset = 1, $group = '')
 {
     global $wp_object_cache;
 
     return $wp_object_cache->increment($key, $offset);
-}*/
+}
 
 /**
  * Removes the cache contents matching key.
