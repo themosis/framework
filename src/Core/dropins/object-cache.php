@@ -62,16 +62,15 @@ function wp_cache_close()
  * @param string|int $key
  * @param int        $offset
  * @param string     $group
- * @param mixed      $force
  *
  * @return bool|int False on failure. The item's new value on success.
  */
-/*function wp_cache_decr($key, $offset = 1, $group = '')
+function wp_cache_decr($key, $offset = 1, $group = '')
 {
     global $wp_object_cache;
 
-    return $wp_object_cache->decrement($key, $offset);
-}*/
+    return $wp_object_cache->decrement($key, $offset, $group);
+}
 
 /**
  * Increment numeric cache item's value.
@@ -79,6 +78,7 @@ function wp_cache_close()
  * @param string|int $key
  * @param int        $offset
  * @param string     $group
+ * @param mixed      $force
  *
  * @return bool|int False on failure. The item's new value on success.
  */

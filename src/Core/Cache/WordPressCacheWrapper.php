@@ -208,4 +208,34 @@ class WordPressCacheWrapper
 
         return $this->set($key, $data, $group, (int) $expire);
     }
+
+    /**
+     * Decrement numeric cache item's value.
+     *
+     * @param string|int $key
+     * @param int        $offset
+     * @param string     $group
+     *
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     *
+     * @return bool|int
+     */
+    public function decrement($key, $offset = 1, $group = 'default')
+    {
+        if (empty($group)) {
+            $group = $this->defaultGroup;
+        }
+
+        if ($this->multisite && ! isset($this->globalGroups[$group])) {
+            $key = $this->blogPrefix.$key;
+        }
+
+        $key = $this->formatKeyName($key, $group);
+
+        if (! $this->store->has($key)) {
+            return false;
+        }
+
+        return $this->store->decrement($key, $offset);
+    }
 }
