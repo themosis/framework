@@ -184,7 +184,7 @@ class WordPressCacheWrapper
      */
     public function add($key, $data, $group = 'default', $expire = 0): bool
     {
-        if (wp_suspend_cache_addition()) {
+        if (function_exists('wp_suspend_cache_addition') && wp_suspend_cache_addition()) {
             return false;
         }
 
