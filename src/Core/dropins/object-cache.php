@@ -85,7 +85,7 @@ function wp_cache_incr($key, $offset = 1, $group = '')
 {
     global $wp_object_cache;
 
-    return $wp_object_cache->increment($key, $offset);
+    return $wp_object_cache->increment($key, $offset, $group);
 }
 
 /**
@@ -96,12 +96,12 @@ function wp_cache_incr($key, $offset = 1, $group = '')
  *
  * @return bool True on success. False on failure.
  */
-/*function wp_cache_delete($key, $group = '')
+function wp_cache_delete($key, $group = '')
 {
     global $wp_object_cache;
 
-    return $wp_object_cache->delete($key);
-}*/
+    return $wp_object_cache->delete($key, $group);
+}
 
 /**
  * Removes all cache items.
@@ -146,7 +146,7 @@ function wp_cache_set($key, $data, $group = '', $expire = 0)
 {
     global $wp_object_cache;
 
-    return $wp_object_cache->set($key, $data, $group, $expire);
+    return $wp_object_cache->set($key, $data, $group, (int) $expire);
 }
 
 /*function wp_cache_replace($key, $data, $group = '', $expire = 0)
