@@ -49,7 +49,7 @@ class WordPressBodyClass
                 return $classes;
             }
 
-            return array_filter(array_map(function ($token) use ($route) {
+            $tokens = array_filter(array_map(function ($token) use ($route) {
                 switch ($type = $token[0]) {
                     case 'variable':
                         if (isset($token[3]) && $route->hasParameter($paramKey = $token[3])) {
@@ -67,6 +67,14 @@ class WordPressBodyClass
                         return false;
                 }
             }, array_reverse($route->getCompiled()->getTokens())));
+
+            if (! empty($tokens)) {
+                return array_filter(array_merge($tokens, $classes), function ($class) {
+                    return 'error404' !== $class;
+                });
+            }
+
+            return $classes;
         };
     }
 }
