@@ -293,4 +293,47 @@ class WordPressCacheWrapper
 
         return $this->store->delete($key);
     }
+
+    /**
+     * Replaces the content in the cache, if content already exists.
+     *
+     * @param string|int $key
+     * @param mixed      $data
+     * @param string     $group
+     * @param int        $expire
+     *
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     *
+     * @return bool
+     */
+    public function replace($key, $data, $group = 'default', $expire = 0)
+    {
+        if (empty($group)) {
+            $group = $this->defaultGroup;
+        }
+
+        $id = $key;
+
+        if ($this->multisite && ! isset($this->globalGroups[$group])) {
+            $id = $this->blogPrefix.$key;
+        }
+
+        $id = $this->formatKeyName($id, $group);
+
+        if (! $this->store->has($id)) {
+            return false;
+        }
+
+        return $this->set($key, $data, $group, (int) $expire);
+    }
+
+    /**
+     * Removes all cache items.
+     *
+     * @return bool
+     */
+    public function flush()
+    {
+        return $this->store->clear();
+    }
 }
