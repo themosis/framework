@@ -268,4 +268,29 @@ class WordPressCacheWrapper
 
         return $this->store->increment($key, $offset);
     }
+
+    /**
+     * Removes the cache contents matching key.
+     *
+     * @param string|int $key
+     * @param string     $group
+     *
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     *
+     * @return bool
+     */
+    public function delete($key, $group = 'default')
+    {
+        if (empty($group)) {
+            $group = $this->defaultGroup;
+        }
+
+        if ($this->multisite && ! isset($this->globalGroups[$group])) {
+            $key = $this->blogPrefix.$key;
+        }
+
+        $key = $this->formatKeyName($key, $group);
+
+        return $this->store->delete($key);
+    }
 }
