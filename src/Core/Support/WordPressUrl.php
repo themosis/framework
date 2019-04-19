@@ -56,8 +56,10 @@ trait WordPressUrl
      */
     public function formatHomeUrl(string $url, string $fragment = 'cms')
     {
-        if (substr($url, -3) === $fragment) {
-            $url = substr($url, 0, -3);
+        $length = (int) strlen($fragment) * -1;
+
+        if (substr($url, $length) === $fragment) {
+            $url = substr($url, 0, $length);
             $url = rtrim($url, '/');
         }
 
@@ -76,7 +78,9 @@ trait WordPressUrl
      */
     public function formatSiteUrl(string $url, string $fragment = 'cms')
     {
-        if (substr($url, -3) !== $fragment && (is_main_site() || is_subdomain_install())) {
+        $length = (int) strlen($fragment) * -1;
+
+        if (substr($url, $length) !== $fragment && (is_main_site() || is_subdomain_install())) {
             if (strpos($fragment, '/') === false) {
                 $fragment = '/'.$fragment;
             }
@@ -99,30 +103,6 @@ trait WordPressUrl
      */
     public function formatNetworkUrl(string $url, string $delimiter = 'wp-admin', string $fragment = 'cms')
     {
-        /*
-         * If there is already a "cms" fragment in the URI,
-         * just return the URL.
-         */
-        if (strrpos($url, $fragment) !== false) {
-            return $url;
-        }
-
-        /*
-         * The network site URL is missing the "cms" fragment.
-         * Let's add it.
-         */
-        $fragments = explode($delimiter, $url);
-
-        /*
-         * Insert the cms fragment appended with the wp-admin delimiter in the middle.
-         */
-        array_splice($fragments, 1, 0, "{$fragment}/{$delimiter}");
-
-        /*
-         * Build the URL by imploding (concatenating) all fragments.
-         */
-        $url = implode('', $fragments);
-
-        return $url;
+        return $this->formatUrl($url, $delimiter, $fragment);
     }
 }
