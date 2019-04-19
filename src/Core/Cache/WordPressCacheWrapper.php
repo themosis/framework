@@ -41,6 +41,13 @@ class WordPressCacheWrapper
      */
     private $multisite;
 
+    /**
+     * Default group name if none defined.
+     *
+     * @var string
+     */
+    private $defaultGroup = 'default';
+
     public function __construct(Repository $store, bool $multisite = false, string $blogPrefix = '')
     {
         $this->store = $store;
@@ -118,7 +125,7 @@ class WordPressCacheWrapper
     public function get($key, $group = 'default', $force = false, &$found = null)
     {
         if (empty($group)) {
-            $group = 'default';
+            $group = $this->defaultGroup;
         }
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
@@ -137,6 +144,33 @@ class WordPressCacheWrapper
     }
 
     /**
+     * Store an item into the cache.
+     *
+     * @param string|int $key
+     * @param mixed      $data
+     * @param string     $group
+     * @param int        $expire
+     *
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     *
+     * @return bool
+     */
+    public function set($key, $data, $group = 'default', $expire = 0)
+    {
+        if (empty($group)) {
+            $group = $this->defaultGroup;
+        }
+
+        if ($this->multisite && ! isset($this->globalGroups[$group])) {
+            $key = $this->blogPrefix.$key;
+        }
+
+        $key = $this->formatKeyName($key, $group);
+
+        return $this->store->set($key, $data, $expire);
+    }
+
+    /**
      * Adds data to the cache if the cache key doesn't already exist.
      *
      * @param string|int $key
@@ -144,10 +178,34 @@ class WordPressCacheWrapper
      * @param string     $group
      * @param int        $expire
      *
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     *
      * @return bool
      */
     public function add($key, $data, $group = 'default', $expire = 0): bool
     {
-        return false;
+        if (wp_suspend_cache_addition()) {
+            return false;
+        }
+
+        if (empty($group)) {
+            $group = $this->defaultGroup;
+        }
+
+        // We must preserve the original key name as the set method will
+        // format the key name as well.
+        $id = $key;
+
+        if ($this->multisite && ! isset($this->globalGroups[$group])) {
+            $id = $this->blogPrefix.$key;
+        }
+
+        $id = $this->formatKeyName($id, $group);
+
+        if ($this->store->has($id)) {
+            return false;
+        }
+
+        return $this->set($key, $data, $group, (int) $expire);
     }
 }

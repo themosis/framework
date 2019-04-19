@@ -39,12 +39,12 @@ function wp_cache_init()
  *
  * @return bool True on success. False if cache value is already in the store.
  */
-/*function wp_cache_add($key, $data, $group = '', $expire = 0)
+function wp_cache_add($key, $data, $group = '', $expire = 0)
 {
     global $wp_object_cache;
 
-    return $wp_object_cache->add($key, $data, $expire);
-}*/
+    return $wp_object_cache->add($key, $data, $group, (int) $expire);
+}
 
 /**
  * Closes the cache.
@@ -139,17 +139,16 @@ function wp_cache_get($key, $group = '', $force = false, &$found = null)
  * @param string|int $key
  * @param mixed      $data
  * @param string     $group
- * @param int        $expires
- * @param mixed      $blog_id
+ * @param int        $expire
  *
  * @return bool False on failure. True on success.
  */
-/*function wp_cache_set($key, $data, $group = '', $expires = 0)
+function wp_cache_set($key, $data, $group = '', $expire = 0)
 {
     global $wp_object_cache;
 
-    return $wp_object_cache->set($key, $data, $expires);
-}*/
+    return $wp_object_cache->set($key, $data, $group, $expire);
+}
 
 /*function wp_cache_replace($key, $data, $group = '', $expire = 0)
 {
