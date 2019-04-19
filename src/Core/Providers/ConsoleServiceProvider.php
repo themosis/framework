@@ -21,6 +21,7 @@ use Themosis\Auth\Console\AuthMakeCommand;
 use Themosis\Core\Console\ConsoleMakeCommand;
 use Themosis\Core\Console\CustomerTableCommand;
 use Themosis\Core\Console\DownCommand;
+use Themosis\Core\Console\DropinClearCommand;
 use Themosis\Core\Console\FormMakeCommand;
 use Themosis\Core\Console\HookMakeCommand;
 use Themosis\Core\Console\KeyGenerateCommand;
@@ -57,6 +58,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected $commands = [
         'Down' => 'command.down',
+        'DropinClear' => 'command.dropin.clear',
         'KeyGenerate' => 'command.key.generate',
         'Migrate' => 'command.migrate',
         'MigrateFresh' => 'command.migrate.fresh',
@@ -185,6 +187,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new DownCommand();
+        });
+    }
+
+    /**
+     * Register the dropin:clear command.
+     *
+     * @param string $abstract
+     */
+    protected function registerDropinClearCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new DropinClearCommand($app['files']);
         });
     }
 
