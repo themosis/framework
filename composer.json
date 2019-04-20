@@ -51,6 +51,7 @@
     "illuminate/notifications": "^5.8",
     "illuminate/pagination": "^5.8",
     "illuminate/queue": "^5.8",
+    "illuminate/redis": "^5.8",
     "illuminate/routing": "^5.8",
     "illuminate/session": "^5.8",
     "illuminate/support": "^5.8",
