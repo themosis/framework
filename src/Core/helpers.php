@@ -8,6 +8,7 @@ use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\View\Factory as ViewFactory;
+use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -279,6 +280,30 @@ if (! function_exists('event')) {
     function event(...$args)
     {
         return app('events')->dispatch(...$args);
+    }
+}
+
+if (! function_exists('factory')) {
+    /**
+     * Create a model factory builder for a given class, name, and amount.
+     *
+     * @param string class|class,name|class,amount|class,name,amount
+     *
+     * @return Illuminate\Database\Eloquent\FactoryBuilder
+     */
+    function factory()
+    {
+        $factory = app(EloquentFactory::class);
+
+        $arguments = func_get_args();
+
+        if (isset($arguments[1]) && is_string($arguments[1])) {
+            return $factory->of($arguments[0], $arguments[1])->times($arguments[2] ?? null);
+        } elseif (isset($arguments[1])) {
+            return $factory->of($arguments[0])->times($arguments[1]);
+        }
+
+        return $factory->of($arguments[0]);
     }
 }
 

@@ -13,6 +13,8 @@ use Illuminate\Database\Console\Migrations\RefreshCommand;
 use Illuminate\Database\Console\Migrations\ResetCommand;
 use Illuminate\Database\Console\Migrations\RollbackCommand;
 use Illuminate\Database\Console\Migrations\StatusCommand;
+use Illuminate\Database\Console\Seeds\SeedCommand;
+use Illuminate\Database\Console\Seeds\SeederMakeCommand;
 use Illuminate\Routing\Console\ControllerMakeCommand;
 use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Session\Console\SessionTableCommand;
@@ -72,6 +74,7 @@ class ConsoleServiceProvider extends ServiceProvider
         'RouteList' => 'command.route.list',
         'ScheduleFinish' => ScheduleFinishCommand::class,
         'ScheduleRun' => ScheduleRunCommand::class,
+        'Seed' => 'command.seed',
         'Up' => 'command.up',
         'ViewClear' => 'command.view.clear'
     ];
@@ -98,6 +101,7 @@ class ConsoleServiceProvider extends ServiceProvider
         'ProviderMake' => 'command.provider.make',
         'RequestMake' => 'command.request.make',
         'ResourceMake' => 'command.resource.make',
+        'SeederMake' => 'command.seeder.make',
         'SessionTable' => 'command.session.table',
         'ThemeInstall' => 'command.theme.install',
         'VendorPublish' => 'command.vendor.publish',
@@ -498,6 +502,30 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerScheduleRunCommand()
     {
         $this->app->singleton(ScheduleRunCommand::class);
+    }
+
+    /**
+     * Register the db:seed command.
+     *
+     * @param string $abstract
+     */
+    protected function registerSeedCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new SeedCommand($app['db']);
+        });
+    }
+
+    /**
+     * Register the make:seeder command.
+     *
+     * @param string $abstract
+     */
+    protected function registerSeederMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new SeederMakeCommand($app['files'], $app['composer']);
+        });
     }
 
     /**
