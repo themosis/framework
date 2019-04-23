@@ -385,6 +385,8 @@ class Page implements PageInterface
         } elseif ('edit.php' === trim($this->getParent(), '\/?&')) {
             // Parent is the default post post type.
             return 'posts';
+        } elseif ('options-general.php' === trim($this->getParent(), '\/?&')) {
+            return 'settings';
         }
 
         // The current page is attached to another one.
