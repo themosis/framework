@@ -382,11 +382,27 @@ class Page implements PageInterface
         if (false !== $pos = strpos($this->getParent(), 'post_type=')) {
             // Parent hook is equivalent to the post type slug value.
             return substr($this->getParent(), $pos + 10);
-        } elseif ('edit.php' === trim($this->getParent(), '\/?&')) {
-            // Parent is the default post post type.
-            return 'posts';
-        } elseif ('options-general.php' === trim($this->getParent(), '\/?&')) {
-            return 'settings';
+        } else ('edit.php' === trim($this->getParent(), '\/?&')) {
+            switch (trim($this->getParent(), '\/?&')) {
+                case 'index.php':
+                    return 'dashboard';
+                case 'edit.php':
+                    return 'posts';
+                case 'upload.php':
+                    return 'media';
+                case 'edit-comments.php':
+                    return 'comments';
+                case 'themes.php':
+                    return 'appearance';
+                case 'plugins.php':
+                    return 'plugins';
+                case 'users.php':
+                    return 'users';
+                case 'tools.php':
+                    return 'tools';
+                case 'options-general.php':
+                    return 'settings';
+            }
         }
 
         // The current page is attached to another one.
