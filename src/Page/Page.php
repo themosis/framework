@@ -382,7 +382,7 @@ class Page implements PageInterface
         if (false !== $pos = strpos($this->getParent(), 'post_type=')) {
             // Parent hook is equivalent to the post type slug value.
             return substr($this->getParent(), $pos + 10);
-        } else ('edit.php' === trim($this->getParent(), '\/?&')) {
+        } else {
             switch (trim($this->getParent(), '\/?&')) {
                 case 'index.php':
                     return 'dashboard';
