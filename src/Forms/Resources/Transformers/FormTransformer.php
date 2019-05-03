@@ -5,6 +5,7 @@ namespace Themosis\Forms\Resources\Transformers;
 use League\Fractal\TransformerAbstract;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
+use Themosis\Forms\Resources\Factory;
 
 class FormTransformer extends TransformerAbstract
 {
@@ -53,7 +54,13 @@ class FormTransformer extends TransformerAbstract
         /** @var FieldTypeInterface|FormInterface $form */
         return $this->collection(
             $form->repository()->all(),
-            $form->getResourceTransformerFactory()->make('FieldTransformer')
+            function (FieldTypeInterface $field) {
+                $field = $field->setResourceTransformerFactory(new Factory());
+                $transformer = $field->getResourceTransformerFactory()->make($field->getResourceTransformer());
+
+                /** @var FieldTransformer $transformer */
+                return $transformer->transform($field);
+            }
         );
     }
 

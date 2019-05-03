@@ -1141,6 +1141,10 @@ class FormCreationTest extends TestCase
         $this->assertEquals('Marco Polo', $resource['fields']['data'][2]['value']);
         $this->assertEquals('green', $resource['fields']['data'][3]['value']);
         $this->assertEquals([20, 30], $resource['fields']['data'][4]['value']);
+        $this->assertEquals(
+            ['key' => 'Small', 'value' => 10, 'type' => 'option'],
+            $resource['fields']['data'][4]['options']['choices'][0]
+        );
     }
 
     public function testFormGetDataObjectDefaultValues()
