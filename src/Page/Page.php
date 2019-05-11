@@ -7,6 +7,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
+use Illuminate\Support\Str;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Hook\IHook;
 use Themosis\Page\Contracts\PageInterface;
@@ -394,7 +395,7 @@ class Page implements PageInterface
             // Parent hook is equivalent to the page menu as lowercase.
             $parent = $this->ui()->factory()->getContainer()->make($abstract);
 
-            return strtolower($parent->getMenu());
+            return Str::slug($parent->getMenu());
         }
 
         return '';
