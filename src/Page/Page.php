@@ -375,30 +375,72 @@ class Page implements PageInterface
      */
     protected function findParentHook(): string
     {
-        if (! $this->hasParent()) {
+        if (!$this->hasParent()) {
             return '';
         }
 
         // Check if parent attribute is attached to a custom post type or another page.
         if (false !== $pos = strpos($this->getParent(), 'post_type=')) {
             // Parent hook is equivalent to the post type slug value.
+
+            // Exception for "page" post type.
+            if ('page' == substr($this->getParent(), $pos + 10)) {
+                return 'pages';
+            }
+
             return substr($this->getParent(), $pos + 10);
-        } elseif ('edit.php' === trim($this->getParent(), '\/?&')) {
-            // Parent is the default post post type.
-            return 'posts';
+        } elseif ($parent_page = $this->isWPDefaultAdminPages(trim($this->getParent(), '\/?&'))) {
+            return $parent_page;
         }
 
         // The current page is attached to another one.
-        $abstract = 'page.'.$this->getParent();
+        $abstract = 'page.' . $this->getParent();
 
         if ($this->ui()->factory()->getContainer()->bound($abstract)) {
             // Parent hook is equivalent to the page menu as lowercase.
             $parent = $this->ui()->factory()->getContainer()->make($abstract);
 
-            return Str::slug($parent->getMenu());
+            return \Illuminate\Support\Str::slug($parent->getMenu());
         }
 
         return '';
+    }
+
+    /**
+     * check if parent pages is a default WP admin page.
+     *
+     * @param string $parent_page
+     * @return boolean|string
+     */
+    private function isWPDefaultAdminPages(string $parent_page)
+    {
+        $default_wp_admin_pages = $this->defaultWPAdminPages();
+
+        if (array_key_exists($parent_page, $default_wp_admin_pages)) {
+            return $default_wp_admin_pages[$parent_page];
+        }
+
+        return false;
+    }
+
+    /**
+     * Default WP Pages slug map.
+     *
+     * @return array
+     */
+    private function defaultWPAdminPages(): array
+    {
+        return [
+            'index.php' => 'dashboard',
+            'edit.php' => 'posts',
+            'upload.php' => 'media',
+            'themes.php' => 'appearance',
+            'tools.php' => 'tools',
+            'edit-comments.php' => 'comments',
+            'plugins.php' => 'plugins',
+            'users.php' => 'users',
+            'options-general.php' => 'settings',
+        ];
     }
 
     /**
@@ -669,7 +711,7 @@ class Page implements PageInterface
             // as we can't rely anymore on the offset.
             $settingName = $data->search($value, true);
 
-            if (! $settingName) {
+            if (!$settingName) {
                 return '';
             }
 
@@ -703,7 +745,7 @@ class Page implements PageInterface
             return '';
         }
 
-        if ($settingName === $lastSetting->getName() && ! $this->errors) {
+        if ($settingName === $lastSetting->getName() && !$this->errors) {
             add_settings_error(
                 $this->getSlug(),
                 'settings_updated',
@@ -727,7 +769,7 @@ class Page implements PageInterface
         $messages = [];
 
         foreach ($setting->getOption('messages', []) as $attr => $message) {
-            $messages[$setting->getName().'.'.$attr] = $message;
+            $messages[$setting->getName() . '.' . $attr] = $message;
         }
 
         return $messages;
@@ -779,7 +821,7 @@ class Page implements PageInterface
         // Set the setting value if any.
         $value = get_option($setting->getName(), null);
 
-        if (! is_null($value)) {
+        if (!is_null($value)) {
             $setting->setValue($value);
         }
 
@@ -833,7 +875,7 @@ class Page implements PageInterface
      */
     public function hasParent(): bool
     {
-        return ! is_null($this->parent);
+        return !is_null($this->parent);
     }
 
     /**
@@ -843,7 +885,7 @@ class Page implements PageInterface
     {
         $request = $this->getRequest();
 
-        if (is_null($request) || ! isset($this->routes['get'])) {
+        if (is_null($request) || !isset($this->routes['get'])) {
             return;
         }
 
@@ -853,7 +895,7 @@ class Page implements PageInterface
             $callback = $this->routes['get'][$action];
             $response = $this->handleCallback($callback);
 
-            if (! is_a($response, Renderable::class)) {
+            if (!is_a($response, Renderable::class)) {
                 throw new \Exception('The controller method must return a view instance.');
             }
 
@@ -870,12 +912,12 @@ class Page implements PageInterface
      */
     public function parsePostRoute()
     {
-        if (empty($this->routes) || ! isset($this->routes['post'])) {
+        if (empty($this->routes) || !isset($this->routes['post'])) {
             return;
         }
 
         foreach ($this->routes['post'] as $action => $callback) {
-            $this->action->add('admin_post_'.$action, $callback);
+            $this->action->add('admin_post_' . $action, $callback);
         }
     }
 
@@ -896,7 +938,7 @@ class Page implements PageInterface
 
         $this->routes[$method][$action] = $callback;
 
-        $this->titles[$action] = ! empty($title) ? $title : $this->getTitle();
+        $this->titles[$action] = !empty($title) ? $title : $this->getTitle();
 
         $this->registerRouteActions();
 
@@ -909,9 +951,9 @@ class Page implements PageInterface
     protected function registerRouteActions()
     {
         // Actions for page routing.
-        $this->action->add('load-toplevel_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
-        $this->action->add('load-admin_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
-        $this->action->add('load-'.$this->findParentHook().'_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('load-toplevel_page_' . $this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('load-admin_page_' . $this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('load-' . $this->findParentHook() . '_page_' . $this->getSlug(), [$this, 'parseGetRoute']);
         $this->action->add('admin_init', [$this, 'parsePostRoute']);
 
         $this->filter->add('admin_title', [$this, 'handleTitle']);
@@ -928,7 +970,7 @@ class Page implements PageInterface
     protected function parseAction(string $action, string $method): string
     {
         if ('post' === $method) {
-            return $this->getSlug().'_'.$action;
+            return $this->getSlug() . '_' . $action;
         }
 
         return $action;
