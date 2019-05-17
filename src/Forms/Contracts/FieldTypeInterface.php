@@ -322,4 +322,14 @@ interface FieldTypeInterface
      * @return string
      */
     public function getComponent(): string;
+
+    /**
+     * Pass custom data to the field view.
+     *
+     * @param string|array $key
+     * @param mixed        $value
+     *
+     * @return FieldTypeInterface
+     */
+    public function with($key, $value = null): FieldTypeInterface;
 }
