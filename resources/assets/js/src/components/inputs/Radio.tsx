@@ -1,9 +1,12 @@
 import * as React from "react";
 import Label from "../labels/Label";
+import classNames from "classnames";
 
 interface RadioProps {
     choices: Array<OptionType>;
     changeHandler?: any;
+    className?: string;
+    id?: string;
     value?: string;
 }
 
@@ -71,7 +74,7 @@ class Radio extends React.Component <RadioProps, RadioState> {
      */
     render() {
         return (
-            <div className="themosis__choice__radio">
+            <div id={this.props.id} className={classNames('themosis__choice__radio', this.props.className)}>
                 { this.renderChoices() }
             </div>
         );

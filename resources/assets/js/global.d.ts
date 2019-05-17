@@ -54,6 +54,7 @@ declare interface MediaOptions {
 declare interface FieldType {
     attributes: {
         checked: string;
+        class?: string;
         id: string;
         max: string;
         min: string;

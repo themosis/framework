@@ -1,12 +1,15 @@
 import * as React from "react";
 import Icon from "../icons/Icon";
 import {isUndefined} from "../../helpers";
+import classNames from "classnames";
 
 interface InputNumberProps {
     value: any;
     name: string;
     step: number;
     precision: number;
+    attributes?: object;
+    className?: string;
     id?: string;
     min?: string;
     max?: string;
@@ -120,7 +123,9 @@ class InputNumber extends React.Component <InputNumberProps> {
                        name={this.props.name}
                        value={this.props.value}
                        id={this.props.id}
-                       type="text"/>
+                       type="text"
+                       className={classNames(this.props.className)}
+                       {...this.props.attributes}/>
                 <button className="button__plus"
                         onClick={() => { this.onClick(this.getStep()) }}
                         type="button">

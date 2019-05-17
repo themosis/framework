@@ -34,7 +34,9 @@ class ChoiceField extends React.Component <FieldProps> {
             return (
                 <Checkboxes choices={this.props.field.options.choices}
                             value={Array.isArray(this.props.field.value) ? this.props.field.value : []}
-                            changeHandler={this.onChange}/>
+                            changeHandler={this.onChange}
+                            id={this.props.field.attributes.id}
+                            className={this.props.field.attributes.class}/>
             );
         }
 
@@ -42,7 +44,9 @@ class ChoiceField extends React.Component <FieldProps> {
             return (
                 <Radio choices={this.props.field.options.choices}
                        value={'string' === typeof this.props.field.value ? this.props.field.value : ''}
-                       changeHandler={this.onChange}/>
+                       changeHandler={this.onChange}
+                       id={this.props.field.attributes.id}
+                       className={this.props.field.attributes.class}/>
             );
         }
 

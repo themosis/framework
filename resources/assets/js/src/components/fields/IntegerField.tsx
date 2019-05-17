@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Description, Field} from "./common";
 import Label from "../labels/Label";
-import {getErrorsMessages, hasErrors, isRequired} from "../../helpers";
+import {getErrorsMessages, hasErrors, isRequired, attributes} from "../../helpers";
 import InputNumber from "../inputs/InputNumber";
 import Error from "../errors/Error";
 
@@ -41,7 +41,9 @@ class IntegerField extends React.Component <FieldProps> {
                                  id={this.props.field.attributes.id}
                                  min={this.props.field.attributes.min}
                                  max={this.props.field.attributes.max}
-                                 value={this.props.field.value}/>
+                                 value={this.props.field.value}
+                                 className={this.props.field.attributes.class}
+                                 attributes={attributes(this.props.field)}/>
                     { hasErrors(this.props.field) && <Error messages={getErrorsMessages(this.props.field)}/> }
                     { this.props.field.options.info && <Description content={this.props.field.options.info}/> }
                 </div>

@@ -1,10 +1,13 @@
 import * as React from "react";
 import Checkbox from "./Checkbox";
 import Label from "../labels/Label";
+import classNames from "classnames";
 
 interface CheckboxesProps {
     choices: Array<OptionType>;
     changeHandler?: any;
+    className?: string;
+    id?: string;
     value?: Array<string>;
 }
 
@@ -98,7 +101,7 @@ class Checkboxes extends React.Component <CheckboxesProps, CheckboxesState> {
      */
     render() {
         return (
-            <div className="themosis__choice__checkbox">
+            <div id={this.props.id} className={classNames('themosis__choice__checkbox', this.props.className)}>
                 { this.renderChoices() }
             </div>
         );

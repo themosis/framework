@@ -71,3 +71,21 @@ export const isUndefined = (value:any): boolean => {
 export const ucfirst = (text: string): string => {
     return text.charAt(0).toUpperCase() + text.slice(1);
 };
+
+/**
+ * Return an object of authorized attributes for the given field.
+ *
+ * @param field
+ *
+ * @return {object}
+ */
+export const attributes = (field: FieldType): object => {
+    const ignoredAttributes = ['class', 'id', 'name', 'type', 'value'];
+
+    return Object.keys(field.attributes).filter((attributeName: string) => {
+        return -1 === ignoredAttributes.indexOf(attributeName);
+    }).reduce((obj, key) => {
+        obj[key] = field.attributes[key];
+        return obj;
+    }, {});
+};
