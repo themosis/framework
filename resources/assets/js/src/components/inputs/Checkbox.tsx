@@ -1,8 +1,11 @@
 import * as React from "react";
+import classNames from "classnames";
 
 interface CheckboxProps {
+    attributes?: object;
     checked?: boolean;
     changeHandler?: any;
+    className?: string;
     value?: string;
     id?: string;
 }
@@ -50,7 +53,9 @@ class Checkbox extends React.Component <CheckboxProps, CheckboxState> {
                        checked={this.state.checked}
                        value={this.props.value}
                        id={this.props.id}
-                       type="checkbox"/>
+                       type="checkbox"
+                       className={classNames(this.props.className)}
+                       {...this.props.attributes}/>
             </div>
         );
     }

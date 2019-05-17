@@ -198,6 +198,13 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     protected $component;
 
     /**
+     * Field view data.
+     *
+     * @var array
+     */
+    private $data = [];
+
+    /**
      * BaseType constructor.
      *
      * @param string $name
@@ -537,9 +544,28 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     protected function getFieldData(): array
     {
-        return [
+        return array_merge($this->data, [
             '__field' => $this
-        ];
+        ]);
+    }
+
+    /**
+     * Pass custom data to the field view.
+     *
+     * @param array|string $key
+     * @param null         $value
+     *
+     * @return FieldTypeInterface
+     */
+    public function with($key, $value = null): FieldTypeInterface
+    {
+        if (is_array($key)) {
+            $this->data = array_merge($this->data, $key);
+        } else {
+            $this->data[$key] = $value;
+        }
+
+        return $this;
     }
 
     /**

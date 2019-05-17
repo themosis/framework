@@ -1,8 +1,9 @@
 import * as React from "react";
 import {Description, Field} from "./common";
 import Label from "../labels/Label";
-import {getErrorsMessages, hasErrors, isRequired} from "../../helpers";
+import {getErrorsMessages, hasErrors, isRequired, attributes} from "../../helpers";
 import Error from "../errors/Error";
+import classNames from "classnames";
 
 /**
  * Email field component.
@@ -34,11 +35,12 @@ class EmailField extends React.Component <FieldProps> {
                 </div>
                 <div className="themosis__column__content">
                     <input id={this.props.field.attributes.id}
-                           className="themosis__input"
+                           className={classNames('themosis__input', this.props.field.attributes.class)}
                            name={this.props.field.name}
                            value={this.props.field.value}
                            type="email"
-                           onChange={this.onChange}/>
+                           onChange={this.onChange}
+                           {...attributes(this.props.field)}/>
                     { hasErrors(this.props.field) && <Error messages={getErrorsMessages(this.props.field)}/> }
                     { this.props.field.options.info && <Description content={this.props.field.options.info}/> }
                 </div>

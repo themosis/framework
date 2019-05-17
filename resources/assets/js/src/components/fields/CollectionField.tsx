@@ -266,7 +266,7 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
 
                         if ('image' === item.attributes.type && 'svg+xml' !== item.attributes.subtype) {
                             const sizes = item.attributes.sizes;
-                            thumbnail = sizes.thumbnail.url;
+                            thumbnail = 'undefined' !== typeof sizes['thumbnail'] ? sizes.thumbnail.url : sizes.full.url;
                         }
 
                         return (

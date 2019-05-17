@@ -2,6 +2,7 @@ import * as React from "react";
 import {Description, Field} from "./common";
 import Label from "../labels/Label";
 import {isRequired} from "../../helpers";
+import classNames from "classnames";
 
 /**
  * The hidden field component.
@@ -24,7 +25,9 @@ class HiddenField extends React.Component <FieldProps> {
                 </div>
                 <div className="themosis__column__content">
                     <div id={this.props.field.attributes.id}
-                         className="themosis__input__hidden">{this.props.field.value}</div>
+                         className={classNames('themosis__input__hidden', this.props.field.attributes.class)}>
+                        {this.props.field.value}
+                    </div>
                     { this.props.field.options.info && <Description content={this.props.field.options.info}/> }
                 </div>
             </Field>

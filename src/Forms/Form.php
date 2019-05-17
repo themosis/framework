@@ -175,6 +175,13 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     protected $component;
 
+    /**
+     * Form view data.
+     *
+     * @var array
+     */
+    private $data = [];
+
     public function __construct(
         $dataClass,
         FieldsRepositoryInterface $repository,
@@ -487,9 +494,28 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         // Only provide the form instance
         // to its view under the private
         // variable "$__form".
-        return [
+        return array_merge($this->data, [
             '__form' => $this
-        ];
+        ]);
+    }
+
+    /**
+     * Pass custom data to the form view.
+     *
+     * @param array|string $key
+     * @param null         $value
+     *
+     * @return FieldTypeInterface
+     */
+    public function with($key, $value = null): FieldTypeInterface
+    {
+        if (is_array($key)) {
+            $this->data = array_merge($this->data, $key);
+        } else {
+            $this->data[$key] = $value;
+        }
+
+        return $this;
     }
 
     /**

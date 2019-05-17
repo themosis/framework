@@ -1,8 +1,9 @@
 import * as React from "react";
 import {Description, Field} from "./common";
-import {getErrorsMessages, hasErrors, isRequired} from "../../helpers";
+import {getErrorsMessages, hasErrors, isRequired, attributes} from "../../helpers";
 import Label from "../labels/Label";
 import Error from "../errors/Error";
+import classNames from "classnames";
 
 /**
  * Text field component.
@@ -34,11 +35,12 @@ class TextField extends React.Component <FieldProps> {
                 </div>
                 <div className="themosis__column__content">
                     <input id={this.props.field.attributes.id}
-                           className="themosis__input"
+                           className={classNames('themosis__input', this.props.field.attributes.class)}
                            type="text"
                            name={this.props.field.name}
                            value={this.props.field.value}
-                           onChange={this.onChange}/>
+                           onChange={this.onChange}
+                           {...attributes(this.props.field)}/>
                     { hasErrors(this.props.field) && <Error messages={getErrorsMessages(this.props.field)}/> }
                     { this.props.field.options.info && <Description content={this.props.field.options.info}/> }
                 </div>
