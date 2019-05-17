@@ -46,7 +46,7 @@ class MediaField extends React.Component <FieldProps, MediaState> {
 
         if ('image' === media.get('type') && 'svg+xml' !== media.get('subtype')) {
             const sizes = media.get('sizes');
-            thumbnail = sizes.thumbnail.url;
+            thumbnail = 'undefined' !== typeof sizes['thumbnail'] ? sizes.thumbnail.url : sizes.full.url;
         }
 
         this.setState({
