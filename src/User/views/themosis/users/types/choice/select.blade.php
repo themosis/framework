@@ -10,7 +10,7 @@
                     $selected = $field->selected(function ($option, $value) {
                         $values = (array) $value;
 
-                        return ! empty($values) && in_array($option, $values, true) ? 'selected="selected"' : '';
+                        return ! empty($values) && in_array($option, $values) ? 'selected="selected"' : '';
                     }, [$choice, $field->getValue()]);
                     ?>
                     <option value="{{ $choice }}" {!! $selected !!}>{{ $label }}</option>
@@ -21,7 +21,7 @@
             $selected = $field->selected(function ($option, $value) {
                 $values = (array) $value;
 
-                return ! empty($values) && in_array($option, $values, true) ? 'selected="selected"' : '';
+                return ! empty($values) && in_array($option, $values) ? 'selected="selected"' : '';
             }, [$choices, $field->getValue()]);
             ?>
             <option value="{{ $choices }}" {!! $selected !!}>{{ $group }}</option>
