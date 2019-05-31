@@ -990,4 +990,29 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     {
         return $this->component;
     }
+
+    /**
+     * Return form HTML element open tag.
+     *
+     * @return string
+     */
+    public function open(): string
+    {
+        return $this->getOption('tags')
+            ? sprintf(
+                '<form %s>',
+                $this->attributes($this->getAttributes())
+            )
+            : '';
+    }
+
+    /**
+     * Return form HTML element close tag.
+     *
+     * @return string
+     */
+    public function close(): string
+    {
+        return $this->getOption('tags') ? '</form>' : '';
+    }
 }
