@@ -25,6 +25,10 @@ mix.webpackConfig(webpack => {
                     test: /\.tsx?$/,
                     loader: "ts-loader",
                     exclude: /node_modules/
+                },
+                {
+                    test: /\.scss$/,
+                    loader: "sass-loader"
                 }
             ]
         },
@@ -48,4 +52,4 @@ mix.webpackConfig(webpack => {
  */
 
 mix.react('resources/assets/js/index.ts', 'dist/js/themosis.core.js');
-mix.js('resources/assets/js/deprecated/poststatus.js', 'dist/js/themosis.poststatus.js');
+//mix.js('resources/assets/js/deprecated/poststatus.js', 'dist/js/themosis.poststatus.js');

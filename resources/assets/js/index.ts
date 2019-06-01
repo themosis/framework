@@ -43,8 +43,10 @@ export { manager as Manager };
 /**
  * Initialize the Metabox Factory.
  */
-const factory = new MetaboxFactory();
-factory.make(themosisGlobal.metabox);
+if ('undefined' !== typeof themosisGlobal) {
+    const factory = new MetaboxFactory();
+    factory.make(themosisGlobal.metabox);
+}
 
 /**
  * Themosis Library Public API.

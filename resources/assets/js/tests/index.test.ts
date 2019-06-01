@@ -1,5 +1,5 @@
-import Themosis from "../index";
+import themosis from "../index";
 
 test('Hello Themosis', () => {
-    expect(Themosis.hello()).toBe('Themosis Framework');
+    expect(themosis.hello()).toBe('Themosis Framework');
 });

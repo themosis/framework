@@ -7,7 +7,7 @@
  */
 export const getErrorsMessages = (field: FieldType): Array<string> => {
     if (hasErrors(field)) {
-        return field.validation.messages[field.name];
+        return field.validation.messages;
     }
 
     return [];
@@ -21,7 +21,7 @@ export const getErrorsMessages = (field: FieldType): Array<string> => {
  * @return {boolean}
  */
 export const hasErrors = (field: FieldType): boolean => {
-    return !!field.validation.messages[field.name];
+    return !!field.validation.messages.length;
 };
 
 /**
