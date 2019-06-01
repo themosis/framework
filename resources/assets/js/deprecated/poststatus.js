@@ -16,8 +16,7 @@ let submitdiv = $('#themosis_publish'),
     post_type = $('input#post_type').val();
 
 // Edit button
-editButton.on('click', e =>
-{
+editButton.on('click', e => {
     e.preventDefault();
 
     // Show the select option list.
@@ -26,15 +25,13 @@ editButton.on('click', e =>
 });
 
 // Cancel button or OK buttons
-statusButtons.on('click', function(e)
-{
+statusButtons.on('click', e => {
     e.preventDefault();
 
     let button = $(this);
 
     // If 'ok' button, update label span with status label.
-    if (button.hasClass('save-post-status'))
-    {
+    if (button.hasClass('save-post-status')) {
         // Grab selected label.
         let selected = selectTag.find(':selected'),
             label = selected.text(),
@@ -45,8 +42,7 @@ statusButtons.on('click', function(e)
 
         // Update publish button.
         // Check if 'draft'
-        if ('draft' === selected.val())
-        {
+        if ('draft' === selected.val()) {
             // Change value of the "original_publish" input.
             originalPublish.val('auto-draft');
             // Change publish button name attribute.
@@ -58,8 +54,7 @@ statusButtons.on('click', function(e)
     }
 
     // If 'cancel' button, make sure to reset the select tag value.
-    if (button.hasClass('cancel-post-status'))
-    {
+    if (button.hasClass('cancel-post-status')) {
         let selected = selectTag.find('option[selected="selected"]');
         selectTag.val(selected.val());
     }
