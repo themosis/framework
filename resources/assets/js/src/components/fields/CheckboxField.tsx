@@ -26,8 +26,8 @@ class CheckboxField extends React.Component <FieldProps> {
     /**
      * Check if field has a checked attribute.
      */
-    isChecked():boolean {
-        return 'checked' === this.props.field.attributes.checked;
+    isChecked(): boolean {
+        return 'on' === this.props.field.value;
     }
 
     /*

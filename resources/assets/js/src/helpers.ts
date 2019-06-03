@@ -7,7 +7,7 @@
  */
 export const getErrorsMessages = (field: FieldType): Array<string> => {
     if (hasErrors(field)) {
-        return field.validation.messages[field.name];
+        return field.validation.messages;
     }
 
     return [];
@@ -21,7 +21,7 @@ export const getErrorsMessages = (field: FieldType): Array<string> => {
  * @return {boolean}
  */
 export const hasErrors = (field: FieldType): boolean => {
-    return !!field.validation.messages[field.name];
+    return !!field.validation.messages.length;
 };
 
 /**
@@ -80,7 +80,7 @@ export const ucfirst = (text: string): string => {
  * @return {object}
  */
 export const attributes = (field: FieldType): object => {
-    const ignoredAttributes = ['class', 'id', 'name', 'type', 'value'];
+    const ignoredAttributes = ['class', 'id', 'name', 'type', 'value', 'checked'];
 
     return Object.keys(field.attributes).filter((attributeName: string) => {
         return -1 === ignoredAttributes.indexOf(attributeName);

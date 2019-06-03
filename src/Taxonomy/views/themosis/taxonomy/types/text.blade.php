@@ -1,2 +1,2 @@
-<input type="text" name="{{ $__field->getName() }}" {!! $__field->attributes($__field->getAttributes()) !!} value="{{ $__field->getRawValue() }}">
+<input type="text" name="{{ $__field->getName() }}" {!! $__field->attributes($__field->getAttributes()) !!} value="{{ $__field->getValue() }}">
 @include($__field->getTheme().'.types.includes.info', ['field' => $__field])

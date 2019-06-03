@@ -96,7 +96,7 @@ declare interface FieldType {
     type: string;
     validation: {
         errors: boolean;
-        messages: object;
+        messages: Array<string>;
         placeholder: string;
         rules: string | Array<string>;
     };

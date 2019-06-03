@@ -29,38 +29,46 @@
   "homepage": "https://github.com/themosis/framework",
   "main": "resources/assets/js/index.js",
   "devDependencies": {
-    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
-    "@babel/preset-typescript": "^7.0.0",
-    "@types/jest": "^23.3.1",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/jest": "^23.3.14",
     "babel-cli": "^6.26.0",
     "babel-preset-react-app": "^3.1.2",
-    "jest": "^23.5.0",
-    "laravel-mix": "^3.0.0",
-    "ts-jest": "^23.1.4",
-    "ts-loader": "^3.5.0",
-    "typescript": "^3.0.3"
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.8.0",
+    "laravel-mix": "^4.0.16",
+    "ts-jest": "^24.0.2",
+    "ts-loader": "^4.5.0",
+    "typescript": "^3.5.1",
+    "vue-template-compiler": "^2.6.10"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.0.0",
-    "@types/classnames": "^2.2.6",
-    "@types/react": "^16.4.13",
-    "@types/react-color": "^2.13.6",
-    "@types/react-dom": "^16.0.7",
-    "@types/react-sortable-hoc": "^0.6.4",
+    "@babel/polyfill": "^7.4.4",
+    "@types/classnames": "^2.2.8",
+    "@types/react": "^16.8.19",
+    "@types/react-color": "^2.17.0",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-sortable-hoc": "^0.6.5",
     "@wordpress/components": "^4.0.0",
     "@wordpress/rich-text": "^2.0.0",
-    "axios": "^0.18.0",
+    "acorn": "^6.1.1",
+    "axios": "^0.18.1",
     "classnames": "^2.2.6",
     "lodash": "^4.17.11",
-    "react": "^16.5.0",
-    "react-color": "^2.14.1",
-    "react-dom": "^16.5.0",
-    "react-sortable-hoc": "^0.8.3"
+    "node-sass": "^4.12.0",
+    "react": "^16.8.6",
+    "react-color": "^2.17.3",
+    "react-dom": "^16.8.6",
+    "react-sortable-hoc": "^0.8.3",
+    "sass-loader": "^7.1.0"
   },
   "jest": {
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
+    },
+    "moduleNameMapper": {
+      "\\.(css|scss)$": "identity-obj-proxy"
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
