@@ -94,14 +94,15 @@ class TaxonomyTest extends TestCase
         $taxonomy = $factory->make('category', 'post', 'Categories', 'Category');
 
         $taxonomyField = new TaxonomyField(
+            $taxonomy,
             $repository = new TaxonomyFieldRepository(),
             $this->getViewFactory($this->getApplication()),
             new \Illuminate\Validation\Factory(new Translator(new FileLoader(new Filesystem(), ''), 'en_US')),
-            new ActionBuilder($this->getApplication())
+            new ActionBuilder($this->getApplication()),
+            ['theme' => 'themosis.taxonomy', 'prefix' => 'wp_']
         );
 
-        $taxonomyField->make($taxonomy, ['prefix' => 'wp_'])
-            ->add($fields->text('note'));
+        $taxonomyField->add($fields->text('note'));
 
         $this->assertEquals('themosis.taxonomy', $repository->getFieldByName('note')->getTheme());
         $this->assertEquals('wp_', $repository->getFieldByName('note')->getPrefix());

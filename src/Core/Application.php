@@ -306,6 +306,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             'taxonomy' => [
                 \Themosis\Taxonomy\Factory::class
             ],
+            'taxonomy.field' => [
+                \Themosis\Taxonomy\TaxonomyFieldFactory::class
+            ],
             'translator' => [
                 \Illuminate\Translation\Translator::class,
                 \Illuminate\Contracts\Translation\Translator::class
@@ -1076,6 +1079,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @param string $abstract
      * @param array  $parameters
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      *
      * @return mixed
      */

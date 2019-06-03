@@ -23,7 +23,7 @@ class TaxonomyServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register taxonomy field.
+     * Register taxonomy field factory.
      */
     protected function registerTaxonomyField()
     {
@@ -31,8 +31,7 @@ class TaxonomyServiceProvider extends ServiceProvider
             $viewFactory = $app['view'];
             $viewFactory->addLocation(__DIR__.'/views');
 
-            return new TaxonomyField(
-                new TaxonomyFieldRepository(),
+            return new TaxonomyFieldFactory(
                 $viewFactory,
                 $app['validator'],
                 $app['action']

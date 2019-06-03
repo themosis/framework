@@ -43,31 +43,19 @@ class TaxonomyField
     protected $options;
 
     public function __construct(
+        TaxonomyInterface $taxonomy,
         TaxonomyFieldRepository $repository,
         \Illuminate\View\Factory $factory,
         \Illuminate\Contracts\Validation\Factory $validator,
-        IHook $action
+        IHook $action,
+        array $options
     ) {
+        $this->taxonomy = $taxonomy;
         $this->repository = $repository;
         $this->factory = $factory;
         $this->validator = $validator;
         $this->action = $action;
-    }
-
-    /**
-     * Attach a taxonomy in order to add custom fields.
-     *
-     * @param TaxonomyInterface $taxonomy
-     * @param array             $options
-     *
-     * @return TaxonomyField
-     */
-    public function make(TaxonomyInterface $taxonomy, array $options = []): TaxonomyField
-    {
-        $this->taxonomy = $taxonomy;
         $this->options = $options;
-
-        return $this;
     }
 
     /**
@@ -79,7 +67,7 @@ class TaxonomyField
      */
     public function add(FieldTypeInterface $field): TaxonomyField
     {
-        $field->setTheme('themosis.taxonomy');
+        $field->setTheme($this->options['theme'] ?? 'themosis.taxonomy');
         $field->setPrefix($this->options['prefix'] ?? 'th_');
 
         $this->repository->add($field);
