@@ -20,6 +20,7 @@ use Themosis\Core\Application;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Forms\Contracts\FormInterface;
 use Themosis\Forms\Fields\Types\TextType;
+use Themosis\Forms\Form;
 use Themosis\Forms\FormFactory;
 use Themosis\Support\Contracts\SectionInterface;
 use Themosis\Tests\Forms\Entities\ContactEntity;
@@ -1266,5 +1267,19 @@ class FormCreationTest extends TestCase
         $this->assertEmpty($dto->title);
         $this->assertEquals($request->get($content->getName()), $dto->content);
         $this->assertEmpty($dto->getAuthor());
+    }
+
+    public function test_form_open_close_tag()
+    {
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+
+        /** @var Form $form */
+        $form = $factory->make(null, ['tags' => false])
+            ->add($fields->text('test'))
+            ->get();
+
+        $this->assertEmpty($form->open());
+        $this->assertEmpty($form->close());
     }
 }
