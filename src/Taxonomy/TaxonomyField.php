@@ -126,7 +126,7 @@ class TaxonomyField
      */
     protected function sanitize(FieldTypeInterface $field)
     {
-        return function ($value, $key, $type) use ($field) {
+        return function ($value, $key, $type) {
             $validator = $this->validator->make(
                 [$key => $value],
                 $this->getTermRules(),
