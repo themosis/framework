@@ -93,10 +93,10 @@ class Factory
      */
     public function exists(string $slug): bool
     {
-        return $this->container->has("themosis.posttype.${id}")
+        return $this->container->has("themosis.posttype.{$slug}")
             || (
                 function_exists('post_type_exists')
-                && post_type_exists($id)
+                && post_type_exists($slug)
             );
     }
 }
