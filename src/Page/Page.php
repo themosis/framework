@@ -711,26 +711,47 @@ class Page implements PageInterface
         if ($validator->fails()) {
             $this->errors++;
 
-            add_settings_error(
+            $this->addSettingsErrorMessage(
                 $this->getSlug(),
                 $setting->getName(),
-                $validator->getMessageBag()->first($setting->getName()),
-                'error'
+                $validator->getMessageBag()->first($setting->getName())
             );
 
             return '';
         }
 
         if ($settingName === $lastSetting->getName() && ! $this->errors) {
-            add_settings_error(
-                $this->getSlug(),
-                'settings_updated',
-                __('Settings saved.'),
-                'updated'
-            );
+            $this->addSettingsSuccessMessage($this->getSlug());
         }
 
         return $value;
+    }
+
+    /**
+     * Add settings error message.
+     *
+     * @param string $slug
+     * @param string $name
+     * @param string $message
+     */
+    private function addSettingsErrorMessage(string $slug, string $name, string $message)
+    {
+        add_settings_error($slug, $name, $message, 'error');
+    }
+
+    /**
+     * Add settings success message.
+     *
+     * @param string $slug
+     */
+    private function addSettingsSuccessMessage(string $slug)
+    {
+        add_settings_error(
+            $slug,
+            'settings_updated',
+            __('Settings saved.'),
+            'updated'
+        );
     }
 
     /**

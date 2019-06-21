@@ -79,4 +79,14 @@ class PostTypeTest extends TestCase
         $this->assertEquals('Add Me', $postType->getLabel('add_new_item'));
         $this->assertEquals('View Product', $postType->getLabel('view_item'));
     }
+
+    public function testPostTypeExists()
+    {
+        $factory = $this->getFactory();
+
+        $factory->make('book', 'Books', 'Book');
+        $this->assertTrue($factory->exists('book'));
+
+        $this->assertFalse($factory->exists('non-existent-post-type'));
+    }
 }

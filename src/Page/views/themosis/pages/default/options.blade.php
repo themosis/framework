@@ -1,7 +1,9 @@
 <div class="wrap">
     <h1>{{ $__page->getTitle() }}</h1>
     @php
-        settings_errors($__page->getSlug());
+        if ('options-general.php' !== $__page->getParent()) {
+            settings_errors($__page->getSlug());
+        }
     @endphp
     <form action="options.php" method="post">
         @php
