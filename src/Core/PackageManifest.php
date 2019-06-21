@@ -104,7 +104,7 @@ class PackageManifest
     /**
      * Generate the packages.php manifest file.
      */
-    protected function build()
+    public function build()
     {
         $packages = [];
 
