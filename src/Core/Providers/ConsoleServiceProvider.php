@@ -384,7 +384,7 @@ class ConsoleServiceProvider extends ServiceProvider
     protected function registerPackageDiscoverCommand($abstract)
     {
         $this->app->singleton($abstract, function ($app) {
-            return new PackageDiscoverCommand($app['files'], $app['composer']);
+            return new PackageDiscoverCommand();
         });
     }
 
