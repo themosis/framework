@@ -89,4 +89,15 @@ class PostTypeTest extends TestCase
 
         $this->assertFalse($factory->exists('non-existent-post-type'));
     }
+
+    public function testGetPostType()
+    {
+        $factory = $this->getFactory();
+
+        $books = $factory->make('book', 'Books', 'Book');
+        $post_type = $factory->get('book');
+        $this->assertSame($books, $post_type);
+
+        $this->assertNull($factory->get('non-existent-post-type'));
+    }
 }
