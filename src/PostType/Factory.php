@@ -37,9 +37,9 @@ class Factory
      * @param string $plural
      * @param string $singular
      *
-     * @return PostTypeInterface
      * @throws PostTypeException
      *
+     * @return PostTypeInterface
      */
     public function make(string $slug, string $plural, string $singular): PostTypeInterface
     {
@@ -110,7 +110,7 @@ class Factory
     {
         $id = "themosis.posttype.{$slug}";
 
-        if (!$this->container->has($id)) {
+        if (! $this->container->has($id)) {
             return null;
         }
 

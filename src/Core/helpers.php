@@ -298,8 +298,8 @@ if (! function_exists('decrypt')) {
     /**
      * Decrypt the given value.
      *
-     * @param  string  $value
-     * @param  bool   $unserialize
+     * @param string $value
+     * @param bool   $unserialize
      *
      * @return mixed
      */
@@ -327,8 +327,8 @@ if (! function_exists('encrypt')) {
     /**
      * Encrypt the given value.
      *
-     * @param  mixed  $value
-     * @param  bool   $serialize
+     * @param mixed $value
+     * @param bool  $serialize
      *
      * @return string
      */
