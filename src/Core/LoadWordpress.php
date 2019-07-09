@@ -10,7 +10,7 @@ trait LoadWordpress
     protected function loadWordpress(): void
     {
         if ($this->loadWp) {
-            require web_path('cms/wp-load.php');
+            require_once web_path('cms/wp-load.php');
         }
     }
 }
