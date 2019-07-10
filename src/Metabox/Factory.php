@@ -73,8 +73,6 @@ class Factory
 
         if (! $this->container->bound($abstract)) {
             $this->container->instance($abstract, $metabox);
-        } else {
-            throw new MetaboxException('The metabox with an ID of ['.$id.'] is already bound.');
         }
 
         return $metabox;
