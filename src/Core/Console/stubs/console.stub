@@ -24,13 +24,6 @@ class DummyClass extends Command
     protected $description = 'Command description';
 
     /**
-     * Choose to load Worpdress's wp-load.php file if true
-     *
-     * @var bool
-     */
-    protected $loadWp = false;
-
-    /**
      * Create a new command instance.
      *
      * @return void
@@ -38,8 +31,6 @@ class DummyClass extends Command
     public function __construct()
     {
         parent::__construct();
-
-        $this->loadWordpress();
     }
 
     /**
@@ -49,6 +40,7 @@ class DummyClass extends Command
      */
     public function handle()
     {
-        //
+        // load Wordpress into this command
+        $this->loadWordpress();
     }
 }
