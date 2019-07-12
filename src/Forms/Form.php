@@ -104,6 +104,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     protected $allowedOptions = [
         'attributes',
+        'container_attr',
         'csrf',
         'errors',
         'flush',
@@ -121,6 +122,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      */
     protected $defaultOptions = [
         'attributes' => [],
+        'container_attr' => [],
         'csrf' => true,
         'flush' => true,
         'tags' => true,
