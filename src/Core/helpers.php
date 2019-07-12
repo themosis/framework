@@ -641,6 +641,8 @@ if (! function_exists('response')) {
      * @param int    $status
      * @param array  $headers
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     function response($content = '', $status = 200, array $headers = [])
@@ -652,6 +654,22 @@ if (! function_exists('response')) {
         }
 
         return $factory->make($content, $status, $headers);
+    }
+}
+
+if (! function_exists('rootUrl')) {
+    /**
+     * Return an URL based on the root domain.
+     *
+     * @param string $uri
+     *
+     * @return string
+     */
+    function rootUrl(string $uri = ''): string
+    {
+        $request = app('request');
+
+        return $request->getSchemeAndHttpHost().($uri ? '/'.$uri : $uri);
     }
 }
 
