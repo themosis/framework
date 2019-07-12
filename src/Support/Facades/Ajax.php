@@ -3,7 +3,13 @@
 namespace Themosis\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use Themosis\Ajax\AjaxInterface;
 
+/**
+ * @method static AjaxInterface listen($action, $callback, $logged = 'both')
+ *
+ * @see \Themosis\Ajax\Ajax
+ */
 class Ajax extends Facade
 {
     /**
