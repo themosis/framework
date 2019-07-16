@@ -382,6 +382,12 @@ class Page implements PageInterface
         // Check if parent attribute is attached to a custom post type or another page.
         if (false !== $pos = strpos($this->getParent(), 'post_type=')) {
             // Parent hook is equivalent to the post type slug value.
+
+            // Exception for "page" post type.
+            if ('page' == substr($this->getParent(), $pos + 10)) {
+                return 'pages';
+            }
+            
             return substr($this->getParent(), $pos + 10);
         } else {
             switch (trim($this->getParent(), '\/?&')) {
