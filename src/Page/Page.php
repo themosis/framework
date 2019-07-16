@@ -413,7 +413,7 @@ class Page implements PageInterface
             // Parent hook is equivalent to the page menu as lowercase.
             $parent = $this->ui()->factory()->getContainer()->make($abstract);
 
-            return Str::kebab(strtolower($parent->getMenu()));
+            return Str::slug(strtolower($parent->getMenu()));
         }
 
         return '';
