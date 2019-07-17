@@ -3,9 +3,12 @@
 namespace DummyNamespace;
 
 use Illuminate\Console\Command;
+use Themosis\Core\LoadWordpress;
 
 class DummyClass extends Command
 {
+    use LoadWordpress;
+
     /**
      * The console command name.
      *
@@ -37,6 +40,7 @@ class DummyClass extends Command
      */
     public function handle()
     {
-        //
+        // load Wordpress into this command
+        $this->loadWordpress();
     }
 }
