@@ -9,13 +9,6 @@ use Symfony\Component\Console\Input\InputOption;
 class ConsoleMakeCommand extends GeneratorCommand
 {
     /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    //protected $signature = 'make:command {name : The name of the command.} {--command=command:name : The terminal command that should be assigned.} {--load-wordpress : Load Wordpress functions into the command.}';
-
-    /**
      * The console command name.
      *
      * @var string
@@ -43,8 +36,6 @@ class ConsoleMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        dump($this->getOptions());
-        dump($this->getArguments());
         if ($this->option('load-wordpress')) {
             return __DIR__.'/stubs/console-wordpress.stub';
         } else {
