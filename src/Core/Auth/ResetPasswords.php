@@ -29,6 +29,7 @@ trait ResetPasswords
     {
         $data = new PasswordResetData();
         $data->setToken($token);
+        $data->setEmail($request->get('email', ''));
 
         $form = $this->form(new PasswordResetForm($data));
 

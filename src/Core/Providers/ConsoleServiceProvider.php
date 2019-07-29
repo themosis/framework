@@ -29,6 +29,7 @@ use Themosis\Core\Console\HookMakeCommand;
 use Themosis\Core\Console\KeyGenerateCommand;
 use Themosis\Core\Console\MailMakeCommand;
 use Themosis\Core\Console\ModelMakeCommand;
+use Themosis\Core\Console\PackageDiscoverCommand;
 use Themosis\Core\Console\PasswordResetTableCommand;
 use Themosis\Core\Console\PluginInstallCommand;
 use Themosis\Core\Console\ProviderMakeCommand;
@@ -69,6 +70,7 @@ class ConsoleServiceProvider extends ServiceProvider
         'MigrateReset' => 'command.migrate.reset',
         'MigrateRollback' => 'command.migrate.rollback',
         'MigrateStatus' => 'command.migrate.status',
+        'PackageDiscover' => 'command.package.discover',
         'RouteCache' => 'command.route.cache',
         'RouteClear' => 'command.route.clear',
         'RouteList' => 'command.route.list',
@@ -389,6 +391,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new ModelMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the package:discover command.
+     *
+     * @param string $abstract
+     */
+    protected function registerPackageDiscoverCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new PackageDiscoverCommand();
         });
     }
 

@@ -231,6 +231,8 @@ class ThemeManager
      *
      * @param array $paths
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return $this
      */
     public function views(array $paths = [])
@@ -246,9 +248,19 @@ class ThemeManager
         $factory = $this->app->make('view');
         $twigLoader = $this->app->make('twig.loader');
 
-        foreach ($paths as $path) {
-            $uri = $this->dirPath.'/'.trim($path, '\/');
-            $factory->getFinder()->prependLocation($uri);
+        foreach ($paths as $path => $priority) {
+            if (is_numeric($path)) {
+                $location = $priority;
+
+                // Set a default base priority for themes
+                // that do not define one.
+                $priority = 100;
+            } else {
+                $location = $path;
+            }
+
+            $uri = $this->dirPath.'/'.trim($location, '\/');
+            $factory->getFinder()->addOrderedLocation($uri, $priority);
             $twigLoader->addPath($uri);
         }
 

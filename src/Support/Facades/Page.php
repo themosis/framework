@@ -3,7 +3,14 @@
 namespace Themosis\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use Themosis\Page\Contracts\PageInterface;
+use Themosis\Page\PageFactory;
 
+/**
+ * @method static PageInterface make(string $slug, string $title)
+ *
+ * @see PageFactory
+ */
 class Page extends Facade
 {
     /**

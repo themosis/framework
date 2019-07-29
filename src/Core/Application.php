@@ -34,7 +34,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @var string
      */
-    const VERSION = '2.0.2';
+    const VERSION = '2.0.4';
 
     /**
      * Application textdomain.
@@ -285,6 +285,10 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             ],
             'redirect' => [
                 \Illuminate\Routing\Redirector::class
+            ],
+            'redis' => [
+                \Illuminate\Redis\RedisManager::class,
+                \Illuminate\Contracts\Redis\Factory::class
             ],
             'request' => [
                 \Illuminate\Http\Request::class,

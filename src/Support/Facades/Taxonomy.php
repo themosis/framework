@@ -3,7 +3,14 @@
 namespace Themosis\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
+use Themosis\Taxonomy\Contracts\TaxonomyInterface;
+use Themosis\Taxonomy\Factory;
 
+/**
+ * @method static TaxonomyInterface make(string $slug, $objects, string $plural, string $singular)
+ *
+ * @see Factory
+ */
 class Taxonomy extends Facade
 {
     /**

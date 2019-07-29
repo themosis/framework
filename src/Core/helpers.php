@@ -156,6 +156,46 @@ if (! function_exists('public_path')) {
     }
 }
 
+if (! function_exists('cache')) {
+    /**
+     * Get / set the specified cache value.
+     *
+     * If an array is passed, we'll assume you want to put to the cache.
+     *
+     * @param  dynamic  key|key,default|data,expiration|null
+     *
+     * @throws \Exception
+     *
+     * @return mixed|\Illuminate\Cache\CacheManager
+     */
+    function cache()
+    {
+        $arguments = func_get_args();
+
+        if (empty($arguments)) {
+            return app('cache');
+        }
+
+        if (is_string($arguments[0])) {
+            return app('cache')->get(...$arguments);
+        }
+
+        if (! is_array($arguments[0])) {
+            throw new Exception(
+                'When setting a value in the cache, you must pass an array of key / value pairs.'
+            );
+        }
+
+        if (! isset($arguments[1])) {
+            throw new Exception(
+                'You must specify an expiration time when setting a value in the cache.'
+            );
+        }
+
+        return app('cache')->put(key($arguments[0]), reset($arguments[0]), $arguments[1]);
+    }
+}
+
 if (! function_exists('config')) {
     /**
      * Get / set the specified configuration value.
@@ -255,6 +295,21 @@ if (! function_exists('database_path')) {
     }
 }
 
+if (! function_exists('decrypt')) {
+    /**
+     * Decrypt the given value.
+     *
+     * @param string $value
+     * @param bool   $unserialize
+     *
+     * @return mixed
+     */
+    function decrypt($value, $unserialize = true)
+    {
+        return app('encrypter')->decrypt($value, $unserialize);
+    }
+}
+
 if (! function_exists('dummy_path')) {
     /**
      * Get dummy path.
@@ -266,6 +321,21 @@ if (! function_exists('dummy_path')) {
     function dummy_path($path = '')
     {
         return '';
+    }
+}
+
+if (! function_exists('encrypt')) {
+    /**
+     * Encrypt the given value.
+     *
+     * @param mixed $value
+     * @param bool  $serialize
+     *
+     * @return string
+     */
+    function encrypt($value, $serialize = true)
+    {
+        return app('encrypter')->encrypt($value, $serialize);
     }
 }
 
@@ -596,6 +666,8 @@ if (! function_exists('response')) {
      * @param int    $status
      * @param array  $headers
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     function response($content = '', $status = 200, array $headers = [])
@@ -607,6 +679,22 @@ if (! function_exists('response')) {
         }
 
         return $factory->make($content, $status, $headers);
+    }
+}
+
+if (! function_exists('rootUrl')) {
+    /**
+     * Return an URL based on the root domain.
+     *
+     * @param string $uri
+     *
+     * @return string
+     */
+    function rootUrl(string $uri = ''): string
+    {
+        $request = app('request');
+
+        return $request->getSchemeAndHttpHost().($uri ? '/'.$uri : $uri);
     }
 }
 
