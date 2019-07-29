@@ -15,6 +15,8 @@ use Illuminate\Database\Console\Migrations\RollbackCommand;
 use Illuminate\Database\Console\Migrations\StatusCommand;
 use Illuminate\Database\Console\Seeds\SeedCommand;
 use Illuminate\Database\Console\Seeds\SeederMakeCommand;
+use Illuminate\Queue\Console\FailedTableCommand;
+use Illuminate\Queue\Console\TableCommand;
 use Illuminate\Routing\Console\ControllerMakeCommand;
 use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Session\Console\SessionTableCommand;
@@ -101,6 +103,8 @@ class ConsoleServiceProvider extends ServiceProvider
         'PasswordResetTable' => 'command.password.reset.table',
         'PluginInstall' => 'command.plugin.install',
         'ProviderMake' => 'command.provider.make',
+        'QueueFailedTable' => 'command.queue.failed-table',
+        'QueueTable' => 'command.queue.table',
         'RequestMake' => 'command.request.make',
         'ResourceMake' => 'command.resource.make',
         'SeederMake' => 'command.seeder.make',
@@ -439,6 +443,30 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new ProviderMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the queue:failed-table command.
+     *
+     * @param string $abstract
+     */
+    protected function registerQueueFailedTableCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new FailedTableCommand($app['files'], $app['composer']);
+        });
+    }
+
+    /**
+     * Register the queue:table command.
+     *
+     * @param string $abstract
+     */
+    protected function registerQueueTableCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new TableCommand($app['files'], $app['composer']);
         });
     }
 
