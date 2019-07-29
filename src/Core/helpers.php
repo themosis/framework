@@ -693,8 +693,10 @@ if (! function_exists('rootUrl')) {
     function rootUrl(string $uri = ''): string
     {
         $request = app('request');
+        // ensure one slash on left, none on the right
+        $uri = ($uri) ? '/'.trim($uri, '/') : $uri;
 
-        return $request->getSchemeAndHttpHost().($uri ? '/'.$uri : $uri);
+        return $request->getSchemeAndHttpHost().$uri;
     }
 }
 
@@ -710,7 +712,8 @@ if (! function_exists('route')) {
      */
     function route($name, $parameters = [], $absolute = true)
     {
-        return app('url')->route($name, $parameters, $absolute);
+        $path = app('url')->route($name, $parameters, false);
+        return ($absolute) ? rootUrl($path) : $path;
     }
 }
 
