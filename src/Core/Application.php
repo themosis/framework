@@ -283,6 +283,17 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
             'posttype' => [
                 \Themosis\PostType\Factory::class
             ],
+            'queue' => [
+                \Illuminate\Queue\QueueManager::class,
+                \Illuminate\Contracts\Queue\Factory::class,
+                \Illuminate\Contracts\Queue\Monitor::class
+            ],
+            'queue.connection' => [
+                \Illuminate\Contracts\Queue\Queue::class
+            ],
+            'queue.failer' => [
+                \Illuminate\Queue\Failed\FailedJobProviderInterface::class
+            ],
             'redirect' => [
                 \Illuminate\Routing\Redirector::class
             ],
