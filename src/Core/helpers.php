@@ -2,6 +2,7 @@
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
+use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Routing\UrlGenerator;
@@ -13,6 +14,8 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Log\LogManager;
+use Illuminate\Queue\CallQueuedClosure;
+use Illuminate\Queue\SerializableClosure;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\HtmlString;
 use Psr\Log\LoggerInterface;
@@ -20,6 +23,7 @@ use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Themosis\Core\Bus\PendingDispatch;
 use Themosis\Core\Mix;
 
 if (! function_exists('abort')) {
@@ -307,6 +311,39 @@ if (! function_exists('decrypt')) {
     function decrypt($value, $unserialize = true)
     {
         return app('encrypter')->decrypt($value, $unserialize);
+    }
+}
+
+if (! function_exists('dispatch')) {
+    /**
+     * Dispatch a job to its appropriate handler.
+     *
+     * @param mixed $job
+     *
+     * @return PendingDispatch
+     */
+    function dispatch($job)
+    {
+        if ($job instanceof Closure) {
+            $job = new CallQueuedClosure(new SerializableClosure($job));
+        }
+
+        return new PendingDispatch($job);
+    }
+}
+
+if (! function_exists('dispatch_now')) {
+    /**
+     * Dispatch a command to its appropriate handler in the current process.
+     *
+     * @param mixed $job
+     * @param null  $handler
+     *
+     * @return mixed
+     */
+    function dispatch_now($job, $handler = null)
+    {
+        return app(Dispatcher::class)->dispatchNow($job, $handler);
     }
 }
 
