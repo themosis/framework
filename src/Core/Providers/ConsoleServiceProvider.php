@@ -16,7 +16,14 @@ use Illuminate\Database\Console\Migrations\StatusCommand;
 use Illuminate\Database\Console\Seeds\SeedCommand;
 use Illuminate\Database\Console\Seeds\SeederMakeCommand;
 use Illuminate\Queue\Console\FailedTableCommand;
+use Illuminate\Queue\Console\FlushFailedCommand as FlushFailedQueueCommand;
+use Illuminate\Queue\Console\ForgetFailedCommand as ForgetFailedQueueCommand;
+use Illuminate\Queue\Console\ListenCommand as ListenQueueCommand;
+use Illuminate\Queue\Console\ListFailedCommand as ListFailedQueueCommand;
+use Illuminate\Queue\Console\RestartCommand as RestartQueueCommand;
+use Illuminate\Queue\Console\RetryCommand as RetryQueueCommand;
 use Illuminate\Queue\Console\TableCommand;
+use Illuminate\Queue\Console\WorkCommand as WorkQueueCommand;
 use Illuminate\Routing\Console\ControllerMakeCommand;
 use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Session\Console\SessionTableCommand;
@@ -73,6 +80,13 @@ class ConsoleServiceProvider extends ServiceProvider
         'MigrateRollback' => 'command.migrate.rollback',
         'MigrateStatus' => 'command.migrate.status',
         'PackageDiscover' => 'command.package.discover',
+        'QueueFailed' => 'command.queue.failed',
+        'QueueFlush' => 'command.queue.flush',
+        'QueueForget' => 'command.queue.forget',
+        'QueueListen' => 'command.queue.listen',
+        'QueueRestart' => 'command.queue.restart',
+        'QueueRetry' => 'command.queue.retry',
+        'QueueWork' => 'command.queue.work',
         'RouteCache' => 'command.route.cache',
         'RouteClear' => 'command.route.clear',
         'RouteList' => 'command.route.list',
@@ -443,6 +457,90 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new ProviderMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the queue:failed command.
+     *
+     * @param string $abstract
+     */
+    protected function registerQueueFailedCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new ListFailedQueueCommand();
+        });
+    }
+
+    /**
+     * Register the queue:flush command.
+     *
+     * @param string $abstract
+     */
+    protected function registerQueueFlushCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new FlushFailedQueueCommand();
+        });
+    }
+
+    /**
+     * Register the queue:forget command.
+     *
+     * @param string $abstract
+     */
+    protected function registerQueueForgetCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new ForgetFailedQueueCommand();
+        });
+    }
+
+    /**
+     * Register the queue:listen command.
+     *
+     * @param string $abstract
+     */
+    protected function registerQueueListenCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ListenQueueCommand($app['queue.listener']);
+        });
+    }
+
+    /**
+     * Register the queue:restart command.
+     *
+     * @param string $abstract
+     */
+    protected function registerQueueRestartCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new RestartQueueCommand();
+        });
+    }
+
+    /**
+     * Register the queue:retry command.
+     *
+     * @param string $abstract
+     */
+    protected function registerQueueRetryCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new RetryQueueCommand();
+        });
+    }
+
+    /**
+     * Register the queue:work command.
+     *
+     * @param string $abstract
+     */
+    protected function registerQueueWorkCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new WorkQueueCommand($app['queue.worker']);
         });
     }
 
