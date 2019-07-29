@@ -14,7 +14,6 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Log\LogManager;
-use Illuminate\Queue\CallQueuedClosure;
 use Illuminate\Queue\SerializableClosure;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\HtmlString;
@@ -25,6 +24,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Themosis\Core\Bus\PendingDispatch;
 use Themosis\Core\Mix;
+use Themosis\Queue\CallQueuedClosure;
 
 if (! function_exists('abort')) {
     /**
