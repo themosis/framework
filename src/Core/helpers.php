@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Log\LogManager;
 use Illuminate\Queue\SerializableClosure;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\HtmlString;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
@@ -602,6 +603,20 @@ if (! function_exists('muplugins_path')) {
     function muplugins_path($path = '')
     {
         return app()->mupluginsPath($path);
+    }
+}
+
+if (! function_exists('now')) {
+    /**
+     * Create a new Carbon instance for the current time.
+     *
+     * @param \DateTimeZone|string|null $tz
+     *
+     * @return \Illuminate\Support\Carbon
+     */
+    function now($tz = null)
+    {
+        return Date::now($tz);
     }
 }
 
