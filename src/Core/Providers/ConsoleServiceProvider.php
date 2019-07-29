@@ -35,6 +35,7 @@ use Themosis\Core\Console\DownCommand;
 use Themosis\Core\Console\DropinClearCommand;
 use Themosis\Core\Console\FormMakeCommand;
 use Themosis\Core\Console\HookMakeCommand;
+use Themosis\Core\Console\JobMakeCommand;
 use Themosis\Core\Console\KeyGenerateCommand;
 use Themosis\Core\Console\MailMakeCommand;
 use Themosis\Core\Console\ModelMakeCommand;
@@ -110,6 +111,7 @@ class ConsoleServiceProvider extends ServiceProvider
         'FactoryMake' => 'command.factory.make',
         'FormMake' => 'command.form.make',
         'HookMake' => 'command.hook.make',
+        'JobMake' => 'command.job.make',
         'MailMake' => 'command.mail.make',
         'MiddlewareMake' => 'command.middleware.make',
         'MigrateMake' => 'command.migrate.make',
@@ -259,6 +261,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new HookMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the make:job command.
+     *
+     * @param string $abstract
+     */
+    protected function registerJobMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new JobMakeCommand($app['files']);
         });
     }
 
