@@ -42,6 +42,7 @@ use Themosis\Core\Console\ModelMakeCommand;
 use Themosis\Core\Console\PackageDiscoverCommand;
 use Themosis\Core\Console\PasswordResetTableCommand;
 use Themosis\Core\Console\PluginInstallCommand;
+use Themosis\Core\Console\PolicyMakeCommand;
 use Themosis\Core\Console\ProviderMakeCommand;
 use Themosis\Core\Console\RequestMakeCommand;
 use Themosis\Core\Console\ResourceMakeCommand;
@@ -118,6 +119,7 @@ class ConsoleServiceProvider extends ServiceProvider
         'ModelMake' => 'command.model.make',
         'PasswordResetTable' => 'command.password.reset.table',
         'PluginInstall' => 'command.plugin.install',
+        'PolicyMake' => 'command.policy.make',
         'ProviderMake' => 'command.provider.make',
         'QueueFailedTable' => 'command.queue.failed-table',
         'QueueTable' => 'command.queue.table',
@@ -459,6 +461,18 @@ class ConsoleServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new PluginInstallCommand($app['files'], new \ZipArchive());
+        });
+    }
+
+    /**
+     * Register the make:policy command.
+     *
+     * @param string $abstract
+     */
+    protected function registerPolicyMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new PolicyMakeCommand($app['files']);
         });
     }
 
