@@ -22,11 +22,11 @@ class BladeServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Blade::directive('can', function ($expression) {
+        Blade::directive('wpcan', function ($expression) {
             return "<?php if( User::current()->can({$expression}) ): ?>";
         });
 
-        Blade::directive('endcan', function () {
+        Blade::directive('endwpcan', function () {
             return '<?php endif; ?>';
         });
 
