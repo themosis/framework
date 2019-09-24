@@ -65,6 +65,11 @@
     "react-sortable-hoc": "^0.8.4",
     "sass-loader": "^7.3.1"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "jest": {
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
@@ -80,6 +85,12 @@
       "jsx",
       "json",
       "node"
+    ]
+  },
+  "lint-staged": {
+    "*.php": [
+      "php ./vendor/bin/php-cs-fixer fix --config .php_cs.dist",
+      "git add"
     ]
   }
 }
