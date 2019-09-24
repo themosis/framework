@@ -29,39 +29,46 @@
   "homepage": "https://github.com/themosis/framework",
   "main": "resources/assets/js/index.js",
   "devDependencies": {
-    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
-    "@babel/preset-typescript": "^7.3.3",
+    "@babel/preset-typescript": "^7.6.0",
     "@types/jest": "^23.3.14",
     "babel-cli": "^6.26.0",
     "babel-preset-react-app": "^3.1.2",
+    "husky": "^3.0.5",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^24.8.0",
-    "laravel-mix": "^4.0.16",
-    "ts-jest": "^24.0.2",
+    "jest": "^24.9.0",
+    "laravel-mix": "^5.0.0",
+    "lint-staged": "^9.3.0",
+    "ts-jest": "^24.1.0",
     "ts-loader": "^4.5.0",
-    "typescript": "^3.5.1",
+    "typescript": "^3.6.3",
     "vue-template-compiler": "^2.6.10"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.4.4",
-    "@types/classnames": "^2.2.8",
-    "@types/react": "^16.8.19",
-    "@types/react-color": "^2.17.0",
-    "@types/react-dom": "^16.8.4",
+    "@babel/polyfill": "^7.6.0",
+    "@types/classnames": "^2.2.9",
+    "@types/react": "^16.9.2",
+    "@types/react-color": "^2.17.2",
+    "@types/react-dom": "^16.9.0",
     "@types/react-sortable-hoc": "^0.6.5",
     "@wordpress/components": "^4.0.0",
-    "@wordpress/rich-text": "^2.0.0",
-    "acorn": "^6.1.1",
+    "@wordpress/rich-text": "^2.0.4",
+    "acorn": "^6.3.0",
     "axios": "^0.18.1",
     "classnames": "^2.2.6",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.15",
     "node-sass": "^4.12.0",
-    "react": "^16.8.6",
+    "react": "^16.9.0",
     "react-color": "^2.17.3",
-    "react-dom": "^16.8.6",
-    "react-sortable-hoc": "^0.8.3",
-    "sass-loader": "^7.1.0"
+    "react-dom": "^16.9.0",
+    "react-sortable-hoc": "^0.8.4",
+    "sass-loader": "^7.3.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "jest": {
     "transform": {
@@ -78,6 +85,12 @@
       "jsx",
       "json",
       "node"
+    ]
+  },
+  "lint-staged": {
+    "*.php": [
+      "php ./vendor/bin/php-cs-fixer fix --config .php_cs.dist",
+      "git add"
     ]
   }
 }
