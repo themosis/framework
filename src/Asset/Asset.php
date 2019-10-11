@@ -399,7 +399,7 @@ class Asset implements AssetInterface
                 return $tag;
             }
 
-            return preg_replace('/(src|href)(.+>)/', $attributes.'$1$2', $tag);
+            return preg_replace('/(src|href)(.+>)/', $attributes.' $1$2', $tag);
         });
 
         return $this;

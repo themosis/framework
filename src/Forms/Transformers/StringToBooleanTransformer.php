@@ -18,6 +18,10 @@ class StringToBooleanTransformer implements DataTransformerInterface
      */
     public function transform($data)
     {
+        if (is_bool($data)) {
+            return $data;
+        }
+
         if (is_null($data)) {
             return false;
         }
