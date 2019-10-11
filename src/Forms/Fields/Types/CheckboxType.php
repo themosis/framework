@@ -76,6 +76,8 @@ class CheckboxType extends BaseType implements
             // or when the option "flush" is set to "false".
             // If true, let's automatically add the "checked" attribute.
             $this->options['attributes']['checked'] = 'checked';
+        } elseif (false === $this->getValue() && isset($this->options['attributes']['checked'])) {
+            unset($this->options['attributes']['checked']);
         }
 
         return $this;

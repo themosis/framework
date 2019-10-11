@@ -18,7 +18,7 @@ class StringToBooleanTransformer implements DataTransformerInterface
      */
     public function transform($data)
     {
-        if (is_bool($data) === true) {
+        if (is_bool($data)) {
             return $data;
         }
 

@@ -1282,4 +1282,28 @@ class FormCreationTest extends TestCase
         $this->assertEmpty($form->open());
         $this->assertEmpty($form->close());
     }
+
+    public function test_checkbox_field_type_with_default_value_can_be_overriden()
+    {
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+
+        $form = $factory->make(new CheckboxDto())
+            ->add($fields->checkbox('subscribe'))
+            ->get();
+
+        $form->handleRequest(Request::create('/', 'POST', ['th_subscribe' => false]));
+
+        $attributes = $form->repository()->getFieldByName('subscribe')->getAttributes();
+
+        // The default value is "true", so the field should be checked.
+        // But the request sent a "false" value, so we need to make sure the
+        // checked attribute is no longer set.
+        $this->assertFalse(isset($attributes['checked']));
+    }
+}
+
+class CheckboxDto
+{
+    public $subscribe = 'on';
 }
