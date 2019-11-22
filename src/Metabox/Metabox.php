@@ -643,12 +643,16 @@ class Metabox implements MetaboxInterface
     /**
      * Check if given post should use the template.
      *
-     * @param \WP_Post $post
+     * @param \WP_Post|\WP_Comment $post
      *
      * @return bool
      */
-    private function hasTemplateForPost(\WP_Post $post): bool
+    private function hasTemplateForPost($post): bool
     {
+        if (is_a($post, 'WP_Comment')) {
+            return false;
+        }
+
         $postTemplate = get_post_meta($post->ID, '_wp_page_template', true);
 
         $templates = isset($this->template[$post->post_type]) ? $this->template[$post->post_type] : [];
