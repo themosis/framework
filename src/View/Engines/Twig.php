@@ -4,6 +4,7 @@ namespace Themosis\View\Engines;
 
 use Illuminate\Contracts\View\Engine;
 use Themosis\View\FileViewFinder;
+use Twig\Environment;
 
 class Twig implements Engine
 {
@@ -22,7 +23,7 @@ class Twig implements Engine
      */
     protected $extension = '.twig';
 
-    public function __construct(\Twig_Environment $twig, FileViewFinder $finder)
+    public function __construct(Environment $twig, FileViewFinder $finder)
     {
         $this->twig = $twig;
         $this->finder = $finder;
@@ -34,9 +35,9 @@ class Twig implements Engine
      * @param string $path The file name with its file extension.
      * @param array  $data View data (context)
      *
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      *
      * @return string
      */
