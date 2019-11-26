@@ -23,7 +23,7 @@ class Loop
      */
     public function title($post = null)
     {
-        return get_the_title($post);
+        return the_title($post);
     }
 
     /**
