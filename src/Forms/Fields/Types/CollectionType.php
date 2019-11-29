@@ -140,7 +140,7 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
         } else {
             delete_post_meta($post_id, $this->getName());
 
-            array_walk($value, function ($val) use ($post_id, $previous) {
+            array_walk($value, function ($val) use ($post_id) {
                 add_post_meta($post_id, $this->getName(), $val, false);
             });
         }

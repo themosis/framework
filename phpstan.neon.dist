@@ -1,0 +1,18 @@
+# Start command: composer update --classmap-authoritative && vendor/bin/phpstan analyze
+
+includes:
+    # https://github.com/phpstan/phpstan/blob/master/conf/bleedingEdge.neon
+    - phar://phpstan.phar/conf/bleedingEdge.neon
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+parameters:
+    level: 2
+    paths:
+        - %currentWorkingDirectory%/src/
+    excludes_analyse:
+        - %currentWorkingDirectory%/src/Page/views
+        - %currentWorkingDirectory%/src/Core/Exceptions/views
+        - %currentWorkingDirectory%/src/Taxonomy/views
+        - %currentWorkingDirectory%/src/PostType/views
+        - %currentWorkingDirectory%/src/Forms/views
+        - %currentWorkingDirectory%/src/Auth/Console/stubs/make/views
+        - %currentWorkingDirectory%/src/User/views

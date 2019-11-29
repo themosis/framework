@@ -1,6 +1,6 @@
 {
   "name": "themosis-framework",
-  "version": "2.0.2",
+  "version": "2.0.5",
   "description": "A WordPress framework.",
   "directories": {
     "test": "resources/assets/js/tests"
