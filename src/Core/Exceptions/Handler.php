@@ -180,6 +180,8 @@ class Handler implements ExceptionHandler
      * @param Request                 $request
      * @param AuthenticationException $e
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return Response
      */
     protected function unauthenticated($request, AuthenticationException $e)
@@ -194,6 +196,8 @@ class Handler implements ExceptionHandler
      *
      * @param ValidationException $e
      * @param Request             $request
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      *
      * @return SymfonyResponse
      */
@@ -212,17 +216,15 @@ class Handler implements ExceptionHandler
      * Convert a validation exception into a response.
      *
      * @param Request             $request
-     * @param ValidationException $e
+     * @param ValidationException $exception
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    protected function invalid($request, ValidationException $e)
+    protected function invalid($request, ValidationException $exception)
     {
-        $url = $e->redirectTo ?? url()->previous();
-
-        return redirect($url)
-            ->withInput($request->except($this->dontFlash))
-            ->withErrors($e->errors(), $e->errorBag);
+        return redirect($exception->redirectTo ?? url()->previous())
+            ->withInput(Arr::except($request->input(), $this->dontFlash))
+            ->withErrors($exception->errors(), $exception->errorBag);
     }
 
     /**
@@ -230,6 +232,8 @@ class Handler implements ExceptionHandler
      *
      * @param Request             $request
      * @param ValidationException $e
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      *
      * @return JsonResponse
      */

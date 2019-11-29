@@ -6,10 +6,16 @@ use Illuminate\Config\Repository;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Routing\ResponseFactory;
+use Illuminate\Support\MessageBag;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Validator;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Themosis\Core\Exceptions\Handler;
@@ -178,6 +184,53 @@ class ExceptionHandlerTest extends TestCase
         $this->assertNotContains('"file":', $response);
         $this->assertNotContains('"line":', $response);
         $this->assertNotContains('"trace":', $response);
+    }
+
+    public function testValidateFileMethod()
+    {
+        $argumentExpected = ['input' => 'My input value'];
+        $argumentActual = null;
+
+        $this->container->singleton('redirect', function () use (&$argumentActual) {
+            $redirector = $this->createMock(Redirector::class);
+
+            $redirector->expects($this->once())
+                ->method('to')
+                ->willReturn($responser = $this->createMock(RedirectResponse::class));
+
+            $responser->expects($this->once())
+                ->method('withInput')
+                ->with($this->callback(function ($argument) use (&$argumentActual) {
+                    $argumentActual = $argument;
+
+                    return true;
+                }))
+                ->willReturn($responser);
+
+            $responser->expects($this->once())
+                ->method('withErrors')
+                ->willReturn($responser);
+
+            return $redirector;
+        });
+
+        $file = $this->createMock(UploadedFile::class);
+        $file->method('getPathname')->willReturn('photo.jpg');
+        $file->method('getClientOriginalName')->willReturn('photo.jpg');
+        $file->method('getClientMimeType')->willReturn(null);
+        $file->method('getError')->willReturn(null);
+
+        $request = Request::create('/', 'POST', $argumentExpected, [], ['photo' => $file]);
+
+        $validator = $this->createMock(Validator::class);
+        $validator->method('errors')->willReturn(new MessageBag(['error' => 'My custom validation exception']));
+
+        $validationException = new ValidationException($validator);
+        $validationException->redirectTo = '/';
+
+        $this->handler->render($request, $validationException);
+
+        $this->assertEquals($argumentExpected, $argumentActual);
     }
 }
 
