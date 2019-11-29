@@ -4,6 +4,7 @@ namespace Themosis\Hook;
 
 use BadMethodCallException;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Str;
 
 abstract class Hook implements IHook
 {
@@ -177,6 +178,8 @@ abstract class Hook implements IHook
      * @param string $class
      * @param string $hook
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return array
      */
     protected function buildClassEventCallback($class, $hook)
@@ -198,12 +201,12 @@ abstract class Hook implements IHook
      */
     protected function parseClassEvent($class, $hook)
     {
-        if (str_contains($class, '@')) {
+        if (Str::contains($class, '@')) {
             return explode('@', $class);
         }
 
         // If no method is defined, use the hook name as the method name.
-        $method = str_contains($hook, '-') ? str_replace('-', '_', $hook) : $hook;
+        $method = Str::contains($hook, '-') ? str_replace('-', '_', $hook) : $hook;
 
         return [$class, $method];
     }

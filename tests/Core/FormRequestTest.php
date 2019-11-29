@@ -3,10 +3,10 @@
 namespace Themosis\Tests\Core;
 
 use Illuminate\Container\Container;
-use Illuminate\Contracts\Translation\Translator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Routing\UrlGenerator;
+use Illuminate\Translation\ArrayLoader;
 use Illuminate\Validation\Factory;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Http\FormRequest;
@@ -80,11 +80,10 @@ class FormRequestTest extends TestCase
      */
     protected function createValidationFactory($container)
     {
-        $translator = $this->getMockBuilder(Translator::class)
-            ->setMethods(['trans', 'transChoice', 'getLocale', 'setLocale', 'rules'])
-            ->getMock();
-
-        $translator->expects($this->any())->method('trans')->willReturn('error');
+        $translator = new \Illuminate\Translation\Translator(
+            new ArrayLoader(),
+            'en_US'
+        );
 
         return new Factory($translator, $container);
     }

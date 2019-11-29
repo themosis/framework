@@ -8,6 +8,7 @@ use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Factory as ValidationFactory;
 use Illuminate\Validation\ValidatesWhenResolvedTrait;
 use Illuminate\Validation\ValidationException;
@@ -57,6 +58,8 @@ class FormRequest extends Request implements ValidatesWhenResolved
 
     /**
      * Get the validator instance for the request.
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      *
      * @return ValidatorContract
      */
@@ -134,7 +137,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
         $rules = $this->container->call([$this, 'rules']);
 
         return $this->only(collect($rules)->keys()->map(function ($rule) {
-            return str_contains($rule, '.') ? explode('.', $rule)[0] : $rule;
+            return Str::contains($rule, '.') ? explode('.', $rule)[0] : $rule;
         })->unique()->toArray());
     }
 

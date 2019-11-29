@@ -71,7 +71,7 @@ class BladeServiceProvider extends ServiceProvider
         });
 
         Blade::directive('role', function ($expression) {
-            return "<?php if( User::current()->hasRole({$expression}) ): ?>";
+            return "<?php if (User::current()->hasRole({$expression})): ?>";
         });
 
         Blade::directive('query', function ($expression) {
@@ -117,7 +117,7 @@ class BladeServiceProvider extends ServiceProvider
             // Set the view data if defined.
             $data = 3 === count($args) ? array_pop($args) : '[]';
 
-            return "<?php if (\$__env->exists('{$path}')) { echo \$__env->make('{$path}', {$data}, array_except(get_defined_vars(), array('__data', '__path')))->render(); } else { echo \$__env->make('{$args[0]}', {$data}, array_except(get_defined_vars(), array('__data', '__path')))->render(); } ?>";
+            return "<?php if (\$__env->exists('{$path}')) { echo \$__env->make('{$path}', {$data}, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); } else { echo \$__env->make('{$args[0]}', {$data}, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); } ?>";
         });
 
         Blade::directive('wp_footer', function () {

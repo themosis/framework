@@ -3,6 +3,7 @@
 namespace Themosis\Support;
 
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Str;
 
 trait CallbackHandler
 {
@@ -60,6 +61,8 @@ trait CallbackHandler
      *
      * @param string $callback
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return array
      */
     protected function handleClassCallback(string $callback): array
@@ -79,7 +82,7 @@ trait CallbackHandler
      */
     protected function parseCallback(string $callback): array
     {
-        if (str_contains($callback, '@')) {
+        if (Str::contains($callback, '@')) {
             return explode('@', $callback);
         }
 
