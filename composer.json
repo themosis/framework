@@ -28,7 +28,7 @@
     }
   },
   "require": {
-    "php": ">=7.1.0",
+    "php": ">=7.2.9",
     "composer/installers": "^1.0",
     "dragonmantank/cron-expression": "^2.2",
     "filp/whoops": "^2.1",
@@ -62,7 +62,7 @@
     "league/fractal": "^0.17.0",
     "ramsey/uuid": "^3.8",
     "symfony/property-access": "^4.2",
-    "twig/twig": " ^2.12",
+    "twig/twig": " ^3.0",
     "vlucas/phpdotenv": "^3.3"
   },
   "require-dev": {
