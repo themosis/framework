@@ -56,7 +56,7 @@ use Themosis\Core\Console\VendorPublishCommand;
 use Themosis\Core\Console\ViewClearCommand;
 use Themosis\Core\Console\WidgetMakeCommand;
 
-class ConsoleServiceProvider extends ServiceProvider
+class ArtisanServiceProvider extends ServiceProvider
 {
     /**
      * Defer the loading of the provider.

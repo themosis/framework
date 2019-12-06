@@ -2,7 +2,7 @@
 
 namespace Themosis\Core\Console;
 
-use Illuminate\Console\Application as Console;
+use Illuminate\Console\Application as Artisan;
 use Illuminate\Console\Command;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Console\Kernel as KernelContract;
@@ -33,7 +33,7 @@ class Kernel implements KernelContract
      *
      * @var \Illuminate\Console\Application
      */
-    protected $console;
+    protected $artisan;
 
     /**
      * @var array
@@ -65,7 +65,7 @@ class Kernel implements KernelContract
     public function __construct(Application $app, Dispatcher $events)
     {
         if (! defined('ARTISAN_BINARY')) {
-            define('ARTISAN_BINARY', 'console');
+            define('ARTISAN_BINARY', 'artisan');
         }
 
         $this->app = $app;
@@ -133,7 +133,7 @@ class Kernel implements KernelContract
         try {
             $this->bootstrap();
 
-            return $this->getConsole()->run($input, $output);
+            return $this->getArtisan()->run($input, $output);
         } catch (\Exception $e) {
             $this->reportException($e);
             $this->renderException($output, $e);
@@ -198,8 +198,8 @@ class Kernel implements KernelContract
     {
         $command = new ClosureCommand($signature, $callback);
 
-        Console::starting(function ($console) use ($command) {
-            $console->add($command);
+        Artisan::starting(function ($artisan) use ($command) {
+            $artisan->add($command);
         });
 
         return $command;
@@ -212,7 +212,7 @@ class Kernel implements KernelContract
      */
     public function registerCommand($command)
     {
-        $this->getConsole()->add($command);
+        $this->getArtisan()->add($command);
     }
 
     /**
@@ -254,56 +254,56 @@ class Kernel implements KernelContract
             );
 
             if (is_subclass_of($command, Command::class) && ! (new \ReflectionClass($command))->isAbstract()) {
-                Console::starting(function ($console) use ($command) {
-                    $console->resolve($command);
+                Artisan::starting(function ($artisan) use ($command) {
+                    $artisan->resolve($command);
                 });
             }
         }
     }
 
     /**
-     * Method alias for compatibility.
-     */
-    protected function getArtisan()
-    {
-        return $this->getConsole();
-    }
-
-    /**
-     * Return the console application instance.
+     * Return the artisan application instance.
      *
      * @return \Illuminate\Console\Application
      */
-    protected function getConsole()
+    protected function getArtisan()
     {
-        if (is_null($this->console)) {
-            $console = new Console($this->app, $this->events, $this->app->version());
-            $console->setName('Themosis Framework');
+        if (is_null($this->artisan)) {
+            $artisan = new Artisan($this->app, $this->events, $this->app->version());
+            $artisan->setName('Themosis Framework');
 
-            return $this->console = $console->resolveCommands($this->commands);
+            return $this->artisan = $artisan->resolveCommands($this->commands);
         }
 
-        return $this->console;
+        return $this->artisan;
     }
 
     /**
-     * Set the console application instance.
-     *
-     * @param \Illuminate\Console\Application $console
+     * Alias for "getArtisan()".
      */
-    public function setConsole($console)
+    protected function getConsole()
     {
-        $this->console = $console;
+        return $this->getArtisan();
     }
 
     /**
      * Alias. Set the console application instance.
      *
+     * @param \Illuminate\Console\Application $console
+     */
+    public function setConsole($console)
+    {
+        $this->setArtisan($console);
+    }
+
+    /**
+     * Set the console application instance.
+     *
      * @param \Illuminate\Console\Application $artisan
      */
     public function setArtisan($artisan)
     {
-        $this->setConsole($artisan);
+        $this->artisan = $artisan;
     }
 
     /**
@@ -319,7 +319,7 @@ class Kernel implements KernelContract
     {
         $this->bootstrap();
 
-        return $this->getConsole()->call($command, $parameters, $outputBuffer);
+        return $this->getArtisan()->call($command, $parameters, $outputBuffer);
     }
 
     /**
@@ -344,7 +344,7 @@ class Kernel implements KernelContract
     {
         $this->bootstrap();
 
-        return $this->getConsole()->all();
+        return $this->getArtisan()->all();
     }
 
     /**
@@ -356,7 +356,7 @@ class Kernel implements KernelContract
     {
         $this->bootstrap();
 
-        return $this->getConsole()->output();
+        return $this->getArtisan()->output();
     }
 
     /**

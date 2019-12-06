@@ -20,7 +20,7 @@ class ConsoleCoreServiceProvider extends AggregateServiceProvider
      * @var array
      */
     protected $providers = [
-        ConsoleServiceProvider::class,
+        ArtisanServiceProvider::class,
         MigrationServiceProvider::class,
         ComposerServiceProvider::class
     ];
