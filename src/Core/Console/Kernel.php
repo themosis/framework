@@ -9,6 +9,7 @@ use Illuminate\Contracts\Console\Kernel as KernelContract;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Env;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -81,12 +82,20 @@ class Kernel implements KernelContract
     protected function defineConsoleSchedule()
     {
         $this->app->singleton(Schedule::class, function ($app) {
-            return new Schedule();
+            return tap(new Schedule($this->scheduleTimezone()), function ($schedule) {
+                $this->schedule($schedule->useCache($this->scheduleCache()));
+            });
         });
+    }
 
-        $schedule = $this->app->make(Schedule::class);
-
-        $this->schedule($schedule);
+    /**
+     * Get the name of the cache store that should manage scheduling mutexes.
+     *
+     * @return string
+     */
+    protected function scheduleCache()
+    {
+        return Env::get('SCHEDULE_CACHE_DRIVER');
     }
 
     /**
@@ -97,6 +106,18 @@ class Kernel implements KernelContract
     protected function schedule(Schedule $schedule)
     {
         //
+    }
+
+    /**
+     * Get the timezone that should be used by default for scheduled events.
+     *
+     * @return \DateTimeZone|string|null
+     */
+    protected function scheduleTimezone()
+    {
+        $config = $this->app['config'];
+
+        return $config->get('app.schedule_timezone', $config->get('app.timezone'));
     }
 
     /**

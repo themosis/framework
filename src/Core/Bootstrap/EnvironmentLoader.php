@@ -3,30 +3,14 @@
 namespace Themosis\Core\Bootstrap;
 
 use Dotenv\Dotenv;
-use Dotenv\Environment\Adapter\EnvConstAdapter;
-use Dotenv\Environment\Adapter\ServerConstAdapter;
-use Dotenv\Environment\DotenvFactory;
 use Dotenv\Exception\InvalidFileException;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Env;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 class EnvironmentLoader
 {
-    /**
-     * Required environment variables.
-     *
-     * @var array
-     */
-    protected $required = [
-        'DATABASE_NAME',
-        'DATABASE_USER',
-        'DATABASE_PASSWORD',
-        'DATABASE_HOST',
-        'APP_URL',
-        'WP_URL'
-    ];
-
     /**
      * Bootstrap the application environment.
      *
@@ -41,9 +25,7 @@ class EnvironmentLoader
         $this->checkForSpecificEnvironmentFile($app);
 
         try {
-            $dotenv = $this->createDotenv($app);
-            $dotenv->safeLoad();
-            $dotenv->required($this->required);
+            $this->createDotenv($app)->safeLoad();
         } catch (InvalidFileException $e) {
             $this->writeErrorAndDie($e);
         }
@@ -106,7 +88,7 @@ class EnvironmentLoader
         return Dotenv::create(
             $app->environmentPath(),
             $app->environmentFile(),
-            new DotenvFactory([new EnvConstAdapter(), new ServerConstAdapter()])
+            Env::getFactory()
         );
     }
 
