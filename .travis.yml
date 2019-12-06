@@ -3,17 +3,18 @@ language: php
 matrix:
   fast_finish: true
   include:
-    - php: 7.1
-    - php: 7.2
+    - php: 7.3
+    - php: 7.4
 
 cache:
   directories:
     - $HOME/.composer/cache
 
 install:
-  - travis_retry composer update --prefer-dist --no-interaction --no-suggest
+  - travis_retry composer install --prefer-dist --no-interaction --no-suggest
 
 before_script:
   - phpenv config-rm xdebug.ini
 
-script: vendor/bin/phpunit
+script:
+  - vendor/bin/phpunit
