@@ -15,6 +15,7 @@ use Illuminate\Database\Console\Migrations\RollbackCommand;
 use Illuminate\Database\Console\Migrations\StatusCommand;
 use Illuminate\Database\Console\Seeds\SeedCommand;
 use Illuminate\Database\Console\Seeds\SeederMakeCommand;
+use Illuminate\Notifications\Console\NotificationTableCommand;
 use Illuminate\Queue\Console\FailedTableCommand;
 use Illuminate\Queue\Console\FlushFailedCommand as FlushFailedQueueCommand;
 use Illuminate\Queue\Console\ForgetFailedCommand as ForgetFailedQueueCommand;
@@ -39,6 +40,7 @@ use Themosis\Core\Console\JobMakeCommand;
 use Themosis\Core\Console\KeyGenerateCommand;
 use Themosis\Core\Console\MailMakeCommand;
 use Themosis\Core\Console\ModelMakeCommand;
+use Themosis\Core\Console\NotificationMakeCommand;
 use Themosis\Core\Console\PackageDiscoverCommand;
 use Themosis\Core\Console\PasswordResetTableCommand;
 use Themosis\Core\Console\PluginInstallCommand;
@@ -117,6 +119,8 @@ class ArtisanServiceProvider extends ServiceProvider
         'MiddlewareMake' => 'command.middleware.make',
         'MigrateMake' => 'command.migrate.make',
         'ModelMake' => 'command.model.make',
+        'NotificationMake' => 'command.notification.make',
+        'NotificationTable' => 'command.notification.table',
         'PasswordResetTable' => 'command.password.reset.table',
         'PluginInstall' => 'command.plugin.install',
         'PolicyMake' => 'command.policy.make',
@@ -425,6 +429,30 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new ModelMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the make:notification command.
+     *
+     * @param string $abstract
+     */
+    protected function registerNotificationMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new NotificationMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the notification:table command.
+     *
+     * @param string $abstract
+     */
+    protected function registerNotificationTableCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new NotificationTableCommand($app['files'], $app['composer']);
         });
     }
 
