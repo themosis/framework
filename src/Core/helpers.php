@@ -2,6 +2,7 @@
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
+use Illuminate\Contracts\Broadcasting\Factory as BroadcastFactory;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -58,6 +59,8 @@ if (! function_exists('app')) {
      * @param string $abstract
      * @param array  $parameters
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return mixed|\Themosis\Core\Application
      */
     function app($abstract = null, array $parameters = [])
@@ -76,6 +79,8 @@ if (! function_exists('app_path')) {
      *
      * @param string $path
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return string
      */
     function app_path($path = '')
@@ -91,6 +96,8 @@ if (! function_exists('asset')) {
      * @param string $path
      * @param bool   $secure
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return string
      */
     function asset($path, $secure = null)
@@ -104,6 +111,8 @@ if (! function_exists('auth')) {
      * Get the available auth instance.
      *
      * @param string|null $guard
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      *
      * @return \Illuminate\Contracts\Auth\Factory|\Illuminate\Contracts\Auth\Guard
      */
@@ -125,6 +134,8 @@ if (! function_exists('back')) {
      * @param array $headers
      * @param mixed $fallback
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     function back($status = 302, $headers = [], $fallback = false)
@@ -139,6 +150,8 @@ if (! function_exists('base_path')) {
      *
      * @param string $path
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return string
      */
     function base_path($path = '')
@@ -147,11 +160,29 @@ if (! function_exists('base_path')) {
     }
 }
 
+if (! function_exists('broadcast')) {
+    /**
+     * Begin broadcasting an event.
+     *
+     * @param null $event
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @return \Illuminate\Broadcasting\PendingBroadcast
+     */
+    function broadcast($event = null)
+    {
+        return app(BroadcastFactory::class)->event($event);
+    }
+}
+
 if (! function_exists('public_path')) {
     /**
      * Get the path to the public folder.
      *
      * @param string $path
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      *
      * @return string
      */
