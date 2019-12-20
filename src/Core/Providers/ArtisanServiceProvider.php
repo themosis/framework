@@ -34,10 +34,13 @@ use Themosis\Core\Console\ConsoleMakeCommand;
 use Themosis\Core\Console\CustomerTableCommand;
 use Themosis\Core\Console\DownCommand;
 use Themosis\Core\Console\DropinClearCommand;
+use Themosis\Core\Console\EventGenerateCommand;
+use Themosis\Core\Console\EventMakeCommand;
 use Themosis\Core\Console\FormMakeCommand;
 use Themosis\Core\Console\HookMakeCommand;
 use Themosis\Core\Console\JobMakeCommand;
 use Themosis\Core\Console\KeyGenerateCommand;
+use Themosis\Core\Console\ListenerMakeCommand;
 use Themosis\Core\Console\MailMakeCommand;
 use Themosis\Core\Console\ModelMakeCommand;
 use Themosis\Core\Console\NotificationMakeCommand;
@@ -111,10 +114,13 @@ class ArtisanServiceProvider extends ServiceProvider
         'ConsoleMake' => 'command.console.make',
         'ControllerMake' => 'command.controller.make',
         'CustomerTable' => 'command.customer.table',
+        'EventGenerate' => 'command.event.generate',
+        'EventMake' => 'command.event.make',
         'FactoryMake' => 'command.factory.make',
         'FormMake' => 'command.form.make',
         'HookMake' => 'command.hook.make',
         'JobMake' => 'command.job.make',
+        'ListenerMake' => 'command.listener.make',
         'MailMake' => 'command.mail.make',
         'MiddlewareMake' => 'command.middleware.make',
         'MigrateMake' => 'command.migrate.make',
@@ -235,6 +241,30 @@ class ArtisanServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the event:generate command.
+     *
+     * @param string $abstract
+     */
+    protected function registerEventGenerateCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new EventGenerateCommand();
+        });
+    }
+
+    /**
+     * Register the make:event command.
+     *
+     * @param string $abstract
+     */
+    protected function registerEventMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new EventMakeCommand($app['files']);
+        });
+    }
+
+    /**
      * Register the make:factory command.
      *
      * @param string $abstract
@@ -291,6 +321,18 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function () {
             return new KeyGenerateCommand();
+        });
+    }
+
+    /**
+     * Register the make:listener command.
+     *
+     * @param string $abstract
+     */
+    protected function registerListenerMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ListenerMakeCommand($app['files']);
         });
     }
 
