@@ -34,7 +34,10 @@ use Themosis\Core\Console\ConsoleMakeCommand;
 use Themosis\Core\Console\CustomerTableCommand;
 use Themosis\Core\Console\DownCommand;
 use Themosis\Core\Console\DropinClearCommand;
+use Themosis\Core\Console\EventCacheCommand;
+use Themosis\Core\Console\EventClearCommand;
 use Themosis\Core\Console\EventGenerateCommand;
+use Themosis\Core\Console\EventListCommand;
 use Themosis\Core\Console\EventMakeCommand;
 use Themosis\Core\Console\FormMakeCommand;
 use Themosis\Core\Console\HookMakeCommand;
@@ -78,6 +81,9 @@ class ArtisanServiceProvider extends ServiceProvider
     protected $commands = [
         'Down' => 'command.down',
         'DropinClear' => 'command.dropin.clear',
+        'EventCache' => 'command.event.cache',
+        'EventClear' => 'command.event.clear',
+        'EventList' => 'command.event.list',
         'KeyGenerate' => 'command.key.generate',
         'Migrate' => 'command.migrate',
         'MigrateFresh' => 'command.migrate.fresh',
@@ -241,6 +247,30 @@ class ArtisanServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the event:cache command.
+     *
+     * @param string $abstract
+     */
+    protected function registerEventCacheCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new EventCacheCommand();
+        });
+    }
+
+    /**
+     * Register the event:clear command.
+     *
+     * @param string $abstract
+     */
+    protected function registerEventClearCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new EventClearCommand($app['files']);
+        });
+    }
+
+    /**
      * Register the event:generate command.
      *
      * @param string $abstract
@@ -249,6 +279,18 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function () {
             return new EventGenerateCommand();
+        });
+    }
+
+    /**
+     * Register the event:list command.
+     *
+     * @param string $abstract
+     */
+    protected function registerEventListCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new EventListCommand();
         });
     }
 
