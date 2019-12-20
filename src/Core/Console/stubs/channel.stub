@@ -1,0 +1,29 @@
+<?php
+
+namespace DummyNamespace;
+
+use NamespacedDummyUserModel;
+
+class DummyClass
+{
+    /**
+     * Create a new channel instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Authenticate the customer's access to the channel.
+     *
+     * @param  \NamespacedDummyUserModel  $customer
+     * @return array|bool
+     */
+    public function join(DummyUser $customer)
+    {
+        //
+    }
+}

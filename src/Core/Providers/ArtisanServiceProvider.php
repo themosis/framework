@@ -30,6 +30,7 @@ use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Session\Console\SessionTableCommand;
 use Illuminate\Support\ServiceProvider;
 use Themosis\Auth\Console\AuthMakeCommand;
+use Themosis\Core\Console\ChannelMakeCommand;
 use Themosis\Core\Console\ConsoleMakeCommand;
 use Themosis\Core\Console\CustomerTableCommand;
 use Themosis\Core\Console\DownCommand;
@@ -117,6 +118,7 @@ class ArtisanServiceProvider extends ServiceProvider
      */
     protected $devCommands = [
         'AuthMake' => 'command.auth.make',
+        'ChannelMake' => 'command.channel.make',
         'ConsoleMake' => 'command.console.make',
         'ControllerMake' => 'command.controller.make',
         'CustomerTable' => 'command.customer.table',
@@ -183,6 +185,18 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new AuthMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the make:channel command.
+     *
+     * @param string $abstract
+     */
+    protected function registerChannelMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ChannelMakeCommand($app['files']);
         });
     }
 
