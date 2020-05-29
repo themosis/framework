@@ -57,7 +57,7 @@ class MixTest extends TestCase
 
         $this->assertEquals(
             '/content/plugins/timeline/dist/css/theme.css?id=ba9aead02aea5cc7befb',
-            $mix('css/theme.css', 'content/plugins/timeline/dist')->toHtml(),
+            $mix('css/theme.css', 'content/plugins/timeline/dist')->toHtml()
         );
     }
 
