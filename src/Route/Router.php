@@ -30,7 +30,7 @@ class Router extends IlluminateRouter
      *
      * @return \Illuminate\Routing\Route
      */
-    protected function newRoute($methods, $uri, $action)
+    public function newRoute($methods, $uri, $action)
     {
         // WordPress condition could have been already applied.
         // We only try one more time to fetch them if no conditions
