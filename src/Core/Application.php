@@ -34,7 +34,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      *
      * @var string
      */
-    const VERSION = '2.0.8';
+    const VERSION = '2.0.9';
 
     /**
      * Application textdomain.
