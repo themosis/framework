@@ -10,22 +10,15 @@ use Symfony\Component\Finder\Finder;
 
 class ConfigurationLoader
 {
-    /**
-     * @var Application
-     */
-    protected $app;
-
     public function bootstrap(Application $app)
     {
-        $this->app = $app;
-
         $items = [];
 
         /*
          * Verify if configuration is cached. If so, fetch it
          * to avoid parsing all config files.
          */
-        if (file_exists($cached = $app->getCachedConfigPath())) {
+        if (is_file($cached = $app->getCachedConfigPath())) {
             $items = require $cached;
             $loadedFromCache = true;
         }
