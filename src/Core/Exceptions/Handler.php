@@ -6,13 +6,14 @@ use Closure;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Router;
@@ -21,20 +22,21 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Reflector;
 use Illuminate\Support\Traits\ReflectsClosures;
+use Illuminate\Support\ViewErrorBag;
 use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application as ConsoleApplication;
-use Symfony\Component\Debug\Exception\FlattenException;
-use Symfony\Component\Debug\ExceptionHandler as SymfonyExceptionHandler;
+use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
-use Whoops\Handler\PrettyPageHandler;
+use Whoops\Handler\HandlerInterface;
 use Whoops\Run as Whoops;
 
 class Handler implements ExceptionHandler
@@ -313,7 +315,17 @@ class Handler implements ExceptionHandler
             return $e->toResponse($request);
         }
 
-        $e = $this->prepareException($e);
+        $e = $this->prepareException($this->mapException($e));
+
+        foreach ($this->renderCallbacks as $renderCallback) {
+            if (is_a($e, $this->firstClosureParameterType($renderCallback))) {
+                $response = $renderCallback($e, $request);
+
+                if (! is_null($response)) {
+                    return $response;
+                }
+            }
+        }
 
         if ($e instanceof HttpResponseException) {
             return $e->getResponse();
@@ -323,9 +335,9 @@ class Handler implements ExceptionHandler
             return $this->convertValidationExceptionToResponse($e, $request);
         }
 
-        return $request->expectsJson() ?
-            $this->prepareJsonResponse($request, $e) :
-            $this->prepareResponse($request, $e);
+        return $request->expectsJson()
+            ? $this->prepareJsonResponse($request, $e)
+            : $this->prepareResponse($request, $e);
     }
 
     /**
@@ -343,6 +355,8 @@ class Handler implements ExceptionHandler
             $e = new AccessDeniedHttpException($e->getMessage(), $e);
         } elseif ($e instanceof TokenMismatchException) {
             $e = new HttpException(419, $e->getMessage(), $e);
+        } elseif ($e instanceof SuspiciousOperationException) {
+            $e = new NotFoundHttpException('Bad hostname provided.', $e);
         }
 
         return $e;
@@ -416,7 +430,7 @@ class Handler implements ExceptionHandler
     {
         return redirect($exception->redirectTo ?? url()->previous())
             ->withInput(Arr::except($request->input(), $this->dontFlash))
-            ->withErrors($exception->errors(), $exception->errorBag);
+            ->withErrors($exception->errors(), $request->input('_error_bag', $exception->errorBag));
     }
 
     /**
@@ -431,13 +445,10 @@ class Handler implements ExceptionHandler
      */
     protected function prepareJsonResponse($request, Throwable $e)
     {
-        $status = $this->isHttpException($e) ? $e->getStatusCode() : 500;
-        $headers = $this->isHttpException($e) ? $e->getHeaders() : [];
-
         return new JsonResponse(
             $this->convertExceptionToArray($e),
-            $status,
-            $headers,
+            $this->isHttpException($e) ? $e->getStatusCode() : 500,
+            $this->isHttpException($e) ? $e->getHeaders() : [],
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
         );
     }
@@ -445,25 +456,25 @@ class Handler implements ExceptionHandler
     /**
      * Determine if the given exception is an HTTP exception.
      *
-     * @param Exception $e
+     * @param Throwable $e
      *
      * @return bool
      */
-    protected function isHttpException(Exception $e)
+    protected function isHttpException(Throwable $e)
     {
-        return $e instanceof HttpException;
+        return $e instanceof HttpExceptionInterface;
     }
 
     /**
      * Convert the given exception to an array.
      *
-     * @param Exception $e
+     * @param Throwable $e
      *
      * @throws \Illuminate\Container\EntryNotFoundException
      *
      * @return array
      */
-    protected function convertExceptionToArray(Exception $e)
+    protected function convertExceptionToArray(Throwable $e)
     {
         return config('app.debug') ? [
             'message' => $e->getMessage(),
@@ -482,13 +493,13 @@ class Handler implements ExceptionHandler
      * Prepare a response for the given exception.
      *
      * @param \Illuminate\Http\Request $request
-     * @param Exception                $e
+     * @param Throwable                $e
      *
      * @throws \Illuminate\Container\EntryNotFoundException
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function prepareResponse($request, Exception $e)
+    protected function prepareResponse($request, Throwable $e)
     {
         if (! $this->isHttpException($e) && config('app.debug')) {
             return $this->toIlluminateResponse(
@@ -511,14 +522,14 @@ class Handler implements ExceptionHandler
      * Map the given exception into an Illuminate response.
      *
      * @param \Symfony\Component\HttpFoundation\Response $response
-     * @param Exception                                  $e
+     * @param Throwable                                  $e
      *
      * @return \Illuminate\Http\Response
      */
-    protected function toIlluminateResponse($response, Exception $e)
+    protected function toIlluminateResponse($response, Throwable $e)
     {
         if ($response instanceof SymfonyRedirectResponse) {
-            $response = new SymfonyRedirectResponse(
+            $response = new RedirectResponse(
                 $response->getTargetUrl(),
                 $response->getStatusCode(),
                 $response->headers->all()
@@ -543,37 +554,46 @@ class Handler implements ExceptionHandler
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function convertExceptionToResponse(Exception $e)
+    protected function convertExceptionToResponse(Throwable $e)
     {
-        $headers = $this->isHttpException($e) ? $e->getHeaders() : [];
-        $statusCode = $this->isHttpException($e) ? $e->getStatusCode() : 500;
+        return new SymfonyResponse(
+            $this->renderExceptionContent($e),
+            $this->isHttpException($e) ? $e->getStatusCode() : 500,
+            $this->isHttpException($e) ? $e->getHeaders() : []
+        );
+    }
 
+    /**
+     * Get the response content for the given exception.
+     *
+     * @param Throwable $e
+     *
+     * @throws \Illuminate\Container\EntryNotFoundException
+     *
+     * @return string
+     */
+    protected function renderExceptionContent(Throwable $e)
+    {
         try {
-            $content = config('app.debug') && class_exists(Whoops::class)
+            return config('app.debug') && class_exists(Whoops::class)
                 ? $this->renderExceptionWithWhoops($e)
                 : $this->renderExceptionWithSymfony($e, config('app.debug'));
         } catch (Exception $e) {
-            $content = $content ?? $this->renderExceptionWithSymfony($e, config('app.debug'));
+            return $this->renderExceptionWithSymfony($e, config('app.debug'));
         }
-
-        return SymfonyResponse::create(
-            $content,
-            $statusCode,
-            $headers
-        );
     }
 
     /**
      * Render an exception using Whoops.
      *
-     * @param Exception $e
+     * @param Throwable $e
      *
      * @return string
      */
-    protected function renderExceptionWithWhoops(Exception $e)
+    protected function renderExceptionWithWhoops(Throwable $e)
     {
         return tap(new Whoops(), function ($whoops) {
-            $whoops->pushHandler($this->whoopsHandler());
+            $whoops->appendHandler($this->whoopsHandler());
             $whoops->writeToOutput(false);
             $whoops->allowQuit(false);
         })->handleException($e);
@@ -586,68 +606,69 @@ class Handler implements ExceptionHandler
      */
     protected function whoopsHandler()
     {
-        return tap(new PrettyPageHandler(), function ($handler) {
-            $files = new Filesystem();
-            $handler->handleUnconditionally(true);
-
-            foreach (config('app.debug_blacklist', []) as $key => $secrets) {
-                foreach ($secrets as $secret) {
-                    $handler->blacklist($key, $secret);
-                }
-            }
-
-            if (config('app.editor', false)) {
-                $handler->setEditor(config('app.editor'));
-            }
-
-            $handler->setApplicationPaths(
-                array_flip(Arr::except(
-                    array_flip($files->directories(base_path())),
-                    [base_path('vendor')]
-                ))
-            );
-        });
+        try {
+            return app(HandlerInterface::class);
+        } catch (BindingResolutionException $e) {
+            return (new WhoopsHandler())->forDebug();
+        }
     }
 
     /**
      * Render an exception to a string using Symfony.
      *
-     * @param Exception $e
-     * @param $debug
+     * @param Throwable $e
+     * @param bool      $debug
      *
      * @return string
      */
-    protected function renderExceptionWithSymfony(Exception $e, $debug)
+    protected function renderExceptionWithSymfony(Throwable $e, $debug)
     {
-        return (new SymfonyExceptionHandler($debug))->getHtml(FlattenException::create($e));
+        $renderer = new HtmlErrorRenderer($debug);
+
+        return $renderer->render($e)->getAsString();
     }
 
     /**
      * Render the given HttpException.
      *
-     * @param \Symfony\Component\HttpKernel\Exception\HttpException $e
+     * @param \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface $e
      *
      * @throws \Illuminate\Container\EntryNotFoundException
      *
      * @return \Symfony\Component\HttpFoundation\Response;
      */
-    protected function renderHttpException(HttpException $e)
+    protected function renderHttpException(HttpExceptionInterface $e)
     {
-        $status = $e->getStatusCode();
+        $this->registerErrorViewPaths();
 
-        $paths = collect(view()->getFinder()->getPaths());
-
-        view()->replaceNamespace('errors', $paths->map(function ($path) {
-            return "{$path}/errors";
-        })->push(__DIR__.'/views')->all());
-
-        if (view()->exists($view = "errors::{$status}")) {
+        if (view()->exists($view = $this->getHttpExceptionView($e))) {
             return response()->view($view, [
+                'errors' => new ViewErrorBag(),
                 'exception' => $e
-            ], $status, $e->getHeaders());
+            ], $e->getStatusCode(), $e->getHeaders());
         }
 
         return $this->convertExceptionToResponse($e);
+    }
+
+    /**
+     * Register the error template hint paths.
+     */
+    protected function registerErrorViewPaths()
+    {
+        (new RegisterErrorViewPaths())();
+    }
+
+    /**
+     * Get the view used to render HTTP exceptions.
+     *
+     * @param HttpExceptionInterface $e
+     *
+     * @return string
+     */
+    protected function getHttpExceptionView(HttpExceptionInterface $e)
+    {
+        return "errors::{$e->getStatusCode()}";
     }
 
     /**
