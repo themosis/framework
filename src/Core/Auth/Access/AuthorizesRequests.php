@@ -107,6 +107,7 @@ trait AuthorizesRequests
     protected function resourceAbilityMap()
     {
         return [
+            'index' => 'viewAny',
             'show' => 'view',
             'create' => 'create',
             'store' => 'create',
