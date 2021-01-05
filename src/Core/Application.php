@@ -7,6 +7,8 @@ use Composer\Autoload\ClassLoader;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
+use Illuminate\Contracts\Foundation\CachesConfiguration;
+use Illuminate\Contracts\Foundation\CachesRoutes;
 use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
 use Illuminate\Events\EventServiceProvider;
 use Illuminate\Filesystem\Filesystem;
@@ -28,14 +30,23 @@ use Themosis\Core\Bootstrap\EnvironmentLoader;
 use Themosis\Core\Events\LocaleUpdated;
 use Themosis\Route\RouteServiceProvider;
 
-class Application extends Container implements ApplicationContract, HttpKernelInterface
+class Application extends Container implements
+    ApplicationContract,
+    CachesConfiguration,
+    CachesRoutes,
+    HttpKernelInterface
 {
     /**
-     * Application version.
+     * Themosis framework version.
+     */
+    const THEMOSIS_VERSION = '3.0.0';
+
+    /**
+     * Laravel version.
      *
      * @var string
      */
-    const VERSION = '2.0.6';
+    const VERSION = '8.0.0';
 
     /**
      * Application textdomain.
