@@ -2,12 +2,14 @@
 
 namespace Themosis\Tests\Core;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Container\Container;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Validation\Factory;
+use Illuminate\Validation\ValidationException;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Http\FormRequest;
 
@@ -27,11 +29,10 @@ class FormRequestTest extends TestCase
         $this->assertEquals(['name' => 'something'], $request->validated());
     }
 
-    /**
-     * @expectedException \Illuminate\Validation\ValidationException
-     */
     public function testValidateThrowsWhenValidationFails()
     {
+        $this->expectException(ValidationException::class);
+
         $request = $this->createRequest(['no' => 'name']);
 
         $this->mocks['redirect']->expects($this->any())->method('withInput');
@@ -40,11 +41,10 @@ class FormRequestTest extends TestCase
         $request->validateResolved();
     }
 
-    /**
-     * @expectedException \Illuminate\Auth\Access\AuthorizationException
-     */
     public function testValidateMethodThrowsWhenAuthorizationFails()
     {
+        $this->expectException(AuthorizationException::class);
+
         $this->createRequest([], CoreTestFormRequestForbiddenStub::class)->validateResolved();
     }
 

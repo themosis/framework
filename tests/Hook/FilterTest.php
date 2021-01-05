@@ -11,7 +11,7 @@ class FilterTest extends TestCase
      */
     protected $app;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->app = new Application();
     }

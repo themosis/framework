@@ -8,7 +8,6 @@ use Illuminate\Contracts\Validation\ValidatesWhenResolved;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Factory as ValidationFactory;
 use Illuminate\Validation\ValidatesWhenResolvedTrait;
 use Illuminate\Validation\ValidationException;
@@ -57,6 +56,11 @@ class FormRequest extends Request implements ValidatesWhenResolved
     protected $errorBag = 'default';
 
     /**
+     * @var \Illuminate\Contracts\Validation\Validator
+     */
+    protected $validator;
+
+    /**
      * Get the validator instance for the request.
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
@@ -65,6 +69,10 @@ class FormRequest extends Request implements ValidatesWhenResolved
      */
     protected function getValidatorInstance()
     {
+        if ($this->validator) {
+            return $this->validator;
+        }
+
         $factory = $this->container->make(ValidationFactory::class);
 
         if (method_exists($this, 'validator')) {
@@ -77,7 +85,9 @@ class FormRequest extends Request implements ValidatesWhenResolved
             $this->withValidator($validator);
         }
 
-        return $validator;
+        $this->setValidator($validator);
+
+        return $this->validator;
     }
 
     /**
@@ -134,11 +144,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
      */
     public function validated()
     {
-        $rules = $this->container->call([$this, 'rules']);
-
-        return $this->only(collect($rules)->keys()->map(function ($rule) {
-            return Str::contains($rule, '.') ? explode('.', $rule)[0] : $rule;
-        })->unique()->toArray());
+        return $this->validator->validated();
     }
 
     /**
@@ -186,7 +192,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
             return $this->container->call([$this, 'authorize']);
         }
 
-        return false;
+        return true;
     }
 
     /**
@@ -198,7 +204,21 @@ class FormRequest extends Request implements ValidatesWhenResolved
      */
     protected function failedAuthorization()
     {
-        throw new AuthorizationException('This action is unauthorized.');
+        throw new AuthorizationException();
+    }
+
+    /**
+     * Set the validator instance.
+     *
+     * @param Validator $validator
+     *
+     * @return $this
+     */
+    public function setValidator(Validator $validator)
+    {
+        $this->validator = $validator;
+
+        return $this;
     }
 
     /**

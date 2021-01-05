@@ -10,7 +10,7 @@ class MixTest extends TestCase
 {
     protected $app;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->getApplication();
     }
