@@ -1056,6 +1056,18 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
+     * Determine if the given service provider is loaded.
+     *
+     * @param string $provider
+     *
+     * @return bool
+     */
+    public function providerIsLoaded(string $provider)
+    {
+        return isset($this->loadedProviders[$provider]);
+    }
+
+    /**
      * Resolve a service provider instance from the class name.
      *
      * @param string $provider
