@@ -16,8 +16,8 @@ class RegisterFacades
         Facade::setFacadeApplication($app);
 
         AliasLoader::getInstance(array_merge(
-            $app['config']->get('app.aliases', []),
-            $app[PackageManifest::class]->aliases()
+            $app->make('config')->get('app.aliases', []),
+            $app->make(PackageManifest::class)->aliases()
         ))->register();
     }
 }
