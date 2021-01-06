@@ -2,6 +2,7 @@
 
 namespace Themosis\Core\Events;
 
+use Illuminate\Support\Reflector;
 use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
 
@@ -53,7 +54,9 @@ class DiscoverEvents
                     continue;
                 }
 
-                $listenerEvents[$listener->name.'@'.$method->name] = optional($method->getParameters()[0]->getClass())->name;
+                $listenerEvents[$listener->name.'@'.$method->name] = Reflector::getParameterClassName(
+                    $method->getParameters()[0]
+                );
             }
         }
 
