@@ -117,7 +117,7 @@ class ArtisanServiceProvider extends ServiceProvider
      * @var array
      */
     protected $devCommands = [
-        'AuthMake' => 'command.auth.make',
+        //'AuthMake' => 'command.auth.make',
         'ChannelMake' => 'command.channel.make',
         'ConsoleMake' => 'command.console.make',
         'ControllerMake' => 'command.controller.make',

@@ -135,6 +135,8 @@ class Application extends Container implements
      */
     protected $namespace;
 
+    protected $storagePath;
+
     public function __construct($basePath = null)
     {
         if ($basePath) {
@@ -582,6 +584,22 @@ class Application extends Container implements
         }
 
         return $this->contentPath('storage').($path ? DIRECTORY_SEPARATOR.$path : $path);
+    }
+
+    /**
+     * Set the storage directory.
+     *
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function useStoragePath($path)
+    {
+        $this->storagePath = $path;
+
+        $this->instance('path.storage', $path);
+
+        return $this;
     }
 
     /**
