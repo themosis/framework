@@ -13,8 +13,8 @@ use Illuminate\Support\Env;
 use Illuminate\Support\Str;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\Finder\Finder;
+use Throwable;
 
 class Kernel implements KernelContract
 {
@@ -134,14 +134,7 @@ class Kernel implements KernelContract
             $this->bootstrap();
 
             return $this->getArtisan()->run($input, $output);
-        } catch (\Exception $e) {
-            $this->reportException($e);
-            $this->renderException($output, $e);
-
-            return 1;
         } catch (\Throwable $e) {
-            $e = new FatalThrowableError($e);
-
             $this->reportException($e);
             $this->renderException($output, $e);
 
@@ -362,9 +355,9 @@ class Kernel implements KernelContract
     /**
      * Report the exception to the exception handler.
      *
-     * @param \Exception $e
+     * @param Throwable $e
      */
-    protected function reportException(\Exception $e)
+    protected function reportException(Throwable $e)
     {
         $this->app[ExceptionHandler::class]->report($e);
     }
@@ -373,9 +366,9 @@ class Kernel implements KernelContract
      * Render the exception.
      *
      * @param OutputInterface $output
-     * @param \Exception      $e
+     * @param Throwable       $e
      */
-    protected function renderException($output, \Exception $e)
+    protected function renderException($output, Throwable $e)
     {
         $this->app[ExceptionHandler::class]->renderForConsole($output, $e);
     }
