@@ -5,7 +5,7 @@ namespace Themosis\Core\Console;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 
-class ConfigClear extends Command
+class ConfigClearCommand extends Command
 {
     /**
      * The console command name.

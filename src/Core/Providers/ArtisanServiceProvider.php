@@ -31,10 +31,13 @@ use Illuminate\Session\Console\SessionTableCommand;
 use Illuminate\Support\ServiceProvider;
 use Themosis\Auth\Console\AuthMakeCommand;
 use Themosis\Core\Console\ChannelMakeCommand;
+use Themosis\Core\Console\ConfigCacheCommand;
+use Themosis\Core\Console\ConfigClearCommand;
 use Themosis\Core\Console\ConsoleMakeCommand;
 use Themosis\Core\Console\CustomerTableCommand;
 use Themosis\Core\Console\DownCommand;
 use Themosis\Core\Console\DropinClearCommand;
+use Themosis\Core\Console\EnvironmentCommand;
 use Themosis\Core\Console\EventCacheCommand;
 use Themosis\Core\Console\EventClearCommand;
 use Themosis\Core\Console\EventGenerateCommand;
@@ -80,8 +83,11 @@ class ArtisanServiceProvider extends ServiceProvider
      * @var array
      */
     protected $commands = [
+        'ConfigCache' => 'command.config.cache',
+        'ConfigClear' => 'command.config.clear',
         'Down' => 'command.down',
         'DropinClear' => 'command.dropin.clear',
+        'Environment' => 'command.environment',
         'EventCache' => 'command.event.cache',
         'EventClear' => 'command.event.clear',
         'EventList' => 'command.event.list',
@@ -201,6 +207,30 @@ class ArtisanServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the config:cache command.
+     *
+     * @param string $abstract
+     */
+    protected function registerConfigCacheCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ConfigCacheCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the config:clear command.
+     *
+     * @param string $abstract
+     */
+    protected function registerConfigClearCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ConfigClearCommand($app['files']);
+        });
+    }
+
+    /**
      * Register the make:command command.
      *
      * @param string $abstract
@@ -257,6 +287,18 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new DropinClearCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the env command.
+     *
+     * @param string $abstract
+     */
+    protected function registerEnvironmentCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new EnvironmentCommand();
         });
     }
 
