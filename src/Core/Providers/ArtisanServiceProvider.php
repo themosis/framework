@@ -2,6 +2,7 @@
 
 namespace Themosis\Core\Providers;
 
+use Illuminate\Cache\Console\CacheTableCommand;
 use Illuminate\Console\Scheduling\ScheduleFinishCommand;
 use Illuminate\Console\Scheduling\ScheduleRunCommand;
 use Illuminate\Database\Console\Factories\FactoryMakeCommand;
@@ -30,7 +31,9 @@ use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Session\Console\SessionTableCommand;
 use Illuminate\Support\ServiceProvider;
 use Themosis\Auth\Console\AuthMakeCommand;
+use Themosis\Core\Console\CastMakeCommand;
 use Themosis\Core\Console\ChannelMakeCommand;
+use Themosis\Core\Console\ComponentMakeCommand;
 use Themosis\Core\Console\ConfigCacheCommand;
 use Themosis\Core\Console\ConfigClearCommand;
 use Themosis\Core\Console\ConsoleMakeCommand;
@@ -43,6 +46,7 @@ use Themosis\Core\Console\EventClearCommand;
 use Themosis\Core\Console\EventGenerateCommand;
 use Themosis\Core\Console\EventListCommand;
 use Themosis\Core\Console\EventMakeCommand;
+use Themosis\Core\Console\ExceptionMakeCommand;
 use Themosis\Core\Console\FormMakeCommand;
 use Themosis\Core\Console\HookMakeCommand;
 use Themosis\Core\Console\JobMakeCommand;
@@ -124,12 +128,16 @@ class ArtisanServiceProvider extends ServiceProvider
      */
     protected $devCommands = [
         //'AuthMake' => 'command.auth.make',
+        'CacheTable' => 'command.cache.table',
+        'CastMake' => 'command.cast.make',
         'ChannelMake' => 'command.channel.make',
+        'ComponentMake' => 'command.component.make',
         'ConsoleMake' => 'command.console.make',
         'ControllerMake' => 'command.controller.make',
         'CustomerTable' => 'command.customer.table',
         'EventGenerate' => 'command.event.generate',
         'EventMake' => 'command.event.make',
+        'ExceptionMake' => 'command.exception.make',
         'FactoryMake' => 'command.factory.make',
         'FormMake' => 'command.form.make',
         'HookMake' => 'command.hook.make',
@@ -195,6 +203,30 @@ class ArtisanServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the cache:table command.
+     *
+     * @param string $abstract
+     */
+    protected function registerCacheTableCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new CacheTableCommand($app['files'], $app['composer']);
+        });
+    }
+
+    /**
+     * Register the make:cast command.
+     *
+     * @param string $abstract
+     */
+    protected function registerCastMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new CastMakeCommand($app['files']);
+        });
+    }
+
+    /**
      * Register the make:channel command.
      *
      * @param string $abstract
@@ -203,6 +235,18 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new ChannelMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the make:component command.
+     *
+     * @param string $abstract
+     */
+    protected function registerComponentMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ComponentMakeCommand($app['files']);
         });
     }
 
@@ -359,6 +403,18 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new EventMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the make:exception command.
+     *
+     * @param string $abstract
+     */
+    protected function registerExceptionMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ExceptionMakeCommand($app['files']);
         });
     }
 
