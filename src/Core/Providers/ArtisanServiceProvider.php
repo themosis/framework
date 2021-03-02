@@ -55,6 +55,7 @@ use Themosis\Core\Console\ListenerMakeCommand;
 use Themosis\Core\Console\MailMakeCommand;
 use Themosis\Core\Console\ModelMakeCommand;
 use Themosis\Core\Console\NotificationMakeCommand;
+use Themosis\Core\Console\ObserverCommand;
 use Themosis\Core\Console\PackageDiscoverCommand;
 use Themosis\Core\Console\PasswordResetTableCommand;
 use Themosis\Core\Console\PluginInstallCommand;
@@ -145,10 +146,10 @@ class ArtisanServiceProvider extends ServiceProvider
         'ListenerMake' => 'command.listener.make',
         'MailMake' => 'command.mail.make',
         'MiddlewareMake' => 'command.middleware.make',
-        'MigrateMake' => 'command.migrate.make',
         'ModelMake' => 'command.model.make',
         'NotificationMake' => 'command.notification.make',
         'NotificationTable' => 'command.notification.table',
+        'ObserverMake' => 'command.observer.make',
         'PasswordResetTable' => 'command.password.reset.table',
         'PluginInstall' => 'command.plugin.install',
         'PolicyMake' => 'command.policy.make',
@@ -649,6 +650,18 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new NotificationTableCommand($app['files'], $app['composer']);
+        });
+    }
+
+    /**
+     * Register the make:observer command.
+     *
+     * @param string $abstract
+     */
+    protected function registerObserverMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new ObserverCommand($app['files']);
         });
     }
 
