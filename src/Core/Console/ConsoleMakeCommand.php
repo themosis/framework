@@ -36,7 +36,11 @@ class ConsoleMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/console.stub';
+        if ($this->option('load-wordpress')) {
+            return __DIR__.'/stubs/console-wordpress.stub';
+        } else {
+            return __DIR__.'/stubs/console.stub';
+        }
     }
 
     /**
@@ -92,6 +96,12 @@ class ConsoleMakeCommand extends GeneratorCommand
                 InputOption::VALUE_OPTIONAL,
                 'The terminal command that should be assigned.',
                 'command:name'
+            ],
+            [
+                'load-wordpress',
+                null,
+                InputOption::VALUE_NONE,
+                'Load Wordpress functions into the command.'
             ]
         ];
     }
