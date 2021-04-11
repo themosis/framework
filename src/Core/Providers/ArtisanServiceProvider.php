@@ -164,9 +164,10 @@ class ArtisanServiceProvider extends ServiceProvider
         'RuleMake' => 'command.rule.make',
         'SeederMake' => 'command.seeder.make',
         'SessionTable' => 'command.session.table',
+        'Serve' => 'command.serve',
+        'StubPublish' => 'command.stub.publish',
         'ThemeInstall' => 'command.theme.install',
         'VendorPublish' => 'command.vendor.publish',
-        'Serve' => 'command.serve',
         'WidgetMake' => 'command.widget.make',
     ];
 
@@ -957,7 +958,7 @@ class ArtisanServiceProvider extends ServiceProvider
     protected function registerSeederMakeCommand($abstract)
     {
         $this->app->singleton($abstract, function ($app) {
-            return new SeederMakeCommand($app['files'], $app['composer']);
+            return new SeederMakeCommand($app['files']);
         });
     }
 
@@ -983,6 +984,11 @@ class ArtisanServiceProvider extends ServiceProvider
         $this->app->singleton($abstract, function ($app) {
             return new SessionTableCommand($app['files'], $app['composer']);
         });
+    }
+
+    protected function registerStubPublishCommand($abstract)
+    {
+        // @todo
     }
 
     /**
