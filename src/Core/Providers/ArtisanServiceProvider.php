@@ -17,6 +17,7 @@ use Illuminate\Database\Console\Migrations\StatusCommand;
 use Illuminate\Database\Console\Seeds\SeedCommand;
 use Illuminate\Database\Console\Seeds\SeederMakeCommand;
 use Illuminate\Notifications\Console\NotificationTableCommand;
+use Illuminate\Queue\Console\BatchesTableCommand;
 use Illuminate\Queue\Console\FailedTableCommand;
 use Illuminate\Queue\Console\FlushFailedCommand as FlushFailedQueueCommand;
 use Illuminate\Queue\Console\ForgetFailedCommand as ForgetFailedQueueCommand;
@@ -66,6 +67,7 @@ use Themosis\Core\Console\ResourceMakeCommand;
 use Themosis\Core\Console\RouteCacheCommand;
 use Themosis\Core\Console\RouteClearCommand;
 use Themosis\Core\Console\RouteListCommand;
+use Themosis\Core\Console\RuleMakeCommand;
 use Themosis\Core\Console\ServeCommand;
 use Themosis\Core\Console\ThemeInstallCommand;
 use Themosis\Core\Console\UpCommand;
@@ -156,8 +158,10 @@ class ArtisanServiceProvider extends ServiceProvider
         'ProviderMake' => 'command.provider.make',
         'QueueFailedTable' => 'command.queue.failed-table',
         'QueueTable' => 'command.queue.table',
+        'QueueBatchesTable' => 'command.queue.batches-table',
         'RequestMake' => 'command.request.make',
         'ResourceMake' => 'command.resource.make',
+        'RuleMake' => 'command.rule.make',
         'SeederMake' => 'command.seeder.make',
         'SessionTable' => 'command.session.table',
         'ThemeInstall' => 'command.theme.install',
@@ -834,6 +838,18 @@ class ArtisanServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the queue:batches-table command.
+     *
+     * @param string $abstract
+     */
+    protected function registerQueueBatchesTableCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new BatchesTableCommand($app['files'], $app['composer']);
+        });
+    }
+
+    /**
      * Register the make:request command.
      *
      * @param string $abstract
@@ -890,6 +906,18 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new RouteListCommand($app['router']);
+        });
+    }
+
+    /**
+     * Register the make:rule command.
+     *
+     * @param string $abstract
+     */
+    protected function registerRuleMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new RuleMakeCommand($app['files']);
         });
     }
 
