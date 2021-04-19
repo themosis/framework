@@ -63,6 +63,8 @@ use Themosis\Core\Console\MailMakeCommand;
 use Themosis\Core\Console\ModelMakeCommand;
 use Themosis\Core\Console\NotificationMakeCommand;
 use Themosis\Core\Console\ObserverCommand;
+use Themosis\Core\Console\OptimizeClearCommand;
+use Themosis\Core\Console\OptimizeCommand;
 use Themosis\Core\Console\PackageDiscoverCommand;
 use Themosis\Core\Console\PasswordResetTableCommand;
 use Themosis\Core\Console\PluginInstallCommand;
@@ -113,13 +115,8 @@ class ArtisanServiceProvider extends ServiceProvider
         'EventClear' => 'command.event.clear',
         'EventList' => 'command.event.list',
         'KeyGenerate' => 'command.key.generate',
-        'Migrate' => 'command.migrate',
-        'MigrateFresh' => 'command.migrate.fresh',
-        'MigrateInstall' => 'command.migrate.install',
-        'MigrateRefresh' => 'command.migrate.refresh',
-        'MigrateReset' => 'command.migrate.reset',
-        'MigrateRollback' => 'command.migrate.rollback',
-        'MigrateStatus' => 'command.migrate.status',
+        'Optimize' => 'command.optimize',
+        'OptimizeClear' => 'command.optimize.clear',
         'PackageDiscover' => 'command.package.discover',
         'QueueFailed' => 'command.queue.failed',
         'QueueFlush' => 'command.queue.flush',
@@ -745,6 +742,30 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new ObserverCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the optimize command.
+     *
+     * @param string $abstract
+     */
+    protected function registerOptimizeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new OptimizeCommand();
+        });
+    }
+
+    /**
+     * Register the optimize:clear command.
+     *
+     * @param string $abstract
+     */
+    protected function registerOptimizeClearCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new OptimizeClearCommand();
         });
     }
 
