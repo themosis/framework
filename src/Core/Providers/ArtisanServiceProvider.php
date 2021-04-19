@@ -9,6 +9,7 @@ use Illuminate\Cache\Console\ForgetCommand as CacheForgetCommand;
 use Illuminate\Console\Scheduling\ScheduleFinishCommand;
 use Illuminate\Console\Scheduling\ScheduleRunCommand;
 use Illuminate\Database\Console\DbCommand;
+use Illuminate\Database\Console\DumpCommand;
 use Illuminate\Database\Console\Factories\FactoryMakeCommand;
 use Illuminate\Database\Console\Migrations\FreshCommand;
 use Illuminate\Database\Console\Migrations\InstallCommand;
@@ -136,6 +137,7 @@ class ArtisanServiceProvider extends ServiceProvider
         'RouteList' => 'command.route.list',
         'ScheduleFinish' => ScheduleFinishCommand::class,
         'ScheduleRun' => ScheduleRunCommand::class,
+        'SchemaDump' => 'command.schema.dump',
         'Seed' => 'command.seed',
         'Up' => 'command.up',
         'ViewClear' => 'command.view.clear'
@@ -1077,6 +1079,18 @@ class ArtisanServiceProvider extends ServiceProvider
     protected function registerScheduleRunCommand()
     {
         $this->app->singleton(ScheduleRunCommand::class);
+    }
+
+    /**
+     * Register the schema:dump command.
+     *
+     * @param string $abstract
+     */
+    protected function registerSchemaDumpCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new DumpCommand();
+        });
     }
 
     /**
