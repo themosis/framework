@@ -69,6 +69,7 @@ use Themosis\Core\Console\RouteClearCommand;
 use Themosis\Core\Console\RouteListCommand;
 use Themosis\Core\Console\RuleMakeCommand;
 use Themosis\Core\Console\ServeCommand;
+use Themosis\Core\Console\StubPublishCommand;
 use Themosis\Core\Console\ThemeInstallCommand;
 use Themosis\Core\Console\UpCommand;
 use Themosis\Core\Console\VendorPublishCommand;
@@ -986,9 +987,16 @@ class ArtisanServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * Register the stub:publish command.
+     *
+     * @param string $abstract
+     */
     protected function registerStubPublishCommand($abstract)
     {
-        // @todo
+        $this->app->singleton($abstract, function () {
+            return new StubPublishCommand();
+        });
     }
 
     /**
