@@ -1,13 +1,12 @@
 <?php
 
-namespace DummyNamespace;
+namespace {{ namespace }};
 
-use Illuminate\Bus\Queueable;
 use Themosis\Core\Bus\Dispatchable;
 
-class DummyClass
+class {{ class }}
 {
-    use Dispatchable, Queueable;
+    use Dispatchable;
 
     /**
      * Create a new job instance.
