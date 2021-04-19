@@ -39,9 +39,10 @@ class ModelMakeCommand extends GeneratorCommand
         }
 
         if ($this->option('all')) {
-            $this->input->setOption('controller', true);
             $this->input->setOption('factory', true);
+            $this->input->setOption('seed', true);
             $this->input->setOption('migration', true);
+            $this->input->setOption('controller', true);
             $this->input->setOption('resource', true);
         }
 
@@ -53,7 +54,11 @@ class ModelMakeCommand extends GeneratorCommand
             $this->createMigration();
         }
 
-        if ($this->option('controller') || $this->option('resource')) {
+        if ($this->option('seed')) {
+            $this->createSeeder();
+        }
+
+        if ($this->option('controller') || $this->option('resource') || $this->option('api')) {
             $this->createController();
         }
     }
@@ -63,9 +68,11 @@ class ModelMakeCommand extends GeneratorCommand
      */
     protected function createFactory()
     {
+        $factory = Str::studly($this->argument('name'));
+
         $this->call('make:factory', [
-            'name' => $this->argument('name').'Factory',
-            '--model' => $this->argument('name')
+            'name' => "{$factory}Factory",
+            '--model' => $this->qualifyClass($this->getNameInput())
         ]);
     }
 
@@ -74,11 +81,27 @@ class ModelMakeCommand extends GeneratorCommand
      */
     protected function createMigration()
     {
-        $table = Str::plural(Str::snake(class_basename($this->argument('name'))));
+        $table = Str::snake(Str::pluralStudly(class_basename($this->argument('name'))));
+
+        if ($this->option('pivot')) {
+            $table = Str::singular($table);
+        }
 
         $this->call('make:migration', [
             'name' => "create_{$table}_table",
-            '--create' => $table
+            '--create' => $table,
+        ]);
+    }
+
+    /**
+     * Create a seeder file for the model.
+     */
+    protected function createSeeder()
+    {
+        $seeder = Str::studly(class_basename($this->argument('name')));
+
+        $this->call('make:seeder', [
+            'name' => "{$seeder}Seeder",
         ]);
     }
 
@@ -90,10 +113,11 @@ class ModelMakeCommand extends GeneratorCommand
         $controller = Str::studly(class_basename($this->argument('name')));
         $modelName = $this->qualifyClass($this->getNameInput());
 
-        $this->call('make:controller', [
+        $this->call('make:controller', array_filter([
             'name' => "{$controller}Controller",
-            '--model' => $this->option('resource') ? $modelName : null
-        ]);
+            '--model' => $this->option('resource') || $this->option('api') ? $modelName : null,
+            '--api' => $this->option('api')
+        ]));
     }
 
     /**
@@ -103,11 +127,37 @@ class ModelMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        if ($this->option('pivot')) {
-            return __DIR__.'/stubs/pivot.model.stub';
-        }
+        return $this->option('pivot')
+            ? $this->resolveStubPath('/stubs/model.pivot.stub')
+            : $this->resolveStubPath('/stubs/model.stub');
+    }
 
-        return __DIR__.'/stubs/model.stub';
+    /**
+     * Resolve the fully-qualified path to the stub.
+     *
+     * @param string $stub
+     *
+     * @return string
+     */
+    protected function resolveStubPath($stub)
+    {
+        return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
+            ? $customPath
+            : __DIR__.$stub;
+    }
+
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param string $rootNamespace
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace)
+    {
+        return is_dir(app_path('Models')) ? $rootNamespace.'\\Models' : $rootNamespace;
     }
 
     /**
@@ -118,13 +168,30 @@ class ModelMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['all', 'a', InputOption::VALUE_NONE, 'Generate a migration, factory, and resource controller for the model'],
+            [
+                'all',
+                'a',
+                InputOption::VALUE_NONE,
+                'Generate a migration, seeder, factory and resource controller for the model'
+            ],
             ['controller', 'c', InputOption::VALUE_NONE, 'Create a new controller for the model'],
             ['factory', 'f', InputOption::VALUE_NONE, 'Create a new factory for the model'],
             ['force', null, InputOption::VALUE_NONE, 'Create the class even if the model already exists'],
             ['migration', 'm', InputOption::VALUE_NONE, 'Create a new migration file for the model'],
-            ['pivot', 'p', InputOption::VALUE_NONE, 'Indicates if the generated model should be a custom intermediate table model'],
-            ['resource', 'r', InputOption::VALUE_NONE, 'Indicates if the generated controller should be a resource controller']
+            ['seed', 's', InputOption::VALUE_NONE, 'Create a new seeder file for the model'],
+            [
+                'pivot',
+                'p',
+                InputOption::VALUE_NONE,
+                'Indicates if the generated model should be a custom intermediate table model'
+            ],
+            [
+                'resource',
+                'r',
+                InputOption::VALUE_NONE,
+                'Indicates if the generated controller should be a resource controller'
+            ],
+            ['api', null, InputOption::VALUE_NONE, 'Indicates if the generated controller should be an API controller']
         ];
     }
 }
