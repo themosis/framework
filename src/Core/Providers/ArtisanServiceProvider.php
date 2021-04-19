@@ -2,9 +2,13 @@
 
 namespace Themosis\Core\Providers;
 
+use Illuminate\Auth\Console\ClearResetsCommand;
 use Illuminate\Cache\Console\CacheTableCommand;
+use Illuminate\Cache\Console\ClearCommand as CacheClearCommand;
+use Illuminate\Cache\Console\ForgetCommand as CacheForgetCommand;
 use Illuminate\Console\Scheduling\ScheduleFinishCommand;
 use Illuminate\Console\Scheduling\ScheduleRunCommand;
+use Illuminate\Database\Console\DbCommand;
 use Illuminate\Database\Console\Factories\FactoryMakeCommand;
 use Illuminate\Database\Console\Migrations\FreshCommand;
 use Illuminate\Database\Console\Migrations\InstallCommand;
@@ -16,6 +20,7 @@ use Illuminate\Database\Console\Migrations\RollbackCommand;
 use Illuminate\Database\Console\Migrations\StatusCommand;
 use Illuminate\Database\Console\Seeds\SeedCommand;
 use Illuminate\Database\Console\Seeds\SeederMakeCommand;
+use Illuminate\Database\Console\WipeCommand;
 use Illuminate\Notifications\Console\NotificationTableCommand;
 use Illuminate\Queue\Console\BatchesTableCommand;
 use Illuminate\Queue\Console\FailedTableCommand;
@@ -34,6 +39,7 @@ use Illuminate\Support\ServiceProvider;
 use Themosis\Auth\Console\AuthMakeCommand;
 use Themosis\Core\Console\CastMakeCommand;
 use Themosis\Core\Console\ChannelMakeCommand;
+use Themosis\Core\Console\ClearCompiledCommand;
 use Themosis\Core\Console\ComponentMakeCommand;
 use Themosis\Core\Console\ConfigCacheCommand;
 use Themosis\Core\Console\ConfigClearCommand;
@@ -92,8 +98,14 @@ class ArtisanServiceProvider extends ServiceProvider
      * @var array
      */
     protected $commands = [
+        'CacheClear' => 'command.cache.clear',
+        'CacheForget' => 'command.cache.forget',
+        'ClearCompiled' => 'command.clear-compiled',
+        'ClearResets' => 'command.auth.resets.clear',
         'ConfigCache' => 'command.config.cache',
         'ConfigClear' => 'command.config.clear',
+        'Db' => DbCommand::class,
+        'DbWipe' => 'command.db.wipe',
         'Down' => 'command.down',
         'DropinClear' => 'command.dropin.clear',
         'Environment' => 'command.environment',
@@ -212,6 +224,30 @@ class ArtisanServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the cache:clear command.
+     *
+     * @param string $abstract
+     */
+    protected function registerCacheClearCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new CacheClearCommand($app['cache'], $app['files']);
+        });
+    }
+
+    /**
+     * Register the cache:forget command.
+     *
+     * @param string $abstract
+     */
+    protected function registerCacheForgetCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new CacheForgetCommand($app['cache']);
+        });
+    }
+
+    /**
      * Register the cache:table command.
      *
      * @param string $abstract
@@ -244,6 +280,25 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new ChannelMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the clear-compiled command.
+     *
+     * @param string $abstract
+     */
+    protected function registerClearCompiledCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new ClearCompiledCommand();
+        });
+    }
+
+    protected function registerClearResetsCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new ClearResetsCommand();
         });
     }
 
@@ -316,6 +371,26 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new CustomerTableCommand($app['files'], $app['composer']);
+        });
+    }
+
+    /**
+     * Register the db command.
+     */
+    protected function registerDbCommand()
+    {
+        $this->app->singleton(DbCommand::class);
+    }
+
+    /**
+     * Register the db:wipe command.
+     *
+     * @param string $abstract
+     */
+    protected function registerDbWipeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new WipeCommand();
         });
     }
 
