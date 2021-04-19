@@ -70,6 +70,7 @@ use Themosis\Core\Console\RouteListCommand;
 use Themosis\Core\Console\RuleMakeCommand;
 use Themosis\Core\Console\ServeCommand;
 use Themosis\Core\Console\StubPublishCommand;
+use Themosis\Core\Console\TestMakeCommand;
 use Themosis\Core\Console\ThemeInstallCommand;
 use Themosis\Core\Console\UpCommand;
 use Themosis\Core\Console\VendorPublishCommand;
@@ -167,6 +168,7 @@ class ArtisanServiceProvider extends ServiceProvider
         'SessionTable' => 'command.session.table',
         'Serve' => 'command.serve',
         'StubPublish' => 'command.stub.publish',
+        'TestMake' => 'command.test.make',
         'ThemeInstall' => 'command.theme.install',
         'VendorPublish' => 'command.vendor.publish',
         'WidgetMake' => 'command.widget.make',
@@ -996,6 +998,18 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function () {
             return new StubPublishCommand();
+        });
+    }
+
+    /**
+     * Register the make:test command.
+     *
+     * @param string $abstract
+     */
+    protected function registerTestMakeCommand($abstract)
+    {
+        $this->app->singleton($abstract, function ($app) {
+            return new TestMakeCommand($app['files']);
         });
     }
 
