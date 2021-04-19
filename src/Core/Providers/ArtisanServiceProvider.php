@@ -23,12 +23,15 @@ use Illuminate\Database\Console\Seeds\SeederMakeCommand;
 use Illuminate\Database\Console\WipeCommand;
 use Illuminate\Notifications\Console\NotificationTableCommand;
 use Illuminate\Queue\Console\BatchesTableCommand;
+use Illuminate\Queue\Console\ClearCommand as QueueClearCommand;
 use Illuminate\Queue\Console\FailedTableCommand;
 use Illuminate\Queue\Console\FlushFailedCommand as FlushFailedQueueCommand;
 use Illuminate\Queue\Console\ForgetFailedCommand as ForgetFailedQueueCommand;
 use Illuminate\Queue\Console\ListenCommand as ListenQueueCommand;
 use Illuminate\Queue\Console\ListFailedCommand as ListFailedQueueCommand;
+use Illuminate\Queue\Console\PruneBatchesCommand as PruneBatchesQueueCommand;
 use Illuminate\Queue\Console\RestartCommand as RestartQueueCommand;
+use Illuminate\Queue\Console\RetryBatchCommand as QueueRetryBatchCommand;
 use Illuminate\Queue\Console\RetryCommand as RetryQueueCommand;
 use Illuminate\Queue\Console\TableCommand;
 use Illuminate\Queue\Console\WorkCommand as WorkQueueCommand;
@@ -118,12 +121,15 @@ class ArtisanServiceProvider extends ServiceProvider
         'Optimize' => 'command.optimize',
         'OptimizeClear' => 'command.optimize.clear',
         'PackageDiscover' => 'command.package.discover',
+        'QueueClear' => 'command.queue.clear',
         'QueueFailed' => 'command.queue.failed',
         'QueueFlush' => 'command.queue.flush',
         'QueueForget' => 'command.queue.forget',
         'QueueListen' => 'command.queue.listen',
+        'QueuePruneBatches' => 'command.queue.prune-batches',
         'QueueRestart' => 'command.queue.restart',
         'QueueRetry' => 'command.queue.retry',
+        'QueueRetryBatch' => 'command.queue.retry-batch',
         'QueueWork' => 'command.queue.work',
         'RouteCache' => 'command.route.cache',
         'RouteClear' => 'command.route.clear',
@@ -830,6 +836,18 @@ class ArtisanServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the queue:clear command.
+     *
+     * @param string $abstract
+     */
+    protected function registerQueueClearCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new QueueClearCommand();
+        });
+    }
+
+    /**
      * Register the queue:failed command.
      *
      * @param string $abstract
@@ -878,6 +896,18 @@ class ArtisanServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the queue:prune-batches command.
+     *
+     * @param string $abstract
+     */
+    protected function registerQueuePruneBatchesCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new PruneBatchesQueueCommand();
+        });
+    }
+
+    /**
      * Register the queue:restart command.
      *
      * @param string $abstract
@@ -886,6 +916,18 @@ class ArtisanServiceProvider extends ServiceProvider
     {
         $this->app->singleton($abstract, function ($app) {
             return new RestartQueueCommand($app['cache.store']);
+        });
+    }
+
+    /**
+     * Register the queue:retry-batch command.
+     *
+     * @param string $abstract
+     */
+    protected function registerQueueRetryBatchCommand($abstract)
+    {
+        $this->app->singleton($abstract, function () {
+            return new QueueRetryBatchCommand();
         });
     }
 
