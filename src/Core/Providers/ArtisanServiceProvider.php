@@ -7,7 +7,11 @@ use Illuminate\Cache\Console\CacheTableCommand;
 use Illuminate\Cache\Console\ClearCommand as CacheClearCommand;
 use Illuminate\Cache\Console\ForgetCommand as CacheForgetCommand;
 use Illuminate\Console\Scheduling\ScheduleFinishCommand;
+use Illuminate\Console\Scheduling\ScheduleListCommand;
 use Illuminate\Console\Scheduling\ScheduleRunCommand;
+use Illuminate\Console\Scheduling\ScheduleTestCommand;
+use Illuminate\Console\Scheduling\ScheduleWorkCommand;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Database\Console\DbCommand;
 use Illuminate\Database\Console\DumpCommand;
 use Illuminate\Database\Console\Factories\FactoryMakeCommand;
@@ -89,7 +93,7 @@ use Themosis\Core\Console\VendorPublishCommand;
 use Themosis\Core\Console\ViewClearCommand;
 use Themosis\Core\Console\WidgetMakeCommand;
 
-class ArtisanServiceProvider extends ServiceProvider
+class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Defer the loading of the provider.
@@ -136,7 +140,10 @@ class ArtisanServiceProvider extends ServiceProvider
         'RouteClear' => 'command.route.clear',
         'RouteList' => 'command.route.list',
         'ScheduleFinish' => ScheduleFinishCommand::class,
+        'ScheduleList' => ScheduleListCommand::class,
         'ScheduleRun' => ScheduleRunCommand::class,
+        'ScheduleTest' => ScheduleTestCommand::class,
+        'ScheduleWork' => ScheduleWorkCommand::class,
         'SchemaDump' => 'command.schema.dump',
         'Seed' => 'command.seed',
         'Up' => 'command.up',
@@ -209,8 +216,8 @@ class ArtisanServiceProvider extends ServiceProvider
      */
     protected function registerCommands(array $commands)
     {
-        foreach (array_keys($commands) as $command) {
-            call_user_func_array([$this, "register{$command}Command"], [$commands[$command]]);
+        foreach ($commands as $command => $alias) {
+            $this->{"register{$command}Command"}($alias);
         }
 
         $this->commands(array_values($commands));
@@ -1074,11 +1081,35 @@ class ArtisanServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the schedule:list command.
+     */
+    protected function registerScheduleListCommand()
+    {
+        $this->app->singleton(ScheduleListCommand::class);
+    }
+
+    /**
      * Register the schedule:run command.
      */
     protected function registerScheduleRunCommand()
     {
         $this->app->singleton(ScheduleRunCommand::class);
+    }
+
+    /**
+     * Register the schedule:test command.
+     */
+    protected function registerScheduleTestCommand()
+    {
+        $this->app->singleton(ScheduleTestCommand::class);
+    }
+
+    /**
+     * Register the schedule:work command.
+     */
+    protected function registerScheduleWorkCommand()
+    {
+        $this->app->singleton(ScheduleWorkCommand::class);
     }
 
     /**
