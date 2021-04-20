@@ -240,6 +240,7 @@ class Application extends Container implements
                 \Illuminate\Contracts\Cookie\QueueingFactory::class
             ],
             'db' => [
+                \Illuminate\Database\ConnectionResolverInterface::class,
                 \Illuminate\Database\DatabaseManager::class
             ],
             'db.connection' => [
