@@ -25,5 +25,36 @@ class StorageLinkCommand extends Command
      */
     public function handle()
     {
+        $relative = $this->option('relative');
+
+        foreach ($this->links() as $link => $target) {
+            if (file_exists($link)) {
+                $this->error("The {$link} link already exists.");
+                continue;
+            }
+
+            if ($relative) {
+                $this->laravel->make('files')->relativeLink($target, $link);
+            } else {
+                $this->laravel->make('files')->link($target, $link);
+            }
+
+            $this->info("The [$link] link has been connected to [$target].");
+        }
+
+        $this->info('The links have been created.');
+    }
+
+    /**
+     * Get the symbolic links that are configured for the application.
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @return array
+     */
+    protected function links()
+    {
+        return $this->laravel['config']['filesystems.links']
+            ?? [public_path('storage') => storage_path('app/public')];
     }
 }
