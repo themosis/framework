@@ -91,6 +91,7 @@ use Themosis\Core\Console\TestMakeCommand;
 use Themosis\Core\Console\ThemeInstallCommand;
 use Themosis\Core\Console\UpCommand;
 use Themosis\Core\Console\VendorPublishCommand;
+use Themosis\Core\Console\ViewCacheCommand;
 use Themosis\Core\Console\ViewClearCommand;
 use Themosis\Core\Console\WidgetMakeCommand;
 
@@ -149,6 +150,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         'Seed' => 'command.seed',
         'StorageLink' => 'command.storage.link',
         'Up' => 'command.up',
+        'ViewCache' => 'command.view.cache',
         'ViewClear' => 'command.view.clear'
     ];
 
@@ -1174,6 +1176,11 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         });
     }
 
+    /**
+     * Register the storage:link command.
+     *
+     * @param string $alias
+     */
     protected function registerStorageLinkCommand($alias)
     {
         $this->app->singleton($alias, function () {
@@ -1238,6 +1245,18 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     {
         $this->app->singleton($alias, function ($app) {
             return new VendorPublishCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the view:cache command.
+     *
+     * @param string $alias
+     */
+    protected function registerViewCacheCommand($alias)
+    {
+        $this->app->singleton($alias, function () {
+            return new ViewCacheCommand();
         });
     }
 
