@@ -84,6 +84,7 @@ use Themosis\Core\Console\RouteCacheCommand;
 use Themosis\Core\Console\RouteClearCommand;
 use Themosis\Core\Console\RouteListCommand;
 use Themosis\Core\Console\RuleMakeCommand;
+use Themosis\Core\Console\SaltsGenerateCommand;
 use Themosis\Core\Console\ServeCommand;
 use Themosis\Core\Console\StorageLinkCommand;
 use Themosis\Core\Console\StubPublishCommand;
@@ -141,6 +142,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         'RouteCache' => 'command.route.cache',
         'RouteClear' => 'command.route.clear',
         'RouteList' => 'command.route.list',
+        'SaltsGenerate' => 'command.salts.generate',
         'ScheduleFinish' => ScheduleFinishCommand::class,
         'ScheduleList' => ScheduleListCommand::class,
         'ScheduleRun' => ScheduleRunCommand::class,
@@ -1073,6 +1075,18 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     {
         $this->app->singleton($alias, function ($app) {
             return new RuleMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the salts:generate command.
+     *
+     * @param string $alias
+     */
+    protected function registerSaltsGenerateCommand($alias)
+    {
+        $this->app->singleton($alias, function () {
+            return new SaltsGenerateCommand();
         });
     }
 
