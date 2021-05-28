@@ -98,7 +98,7 @@ class SaltsGenerateCommand extends Command
         file_put_contents(
             $this->laravel->environmentFilePath(),
             preg_replace(
-                $this->keyReplacementPattern($key, $salt),
+                $this->keyReplacementPattern($key),
                 $key.'="'.$salt.'"',
                 file_get_contents($this->laravel->environmentFilePath())
             )
@@ -113,7 +113,7 @@ class SaltsGenerateCommand extends Command
     protected function keyReplacementPattern(string $key)
     {
         $alias = 'app.salts.'.strtolower($key);
-        $escaped = preg_quote('='.$this->laravel['config'][$alias], '/');
+        $escaped = preg_quote('="'.$this->laravel['config'][$alias].'"', '/');
 
         return "/^{$key}{$escaped}/m";
     }
