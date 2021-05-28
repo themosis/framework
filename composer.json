@@ -59,7 +59,6 @@
     "illuminate/validation": "^8.12",
     "illuminate/view": "^8.12",
     "laravel/tinker": "^2.5",
-    "laravel/ui": "^3.1",
     "league/flysystem": "^1.1",
     "league/fractal": "^0.19.0",
     "paragonie/sodium_compat": "^1.15",

@@ -44,7 +44,6 @@ use Illuminate\Routing\Console\ControllerMakeCommand;
 use Illuminate\Routing\Console\MiddlewareMakeCommand;
 use Illuminate\Session\Console\SessionTableCommand;
 use Illuminate\Support\ServiceProvider;
-use Themosis\Auth\Console\AuthMakeCommand;
 use Themosis\Core\Console\CastMakeCommand;
 use Themosis\Core\Console\ChannelMakeCommand;
 use Themosis\Core\Console\ClearCompiledCommand;
@@ -162,7 +161,6 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
      * @var array
      */
     protected $devCommands = [
-        //'AuthMake' => 'command.auth.make',
         'CacheTable' => 'command.cache.table',
         'CastMake' => 'command.cast.make',
         'ChannelMake' => 'command.channel.make',
@@ -227,18 +225,6 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         }
 
         $this->commands(array_values($commands));
-    }
-
-    /**
-     * Register the make:auth command.
-     *
-     * @param string $alias
-     */
-    protected function registerAuthMakeCommand($alias)
-    {
-        $this->app->singleton($alias, function ($app) {
-            return new AuthMakeCommand($app['files']);
-        });
     }
 
     /**
