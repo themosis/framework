@@ -4,44 +4,63 @@ namespace Themosis\Core\Support\Providers;
 
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Traits\ForwardsCalls;
 use Themosis\Route\Router;
 
 class RouteServiceProvider extends ServiceProvider
 {
+    use ForwardsCalls;
+
     /**
      * Controller namespace used by loaded routes.
      *
-     * @var string
+     * @var string|null
      */
     protected $namespace;
 
     /**
-     * Bootstrap the service.
+     * The callback that should be used to load application's routes.
+     *
+     * @var \Closure|null
      */
-    public function boot()
+    protected $loadRoutesUsing;
+
+    public function register()
     {
-        $this->setControllerNamespace();
+        $this->booted(function () {
+            $this->setRootControllerNamespace();
 
-        if ($this->app->routesAreCached()) {
-            $this->loadCachedRoutes();
-        } else {
-            $this->loadRoutes();
+            if ($this->routesAreCached()) {
+                $this->loadCachedRoutes();
+            } else {
+                $this->loadRoutes();
 
-            $this->app->booted(function () {
-                $this->app['router']->getRoutes()->refreshNameLookups();
-                $this->app['router']->getRoutes()->refreshActionLookups();
-            });
-        }
+                $this->app->booted(function () {
+                    $this->app['router']->getRoutes()->refreshNameLookups();
+                    $this->app['router']->getRoutes()->refreshActionLookups();
+                });
+            }
+        });
     }
 
     /**
-     * Set the controller namespace.
+     * Set the root controller namespace for the application.
      */
-    protected function setControllerNamespace()
+    protected function setRootControllerNamespace()
     {
         if (! is_null($this->namespace)) {
             $this->app[UrlGenerator::class]->setRootControllerNamespace($this->namespace);
         }
+    }
+
+    /**
+     * Determine if the application routes are cached.
+     *
+     * @return bool
+     */
+    protected function routesAreCached()
+    {
+        return $this->app->routesAreCached();
     }
 
     /**
@@ -54,14 +73,25 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
+
     /**
-     * Load routes.
+     * Load the application routes.
      */
     protected function loadRoutes()
     {
-        if (method_exists($this, 'map')) {
+        if (! is_null($this->loadRoutesUsing)) {
+            $this->app->call($this->loadRoutesUsing);
+        } elseif (method_exists($this, 'map')) {
             $this->app->call([$this, 'map']);
         }
+    }
+
+    /**
+     * Bootstrap the service.
+     */
+    public function boot()
+    {
+        //
     }
 
     /**
@@ -70,18 +100,16 @@ class RouteServiceProvider extends ServiceProvider
      * @param string $method
      * @param array  $parameters
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return mixed
      */
     public function __call($method, $parameters)
     {
-        return call_user_func_array(
-            [$this->app->make(Router::class), $method],
+        return $this->forwardCallTo(
+            $this->app->make(Router::class),
+            $method,
             $parameters
         );
-    }
-
-    public function register()
-    {
-        //
     }
 }

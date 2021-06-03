@@ -2,7 +2,10 @@
 
 namespace Themosis\Core\Http\Middleware;
 
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\Encrypter;
+use Illuminate\Contracts\Support\Responsable;
+use Illuminate\Cookie\CookieValuePrefix;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Http\Request;
 use Illuminate\Session\TokenMismatchException;
@@ -33,28 +36,6 @@ class VerifyCsrfToken
     protected $except = [];
 
     /**
-     * CSRF token name.
-     *
-     * @var string
-     */
-    protected $token = '_token';
-
-    /**
-     * @var string
-     */
-    protected $csrfHeader = 'X-CSRF-TOKEN';
-
-    /**
-     * @var string
-     */
-    protected $xsrfHeader = 'X-XSRF-TOKEN';
-
-    /**
-     * @var string
-     */
-    protected static $encryptToken = 'XSRF-TOKEN';
-
-    /**
      * Indicates wheter the XSRF-TOKEN cookie should be set on the response.
      *
      * @var bool
@@ -79,18 +60,19 @@ class VerifyCsrfToken
      */
     public function handle($request, \Closure $next)
     {
-        if ($this->isReading($request)
-        || $this->isRunningUnitTests()
-        || $this->inExceptArray($request)
-        || $this->tokensMatch($request)) {
+        if ($this->isReading($request) ||
+            $this->runningUnitTests() ||
+            $this->inExceptArray($request) ||
+            $this->tokensMatch($request)
+        ) {
             return tap($next($request), function ($response) use ($request) {
-                if ($this->addHttpCookie) {
+                if ($this->shouldAddXsrfTokenCookie()) {
                     $this->addCookieToResponse($request, $response);
                 }
             });
         }
 
-        throw new TokenMismatchException();
+        throw new TokenMismatchException('CSRF token mismatch');
     }
 
     /**
@@ -110,7 +92,7 @@ class VerifyCsrfToken
      *
      * @return bool
      */
-    protected function isRunningUnitTests()
+    protected function runningUnitTests()
     {
         return $this->app->runningInConsole() && $this->app->runningUnitTests();
     }
@@ -148,9 +130,9 @@ class VerifyCsrfToken
     {
         $token = $this->getTokenFromRequest($request);
 
-        return is_string($request->session()->token())
-            && is_string($token)
-            && hash_equals($request->session()->token(), $token);
+        return is_string($request->session()->token()) &&
+            is_string($token) &&
+            hash_equals($request->session()->token(), $token);
     }
 
     /**
@@ -162,13 +144,27 @@ class VerifyCsrfToken
      */
     protected function getTokenFromRequest(Request $request)
     {
-        $token = $request->input($this->token) ?: $request->header($this->csrfHeader);
+        $token = $request->input('_token') ?: $request->header('X-CSRF-TOKEN');
 
-        if (! $token && $header = $request->header($this->xsrfHeader)) {
-            $token = $this->encrypter->decrypt($header, static::serialized());
+        if (! $token && $header = $request->header('X-CSRF-TOKEN')) {
+            try {
+                $token = CookieValuePrefix::remove($this->encrypter->decrypt($header, static::serialized()));
+            } catch (DecryptException $exception) {
+                $token = '';
+            }
         }
 
         return $token;
+    }
+
+    /**
+     * Determine if the cookie should be added to the response.
+     *
+     * @return bool
+     */
+    public function shouldAddXsrfTokenCookie()
+    {
+        return $this->addHttpCookie;
     }
 
     /**
@@ -185,9 +181,13 @@ class VerifyCsrfToken
     {
         $config = config('session');
 
+        if ($response instanceof Responsable) {
+            $response = $response->toResponse($request);
+        }
+
         $response->headers->setCookie(
             new Cookie(
-                static::$encryptToken,
+                'XSRF-TOKEN',
                 $request->session()->token(),
                 $this->availableAt(60 * $config['lifetime']),
                 $config['path'],
@@ -209,6 +209,6 @@ class VerifyCsrfToken
      */
     public static function serialized()
     {
-        return EncryptCookies::serialized(static::$encryptToken);
+        return EncryptCookies::serialized('XSRF-TOKEN');
     }
 }
