@@ -2,6 +2,7 @@
 
 namespace Themosis\Core\Support\Providers;
 
+use Closure;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Traits\ForwardsCalls;
@@ -73,7 +74,6 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
-
     /**
      * Load the application routes.
      */
@@ -111,5 +111,19 @@ class RouteServiceProvider extends ServiceProvider
             $method,
             $parameters
         );
+    }
+
+    /**
+     * Register the callback that will be used to load the application's routes.
+     *
+     * @param Closure $routesCallback
+     *
+     * @return $this
+     */
+    protected function routes(Closure $routesCallback)
+    {
+        $this->loadRoutesUsing = $routesCallback;
+
+        return $this;
     }
 }
