@@ -55,7 +55,7 @@
     "@wordpress/components": "^4.0.0",
     "@wordpress/rich-text": "^2.0.4",
     "acorn": "^6.4.1",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "lodash": "^4.17.21",
     "node-sass": "^4.12.0",
