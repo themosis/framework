@@ -12,6 +12,8 @@ trait Authorizable
      * @param iterable|string $abilities
      * @param array|mixed     $arguments
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return bool
      */
     public function can($abilities, $arguments = [])

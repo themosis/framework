@@ -43,30 +43,6 @@ trait AuthorizesRequests
     }
 
     /**
-     * Authorize a resource action based on the incoming request.
-     *
-     * @param string                        $model
-     * @param string|null                   $parameter
-     * @param array                         $options
-     * @param \Illuminate\Http\Request|null $request
-     */
-    public function authorizeResource($model, $parameter = null, array $options = [], $request = null)
-    {
-        $parameter = $parameter ?: Str::snake(class_basename($model));
-
-        $middleware = [];
-
-        foreach ($this->resourceAbilityMap() as $method => $ability) {
-            $modelName = in_array($method, $this->resourceMethodsWithoutModels()) ? $model : $parameter;
-            $middleware["can:{$ability},{$modelName}"][] = $method;
-        }
-
-        foreach ($middleware as $middlewareName => $methods) {
-            $this->middleware($middlewareName, $options)->only($methods);
-        }
-    }
-
-    /**
      * Guesses the ability's name if it wasn't provided.
      *
      * @param mixed       $ability
@@ -97,6 +73,30 @@ trait AuthorizesRequests
         $map = $this->resourceAbilityMap();
 
         return $map[$ability] ?? $ability;
+    }
+
+    /**
+     * Authorize a resource action based on the incoming request.
+     *
+     * @param string                        $model
+     * @param string|null                   $parameter
+     * @param array                         $options
+     * @param \Illuminate\Http\Request|null $request
+     */
+    public function authorizeResource($model, $parameter = null, array $options = [], $request = null)
+    {
+        $parameter = $parameter ?: Str::snake(class_basename($model));
+
+        $middleware = [];
+
+        foreach ($this->resourceAbilityMap() as $method => $ability) {
+            $modelName = in_array($method, $this->resourceMethodsWithoutModels()) ? $model : $parameter;
+            $middleware["can:{$ability},{$modelName}"][] = $method;
+        }
+
+        foreach ($middleware as $middlewareName => $methods) {
+            $this->middleware($middlewareName, $options)->only($methods);
+        }
     }
 
     /**
