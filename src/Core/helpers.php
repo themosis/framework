@@ -4,13 +4,13 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Contracts\Broadcasting\Factory as BroadcastFactory;
 use Illuminate\Contracts\Bus\Dispatcher;
+use Illuminate\Contracts\Cookie\Factory as CookieFactory;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Contracts\View\Factory as ViewFactory;
-use Illuminate\Database\Eloquent\Factory as EloquentFactory;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,7 +26,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Themosis\Core\Bus\PendingDispatch;
 use Themosis\Core\Mix;
-use Themosis\Queue\CallQueuedClosure;
 
 if (! function_exists('abort')) {
     /**
@@ -49,6 +48,62 @@ if (! function_exists('abort')) {
         }
 
         app()->abort($code, $message, $headers);
+    }
+}
+
+if (! function_exists('abort_if')) {
+    /**
+     * Throw an HttpException with the given data if the given condition is true.
+     *
+     * @param bool                                                                                     $boolean
+     * @param \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Support\Responsable|int $code
+     * @param string                                                                                   $message
+     * @param array                                                                                    $headers
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    function abort_if($boolean, $code, $message = '', array $headers = [])
+    {
+        if ($boolean) {
+            abort($code, $message, $headers);
+        }
+    }
+}
+
+if (! function_exists('abort_unless')) {
+    /**
+     * Throw an HttpException with the given data unless the given condition is true.
+     *
+     * @param bool                                                                                     $boolean
+     * @param \Symfony\Component\HttpFoundation\Response|\Illuminate\Contracts\Support\Responsable|int $code
+     * @param string                                                                                   $message
+     * @param array                                                                                    $headers
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    function abort_unless($boolean, $code, $message = '', array $headers = [])
+    {
+        if (! $boolean) {
+            abort($code, $message, $headers);
+        }
+    }
+}
+
+if (! function_exists('action')) {
+    /**
+     * Generate the URL to a controller action.
+     *
+     * @param string|array $name
+     * @param mixed        $parameters
+     * @param bool         $absolute
+     *
+     * @return string
+     */
+    function action($name, $parameters = [], $absolute = true)
+    {
+        return app('url')->action($name, $parameters, $absolute);
     }
 }
 
@@ -160,6 +215,21 @@ if (! function_exists('base_path')) {
     }
 }
 
+if (! function_exists('bcrypt')) {
+    /**
+     * Hash the given value against the bcrypt algorithm.
+     *
+     * @param string $value
+     * @param array  $options
+     *
+     * @return string
+     */
+    function bcrypt($value, $options = [])
+    {
+        return app('hash')->driver('bcrypt')->make($value, $options);
+    }
+}
+
 if (! function_exists('broadcast')) {
     /**
      * Begin broadcasting an event.
@@ -176,29 +246,13 @@ if (! function_exists('broadcast')) {
     }
 }
 
-if (! function_exists('public_path')) {
-    /**
-     * Get the path to the public folder.
-     *
-     * @param string $path
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     *
-     * @return string
-     */
-    function public_path($path = '')
-    {
-        return app()->make('path.public').($path ? DIRECTORY_SEPARATOR.ltrim($path, DIRECTORY_SEPARATOR) : $path);
-    }
-}
-
 if (! function_exists('cache')) {
     /**
      * Get / set the specified cache value.
      *
      * If an array is passed, we'll assume you want to put to the cache.
      *
-     * @param  dynamic  key|key,default|data,expiration|null
+     * @param dynamic  key|key,default|data,expiration|null
      *
      * @throws \Exception
      *
@@ -284,6 +338,43 @@ if (! function_exists('content_path')) {
     function content_path($path = '')
     {
         return app()->contentPath($path);
+    }
+}
+
+if (! function_exists('cookie')) {
+    /**
+     * Create a new cookie instance.
+     *
+     * @param string|null $name
+     * @param string|null $value
+     * @param int         $minutes
+     * @param string|null $path
+     * @param string|null $domain
+     * @param bool|null   $secure
+     * @param bool        $httpOnly
+     * @param bool        $raw
+     * @param string|null $sameSite
+     *
+     * @return \Illuminate\Cookie\CookieJar|\Symfony\Component\HttpFoundation\Cookie
+     */
+    function cookie(
+        $name = null,
+        $value = null,
+        $minutes = 0,
+        $path = null,
+        $domain = null,
+        $secure = null,
+        $httpOnly = true,
+        $raw = false,
+        $sameSite = null
+    ) {
+        $cookie = app(CookieFactory::class);
+
+        if (is_null($name)) {
+            return $cookie;
+        }
+
+        return $cookie->make($name, $value, $minutes, $path, $domain, $secure, $httpOnly, $raw, $sameSite);
     }
 }
 
@@ -379,17 +470,20 @@ if (! function_exists('dispatch_now')) {
     }
 }
 
-if (! function_exists('dummy_path')) {
+if (! function_exists('dispatch_sync')) {
     /**
-     * Get dummy path.
+     * Dispatch a command to its appropriate handler in the current process.
      *
-     * @param string $path
+     * Queueable jobs will be dispatched to the "sync" queue.
      *
-     * @return string
+     * @param mixed $job
+     * @param mixed $handler
+     *
+     * @return mixed
      */
-    function dummy_path($path = '')
+    function dispatch_sync($job, $handler = null)
     {
-        return '';
+        return app(Dispatcher::class)->dispatchSync($job, $handler);
     }
 }
 
@@ -422,27 +516,16 @@ if (! function_exists('event')) {
     }
 }
 
-if (! function_exists('factory')) {
+if (! function_exists('info')) {
     /**
-     * Create a model factory builder for a given class, name, and amount.
+     * Write some information to the log.
      *
-     * @param string class|class,name|class,amount|class,name,amount
-     *
-     * @return Illuminate\Database\Eloquent\FactoryBuilder
+     * @param string $message
+     * @param array  $context
      */
-    function factory()
+    function info($message, $context = [])
     {
-        $factory = app(EloquentFactory::class);
-
-        $arguments = func_get_args();
-
-        if (isset($arguments[1]) && is_string($arguments[1])) {
-            return $factory->of($arguments[0], $arguments[1])->times($arguments[2] ?? null);
-        } elseif (isset($arguments[1])) {
-            return $factory->of($arguments[0])->times($arguments[1]);
-        }
-
-        return $factory->of($arguments[0]);
+        app('log')->info($message, $context);
     }
 }
 
@@ -530,10 +613,10 @@ if (! function_exists('load_themosis_plugin_textdomain')) {
         /**
          * Filters a plugin's locale.
          *
-         * @since 3.0.0
-         *
          * @param string $locale The plugin's current locale.
          * @param string $domain Text domain. Unique identifier for retrieving translated strings.
+         *
+         * @since 3.0.0
          */
         $locale = apply_filters('plugin_locale', determine_locale(), $domain);
 
@@ -651,6 +734,37 @@ if (! function_exists('now')) {
     }
 }
 
+if (! function_exists('old')) {
+    /**
+     * Retrieve an old input item.
+     *
+     * @param string|null $key
+     * @param mixed       $default
+     *
+     * @return mixed
+     */
+    function old($key = null, $default = null)
+    {
+        return app('request')->old($key, $default);
+    }
+}
+
+if (! function_exists('policy')) {
+    /**
+     * Get a policy instance for a given class.
+     *
+     * @param object|string $class
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return mixed
+     */
+    function policy($class)
+    {
+        return app(Gate::class)->getPolicyFor($class);
+    }
+}
+
 if (! function_exists('plugins_path')) {
     /**
      * Return the plugins path.
@@ -662,6 +776,22 @@ if (! function_exists('plugins_path')) {
     function plugins_path($path = '')
     {
         return app()->pluginsPath($path);
+    }
+}
+
+if (! function_exists('public_path')) {
+    /**
+     * Get the path to the public folder.
+     *
+     * @param string $path
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @return string
+     */
+    function public_path($path = '')
+    {
+        return app()->make('path.public').($path ? DIRECTORY_SEPARATOR.ltrim($path, DIRECTORY_SEPARATOR) : $path);
     }
 }
 
@@ -724,6 +854,45 @@ if (! function_exists('request')) {
         $value = app('request')->__get($key);
 
         return is_null($value) ? value($default) : $value;
+    }
+}
+
+if (! function_exists('rescue')) {
+    /**
+     * Catch a potential exception and return a default value.
+     *
+     * @param callable $callback
+     * @param mixed    $rescue
+     * @param bool     $report
+     *
+     * @return mixed
+     */
+    function rescue(callable $callback, $rescue = null, $report = true)
+    {
+        try {
+            return $callback();
+        } catch (Throwable $e) {
+            if ($report) {
+                report($e);
+            }
+
+            return value($rescue, $e);
+        }
+    }
+}
+
+if (! function_exists('resolve')) {
+    /**
+     * Resolve a service from the container.
+     *
+     * @param string $name
+     * @param array  $parameters
+     *
+     * @return mixed
+     */
+    function resolve($name, array $parameters = [])
+    {
+        return app($name, $parameters);
     }
 }
 
@@ -815,6 +984,21 @@ if (! function_exists('secure_asset')) {
     }
 }
 
+if (! function_exists('secure_url')) {
+    /**
+     * Generate a HTTPS url for the application.
+     *
+     * @param string $path
+     * @param mixed  $parameters
+     *
+     * @return string
+     */
+    function secure_url($path, $parameters = [])
+    {
+        return url($path, $parameters, true);
+    }
+}
+
 if (! function_exists('session')) {
     /**
      * Get / set the specified session value.
@@ -867,6 +1051,20 @@ if (! function_exists('themes_path')) {
     function themes_path($path = '')
     {
         return app()->themesPath($path);
+    }
+}
+
+if (! function_exists('today')) {
+    /**
+     * Create a new Carbon instance for the current date.
+     *
+     * @param \DateTimeZone|string|null $tz
+     *
+     * @return \Illuminate\Support\Carbon
+     */
+    function today($tz = null)
+    {
+        return Date::today($tz);
     }
 }
 
