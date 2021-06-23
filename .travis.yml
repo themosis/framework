@@ -16,4 +16,6 @@ install:
 before_script:
   - phpenv config-rm xdebug.ini
 
-script: vendor/bin/phpunit
+script:
+  - vendor/bin/phpstan analyze
+  - vendor/bin/phpunit
