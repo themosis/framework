@@ -1,0 +1,42 @@
+<?php
+
+namespace {{ namespace }};
+
+use Themosis\Core\Console\WordPress;
+
+class {{ class }} extends WordPress
+{
+    /**
+     * The console command name.
+     *
+     * @var string
+     */
+    protected $signature = '{{ command }}';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command description';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
+    {
+        return 0;
+    }
+}

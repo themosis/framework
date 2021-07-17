@@ -37,6 +37,10 @@ class ConsoleMakeCommand extends GeneratorCommand
     protected function getStub()
     {
         $relativePath = '/stubs/console.stub';
+        
+        if ($this->option('wordpress')) {
+            $relativePath = '/stubs/console-wordpress.stub';
+        }
 
         return file_exists($customPath = $this->laravel->basePath(trim($relativePath, '/')))
             ? $customPath
@@ -96,6 +100,12 @@ class ConsoleMakeCommand extends GeneratorCommand
                 InputOption::VALUE_OPTIONAL,
                 'The terminal command that should be assigned.',
                 'command:name'
+            ],
+            [
+                'wordpress',
+                null,
+                InputOption::VALUE_NONE,
+                'Load WordPress into the command.'
             ]
         ];
     }
