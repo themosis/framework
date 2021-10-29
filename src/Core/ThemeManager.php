@@ -4,6 +4,7 @@ namespace Themosis\Core;
 
 use Composer\Autoload\ClassLoader;
 use Illuminate\Config\Repository;
+use Illuminate\Support\Collection;
 use Themosis\Asset\Finder;
 use Themosis\Core\Support\IncludesFiles;
 use Themosis\Core\Support\WordPressFileHeaders;
@@ -225,6 +226,21 @@ class ThemeManager
 
         return $this;
     }
+
+    /**
+     * Register theme hookable class.
+     *
+     * @param array $providers
+     *
+     * @return $this
+     */
+    public function hooks(array $hooks = [])
+    {
+        $hooks = Collection::make($hooks);
+        (new HooksRepository($this->app))->load($hooks->all());
+        return $this;
+    }
+
 
     /**
      * Register theme views path.
