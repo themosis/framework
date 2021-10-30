@@ -230,7 +230,7 @@ class ThemeManager
     /**
      * Register theme hookable class.
      *
-     * @param array $providers
+     * @param array $hooks
      *
      * @return $this
      */

@@ -250,7 +250,7 @@ class PluginManager
     /**
      * Register plugin hookable class.
      *
-     * @param array $providers
+     * @param array $hooks
      *
      * @return $this
      */
