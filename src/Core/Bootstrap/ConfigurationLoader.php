@@ -30,6 +30,8 @@ class ConfigurationLoader
 
         if (! isset($loadedFromCache)) {
             $this->loadConfigurationFiles($app, $config);
+        } else {
+            $this->maybeForceWpConfigInclude();
         }
 
         /*
@@ -56,12 +58,12 @@ class ConfigurationLoader
      */
     protected function loadConfigurationFiles(Application $app, RepositoryContract $repository)
     {
+
         $files = $this->getConfigurationFiles($app);
 
         if (! isset($files['app'])) {
             throw new Exception('Unable to load the "app" configuration file.');
         }
-
         foreach ($files as $key => $path) {
             // Avoid duplicate constant definitions.
             if ('wordpress' === $key && defined('AUTH_KEY')) {
@@ -70,6 +72,21 @@ class ConfigurationLoader
 
             $repository->set($key, require $path);
         }
+    }
+
+    /**
+     * Get the path to the routes cache file.
+     *
+     * @return string
+     */
+    protected function maybeForceWpConfigInclude()
+    {
+        // Avoid duplicate constants definitions.
+        if (defined('AUTH_KEY')) {
+            return;
+        }
+        $cacheConfig = app()->getCachedConfigPath('config.php');
+        file_exists($cacheConfig) ? require_once app()->configPath('wordpress.php') : null;
     }
 
     /**
