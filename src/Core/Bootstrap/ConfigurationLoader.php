@@ -10,25 +10,15 @@ use Symfony\Component\Finder\Finder;
 
 class ConfigurationLoader
 {
-    /**
-     * @var Application
-     */
-    protected $app;
-
-    /**
-     * @throws Exception
-     */
     public function bootstrap(Application $app)
     {
-        $this->app = $app;
-
         $items = [];
 
         /*
          * Verify if configuration is cached. If so, fetch it
          * to avoid parsing all config files.
          */
-        if (file_exists($cached = $app->getCachedConfigPath())) {
+        if (is_file($cached = $app->getCachedConfigPath())) {
             $items = require $cached;
             $loadedFromCache = true;
         }
@@ -68,12 +58,12 @@ class ConfigurationLoader
      */
     protected function loadConfigurationFiles(Application $app, RepositoryContract $repository)
     {
+
         $files = $this->getConfigurationFiles($app);
 
         if (! isset($files['app'])) {
             throw new Exception('Unable to load the "app" configuration file.');
         }
-
         foreach ($files as $key => $path) {
             // Avoid duplicate constant definitions.
             if ('wordpress' === $key && defined('AUTH_KEY')) {
@@ -82,6 +72,21 @@ class ConfigurationLoader
 
             $repository->set($key, require $path);
         }
+    }
+
+    /**
+     * Get the path to the routes cache file.
+     *
+     * @return string
+     */
+    protected function maybeForceWpConfigInclude()
+    {
+        // Avoid duplicate constants definitions.
+        if (defined('AUTH_KEY')) {
+            return;
+        }
+        $cacheConfig = app()->getCachedConfigPath('config.php');
+        file_exists($cacheConfig) ? require_once app()->configPath('wordpress.php') : null;
     }
 
     /**
@@ -104,21 +109,6 @@ class ConfigurationLoader
         ksort($files, SORT_NATURAL);
 
         return $files;
-    }
-
-    /**
-     * Get the path to the routes cache file.
-     *
-     * @return string
-     */
-    protected function maybeForceWpConfigInclude()
-    {
-        // Avoid duplicate constants definitions.
-        if (defined('AUTH_KEY')) {
-            return;
-        }
-        $cacheConfig = app()->getCachedConfigPath('config.php');
-        file_exists($cacheConfig) ? require_once app()->configPath('wordpress.php') : null;
     }
 
     /**
