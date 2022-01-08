@@ -15,6 +15,9 @@ class ConfigurationLoader
      */
     protected $app;
 
+    /**
+     * @throws Exception
+     */
     public function bootstrap(Application $app)
     {
         $this->app = $app;
@@ -37,6 +40,8 @@ class ConfigurationLoader
 
         if (! isset($loadedFromCache)) {
             $this->loadConfigurationFiles($app, $config);
+        } else {
+            $this->maybeForceWpConfigInclude();
         }
 
         /*
@@ -99,6 +104,21 @@ class ConfigurationLoader
         ksort($files, SORT_NATURAL);
 
         return $files;
+    }
+
+    /**
+     * Get the path to the routes cache file.
+     *
+     * @return string
+     */
+    protected function maybeForceWpConfigInclude()
+    {
+        // Avoid duplicate constants definitions.
+        if (defined('AUTH_KEY')) {
+            return;
+        }
+        $cacheConfig = app()->getCachedConfigPath('config.php');
+        file_exists($cacheConfig) ? require_once app()->configPath('wordpress.php') : null;
     }
 
     /**
