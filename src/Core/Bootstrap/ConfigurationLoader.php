@@ -82,11 +82,20 @@ class ConfigurationLoader
     protected function maybeForceWpConfigInclude()
     {
         // Avoid duplicate constants definitions.
-        if (defined('AUTH_KEY')) {
+        if ($this->isWordPressConfigAlreadyLoaded()) {
             return;
         }
         $cacheConfig = app()->getCachedConfigPath('config.php');
         file_exists($cacheConfig) ? require_once app()->configPath('wordpress.php') : null;
+    }
+
+    /**
+     * Check if the WordPress config constants are already defined.
+     * @return bool
+     */
+    protected function isWordPressConfigAlreadyLoaded(): bool
+    {
+        return defined('AUTH_KEY');
     }
 
     /**
