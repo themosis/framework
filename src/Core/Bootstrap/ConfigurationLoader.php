@@ -76,8 +76,6 @@ class ConfigurationLoader
 
     /**
      * Get the path to the routes cache file.
-     *
-     * @return string
      */
     protected function maybeForceWpConfigInclude()
     {
@@ -86,7 +84,12 @@ class ConfigurationLoader
             return;
         }
         $cacheConfig = app()->getCachedConfigPath('config.php');
-        file_exists($cacheConfig) ? require_once app()->configPath('wordpress.php') : null;
+
+        if (!file_exists($cacheConfig)) {
+            return;
+        }
+
+        require_once app()->configPath('wordpress.php');
     }
 
     /**
