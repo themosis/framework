@@ -75,7 +75,7 @@ class ConfigurationLoader
     }
 
     /**
-     * Get the path to the routes cache file.
+     * Do we need to include the wordpress config file if cached config is loaded?
      */
     protected function maybeForceWpConfigInclude():void
     {
