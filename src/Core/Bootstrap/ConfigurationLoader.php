@@ -30,6 +30,8 @@ class ConfigurationLoader
 
         if (! isset($loadedFromCache)) {
             $this->loadConfigurationFiles($app, $config);
+        } else {
+            $this->maybeForceWpConfigInclude();
         }
 
         /*
@@ -54,22 +56,48 @@ class ConfigurationLoader
      *
      * @throws Exception
      */
-    protected function loadConfigurationFiles(Application $app, RepositoryContract $repository)
+    protected function loadConfigurationFiles(Application $app, RepositoryContract $repository): void
     {
+
         $files = $this->getConfigurationFiles($app);
 
         if (! isset($files['app'])) {
             throw new Exception('Unable to load the "app" configuration file.');
         }
-
         foreach ($files as $key => $path) {
             // Avoid duplicate constant definitions.
-            if ('wordpress' === $key && defined('AUTH_KEY')) {
+            if ('wordpress' === $key && $this->isWordPressConfigLoaded()) {
                 continue;
             }
 
             $repository->set($key, require $path);
         }
+    }
+
+    /**
+     * Do we need to include the wordpress config file if cached config is loaded?
+     */
+    protected function maybeForceWpConfigInclude():void
+    {
+        // Avoid duplicate constants definitions.
+        if ($this->isWordPressConfigAlreadyLoaded()) {
+            return;
+        }
+        $cacheConfig = app()->getCachedConfigPath('config.php');
+
+        if (!file_exists($cacheConfig)) {
+            return;
+        }
+
+        require_once app()->configPath('wordpress.php');
+    }
+
+    /**
+     * Check if the WordPress config constants are already defined.
+     */
+    protected function isWordPressConfigLoaded(): bool
+    {
+        return defined('AUTH_KEY');
     }
 
     /**
