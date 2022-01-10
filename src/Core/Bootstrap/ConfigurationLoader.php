@@ -66,7 +66,7 @@ class ConfigurationLoader
         }
         foreach ($files as $key => $path) {
             // Avoid duplicate constant definitions.
-            if ('wordpress' === $key && defined('AUTH_KEY')) {
+            if ('wordpress' === $key && $this->isWordPressConfigLoaded()) {
                 continue;
             }
 
@@ -93,7 +93,7 @@ class ConfigurationLoader
      * Check if the WordPress config constants are already defined.
      * @return bool
      */
-    protected function isWordPressConfigAlreadyLoaded(): bool
+    protected function isWordPressConfigLoaded(): bool
     {
         return defined('AUTH_KEY');
     }
