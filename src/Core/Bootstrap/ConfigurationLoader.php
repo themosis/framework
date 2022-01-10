@@ -18,7 +18,7 @@ class ConfigurationLoader
          * Verify if configuration is cached. If so, fetch it
          * to avoid parsing all config files.
          */
-        if (is_file($cached = $app->getCachedConfigPath())) {
+        if (file_exists($cached = $app->getCachedConfigPath())) {
             $items = require $cached;
             $loadedFromCache = true;
         }
