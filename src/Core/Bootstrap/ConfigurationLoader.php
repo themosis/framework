@@ -56,7 +56,7 @@ class ConfigurationLoader
      *
      * @throws Exception
      */
-    protected function loadConfigurationFiles(Application $app, RepositoryContract $repository)
+    protected function loadConfigurationFiles(Application $app, RepositoryContract $repository): void
     {
 
         $files = $this->getConfigurationFiles($app);
@@ -77,7 +77,7 @@ class ConfigurationLoader
     /**
      * Get the path to the routes cache file.
      */
-    protected function maybeForceWpConfigInclude()
+    protected function maybeForceWpConfigInclude():void
     {
         // Avoid duplicate constants definitions.
         if ($this->isWordPressConfigAlreadyLoaded()) {
