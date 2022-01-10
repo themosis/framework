@@ -94,7 +94,6 @@ class ConfigurationLoader
 
     /**
      * Check if the WordPress config constants are already defined.
-     * @return bool
      */
     protected function isWordPressConfigLoaded(): bool
     {
