@@ -80,13 +80,22 @@ class LoadConfiguration extends Configuration
         }
     }
 
+    /**
+     * @throws Exception
+     */
     protected function loadWordPressConfiguration(Application $app): void
     {
+        $path = $app->configPath("{$this->wordpress}.php");
+
+        if (! file_exists($path)) {
+            throw new Exception('Unable to load the "wordpress" configuration file.');
+        }
+
         if ($this->wordpressIsLoaded()) {
             return;
         }
 
-        require $app->configPath("{$this->wordpress}.php");
+        require $path;
     }
 
     protected function wordpressIsLoaded(): bool
