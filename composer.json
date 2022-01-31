@@ -19,7 +19,7 @@
       "Themosis\\": "src/"
     },
     "files": [
-      "src/Core/helpers.php"
+      "src/Foundation/helpers.php"
     ]
   },
   "autoload-dev": {
