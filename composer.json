@@ -42,7 +42,7 @@
   },
   "require-dev": {
     "beyondcode/laravel-dump-server": "^1.7",
-    "friendsofphp/php-cs-fixer": "^2.17",
+    "friendsofphp/php-cs-fixer": "^3.5",
     "phpunit/phpunit": "^9.0",
     "symfony/var-dumper": "^5.2"
   },

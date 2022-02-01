@@ -1,6 +1,5 @@
 <?php
 
-use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
 /**
@@ -16,9 +15,8 @@ $finder = Finder::create()
         'node_modules'
     ]);
 
-return Config::create()
-    ->setFinder($finder)
-    ->setRules([
+$config = new PhpCsFixer\Config();
+return $config->setRules([
         '@PSR2' => true,
         'strict_param' => false,
         'array_syntax' => [
@@ -60,4 +58,5 @@ return Config::create()
         'semicolon_after_instruction' => true,
         'trim_array_spaces' => true,
         'ternary_operator_spaces' => true
-    ]);
+    ])
+        ->setFinder($finder);

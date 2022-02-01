@@ -17,6 +17,13 @@ class LoadConfiguration extends Configuration
      */
     protected string $wordpress = 'wordpress';
 
+    /**
+     * @param Application $app
+     *
+     * @return void
+     *
+     * @throws Exception
+     */
     public function bootstrap(Application $app): void
     {
         $items = [];
