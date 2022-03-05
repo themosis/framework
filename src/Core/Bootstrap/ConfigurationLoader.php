@@ -80,7 +80,7 @@ class ConfigurationLoader
     protected function maybeForceWpConfigInclude():void
     {
         // Avoid duplicate constants definitions.
-        if ($this->isWordPressConfigAlreadyLoaded()) {
+        if ($this->isWordPressConfigLoaded()) {
             return;
         }
         $cacheConfig = app()->getCachedConfigPath('config.php');
