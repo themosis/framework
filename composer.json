@@ -53,9 +53,17 @@
   "config": {
     "sort-packages": true,
     "allow-plugins": {
-      "composer/installers": true
+      "composer/installers": true,
+      "themosis/composer-exclude-files": true
     }
   },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "extra": {
+    "exclude-from-files": {
+      "laravel/framework": [
+        "src/Illuminate/Foundation/helpers.php"
+      ]
+    }
+  }
 }
