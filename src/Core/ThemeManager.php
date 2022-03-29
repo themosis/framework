@@ -4,12 +4,14 @@ namespace Themosis\Core;
 
 use Composer\Autoload\ClassLoader;
 use Illuminate\Config\Repository;
+use Illuminate\Support\Facades\View;
 use Themosis\Asset\Finder;
 use Themosis\Core\Support\IncludesFiles;
 use Themosis\Core\Support\WordPressFileHeaders;
 use Themosis\Core\Theme\ImageSize;
 use Themosis\Core\Theme\Support;
 use Themosis\Core\Theme\Templates;
+use Themosis\View\Composer;
 
 class ThemeManager
 {
@@ -99,6 +101,7 @@ class ThemeManager
         $this->setThemeConstants();
         $this->loadThemeConfiguration($path);
         $this->setThemeAutoloading();
+        $this->loadThemeComposers();
 
         return $this;
     }
@@ -208,6 +211,27 @@ class ThemeManager
         }
 
         $this->loader->register();
+    }
+
+    protected function loadThemeComposers() {
+        $path = $this->getPath('resources' . DS . 'View' . DS . 'Composers');
+
+        if (!is_dir($path)) {
+            return;
+        }
+
+        foreach (\Symfony\Component\Finder\Finder::create()->files()->name('*.php')->in([$path])->sortByName() as $file) {
+            /** @var \SplFileInfo $file */
+            $composer = '\\Theme' . str_replace([$this->getPath('resources'), '.php', DS], ['', '', '\\'], $file->getRealPath());
+
+            if (
+                is_subclass_of($composer, Composer::class) &&
+                ! (new \ReflectionClass($composer))->isAbstract()
+            ) {
+                View::composer($composer::views(), $composer);
+            }
+
+        }
     }
 
     /**
