@@ -30,22 +30,19 @@
   "require": {
     "php": "^8.0",
     "composer/installers": "^1.9",
-    "laravel/framework": "^8.81",
-    "laravel/tinker": "^2.5",
-    "laravel/ui": "^3.1",
-    "league/fractal": "^0.19.0",
-    "paragonie/sodium_compat": "^1.15",
+    "laravel/framework": "^9.6",
+    "laravel/tinker": "^2.7",
+    "laravel/ui": "^3.4",
+    "league/fractal": "^0.20",
+    "paragonie/sodium_compat": "^1.17",
     "predis/predis": "^1.1",
-    "ramsey/uuid": "^4.1",
-    "symfony/property-access": "^5.2",
+    "symfony/property-access": "^6.0",
     "themosis/composer-exclude-files": "^1.0",
     "twig/twig": " ^3.1"
   },
   "require-dev": {
-    "beyondcode/laravel-dump-server": "^1.7",
-    "friendsofphp/php-cs-fixer": "^3.5",
-    "phpunit/phpunit": "^9.0",
-    "symfony/var-dumper": "^5.2"
+    "beyondcode/laravel-dump-server": "^1.8",
+    "phpunit/phpunit": "^9.5"
   },
   "scripts": {
     "test": "phpunit"
