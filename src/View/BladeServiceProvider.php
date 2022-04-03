@@ -4,74 +4,42 @@ namespace Themosis\View;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Themosis\Support\Facades\User;
 
 class BladeServiceProvider extends ServiceProvider
 {
-    /**
-     * Register bindings.
-     */
-    public function register()
-    {
-        $this->app->bind('loop', function () {
-            return new Loop();
-        });
-    }
-
-    /**
-     * Register Blade custom directives.
-     */
     public function boot()
     {
-        Blade::directive('wpcan', function ($expression) {
-            return "<?php if( User::current()->can({$expression}) ): ?>";
+        Blade::if('wp_can', function ($capability) {
+            return User::current()->can(...func_get_args());
         });
 
-        Blade::directive('endwpcan', function () {
-            return '<?php endif; ?>';
+        Blade::directive('wp_footer', function () {
+            return '<?php wp_footer(); ?>';
         });
 
-        Blade::directive('endloggedin', function () {
-            return '<?php endif; ?>';
+        Blade::directive('wp_head', function () {
+            return '<?php wp_head(); ?>';
         });
 
-        Blade::directive('endloggedout', function () {
-            return '<?php endif; ?>';
+        Blade::if('wp_logged_in', function () {
+            return is_user_logged_in();
+        });
+
+        Blade::if('wp_role', function (string $role) {
+            return User::current()->hasRole($role);
         });
 
         Blade::directive('endloop', function () {
             return '<?php }} ?>';
         });
 
-        Blade::directive('endrole', function () {
-            return '<?php endif; ?>';
-        });
-
         Blade::directive('endquery', function () {
             return '<?php }} wp_reset_postdata(); ?>';
         });
 
-        Blade::directive('footer', function () {
-            return '<?php wp_footer(); ?>';
-        });
-
-        Blade::directive('head', function () {
-            return '<?php wp_head(); ?>';
-        });
-
-        Blade::directive('loggedin', function () {
-            return '<?php if( is_user_logged_in() ): ?>';
-        });
-
-        Blade::directive('loggedout', function () {
-            return '<?php if( !is_user_logged_in() ): ?>';
-        });
-
         Blade::directive('loop', function () {
             return '<?php if (have_posts()) { while (have_posts()) { the_post(); ?>';
-        });
-
-        Blade::directive('role', function ($expression) {
-            return "<?php if (User::current()->hasRole({$expression})): ?>";
         });
 
         Blade::directive('query', function ($expression) {
@@ -118,22 +86,6 @@ class BladeServiceProvider extends ServiceProvider
             $data = 3 === count($args) ? array_pop($args) : '[]';
 
             return "<?php if (\$__env->exists('{$path}')) { echo \$__env->make('{$path}', {$data}, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); } else { echo \$__env->make('{$args[0]}', {$data}, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); } ?>";
-        });
-
-        Blade::directive('wp_footer', function () {
-            return '<?php wp_footer(); ?>';
-        });
-
-        Blade::directive('wp_head', function () {
-            return '<?php wp_head(); ?>';
-        });
-
-        Blade::directive('wpfooter', function () {
-            return '<?php wp_footer(); ?>';
-        });
-
-        Blade::directive('wphead', function () {
-            return '<?php wp_head(); ?>';
         });
     }
 }
