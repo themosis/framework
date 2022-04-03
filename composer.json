@@ -42,6 +42,7 @@
   },
   "require-dev": {
     "beyondcode/laravel-dump-server": "^1.8",
+    "johnpbloch/wordpress-core": "^5.9",
     "phpunit/phpunit": "^9.5"
   },
   "scripts": {

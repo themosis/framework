@@ -30,20 +30,28 @@ class BladeServiceProvider extends ServiceProvider
             return User::current()->hasRole($role);
         });
 
-        Blade::directive('endloop', function () {
-            return '<?php }} ?>';
-        });
-
-        Blade::directive('endquery', function () {
-            return '<?php }} wp_reset_postdata(); ?>';
-        });
-
         Blade::directive('loop', function () {
-            return '<?php if (have_posts()) { while (have_posts()) { the_post(); ?>';
+            return '<?php if (have_posts()) { $__in_loop = true; while (have_posts()) { the_post(); ?>';
+        });
+
+        Blade::directive('loopelse', function () {
+            return '<?php }} else { ?>';
+        });
+
+        Blade::directive('endloop', function () {
+            return '<?php isset($__in_loop) && $__in_loop ? }} unset($__in_loop); : } ?>';
         });
 
         Blade::directive('query', function ($expression) {
-            return '<?php $_query = (is_array('.$expression.')) ? new \WP_Query('.$expression.') : '.$expression.'; if ($_query->have_posts()) { while ($_query->have_posts()) { $_query->the_post(); ?>';
+            return '<?php $_query = (is_array('.$expression.')) ? new \WP_Query('.$expression.') : '.$expression.'; if ($_query->have_posts()) { $__in_loop = true; while ($_query->have_posts()) { $_query->the_post(); ?>';
+        });
+
+        Blade::directive('queryelse', function () {
+            return '<?php }} else { ?>';
+        });
+
+        Blade::directive('endquery', function () {
+            return '<?php isset($__in_loop) && $__in_loop ? }} wp_reset_postdata(); unset($__in_loop); : } ?>';
         });
 
         /**
