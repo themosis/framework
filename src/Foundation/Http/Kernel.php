@@ -4,6 +4,8 @@ namespace Themosis\Foundation\Http;
 
 use Illuminate\Foundation\Http\Kernel as BaseHttpKernel;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Pipeline;
 use Illuminate\Support\Facades\Facade;
 
 class Kernel extends BaseHttpKernel
@@ -19,12 +21,34 @@ class Kernel extends BaseHttpKernel
 
     public function boot(Request $request): void
     {
-        $request->enableHttpMethodParameterOverride();
-
         $this->app->instance('request', $request);
 
         Facade::clearResolvedInstance('request');
 
         $this->bootstrap();
+    }
+
+    public function front(): void
+    {
+        $request = $this->app['request'];
+
+        $response = $this->handle($request);
+        $response->send();
+
+        $this->terminate($request, $response);
+    }
+
+    /**
+     * Send the given request through the middleware / router.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    protected function sendRequestThroughRouter($request): Response
+    {
+        return (new Pipeline($this->app))
+            ->send($request)
+            ->through($this->app->shouldSkipMiddleware() ? [] : $this->middleware)
+            ->then($this->dispatchToRouter());
     }
 }
