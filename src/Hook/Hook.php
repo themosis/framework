@@ -5,6 +5,7 @@ namespace Themosis\Hook;
 use BadMethodCallException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Str;
+use Themosis\Hook\Support\ArgumentCountCalculator;
 
 abstract class Hook implements IHook
 {
@@ -43,7 +44,7 @@ abstract class Hook implements IHook
      *
      * @return $this
      */
-    public function add($hooks, $callback, $priority = 10, $accepted_args = 3)
+    public function add($hooks, $callback, $priority = 10, $accepted_args = null)
     {
         foreach ((array) $hooks as $hook) {
             $this->addHookEvent($hook, $callback, $priority, $accepted_args);

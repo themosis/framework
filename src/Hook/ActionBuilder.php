@@ -2,6 +2,8 @@
 
 namespace Themosis\Hook;
 
+use Themosis\Hook\Support\ArgumentCountCalculator;
+
 class ActionBuilder extends Hook
 {
     /**
@@ -31,7 +33,7 @@ class ActionBuilder extends Hook
      */
     protected function doAction($hook, $args)
     {
-        do_action($hook, $args);
+        return call_user_func('do_action', $hook, ...$args);
     }
 
     /**
@@ -42,7 +44,7 @@ class ActionBuilder extends Hook
      */
     protected function doActionRefArray($hook, array $args)
     {
-        do_action_ref_array($hook, $args);
+        return call_user_func('do_action_ref_array', $hook, ...$args);
     }
 
     /**
@@ -69,6 +71,7 @@ class ActionBuilder extends Hook
      */
     protected function addAction($name, $callback, $priority, $accepted_args)
     {
+        $accepted_args = is_null($accepted_args) ? (new ArgumentCountCalculator($callback))->calculate() : $accepted_args;
         add_action($name, $callback, $priority, $accepted_args);
     }
 }

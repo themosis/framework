@@ -14,7 +14,7 @@ interface IHook
      *
      * @return mixed
      */
-    public function add($hooks, $callback, $priority = 10, $accepted_args = 2);
+    public function add($hooks, $callback, $priority = 10, $accepted_args = null);
 
     /**
      * Run all events registered with the hook.

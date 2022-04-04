@@ -2,6 +2,8 @@
 
 namespace Themosis\Hook;
 
+use Themosis\Hook\Support\ArgumentCountCalculator;
+
 class FilterBuilder extends Hook
 {
     /**
@@ -71,6 +73,7 @@ class FilterBuilder extends Hook
      */
     protected function addFilter($name, $callback, $priority, $accepted_args)
     {
+        $accepted_args = is_null($accepted_args) ? (new ArgumentCountCalculator($callback))->calculate() : $accepted_args;
         add_filter($name, $callback, $priority, $accepted_args);
     }
 }
