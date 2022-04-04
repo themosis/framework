@@ -56,7 +56,7 @@ class ConfigurationLoader
      *
      * @throws Exception
      */
-    protected function loadConfigurationFiles(Application $app, RepositoryContract $repository)
+    protected function loadConfigurationFiles(Application $app, RepositoryContract $repository): void
     {
 
         $files = $this->getConfigurationFiles($app);
@@ -66,7 +66,7 @@ class ConfigurationLoader
         }
         foreach ($files as $key => $path) {
             // Avoid duplicate constant definitions.
-            if ('wordpress' === $key && defined('AUTH_KEY')) {
+            if ('wordpress' === $key && $this->isWordPressConfigLoaded()) {
                 continue;
             }
 
@@ -75,18 +75,29 @@ class ConfigurationLoader
     }
 
     /**
-     * Get the path to the routes cache file.
-     *
-     * @return string
+     * Do we need to include the wordpress config file if cached config is loaded?
      */
-    protected function maybeForceWpConfigInclude()
+    protected function maybeForceWpConfigInclude():void
     {
         // Avoid duplicate constants definitions.
-        if (defined('AUTH_KEY')) {
+        if ($this->isWordPressConfigLoaded()) {
             return;
         }
         $cacheConfig = app()->getCachedConfigPath('config.php');
-        file_exists($cacheConfig) ? require_once app()->configPath('wordpress.php') : null;
+
+        if (!file_exists($cacheConfig)) {
+            return;
+        }
+
+        require_once app()->configPath('wordpress.php');
+    }
+
+    /**
+     * Check if the WordPress config constants are already defined.
+     */
+    protected function isWordPressConfigLoaded(): bool
+    {
+        return defined('AUTH_KEY');
     }
 
     /**
