@@ -4,7 +4,6 @@ namespace Themosis\Hook;
 
 use BadMethodCallException;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Str;
 use Themosis\Hook\Support\ArgumentCountCalculator;
 
 abstract class Hook implements IHook
@@ -44,9 +43,10 @@ abstract class Hook implements IHook
      *
      * @return $this
      */
-    public function add($hooks, $callback, $priority = 10, $accepted_args = null)
+    public function add($hooks, $callback, int $priority = 10, $accepted_args = null): self
     {
         foreach ((array) $hooks as $hook) {
+            $accepted_args = null === $accepted_args ? (new ArgumentCountCalculator($callback))->calculate() : $accepted_args;
             $this->addHookEvent($hook, $callback, $priority, $accepted_args);
         }
 
@@ -60,9 +60,9 @@ abstract class Hook implements IHook
      *
      * @return bool
      */
-    public function exists($hook)
+    public function exists(string $hook): bool
     {
-        return array_key_exists($hook, $this->hooks);
+        return isset($this->hooks[$hook]);
     }
 
     /**
@@ -74,7 +74,7 @@ abstract class Hook implements IHook
      *
      * @return mixed The Hook instance or false.
      */
-    public function remove($hook, $callback = null, $priority = 10)
+    public function remove(string $hook, $callback = null, int $priority = 10): self
     {
         // If $callback is null, it means we have chained the methods to
         // the action/filter instance. If the instance has no callback, return false.
@@ -101,9 +101,9 @@ abstract class Hook implements IHook
      *
      * @return array|null
      */
-    public function getCallback($hook)
+    public function getCallback(string $hook)
     {
-        if (array_key_exists($hook, $this->hooks)) {
+        if (isset($this->hooks[$hook])) {
             return $this->hooks[$hook];
         }
 
@@ -117,7 +117,7 @@ abstract class Hook implements IHook
      * @param \Closure|string|array $callback
      * @param int                   $priority
      */
-    protected function removeAction($hook, $callback, $priority)
+    protected function removeAction(string $hook, $callback, int $priority)
     {
         remove_action($hook, $callback, $priority);
     }
@@ -134,7 +134,7 @@ abstract class Hook implements IHook
      *
      * @return \Closure|array|string
      */
-    protected function addHookEvent($hook, $callback, $priority, $accepted_args)
+    protected function addHookEvent(string $hook, $callback, int $priority, $accepted_args)
     {
         // Check if $callback is a closure.
         if ($callback instanceof \Closure || is_array($callback)) {
@@ -164,7 +164,7 @@ abstract class Hook implements IHook
      *
      * @return array
      */
-    protected function addClassEvent($hook, $class, $priority, $accepted_args)
+    protected function addClassEvent(string $hook, string $class, int $priority, int $accepted_args): array
     {
         $callback = $this->buildClassEventCallback($class, $hook);
 
@@ -183,7 +183,7 @@ abstract class Hook implements IHook
      *
      * @return array
      */
-    protected function buildClassEventCallback($class, $hook)
+    protected function buildClassEventCallback(string $class, string $hook): array
     {
         list($class, $method) = $this->parseClassEvent($class, $hook);
 
@@ -200,14 +200,14 @@ abstract class Hook implements IHook
      *
      * @return array
      */
-    protected function parseClassEvent($class, $hook)
+    protected function parseClassEvent(string $class, string $hook): array
     {
-        if (Str::contains($class, '@')) {
+        if (false !== strpos($class, '@')) {
             return explode('@', $class);
         }
 
         // If no method is defined, use the hook name as the method name.
-        $method = Str::contains($hook, '-') ? str_replace('-', '_', $hook) : $hook;
+        $method = false !== strpos($hook, '-') ? str_replace('-', '_', $hook) : $hook;
 
         return [$class, $method];
     }
@@ -222,7 +222,7 @@ abstract class Hook implements IHook
      *
      * @throws BadMethodCallException
      */
-    protected function addEventListener($name, $callback, $priority, $accepted_args)
+    protected function addEventListener(string $name, $callback, int $priority, int $accepted_args)
     {
         throw new BadMethodCallException('The "addEventListener" method must be overridden.');
     }

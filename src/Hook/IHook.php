@@ -14,7 +14,7 @@ interface IHook
      *
      * @return mixed
      */
-    public function add($hooks, $callback, $priority = 10, $accepted_args = null);
+    public function add($hooks, $callback, int $priority = 10, $accepted_args = null);
 
     /**
      * Run all events registered with the hook.
@@ -24,7 +24,7 @@ interface IHook
      *
      * @return mixed
      */
-    public function run($hook, $args = null);
+    public function run(string $hook, $args = null);
 
     /**
      * Check if a registered hook exists.
@@ -33,7 +33,7 @@ interface IHook
      *
      * @return bool
      */
-    public function exists($hook);
+    public function exists(string $hook): bool;
 
     /**
      * Return the callback registered with the given hook.
@@ -42,7 +42,7 @@ interface IHook
      *
      * @return array|bool
      */
-    public function getCallback($hook);
+    public function getCallback(string $hook);
 
     /**
      * Remove a defined action or filter.
@@ -53,5 +53,5 @@ interface IHook
      *
      * @return mixed
      */
-    public function remove($hook, $callback = null, $priority = 10);
+    public function remove(string $hook, $callback = null, int $priority = 10);
 }
