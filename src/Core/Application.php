@@ -1280,7 +1280,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $kernel = $this->make($kernel);
 
         $response = $kernel->handle($request);
-        $response->send();
+        $response->sendHeaders();
+        $response->sendContent();
 
         $kernel->terminate($request, $response);
 
