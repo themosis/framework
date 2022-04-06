@@ -28,16 +28,6 @@ class Kernel extends BaseHttpKernel
         $this->bootstrap();
     }
 
-    public function front(): void
-    {
-        $request = $this->app['request'];
-
-        $response = $this->handle($request);
-        $response->send();
-
-        $this->terminate($request, $response);
-    }
-
     /**
      * Send the given request through the middleware / router.
      *
