@@ -47,7 +47,7 @@
     "phpunit/phpunit": "^9.5"
   },
   "scripts": {
-    "test": "phpunit",
+    "test": "XDEBUG_MODE=coverage phpunit",
     "fix": "php-cs-fixer fix"
   },
   "config": {

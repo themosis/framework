@@ -1,13 +1,12 @@
-# Miscellaneous
-.DS_Store
-Thumbs.db
 .idea/
-node_modules/
+.phpunit.cache/
+.phpunit.result.cache
+.php-cs-fixer.cache
+.DS_Store
 
-# Framework
-/vendor
 composer.lock
 composer.phar
-.php_cs.cache
-.php-cs-fixer.cache
-.phpunit.result.cache
+
+build/
+node_modules/
+vendor/
