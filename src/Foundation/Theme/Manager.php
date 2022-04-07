@@ -1,30 +1,28 @@
 <?php
 
-namespace Themosis\Foundation;
+namespace Themosis\Foundation\Theme;
 
 use Composer\Autoload\ClassLoader;
 use Illuminate\Config\Repository;
 use Illuminate\Foundation\Application;
 use Themosis\Asset\Finder;
+use Themosis\Foundation\Support\HasConfigurationFiles;
 use Themosis\Foundation\Support\IncludesFiles;
 use Themosis\Foundation\Support\WordPressFileHeaders;
-use Themosis\Foundation\Theme\ImageSize;
-use Themosis\Foundation\Theme\Support;
-use Themosis\Foundation\Theme\Templates;
-use WP_Theme;
 
-class ThemeManager
+class Manager
 {
-    use WordPressFileHeaders;
+    use HasConfigurationFiles;
     use IncludesFiles;
+    use WordPressFileHeaders;
 
-    protected WP_Theme $theme;
+    protected string $path;
+
+    protected string $directory;
 
     protected string $routesPath;
 
     protected array $parsedHeaders = [];
-
-    protected string $directory;
 
     public ImageSize $images;
 
@@ -44,22 +42,20 @@ class ThemeManager
     public function __construct(
         protected Application $app,
         protected ClassLoader $loader,
-        protected Repository $config,
-        protected string $dirPath
+        protected Repository  $config,
     )
     {
     }
 
     /**
      * Load the theme.
-     *
-     * @param string $path Theme configuration folder path.
      */
-    public function load(string $path): self
+    public function load(string $path, string $configDirectory): self
     {
+        $this->setPath($path);
         $this->setThemeDirectory();
         $this->setThemeConstants();
-        $this->loadThemeConfiguration($path);
+        $this->loadThemeConfiguration($configDirectory);
         $this->setThemeAutoloading();
 
         return $this;
@@ -67,16 +63,12 @@ class ThemeManager
 
     /**
      * Define theme assets directories.
-     *
-     * @param array $locations
-     *
-     * @return $this
      */
-    public function assets(array $locations)
+    public function assets(array $locations): self
     {
         $finder = $this->app->bound('asset.finder') ? $this->app['asset.finder'] : null;
 
-        if (! is_null($finder)) {
+        if (!is_null($finder)) {
             /** @var Finder $finder */
             $finder->addLocations($locations);
         }
@@ -86,86 +78,79 @@ class ThemeManager
 
     /**
      * Return a theme header property.
-     *
-     * @param string $header
-     *
-     * @return string|null
      */
-    public function getHeader(string $header)
+    public function getHeader(string $header): ?string
     {
         return $this->parsedHeaders[$header] ?? null;
     }
 
     /**
      * Return the theme directory name.
-     *
-     * @return string
      */
-    public function getDirectory()
+    public function getDirectory(): string
     {
         return $this->directory;
     }
 
+    protected function setPath(string $path): void
+    {
+        $this->path = $path;
+    }
+
     /**
      * Return the theme root path.
-     *
-     * @param string $path Path to append to the theme base path.
-     *
-     * @return string
      */
-    public function getPath(string $path = '')
+    public function getPath(string $path = ''): string
     {
-        return $this->dirPath.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->path . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 
     /**
      * Return the theme root URL.
-     *
-     * @param string $path Path to append to the theme base URL.
-     *
-     * @return string
      */
-    public function getUrl(string $path = '')
+    public function getUrl(string $uri = ''): string
     {
         if (is_multisite() && defined(SUBDOMAIN_INSTALL) && SUBDOMAIN_INSTALL) {
             return sprintf(
-                '%s/%s/themes/%s',
-                get_home_url(),
-                CONTENT_DIR,
-                $this->getDirectory()
-            ).($path ? '/'.$path : $path);
+                    '%s/%s/themes/%s',
+                    get_home_url(),
+                    CONTENT_DIR,
+                    $this->getDirectory()
+                ) . ($uri ? '/' . $uri : $uri);
         }
 
-        return get_template_directory_uri().($path ? '/'.$path : $path);
+        return get_template_directory_uri() . ($uri ? '/' . $uri : $uri);
     }
 
     /**
      * Set the theme directory name property.
      */
-    protected function setThemeDirectory()
+    protected function setThemeDirectory(): void
     {
-        $pos = strrpos($this->dirPath, DIRECTORY_SEPARATOR);
+        $pos = strrpos($this->path, DIRECTORY_SEPARATOR);
 
-        $this->directory = substr($this->dirPath, $pos + 1);
+        $this->directory = substr($this->path, $pos + 1);
     }
 
     /**
      * Load theme configuration files.
-     *
-     * @param string $path
      */
-    protected function loadThemeConfiguration(string $path)
+    protected function loadThemeConfiguration(string $configDirectory): void
     {
-        $this->app->loadConfigurationFiles($this->config, $path);
+        $files = $this->getConfigurationFiles($this->path . '/' . trim($configDirectory, '\/'));
+
+        foreach ($files as $key => $path) {
+            $this->config->set($key, require $path);
+        }
     }
 
     /**
      * Load theme classes.
      */
-    protected function setThemeAutoloading()
+    protected function setThemeAutoloading(): void
     {
         foreach ($this->config->get('theme.autoloading', []) as $ns => $path) {
-            $path = $this->dirPath.'/'.trim($path, '\/');
+            $path = $this->path . '/' . trim($path, '\/');
             $this->loader->addPsr4($ns, $path);
         }
 
@@ -174,12 +159,8 @@ class ThemeManager
 
     /**
      * Register theme services providers.
-     *
-     * @param array $providers
-     *
-     * @return $this
      */
-    public function providers(array $providers = [])
+    public function providers(array $providers = []): self
     {
         foreach ($providers as $provider) {
             $this->app->register(new $provider($this->app));
@@ -190,16 +171,10 @@ class ThemeManager
 
     /**
      * Register theme views path.
-     *
-     * @param array $paths
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     *
-     * @return $this
      */
-    public function views(array $paths = [])
+    public function views(array $paths = []): self
     {
-        if (! $this->app->has('view')) {
+        if (!$this->app->has('view')) {
             return $this;
         }
 
@@ -208,22 +183,15 @@ class ThemeManager
         }
 
         $factory = $this->app->make('view');
-        $twigLoader = $this->app->make('twig.loader');
+        $twigLoader = $this->app->has('twig.loader')
+            ? $this->app->make('twig.loader')
+            : null;
 
-        foreach ($paths as $path => $priority) {
-            if (is_numeric($path)) {
-                $location = $priority;
+        foreach ($paths as $path) {
+            $uri = $this->path . '/' . trim($path, '\/');
 
-                // Set a default base priority for themes
-                // that do not define one.
-                $priority = 100;
-            } else {
-                $location = $path;
-            }
-
-            $uri = $this->dirPath.'/'.trim($location, '\/');
-            $factory->getFinder()->addOrderedLocation($uri, $priority);
-            $twigLoader->addPath($uri);
+            $factory->getFinder()->prependLocation($uri);
+            $twigLoader?->prependPath($uri);
         }
 
         return $this;
@@ -232,26 +200,18 @@ class ThemeManager
     /**
      * Register theme constants.
      */
-    protected function setThemeConstants()
+    protected function setThemeConstants(): void
     {
-        $this->parsedHeaders = $this->headers($this->dirPath.'/style.css', $this->headers);
-
-        // Theme text domain.
-        $textdomain = (isset($this->parsedHeaders['text_domain']) && ! empty($this->parsedHeaders['text_domain']))
-            ? $this->parsedHeaders['text_domain']
-            : 'themosis_theme';
+        $this->parsedHeaders = $this->headers($this->path . '/style.css', $this->headers);
+        $textdomain = $this->parsedHeaders['text_domain'] ?? 'themosis_theme';
 
         defined('THEME_TD') ? THEME_TD : define('THEME_TD', $textdomain);
     }
 
     /**
      * Register theme image sizes.
-     *
-     * @param array $sizes
-     *
-     * @return $this
      */
-    public function images(array $sizes = [])
+    public function images(array $sizes = []): self
     {
         if (empty($sizes)) {
             return $this;
@@ -265,35 +225,21 @@ class ThemeManager
 
     /**
      * Return a configuration value.
-     *
-     * @param string $key
-     * @param mixed  $default
-     *
-     * @return mixed
      */
-    public function config(string $key, $default = null)
+    public function config(string $key, mixed $default = null): mixed
     {
         return $this->config->get($key, $default);
     }
 
-    /**
-     * Return the theme images sizes.
-     *
-     * @return ImageSize
-     */
-    public function getImages()
+    public function getImages(): ImageSize
     {
         return $this->images;
     }
 
     /**
      * Register theme menus locations.
-     *
-     * @param array $menus
-     *
-     * @return $this
      */
-    public function menus(array $menus = [])
+    public function menus(array $menus = []): self
     {
         if (empty($menus)) {
             return $this;
@@ -308,12 +254,8 @@ class ThemeManager
 
     /**
      * Register theme sidebars.
-     *
-     * @param array $sidebars
-     *
-     * @return $this
      */
-    public function sidebars($sidebars = [])
+    public function sidebars(array $sidebars = []): self
     {
         if (empty($sidebars)) {
             return $this;
@@ -330,12 +272,8 @@ class ThemeManager
 
     /**
      * Register theme support features.
-     *
-     * @param array $features
-     *
-     * @return $this
      */
-    public function support($features = [])
+    public function support(array $features = []): self
     {
         (new Support($features))->register();
 
@@ -344,12 +282,8 @@ class ThemeManager
 
     /**
      * Register theme templates.
-     *
-     * @param array $templates
-     *
-     * @return $this
      */
-    public function templates($templates = [])
+    public function templates(array $templates = []): self
     {
         (new Templates($templates, $this->app['filter']))
             ->register();
