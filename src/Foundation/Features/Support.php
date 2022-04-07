@@ -1,18 +1,14 @@
 <?php
 
-namespace Themosis\Foundation\Theme;
+namespace Themosis\Foundation\Features;
+
+use InvalidArgumentException;
 
 class Support
 {
-    /**
-     * @var array
-     */
-    protected $features;
+    protected array $features;
 
-    /**
-     * @var array
-     */
-    protected $mustHaveProperties = [
+    protected array $mustHaveProperties = [
         'custom-background',
         'custom-header',
         'html5',
@@ -28,26 +24,24 @@ class Support
 
     /**
      * Parse theme features.
-     *
-     * @param array $features
-     *
-     * @return array
      */
-    protected function parse(array $features)
+    protected function parse(array $features): array
     {
         $allowed = [];
 
         foreach ($features as $feature => $value) {
             if (is_int($feature)) {
-                // Allow theme features without options.
-                // Though post formats must be added with properties.
-                // Here we first check that "post-formats" is not provided
-                // without a value. If so, just pass it.
+                /**
+                 * Allow theme features without options.
+                 * Though post formats must be added with properties.
+                 * Here we first check that "post-formats" is not provided
+                 * without a value. If so, just pass it.
+                 */
                 if (! in_array($value, $this->mustHaveProperties, true)) {
                     $allowed[$value] = $value;
                 } else {
-                    throw new \InvalidArgumentException(
-                        'The theme feature ['.$value.'] must have a defined property in order to work.'
+                    throw new InvalidArgumentException(
+                        "The theme feature [$value] must have a defined property in order to work."
                     );
                 }
             } else {
@@ -61,7 +55,7 @@ class Support
     /**
      * Register theme support.
      */
-    public function register()
+    public function register(): void
     {
         if (! function_exists('add_theme_support') || empty($this->features)) {
             return;
