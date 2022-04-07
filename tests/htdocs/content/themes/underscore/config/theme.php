@@ -2,9 +2,9 @@
 
 return [
     'autoloading' => [
-        'Theme\\' => 'resources'
+        'Theme\\' => 'resources',
     ],
     'providers' => [
-        Theme\Providers\RouteServiceProvider::class
-    ]
+        Theme\Providers\RouteServiceProvider::class,
+    ],
 ];

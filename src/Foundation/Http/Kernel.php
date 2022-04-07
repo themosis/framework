@@ -32,7 +32,6 @@ class Kernel extends BaseHttpKernel
      * Send the given request through the middleware / router.
      *
      * @param Request $request
-     * @return Response
      */
     protected function sendRequestThroughRouter($request): Response
     {

@@ -36,7 +36,7 @@ class MetaboxApiController
         } catch (\Exception $e) {
             throw new HttpResponseException(response()->json([
                 'message' => $e->getMessage(),
-                'errors' => true
+                'errors' => true,
             ], 500));
         }
 
@@ -61,7 +61,7 @@ class MetaboxApiController
         } catch (\Exception $exception) {
             return response()->json([
                 'message' => $exception->getMessage(),
-                'errors' => true
+                'errors' => true,
             ], 500);
         }
 

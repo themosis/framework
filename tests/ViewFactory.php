@@ -36,7 +36,7 @@ trait ViewFactory
 
         $bladeCompiler = new BladeCompiler(
             $filesystem,
-            __DIR__.'/storage/views'
+            __DIR__ . '/storage/views',
         );
 
         $app->instance('blade', $bladeCompiler);
@@ -56,9 +56,9 @@ trait ViewFactory
             $viewFinder = new FileViewFinder(
                 $filesystem,
                 $paths,
-                ['blade.php', 'php']
+                ['blade.php', 'php'],
             ),
-            new Dispatcher($app)
+            new Dispatcher($app),
         );
 
         $factory->addExtension('blade', $resolver);

@@ -43,7 +43,7 @@ class BladeServiceProvider extends ServiceProvider
         });
 
         Blade::directive('query', function ($expression) {
-            return '<?php $_query = (is_array('.$expression.')) ? new \WP_Query('.$expression.') : '.$expression.'; if ($_query->have_posts()) { $__in_loop = true; while ($_query->have_posts()) { $_query->the_post(); ?>';
+            return '<?php $_query = (is_array(' . $expression . ')) ? new \WP_Query(' . $expression . ') : ' . $expression . '; if ($_query->have_posts()) { $__in_loop = true; while ($_query->have_posts()) { $_query->the_post(); ?>';
         });
 
         Blade::directive('queryelse', function () {
@@ -85,7 +85,7 @@ class BladeServiceProvider extends ServiceProvider
                     $args[1] = call_user_func($args[1]);
                 }
 
-                $path = $args[0].'-'.$args[1];
+                $path = $args[0] . '-' . $args[1];
             } else {
                 $path = $args[0];
             }

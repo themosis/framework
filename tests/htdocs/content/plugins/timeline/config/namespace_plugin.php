@@ -2,13 +2,13 @@
 
 return [
     'autoloading' => [
-        'Com\\Themosis\\Plugin\\' => 'resources'
+        'Com\\Themosis\\Plugin\\' => 'resources',
     ],
     'providers' => [
-        Com\Themosis\Plugin\Providers\Route::class
+        Com\Themosis\Plugin\Providers\Route::class,
     ],
     'views' => [
-        'views'
+        'views',
     ],
-    'anyvar' => true
+    'anyvar' => true,
 ];

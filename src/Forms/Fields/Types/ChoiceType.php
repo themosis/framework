@@ -76,7 +76,7 @@ class ChoiceType extends BaseType implements
             'choices',
             'expanded',
             'multiple',
-            'layout'
+            'layout',
         ]);
     }
 
@@ -90,13 +90,13 @@ class ChoiceType extends BaseType implements
         $default = [
             'expanded' => false,
             'multiple' => false,
-            'choices' => null
+            'choices' => null,
         ];
 
         if (function_exists('_x')) {
             $default['l10n'] = [
                 'not_found' => _x('Nothing found', 'field', Application::TEXTDOMAIN),
-                'placeholder' => _x('Select an option...', 'field', Application::TEXTDOMAIN)
+                'placeholder' => _x('Select an option...', 'field', Application::TEXTDOMAIN),
             ];
         }
 
@@ -179,7 +179,7 @@ class ChoiceType extends BaseType implements
 
         return array_merge($options, [
             'choices' => $choices,
-            'layout' => $this->getLayout()
+            'layout' => $this->getLayout(),
         ]);
     }
 

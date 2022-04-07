@@ -42,7 +42,7 @@ class AuthMakeCommand extends Command
         'auth/verify.stub' => 'auth/verify.blade.php',
         'auth/passwords/email.stub' => 'auth/passwords/email.blade.php',
         'auth/passwords/reset.stub' => 'auth/passwords/reset.blade.php',
-        'settings/home.stub' => 'settings/home.blade.php'
+        'settings/home.stub' => 'settings/home.blade.php',
     ];
 
     /**
@@ -56,7 +56,7 @@ class AuthMakeCommand extends Command
         'Auth/RegisterController.stub' => 'Auth/RegisterController.php',
         'Auth/ResetPasswordController.stub' => 'Auth/ResetPasswordController.php',
         'Auth/VerificationController.stub' => 'Auth/VerificationController.php',
-        'SettingsController.stub' => 'SettingsController.php'
+        'SettingsController.stub' => 'SettingsController.php',
     ];
 
     /**
@@ -69,7 +69,7 @@ class AuthMakeCommand extends Command
         'Auth/Passwords/PasswordResetForm.stub' => 'Auth/Passwords/PasswordResetForm.php',
         'Auth/LoginForm.stub' => 'Auth/LoginForm.php',
         'Auth/LogoutForm.stub' => 'Auth/LogoutForm.php',
-        'Auth/RegisterForm.stub' => 'Auth/RegisterForm.php'
+        'Auth/RegisterForm.stub' => 'Auth/RegisterForm.php',
     ];
 
     public function __construct(Filesystem $files)
@@ -93,7 +93,7 @@ class AuthMakeCommand extends Command
             $this->exportForms();
             $this->files->append(
                 base_path('routes/web.php'),
-                $this->files->get(__DIR__.'/stubs/make/routes.stub')
+                $this->files->get(__DIR__ . '/stubs/make/routes.stub'),
             );
         }
 
@@ -128,15 +128,15 @@ class AuthMakeCommand extends Command
     protected function exportViews()
     {
         foreach ($this->views as $pathIn => $pathOut) {
-            if ($this->files->exists($view = resource_path('views/'.$pathOut)) && ! $this->option('force')) {
+            if ($this->files->exists($view = resource_path('views/' . $pathOut)) && ! $this->option('force')) {
                 if (! $this->confirm("The [{$pathOut}] view already exists. Do you want to overwrite it?")) {
                     continue;
                 }
             }
 
             $this->files->copy(
-                __DIR__.'/stubs/make/views/'.$pathIn,
-                $view
+                __DIR__ . '/stubs/make/views/' . $pathIn,
+                $view,
             );
         }
     }
@@ -147,7 +147,7 @@ class AuthMakeCommand extends Command
     protected function exportControllers()
     {
         foreach ($this->controllers as $pathIn => $pathOut) {
-            if ($this->files->exists($controller = app_path('Http/Controllers/'.$pathOut))
+            if ($this->files->exists($controller = app_path('Http/Controllers/' . $pathOut))
                 && ! $this->option('force')) {
                 if (! $this->confirm("The [{$pathOut}] controller already exists. Do you want to overwrite it?")) {
                     continue;
@@ -156,7 +156,7 @@ class AuthMakeCommand extends Command
 
             $this->files->put(
                 $controller,
-                $this->compileStub($this->files->get(__DIR__.'/stubs/make/controllers/'.$pathIn))
+                $this->compileStub($this->files->get(__DIR__ . '/stubs/make/controllers/' . $pathIn)),
             );
         }
     }
@@ -167,7 +167,7 @@ class AuthMakeCommand extends Command
     protected function exportForms()
     {
         foreach ($this->forms as $pathIn => $pathOut) {
-            if ($this->files->exists($form = app_path('Forms/'.$pathOut)) && ! $this->option('force')) {
+            if ($this->files->exists($form = app_path('Forms/' . $pathOut)) && ! $this->option('force')) {
                 if (! $this->confirm("The [{$pathOut}] form already exists. Do you want to overwrite it?")) {
                     continue;
                 }
@@ -175,7 +175,7 @@ class AuthMakeCommand extends Command
 
             $this->files->put(
                 $form,
-                $this->compileStub($this->files->get(__DIR__.'/stubs/make/forms/'.$pathIn))
+                $this->compileStub($this->files->get(__DIR__ . '/stubs/make/forms/' . $pathIn)),
             );
         }
     }
@@ -194,7 +194,7 @@ class AuthMakeCommand extends Command
         return str_replace(
             '{{namespace}}',
             $this->getAppNamespace(),
-            $content
+            $content,
         );
     }
 }

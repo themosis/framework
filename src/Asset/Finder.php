@@ -93,16 +93,16 @@ class Finder
         $path = trim($path, '\/');
 
         foreach ($this->locations as $dir => $url) {
-            if ($this->files->exists($fullPath = $dir.'/'.$path)) {
+            if ($this->files->exists($fullPath = $dir . '/' . $path)) {
                 return (new File($this->files))
                     ->setPath($fullPath)
-                    ->setUrl($url.'/'.$path)
+                    ->setUrl($url . '/' . $path)
                     ->setExternal(false)
                     ->setType($fullPath);
             }
         }
 
-        throw new AssetException('Unable to find the asset with the following path: '.$path);
+        throw new AssetException('Unable to find the asset with the following path: ' . $path);
     }
 
     /**

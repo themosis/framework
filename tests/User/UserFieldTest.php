@@ -16,7 +16,8 @@ use Themosis\User\UserField;
 
 class UserFieldTest extends TestCase
 {
-    use Application, ViewFactory;
+    use Application;
+    use ViewFactory;
 
     protected function getFieldFactory()
     {
@@ -33,7 +34,7 @@ class UserFieldTest extends TestCase
             new FieldsRepository(),
             new ActionBuilder($app),
             $this->getViewFactory($app),
-            new \Illuminate\Validation\Factory(new Translator(new FileLoader(new Filesystem(), ''), 'en_US'))
+            new \Illuminate\Validation\Factory(new Translator(new FileLoader(new Filesystem(), ''), 'en_US')),
         );
     }
 
@@ -67,7 +68,7 @@ class UserFieldTest extends TestCase
         $user->make()
             ->add(new Section('general', 'General', [
                 $text = $fields->text('test'),
-                $email = $fields->email('email')
+                $email = $fields->email('email'),
             ]));
 
         $this->assertEquals($text, $user->repository()->getFieldByName('test'));

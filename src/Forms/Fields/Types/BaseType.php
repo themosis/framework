@@ -48,7 +48,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         'placeholder',
         'rules',
         'show_in_rest',
-        'theme'
+        'theme',
     ];
 
     /**
@@ -67,7 +67,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         'mapped' => true,
         'messages' => [],
         'rules' => '',
-        'show_in_rest' => false
+        'show_in_rest' => false,
     ];
 
     /**
@@ -261,7 +261,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         $options = array_merge(
             $this->getDefaultOptions(),
             $this->options,
-            $options
+            $options,
         );
 
         if (isset($options['l10n']) && ! empty($l10n)) {
@@ -305,7 +305,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         // Set a default "id" attribute. This attribute can be used on the field
         // and to its associated label as the "for" attribute value if not set.
         if (! isset($options['attributes']['id'])) {
-            $options['attributes']['id'] = $this->getName().'_field';
+            $options['attributes']['id'] = $this->getName() . '_field';
         }
 
         // Set the "for" attribute automatically on the label attributes property.
@@ -416,7 +416,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function getName(): string
     {
-        return trim($this->prefix).$this->getBaseName();
+        return trim($this->prefix) . $this->getBaseName();
     }
 
     /**
@@ -485,7 +485,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         }
 
         if (isset($this->options['attributes'][$name])) {
-            $this->options['attributes'][$name] .= ' '.$value;
+            $this->options['attributes'][$name] .= ' ' . $value;
         } else {
             $this->options['attributes'][$name] = $value;
         }
@@ -545,7 +545,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     protected function getFieldData(): array
     {
         return array_merge($this->data, [
-            '__field' => $this
+            '__field' => $this,
         ]);
     }
 

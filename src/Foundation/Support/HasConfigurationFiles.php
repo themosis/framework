@@ -13,7 +13,7 @@ trait HasConfigurationFiles
 
         foreach (Finder::create()->files()->name('*.php')->in($path) as $file) {
             $directory = $this->getNestedDirectory($file, $path);
-            $files[$directory.basename($file->getRealPath(), '.php')] = $file->getRealPath();
+            $files[$directory . basename($file->getRealPath(), '.php')] = $file->getRealPath();
         }
 
         ksort($files, SORT_NATURAL);
@@ -29,7 +29,7 @@ trait HasConfigurationFiles
         $directory = $file->getPath();
 
         if ($nested = trim(str_replace($path, '', $directory), DIRECTORY_SEPARATOR)) {
-            $nested = str_replace(DIRECTORY_SEPARATOR, '.', $nested).'.';
+            $nested = str_replace(DIRECTORY_SEPARATOR, '.', $nested) . '.';
         }
 
         return $nested;

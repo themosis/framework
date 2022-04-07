@@ -46,8 +46,7 @@ class Manager
         protected Application $app,
         protected ClassLoader $loader,
         protected Repository  $config,
-    )
-    {
+    ) {
     }
 
     /**
@@ -71,7 +70,7 @@ class Manager
     {
         $finder = $this->app->bound('asset.finder') ? $this->app['asset.finder'] : null;
 
-        if (!is_null($finder)) {
+        if (! is_null($finder)) {
             /** @var Finder $finder */
             $finder->addLocations($locations);
         }
@@ -115,11 +114,11 @@ class Manager
     {
         if (is_multisite() && defined(SUBDOMAIN_INSTALL) && SUBDOMAIN_INSTALL) {
             return sprintf(
-                    '%s/%s/themes/%s',
-                    get_home_url(),
-                    CONTENT_DIR,
-                    $this->getDirectory()
-                ) . ($uri ? '/' . $uri : $uri);
+                '%s/%s/themes/%s',
+                get_home_url(),
+                CONTENT_DIR,
+                $this->getDirectory(),
+            ) . ($uri ? '/' . $uri : $uri);
         }
 
         return get_template_directory_uri() . ($uri ? '/' . $uri : $uri);
@@ -177,7 +176,7 @@ class Manager
      */
     public function views(array $paths = []): self
     {
-        if (!$this->app->has('view')) {
+        if (! $this->app->has('view')) {
             return $this;
         }
 

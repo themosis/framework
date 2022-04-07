@@ -86,15 +86,16 @@ class Factory implements UserFactoryContract
             [
                 'username' => 'min:6|max:60',
                 'password' => 'min:6|max:255',
-                'email' => 'email|max:100'
-            ]
+                'email' => 'email|max:100',
+            ],
         );
 
         if ($validator->fails()) {
             $message = sprintf(
                 'Invalid user credentials. %s',
-                implode(' ', $validator->errors()->all())
+                implode(' ', $validator->errors()->all()),
             );
+
             throw new UserException($message);
         }
     }

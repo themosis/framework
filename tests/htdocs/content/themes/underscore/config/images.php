@@ -6,5 +6,5 @@ return [
     'square' => [50],
     'with-crop' => [100, 100, true],
     'with-label' => [300, 150, false, 'Label'],
-    'no-dropdown' => [200, 200, false, false]
+    'no-dropdown' => [200, 200, false, false],
 ];

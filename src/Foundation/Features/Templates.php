@@ -44,7 +44,7 @@ class Templates
                 /**
                  * 2.2 - $properties is an array.
                  */
-                if (is_array($properties) && !empty($properties)) {
+                if (is_array($properties) && ! empty($properties)) {
                     /**
                      * 2.2.1 - $properties has only one value, meaning it's a display name
                      * and only available to page.
@@ -60,7 +60,7 @@ class Templates
                         /**
                          * 2.2.2.1 - Loop through the second one (cast it as an array in case of).
                          */
-                        $post_types = (array)$properties[1];
+                        $post_types = (array) $properties[1];
 
                         foreach ($post_types as $post_type) {
                             $post_type = trim($post_type);
@@ -69,7 +69,7 @@ class Templates
                              * Verify if $post_type exists.
                              * If not, add it with a default value.
                              */
-                            if (!isset($templates[$post_type])) {
+                            if (! isset($templates[$post_type])) {
                                 $templates[$post_type] = [];
                             }
 

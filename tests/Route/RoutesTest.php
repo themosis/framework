@@ -28,12 +28,12 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'WordPress Home (blog archive)',
-            $router->dispatch(Request::create('/', 'GET'))->getContent()
+            $router->dispatch(Request::create('/', 'GET'))->getContent(),
         );
 
         $this->assertEquals(
             'Home post route',
-            $router->dispatch(Request::create('/', 'POST'))->getContent()
+            $router->dispatch(Request::create('/', 'POST'))->getContent(),
         );
     }
 
@@ -47,7 +47,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Another WordPress blog archive',
-            $router->dispatch(Request::create('/', 'GET'))->getContent()
+            $router->dispatch(Request::create('/', 'GET'))->getContent(),
         );
     }
 
@@ -61,7 +61,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Not found',
-            $router->dispatch(Request::create('asdfg', 'GET'))->getContent()
+            $router->dispatch(Request::create('asdfg', 'GET'))->getContent(),
         );
     }
 
@@ -76,7 +76,7 @@ class RoutesTest extends TestCase
         $this->assertEquals(
             'Sample page',
             $router->dispatch(Request::create('sample-page', 'GET'))->getContent(),
-            'Cannot reach default page.'
+            'Cannot reach default page.',
         );
 
         $router->post('page', ['contact', function () {
@@ -85,7 +85,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Form submitted',
-            $router->dispatch(Request::create('contact', 'POST'))->getContent()
+            $router->dispatch(Request::create('contact', 'POST'))->getContent(),
         );
     }
 
@@ -99,7 +99,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Blog posts',
-            $router->dispatch(Request::create('category', 'GET'))->getContent()
+            $router->dispatch(Request::create('category', 'GET'))->getContent(),
         );
     }
 
@@ -113,7 +113,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Some media',
-            $router->dispatch(Request::create('article/attachment/234', 'GET'))->getContent()
+            $router->dispatch(Request::create('article/attachment/234', 'GET'))->getContent(),
         );
     }
 
@@ -127,7 +127,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Author posts',
-            $router->dispatch(Request::create('author/john-doe', 'GET'))->getContent()
+            $router->dispatch(Request::create('author/john-doe', 'GET'))->getContent(),
         );
     }
 
@@ -141,7 +141,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'General category',
-            $router->dispatch(Request::create('category/uncategorized', 'GET'))->getContent()
+            $router->dispatch(Request::create('category/uncategorized', 'GET'))->getContent(),
         );
     }
 
@@ -155,7 +155,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Date archive',
-            $router->dispatch(Request::create('2018', 'GET'))->getContent()
+            $router->dispatch(Request::create('2018', 'GET'))->getContent(),
         );
     }
 
@@ -169,7 +169,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Day archive',
-            $router->dispatch(Request::create('2018/12/25', 'GET'))->getContent()
+            $router->dispatch(Request::create('2018/12/25', 'GET'))->getContent(),
         );
     }
 
@@ -183,7 +183,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Front page',
-            $router->dispatch(Request::create('/', 'GET'))->getContent()
+            $router->dispatch(Request::create('/', 'GET'))->getContent(),
         );
     }
 
@@ -197,7 +197,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Another front page',
-            $router->dispatch(Request::create('/', 'GET'))->getContent()
+            $router->dispatch(Request::create('/', 'GET'))->getContent(),
         );
     }
 
@@ -211,7 +211,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Month archive',
-            $router->dispatch(Request::create('2018/05', 'GET'))->getContent()
+            $router->dispatch(Request::create('2018/05', 'GET'))->getContent(),
         );
     }
 
@@ -225,7 +225,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Page 2 archive',
-            $router->dispatch(Request::create('category/featured/page/2', 'GET'))->getContent()
+            $router->dispatch(Request::create('category/featured/page/2', 'GET'))->getContent(),
         );
     }
 
@@ -239,7 +239,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Template page',
-            $router->dispatch(Request::create('any-page', 'GET'))->getContent()
+            $router->dispatch(Request::create('any-page', 'GET'))->getContent(),
         );
     }
 
@@ -253,7 +253,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Any post type archive',
-            $router->dispatch(Request::create('some-slug', 'GET'))->getContent()
+            $router->dispatch(Request::create('some-slug', 'GET'))->getContent(),
         );
     }
 
@@ -267,7 +267,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Events archive',
-            $router->dispatch(Request::create('prefix-events', 'GET'))->getContent()
+            $router->dispatch(Request::create('prefix-events', 'GET'))->getContent(),
         );
     }
 
@@ -281,7 +281,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Services or books archive',
-            $router->dispatch(Request::create('prefix-services', 'GET'))->getContent()
+            $router->dispatch(Request::create('prefix-services', 'GET'))->getContent(),
         );
     }
 
@@ -295,7 +295,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Search results',
-            $router->dispatch(Request::create('?s=some-term', 'GET'))->getContent()
+            $router->dispatch(Request::create('?s=some-term', 'GET'))->getContent(),
         );
     }
 
@@ -309,7 +309,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'A post',
-            $router->dispatch(Request::create('2025/04/12/a-hello-world-article', 'GET'))->getContent()
+            $router->dispatch(Request::create('2025/04/12/a-hello-world-article', 'GET'))->getContent(),
         );
     }
 
@@ -323,7 +323,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'A generic post',
-            $router->dispatch(Request::create('2025/04/16/a-hello-world-article', 'GET'))->getContent()
+            $router->dispatch(Request::create('2025/04/16/a-hello-world-article', 'GET'))->getContent(),
         );
     }
 
@@ -337,7 +337,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'A book post',
-            $router->dispatch(Request::create('books/big-book', 'GET'))->getContent()
+            $router->dispatch(Request::create('books/big-book', 'GET'))->getContent(),
         );
     }
 
@@ -351,7 +351,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'An event or service post',
-            $router->dispatch(Request::create('events/our-little-event', 'GET'))->getContent()
+            $router->dispatch(Request::create('events/our-little-event', 'GET'))->getContent(),
         );
     }
 
@@ -365,7 +365,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'A sticky post',
-            $router->dispatch(Request::create('2345/02/14/valentine-day', 'GET'))->getContent()
+            $router->dispatch(Request::create('2345/02/14/valentine-day', 'GET'))->getContent(),
         );
     }
 
@@ -379,7 +379,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Tag archive',
-            $router->dispatch(Request::create('tags/wordpress', 'GET'))->getContent()
+            $router->dispatch(Request::create('tags/wordpress', 'GET'))->getContent(),
         );
     }
 
@@ -393,7 +393,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Tax archive',
-            $router->dispatch(Request::create('taxonomy/authors', 'GET'))->getContent()
+            $router->dispatch(Request::create('taxonomy/authors', 'GET'))->getContent(),
         );
     }
 
@@ -407,7 +407,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Time archive',
-            $router->dispatch(Request::create('2034/07/10/some-party-to-have', 'GET'))->getContent()
+            $router->dispatch(Request::create('2034/07/10/some-party-to-have', 'GET'))->getContent(),
         );
     }
 
@@ -421,7 +421,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Year archive',
-            $router->dispatch(Request::create('2042', 'GET'))->getContent()
+            $router->dispatch(Request::create('2042', 'GET'))->getContent(),
         );
     }
 
@@ -435,7 +435,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Custom content',
-            $router->dispatch(Request::create('whatever', 'GET'))->getContent()
+            $router->dispatch(Request::create('whatever', 'GET'))->getContent(),
         );
 
         $router->post('anything', [42, function () {
@@ -444,7 +444,7 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Post custom content',
-            $router->dispatch(Request::create('some-uri', 'POST'))->getContent()
+            $router->dispatch(Request::create('some-uri', 'POST'))->getContent(),
         );
     }
 
@@ -469,14 +469,14 @@ class RoutesTest extends TestCase
             'middleware' => WordPressBindings::class,
             'uses' => function () {
                 return 'Something';
-            }
+            },
         ]);
 
         $router->dispatch(Request::create('/', 'GET'));
 
         $this->assertEquals([
             'post' => null,
-            'wp_query' => null
+            'wp_query' => null,
         ], $route->parameters());
     }
 
@@ -489,12 +489,12 @@ class RoutesTest extends TestCase
 
         $this->assertEquals(
             'Controller index action',
-            $router->dispatch(Request::create('/', 'GET'))->getContent()
+            $router->dispatch(Request::create('/', 'GET'))->getContent(),
         );
 
         $this->assertEquals([
             'post' => null,
-            'wp_query' => null
+            'wp_query' => null,
         ], $route->parameters());
     }
 
@@ -524,22 +524,22 @@ class RoutesTest extends TestCase
         }]);
         $this->assertEquals(
             'themosis',
-            $router->dispatch(Request::create('http://api.themosis.bar/foo/bar', 'GET'))->getContent()
+            $router->dispatch(Request::create('http://api.themosis.bar/foo/bar', 'GET'))->getContent(),
         );
         $this->assertEquals(
             'wordpress',
-            $router->dispatch(Request::create('http://api.wordpress.baz/foo/bar', 'GET'))->getContent()
+            $router->dispatch(Request::create('http://api.wordpress.baz/foo/bar', 'GET'))->getContent(),
         );
 
         $router = $this->getWordPressRouter();
         $router->get('foo/{age}', ['domain' => 'api.{name}.bar', function ($name, $age) {
-            return $name.$age;
+            return $name . $age;
         }]);
         $this->assertEquals(
             'max35',
             $router->dispatch(
-                Request::create('http://api.max.bar/foo/35', 'GET')
-            )->getContent()
+                Request::create('http://api.max.bar/foo/35', 'GET'),
+            )->getContent(),
         );
 
         $router = $this->getWordPressRouter();
@@ -560,16 +560,16 @@ class RoutesTest extends TestCase
 
         $router = $this->getWordPressRouter();
         $router->get('foo/{name}/boom/{age?}/{location?}', function ($name, $age = 25, $location = 'AR') {
-            return $name.$age.$location;
+            return $name . $age . $location;
         });
         $this->assertEquals(
             'wordpress30AR',
-            $router->dispatch(Request::create('foo/wordpress/boom/30', 'GET'))->getContent()
+            $router->dispatch(Request::create('foo/wordpress/boom/30', 'GET'))->getContent(),
         );
 
         $router = $this->getWordPressRouter();
         $router->get('{bar}/{baz?}', function ($name, $age = 25) {
-            return $name.$age;
+            return $name . $age;
         });
         $this->assertEquals('wordpress25', $router->dispatch(Request::create('wordpress', 'GET'))->getContent());
 
@@ -582,7 +582,7 @@ class RoutesTest extends TestCase
 
         $router = $this->getWordPressRouter();
         $router->get('{foo?}/{baz?}', ['as' => 'foo', function ($name = 'julien', $age = 25) {
-            return $name.$age;
+            return $name . $age;
         }]);
         $this->assertEquals('julien25', $router->dispatch(Request::create('/', 'GET'))->getContent());
         $this->assertEquals('marcel25', $router->dispatch(Request::create('marcel', 'GET'))->getContent());
@@ -599,7 +599,7 @@ class RoutesTest extends TestCase
         });
         $this->assertEquals(
             'oxygen%20',
-            $router->dispatch(Request::create('http://test.com/foo/oxygen%2520', 'GET'))->getContent()
+            $router->dispatch(Request::create('http://test.com/foo/oxygen%2520', 'GET'))->getContent(),
         );
 
         $router = $this->getWordPressRouter();
@@ -637,7 +637,7 @@ class RoutesTest extends TestCase
         });
         $this->assertEquals(
             'hello',
-            $router->dispatch(Request::create('foo/bar/%C3%A5%CE%B1%D1%84', 'GET'))->getContent()
+            $router->dispatch(Request::create('foo/bar/%C3%A5%CE%B1%D1%84', 'GET'))->getContent(),
         );
 
         $router = $this->getWordPressRouter();
@@ -651,7 +651,7 @@ class RoutesTest extends TestCase
     {
         $router = $this->getWordPressRouter();
         $router->get('test', function () {
-            return (new SymfonyResponse('test', 304, ['foo' => 'bar']))->setLastModified(new DateTime);
+            return (new SymfonyResponse('test', 304, ['foo' => 'bar']))->setLastModified(new DateTime());
         });
         $response = $router->dispatch(Request::create('test', 'GET'));
         $this->assertSame(304, $response->getStatusCode());
@@ -686,7 +686,7 @@ class RoutesTest extends TestCase
             'is_tax' => 'tax',
             'is_time' => 'time',
             'is_year' => 'year',
-            'is_custom' => ['custom', 'anything']
+            'is_custom' => ['custom', 'anything'],
         ]);
 
         return $router;

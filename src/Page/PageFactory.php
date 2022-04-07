@@ -65,7 +65,7 @@ class PageFactory implements PageFactoryInterface
             ->setMenu($title);
 
         // Store page instance within the service container.
-        $this->view->getContainer()->instance($this->prefix.'.'.$page->getSlug(), $page);
+        $this->view->getContainer()->instance($this->prefix . '.' . $page->getSlug(), $page);
 
         return $page;
     }

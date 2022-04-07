@@ -27,7 +27,7 @@ class ImageSize
                 'width' => $width,
                 'height' => $height,
                 'crop' => $crop,
-                'label' => $label
+                'label' => $label,
             ];
         }
 
@@ -36,7 +36,7 @@ class ImageSize
 
     protected function parseProperties(array $properties, string $slug): array
     {
-        return match(count($properties)) {
+        return match (count($properties)) {
             /**
              * Square with defaults.
              */
@@ -59,7 +59,7 @@ class ImageSize
                 $properties[0],
                 $properties[1],
                 $properties[2],
-                (true === $properties[3]) ? $this->label($slug) : $properties[3]
+                (true === $properties[3]) ? $this->label($slug) : $properties[3],
             ]
         };
     }

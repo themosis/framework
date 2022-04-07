@@ -13,7 +13,7 @@ class RouteCollection extends IlluminateRouteCollection
      */
     protected function addToCollections($route)
     {
-        $domainAndUri = $route->getDomain().$route->uri();
+        $domainAndUri = $route->getDomain() . $route->uri();
 
         if ($route->hasCondition() && ! empty($route->getConditionParameters())) {
             $domainAndUri .= serialize($route->getConditionParameters());
@@ -23,6 +23,6 @@ class RouteCollection extends IlluminateRouteCollection
             $this->routes[$method][$domainAndUri] = $route;
         }
 
-        $this->allRoutes[$method.$domainAndUri] = $route;
+        $this->allRoutes[$method . $domainAndUri] = $route;
     }
 }

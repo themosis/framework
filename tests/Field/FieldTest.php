@@ -9,13 +9,14 @@ use Themosis\Tests\ViewFactory;
 
 class FieldTest extends TestCase
 {
-    use Application, ViewFactory;
+    use Application;
+    use ViewFactory;
 
     protected function getFieldFactory()
     {
         return new Factory(
             $this->getApplication(),
-            $this->getViewFactory($this->getApplication(), [__DIR__.'/views'])
+            $this->getViewFactory($this->getApplication(), [__DIR__ . '/views']),
         );
     }
 

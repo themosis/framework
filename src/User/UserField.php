@@ -46,21 +46,21 @@ class UserField implements UserFieldContract
      * @var array
      */
     protected $allowedOptions = [
-        'prefix'
+        'prefix',
     ];
 
     /**
      * @var array
      */
     protected $defaultOptions = [
-        'prefix' => 'th_'
+        'prefix' => 'th_',
     ];
 
     public function __construct(
         FieldsRepositoryInterface $repository,
         IHook $action,
         ViewFactory $factory,
-        ValidationFactory $validator
+        ValidationFactory $validator,
     ) {
         $this->repository = $repository;
         $this->action = $action;
@@ -119,7 +119,7 @@ class UserField implements UserFieldContract
                 foreach ($section->getItems() as $item) {
                     /** @var FieldTypeInterface $item */
                     $item->setOptions([
-                        'group' => $section->getId()
+                        'group' => $section->getId(),
                     ]);
 
                     $this->add($item, $section);
@@ -171,12 +171,12 @@ class UserField implements UserFieldContract
         $this->action->add([
             'user_new_form',
             'show_user_profile',
-            'edit_user_profile'
+            'edit_user_profile',
         ], [$this, 'display']);
 
         $this->action->add([
             'user_register',
-            'profile_update'
+            'profile_update',
         ], [$this, 'save']);
 
         return $this;
@@ -217,7 +217,7 @@ class UserField implements UserFieldContract
 
             echo $this->factory->make('themosis.users.main', [
                 'section' => $group,
-                'fields' => $fields
+                'fields' => $fields,
             ])->render();
         }
     }
@@ -240,7 +240,7 @@ class UserField implements UserFieldContract
             $this->getUserData(app('request')),
             $this->getUserRules(),
             $this->getUserMessages(),
-            $this->getUserPlaceholders()
+            $this->getUserPlaceholders(),
         );
 
         $validation = $validator->valid();
@@ -252,7 +252,7 @@ class UserField implements UserFieldContract
             if (method_exists($field, 'userSave')) {
                 $field->userSave($validation[$field->getName()] ?? null, $user_id);
             } else {
-                throw new UserException('Unable to save ['.$field->getName().']. The [userSave] method is missing.');
+                throw new UserException('Unable to save [' . $field->getName() . ']. The [userSave] method is missing.');
             }
         }
     }
@@ -302,7 +302,7 @@ class UserField implements UserFieldContract
 
         foreach ($this->repository->all() as $field) {
             foreach ($field->getOption('messages') as $rule => $message) {
-                $messages[$field->getName().'.'.$rule] = $message;
+                $messages[$field->getName() . '.' . $rule] = $message;
             }
         }
 

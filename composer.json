@@ -42,11 +42,13 @@
   },
   "require-dev": {
     "beyondcode/laravel-dump-server": "^1.8",
+    "friendsofphp/php-cs-fixer": "^3.8",
     "johnpbloch/wordpress-core": "^5.9",
     "phpunit/phpunit": "^9.5"
   },
   "scripts": {
-    "test": "phpunit"
+    "test": "phpunit",
+    "fix": "php-cs-fixer fix"
   },
   "config": {
     "sort-packages": true,

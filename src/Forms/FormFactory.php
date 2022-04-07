@@ -47,7 +47,7 @@ class FormFactory implements FormFactoryInterface
      * @var array
      */
     protected $attributes = [
-        'method' => 'post'
+        'method' => 'post',
     ];
 
     /**
@@ -68,7 +68,7 @@ class FormFactory implements FormFactoryInterface
             new FieldsRepository(),
             $this->validation,
             $this->viewer,
-            $dataMapperManager
+            $dataMapperManager,
         );
         $form->setManager($this->manager);
         $form->setResourceTransformerFactory($this->factory);
@@ -84,7 +84,7 @@ class FormFactory implements FormFactoryInterface
         ValidationFactoryInterface $validation,
         ViewFactoryInterface $viewer,
         Manager $manager,
-        Factory $factory
+        Factory $factory,
     ) {
         $this->validation = $validation;
         $this->viewer = $viewer;

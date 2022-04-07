@@ -56,7 +56,7 @@ class User extends \WP_User
     public function update(array $data): User
     {
         $user = wp_update_user(array_merge($data, [
-            'ID' => $this->ID
+            'ID' => $this->ID,
         ]));
 
         if (is_a($user, 'WP_Error')) {

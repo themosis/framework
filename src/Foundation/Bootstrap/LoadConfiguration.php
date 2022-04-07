@@ -20,8 +20,6 @@ class LoadConfiguration extends Configuration
     /**
      * @param Application $app
      *
-     * @return void
-     *
      * @throws Exception
      */
     public function bootstrap(Application $app): void
@@ -42,7 +40,7 @@ class LoadConfiguration extends Configuration
         // options available to the developer for use in various parts of this app.
         $app->instance('config', $config = new Repository($items));
 
-        if (!isset($loadedFromCache)) {
+        if (! isset($loadedFromCache)) {
             $this->loadConfigurationFiles($app, $config);
         }
 
@@ -65,8 +63,7 @@ class LoadConfiguration extends Configuration
      * Load the configuration items.
      *
      * @param \Illuminate\Contracts\Foundation\Application $app
-     * @param \Illuminate\Contracts\Config\Repository $repository
-     * @return void
+     * @param \Illuminate\Contracts\Config\Repository      $repository
      *
      * @throws \Exception
      */
@@ -74,7 +71,7 @@ class LoadConfiguration extends Configuration
     {
         $files = $this->getConfigurationFiles($app);
 
-        if (!isset($files['app'])) {
+        if (! isset($files['app'])) {
             throw new Exception('Unable to load the "app" configuration file.');
         }
 

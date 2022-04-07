@@ -125,7 +125,7 @@ class Page implements PageInterface
         IHook $filter,
         UIContainerInterface $ui,
         SettingsRepositoryInterface $repository,
-        Factory $validator
+        Factory $validator,
     ) {
         $this->action = $action;
         $this->filter = $filter;
@@ -407,7 +407,7 @@ class Page implements PageInterface
         }
 
         // The current page is attached to another one.
-        $abstract = 'page.'.$this->getParent();
+        $abstract = 'page.' . $this->getParent();
 
         if ($this->ui()->factory()->getContainer()->bound($abstract)) {
             // Parent hook is equivalent to the page menu as lowercase.
@@ -433,7 +433,7 @@ class Page implements PageInterface
                 $this->getSlug(),
                 [$this, 'render'],
                 $this->getIcon(),
-                $this->getPosition()
+                $this->getPosition(),
             );
         } else {
             // Add a submenu page.
@@ -443,7 +443,7 @@ class Page implements PageInterface
                 $this->getMenu(),
                 $this->getCapability(),
                 $this->getSlug(),
-                [$this, 'render']
+                [$this, 'render'],
             );
         }
     }
@@ -454,7 +454,7 @@ class Page implements PageInterface
     public function render()
     {
         echo $this->ui()->getView()->with([
-            '__page' => $this
+            '__page' => $this,
         ])->render();
     }
 
@@ -504,7 +504,7 @@ class Page implements PageInterface
     {
         $sections = array_merge(
             $this->repository()->getSections()->all(),
-            $sections
+            $sections,
         );
 
         array_walk($sections, function ($section) {
@@ -611,7 +611,7 @@ class Page implements PageInterface
                     [$this, 'renderSettings'],
                     $this->getSlug(),
                     $slug,
-                    $setting
+                    $setting,
                 );
 
                 // Validate setting.
@@ -625,7 +625,7 @@ class Page implements PageInterface
                     'sanitize_callback' => [$this, 'sanitizeSetting'],
                     'default' => $setting->getOption('data', ''),
                     'show_in_rest' => $showInRest,
-                    'type' => $setting->getOption('data_type', 'string')
+                    'type' => $setting->getOption('data_type', 'string'),
                 ]);
             }
         }
@@ -648,11 +648,11 @@ class Page implements PageInterface
         $setting->setPrefix($this->getPrefix());
         $setting->setOptions([
             'label' => $setting->getOption('label', ucfirst($setting->getBaseName())),
-            'placeholder' => $setting->getOption('placeholder', $setting->getBaseName())
+            'placeholder' => $setting->getOption('placeholder', $setting->getBaseName()),
         ]);
 
         $attributes = array_merge([
-            'class' => 'regular-text'
+            'class' => 'regular-text',
         ], $setting->getAttributes());
         $setting->setAttributes($attributes);
 
@@ -701,7 +701,7 @@ class Page implements PageInterface
             $data->all(),
             [$setting->getName() => $setting->getOption('rules')],
             $this->getSettingMessages($setting),
-            $this->getSettingPlaceholder($setting)
+            $this->getSettingPlaceholder($setting),
         );
 
         // Update setting offset.
@@ -714,7 +714,7 @@ class Page implements PageInterface
             $this->addSettingsErrorMessage(
                 $this->getSlug(),
                 $setting->getName(),
-                $validator->getMessageBag()->first($setting->getName())
+                $validator->getMessageBag()->first($setting->getName()),
             );
 
             return '';
@@ -750,7 +750,7 @@ class Page implements PageInterface
             $slug,
             'settings_updated',
             __('Settings saved.'),
-            'updated'
+            'updated',
         );
     }
 
@@ -766,7 +766,7 @@ class Page implements PageInterface
         $messages = [];
 
         foreach ($setting->getOption('messages', []) as $attr => $message) {
-            $messages[$setting->getName().'.'.$attr] = $message;
+            $messages[$setting->getName() . '.' . $attr] = $message;
         }
 
         return $messages;
@@ -802,7 +802,7 @@ class Page implements PageInterface
             '%s.%s.%s',
             $this->ui()->getTheme(),
             $this->ui()->getLayout(),
-            $section->getView()
+            $section->getView(),
         );
 
         echo $this->ui()->factory()->make($view)->with($section->getViewData())->render();
@@ -826,7 +826,7 @@ class Page implements PageInterface
 
         echo $this->ui()->factory()->make($view)->with([
             '__field' => $setting,
-            '__page' => $this
+            '__page' => $this,
         ])->render();
     }
 
@@ -914,7 +914,7 @@ class Page implements PageInterface
         }
 
         foreach ($this->routes['post'] as $action => $callback) {
-            $this->action->add('admin_post_'.$action, $callback);
+            $this->action->add('admin_post_' . $action, $callback);
         }
     }
 
@@ -948,9 +948,9 @@ class Page implements PageInterface
     protected function registerRouteActions()
     {
         // Actions for page routing.
-        $this->action->add('load-toplevel_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
-        $this->action->add('load-admin_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
-        $this->action->add('load-'.$this->findParentHook().'_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('load-toplevel_page_' . $this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('load-admin_page_' . $this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('load-' . $this->findParentHook() . '_page_' . $this->getSlug(), [$this, 'parseGetRoute']);
         $this->action->add('admin_init', [$this, 'parsePostRoute']);
 
         $this->filter->add('admin_title', [$this, 'handleTitle']);
@@ -967,7 +967,7 @@ class Page implements PageInterface
     protected function parseAction(string $action, string $method): string
     {
         if ('post' === $method) {
-            return $this->getSlug().'_'.$action;
+            return $this->getSlug() . '_' . $action;
         }
 
         return $action;

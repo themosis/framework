@@ -25,7 +25,7 @@ class CallbackHandlerTest extends TestCase
         $handler = $this->getHandler();
 
         $this->assertEquals('something', $handler->render('themosis_callback_helper', [
-            'params' => 'something'
+            'params' => 'something',
         ]));
     }
 
@@ -40,7 +40,7 @@ class CallbackHandlerTest extends TestCase
         $this->assertTrue($handler->render(function ($args) {
             return isset($args['key']);
         }, [
-            'key' => 'value'
+            'key' => 'value',
         ]));
     }
 
@@ -50,7 +50,7 @@ class CallbackHandlerTest extends TestCase
 
         $this->assertTrue($handler->render([new CallbackClass(), 'index']));
         $this->assertEquals(42, $handler->render([new CallbackClass(), 'index'], [
-            'count' => 42
+            'count' => 42,
         ]));
     }
 
@@ -60,7 +60,7 @@ class CallbackHandlerTest extends TestCase
 
         $this->assertTrue($handler->render('Themosis\Tests\Support\CallbackClass'));
         $this->assertEquals(42, $handler->render('Themosis\Tests\Support\CallbackClass', [
-            'count' => 42
+            'count' => 42,
         ]));
 
         $this->assertTrue($handler->render('Themosis\Tests\Support\CallbackClass@custom'));

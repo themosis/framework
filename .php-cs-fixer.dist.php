@@ -16,8 +16,9 @@ $finder = Finder::create()
     ]);
 
 $config = new PhpCsFixer\Config();
+
 return $config->setRules([
-        '@PSR2' => true,
+        '@PSR12' => true,
         'strict_param' => false,
         'array_syntax' => [
             'syntax' => 'short'
@@ -26,19 +27,19 @@ return $config->setRules([
             'space' => 'single'
         ],
         'concat_space' => [
-            'spacing' => 'none'
+            'spacing' => 'one'
         ],
         'ordered_imports' => true,
         'no_unused_imports' => true,
         'no_whitespace_before_comma_in_array' => true,
-        'blank_line_before_return' => true,
+        'blank_line_before_statement' => true,
         'no_whitespace_in_blank_line' => true,
         'blank_line_after_namespace' => true,
         'single_blank_line_before_namespace' => true,
         'single_line_after_imports' => true,
         'blank_line_after_opening_tag' => true,
         'no_empty_statement' => true,
-        'trailing_comma_in_multiline_array' => false,
+        'trailing_comma_in_multiline' => ['elements' => ['arrays', 'arguments', 'parameters']],
         'no_blank_lines_after_class_opening' => true,
         'no_blank_lines_after_phpdoc' => true,
         'phpdoc_trim' => true,

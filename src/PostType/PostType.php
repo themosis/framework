@@ -227,7 +227,7 @@ class PostType implements PostTypeInterface
             ->setCallback(function ($args) {
                 echo view('_themosisPublishMetabox', [
                     'statuses' => $this->status,
-                    '__post' => $args['post']
+                    '__post' => $args['post'],
                 ]);
             })
             ->set();
@@ -288,13 +288,13 @@ class PostType implements PostTypeInterface
         // Apply selected status on save.
         $this->filter->add([
             'pre_post_status',
-            'status_save_pre'
+            'status_save_pre',
         ], [$this, 'applyStatus']);
 
         // Expose post type status for JS use.
         $this->filter->add('themosis_admin_global', function ($data) {
             $status['draft'] = $this->parseStatusArguments('draft', [
-                'publish_text' => __('Save Draft')
+                'publish_text' => __('Save Draft'),
             ]);
 
             $data['post_types'][$this->slug] = ['statuses' => array_merge($status, $this->status)];
@@ -335,10 +335,10 @@ class PostType implements PostTypeInterface
             'show_in_admin_all_list' => true,
             'show_in_admin_status_list' => true,
             'label_count' => _n_noop(
-                $name.' <span class="count">(%s)</span>',
-                $name.' <span class="count">(%s)</span>'
+                $name . ' <span class="count">(%s)</span>',
+                $name . ' <span class="count">(%s)</span>',
             ),
-            'publish_text' => __('Apply Changes')
+            'publish_text' => __('Apply Changes'),
         ]);
     }
 

@@ -54,7 +54,7 @@ class Asset implements AssetInterface
         'wp_enqueue_scripts' => 'front',
         'admin_enqueue_scripts' => 'admin',
         'login_enqueue_scripts' => 'login',
-        'customize_preview_init' => 'customizer'
+        'customize_preview_init' => 'customizer',
     ];
 
     /**
@@ -306,7 +306,7 @@ class Asset implements AssetInterface
             $this->getUrl(),
             $this->getDependencies(),
             $this->getVersion(),
-            $this->getArgument()
+            $this->getArgument(),
         );
 
         if (! empty($this->localize)) {
@@ -332,7 +332,7 @@ class Asset implements AssetInterface
             $this->getUrl(),
             $this->getDependencies(),
             $this->getVersion(),
-            $this->getArgument()
+            $this->getArgument(),
         );
 
         if (! empty($this->inline)) {
@@ -369,7 +369,7 @@ class Asset implements AssetInterface
     {
         $this->inline[] = [
             'code' => $code,
-            'position' => $after ? 'after' : 'before'
+            'position' => $after ? 'after' : 'before',
         ];
 
         return $this;
@@ -399,7 +399,7 @@ class Asset implements AssetInterface
                 return $tag;
             }
 
-            return preg_replace('/(src|href)(.+>)/', $attributes.' $1$2', $tag);
+            return preg_replace('/(src|href)(.+>)/', $attributes . ' $1$2', $tag);
         });
 
         return $this;

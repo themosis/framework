@@ -60,12 +60,12 @@ class Factory
                 'items_list_navigation' => sprintf('%s list navigation', $plural),
                 'items_list' => sprintf('%s list', $plural),
                 'most_used' => 'Most Used',
-                'back_to_items' => sprintf('Back to %s', $plural)
+                'back_to_items' => sprintf('Back to %s', $plural),
             ])
             ->setArguments([
                 'public' => true,
                 'show_in_rest' => true,
-                'show_admin_column' => true
+                'show_admin_column' => true,
             ]);
 
         $abstract = sprintf('themosis.taxonomy.%s', $slug);
@@ -73,7 +73,7 @@ class Factory
         if (! $this->container->bound($abstract)) {
             $this->container->instance($abstract, $taxonomy);
         } else {
-            throw new TaxonomyException('The taxonomy ['.$slug.'] already exists.');
+            throw new TaxonomyException('The taxonomy [' . $slug . '] already exists.');
         }
 
         return $taxonomy;

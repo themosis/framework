@@ -193,7 +193,7 @@ class Route extends IlluminateRoute
         }
 
         return $this->wordpressValidators = [
-            new ConditionValidator
+            new ConditionValidator(),
         ];
     }
 }

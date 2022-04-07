@@ -14,6 +14,6 @@ trait FormHelper
      */
     protected function buildViewPath(string $theme, string $view)
     {
-        return $theme.'.'.$view;
+        return $theme . '.' . $view;
     }
 }

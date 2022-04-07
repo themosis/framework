@@ -82,7 +82,7 @@ class Router extends IlluminateRouter
         if (! is_null($config)) {
             $this->conditions = array_merge(
                 $config->get('app.conditions', []),
-                $conditions
+                $conditions,
             );
         } else {
             $this->conditions = $conditions;

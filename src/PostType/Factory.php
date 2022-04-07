@@ -65,7 +65,7 @@ class Factory
                     'filter_items_list'     => sprintf('Filter %s list', strtolower($plural)),
                     'items_list_navigation' => sprintf('%s list navigation', $plural),
                     'items_list'            => sprintf('%s list', $plural),
-                ]
+                ],
             )
             ->setArguments(
                 [
@@ -74,7 +74,7 @@ class Factory
                     'menu_position' => 20,
                     'supports'      => ['title'],
                     'has_archive'   => true,
-                ]
+                ],
             );
 
         $abstract = sprintf('themosis.posttype.%s', $slug);
@@ -82,7 +82,7 @@ class Factory
         if (! $this->container->bound($abstract)) {
             $this->container->instance($abstract, $postType);
         } else {
-            throw new PostTypeException('The post type ['.$slug.'] already exists.');
+            throw new PostTypeException('The post type [' . $slug . '] already exists.');
         }
 
         return $postType;

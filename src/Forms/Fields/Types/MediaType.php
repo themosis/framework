@@ -55,7 +55,7 @@ class MediaType extends BaseType implements
     protected function setAllowedOptions(): array
     {
         return array_merge($this->allowedOptions, [
-            'type'
+            'type',
         ]);
     }
 
@@ -67,7 +67,7 @@ class MediaType extends BaseType implements
     protected function setDefaultOptions(): array
     {
         $default = [
-            'type' => ['image', 'application']
+            'type' => ['image', 'application'],
         ];
 
         if (function_exists('_x')) {
@@ -77,7 +77,7 @@ class MediaType extends BaseType implements
                 'id' => _x('ID:', 'field', Application::TEXTDOMAIN),
                 'name' => _x('File Name:', 'field', Application::TEXTDOMAIN),
                 'remove' => _x('Remove', 'field', Application::TEXTDOMAIN),
-                'title' => _x('Insert Media', 'field', Application::TEXTDOMAIN)
+                'title' => _x('Insert Media', 'field', Application::TEXTDOMAIN),
             ];
         }
 
@@ -167,7 +167,7 @@ class MediaType extends BaseType implements
      */
     public function termSave($value, int $term_id)
     {
-        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on term meta.');
+        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on term meta.');
     }
 
     /**
@@ -179,7 +179,7 @@ class MediaType extends BaseType implements
      */
     public function termGet(int $term_id)
     {
-        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on term meta.');
+        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on term meta.');
     }
 
     /**
@@ -191,7 +191,7 @@ class MediaType extends BaseType implements
      */
     public function userGet(int $user_id)
     {
-        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on user meta.');
+        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on user meta.');
     }
 
     /**
@@ -204,7 +204,7 @@ class MediaType extends BaseType implements
      */
     public function userSave($value, int $user_id)
     {
-        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on user meta.');
+        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on user meta.');
     }
 
     /**
@@ -216,7 +216,7 @@ class MediaType extends BaseType implements
      */
     public function settingGet()
     {
-        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on page settings.');
+        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on page settings.');
     }
 
     /**

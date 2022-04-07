@@ -51,7 +51,7 @@ class HiddenType extends TextType
      */
     public function termSave($value, int $term_id)
     {
-        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on term meta.');
+        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on term meta.');
     }
 
     /**
@@ -63,7 +63,7 @@ class HiddenType extends TextType
      */
     public function termGet(int $term_id)
     {
-        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on term meta.');
+        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on term meta.');
     }
 
     /**
@@ -75,7 +75,7 @@ class HiddenType extends TextType
      */
     public function userGet(int $user_id)
     {
-        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on user meta.');
+        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on user meta.');
     }
 
     /**
@@ -88,6 +88,6 @@ class HiddenType extends TextType
      */
     public function userSave($value, int $user_id)
     {
-        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on user meta.');
+        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on user meta.');
     }
 }

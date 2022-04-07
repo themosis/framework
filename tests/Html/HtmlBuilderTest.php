@@ -15,8 +15,8 @@ class HtmlBuilderTest extends TestCase
             'action="test" method="post"',
             $html->attributes([
                 'action' => 'test',
-                'method' => 'post'
-            ])
+                'method' => 'post',
+            ]),
         );
 
         $this->assertEquals(
@@ -26,8 +26,8 @@ class HtmlBuilderTest extends TestCase
                 'required',
                 'checked',
                 'min' => 0,
-                'max' => 255
-            ])
+                'max' => 255,
+            ]),
         );
     }
 
@@ -37,7 +37,7 @@ class HtmlBuilderTest extends TestCase
 
         $this->assertEquals(
             "Un &#039;apostrophe&#039; en &lt;strong&gt;gras&lt;/strong&gt;",
-            $html->entities('Un \'apostrophe\' en <strong>gras</strong>')
+            $html->entities('Un \'apostrophe\' en <strong>gras</strong>'),
         );
 
         $this->assertEmpty($html->entities("\x8F!!!"));
@@ -49,7 +49,7 @@ class HtmlBuilderTest extends TestCase
 
         $this->assertEquals(
             '&lt;a href=&#039;test&#039;&gt;Test&lt;/a&gt;',
-            $html->special("<a href='test'>Test</a>")
+            $html->special("<a href='test'>Test</a>"),
         );
     }
 }

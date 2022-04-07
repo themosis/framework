@@ -12,12 +12,12 @@ class SectionTest extends TestCase
         $section = new Section('default');
         $section->setItems($items = [
             new \stdClass(),
-            new \stdClass()
+            new \stdClass(),
         ]);
         $section->setView('com.site.component.default');
         $section->setViewData([
             'title' => 'A section name',
-            'desc' => 'Something useful to say'
+            'desc' => 'Something useful to say',
         ]);
 
         $this->assertEquals('default', $section->getId());
@@ -27,7 +27,7 @@ class SectionTest extends TestCase
         $this->assertEquals([
             'title' => 'A section name',
             'desc' => 'Something useful to say',
-            '__section' => $section
+            '__section' => $section,
         ], $section->getViewData());
 
         $this->assertEquals(2, count($section));
@@ -52,12 +52,12 @@ class SectionTest extends TestCase
     {
         $section = new Section('special', 'Special', [
             'item 1',
-            'item 2'
+            'item 2',
         ]);
 
         $this->assertEquals([
             'item 1',
-            'item 2'
+            'item 2',
         ], $section->getItems());
         $this->assertEquals('special', $section->getId());
         $this->assertEquals('Special', $section->getTitle());

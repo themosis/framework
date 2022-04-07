@@ -45,7 +45,7 @@ class MetaboxTest extends TestCase
             new ActionBuilder($this->getApplication()),
             new FilterBuilder($this->getApplication()),
             $this->getMetaboxResource(),
-            new FieldsRepository()
+            new FieldsRepository(),
         );
     }
 
@@ -90,7 +90,7 @@ class MetaboxTest extends TestCase
         $box = $factory->make('properties')
             ->add($fields->text('name'))
             ->add($fields->email('email', [
-                'group' => 'secondary'
+                'group' => 'secondary',
             ]));
 
         $fieldName = $box->repository()->getField('name');
@@ -119,15 +119,15 @@ class MetaboxTest extends TestCase
             'priority' => 'default',
             'screen' => [
                 'id' => 'post',
-                'post_type' => 'post'
+                'post_type' => 'post',
             ],
             'title' => 'Infos',
             'fields' => [
-                'data' => []
+                'data' => [],
             ],
             'groups' => [
-                'data' => []
-            ]
+                'data' => [],
+            ],
         ];
 
         $this->assertEquals($expected, $box->toArray());
@@ -151,14 +151,14 @@ class MetaboxTest extends TestCase
             'priority' => 'default',
             'screen' => [
                 'id' => 'page',
-                'post_type' => 'page'
+                'post_type' => 'page',
             ],
             'title' => 'Book Properties',
             'fields' => [
                 'data' => [
                     [
                         'attributes' => [
-                            'id' => 'th_author_field'
+                            'id' => 'th_author_field',
                         ],
                         'basename' => 'author',
                         'component' => 'themosis.fields.text',
@@ -168,13 +168,13 @@ class MetaboxTest extends TestCase
                         'options' => [
                             'group' => 'default',
                             'info' => '',
-                            'l10n' => []
+                            'l10n' => [],
                         ],
                         'label' => [
                             'inner' => 'Author',
                             'attributes' => [
-                                'for' => 'th_author_field'
-                            ]
+                                'for' => 'th_author_field',
+                            ],
                         ],
                         'theme' => '',
                         'type' => 'text',
@@ -182,21 +182,21 @@ class MetaboxTest extends TestCase
                             'errors' => true,
                             'messages' => [],
                             'placeholder' => 'author',
-                            'rules' => ''
+                            'rules' => '',
                         ],
-                        'value' => ''
-                    ]
-                ]
+                        'value' => '',
+                    ],
+                ],
             ],
             'groups' => [
                 'data' => [
                     [
                         'id' => 'default',
                         'theme' => '',
-                        'title' => ''
-                    ]
-                ]
-            ]
+                        'title' => '',
+                    ],
+                ],
+            ],
         ];
 
         $this->assertEquals($expected, $box->toArray());
@@ -213,14 +213,14 @@ class MetaboxTest extends TestCase
             ->add(
                 new Section('general', 'General', [
                     $fields->text('firstname'),
-                    $fields->email('email')
-                ])
+                    $fields->email('email'),
+                ]),
             )
             ->add(
                 new Section('social', 'Social', [
                     $fields->text('facebook'),
-                    $fields->text('twitter')
-                ])
+                    $fields->text('twitter'),
+                ]),
             );
 
         $this->assertEquals(3, count($box->repository()->getGroups()));
@@ -244,7 +244,7 @@ class MetaboxTest extends TestCase
 
         $this->assertEquals('Hello World', $box->getTranslation('hello'));
         $this->assertEquals([
-            'hello' => 'Hello World'
+            'hello' => 'Hello World',
         ], $box->getTranslations());
     }
 
@@ -278,7 +278,7 @@ class MetaboxTest extends TestCase
 
         $this->assertEquals([
             'custom' => ['one', 'two'],
-            'post' => ['fullwidth']
+            'post' => ['fullwidth'],
         ], $box->getTemplate());
     }
 }
