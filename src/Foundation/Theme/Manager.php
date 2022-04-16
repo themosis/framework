@@ -23,8 +23,6 @@ class Manager
 
     protected string $directory;
 
-    protected string $routesPath;
-
     protected array $parsedHeaders = [];
 
     public ImageSize $images;
@@ -52,9 +50,10 @@ class Manager
     /**
      * Load the theme.
      */
-    public function load(string $path, string $configDirectory): self
+    public function load(string $path, string $configDirectory = 'config'): self
     {
         $this->setPath($path);
+        $this->setHeaders();
         $this->setThemeDirectory();
         $this->setThemeConstants();
         $this->loadThemeConfiguration($configDirectory);
@@ -84,6 +83,11 @@ class Manager
     public function getHeader(string $header): ?string
     {
         return $this->parsedHeaders[$header] ?? null;
+    }
+
+    protected function setHeaders(): void
+    {
+        $this->parsedHeaders = $this->headers($this->path . '/style.css', $this->headers);
     }
 
     /**
@@ -204,7 +208,6 @@ class Manager
      */
     protected function setThemeConstants(): void
     {
-        $this->parsedHeaders = $this->headers($this->path . '/style.css', $this->headers);
         $textdomain = $this->parsedHeaders['text_domain'] ?? 'themosis_theme';
 
         defined('THEME_TD') ? THEME_TD : define('THEME_TD', $textdomain);
