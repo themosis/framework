@@ -20,17 +20,13 @@ class ManagerTest extends TestCase
         $this->manager = $manager;
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function it_can_extract_theme_directory_name(): void
     {
         $this->assertEquals('themosis-fake-theme', $this->manager->getDirectory());
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function it_can_load_a_theme_headers(): void
     {
         $this->assertEquals('Themosis Fake Theme', $this->manager->getHeader('name'));
@@ -41,14 +37,18 @@ class ManagerTest extends TestCase
         $this->assertNull($this->manager->getHeader('custom_property'));
     }
 
-    /**
-     * @test
-     */
+    /**  @test */
     public function it_can_return_theme_paths(): void
     {
         $path = WP_CONTENT_DIR . '/themes/themosis-fake-theme';
 
         $this->assertEquals($path, $this->manager->getPath());
         $this->assertEquals($path . '/config', $this->manager->getPath('config'));
+    }
+
+    /** @test */
+    public function it_can_return_theme_url(): void
+    {
+        $this->assertEquals('https://themosis.test/content/themes/themosis-fake-theme', $this->manager->getUrl());
     }
 }
