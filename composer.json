@@ -41,6 +41,7 @@
     "twig/twig": " ^3.1"
   },
   "require-dev": {
+    "ext-pdo": "*",
     "beyondcode/laravel-dump-server": "^1.8",
     "friendsofphp/php-cs-fixer": "^3.8",
     "johnpbloch/wordpress-core": "^5.9",
