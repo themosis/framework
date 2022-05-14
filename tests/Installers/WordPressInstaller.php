@@ -18,7 +18,15 @@ class WordPressInstaller
 
     public function uninstallWordPress(): void
     {
-        // Drop database tables.
+        global $wpdb;
+
+        $tables = array_values($wpdb->tables());
+
+        foreach ($tables as $table) {
+            $wpdb->query("DROP TABLE IF EXISTS $table;");
+        }
+
+        $wpdb->close();
     }
 
     private function setDefaultConstants(): void
