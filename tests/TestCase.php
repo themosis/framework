@@ -5,6 +5,7 @@ namespace Themosis\Tests;
 use Illuminate\Config\Repository;
 use Illuminate\Foundation\Application;
 use PHPUnit\Framework\TestCase as PhpUnitTestCase;
+use Themosis\Tests\Installers\WordPressInstaller;
 
 class TestCase extends PhpUnitTestCase
 {
@@ -13,6 +14,11 @@ class TestCase extends PhpUnitTestCase
     protected function setUp(): void
     {
         $this->setApplication();
+    }
+
+    protected function tearDown(): void
+    {
+        WordPressInstaller::make()->refresh();
     }
 
     private function setApplication(): void

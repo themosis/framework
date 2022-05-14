@@ -4,11 +4,29 @@ namespace Themosis\Tests\Installers;
 
 class WordPressInstaller
 {
-    public function __construct(private WordPressConfiguration $wordPressConfiguration)
+    private static ?self $instance = null;
+
+    private function __construct(private WordPressConfiguration $wordPressConfiguration)
     {
+        $this->installWordPress();
     }
 
-    public function installWordPress(): void
+    public static function make(): self
+    {
+        if (static::$instance) {
+            return static::$instance;
+        }
+
+        return static::$instance = new self(WordPressConfiguration::make());
+    }
+
+    public function refresh(): void
+    {
+        $this->uninstallWordPress();
+        $this->install();
+    }
+
+    private function installWordPress(): void
     {
         $this->setDefaultConstants();
         $this->setServerVariables();
@@ -16,7 +34,7 @@ class WordPressInstaller
         $this->install();
     }
 
-    public function uninstallWordPress(): void
+    private function uninstallWordPress(): void
     {
         global $wpdb;
 
@@ -25,8 +43,6 @@ class WordPressInstaller
         foreach ($tables as $table) {
             $wpdb->query("DROP TABLE IF EXISTS $table;");
         }
-
-        $wpdb->close();
     }
 
     private function setDefaultConstants(): void
