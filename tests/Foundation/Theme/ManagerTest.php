@@ -4,20 +4,34 @@ namespace Themosis\Tests\Foundation\Theme;
 
 use Composer\Autoload\ClassLoader;
 use Themosis\Foundation\Theme\Manager;
+use Themosis\Tests\Installers\WordPressConfiguration;
+use Themosis\Tests\Installers\WordPressInstaller;
 use Themosis\Tests\TestCase;
 
 class ManagerTest extends TestCase
 {
+    private WordPressInstaller $wordPressInstaller;
+
     private Manager $manager;
 
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->wordPressInstaller = new WordPressInstaller(WordPressConfiguration::make());
+        $this->wordPressInstaller->installWordPress();
+
         $manager = new Manager($this->app, new ClassLoader(), $this->app['config']);
         $manager->load(WP_CONTENT_DIR . '/themes/themosis-fake-theme');
 
         $this->manager = $manager;
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        $this->wordPressInstaller->uninstallWordPress();
     }
 
     /** @test */
