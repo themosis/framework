@@ -11,13 +11,15 @@ class WordPressInstaller
         $this->installWordPress();
     }
 
-    public static function make(): self
+    public static function make(?WordPressConfiguration $configuration = null): self
     {
         if (static::$instance) {
             return static::$instance;
         }
 
-        return static::$instance = new self(WordPressConfiguration::make());
+        return static::$instance = new self(
+            $configuration ?? WordPressConfiguration::make(),
+        );
     }
 
     public function refresh(): void
@@ -57,24 +59,24 @@ class WordPressInstaller
         /**
          * URLs.
          */
-        define('WP_SITEURL', 'https://themosis.test');
-        define('WP_HOME', 'https://themosis.test');
-        define('WP_CONTENT_URL', 'https://themosis.test/content');
+        define('WP_SITEURL', $this->wordPressConfiguration->siteUrl());
+        define('WP_HOME', $this->wordPressConfiguration->homeUrl());
+        define('WP_CONTENT_URL', $this->wordPressConfiguration->homeUrl() . DS . CONTENT_DIR);
 
         /**
          * Database.
          */
-        define('DB_NAME', 'themosis_tests');
-        define('DB_USER', 'root');
-        define('DB_PASSWORD', 'root');
-        define('DB_HOST', 'localhost');
-        define('DB_CHARSET', 'utf8mb4');
-        define('DB_COLLATE', 'utf8mb4_unicode_ci');
+        define('DB_NAME', $this->wordPressConfiguration->databaseName());
+        define('DB_USER', $this->wordPressConfiguration->databaseUser());
+        define('DB_PASSWORD', $this->wordPressConfiguration->databasePassword());
+        define('DB_HOST', $this->wordPressConfiguration->databaseHost());
+        define('DB_CHARSET', $this->wordPressConfiguration->databaseCharset());
+        define('DB_COLLATE', $this->wordPressConfiguration->databaseCollate());
 
         /**
          * Theme.
          */
-        define('WP_DEFAULT_THEME', 'themosis-fake-theme');
+        define('WP_DEFAULT_THEME', $this->wordPressConfiguration->defaultTheme());
 
         /**
          * Installation.
