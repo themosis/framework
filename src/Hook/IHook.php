@@ -6,25 +6,13 @@ interface IHook
 {
     /**
      * Add event using the WordPress hooks.
-     *
-     * @param string|array          $hooks         The hook name.
-     * @param \Closure|string|array $callback      Using a class method like so "MyClass@method"
-     * @param int                   $priority
-     * @param int                   $accepted_args
-     *
-     * @return mixed
      */
-    public function add($hooks, $callback, $priority = 10, $accepted_args = 2);
+    public function add(string | array $hooks, callable $callback, int $priority = 10, int $accepted_args = 3): static;
 
     /**
      * Run all events registered with the hook.
-     *
-     * @param string $hook The event hook name.
-     * @param mixed  $args
-     *
-     * @return mixed
      */
-    public function run($hook, $args = null);
+    public function run(string $hook, mixed ...$args): mixed;
 
     /**
      * Check if a registered hook exists.
@@ -33,25 +21,25 @@ interface IHook
      *
      * @return bool
      */
-    public function exists($hook);
+    public function exists(string $hook): bool;
 
     /**
      * Return the callback registered with the given hook.
      *
      * @param string $hook The hook name.
      *
-     * @return array|bool
+     * @return ?callable
      */
-    public function getCallback($hook);
+    public function getCallback(string $hook): ?callable;
 
     /**
      * Remove a defined action or filter.
      *
-     * @param string          $hook     The hook name.
-     * @param \Closure|string $callback The callback to remove.
-     * @param int             $priority The priority number.
+     * @param string    $hook     The hook name.
+     * @param ?callable $callback The callback to remove.
+     * @param int       $priority The priority number.
      *
      * @return mixed
      */
-    public function remove($hook, $callback = null, $priority = 10);
+    public function remove(string $hook, callable $callback = null, int $priority = 10): bool | static;
 }

@@ -6,20 +6,11 @@ use Illuminate\Contracts\Foundation\Application;
 
 class Hookable
 {
-    /**
-     * @var Application
-     */
-    protected $app;
+    protected Application $app;
 
-    /**
-     * @var string|array
-     */
-    public $hook;
+    public string|array $hook;
 
-    /**
-     * @var int
-     */
-    public $priority = 10;
+    public int $priority = 10;
 
     public function __construct(Application $app)
     {

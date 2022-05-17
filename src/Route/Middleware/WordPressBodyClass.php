@@ -2,17 +2,17 @@
 
 namespace Themosis\Route\Middleware;
 
-use Themosis\Hook\FilterBuilder;
+use Themosis\Hook\Filter;
 use Themosis\Route\Route;
 
 class WordPressBodyClass
 {
     /**
-     * @var FilterBuilder
+     * @var Filter
      */
     protected $filter;
 
-    public function __construct(FilterBuilder $filter)
+    public function __construct(Filter $filter)
     {
         $this->filter = $filter;
     }

@@ -3,6 +3,7 @@
 namespace Themosis\Tests\Foundation\Theme;
 
 use Composer\Autoload\ClassLoader;
+use Illuminate\Support\ServiceProvider;
 use Themosis\Foundation\Theme\Manager;
 use Themosis\Tests\Installers\WordPressConfiguration;
 use Themosis\Tests\TestCase;
@@ -91,10 +92,16 @@ class ManagerTest extends TestCase
     /** @test */
     public function it_can_register_theme_service_providers(): void
     {
-        /**
-         * @todo Write service providers test.
-         */
-        $this->markTestSkipped();
+        $this->manager->providers([
+            TestThemeServiceProvider::class,
+            MenuServiceProvider::class,
+        ]);
+
+        $this->assertInstanceOf(TestThemeServiceProvider::class, $this->app->getProvider(TestThemeServiceProvider::class));
+        $this->assertInstanceOf(MenuServiceProvider::class, $this->app->getProvider(MenuServiceProvider::class));
+
+        $this->assertTrue($this->app->bound('test-theme'));
+        $this->assertTrue($this->app->make('test-theme'));
     }
 
     /** @test */
@@ -150,4 +157,18 @@ class ManagerTest extends TestCase
          */
         $this->markTestSkipped();
     }
+}
+
+class TestThemeServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        $this->app->bind('test-theme', function () {
+            return true;
+        });
+    }
+}
+
+class MenuServiceProvider extends ServiceProvider
+{
 }

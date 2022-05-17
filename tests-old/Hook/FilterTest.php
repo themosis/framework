@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
-use Themosis\Hook\FilterBuilder;
+use Themosis\Hook\Filter;
 
 class FilterTest extends TestCase
 {
@@ -18,7 +18,7 @@ class FilterTest extends TestCase
 
     public function testFilterWithClosure()
     {
-        $filter = $this->getMockBuilder(FilterBuilder::class)
+        $filter = $this->getMockBuilder(Filter::class)
             ->setConstructorArgs([$this->app])
             ->setMethods(['addFilter'])
             ->getMock();
@@ -44,7 +44,7 @@ class FilterTest extends TestCase
 
     public function testFilterWithClass()
     {
-        $filter = $this->getMockBuilder(FilterBuilder::class)
+        $filter = $this->getMockBuilder(Filter::class)
             ->setConstructorArgs([$this->app])
             ->setMethods(['addFilter'])
             ->getMock();
@@ -87,7 +87,7 @@ class FilterTest extends TestCase
 
     public function testFilterWithNamedCallback()
     {
-        $filter = $this->getMockBuilder(FilterBuilder::class)
+        $filter = $this->getMockBuilder(Filter::class)
             ->setConstructorArgs([$this->app])
             ->setMethods(['addFilter'])
             ->getMock();
@@ -106,7 +106,7 @@ class FilterTest extends TestCase
 
     public function testFilterCanListenToMultipleHooks()
     {
-        $filter = $this->getMockBuilder(FilterBuilder::class)
+        $filter = $this->getMockBuilder(Filter::class)
             ->setConstructorArgs([$this->app])
             ->setMethods(['addFilter'])
             ->getMock();

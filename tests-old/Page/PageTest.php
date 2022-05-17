@@ -23,7 +23,7 @@ class PageTest extends TestCase
 
     protected function getActionMock()
     {
-        return $this->getMockBuilder(\Themosis\Hook\ActionBuilder::class)
+        return $this->getMockBuilder(\Themosis\Hook\Action::class)
             ->setMethods(['add'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -31,7 +31,7 @@ class PageTest extends TestCase
 
     protected function getFilter()
     {
-        return $this->getMockBuilder(\Themosis\Hook\FilterBuilder::class)
+        return $this->getMockBuilder(\Themosis\Hook\Filter::class)
             ->setMethods(['add'])
             ->disableOriginalConstructor()
             ->getMock();

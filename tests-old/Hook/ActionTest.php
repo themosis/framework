@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
-use Themosis\Hook\ActionBuilder;
+use Themosis\Hook\Action;
 
 class ActionTest extends TestCase
 {
@@ -18,7 +18,7 @@ class ActionTest extends TestCase
 
     public function testActionWithClosure()
     {
-        $action = $this->getMockBuilder(ActionBuilder::class)
+        $action = $this->getMockBuilder(Action::class)
             ->setConstructorArgs([$this->app])
             ->setMethods(['addAction'])
             ->getMock();
@@ -44,7 +44,7 @@ class ActionTest extends TestCase
 
     public function testActionWithClass()
     {
-        $action = $this->getMockBuilder(ActionBuilder::class)
+        $action = $this->getMockBuilder(Action::class)
             ->setConstructorArgs([$this->app])
             ->setMethods(['addAction'])
             ->getMock();
@@ -79,7 +79,7 @@ class ActionTest extends TestCase
 
     public function testActionWithNamedCallback()
     {
-        $action = $this->getMockBuilder(ActionBuilder::class)
+        $action = $this->getMockBuilder(Action::class)
             ->setConstructorArgs([$this->app])
             ->setMethods(['addAction'])
             ->getMock();
@@ -97,7 +97,7 @@ class ActionTest extends TestCase
 
     public function testActionUsingCurrentInstance()
     {
-        $action = $this->getMockBuilder(ActionBuilder::class)
+        $action = $this->getMockBuilder(Action::class)
             ->setConstructorArgs([$this->app])
             ->setMethods(['addAction'])
             ->getMock();
@@ -116,7 +116,7 @@ class ActionTest extends TestCase
 
     public function testActionIsRanWithoutArguments()
     {
-        $action = $this->getMockBuilder(ActionBuilder::class)
+        $action = $this->getMockBuilder(Action::class)
             ->setConstructorArgs([$this->app])
             ->setMethods(['doAction'])
             ->getMock();
@@ -132,7 +132,7 @@ class ActionTest extends TestCase
 
     public function testActionIsRanWithMultipleArguments()
     {
-        $action = $this->getMockBuilder(ActionBuilder::class)
+        $action = $this->getMockBuilder(Action::class)
             ->setConstructorArgs([$this->app])
             ->setMethods(['doActionRefArray'])
             ->getMock();
@@ -147,7 +147,7 @@ class ActionTest extends TestCase
 
     public function testCanListenToMultipleActionsAtOnce()
     {
-        $action = $this->getMockBuilder(ActionBuilder::class)
+        $action = $this->getMockBuilder(Action::class)
             ->setConstructorArgs([$this->app])
             ->setMethods(['addAction'])
             ->getMock();

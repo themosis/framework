@@ -8,7 +8,7 @@ use Illuminate\Translation\Translator;
 use PHPUnit\Framework\TestCase;
 use Themosis\Field\Factory;
 use Themosis\Forms\Fields\FieldsRepository;
-use Themosis\Hook\ActionBuilder;
+use Themosis\Hook\Action;
 use Themosis\Support\Section;
 use Themosis\Tests\Application;
 use Themosis\Tests\ViewFactory;
@@ -32,7 +32,7 @@ class UserFieldTest extends TestCase
 
         return new UserField(
             new FieldsRepository(),
-            new ActionBuilder($app),
+            new Action($app),
             $this->getViewFactory($app),
             new \Illuminate\Validation\Factory(new Translator(new FileLoader(new Filesystem(), ''), 'en_US')),
         );

@@ -6,7 +6,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Translation\FileLoader;
 use Illuminate\Translation\Translator;
 use PHPUnit\Framework\TestCase;
-use Themosis\Hook\ActionBuilder;
+use Themosis\Hook\Action;
 use Themosis\Taxonomy\Factory;
 use Themosis\Taxonomy\TaxonomyField;
 use Themosis\Taxonomy\TaxonomyFieldRepository;
@@ -20,7 +20,7 @@ class TaxonomyTest extends TestCase
     {
         $app = $this->getApplication();
 
-        return new Factory($app, new ActionBuilder($app));
+        return new Factory($app, new Action($app));
     }
 
     protected function getFieldsFactory()
@@ -99,7 +99,7 @@ class TaxonomyTest extends TestCase
             $repository = new TaxonomyFieldRepository(),
             $this->getViewFactory($this->getApplication()),
             new \Illuminate\Validation\Factory(new Translator(new FileLoader(new Filesystem(), ''), 'en_US')),
-            new ActionBuilder($this->getApplication()),
+            new Action($this->getApplication()),
             ['theme' => 'themosis.taxonomy', 'prefix' => 'wp_'],
         );
 

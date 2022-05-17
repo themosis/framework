@@ -12,6 +12,7 @@ use Themosis\Foundation\Features\Templates;
 use Themosis\Foundation\Support\HasConfigurationFiles;
 use Themosis\Foundation\Support\IncludesFiles;
 use Themosis\Foundation\Support\WordPressFileHeaders;
+use Themosis\Hook\Filter;
 
 class Manager
 {
@@ -44,6 +45,7 @@ class Manager
         protected Application $app,
         protected ClassLoader $loader,
         protected Repository  $config,
+        protected Filter $filter,
     ) {
     }
 
@@ -222,7 +224,7 @@ class Manager
             return $this;
         }
 
-        $this->images = (new ImageSize($sizes, $this->app['filter']))
+        $this->images = (new ImageSize($sizes, $this->filter))
             ->register();
 
         return $this;
@@ -290,7 +292,7 @@ class Manager
      */
     public function templates(array $templates = []): self
     {
-        (new Templates($templates, $this->app['filter']))
+        (new Templates($templates, $this->filter))
             ->register();
 
         return $this;

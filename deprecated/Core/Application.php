@@ -190,7 +190,7 @@ class Application extends Container implements
     {
         $list = [
             'action' => [
-                \Themosis\Hook\ActionBuilder::class
+                \Themosis\Hook\Action::class
             ],
             'ajax' => [
                 \Themosis\Ajax\Ajax::class
@@ -269,7 +269,7 @@ class Application extends Container implements
                 \Illuminate\Contracts\Filesystem\Cloud::class
             ],
             'filter' => [
-                \Themosis\Hook\FilterBuilder::class
+                \Themosis\Hook\Filter::class
             ],
             'form' => [
                 \Themosis\Forms\FormFactory::class

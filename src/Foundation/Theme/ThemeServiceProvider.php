@@ -4,6 +4,7 @@ namespace Themosis\Foundation\Theme;
 
 use Composer\Autoload\ClassLoader;
 use Illuminate\Support\ServiceProvider;
+use Themosis\Hook\Filter;
 
 class ThemeServiceProvider extends ServiceProvider
 {
@@ -15,7 +16,7 @@ class ThemeServiceProvider extends ServiceProvider
     protected function registerThemeManager(): void
     {
         $this->app->bind('themosis.theme', function ($app) {
-            return new Manager($app, new ClassLoader(), $app['config']);
+            return new Manager($app, new ClassLoader(), $app['config'], $app[Filter::class]);
         });
     }
 }

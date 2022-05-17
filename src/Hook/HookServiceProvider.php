@@ -6,14 +6,14 @@ use Illuminate\Support\ServiceProvider;
 
 class HookServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
-        $this->app->bind('action', function ($container) {
-            return new ActionBuilder($container);
+        $this->app->bind(Action::class, function ($container) {
+            return new Action($container);
         });
 
-        $this->app->bind('filter', function ($container) {
-            return new FilterBuilder($container);
+        $this->app->bind(Filter::class, function ($container) {
+            return new Filter($container);
         });
     }
 }

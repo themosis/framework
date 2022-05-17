@@ -12,7 +12,7 @@ use Themosis\Hook\Hook;
  * @method static Hook|false remove(string $hook, \Closure|string $callback, int $priority = 10)
  * @method static array|null getCallback(string $hook)
  *
- * @see \Themosis\Hook\FilterBuilder
+ * @see \Themosis\Hook\Filter
  */
 class Filter extends Facade
 {

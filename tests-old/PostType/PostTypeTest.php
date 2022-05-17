@@ -5,8 +5,8 @@ namespace Themosis\Tests\PostType;
 use Illuminate\Config\Repository;
 use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
-use Themosis\Hook\ActionBuilder;
-use Themosis\Hook\FilterBuilder;
+use Themosis\Hook\Action;
+use Themosis\Hook\Filter;
 use Themosis\PostType\Contracts\PostTypeInterface;
 use Themosis\PostType\Factory;
 
@@ -38,8 +38,8 @@ class PostTypeTest extends TestCase
 
         return new Factory(
             $app,
-            new ActionBuilder($app),
-            new FilterBuilder($app),
+            new Action($app),
+            new Filter($app),
         );
     }
 
