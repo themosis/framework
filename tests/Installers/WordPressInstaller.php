@@ -28,6 +28,11 @@ class WordPressInstaller
         $this->install();
     }
 
+    public function configuration(): WordPressConfiguration
+    {
+        return $this->wordPressConfiguration;
+    }
+
     private function installWordPress(): void
     {
         $this->setDefaultConstants();

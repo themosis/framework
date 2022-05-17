@@ -210,7 +210,7 @@ class Manager
     {
         $textdomain = $this->parsedHeaders['text_domain'] ?? 'themosis_theme';
 
-        defined('THEME_TD') ? THEME_TD : define('THEME_TD', $textdomain);
+        defined('THEME_TD') ?: define('THEME_TD', $textdomain);
     }
 
     /**

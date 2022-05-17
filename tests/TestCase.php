@@ -5,6 +5,7 @@ namespace Themosis\Tests;
 use Illuminate\Config\Repository;
 use Illuminate\Foundation\Application;
 use PHPUnit\Framework\TestCase as PhpUnitTestCase;
+use Themosis\Tests\Installers\WordPressConfiguration;
 use Themosis\Tests\Installers\WordPressInstaller;
 
 class TestCase extends PhpUnitTestCase
@@ -25,7 +26,11 @@ class TestCase extends PhpUnitTestCase
     {
         $app = new Application();
 
-        $app->bind('config', fn () => new Repository());
+        $app->instance('config', new Repository());
+
+        $app->bind(WordPressConfiguration::class, function () {
+            return WordPressInstaller::make()->configuration();
+        });
 
         $this->app = $app;
     }
