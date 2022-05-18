@@ -21,7 +21,7 @@ class ImageSize
         $images = [];
 
         foreach ($sizes as $slug => $properties) {
-            list($width, $height, $crop, $label) = $this->parseProperties($properties, $slug);
+            [$width, $height, $crop, $label] = $this->parseProperties($properties, $slug);
 
             $images[$slug] = [
                 'width' => $width,

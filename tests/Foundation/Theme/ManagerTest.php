@@ -5,6 +5,7 @@ namespace Themosis\Tests\Foundation\Theme;
 use Composer\Autoload\ClassLoader;
 use Illuminate\Support\ServiceProvider;
 use Themosis\Foundation\Theme\Manager;
+use Themosis\Hook\Filter;
 use Themosis\Tests\Installers\WordPressConfiguration;
 use Themosis\Tests\TestCase;
 
@@ -18,7 +19,7 @@ class ManagerTest extends TestCase
     {
         parent::setUp();
 
-        $manager = new Manager($this->app, new ClassLoader(), $this->app['config']);
+        $manager = new Manager($this->app, new ClassLoader(), $this->app['config'], new Filter($this->app));
         $manager->load(WP_CONTENT_DIR . '/themes/themosis-fake-theme');
 
         $this->manager = $manager;
@@ -83,10 +84,39 @@ class ManagerTest extends TestCase
     /** @test */
     public function it_can_register_custom_image_sizes(): void
     {
-        /**
-         * @todo Write image sizes test.
-         */
-        $this->markTestSkipped();
+        $imageSizes = [
+            'square' => [250, 250, true],
+            'landscape' => [640, 480, false, true],
+            'portrait' => [480, 640, false, 'Portrait Image Size'],
+        ];
+
+        $this->manager->images($imageSizes);
+
+        $this->assertTrue(has_image_size('square'));
+        $this->assertTrue(has_image_size('landscape'));
+        $this->assertTrue(has_image_size('portrait'));
+
+        $this->assertEquals(250, wp_get_additional_image_sizes()['square']['width']);
+        $this->assertEquals(250, wp_get_additional_image_sizes()['square']['height']);
+        $this->assertTrue(wp_get_additional_image_sizes()['square']['crop']);
+
+        $this->assertEquals(640, wp_get_additional_image_sizes()['landscape']['width']);
+        $this->assertEquals(480, wp_get_additional_image_sizes()['landscape']['height']);
+        $this->assertFalse(wp_get_additional_image_sizes()['landscape']['crop']);
+
+        $this->assertEquals(480, wp_get_additional_image_sizes()['portrait']['width']);
+        $this->assertEquals(640, wp_get_additional_image_sizes()['portrait']['height']);
+        $this->assertFalse(wp_get_additional_image_sizes()['portrait']['crop']);
+
+        (new Filter($this->app))->add('image_size_names_choose', function (array $sizes) use ($imageSizes) {
+            $this->assertTrue(isset($sizes['landscape']));
+            $this->assertEquals('Landscape', $sizes['landscape']);
+
+            $this->assertTrue(isset($sizes['portrait']));
+            $this->assertEquals($imageSizes['portrait'][3], $sizes['portrait']);
+        });
+
+        (new Filter($this->app))->run('image_size_names_choose', []);
     }
 
     /** @test */
