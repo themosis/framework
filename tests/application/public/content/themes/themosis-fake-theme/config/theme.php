@@ -1,7 +1,11 @@
 <?php
 
 return [
-    'autoload' => true,
+    'autoload' => [
+        'Theme\\' => 'resources',
+    ],
+
+    'active' => true,
 
     'sizes' => [
         'sm' => 'small',

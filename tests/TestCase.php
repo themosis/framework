@@ -24,7 +24,7 @@ class TestCase extends PhpUnitTestCase
 
     private function setApplication(): void
     {
-        $app = new Application();
+        $app = new Application(dirname(__DIR__));
 
         $app->instance('config', new Repository());
 

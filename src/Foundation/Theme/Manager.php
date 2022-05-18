@@ -59,7 +59,7 @@ class Manager
         $this->setThemeDirectory();
         $this->setThemeConstants();
         $this->loadThemeConfiguration($configDirectory);
-        $this->setThemeAutoloading();
+        $this->setThemeAutoload();
 
         return $this;
     }
@@ -155,9 +155,9 @@ class Manager
     /**
      * Load theme classes.
      */
-    protected function setThemeAutoloading(): void
+    protected function setThemeAutoload(): void
     {
-        foreach ($this->config->get('theme.autoloading', []) as $ns => $path) {
+        foreach ($this->config->get('theme.autoload', []) as $ns => $path) {
             $path = $this->path . '/' . trim($path, '\/');
             $this->loader->addPsr4($ns, $path);
         }

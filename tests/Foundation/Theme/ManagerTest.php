@@ -3,7 +3,12 @@
 namespace Themosis\Tests\Foundation\Theme;
 
 use Composer\Autoload\ClassLoader;
+use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\Factory;
+use Illuminate\View\ViewServiceProvider;
+use Theme\Models\FakeModel;
+use Theme\ThemeHelper;
 use Themosis\Foundation\Theme\Manager;
 use Themosis\Hook\Filter;
 use Themosis\Tests\Installers\WordPressConfiguration;
@@ -18,6 +23,11 @@ class ManagerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->app->make('config')->set('view.paths', []);
+
+        $this->app->register(FilesystemServiceProvider::class);
+        $this->app->register(ViewServiceProvider::class);
 
         $manager = new Manager($this->app, new ClassLoader(), $this->app['config'], new Filter($this->app));
         $manager->load(WP_CONTENT_DIR . '/themes/themosis-fake-theme');
@@ -68,7 +78,7 @@ class ManagerTest extends TestCase
         $config = $this->app['config'];
 
         $this->assertIsArray($config['theme']);
-        $this->assertTrue($config['theme.autoload']);
+        $this->assertTrue($config['theme.active']);
         $this->assertIsArray($config['theme.sizes']);
         $this->assertEquals('medium', $config['theme.sizes.md']);
         $this->assertTrue($config['misc.access']);
@@ -79,6 +89,13 @@ class ManagerTest extends TestCase
     {
         $this->assertTrue(defined('THEME_TD'));
         $this->assertEquals($this->manager->getHeader('text_domain'), THEME_TD);
+    }
+
+    /** @test */
+    public function it_can_autoload_theme_classes(): void
+    {
+        $this->assertInstanceOf(ThemeHelper::class, new ThemeHelper());
+        $this->assertInstanceOf(FakeModel::class, new FakeModel());
     }
 
     /** @test */
@@ -137,10 +154,17 @@ class ManagerTest extends TestCase
     /** @test */
     public function it_can_register_theme_views(): void
     {
-        /**
-         * @todo Write views test.
-         */
-        $this->markTestSkipped();
+        $this->manager->views([
+            'views',
+        ]);
+
+        /** @var Factory $factory */
+        $factory = $this->app->make('view');
+
+        $this->assertEquals(
+            $this->app->basePath('tests/application/public/content/themes/themosis-fake-theme/views/main.blade.php'),
+            $factory->getFinder()->find('main'),
+        );
     }
 
     /** @test */
