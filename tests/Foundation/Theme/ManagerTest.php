@@ -179,37 +179,79 @@ class ManagerTest extends TestCase
     /** @test */
     public function it_can_register_theme_navigation_menus(): void
     {
-        /**
-         * @todo Write menus registration test.
-         */
-        $this->markTestSkipped();
+        $menus = [
+            'main' => __('Main Navigation', THEME_TD),
+            'secondary' => __('Secondary Navigation', THEME_TD),
+        ];
+
+        $this->manager->menus($menus);
+
+        $this->assertEquals($menus, get_registered_nav_menus());
     }
 
     /** @test */
     public function it_can_register_theme_sidebars(): void
     {
-        /**
-         * @todo Write sidebars test.
-         */
-        $this->markTestSkipped();
+        $sidebars = [
+            [
+                'name' => __('First sidebar', THEME_TD),
+                'id' => 'sidebar-1',
+                'description' => __('Area of first sidebar', THEME_TD),
+                'class' => 'custom',
+                'before_widget' => '<div>',
+                'after_widget' => '</div>',
+                'before_title' => '<h2>',
+                'after_title' => '</h2>',
+                'before_sidebar' => '',
+                'after_sidebar' => '',
+                'show_in_rest' => false,
+            ],
+        ];
+
+        $this->manager->sidebars($sidebars);
+
+        $this->assertEquals($sidebars[0], wp_get_sidebar('sidebar-1'));
     }
 
     /** @test */
     public function it_can_register_theme_support(): void
     {
-        /**
-         * @todo Write theme support test.
-         */
-        $this->markTestSkipped();
+        $supports = [
+            'post-thumbnails' => ['post', 'page'],
+            'title-tag',
+            'custom-feature' => true,
+        ];
+
+        $this->manager->support($supports);
+
+        $this->assertEquals($supports['post-thumbnails'], get_theme_support('post-thumbnails')[0]);
+        $this->assertFalse(get_theme_support('title-tag'));
+        $this->assertTrue(get_theme_support('custom-feature')[0]);
     }
 
     /** @test */
     public function it_can_register_theme_templates(): void
     {
-        /**
-         * @todo Write theme templates test.
-         */
-        $this->markTestSkipped();
+        $templates = [
+            'custom-template' => [__('Custom Template', THEME_TD), ['page']],
+            'about-page' => __('About'),
+            'video-template' => [__('Video', THEME_TD), 'portfolio'],
+        ];
+
+        $this->manager->templates($templates);
+
+        $filter = (new Filter($this->app))->add('theme_page_templates', function ($registered) use ($templates) {
+            $this->assertEquals($templates['custom-template'][0], $registered['custom-template']);
+            $this->assertEquals($templates['about-page'], $registered['about-page']);
+        });
+
+        $filter->run('theme_page_templates', []);
+
+        $filter = (new Filter($this->app))->add('theme_portfolio_templates', function ($registered) use ($templates) {
+            $this->assertEquals($templates['video-template'][0], $registered['video-template']);
+        });
+
+        $filter->run('theme_portfolio_templates', []);
     }
 }
 
