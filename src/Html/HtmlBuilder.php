@@ -4,10 +4,7 @@ namespace Themosis\Html;
 
 class HtmlBuilder
 {
-    /**
-     * @var string
-     */
-    protected $charset = 'UTF-8';
+    protected string $charset = 'UTF-8';
 
     public function __construct()
     {
@@ -17,12 +14,8 @@ class HtmlBuilder
     /**
      * Set the encoding charset.
      * Defaults to UTF8.
-     *
-     * @param string $charset
-     *
-     * @return \Themosis\Html\HtmlBuilder
      */
-    public function setCharset($charset = null)
+    public function setCharset(?string $charset = null): self
     {
         if (! is_null($charset)) {
             $this->charset = $charset;
@@ -37,12 +30,8 @@ class HtmlBuilder
 
     /**
      * Build a list of HTML attributes from an array.
-     *
-     * @param array $attributes An array of html tag attributes.
-     *
-     * @return string The html attributes output.
      */
-    public function attributes(array $attributes)
+    public function attributes(array $attributes): string
     {
         $html = [];
 
@@ -59,53 +48,43 @@ class HtmlBuilder
 
     /**
      * Build the attribute.
-     *
-     * @param string $key
-     * @param string $value
-     *
-     * @return string|null
      */
-    protected function attributeElement($key, $value)
+    protected function attributeElement(string $key, string $value): string
     {
-        // For numeric keys we will assume that the value is a boolean attribute
-        // where the presence of the attribute represents a true value and the
-        // absence represents a false value.
-        // This will convert HTML attributes such as "required" to a correct
-        // form instead of using incorrect numeric.
+        /**
+         * For numeric keys we will assume that the value is a boolean attribute
+         * where the presence of the attribute represents a true value and the
+         * absence represents a false value.
+         * This will convert HTML attributes such as "required" to a correct
+         * form instead of using incorrect numeric.
+         */
         if (is_numeric($key)) {
             return $value;
         }
-        // Treat boolean attributes as HTML properties
-        if (is_bool($value) && $key !== 'value') {
+
+        /**
+         * Treat boolean attributes as HTML properties.
+         */
+        if ($key !== 'value') {
             return $value ? $key : '';
         }
-        if (! is_null($value)) {
-            return $key . '="' . $this->special($value) . '"';
-        }
 
-        return null;
+
+        return $key . '="' . $this->special($value) . '"';
     }
 
     /**
      * Convert HTML characters to entities.
-     *
-     * @param string $value A string to encode.
-     *
-     * @return string The encoded character.
      */
-    public function entities($value)
+    public function entities(string $value): string
     {
         return htmlentities($value, ENT_QUOTES, $this->charset, false);
     }
 
     /**
      * Convert special characters to HTML entities.
-     *
-     * @param string $value
-     *
-     * @return string
      */
-    public function special($value)
+    public function special(string $value): string
     {
         return htmlspecialchars($value, ENT_QUOTES, $this->charset, false);
     }

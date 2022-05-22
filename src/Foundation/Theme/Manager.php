@@ -65,21 +65,6 @@ class Manager
     }
 
     /**
-     * Define theme assets directories.
-     */
-    public function assets(array $locations): self
-    {
-        $finder = $this->app->bound('asset.finder') ? $this->app['asset.finder'] : null;
-
-        if (! is_null($finder)) {
-            /** @var Finder $finder */
-            $finder->addLocations($locations);
-        }
-
-        return $this;
-    }
-
-    /**
      * Return a theme header property.
      */
     public function getHeader(string $header): ?string
@@ -172,6 +157,21 @@ class Manager
     {
         foreach ($providers as $provider) {
             $this->app->register(new $provider($this->app));
+        }
+
+        return $this;
+    }
+
+    /**
+     * Define theme assets directories.
+     */
+    public function assets(array $locations): self
+    {
+        $finder = $this->app->bound(Finder::class) ? $this->app[Finder::class] : null;
+
+        if (! is_null($finder)) {
+            /** @var Finder $finder */
+            $finder->addLocations($locations);
         }
 
         return $this;

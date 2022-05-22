@@ -6,32 +6,17 @@ use Illuminate\Filesystem\Filesystem;
 
 class File implements AssetFileInterface
 {
-    protected $files;
+    protected Filesystem $files;
 
-    /**
-     * @var bool
-     */
-    protected $external = false;
+    protected bool $external = false;
 
-    /**
-     * @var string
-     */
-    protected $path;
+    protected string $path;
 
-    /**
-     * @var string
-     */
-    protected $url;
+    protected string $url;
 
-    /**
-     * @var string
-     */
-    protected $type;
+    protected string $type;
 
-    /**
-     * @var array
-     */
-    protected $extensions = ['js', 'css', 'script', 'style'];
+    protected array $extensions = ['js', 'css', 'script', 'style'];
 
     public function __construct(Filesystem $files)
     {
@@ -40,8 +25,6 @@ class File implements AssetFileInterface
 
     /**
      * Check if the file is external or local.
-     *
-     * @return bool
      */
     public function isExternal(): bool
     {
@@ -50,10 +33,6 @@ class File implements AssetFileInterface
 
     /**
      * Set the asset file external status.
-     *
-     * @param bool $isExternal
-     *
-     * @return AssetFileInterface
      */
     public function setExternal(bool $isExternal = false): AssetFileInterface
     {
@@ -64,8 +43,6 @@ class File implements AssetFileInterface
 
     /**
      * Return the asset file path.
-     *
-     * @return string
      */
     public function getPath(): string
     {
@@ -74,10 +51,6 @@ class File implements AssetFileInterface
 
     /**
      * Set the asset file path.
-     *
-     * @param string $path
-     *
-     * @return AssetFileInterface
      */
     public function setPath(string $path): AssetFileInterface
     {
@@ -88,8 +61,6 @@ class File implements AssetFileInterface
 
     /**
      * Return the asset file URL.
-     *
-     * @return string
      */
     public function getUrl(): string
     {
@@ -98,10 +69,6 @@ class File implements AssetFileInterface
 
     /**
      * Set the asset file URL.
-     *
-     * @param string $url
-     *
-     * @return AssetFileInterface
      */
     public function setUrl(string $url): AssetFileInterface
     {
@@ -112,27 +79,22 @@ class File implements AssetFileInterface
 
     /**
      * Return the asset file type.
-     *
-     * @return null|string
      */
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
 
     /**
      * Set the asset file type.
-     *
-     * @param string $filename
-     * @param string $type
-     *
-     * @return AssetFileInterface
      */
-    public function setType(string $filename, $type = null): AssetFileInterface
+    public function setType(string $filename, ?string $type = null): AssetFileInterface
     {
         if (! is_null($type) && in_array($type, $this->extensions, true)) {
-            // We first listen to a defined asset type.
-            // If no type is defined, let's try to discover it.
+            /**
+             * We first listen to a defined asset type.
+             * If no type is defined, let's try to discover it.
+             */
             $this->type = $this->findType($type);
 
             return $this;
@@ -149,12 +111,8 @@ class File implements AssetFileInterface
 
     /**
      * Find the file type.
-     *
-     * @param string $type
-     *
-     * @return string
      */
-    protected function findType(string $type)
+    protected function findType(string $type): string
     {
         return in_array($type, ['css', 'style'], true) ? 'style' : 'script';
     }

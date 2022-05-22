@@ -8,7 +8,7 @@ class HtmlServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind('html', function () {
+        $this->app->bind(HtmlBuilder::class, function () {
             return new HtmlBuilder();
         });
     }

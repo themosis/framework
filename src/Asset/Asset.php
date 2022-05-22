@@ -7,72 +7,46 @@ use Themosis\Html\HtmlBuilder;
 
 class Asset implements AssetInterface
 {
-    /**
-     * @var string
-     */
-    protected $handle;
+    protected string $handle;
 
-    /**
-     * @var AssetFileInterface
-     */
-    protected $file;
+    protected AssetFileInterface $file;
 
-    /**
-     * @var bool|string|array
-     */
-    protected $dependencies;
+    protected string|bool|array $dependencies;
 
-    /**
-     * @var null|string|bool
-     */
-    protected $version;
+    protected string|bool|null $version;
 
-    /**
-     * @var string|bool
-     */
-    protected $argument;
+    protected string|bool $argument;
 
-    /**
-     * @var IHook
-     */
-    protected $action;
+    protected IHook $action;
 
-    /**
-     * @var IHook
-     */
-    protected $filter;
+    protected IHook $filter;
 
-    /**
-     * @var HtmlBuilder
-     */
-    protected $html;
+    protected HtmlBuilder $html;
 
-    /**
-     * @var array
-     */
-    protected $locations = [
+    protected array $locations = [
         'wp_enqueue_scripts' => 'front',
         'admin_enqueue_scripts' => 'admin',
         'login_enqueue_scripts' => 'login',
         'customize_preview_init' => 'customizer',
+        'enqueue_block_editor_assets' => 'editor',
     ];
 
     /**
      * Asset localized data.
-     *
-     * @var array
      */
-    protected $localize = [];
+    protected array $localize = [];
 
     /**
      * Asset inline code.
-     *
-     * @var array
      */
-    protected $inline = [];
+    protected array $inline = [];
 
-    public function __construct(AssetFileInterface $file, IHook $action, IHook $filter, HtmlBuilder $html)
-    {
+    public function __construct(
+        AssetFileInterface $file,
+        IHook $action,
+        IHook $filter,
+        HtmlBuilder $html,
+    ) {
         $this->file = $file;
         $this->action = $action;
         $this->filter = $filter;
@@ -81,8 +55,6 @@ class Asset implements AssetInterface
 
     /**
      * Return the asset handle.
-     *
-     * @return string
      */
     public function getHandle(): string
     {
@@ -91,10 +63,6 @@ class Asset implements AssetInterface
 
     /**
      * Set the asset handle.
-     *
-     * @param string $handle
-     *
-     * @return AssetInterface
      */
     public function setHandle(string $handle): AssetInterface
     {
@@ -105,8 +73,6 @@ class Asset implements AssetInterface
 
     /**
      * Return the asset file instance.
-     *
-     * @return AssetFileInterface
      */
     public function file(): AssetFileInterface
     {
@@ -115,8 +81,6 @@ class Asset implements AssetInterface
 
     /**
      * Return the asset path.
-     *
-     * @return string
      */
     public function getPath(): string
     {
@@ -125,8 +89,6 @@ class Asset implements AssetInterface
 
     /**
      * Return the asset URL.
-     *
-     * @return string
      */
     public function getUrl(): string
     {
@@ -135,10 +97,6 @@ class Asset implements AssetInterface
 
     /**
      * Set the asset dependencies.
-     *
-     * @param array $dependencies
-     *
-     * @return AssetInterface
      */
     public function setDependencies(array $dependencies): AssetInterface
     {
@@ -149,22 +107,16 @@ class Asset implements AssetInterface
 
     /**
      * Return the asset dependencies.
-     *
-     * @return array|bool|mixed|string
      */
-    public function getDependencies()
+    public function getDependencies(): string|array|bool
     {
         return $this->dependencies;
     }
 
     /**
      * Set the asset version.
-     *
-     * @param bool|null|string $version
-     *
-     * @return AssetInterface
      */
-    public function setVersion($version): AssetInterface
+    public function setVersion(string|bool|null $version): AssetInterface
     {
         $this->version = $version;
 
@@ -173,10 +125,8 @@ class Asset implements AssetInterface
 
     /**
      * Return the asset version.
-     *
-     * @return null|string|bool
      */
-    public function getVersion()
+    public function getVersion(): string|bool|null
     {
         return $this->version;
     }
@@ -184,10 +134,6 @@ class Asset implements AssetInterface
     /**
      * Set the asset type.
      * Override the auto-discovered type if any.
-     *
-     * @param string $type
-     *
-     * @return AssetInterface
      */
     public function setType(string $type): AssetInterface
     {
@@ -200,32 +146,24 @@ class Asset implements AssetInterface
 
     /**
      * Return the asset type.
-     *
-     * @return null|string
      */
-    public function getType()
+    public function getType(): string|null
     {
         return $this->file->getType();
     }
 
     /**
      * Return the asset argument.
-     *
-     * @return bool|string
      */
-    public function getArgument()
+    public function getArgument(): string|bool
     {
         return $this->argument;
     }
 
     /**
      * Set the asset argument.
-     *
-     * @param bool|string $arg
-     *
-     * @return AssetInterface
      */
-    public function setArgument($arg = null): AssetInterface
+    public function setArgument(string|bool|null $arg = null): AssetInterface
     {
         if (! is_null($arg)) {
             $this->argument = $arg;
@@ -233,8 +171,10 @@ class Asset implements AssetInterface
             return $this;
         }
 
-        // If no argument is passed but we have its type
-        // then let's define some defaults.
+        /**
+         * If no argument is passed, but we have its type
+         * then let's define some defaults.
+         */
         if ('style' === $this->getType()) {
             $this->argument = 'all';
         }
@@ -248,12 +188,8 @@ class Asset implements AssetInterface
 
     /**
      * Load the asset on the defined area. Default to front-end.
-     *
-     * @param string|array $locations
-     *
-     * @return AssetInterface
      */
-    public function to($locations = 'front'): AssetInterface
+    public function to(string|array $locations = 'front'): AssetInterface
     {
         if (is_string($locations)) {
             $locations = [$locations];
@@ -272,18 +208,18 @@ class Asset implements AssetInterface
 
     /**
      * Register the asset with appropriate action hook.
-     *
-     * @param string $hook
      */
-    protected function install(string $hook)
+    protected function install(string $hook): void
     {
         $this->action->add($hook, [$this, 'enqueue']);
     }
 
     /**
      * Enqueue asset.
+     *
+     * @throws AssetException
      */
-    public function enqueue()
+    public function enqueue(): void
     {
         if (is_null($this->getType())) {
             throw new AssetException('The asset must have a type defined. Null given.');
@@ -299,7 +235,7 @@ class Asset implements AssetInterface
     /**
      * Enqueue a script asset.
      */
-    protected function enqueueScript()
+    protected function enqueueScript(): void
     {
         wp_enqueue_script(
             $this->getHandle(),
@@ -325,7 +261,7 @@ class Asset implements AssetInterface
     /**
      * Enqueue a style asset.
      */
-    protected function enqueueStyle()
+    protected function enqueueStyle(): void
     {
         wp_enqueue_style(
             $this->getHandle(),
@@ -344,11 +280,6 @@ class Asset implements AssetInterface
 
     /**
      * Localize the asset.
-     *
-     * @param string $name
-     * @param array  $data
-     *
-     * @return AssetInterface
      */
     public function localize(string $name, array $data): AssetInterface
     {
@@ -359,11 +290,6 @@ class Asset implements AssetInterface
 
     /**
      * Add asset inline code.
-     *
-     * @param string $code
-     * @param bool   $after
-     *
-     * @return AssetInterface
      */
     public function inline(string $code, bool $after = true): AssetInterface
     {
@@ -378,11 +304,7 @@ class Asset implements AssetInterface
     /**
      * Add asset attributes.
      *
-     * @param array $attributes
-     *
      * @throws AssetException
-     *
-     * @return AssetInterface
      */
     public function attributes(array $attributes): AssetInterface
     {

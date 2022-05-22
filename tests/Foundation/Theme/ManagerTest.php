@@ -9,6 +9,10 @@ use Illuminate\View\Factory;
 use Illuminate\View\ViewServiceProvider;
 use Theme\Models\FakeModel;
 use Theme\ThemeHelper;
+use Themosis\Asset\AssetException;
+use Themosis\Asset\AssetFileInterface;
+use Themosis\Asset\AssetServiceProvider;
+use Themosis\Asset\Finder;
 use Themosis\Foundation\Theme\Manager;
 use Themosis\Hook\Filter;
 use Themosis\Tests\Installers\WordPressConfiguration;
@@ -88,7 +92,7 @@ class ManagerTest extends TestCase
     public function it_can_define_theme_textdomain_constant(): void
     {
         $this->assertTrue(defined('THEME_TD'));
-        $this->assertEquals($this->manager->getHeader('text_domain'), THEME_TD);
+        $this->assertEquals(THEME_TD, $this->manager->getHeader('text_domain'));
     }
 
     /** @test */
@@ -170,10 +174,24 @@ class ManagerTest extends TestCase
     /** @test */
     public function it_can_locate_theme_assets(): void
     {
-        /**
-         * @todo Write theme asset location test.
-         */
-        $this->markTestSkipped();
+        $this->app['config']->set('assets.paths', []);
+        $this->app->register(AssetServiceProvider::class);
+
+        $assets = [
+            $this->manager->getPath('dist') => $this->manager->getUrl('dist'),
+        ];
+
+        $this->manager->assets($assets);
+
+        /** @var Finder $finder */
+        $finder = $this->app[Finder::class];
+
+        $this->assertInstanceOf(AssetFileInterface::class, $finder->find('css/theme.css'));
+        $this->assertInstanceOf(AssetFileInterface::class, $finder->find('js/app.min.js'));
+        $this->assertInstanceOf(AssetFileInterface::class, $finder->find('js/library/fake-library.js'));
+
+        $this->expectException(AssetException::class);
+        $finder->find('dir/do/not/exist.js');
     }
 
     /** @test */

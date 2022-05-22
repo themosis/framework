@@ -6,20 +6,11 @@ use Illuminate\Filesystem\Filesystem;
 
 class Finder
 {
-    /**
-     * @var Filesystem
-     */
-    protected $files;
+    protected Filesystem $files;
 
-    /**
-     * @var array
-     */
-    protected $locations = [];
+    protected array $locations = [];
 
-    /**
-     * @var array
-     */
-    protected $schemes = ['//', 'http'];
+    protected array $schemes = ['//', 'http'];
 
     public function __construct(Filesystem $files)
     {
@@ -28,11 +19,6 @@ class Finder
 
     /**
      * Add a base location in order to find an asset.
-     *
-     * @param string $path
-     * @param string $url
-     *
-     * @return Finder
      */
     public function addLocation(string $path, string $url): Finder
     {
@@ -47,10 +33,6 @@ class Finder
     /**
      * Add multiple locations.
      * The key is the asset path and the value its URL.
-     *
-     * @param array $paths
-     *
-     * @return Finder
      */
     public function addLocations(array $paths): Finder
     {
@@ -63,8 +45,6 @@ class Finder
 
     /**
      * Return the registered locations.
-     *
-     * @return array
      */
     public function getLocations(): array
     {
@@ -74,11 +54,7 @@ class Finder
     /**
      * Return an asset file instance if found.
      *
-     * @param string $path
-     *
      * @throws AssetException
-     *
-     * @return AssetFileInterface
      */
     public function find(string $path): AssetFileInterface
     {
@@ -107,15 +83,11 @@ class Finder
 
     /**
      * Check if given path is an external asset or not.
-     *
-     * @param string $path
-     *
-     * @return bool
      */
     protected function isExternal(string $path): bool
     {
         foreach ($this->schemes as $scheme) {
-            if (strpos($path, $scheme) !== false) {
+            if (str_contains($path, $scheme)) {
                 return true;
             }
         }

@@ -4,6 +4,7 @@ namespace Themosis\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 use Themosis\Asset\AssetInterface;
+use Themosis\Asset\Factory;
 
 /**
  * @method static AssetInterface add(string $handle, string $path, array $dependencies = [], $version = null, $arg = null)
@@ -12,13 +13,8 @@ use Themosis\Asset\AssetInterface;
  */
 class Asset extends Facade
 {
-    /**
-     * Get the registered name of the component.
-     *
-     * @return string
-     */
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
-        return 'asset';
+        return Factory::class;
     }
 }
