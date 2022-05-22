@@ -6,7 +6,7 @@ use Illuminate\Foundation\Application;
 
 class HttpHandler
 {
-    public static function front()
+    public static function front(): void
     {
         $application = Application::getInstance();
         $request = $application->make('request');
