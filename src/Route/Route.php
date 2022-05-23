@@ -12,49 +12,43 @@ class Route extends IlluminateRoute
 {
     /**
      * WordPress conditions rules.
-     *
-     * @var array
      */
-    protected $conditions = [];
+    protected array $conditions = [];
 
     /**
      * A WordPress condition.
-     *
-     * @var string
      */
-    protected $condition = '';
+    protected ?string $condition;
 
     /**
      * Condition parameters.
-     *
-     * @var array
      */
-    protected $conditionParams = [];
+    protected array $conditionParams = [];
 
     /**
      * List of WordPress route validators.
-     *
-     * @var array
      */
-    protected $wordpressValidators;
+    public static array $wordpressValidators;
 
     /**
      * Determine if the route matches given request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param bool                     $includingMethod
+     * @param Request $request
+     * @param bool    $includingMethod
      *
      * @return bool
      */
-    public function matches(Request $request, $includingMethod = true)
+    public function matches(Request $request, $includingMethod = true): bool
     {
         $this->compileRoute();
 
-        // Let's first check if we're working with a WordPress route.
-        // If not a WordPress route, we go through each Illuminate
-        // validators to match the request.
-        if ($this->hasCondition()) {
-            foreach ($this->getWordPressValidators() as $validator) {
+        /**
+         * Let's first check if we're working with a WordPress route.
+         * If not a WordPress route, we go through each Illuminate
+         * validators to match the request.
+         */
+        if ($this->hasWordPressCondition()) {
+            foreach (self::getWordPressValidators() as $validator) {
                 if (! $validator->matches($this, $request)) {
                     return false;
                 }
@@ -80,27 +74,16 @@ class Route extends IlluminateRoute
     }
 
     /**
-     * Check if route has a condition available.
-     * Meaning this is a WordPress route.
-     *
-     * @return bool
+     * Check if route has a WordPress condition.
      */
-    public function hasCondition(): bool
+    public function hasWordPressCondition(): bool
     {
         return ! empty($this->condition);
     }
 
-    /**
-     * Set route WordPress conditions rules.
-     *
-     * @param array $conditions
-     *
-     * @return \Themosis\Route\Route
-     */
-    public function setConditions(array $conditions = [])
+    public function setWordPressConditions(array $conditions = []): self
     {
         $this->conditions = $conditions;
-
         $this->condition = $this->parseCondition($this->uri());
         $this->conditionParams = $this->parseConditionParams($this->getAction());
 
@@ -115,7 +98,7 @@ class Route extends IlluminateRoute
      *
      * @return string
      */
-    protected function parseCondition(string $condition): string
+    protected function parseCondition(string $condition): ?string
     {
         $conditions = $this->getConditions();
 
@@ -153,28 +136,22 @@ class Route extends IlluminateRoute
 
     /**
      * Return the route condition.
-     *
-     * @return string
      */
-    public function getCondition()
+    public function getCondition(): string
     {
         return $this->condition;
     }
 
     /**
      * Return registered conditions.
-     *
-     * @return array
      */
-    public function getConditions()
+    public function getConditions(): array
     {
         return $this->conditions;
     }
 
     /**
      * Return the route condition parameters.
-     *
-     * @return array
      */
     public function getConditionParameters(): array
     {
@@ -183,16 +160,14 @@ class Route extends IlluminateRoute
 
     /**
      * Get the WordPress route validators for the instance.
-     *
-     * @return array
      */
-    public function getWordPressValidators()
+    public static function getWordPressValidators(): array
     {
-        if (isset($this->wordpressValidators)) {
-            return $this->wordpressValidators;
+        if (isset(static::$wordpressValidators)) {
+            return static::$wordpressValidators;
         }
 
-        return $this->wordpressValidators = [
+        return static::$wordpressValidators = [
             new ConditionValidator(),
         ];
     }

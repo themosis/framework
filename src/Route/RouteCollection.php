@@ -15,7 +15,7 @@ class RouteCollection extends IlluminateRouteCollection
     {
         $domainAndUri = $route->getDomain() . $route->uri();
 
-        if ($route->hasCondition() && ! empty($route->getConditionParameters())) {
+        if ($route->hasWordPressCondition() && ! empty($route->getConditionParameters())) {
             $domainAndUri .= serialize($route->getConditionParameters());
         }
 

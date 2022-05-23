@@ -10,10 +10,8 @@ class Router extends IlluminateRouter
 {
     /**
      * WordPress conditions.
-     *
-     * @var array
      */
-    protected $conditions = [];
+    protected array $conditions = [];
 
     public function __construct(Dispatcher $events, Container $container = null)
     {
@@ -32,17 +30,19 @@ class Router extends IlluminateRouter
      */
     public function newRoute($methods, $uri, $action)
     {
-        // WordPress condition could have been already applied.
-        // We only try one more time to fetch them if no conditions
-        // are registered. This avoids the overwrite of any pre-existing rules.
+        /**
+         * WordPress condition could have been already applied.
+         * We only try one more time to fetch them if no conditions
+         * are registered. This avoids to overwrite any of pre-existing rules.
+         */
         if (empty($this->conditions)) {
-            $this->setConditions();
+            $this->setWordPressConditions();
         }
 
         return (new Route($methods, $uri, $action))
             ->setRouter($this)
             ->setContainer($this->container)
-            ->setConditions($this->conditions);
+            ->setWordPressConditions($this->conditions);
     }
 
     /**
@@ -70,12 +70,7 @@ class Router extends IlluminateRouter
         return parent::findRoute($request);
     }
 
-    /**
-     * Setup WordPress conditions.
-     *
-     * @param array $conditions
-     */
-    public function setConditions(array $conditions = [])
+    public function setWordPressConditions(array $conditions = []): void
     {
         $config = $this->container->has('config') ? $this->container->make('config') : null;
 
@@ -91,12 +86,8 @@ class Router extends IlluminateRouter
 
     /**
      * Add WordPress default parameters if WordPress route.
-     *
-     * @param \Themosis\Route\Route $route
-     *
-     * @return \Themosis\Route\Route
      */
-    public function addWordPressBindings($route)
+    public function addWordPressBindings(Route $route): Route
     {
         global $post, $wp_query;
 

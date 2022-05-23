@@ -2,8 +2,8 @@
 
 namespace Themosis\Route\Middleware;
 
+use Illuminate\Routing\Route;
 use Themosis\Hook\Filter;
-use Themosis\Route\Route;
 
 class WordPressBodyClass
 {
@@ -45,7 +45,7 @@ class WordPressBodyClass
     protected function dispatchBodyClass(Route $route)
     {
         return function ($classes) use ($route) {
-            if ($route->hasCondition()) {
+            if ($route->hasWordPressCondition()) {
                 return $classes;
             }
 

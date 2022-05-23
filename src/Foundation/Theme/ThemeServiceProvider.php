@@ -15,8 +15,13 @@ class ThemeServiceProvider extends ServiceProvider
 
     protected function registerThemeManager(): void
     {
-        $this->app->bind('themosis.theme', function ($app) {
-            return new Manager($app, new ClassLoader(), $app['config'], $app[Filter::class]);
-        });
+        $themeManager = new Manager(
+            $this->app,
+            new ClassLoader(),
+            $this->app['config'],
+            $this->app[Filter::class],
+        );
+
+        $this->app->instance('themosis.theme', $themeManager);
     }
 }

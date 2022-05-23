@@ -11,13 +11,14 @@ class ConditionValidator implements ValidatorInterface
     /**
      * Validate a given rule against a route and request.
      *
-     * @param \Illuminate\Routing\Route $route
-     * @param \Illuminate\Http\Request  $request
+     * @param Route   $route
+     * @param Request $request
      *
      * @return bool
      */
-    public function matches(Route $route, Request $request)
+    public function matches(Route $route, Request $request): bool
     {
+        /** @var \Themosis\Route\Route $route */
         if (call_user_func_array($route->getCondition(), $route->getConditionParameters())) {
             return true;
         }

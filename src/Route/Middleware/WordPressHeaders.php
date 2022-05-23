@@ -20,7 +20,7 @@ class WordPressHeaders
         $route = $request->route();
         $response = $next($request);
 
-        if (! $route->hasCondition() && function_exists('is_user_logged_in') && ! is_user_logged_in()) {
+        if (! $route->hasWordPressCondition() && function_exists('is_user_logged_in') && ! is_user_logged_in()) {
             // We're on a custom route. Remove "no-cache" headers added by WordPress:
             // - Cache-Control
             // - Expires

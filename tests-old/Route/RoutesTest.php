@@ -663,7 +663,7 @@ class RoutesTest extends TestCase
     protected function getWordPressRouter()
     {
         $router = $this->getRouter();
-        $router->setConditions([
+        $router->setWordPressConditions([
             'is_404' => '404',
             'is_archive' => 'archive',
             'is_attachment' => 'attachment',

@@ -4,7 +4,7 @@ namespace Themosis\Foundation\Theme;
 
 use Composer\Autoload\ClassLoader;
 use Illuminate\Config\Repository;
-use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Foundation\Application;
 use Themosis\Asset\Finder;
 use Themosis\Foundation\Features\ImageSize;
 use Themosis\Foundation\Features\Support;

@@ -841,6 +841,20 @@ if (! function_exists('storage_path')) {
     }
 }
 
+if (! function_exists('themes_path')) {
+    /**
+     * Get the path to the themes folder.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    function themes_path($path = '')
+    {
+        return app()->publicPath() . DIRECTORY_SEPARATOR . CONTENT_DIR . DIRECTORY_SEPARATOR . 'themes' . ($path != '' ? DIRECTORY_SEPARATOR . $path : '');
+    }
+}
+
 if (! function_exists('today')) {
     /**
      * Create a new Carbon instance for the current date.

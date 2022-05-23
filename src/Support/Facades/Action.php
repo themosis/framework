@@ -3,7 +3,6 @@
 namespace Themosis\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Themosis\Hook\Action;
 use Themosis\Hook\Hook;
 
 /**
@@ -17,13 +16,8 @@ use Themosis\Hook\Hook;
  */
 class Action extends Facade
 {
-    /**
-     * Get the registered name of the component.
-     *
-     * @return string
-     */
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
-        return 'action';
+        return \Themosis\Hook\Action::class;
     }
 }
