@@ -2,11 +2,13 @@
 .DS_Store
 Thumbs.db
 .idea/
-node_modules/
+.phpunit.cache/
+.php-cs-fixer.cache
+.phpunit.result.cache
+
 
 # Framework
-/vendor
+vendor/
+node_modules/
 composer.lock
 composer.phar
-.php_cs.cache
-.phpunit.result.cache
