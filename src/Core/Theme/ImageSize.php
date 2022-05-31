@@ -42,7 +42,7 @@ class ImageSize
                 'width' => $width,
                 'height' => $height,
                 'crop' => $crop,
-                'label' => $label
+                'label' => $label,
             ];
         }
 
@@ -63,14 +63,17 @@ class ImageSize
             case 1:
                 // Square with defaults.
                 return [$properties[0], $properties[0], false, false];
+
                 break;
             case 2:
                 // Custom size with defaults.
                 return [$properties[0], $properties[1], false, false];
+
                 break;
             case 3:
                 // Custom size with custom crop option.
                 return [$properties[0], $properties[1], $properties[2], false];
+
                 break;
             case 4:
             default:

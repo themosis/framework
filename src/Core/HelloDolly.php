@@ -45,7 +45,7 @@ class HelloDolly
             "Have a little faith in me, fellas",
             "Dolly, never go away",
             "Promise, you'll never go away",
-            "Dolly'll never go away again"
+            "Dolly'll never go away again",
         ])->random();
     }
 }

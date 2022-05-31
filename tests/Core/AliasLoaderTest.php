@@ -33,7 +33,7 @@ class AliasLoaderTest extends TestCase
         $this->assertEquals([
             'bar' => 'baz',
             'foo' => 'doe',
-            'some' => 'thing'
+            'some' => 'thing',
         ], $loader->getAliases());
     }
 }

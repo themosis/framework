@@ -18,7 +18,7 @@ class Support
         'html5',
         'post-formats',
         'post-thumbnails',
-        'starter-content'
+        'starter-content',
     ];
 
     public function __construct(array $features)
@@ -47,7 +47,7 @@ class Support
                     $allowed[$value] = $value;
                 } else {
                     throw new \InvalidArgumentException(
-                        'The theme feature ['.$value.'] must have a defined property in order to work.'
+                        'The theme feature [' . $value . '] must have a defined property in order to work.',
                     );
                 }
             } else {

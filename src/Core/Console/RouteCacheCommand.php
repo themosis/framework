@@ -58,7 +58,7 @@ class RouteCacheCommand extends Command
 
         $this->files->put(
             $this->laravel->getCachedRoutesPath(),
-            $this->buildRouteCacheFile($routes)
+            $this->buildRouteCacheFile($routes),
         );
 
         $this->info('Routes cached successfully.');
@@ -101,7 +101,7 @@ class RouteCacheCommand extends Command
      */
     protected function buildRouteCacheFile(RouteCollection $routes)
     {
-        $stub = $this->files->get(__DIR__.'/stubs/routes.stub');
+        $stub = $this->files->get(__DIR__ . '/stubs/routes.stub');
 
         return str_replace('{{routes}}', base64_encode(serialize($routes)), $stub);
     }

@@ -32,7 +32,7 @@ class MetaboxServiceProvider extends ServiceProvider
             $resource = new MetaboxResource(
                 $app->bound('league.fractal') ? $app['league.fractal'] : new Manager(),
                 new ArraySerializer(),
-                new MetaboxTransformer()
+                new MetaboxTransformer(),
             );
 
             return new Factory($app, $app['action'], $app['filter'], $resource);

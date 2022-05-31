@@ -99,7 +99,7 @@ class RouteListCommand extends Command
             'uri' => $route->uri(),
             'name' => $route->getName(),
             'action' => $route->getActionName(),
-            'middleware' => $this->getMiddleware($route)
+            'middleware' => $this->getMiddleware($route),
         ]);
     }
 
@@ -177,8 +177,8 @@ class RouteListCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'The colomn (host, method, uri, name, action, middleware) to sort by.',
-                'uri'
-            ]
+                'uri',
+            ],
         ];
     }
 }

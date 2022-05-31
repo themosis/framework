@@ -25,7 +25,7 @@ class TaxonomyFieldFactory
     public function __construct(
         \Illuminate\View\Factory $viewFactory,
         \Illuminate\Contracts\Validation\Factory $validator,
-        IHook $action
+        IHook $action,
     ) {
         $this->factory = $viewFactory;
         $this->validator = $validator;
@@ -44,7 +44,7 @@ class TaxonomyFieldFactory
     {
         $options = array_merge([
             'theme' => 'themosis.taxonomy',
-            'prefix' => 'th_'
+            'prefix' => 'th_',
         ], $options);
 
         return new TaxonomyField(
@@ -53,7 +53,7 @@ class TaxonomyFieldFactory
             $this->factory,
             $this->validator,
             $this->action,
-            $options
+            $options,
         );
     }
 }

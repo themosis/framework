@@ -51,7 +51,7 @@ class NumberType extends BaseType implements
     protected function setAllowedOptions(): array
     {
         return array_merge($this->allowedOptions, [
-            'precision'
+            'precision',
         ]);
     }
 
@@ -63,7 +63,7 @@ class NumberType extends BaseType implements
     protected function setDefaultOptions(): array
     {
         return array_merge($this->defaultOptions, [
-            'precision' => 0
+            'precision' => 0,
         ]);
     }
 

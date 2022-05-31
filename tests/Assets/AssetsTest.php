@@ -19,8 +19,8 @@ class AssetsTest extends TestCase
     {
         $finder = new Finder(new Filesystem());
         $finder->addLocation(
-            __DIR__.'/files',
-            'https://www.domain.com/dist'
+            __DIR__ . '/files',
+            'https://www.domain.com/dist',
         );
 
         return $finder;
@@ -34,7 +34,7 @@ class AssetsTest extends TestCase
             $this->getFinder(),
             new ActionBuilder($app),
             new FilterBuilder($app),
-            new HtmlBuilder()
+            new HtmlBuilder(),
         );
     }
 
@@ -44,14 +44,14 @@ class AssetsTest extends TestCase
 
         $finder->addLocation(
             '/home/www/htdocs/content/themes/themosis/dist',
-            'https://www.website.com/content/themes/themosis/dist'
+            'https://www.website.com/content/themes/themosis/dist',
         );
 
         $finder->addLocations([
             'www/resources' => 'http://example.com/resources/',
             'public/assets/' => 'https://wordpress.xyz/assets',
             '/public/dist' => 'http://sub.domain.com/dist/',
-            'c:\\dev\\sites\\project-x\\public\\dist' => 'http://project-x.com/dist'
+            'c:\\dev\\sites\\project-x\\public\\dist' => 'http://project-x.com/dist',
         ]);
 
         $this->assertEquals(
@@ -60,9 +60,9 @@ class AssetsTest extends TestCase
                 'www/resources',
                 'public/assets',
                 '/public/dist',
-                'c:\\dev\\sites\\project-x\\public\\dist'
+                'c:\\dev\\sites\\project-x\\public\\dist',
             ],
-            array_keys($finder->getLocations())
+            array_keys($finder->getLocations()),
         );
 
         $this->assertEquals([
@@ -70,7 +70,7 @@ class AssetsTest extends TestCase
             'http://example.com/resources',
             'https://wordpress.xyz/assets',
             'http://sub.domain.com/dist',
-            'http://project-x.com/dist'
+            'http://project-x.com/dist',
         ], array_values($finder->getLocations()));
     }
 
@@ -79,20 +79,20 @@ class AssetsTest extends TestCase
         $finder = new Finder(new Filesystem());
 
         $finder->addLocation(
-            __DIR__.'/files/',
-            'https://www.domain.com/dist'
+            __DIR__ . '/files/',
+            'https://www.domain.com/dist',
         );
 
         $file = $finder->find('theme.css');
 
-        $this->assertEquals(__DIR__.'/files/theme.css', $file->getPath());
+        $this->assertEquals(__DIR__ . '/files/theme.css', $file->getPath());
         $this->assertEquals('https://www.domain.com/dist/theme.css', $file->getUrl());
         $this->assertFalse($file->isExternal());
 
         $file = $finder->find('/js/carousel.js');
 
         $this->assertFalse($file->isExternal());
-        $this->assertEquals(__DIR__.'/files/js/carousel.js', $file->getPath());
+        $this->assertEquals(__DIR__ . '/files/js/carousel.js', $file->getPath());
         $this->assertEquals('https://www.domain.com/dist/js/carousel.js', $file->getUrl());
     }
 
@@ -125,13 +125,13 @@ class AssetsTest extends TestCase
 
         $this->assertInstanceOf(
             Asset::class,
-            $factory->add('ecommerce', 'css/products.min.css')
+            $factory->add('ecommerce', 'css/products.min.css'),
         );
 
         $this->expectException(\InvalidArgumentException::class);
         $this->assertInstanceOf(
             AssetInterface::class,
-            $factory->add('', '')
+            $factory->add('', ''),
         );
     }
 
@@ -144,7 +144,7 @@ class AssetsTest extends TestCase
 
         $this->assertEquals('theme', $asset->getHandle());
         $this->assertFalse($asset->file()->isExternal());
-        $this->assertEquals(__DIR__.'/files/theme.min.js', $asset->getPath());
+        $this->assertEquals(__DIR__ . '/files/theme.min.js', $asset->getPath());
         $this->assertEquals('https://www.domain.com/dist/theme.min.js', $asset->getUrl());
         $this->assertEmpty($asset->getDependencies());
         $this->assertNull($asset->getVersion());
@@ -174,7 +174,7 @@ class AssetsTest extends TestCase
 
         $this->assertEquals([
             'bootstrap',
-            'jqueryui'
+            'jqueryui',
         ], $asset->getDependencies());
     }
 
@@ -260,7 +260,7 @@ class AssetsTest extends TestCase
             'bootstrap',
             'https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap',
             [],
-            4.1
+            4.1,
         );
         $this->assertNull($asset->getArgument());
         $asset->setArgument('screen');

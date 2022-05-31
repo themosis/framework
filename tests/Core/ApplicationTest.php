@@ -20,143 +20,143 @@ class ApplicationTest extends TestCase
 {
     public function testBasePathSetup()
     {
-        $path = realpath(__DIR__.'/../../');
+        $path = realpath(__DIR__ . '/../../');
         $app = new Application($path);
         $this->assertEquals($path, $app->basePath());
     }
 
     public function testApplicationPaths()
     {
-        $path = realpath(__DIR__.'/../');
+        $path = realpath(__DIR__ . '/../');
         $app = new Application($path);
 
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'app',
+            $path . DIRECTORY_SEPARATOR . 'app',
             $app['path'],
-            'Cannot get the default path'
+            'Cannot get the default path',
         );
         $this->assertEquals(
             $path,
             $app['path.base'],
-            'Cannot get the base path'
+            'Cannot get the base path',
         );
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'htdocs'.DIRECTORY_SEPARATOR.'content',
+            $path . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'content',
             $app['path.content'],
-            'Cannot get the content path'
+            'Cannot get the content path',
         );
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'htdocs'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'mu-plugins',
+            $path . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'mu-plugins',
             $app['path.muplugins'],
-            'Cannot get the mu-plugins path'
+            'Cannot get the mu-plugins path',
         );
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'htdocs'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'plugins',
+            $path . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'plugins',
             $app['path.plugins'],
-            'Cannot get the plugins path'
+            'Cannot get the plugins path',
         );
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'htdocs'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'themes',
+            $path . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'themes',
             $app['path.themes'],
-            'Cannot get the themes path'
+            'Cannot get the themes path',
         );
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'app',
+            $path . DIRECTORY_SEPARATOR . 'app',
             $app['path.application'],
-            'Cannot get the app path'
+            'Cannot get the app path',
         );
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'resources',
-            $app['path.resources']
+            $path . DIRECTORY_SEPARATOR . 'resources',
+            $app['path.resources'],
         );
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'languages',
+            $path . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'languages',
             $app['path.lang'],
-            'Cannot get the languages path'
+            'Cannot get the languages path',
         );
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'htdocs',
+            $path . DIRECTORY_SEPARATOR . 'htdocs',
             $app['path.web'],
-            'Cannot get the web path'
+            'Cannot get the web path',
         );
         $this->assertEquals(
             $path,
             $app['path.root'],
-            'Cannot get the root path'
+            'Cannot get the root path',
         );
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'config',
+            $path . DIRECTORY_SEPARATOR . 'config',
             $app['path.config'],
-            'Cannot get the defaut config path'
+            'Cannot get the defaut config path',
         );
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'htdocs',
+            $path . DIRECTORY_SEPARATOR . 'htdocs',
             $app['path.public'],
-            'Cannot get the public path'
+            'Cannot get the public path',
         );
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'storage',
+            $path . DIRECTORY_SEPARATOR . 'storage',
             $app['path.storage'],
-            'Cannot get the storage path'
+            'Cannot get the storage path',
         );
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'database',
+            $path . DIRECTORY_SEPARATOR . 'database',
             $app['path.database'],
-            'Cannot get the database path'
+            'Cannot get the database path',
         );
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'bootstrap',
+            $path . DIRECTORY_SEPARATOR . 'bootstrap',
             $app['path.bootstrap'],
-            'Cannot get the bootstrap path'
+            'Cannot get the bootstrap path',
         );
         $this->assertEquals(
-            $path.DIRECTORY_SEPARATOR.'htdocs'.DIRECTORY_SEPARATOR.'cms',
+            $path . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'cms',
             $app['path.wp'],
-            'Cannot get the WordPress path'
+            'Cannot get the WordPress path',
         );
     }
 
     public function testApplicationBaseBindings()
     {
-        $path = realpath(__DIR__.'/../');
+        $path = realpath(__DIR__ . '/../');
         $app = new Application($path);
 
         $this->assertInstanceOf(
             'Themosis\Core\Application',
             $app['app'],
-            'Application instance is not bound'
+            'Application instance is not bound',
         );
         $this->assertInstanceOf(
             Container::class,
             $app['Illuminate\Container\Container'],
-            'Container instance is not bound'
+            'Container instance is not bound',
         );
         $this->assertInstanceOf(
             PackageManifest::class,
             $app['Themosis\Core\PackageManifest'],
-            'Package manifest is not bound'
+            'Package manifest is not bound',
         );
     }
 
     public function testApplicationBaseServiceProviders()
     {
-        $path = realpath(__DIR__.'/../');
+        $path = realpath(__DIR__ . '/../');
         $app = new Application($path);
 
         $this->assertInstanceOf(
             'Illuminate\Events\EventServiceProvider',
             $app->getProvider(EventServiceProvider::class),
-            'The event service provider is not registered'
+            'The event service provider is not registered',
         );
         $this->assertInstanceOf(
             'Illuminate\Log\LogServiceProvider',
             $app->getProvider(LogServiceProvider::class),
-            'Log service provider is not registered'
+            'Log service provider is not registered',
         );
         $this->assertInstanceOf(
             'Themosis\Route\RouteServiceProvider',
             $app->getProvider(RouteServiceProvider::class),
-            'Route service provider is not registered'
+            'Route service provider is not registered',
         );
     }
 
@@ -196,7 +196,7 @@ class ApplicationTest extends TestCase
     {
         $app = new Application();
         $app->setDeferredServices([
-            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceStub'
+            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceStub',
         ]);
 
         $this->assertTrue($app->bound('foo'));
@@ -207,7 +207,7 @@ class ApplicationTest extends TestCase
     {
         $app = new Application();
         $app->setDeferredServices([
-            'foo' => 'Themosis\Tests\Core\ApplicationDeferredSharedService'
+            'foo' => 'Themosis\Tests\Core\ApplicationDeferredSharedService',
         ]);
         $this->assertTrue($app->bound('foo'));
 
@@ -223,10 +223,10 @@ class ApplicationTest extends TestCase
     {
         $app = new Application();
         $app->setDeferredServices([
-            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceStub'
+            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceStub',
         ]);
         $app->extend('foo', function ($instance, $container) {
-            return $instance.'bar';
+            return $instance . 'bar';
         });
 
         $this->assertEquals('foobar', $app->make('foo'));
@@ -236,7 +236,7 @@ class ApplicationTest extends TestCase
     {
         $app = new Application();
         $app->setDeferredServices([
-            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceCountStub'
+            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceCountStub',
         ]);
         $instance = $app->make('foo');
         $this->assertInstanceOf('stdClass', $instance);
@@ -248,7 +248,7 @@ class ApplicationTest extends TestCase
     {
         $app = new Application();
         $app->setDeferredServices([
-            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceStub'
+            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceStub',
         ]);
         $app->instance('foo', 'bar');
         $instance = $app->make('foo');
@@ -260,13 +260,13 @@ class ApplicationTest extends TestCase
         ApplicationDeferredServiceStub::$initialized = false;
         $app = new Application();
         $app->setDeferredServices([
-            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceStub'
+            'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceStub',
         ]);
         $this->assertTrue($app->bound('foo'));
         $this->assertFalse(ApplicationDeferredServiceStub::$initialized);
 
         $app->extend('foo', function ($instance) {
-            return $instance.'bar';
+            return $instance . 'bar';
         });
 
         $this->assertFalse(ApplicationDeferredServiceStub::$initialized);
@@ -278,7 +278,7 @@ class ApplicationTest extends TestCase
     {
         $app = new Application();
         $app->setDeferredServices([
-            'foo' => 'Themosis\Tests\Core\ApplicationFactoryServiceProvider'
+            'foo' => 'Themosis\Tests\Core\ApplicationFactoryServiceProvider',
         ]);
 
         $this->assertTrue($app->bound('foo'));
@@ -292,7 +292,7 @@ class ApplicationTest extends TestCase
         $app = new Application();
         $app->setDeferredServices([
             'foo' => 'Themosis\Tests\Core\ApplicationMultiProvider',
-            'bar' => 'Themosis\Tests\Core\ApplicationMultiProvider'
+            'bar' => 'Themosis\Tests\Core\ApplicationMultiProvider',
         ]);
 
         $this->assertEquals('foo', $app->make('foo'));
@@ -324,7 +324,7 @@ class ApplicationTest extends TestCase
         $app->afterLoadingEnvironment($closure);
         $this->assertArrayHasKey(
             0,
-            $app['events']->getListeners('bootstrapped: Themosis\Core\Bootstrap\EnvironmentLoader')
+            $app['events']->getListeners('bootstrapped: Themosis\Core\Bootstrap\EnvironmentLoader'),
         );
     }
 
@@ -336,7 +336,7 @@ class ApplicationTest extends TestCase
         $app->beforeBootstrapping('Themosis\Core\Bootstrap\RegisterFacades', $closure);
         $this->assertArrayHasKey(
             0,
-            $app['events']->getListeners('bootstrapping: Themosis\Core\Bootstrap\RegisterFacades')
+            $app['events']->getListeners('bootstrapping: Themosis\Core\Bootstrap\RegisterFacades'),
         );
     }
 
@@ -348,7 +348,7 @@ class ApplicationTest extends TestCase
         $app->afterBootstrapping('Themosis\Core\Bootstrap\RegisterFacades', $closure);
         $this->assertArrayHasKey(
             0,
-            $app['events']->getListeners('bootstrapped: Themosis\Core\Bootstrap\RegisterFacades')
+            $app['events']->getListeners('bootstrapped: Themosis\Core\Bootstrap\RegisterFacades'),
         );
     }
 
@@ -394,7 +394,7 @@ class ApplicationMultiProvider extends ServiceProvider
         });
 
         $this->app->singleton('bar', function ($app) {
-            return $app['foo'].'bar';
+            return $app['foo'] . 'bar';
         });
     }
 }
@@ -458,11 +458,11 @@ class ServiceProviderWithNoRegisterMethod extends ServiceProvider
 class ServiceProviderForTestingThree extends ServiceProvider
 {
     public $bindings = [
-        AbstractClass::class => ConcreteClass::class
+        AbstractClass::class => ConcreteClass::class,
     ];
 
     public $singletons = [
-        AbstractClass::class => ConcreteClass::class
+        AbstractClass::class => ConcreteClass::class,
     ];
 
     public function register()

@@ -10,7 +10,8 @@ use Themosis\Core\Support\WordPressFileHeaders;
 
 class PluginsRepository
 {
-    use WordPressFileHeaders, PluginHeaders;
+    use WordPressFileHeaders;
+    use PluginHeaders;
 
     /**
      * @var Application
@@ -62,7 +63,7 @@ class PluginsRepository
             $path = sprintf('%s/%s', $plugin, $headers['root']);
             $this->app->registerPlugin($path);
             $this->app['events']->dispatch(
-                new PluginLoaded($plugin, $headers)
+                new PluginLoaded($plugin, $headers),
             );
         }
     }
@@ -109,6 +110,7 @@ class PluginsRepository
 
             if (! empty($headers['name'])) {
                 return array_merge(['root' => $file->getFilename()], $headers);
+
                 break;
             }
         }
@@ -160,7 +162,7 @@ class PluginsRepository
 
         $this->files->put(
             $this->manifestPath,
-            '<?php return '.var_export($manifest, true).';'
+            '<?php return ' . var_export($manifest, true) . ';',
         );
 
         return $manifest;

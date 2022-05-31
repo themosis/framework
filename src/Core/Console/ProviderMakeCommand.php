@@ -35,7 +35,7 @@ class ProviderMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/provider.stub';
+        return __DIR__ . '/stubs/provider.stub';
     }
 
     /**
@@ -47,6 +47,6 @@ class ProviderMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Providers';
+        return $rootNamespace . '\Providers';
     }
 }

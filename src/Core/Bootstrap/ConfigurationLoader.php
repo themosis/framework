@@ -58,7 +58,6 @@ class ConfigurationLoader
      */
     protected function loadConfigurationFiles(Application $app, RepositoryContract $repository): void
     {
-
         $files = $this->getConfigurationFiles($app);
 
         if (! isset($files['app'])) {
@@ -77,7 +76,7 @@ class ConfigurationLoader
     /**
      * Do we need to include the wordpress config file if cached config is loaded?
      */
-    protected function maybeForceWpConfigInclude():void
+    protected function maybeForceWpConfigInclude(): void
     {
         // Avoid duplicate constants definitions.
         if ($this->isWordPressConfigLoaded()) {
@@ -85,7 +84,7 @@ class ConfigurationLoader
         }
         $cacheConfig = app()->getCachedConfigPath('config.php');
 
-        if (!file_exists($cacheConfig)) {
+        if (! file_exists($cacheConfig)) {
             return;
         }
 
@@ -114,7 +113,7 @@ class ConfigurationLoader
         foreach (Finder::create()->files()->name('*.php')->in($app->configPath()) as $file) {
             $directory = $this->getNestedDirectory($file, $app->configPath());
 
-            $files[$directory.basename($file->getRealPath(), '.php')] = $file->getRealPath();
+            $files[$directory . basename($file->getRealPath(), '.php')] = $file->getRealPath();
         }
 
         ksort($files, SORT_NATURAL);
@@ -135,7 +134,7 @@ class ConfigurationLoader
         $directory = $file->getPath();
 
         if ($nested = trim(str_replace($path, '', $directory), DIRECTORY_SEPARATOR)) {
-            $nested = str_replace(DIRECTORY_SEPARATOR, '.', $nested).'.';
+            $nested = str_replace(DIRECTORY_SEPARATOR, '.', $nested) . '.';
         }
 
         return $nested;

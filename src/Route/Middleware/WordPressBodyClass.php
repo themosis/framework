@@ -29,7 +29,7 @@ class WordPressBodyClass
     {
         $this->filter->add(
             'body_class',
-            $this->dispatchBodyClass($request->route())
+            $this->dispatchBodyClass($request->route()),
         );
 
         return $next($request);
@@ -59,9 +59,11 @@ class WordPressBodyClass
                         }
 
                         return false;
+
                         break;
                     case 'text':
                         return sanitize_title($token[1]);
+
                         break;
                     default:
                         return false;

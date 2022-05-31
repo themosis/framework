@@ -19,7 +19,7 @@ class HooksRepositoryTest extends TestCase
 
         (new HooksRepository($app))->load([
             'Some\Namespace\Hookable',
-            \Themosis\Tests\Core\MyActions::class
+            \Themosis\Tests\Core\MyActions::class,
         ]);
     }
 }

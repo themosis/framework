@@ -13,7 +13,8 @@ use Themosis\Taxonomy\TaxonomyFieldRepository;
 
 class TaxonomyTest extends TestCase
 {
-    use Application, ViewFactory;
+    use Application;
+    use ViewFactory;
 
     protected function getFactory()
     {
@@ -29,8 +30,8 @@ class TaxonomyTest extends TestCase
         return new \Themosis\Field\Factory(
             $app,
             $this->getViewFactory($app, [
-                __DIR__.'/../../../framework/src/Forms/views'
-            ])
+                __DIR__ . '/../../../framework/src/Forms/views',
+            ]),
         );
     }
 
@@ -56,12 +57,12 @@ class TaxonomyTest extends TestCase
 
         $taxonomy = $factory->make('theme', ['projects'], 'Themes', 'Theme')
             ->setLabels([
-                'popular_items' => 'Best Themes'
+                'popular_items' => 'Best Themes',
             ])
             ->setObjects(['post', 'wireframes'])
             ->setArguments([
                 'show_in_rest' => false,
-                'public' => false
+                'public' => false,
             ]);
 
         $this->assertEquals('Best Themes', $taxonomy->getLabel('popular_items'));
@@ -77,7 +78,7 @@ class TaxonomyTest extends TestCase
 
         $repository->add([
             $notice = $fields->text('notice'),
-            $email = $fields->email('email')
+            $email = $fields->email('email'),
         ]);
 
         $this->assertEquals($note, $repository->getFieldByName('note'));
@@ -99,7 +100,7 @@ class TaxonomyTest extends TestCase
             $this->getViewFactory($this->getApplication()),
             new \Illuminate\Validation\Factory(new Translator(new FileLoader(new Filesystem(), ''), 'en_US')),
             new ActionBuilder($this->getApplication()),
-            ['theme' => 'themosis.taxonomy', 'prefix' => 'wp_']
+            ['theme' => 'themosis.taxonomy', 'prefix' => 'wp_'],
         );
 
         $taxonomyField->add($fields->text('note'));

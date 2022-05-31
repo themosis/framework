@@ -65,7 +65,7 @@ class ViewCacheCommand extends Command
                 ->in($paths)
                 ->exclude('vendor')
                 ->name('*.blade.php')
-                ->files()
+                ->files(),
         );
     }
 
@@ -79,7 +79,7 @@ class ViewCacheCommand extends Command
         $finder = $this->laravel['view']->getFinder();
 
         return collect($finder->getPaths())->merge(
-            collect($finder->getHints())->flatten()
+            collect($finder->getHints())->flatten(),
         );
     }
 }

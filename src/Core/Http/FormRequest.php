@@ -103,7 +103,7 @@ class FormRequest extends Request implements ValidatesWhenResolved
             $this->validationData(),
             $this->container->call([$this, 'rules']),
             $this->messages(),
-            $this->attributes()
+            $this->attributes(),
         );
     }
 

@@ -53,8 +53,8 @@ class ViewServiceProvider extends IlluminateViewServiceProvider
                 $app['twig.loader'],
                 [
                     'auto_reload' => true,
-                    'cache' => $app['config']['view.twig']
-                ]
+                    'cache' => $app['config']['view.twig'],
+                ],
             );
 
             // Add Twig Debug Extension

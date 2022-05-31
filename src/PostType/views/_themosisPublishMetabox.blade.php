@@ -31,6 +31,7 @@ $status_keys = array_keys($statuses);
                             <input type="submit" name="save" id="save-post" value="<?php esc_attr_e('Save as Pending'); ?>" class="button" />
                             <?php
                         }
+
                         break;
                     default:
                         // If status not one defined, then we can save a draft version.
@@ -41,6 +42,7 @@ $status_keys = array_keys($statuses);
                             } ?> type="submit" name="save" id="save-post" value="<?php esc_attr_e('Save Draft'); ?>" class="button" />
                         <?php
                         }
+
                         break;
                 }
                 ?>
@@ -112,7 +114,7 @@ $status_keys = array_keys($statuses);
                         <input type="hidden" name="hidden_post_status" id="hidden_post_status" value="<?php echo esc_attr(('auto-draft' === $__post->post_status) ? 'draft' : $__post->post_status); ?>" />
                         <?php
                             $choices = [
-                                __('Draft') => 'draft'
+                                __('Draft') => 'draft',
                             ];
 
                     foreach ($statuses as $key => $status) {
@@ -121,11 +123,11 @@ $status_keys = array_keys($statuses);
 
                     $select =  Field::choice('post_status', [
                                 'attributes' => [
-                                    'id' => 'post_status'
+                                    'id' => 'post_status',
                                 ],
                                 'choices' => $choices,
                                 'data' => $__post->post_status,
-                                'theme' => 'themosis'
+                                'theme' => 'themosis',
                             ]);
                     $select->setPrefix(''); ?>
                         {!! $select->render(); !!}
@@ -182,7 +184,7 @@ $status_keys = array_keys($statuses);
                 if ($can_publish) {
                     // Check if post date is longer than now.
                     // If so, the post has to be scheduled.
-                    if (! empty($__post->post_date_gmt) && time() < strtotime($__post->post_date_gmt.' +0000')) {
+                    if (! empty($__post->post_date_gmt) && time() < strtotime($__post->post_date_gmt . ' +0000')) {
                         ?>
                         <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e('Schedule'); ?>"/>
                         <?php submit_button(__('Schedule'), 'primary button-large', 'publish', false, ['accesskey' => 'p']); ?>

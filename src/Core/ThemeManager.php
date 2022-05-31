@@ -13,7 +13,8 @@ use Themosis\Core\Theme\Templates;
 
 class ThemeManager
 {
-    use WordPressFileHeaders, IncludesFiles;
+    use WordPressFileHeaders;
+    use IncludesFiles;
 
     /**
      * @var Application
@@ -153,7 +154,7 @@ class ThemeManager
      */
     public function getPath(string $path = '')
     {
-        return $this->dirPath.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->dirPath . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 
     /**
@@ -170,11 +171,11 @@ class ThemeManager
                 '%s/%s/themes/%s',
                 get_home_url(),
                 CONTENT_DIR,
-                $this->getDirectory()
-            ).($path ? '/'.$path : $path);
+                $this->getDirectory(),
+            ) . ($path ? '/' . $path : $path);
         }
 
-        return get_template_directory_uri().($path ? '/'.$path : $path);
+        return get_template_directory_uri() . ($path ? '/' . $path : $path);
     }
 
     /**
@@ -203,7 +204,7 @@ class ThemeManager
     protected function setThemeAutoloading()
     {
         foreach ($this->config->get('theme.autoloading', []) as $ns => $path) {
-            $path = $this->dirPath.'/'.trim($path, '\/');
+            $path = $this->dirPath . '/' . trim($path, '\/');
             $this->loader->addPsr4($ns, $path);
         }
 
@@ -259,7 +260,7 @@ class ThemeManager
                 $location = $path;
             }
 
-            $uri = $this->dirPath.'/'.trim($location, '\/');
+            $uri = $this->dirPath . '/' . trim($location, '\/');
             $factory->getFinder()->addOrderedLocation($uri, $priority);
             $twigLoader->addPath($uri);
         }
@@ -272,7 +273,7 @@ class ThemeManager
      */
     protected function setThemeConstants()
     {
-        $this->parsedHeaders = $this->headers($this->dirPath.'/style.css', $this->headers);
+        $this->parsedHeaders = $this->headers($this->dirPath . '/style.css', $this->headers);
 
         // Theme text domain.
         $textdomain = (isset($this->parsedHeaders['text_domain']) && ! empty($this->parsedHeaders['text_domain']))

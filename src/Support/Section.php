@@ -122,7 +122,7 @@ class Section implements SectionInterface, Iterator, Countable
     public function getView(bool $prefixed = false): string
     {
         if ($prefixed) {
-            return $this->getTheme().'.'.$this->view;
+            return $this->getTheme() . '.' . $this->view;
         }
 
         return $this->view;
@@ -167,7 +167,7 @@ class Section implements SectionInterface, Iterator, Countable
         // We provide a copy of the section instance
         // so we can iterate over its items from the view.
         $this->data = array_merge($data, [
-            '__section' => $this
+            '__section' => $this,
         ]);
 
         return $this;

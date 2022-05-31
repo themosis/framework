@@ -32,7 +32,7 @@ class PluginManagerTest extends TestCase
     {
         $app = $this->getApplication();
 
-        return (new PluginManager($app, $app->pluginsPath('timeline'.DIRECTORY_SEPARATOR.'timeline.php'), new ClassLoader()))->load('config');
+        return (new PluginManager($app, $app->pluginsPath('timeline' . DIRECTORY_SEPARATOR . 'timeline.php'), new ClassLoader()))->load('config');
     }
 
     public function testManagerBootstrapPlugin()
@@ -43,7 +43,7 @@ class PluginManagerTest extends TestCase
         $this->assertEquals($this->getApplication()->pluginsPath('timeline'), $plugin->getPath());
         $this->assertTrue(defined('TIMELINE_TD'));
 
-        $this->assertEquals($this->getApplication()->pluginsPath('timeline'.DIRECTORY_SEPARATOR.'dist'), $plugin->getPath('dist'));
+        $this->assertEquals($this->getApplication()->pluginsPath('timeline' . DIRECTORY_SEPARATOR . 'dist'), $plugin->getPath('dist'));
     }
 
     public function testPluginHeaders()
@@ -61,7 +61,7 @@ class PluginManagerTest extends TestCase
         $plugin = $this->getPlugin();
 
         $this->assertEquals([
-            'Com\\Themosis\\Plugin\\' => 'resources'
+            'Com\\Themosis\\Plugin\\' => 'resources',
         ], $plugin->config('plugin.autoloading'));
 
         $this->assertTrue($plugin->config('plugin.anyvar'));

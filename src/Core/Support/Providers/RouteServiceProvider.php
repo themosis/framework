@@ -109,7 +109,7 @@ class RouteServiceProvider extends ServiceProvider
         return $this->forwardCallTo(
             $this->app->make(Router::class),
             $method,
-            $parameters
+            $parameters,
         );
     }
 

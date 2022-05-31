@@ -80,7 +80,7 @@ class HtmlBuilder
             return $value ? $key : '';
         }
         if (! is_null($value)) {
-            return $key.'="'.$this->special($value).'"';
+            return $key . '="' . $this->special($value) . '"';
         }
 
         return null;

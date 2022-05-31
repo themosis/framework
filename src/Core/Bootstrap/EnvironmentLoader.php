@@ -41,7 +41,7 @@ class EnvironmentLoader
         if ($app->runningInConsole() && ($input = new ArgvInput())->hasParameterOption('--env')) {
             if ($this->setEnvironmentFilePath(
                 $app,
-                $app->environmentFile().'.'.$input->getParameterOption('--env')
+                $app->environmentFile() . '.' . $input->getParameterOption('--env'),
             )) {
                 return;
             }
@@ -53,7 +53,7 @@ class EnvironmentLoader
 
         $this->setEnvironmentFilePath(
             $app,
-            $app->environmentFile().'.'.env('APP_ENV')
+            $app->environmentFile() . '.' . env('APP_ENV'),
         );
     }
 
@@ -67,7 +67,7 @@ class EnvironmentLoader
      */
     protected function setEnvironmentFilePath($app, $file)
     {
-        if (file_exists($app->environmentPath().'/'.$file)) {
+        if (file_exists($app->environmentPath() . '/' . $file)) {
             $app->loadEnvironmentFrom($file);
 
             return true;
@@ -88,7 +88,7 @@ class EnvironmentLoader
         return Dotenv::create(
             Env::getRepository(),
             $app->environmentPath(),
-            $app->environmentFile()
+            $app->environmentFile(),
         );
     }
 

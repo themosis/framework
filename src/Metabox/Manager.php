@@ -65,7 +65,7 @@ class Manager implements MetaboxManagerInterface
             $data,
             $this->getMetaboxRules($fields),
             $this->getMetaboxMessages($fields),
-            $this->getMetaboxPlaceholders($fields)
+            $this->getMetaboxPlaceholders($fields),
         );
 
         $validatedData = $validator->valid();
@@ -79,7 +79,7 @@ class Manager implements MetaboxManagerInterface
                 $field->metaboxSave($value, $post_id);
             } else {
                 throw new MetaboxException(
-                    'Unable to save ['.$field->getName().']. The [metaboxSave] method is missing.'
+                    'Unable to save [' . $field->getName() . ']. The [metaboxSave] method is missing.',
                 );
             }
         }
@@ -141,7 +141,7 @@ class Manager implements MetaboxManagerInterface
         foreach ($fields as $field) {
             /** @var FieldTypeInterface $field */
             foreach ($field->getOption('messages') as $attr => $message) {
-                $messages[$field->getName().'.'.$attr] = $message;
+                $messages[$field->getName() . '.' . $attr] = $message;
             }
         }
 

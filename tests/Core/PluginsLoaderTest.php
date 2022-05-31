@@ -28,7 +28,7 @@ class PluginsLoaderTest extends TestCase
             $app,
             $filesystem,
             '',
-            ''
+            '',
         );
 
         $plugins = ['fake-plugin' => [
@@ -41,7 +41,7 @@ class PluginsLoaderTest extends TestCase
             'author_uri' => '',
             'textdomain' => '',
             'domainpath' => '',
-            'network' => ''
+            'network' => '',
         ]];
 
         $filesystem->expects($this->once())
@@ -64,12 +64,12 @@ class PluginsLoaderTest extends TestCase
             $app,
             $filesystem,
             '',
-            ''
+            '',
         );
 
         $headers = $loader->headers(
-            realpath(__DIR__.'/../htdocs/content/mu-plugins/fake-plugin/fakeplugin.php'),
-            $loader->headers
+            realpath(__DIR__ . '/../htdocs/content/mu-plugins/fake-plugin/fakeplugin.php'),
+            $loader->headers,
         );
 
         $this->assertTrue(is_array($headers));
@@ -88,7 +88,7 @@ class PluginsLoaderTest extends TestCase
             'text_domain' => '',
             'domain_path' => '',
             'domain_var' => '',
-            'network' => ''
+            'network' => '',
         ], $headers);
     }
 
@@ -97,8 +97,8 @@ class PluginsLoaderTest extends TestCase
         $loader = new PluginsRepository(
             new Application(),
             new Filesystem(),
-            realpath(__DIR__.'/../htdocs/content/mu-plugins'),
-            ''
+            realpath(__DIR__ . '/../htdocs/content/mu-plugins'),
+            '',
         );
 
         $allHeaders = $loader->getPlugin('fake-plugin');
@@ -118,7 +118,7 @@ class PluginsLoaderTest extends TestCase
             'text_domain' => '',
             'domain_path' => '',
             'domain_var' => '',
-            'network' => ''
+            'network' => '',
         ];
         $this->assertTrue(is_array($allHeaders));
         $this->assertEquals($expected, $allHeaders);

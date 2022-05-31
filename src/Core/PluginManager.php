@@ -11,7 +11,9 @@ use Themosis\Core\Support\WordPressFileHeaders;
 
 class PluginManager
 {
-    use WordPressFileHeaders, IncludesFiles, PluginHeaders;
+    use WordPressFileHeaders;
+    use IncludesFiles;
+    use PluginHeaders;
 
     /**
      * @var Application
@@ -110,7 +112,7 @@ class PluginManager
      */
     public function getPath(string $path = ''): string
     {
-        return $this->dirPath.($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return $this->dirPath . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 
     /**
@@ -157,7 +159,7 @@ class PluginManager
      */
     public function config(string $key, $default = null)
     {
-        $fullnameKey = $this->getNamespace().'_'.$key;
+        $fullnameKey = $this->getNamespace() . '_' . $key;
 
         return $this->config->get($fullnameKey, $default);
     }
@@ -214,7 +216,7 @@ class PluginManager
      */
     protected function loadPluginConfiguration(string $configPath)
     {
-        $this->app->loadConfigurationFiles($this->config, $this->dirPath.'/'.trim($configPath, '\/'));
+        $this->app->loadConfigurationFiles($this->config, $this->dirPath . '/' . trim($configPath, '\/'));
     }
 
     /**
@@ -223,7 +225,7 @@ class PluginManager
     protected function setPluginAutoloading()
     {
         foreach ($this->config('plugin.autoloading', []) as $ns => $path) {
-            $path = $this->dirPath.'/'.trim($path, '\/');
+            $path = $this->dirPath . '/' . trim($path, '\/');
             $this->loader->addPsr4($ns, $path);
         }
 
@@ -267,7 +269,7 @@ class PluginManager
         $twigLoader = $this->app->make('twig.loader');
 
         foreach ($paths as $path) {
-            $uri = $this->dirPath.'/'.trim($path, '\/');
+            $uri = $this->dirPath . '/' . trim($path, '\/');
             $factory->addLocation($uri);
             $twigLoader->addPath($uri);
         }

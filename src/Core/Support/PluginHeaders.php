@@ -24,6 +24,6 @@ trait PluginHeaders
         'text_domain' => 'Text Domain',
         'domain_path' => 'Domain Path',
         'domain_var' => 'Domain Var',
-        'network' => 'Network'
+        'network' => 'Network',
     ];
 }

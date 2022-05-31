@@ -48,7 +48,7 @@ class TaxonomyField
         \Illuminate\View\Factory $factory,
         \Illuminate\Contracts\Validation\Factory $validator,
         IHook $action,
-        array $options
+        array $options,
     ) {
         $this->taxonomy = $taxonomy;
         $this->repository = $repository;
@@ -88,13 +88,13 @@ class TaxonomyField
         }
 
         // Display fields.
-        $this->action->add($this->taxonomy->getName().'_add_form_fields', $this->outputAddFields());
-        $this->action->add($this->taxonomy->getName().'_edit_form_fields', $this->outputEditFields());
+        $this->action->add($this->taxonomy->getName() . '_add_form_fields', $this->outputAddFields());
+        $this->action->add($this->taxonomy->getName() . '_edit_form_fields', $this->outputEditFields());
 
         // Save fields values.
         $this->action->add([
-            'create_'.$this->taxonomy->getName(),
-            'edit_'.$this->taxonomy->getName()
+            'create_' . $this->taxonomy->getName(),
+            'edit_' . $this->taxonomy->getName(),
         ], $this->save());
     }
 
@@ -111,7 +111,7 @@ class TaxonomyField
                     'type' => $field->getOption('data_type', 'string'),
                     'single' => ! $field->getOption('multiple', false),
                     'show_in_rest' => $field->getOption('show_in_rest', false),
-                    'sanitize_callback' => $this->sanitize($field)
+                    'sanitize_callback' => $this->sanitize($field),
                 ]);
             }
         };
@@ -131,7 +131,7 @@ class TaxonomyField
                 [$key => $value],
                 $this->getTermRules(),
                 $this->getTermMessages(),
-                $this->getTermPlaceholders()
+                $this->getTermPlaceholders(),
             );
 
             $validation = $validator->valid();
@@ -153,7 +153,7 @@ class TaxonomyField
                 $this->getTermData(app('request')),
                 $this->getTermRules(),
                 $this->getTermMessages(),
-                $this->getTermPlaceholders()
+                $this->getTermPlaceholders(),
             );
 
             $validation = $validator->valid();
@@ -166,7 +166,7 @@ class TaxonomyField
                     $field->termSave($validation[$field->getName()] ?? null, $term_id);
                 } else {
                     throw new TaxonomyException(
-                        'Unable to save ['.$field->getName().']. The [termSave] method is missing.'
+                        'Unable to save [' . $field->getName() . ']. The [termSave] method is missing.',
                     );
                 }
             }
@@ -218,7 +218,7 @@ class TaxonomyField
 
         foreach ($this->repository as $field) {
             foreach ($field->getOption('messages') as $rule => $message) {
-                $messages[$field->getName().'.'.$rule] = $message;
+                $messages[$field->getName() . '.' . $rule] = $message;
             }
         }
 
@@ -250,7 +250,7 @@ class TaxonomyField
     {
         return function () {
             echo $this->factory->make('themosis.taxonomy.add', [
-                'fields' => $this->repository
+                'fields' => $this->repository,
             ])->render();
         };
     }
@@ -271,7 +271,7 @@ class TaxonomyField
             }
 
             echo $this->factory->make('themosis.taxonomy.edit', [
-                'fields' => $this->repository
+                'fields' => $this->repository,
             ])->render();
         };
     }

@@ -61,7 +61,7 @@ class PageTest extends TestCase
 
         $bladeCompiler = new BladeCompiler(
             $filesystem,
-            __DIR__.'/../storage/views'
+            __DIR__ . '/../storage/views',
         );
         $application->instance('blade', $bladeCompiler);
 
@@ -78,10 +78,10 @@ class PageTest extends TestCase
         $factory = new \Illuminate\View\Factory(
             $resolver,
             $viewFinder = new FileViewFinder($filesystem, [
-                __DIR__.'/../../../framework/src/Themosis/Page/views/',
-                __DIR__.'/views/'
+                __DIR__ . '/../../../framework/src/Themosis/Page/views/',
+                __DIR__ . '/views/',
             ], ['blade.php', 'php']),
-            new Dispatcher($application)
+            new Dispatcher($application),
         );
 
         $factory->addExtension('blade', $resolver);
@@ -105,7 +105,7 @@ class PageTest extends TestCase
             $action,
             $this->getFilter(),
             $this->getViewFactory(),
-            $this->getValidationFactory('en_US')
+            $this->getValidationFactory('en_US'),
         );
     }
 
@@ -134,7 +134,7 @@ class PageTest extends TestCase
 
         $page->set();
 
-        $this->assertEquals($page, $factory->getContainer()->make('page.'.$page->getSlug()));
+        $this->assertEquals($page, $factory->getContainer()->make('page.' . $page->getSlug()));
     }
 
     public function testCreateANetworkPage()
@@ -162,7 +162,7 @@ class PageTest extends TestCase
         $page->with('__page', $page);
         $page->with([
             'some' => 'value',
-            'key' => 42
+            'key' => 42,
         ]);
         $page->setCapability('custom_cap');
         $page->set();
@@ -187,18 +187,18 @@ class PageTest extends TestCase
 
         $page->addSections([
             new Section('general', 'General'),
-            (new Section('custom', 'Custom Section'))->setView('custom')
+            (new Section('custom', 'Custom Section'))->setView('custom'),
         ]);
 
         $page->addSettings('general', [
             $firstname = $fieldFactory->text('firstname'),
-            $email = $fieldFactory->email('email')
+            $email = $fieldFactory->email('email'),
         ]);
 
         $page->addSettings([
             'custom' => [
-                $message = $fieldFactory->textarea('message')
-            ]
+                $message = $fieldFactory->textarea('message'),
+            ],
         ]);
 
         $this->assertInstanceOf(\Themosis\Page\PageSettingsRepository::class, $page->repository());

@@ -44,7 +44,7 @@ class EditorType extends TextareaType
     {
         return array_merge($this->allowedOptions, [
             'settings',
-            'settings_js'
+            'settings_js',
         ]);
     }
 
@@ -57,14 +57,14 @@ class EditorType extends TextareaType
     {
         return array_merge($this->defaultOptions, [
             'settings' => [
-                'textarea_rows' => 10
+                'textarea_rows' => 10,
             ],
             'settings_js' => [
                 'quicktags' => true,
                 'tinymce' => [
-                    'min_height' => 200
-                ]
-            ]
+                    'min_height' => 200,
+                ],
+            ],
         ]);
     }
 
@@ -78,7 +78,7 @@ class EditorType extends TextareaType
      */
     public function termSave($value, int $term_id)
     {
-        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on term meta.');
+        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on term meta.');
     }
 
     /**
@@ -90,6 +90,6 @@ class EditorType extends TextareaType
      */
     public function termGet(int $term_id)
     {
-        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on term meta.');
+        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on term meta.');
     }
 }

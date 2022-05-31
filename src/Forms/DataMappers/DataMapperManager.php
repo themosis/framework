@@ -30,7 +30,7 @@ class DataMapperManager
         }
 
         $field->setValue(
-            $this->propertyAccessor->getValue($data, $field->getBaseName())
+            $this->propertyAccessor->getValue($data, $field->getBaseName()),
         );
     }
 

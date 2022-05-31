@@ -134,13 +134,13 @@ class AliasLoader
      */
     protected function ensureFacadeExists($alias)
     {
-        if (file_exists($path = storage_path('framework/cache/facade-'.sha1($alias).'.php'))) {
+        if (file_exists($path = storage_path('framework/cache/facade-' . sha1($alias) . '.php'))) {
             return $path;
         }
 
         file_put_contents($path, $this->formatFacadeStub(
             $alias,
-            file_get_contents(__DIR__.'/stubs/facade.stub')
+            file_get_contents(__DIR__ . '/stubs/facade.stub'),
         ));
 
         return $path;
@@ -159,13 +159,13 @@ class AliasLoader
         $replacements = [
             str_replace('/', '\\', dirname(str_replace('\\', '/', $alias))),
             class_basename($alias),
-            substr($alias, strlen(static::$facadeNamespace))
+            substr($alias, strlen(static::$facadeNamespace)),
         ];
 
         return str_replace(
             ['DummyNamespace', 'DummyClass', 'DummyTarget'],
             $replacements,
-            $stub
+            $stub,
         );
     }
 
@@ -207,7 +207,7 @@ class AliasLoader
      */
     public static function setFacadeNamespace($namespace)
     {
-        static::$facadeNamespace = rtrim($namespace, '\\').'\\';
+        static::$facadeNamespace = rtrim($namespace, '\\') . '\\';
     }
 
     /**

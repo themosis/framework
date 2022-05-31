@@ -75,7 +75,7 @@ class VendorPublishCommand extends Command
 
         list($this->provider, $this->tags) = [
             $this->option('provider'),
-            (array) $this->option('tag')
+            (array) $this->option('tag'),
         ];
 
         if (! $this->provider && ! $this->tags) {
@@ -90,7 +90,7 @@ class VendorPublishCommand extends Command
     {
         $choice = $this->choice(
             "Which provider or tag's files would you like to publish?",
-            $choices = $this->publishableChoices()
+            $choices = $this->publishableChoices(),
         );
 
         if ($choice == $choices[0] || is_null($choice)) {
@@ -110,7 +110,7 @@ class VendorPublishCommand extends Command
         return array_merge(
             ['<comment>Publish files from all providers and tags listed below</comment>'],
             preg_filter('/^/', '<comment>Provider: </comment>', Arr::sort(ServiceProvider::publishableProviders())),
-            preg_filter('/^/', '<comment>Tag: </comment>', Arr::sort(ServiceProvider::publishableGroups()))
+            preg_filter('/^/', '<comment>Tag: </comment>', Arr::sort(ServiceProvider::publishableGroups())),
         );
     }
 
@@ -202,7 +202,7 @@ class VendorPublishCommand extends Command
     {
         $this->moveManagedFiles(new MountManager([
             'from' => new \League\Flysystem\Filesystem(new Local($from)),
-            'to' => new \League\Flysystem\Filesystem(new Local($to))
+            'to' => new \League\Flysystem\Filesystem(new Local($to)),
         ]));
 
         $this->status($from, $to, 'Directory');
@@ -218,8 +218,8 @@ class VendorPublishCommand extends Command
     protected function moveManagedFiles($manager)
     {
         foreach ($manager->listContents('from://', true) as $file) {
-            if ($file['type'] === 'file' && (! $manager->has('to://'.$file['path']) || $this->option('force'))) {
-                $manager->put('to://'.$file['path'], $manager->read('from://'.$file['path']));
+            if ($file['type'] === 'file' && (! $manager->has('to://' . $file['path']) || $this->option('force'))) {
+                $manager->put('to://' . $file['path'], $manager->read('from://' . $file['path']));
             }
         }
     }
@@ -249,7 +249,7 @@ class VendorPublishCommand extends Command
         $to = str_replace(base_path(), '', realpath($to));
 
         $this->line(
-            "<info>Copied {$type}</info> <comment>[{$from}]</comment> <info>To</info> <comment>[{$to}]</comment>"
+            "<info>Copied {$type}</info> <comment>[{$from}]</comment> <info>To</info> <comment>[{$to}]</comment>",
         );
     }
 }

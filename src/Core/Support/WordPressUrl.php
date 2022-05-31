@@ -82,7 +82,7 @@ trait WordPressUrl
 
         if (substr($url, $length) !== $fragment && (is_main_site() || is_subdomain_install())) {
             if (strpos($fragment, '/') === false) {
-                $fragment = '/'.$fragment;
+                $fragment = '/' . $fragment;
             }
 
             $url .= $fragment;

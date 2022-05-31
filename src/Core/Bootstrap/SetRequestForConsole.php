@@ -23,7 +23,7 @@ class SetRequestForConsole
         if (isset($components['path'])) {
             $server = array_merge($server, [
                 'SCRIPT_FILENAME' => $components['path'],
-                'SCRIPT_NAME' => $components['path']
+                'SCRIPT_NAME' => $components['path'],
             ]);
         }
 
@@ -33,7 +33,7 @@ class SetRequestForConsole
             [],
             [],
             [],
-            $server
+            $server,
         ));
     }
 }

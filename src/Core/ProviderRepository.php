@@ -177,7 +177,7 @@ class ProviderRepository
 
         $this->files->put(
             $this->manifestPath,
-            '<?php return '.var_export($manifest, true).';'
+            '<?php return ' . var_export($manifest, true) . ';',
         );
 
         return array_merge(['when' => []], $manifest);

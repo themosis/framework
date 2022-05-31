@@ -39,7 +39,7 @@ class PostTypeTest extends TestCase
         return new Factory(
             $app,
             new ActionBuilder($app),
-            new FilterBuilder($app)
+            new FilterBuilder($app),
         );
     }
 
@@ -65,7 +65,7 @@ class PostTypeTest extends TestCase
             ->setArguments([
                 'public' => false,
                 'menu_position' => 35,
-                'has_archive' => false
+                'has_archive' => false,
             ]);
 
         $this->assertFalse($postType->getArgument('public'));
@@ -73,7 +73,7 @@ class PostTypeTest extends TestCase
         $this->assertFalse($postType->getArgument('has_archive'));
 
         $postType->setLabels([
-            'add_new_item' => 'Add Me'
+            'add_new_item' => 'Add Me',
         ]);
 
         $this->assertEquals('Add Me', $postType->getLabel('add_new_item'));

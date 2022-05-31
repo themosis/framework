@@ -353,7 +353,7 @@ class Metabox implements MetaboxInterface
             $this->getScreen(),
             $this->getContext(),
             $this->getPriority(),
-            $this->getArguments()
+            $this->getArguments(),
         );
     }
 
@@ -368,7 +368,7 @@ class Metabox implements MetaboxInterface
         $args = array_merge($args['args'], [
             'metabox' => $this,
             'post' => $post,
-            'screen' => $this->getScreen()
+            'screen' => $this->getScreen(),
         ]);
 
         $response = $this->handleCallback($this->getCallback(), $args);
@@ -522,7 +522,7 @@ class Metabox implements MetaboxInterface
                 foreach ($section->getItems() as $item) {
                     /** @var FieldTypeInterface $item */
                     $item->setOptions([
-                        'group' => $section->getId()
+                        'group' => $section->getId(),
                     ]);
 
                     $this->add($item, $section);

@@ -50,7 +50,7 @@ class ComponentMakeCommand extends GeneratorCommand
     protected function writeView()
     {
         $path = $this->viewPath(
-            str_replace('.', '/', 'components.'.$this->getView()).'.blade.php'
+            str_replace('.', '/', 'components.' . $this->getView()) . '.blade.php',
         );
 
         if (! $this->files->isDirectory(dirname($path))) {
@@ -66,8 +66,8 @@ class ComponentMakeCommand extends GeneratorCommand
         file_put_contents(
             $path,
             '<div>
-    <!-- '.HelloDolly::lyric().' -->
-</div>'
+    <!-- ' . HelloDolly::lyric() . ' -->
+</div>',
         );
     }
 
@@ -99,15 +99,15 @@ class ComponentMakeCommand extends GeneratorCommand
         if ($this->option('inline')) {
             return str_replace(
                 'DummyView',
-                "<<<'blade'\n<div>\n    <!-- ".HelloDolly::lyric()." -->\n</div>\nblade",
-                parent::buildClass($name)
+                "<<<'blade'\n<div>\n    <!-- " . HelloDolly::lyric() . " -->\n</div>\nblade",
+                parent::buildClass($name),
             );
         }
 
         return str_replace(
             'DummyView',
-            'view(\'components.'.$this->getView().'\')',
-            parent::buildClass($name)
+            'view(\'components.' . $this->getView() . '\')',
+            parent::buildClass($name),
         );
     }
 
@@ -118,7 +118,7 @@ class ComponentMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/view-component.stub';
+        return __DIR__ . '/stubs/view-component.stub';
     }
 
     /**
@@ -130,7 +130,7 @@ class ComponentMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\View\Components';
+        return $rootNamespace . '\View\Components';
     }
 
     /**

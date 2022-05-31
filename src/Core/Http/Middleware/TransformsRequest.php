@@ -60,7 +60,7 @@ class TransformsRequest
     protected function cleanArray(array $data, $keyPrefix = '')
     {
         foreach ($data as $key => $value) {
-            $data[$key] = $this->cleanValue($keyPrefix.$key, $value);
+            $data[$key] = $this->cleanValue($keyPrefix . $key, $value);
         }
 
         return collect($data)->all();
@@ -77,7 +77,7 @@ class TransformsRequest
     protected function cleanValue($key, $value)
     {
         if (is_array($value)) {
-            return $this->cleanArray($value, $key.'.');
+            return $this->cleanArray($value, $key . '.');
         }
 
         return $this->transform($key, $value);

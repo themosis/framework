@@ -34,7 +34,7 @@ class SaltsGenerateCommand extends Command
         'AUTH_SALT',
         'SECURE_AUTH_SALT',
         'LOGGED_IN_SALT',
-        'NONCE_SALT'
+        'NONCE_SALT',
     ];
 
     /**
@@ -99,9 +99,9 @@ class SaltsGenerateCommand extends Command
             $this->laravel->environmentFilePath(),
             preg_replace(
                 $this->keyReplacementPattern($key),
-                $key.'="'.$salt.'"',
-                file_get_contents($this->laravel->environmentFilePath())
-            )
+                $key . '="' . $salt . '"',
+                file_get_contents($this->laravel->environmentFilePath()),
+            ),
         );
     }
 
@@ -112,7 +112,7 @@ class SaltsGenerateCommand extends Command
      */
     protected function keyReplacementPattern(string $key)
     {
-        $alias = 'app.salts.'.strtolower($key);
+        $alias = 'app.salts.' . strtolower($key);
         $escaped = preg_quote($this->laravel['config'][$alias], '/');
 
         return "/^{$key}=\"?{$escaped}\"?/m";

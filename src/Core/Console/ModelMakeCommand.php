@@ -72,7 +72,7 @@ class ModelMakeCommand extends GeneratorCommand
 
         $this->call('make:factory', [
             'name' => "{$factory}Factory",
-            '--model' => $this->qualifyClass($this->getNameInput())
+            '--model' => $this->qualifyClass($this->getNameInput()),
         ]);
     }
 
@@ -116,7 +116,7 @@ class ModelMakeCommand extends GeneratorCommand
         $this->call('make:controller', array_filter([
             'name' => "{$controller}Controller",
             '--model' => $this->option('resource') || $this->option('api') ? $modelName : null,
-            '--api' => $this->option('api')
+            '--api' => $this->option('api'),
         ]));
     }
 
@@ -143,7 +143,7 @@ class ModelMakeCommand extends GeneratorCommand
     {
         return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
             ? $customPath
-            : __DIR__.$stub;
+            : __DIR__ . $stub;
     }
 
     /**
@@ -157,7 +157,7 @@ class ModelMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return is_dir(app_path('Models')) ? $rootNamespace.'\\Models' : $rootNamespace;
+        return is_dir(app_path('Models')) ? $rootNamespace . '\\Models' : $rootNamespace;
     }
 
     /**
@@ -172,7 +172,7 @@ class ModelMakeCommand extends GeneratorCommand
                 'all',
                 'a',
                 InputOption::VALUE_NONE,
-                'Generate a migration, seeder, factory and resource controller for the model'
+                'Generate a migration, seeder, factory and resource controller for the model',
             ],
             ['controller', 'c', InputOption::VALUE_NONE, 'Create a new controller for the model'],
             ['factory', 'f', InputOption::VALUE_NONE, 'Create a new factory for the model'],
@@ -183,15 +183,15 @@ class ModelMakeCommand extends GeneratorCommand
                 'pivot',
                 'p',
                 InputOption::VALUE_NONE,
-                'Indicates if the generated model should be a custom intermediate table model'
+                'Indicates if the generated model should be a custom intermediate table model',
             ],
             [
                 'resource',
                 'r',
                 InputOption::VALUE_NONE,
-                'Indicates if the generated controller should be a resource controller'
+                'Indicates if the generated controller should be a resource controller',
             ],
-            ['api', null, InputOption::VALUE_NONE, 'Indicates if the generated controller should be an API controller']
+            ['api', null, InputOption::VALUE_NONE, 'Indicates if the generated controller should be an API controller'],
         ];
     }
 }

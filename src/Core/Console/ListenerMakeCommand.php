@@ -43,7 +43,7 @@ class ListenerMakeCommand extends GeneratorCommand
         $event = $this->option('event');
 
         if (! Str::startsWith($event, [$this->laravel->getNamespace(), 'Illuminate', '\\', 'Themosis'])) {
-            $event = $this->laravel->getNamespace().'Events\\'.$event;
+            $event = $this->laravel->getNamespace() . 'Events\\' . $event;
         }
 
         $stub = str_replace('DummyEvent', class_basename($event), parent::buildClass($name));
@@ -60,13 +60,13 @@ class ListenerMakeCommand extends GeneratorCommand
     {
         if ($this->option('queued')) {
             return $this->option('event')
-                ? __DIR__.'/stubs/listener-queued.stub'
-                : __DIR__.'/stubs/listener-queued-duck.stub';
+                ? __DIR__ . '/stubs/listener-queued.stub'
+                : __DIR__ . '/stubs/listener-queued-duck.stub';
         }
 
         return $this->option('event')
-            ? __DIR__.'/stubs/listener.stub'
-            : __DIR__.'/stubs/listener-duck.stub';
+            ? __DIR__ . '/stubs/listener.stub'
+            : __DIR__ . '/stubs/listener-duck.stub';
     }
 
     /**
@@ -90,7 +90,7 @@ class ListenerMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Listeners';
+        return $rootNamespace . '\Listeners';
     }
 
     /**
@@ -102,7 +102,7 @@ class ListenerMakeCommand extends GeneratorCommand
     {
         return [
             ['event', 'e', InputOption::VALUE_OPTIONAL, 'The event class being listened for'],
-            ['queued', null, InputOption::VALUE_NONE, 'Indicates the event listener shoud be queued']
+            ['queued', null, InputOption::VALUE_NONE, 'Indicates the event listener shoud be queued'],
         ];
     }
 }

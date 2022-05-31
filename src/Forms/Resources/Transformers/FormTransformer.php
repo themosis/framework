@@ -14,7 +14,7 @@ class FormTransformer extends TransformerAbstract
      */
     protected $defaultIncludes = [
         'fields',
-        'groups'
+        'groups',
     ];
 
     /**
@@ -37,8 +37,8 @@ class FormTransformer extends TransformerAbstract
             'type' => $form->getType(),
             'validation' => [
                 'errors' => $form->getOption('errors', true),
-                'isValid' => $form->isValid()
-            ]
+                'isValid' => $form->isValid(),
+            ],
         ];
     }
 
@@ -60,7 +60,7 @@ class FormTransformer extends TransformerAbstract
 
                 /** @var FieldTransformer $transformer */
                 return $transformer->transform($field);
-            }
+            },
         );
     }
 
@@ -76,7 +76,7 @@ class FormTransformer extends TransformerAbstract
         /** @var FieldTypeInterface|FormInterface $form */
         return $this->collection(
             $form->repository()->getGroups(),
-            $form->getResourceTransformerFactory()->make('GroupTransformer')
+            $form->getResourceTransformerFactory()->make('GroupTransformer'),
         );
     }
 }

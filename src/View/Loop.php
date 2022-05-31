@@ -196,7 +196,7 @@ class Loop
      */
     public function postClass($class = '', $post_id = null)
     {
-        return 'class="'.implode(' ', get_post_class($class, $post_id)).'"';
+        return 'class="' . implode(' ', get_post_class($class, $post_id)) . '"';
     }
 
     /**

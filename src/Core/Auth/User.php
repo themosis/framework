@@ -16,5 +16,8 @@ class User extends Model implements
     AuthorizableInterface,
     CanResetPasswordInterface
 {
-    use Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
+    use Authenticatable;
+    use Authorizable;
+    use CanResetPassword;
+    use MustVerifyEmail;
 }

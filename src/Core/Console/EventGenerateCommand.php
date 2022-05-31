@@ -67,7 +67,7 @@ class EventGenerateCommand extends Command
 
             $this->callSilent('make:listener', array_filter([
                 'name' => $listener,
-                '--event' => $event
+                '--event' => $event,
             ]));
         }
     }

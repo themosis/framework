@@ -52,7 +52,7 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
     protected function setAllowedOptions(): array
     {
         return array_merge($this->allowedOptions, [
-            'limit'
+            'limit',
         ]);
     }
 
@@ -66,7 +66,7 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
         // A limit of "0" means no-limit.
         $default = [
             'limit' => 0,
-            'type' => ['image', 'application']
+            'type' => ['image', 'application'],
         ];
 
         if (function_exists('_x')) {
@@ -74,7 +74,7 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
                 'add' => _x('Add Media', 'field', Application::TEXTDOMAIN),
                 'button' => _x('Insert', 'field', Application::TEXTDOMAIN),
                 'remove' => _x('Remove Selected', 'field', Application::TEXTDOMAIN),
-                'title' => _x('Insert Multiple Media', 'field', Application::TEXTDOMAIN)
+                'title' => _x('Insert Multiple Media', 'field', Application::TEXTDOMAIN),
             ];
         }
 

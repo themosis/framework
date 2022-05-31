@@ -208,13 +208,14 @@ class Taxonomy implements TaxonomyInterface
     protected function parseObjectsForCustomStatus(array $objects): TaxonomyInterface
     {
         foreach ($objects as $object) {
-            if ($this->container->bound('themosis.posttype.'.$object)) {
-                $postType = $this->container['themosis.posttype.'.$object];
+            if ($this->container->bound('themosis.posttype.' . $object)) {
+                $postType = $this->container['themosis.posttype.' . $object];
 
                 if ($postType->hasStatus()) {
                     $this->setArguments([
-                        'update_count_callback' => '_update_generic_term_count'
+                        'update_count_callback' => '_update_generic_term_count',
                     ]);
+
                     break;
                 }
             }

@@ -41,7 +41,7 @@ class ChannelMakeCommand extends GeneratorCommand
         return str_replace(
             'DummyUser',
             class_basename($this->userProviderModel()),
-            parent::buildClass($name)
+            parent::buildClass($name),
         );
     }
 
@@ -52,7 +52,7 @@ class ChannelMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/channel.stub';
+        return __DIR__ . '/stubs/channel.stub';
     }
 
     /**
@@ -64,6 +64,6 @@ class ChannelMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Broadcasting';
+        return $rootNamespace . '\Broadcasting';
     }
 }

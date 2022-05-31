@@ -19,7 +19,7 @@ class WordPress extends AbstractExtension implements GlobalsInterface
     public function getGlobals(): array
     {
         return [
-            'fn' => $this
+            'fn' => $this,
         ];
     }
 
@@ -106,7 +106,7 @@ class WordPress extends AbstractExtension implements GlobalsInterface
             }),
             new TwigFunction('translate_nooped_plural', function ($plural, $count, $domain = 'default') {
                 return translate_nooped_plural($plural, $count, $domain);
-            })
+            }),
         ];
     }
 
@@ -139,7 +139,7 @@ class WordPress extends AbstractExtension implements GlobalsInterface
             }),
             new TwigFilter('zeroise', function ($number, $treshold = 4) {
                 return zeroise($number, $treshold);
-            })
+            }),
         ];
     }
 }

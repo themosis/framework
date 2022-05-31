@@ -19,7 +19,7 @@ class WordPressDropins
         'install' => 'install.php',
         'maintenance' => 'maintenance.php',
         'object-cache' => 'object-cache.php',
-        'sunrise' => 'sunrise.php'
+        'sunrise' => 'sunrise.php',
     ];
 
     /**

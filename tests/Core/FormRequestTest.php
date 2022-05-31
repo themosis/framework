@@ -61,7 +61,7 @@ class FormRequestTest extends TestCase
         $container = tap(new Container(), function ($container) {
             $container->instance(
                 Factory::class,
-                $this->createValidationFactory($container)
+                $this->createValidationFactory($container),
             );
         });
 
@@ -82,7 +82,7 @@ class FormRequestTest extends TestCase
     {
         $translator = new \Illuminate\Translation\Translator(
             new ArrayLoader(),
-            'en_US'
+            'en_US',
         );
 
         return new Factory($translator, $container);

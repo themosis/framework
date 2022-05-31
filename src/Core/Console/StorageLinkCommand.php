@@ -30,6 +30,7 @@ class StorageLinkCommand extends Command
         foreach ($this->links() as $link => $target) {
             if (file_exists($link)) {
                 $this->error("The {$link} link already exists.");
+
                 continue;
             }
 

@@ -18,7 +18,7 @@ class Factory
         if (false !== strpos($className, '\\')) {
             $class = $className;
         } else {
-            $class = 'Themosis\\Forms\\Resources\\Transformers\\'.$className;
+            $class = 'Themosis\\Forms\\Resources\\Transformers\\' . $className;
         }
 
         return new $class();

@@ -68,13 +68,13 @@ class ObserverCommand extends GeneratorCommand
             '{{model}}' => class_basename($modelClass),
             'DummyModelVariable' => lcfirst(class_basename($modelClass)),
             '{{ modelVariable }}' => lcfirst(class_basename($modelClass)),
-            '{{modelVariable}}' => lcfirst(class_basename($modelClass))
+            '{{modelVariable}}' => lcfirst(class_basename($modelClass)),
         ];
 
         return str_replace(
             array_keys($replace),
             array_values($replace),
-            $stub
+            $stub,
         );
     }
 
@@ -117,7 +117,7 @@ class ObserverCommand extends GeneratorCommand
     {
         return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
             ? $customPath
-            : __DIR__.$stub;
+            : __DIR__ . $stub;
     }
 
     /**
@@ -129,7 +129,7 @@ class ObserverCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Observers';
+        return $rootNamespace . '\Observers';
     }
 
     /**
@@ -140,7 +140,7 @@ class ObserverCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['model', 'm', InputOption::VALUE_OPTIONAL, 'The model that the observer applies to.']
+            ['model', 'm', InputOption::VALUE_OPTIONAL, 'The model that the observer applies to.'],
         ];
     }
 }

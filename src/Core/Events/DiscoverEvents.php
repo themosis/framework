@@ -20,7 +20,7 @@ class DiscoverEvents
     {
         return collect(static::getListenerEvents(
             (new Finder())->files()->in($listenerPath),
-            $basePath
+            $basePath,
         ))->mapToDictionary(function ($event, $listener) {
             return [$event => $listener];
         })->all();
@@ -54,8 +54,8 @@ class DiscoverEvents
                     continue;
                 }
 
-                $listenerEvents[$listener->name.'@'.$method->name] = Reflector::getParameterClassName(
-                    $method->getParameters()[0]
+                $listenerEvents[$listener->name . '@' . $method->name] = Reflector::getParameterClassName(
+                    $method->getParameters()[0],
                 );
             }
         }
@@ -76,9 +76,9 @@ class DiscoverEvents
         $class = trim(Str::replaceFirst($basePath, '', $file->getRealPath()), DIRECTORY_SEPARATOR);
 
         return str_replace(
-            [DIRECTORY_SEPARATOR, ucfirst(basename(app()->path())).'\\'],
+            [DIRECTORY_SEPARATOR, ucfirst(basename(app()->path())) . '\\'],
             ['\\', app()->getNamespace()],
-            ucfirst(Str::replaceLast('.php', '', $class))
+            ucfirst(Str::replaceLast('.php', '', $class)),
         );
     }
 }

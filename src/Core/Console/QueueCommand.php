@@ -8,7 +8,8 @@ use Themosis\Core\Bus\Dispatchable;
 
 class QueueCommand implements ShouldQueue
 {
-    use Dispatchable, Queueable;
+    use Dispatchable;
+    use Queueable;
 
     /**
      * The data to pass to the console command.

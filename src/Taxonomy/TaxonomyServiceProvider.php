@@ -29,12 +29,12 @@ class TaxonomyServiceProvider extends ServiceProvider
     {
         $this->app->bind('taxonomy.field', function ($app) {
             $viewFactory = $app['view'];
-            $viewFactory->addLocation(__DIR__.'/views');
+            $viewFactory->addLocation(__DIR__ . '/views');
 
             return new TaxonomyFieldFactory(
                 $viewFactory,
                 $app['validator'],
-                $app['action']
+                $app['action'],
             );
         });
     }

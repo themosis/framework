@@ -168,8 +168,8 @@ class PendingDispatch
             : Container::getInstance()->make(Cache::class);
 
         return (bool) $cache->lock(
-            $key = 'laravel_unique_job:'.get_class($this->job).$uniqueId,
-            $this->job->uniqueFor ?? 0
+            $key = 'laravel_unique_job:' . get_class($this->job) . $uniqueId,
+            $this->job->uniqueFor ?? 0,
         )->get();
     }
 

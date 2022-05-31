@@ -272,13 +272,13 @@ if (! function_exists('cache')) {
 
         if (! is_array($arguments[0])) {
             throw new Exception(
-                'When setting a value in the cache, you must pass an array of key / value pairs.'
+                'When setting a value in the cache, you must pass an array of key / value pairs.',
             );
         }
 
         if (! isset($arguments[1])) {
             throw new Exception(
-                'You must specify an expiration time when setting a value in the cache.'
+                'You must specify an expiration time when setting a value in the cache.',
             );
         }
 
@@ -366,7 +366,7 @@ if (! function_exists('cookie')) {
         $secure = null,
         $httpOnly = true,
         $raw = false,
-        $sameSite = null
+        $sameSite = null,
     ) {
         $cookie = app(CookieFactory::class);
 
@@ -386,7 +386,7 @@ if (! function_exists('csrf_field')) {
      */
     function csrf_field()
     {
-        return new HtmlString('<input type="hidden" name="_token" value="'.csrf_token().'">');
+        return new HtmlString('<input type="hidden" name="_token" value="' . csrf_token() . '">');
     }
 }
 
@@ -584,11 +584,11 @@ if (! function_exists('load_application_textdomain')) {
     {
         if (! function_exists('load_textdomain')) {
             throw new ErrorException(
-                'Function called too early. Function depends on the {load_textdomain} WordPress function.'
+                'Function called too early. Function depends on the {load_textdomain} WordPress function.',
             );
         }
 
-        $path = resource_path('languages'.DS.$locale.DS.$domain.'.mo');
+        $path = resource_path('languages' . DS . $locale . DS . $domain . '.mo');
 
         if (file_exists($path) && is_readable($path)) {
             return load_textdomain($domain, $path);
@@ -620,9 +620,9 @@ if (! function_exists('load_themosis_plugin_textdomain')) {
          */
         $locale = apply_filters('plugin_locale', determine_locale(), $domain);
 
-        $mofile = $domain.'-'.$locale.'.mo';
+        $mofile = $domain . '-' . $locale . '.mo';
 
-        return load_textdomain($domain, rtrim($path, '\/').DIRECTORY_SEPARATOR.$mofile);
+        return load_textdomain($domain, rtrim($path, '\/') . DIRECTORY_SEPARATOR . $mofile);
     }
 }
 
@@ -685,7 +685,7 @@ if (! function_exists('method_field')) {
      */
     function method_field($method)
     {
-        return new HtmlString('<input type="hidden" name="_method" value="'.$method.'">');
+        return new HtmlString('<input type="hidden" name="_method" value="' . $method . '">');
     }
 }
 
@@ -791,7 +791,7 @@ if (! function_exists('public_path')) {
      */
     function public_path($path = '')
     {
-        return app()->make('path.public').($path ? DIRECTORY_SEPARATOR.ltrim($path, DIRECTORY_SEPARATOR) : $path);
+        return app()->make('path.public') . ($path ? DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR) : $path);
     }
 }
 
@@ -946,9 +946,9 @@ if (! function_exists('rootUrl')) {
     {
         $request = app('request');
         // ensure one slash on left, none on the right
-        $uri = ($uri) ? '/'.trim($uri, '/') : $uri;
+        $uri = ($uri) ? '/' . trim($uri, '/') : $uri;
 
-        return $request->getSchemeAndHttpHost().$uri;
+        return $request->getSchemeAndHttpHost() . $uri;
     }
 }
 

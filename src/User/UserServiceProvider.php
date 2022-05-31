@@ -30,13 +30,13 @@ class UserServiceProvider extends ServiceProvider
     {
         $this->app->bind('themosis.user.field', function ($app) {
             $viewFactory = $app['view'];
-            $viewFactory->addLocation(__DIR__.'/views');
+            $viewFactory->addLocation(__DIR__ . '/views');
 
             return new UserField(
                 new FieldsRepository(),
                 $app['action'],
                 $viewFactory,
-                $app['validator']
+                $app['validator'],
             );
         });
     }

@@ -50,7 +50,7 @@ class FormBuilder implements FormBuilderInterface
 
         foreach ($options as $key => $value) {
             if (! in_array($key, $field->getAllowedOptions(), true)) {
-                throw new \DomainException('The "'.$key.'" option is not allowed on the provided field.');
+                throw new \DomainException('The "' . $key . '" option is not allowed on the provided field.');
             }
 
             $parsed[$key] = $value;
@@ -71,7 +71,7 @@ class FormBuilder implements FormBuilderInterface
         /** @var BaseType $field */
         $opts = $this->validateOptions(array_merge([
             'errors' => $this->form->getOption('errors'),
-            'theme' => $this->form->getOption('theme')
+            'theme' => $this->form->getOption('theme'),
         ], $field->getOptions()), $field);
         $field->setLocale($this->form->getLocale());
         $field->setOptions($opts);

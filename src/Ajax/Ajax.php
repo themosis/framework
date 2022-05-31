@@ -32,19 +32,19 @@ class Ajax implements AjaxInterface
         // Front-end ajax for non-logged users
         // Set $logged to false
         if ($logged === false || $logged === 'no') {
-            $this->action->add('wp_ajax_nopriv_'.$action, $callback);
+            $this->action->add('wp_ajax_nopriv_' . $action, $callback);
         }
 
         // Front-end and back-end ajax for logged users
         if ($logged === true || $logged === 'yes') {
-            $this->action->add('wp_ajax_'.$action, $callback);
+            $this->action->add('wp_ajax_' . $action, $callback);
         }
 
         // Front-end and back-end for both logged in or out users
         if ($logged === 'both') {
             $this->action->add([
-                'wp_ajax_nopriv_'.$action,
-                'wp_ajax_'.$action
+                'wp_ajax_nopriv_' . $action,
+                'wp_ajax_' . $action,
             ], $callback);
         }
 

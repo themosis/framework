@@ -52,7 +52,7 @@ class TestMakeCommand extends GeneratorCommand
     {
         return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
             ? $customPath
-            : __DIR__.$stub;
+            : __DIR__ . $stub;
     }
 
     /**
@@ -68,7 +68,7 @@ class TestMakeCommand extends GeneratorCommand
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
 
-        return base_path('tests').str_replace('\\', '/', $name).'.php';
+        return base_path('tests') . str_replace('\\', '/', $name) . '.php';
     }
 
     /**
@@ -81,8 +81,8 @@ class TestMakeCommand extends GeneratorCommand
     protected function getDefaultNamespace($rootNamespace)
     {
         return $this->option('unit')
-            ? $rootNamespace.'\Unit'
-            : $rootNamespace.'\Feature';
+            ? $rootNamespace . '\Unit'
+            : $rootNamespace . '\Feature';
     }
 
     /**
@@ -103,7 +103,7 @@ class TestMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['unit', 'u', InputOption::VALUE_NONE, 'Create a unit test.']
+            ['unit', 'u', InputOption::VALUE_NONE, 'Create a unit test.'],
         ];
     }
 }

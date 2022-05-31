@@ -34,7 +34,7 @@ class WhoopsHandler
     protected function registerApplicationPaths($handler)
     {
         $handler->setApplicationPaths(
-            array_flip($this->directoriesExceptVendor())
+            array_flip($this->directoriesExceptVendor()),
         );
 
         return $this;
@@ -51,7 +51,7 @@ class WhoopsHandler
     {
         return Arr::except(
             array_flip((new Filesystem())->directories(base_path())),
-            [base_path('vendor')]
+            [base_path('vendor')],
         );
     }
 

@@ -74,7 +74,7 @@ class FormCreationTest extends TestCase
 
         $bladeCompiler = new BladeCompiler(
             $filesystem,
-            __DIR__.'/../storage/views'
+            __DIR__ . '/../storage/views',
         );
         $application->instance('blade', $bladeCompiler);
 
@@ -91,10 +91,10 @@ class FormCreationTest extends TestCase
         $factory = new \Illuminate\View\Factory(
             $resolver,
             $viewFinder = new FileViewFinder($filesystem, [
-                __DIR__.'/../../../framework/src/Forms/views/',
-                __DIR__.'/views/'
+                __DIR__ . '/../../../framework/src/Forms/views/',
+                __DIR__ . '/views/',
             ], ['blade.php', 'php']),
-            new Dispatcher($application)
+            new Dispatcher($application),
         );
 
         $factory->addExtension('blade', $resolver);
@@ -111,7 +111,7 @@ class FormCreationTest extends TestCase
             $this->getValidationFactory($locale),
             $this->getViewFactory(),
             new Manager(),
-            new \Themosis\Forms\Resources\Factory()
+            new \Themosis\Forms\Resources\Factory(),
         );
     }
 
@@ -140,7 +140,7 @@ class FormCreationTest extends TestCase
 
         /** @var $form FormInterface|FieldTypeInterface */
         $this->assertEquals([
-            'method' => 'post'
+            'method' => 'post',
         ], $form->getAttributes());
         $this->assertEquals('themosis.form.default', $form->getView());
         $this->assertEquals('themosis.form.group', $form->repository()->getGroup('default')->getView(true));
@@ -181,10 +181,10 @@ class FormCreationTest extends TestCase
                 ->add($firstname = $fields->text('firstname'))
                 ->add($lastname = $fields->text('lastname'))
                 ->add($email = $fields->email('email', [
-                    'group' => 'corporate'
+                    'group' => 'corporate',
                 ]))
                 ->add($company = $fields->text('company', [
-                    'group' => 'corporate'
+                    'group' => 'corporate',
                 ]))
                 ->get();
 
@@ -198,7 +198,7 @@ class FormCreationTest extends TestCase
         $this->assertEquals(2, count($form->repository()->getFieldsByGroup('corporate')));
         $this->assertEquals([
                 $email,
-                $company
+                $company,
             ], $form->repository()->getFieldsByGroup('corporate')->getItems());
 
         // Form instance should be aware of its groups.
@@ -210,7 +210,7 @@ class FormCreationTest extends TestCase
             /** @var SectionInterface $group */
             $this->assertTrue(in_array($group->getId(), [
                 'default',
-                'corporate'
+                'corporate',
             ]));
         }
     }
@@ -223,25 +223,25 @@ class FormCreationTest extends TestCase
         $form = $factory->make(null, [
             'attributes' => [
                 'method' => 'get',
-                'id' => 'get-form'
-            ]
+                'id' => 'get-form',
+            ],
         ])
             ->add($firstname = $fields->text('firstname', [
-                'rules' => 'required|min:3'
+                'rules' => 'required|min:3',
             ]))
             ->add($email = $fields->email('email', [
-                'rules' => 'required|email'
+                'rules' => 'required|email',
             ]))
             ->get();
 
         $request = Request::create('/', 'POST', [
             'th_firstname' => 'Foo',
-            'th_email' => 'foo@bar.com'
+            'th_email' => 'foo@bar.com',
         ]);
 
         $this->assertEquals([
             'method' => 'get',
-            'id' => 'get-form'
+            'id' => 'get-form',
         ], $form->getAttributes());
 
         $form->handleRequest($request);
@@ -259,24 +259,24 @@ class FormCreationTest extends TestCase
                 'rules' => 'required|max:5',
                 'messages' => [
                     'max' => 'The :attribute can only have 5 characters maximum.',
-                    'required' => 'The firstname is required.'
-                ]
+                    'required' => 'The firstname is required.',
+                ],
             ]))
             ->add($fields->email('email', [
-                'rules' => 'required|email'
+                'rules' => 'required|email',
             ]))
             ->add($fields->text('company', [
                 'rules' => 'required',
                 'messages' => [
-                    'required' => 'The :attribute name is required.'
+                    'required' => 'The :attribute name is required.',
                 ],
-                'placeholder' => 'enterprise'
+                'placeholder' => 'enterprise',
             ]))
             ->get();
 
         $request = Request::create('/', 'POST', [
             'th_firstname' => 'Marcel',
-            'th_email' => 'marcel@domain.com'
+            'th_email' => 'marcel@domain.com',
         ]);
 
         $form->handleRequest($request);
@@ -284,11 +284,11 @@ class FormCreationTest extends TestCase
         $this->assertFalse($form->isValid());
         $this->assertEquals(
             'The firstname can only have 5 characters maximum.',
-            $form->error('firstname', true)
+            $form->error('firstname', true),
         );
         $this->assertEquals(
             'The enterprise name is required.',
-            $form->error('company', true)
+            $form->error('company', true),
         );
     }
 
@@ -300,22 +300,22 @@ class FormCreationTest extends TestCase
         $form = $factory->make(null, [
             'attributes' => [
                 'id' => 'some-form',
-                'name' => 'formidable'
-            ]
+                'name' => 'formidable',
+            ],
         ])
             ->add($fn = $fields->text('firstname', [
                 'attributes' => [
                     'class' => 'field branding',
                     'data-type' => 'text',
                     'required',
-                    'id' => 'custom-id'
-                ]
+                    'id' => 'custom-id',
+                ],
             ]))
             ->add($em = $fields->email('email', [
                 'label' => 'Email Address',
                 'label_attr' => [
-                    'class' => 'label'
-                ]
+                    'class' => 'label',
+                ],
             ]))
             ->get();
 
@@ -329,19 +329,19 @@ class FormCreationTest extends TestCase
             'class' => 'field branding',
             'data-type' => 'text',
             'required',
-            'id' => 'custom-id'
+            'id' => 'custom-id',
         ], $fn->getOption('attributes'));
         $this->assertEquals([
-            'id' => 'th_email_field'
+            'id' => 'th_email_field',
         ], $em->getOption('attributes'));
         $this->assertEquals('Firstname', $fn->getOption('label'));
         $this->assertEquals('Email Address', $em->getOption('label'));
         $this->assertEquals([
-            'for' => 'custom-id'
+            'for' => 'custom-id',
         ], $fn->getOption('label_attr'));
         $this->assertEquals([
             'class' => 'label',
-            'for' => 'th_email_field'
+            'for' => 'th_email_field',
         ], $em->getOption('label_attr'));
 
         $this->assertEquals('themosis.groups.custom', $form->repository()->getGroup($fn->getOption('group'))->getView(true));
@@ -350,7 +350,7 @@ class FormCreationTest extends TestCase
         $this->assertEquals([
             'method' => 'post',
             'id' => 'some-form',
-            'name' => 'formidable'
+            'name' => 'formidable',
         ], $form->getAttributes());
         $this->assertEquals('themosis.forms.custom', $form->getView());
 
@@ -386,7 +386,7 @@ class FormCreationTest extends TestCase
 
         $request = Request::create('/', 'POST', [
             'th_name' => 'Marcel',
-            'th_email' => 'marcel@domain.com'
+            'th_email' => 'marcel@domain.com',
         ]);
 
         $this->assertFalse($form->isValid());
@@ -411,16 +411,16 @@ class FormCreationTest extends TestCase
 
         $form = $factory->make()
             ->add($name = $fields->text('name', [
-                'rules' => 'min:5'
+                'rules' => 'min:5',
             ]))
             ->add($email = $fields->email('email', [
-                'rules' => 'email'
+                'rules' => 'email',
             ]))
             ->get();
 
         $request = Request::create('/', 'POST', [
             'th_name' => 'xxx',
-            'th_email' => 'notanemail'
+            'th_email' => 'notanemail',
         ]);
 
         $this->assertEquals('', $name->getValue());
@@ -439,7 +439,7 @@ class FormCreationTest extends TestCase
         $fields = $this->getFieldsFactory();
 
         $form = $factory->make(null, [
-            'flush' => false
+            'flush' => false,
         ])
             ->add($name = $fields->text('name'))
             ->add($email = $fields->text('email'))
@@ -459,7 +459,7 @@ class FormCreationTest extends TestCase
             'th_age' => 32,
             'th_price' => 24.99,
             'th_enable' => 'yes',
-            'th_subscribe' => 'no'
+            'th_subscribe' => 'no',
         ]);
 
         $form->handleRequest($request);
@@ -489,78 +489,78 @@ class FormCreationTest extends TestCase
 
         $form = $factory->make()
             ->add($color = $fields->choice('colors', [
-                'choices' => ['red', 'green', 'blue']
+                'choices' => ['red', 'green', 'blue'],
             ]))
             ->add($country = $fields->choice('country', [
                 'choices' => [
                     'Allemagne' => 'de',
                     'Belgique' => 'be',
-                    'France' => 'fr'
+                    'France' => 'fr',
                 ],
-                'multiple' => true
+                'multiple' => true,
             ]))
             ->add($groupedCountry = $fields->choice('group_country', [
                 'choices' => [
                     'Europe' => [
                         'Allemagne' => 'de',
                         'Belgique' => 'be',
-                        'France' => 'fr'
+                        'France' => 'fr',
                     ],
                     'America' => [
                         'Canada' => 'ca',
                         'United States' => 'us',
-                        'Mexico' => 'mx'
-                    ]
+                        'Mexico' => 'mx',
+                    ],
                 ],
-                'expanded' => true
+                'expanded' => true,
             ]))
             ->add($anotherGroupCountry = $fields->choice('another_country', [
                 'choices' => [
                     'Europe' => [
                         'de',
                         'be',
-                        'fr'
+                        'fr',
                     ],
                     'America' => [
                         'ca',
                         'us',
-                        'mx'
-                    ]
+                        'mx',
+                    ],
                 ],
-                'multiple' => true
+                'multiple' => true,
             ]))
             ->add($article = $fields->choice('article', [
                 'choices' => [
                     'Title 1' => 24,
                     'Title 2' => 456,
-                    'Title XYZ' => 10
-                ]
+                    'Title XYZ' => 10,
+                ],
             ]))
             ->add($post = $fields->choice('post', [
                 'choices' => [
                     35,
                     7,
-                    986
-                ]
+                    986,
+                ],
             ]))
             ->add($featured = $fields->choice('featured', [
                 'choices' => [
                     'Politics' => [
                         'Article 23' => 34,
-                        'Article 35' => 78
+                        'Article 35' => 78,
                     ],
                     'Tech' => [
                         'Article 67' => 89,
-                        'Article 12' => 17
-                    ]
+                        'Article 12' => 17,
+                    ],
                 ],
                 'multiple' => true,
-                'expanded' => true
+                'expanded' => true,
             ]))
             ->get();
 
         $request = Request::create('/', 'GET', [
-            'th_colors' => 'green'
+            'th_colors' => 'green',
         ]);
 
         $form->handleRequest($request);
@@ -568,7 +568,7 @@ class FormCreationTest extends TestCase
         $this->assertEquals([
             'Red' => 'red',
             'Green' => 'green',
-            'Blue' => 'blue'
+            'Blue' => 'blue',
         ], $color->getOption('choices')->format()->get());
         $this->assertEquals('select', $color->getLayout());
         $this->assertEquals('green', $color->getValue());
@@ -576,7 +576,7 @@ class FormCreationTest extends TestCase
         $this->assertEquals([
             'Allemagne' => 'de',
             'Belgique' => 'be',
-            'France' => 'fr'
+            'France' => 'fr',
         ], $country->getOption('choices')->format()->get());
         $this->assertEquals('select', $country->getLayout());
 
@@ -584,13 +584,13 @@ class FormCreationTest extends TestCase
             'Europe' => [
                 'Allemagne' => 'de',
                 'Belgique' => 'be',
-                'France' => 'fr'
+                'France' => 'fr',
             ],
             'America' => [
                 'Canada' => 'ca',
                 'United States' => 'us',
-                'Mexico' => 'mx'
-            ]
+                'Mexico' => 'mx',
+            ],
         ], $groupedCountry->getOption('choices')->format()->get());
         $this->assertEquals('radio', $groupedCountry->getLayout());
 
@@ -598,13 +598,13 @@ class FormCreationTest extends TestCase
             'Europe' => [
                 'De' => 'de',
                 'Be' => 'be',
-                'Fr' => 'fr'
+                'Fr' => 'fr',
             ],
             'America' => [
                 'Ca' => 'ca',
                 'Us' => 'us',
-                'Mx' => 'mx'
-            ]
+                'Mx' => 'mx',
+            ],
         ], $anotherGroupCountry->getOption('choices')->format()->get());
         $this->assertEquals('select', $anotherGroupCountry->getLayout());
         $this->assertTrue(in_array('multiple', $anotherGroupCountry->getAttributes()));
@@ -612,24 +612,24 @@ class FormCreationTest extends TestCase
         $this->assertEquals([
             'Title 1' => 24,
             'Title 2' => 456,
-            'Title XYZ' => 10
+            'Title XYZ' => 10,
         ], $article->getOption('choices')->format()->get());
 
         $this->assertEquals([
             '35' => 35,
             '7' => 7,
-            '986' => 986
+            '986' => 986,
         ], $post->getOption('choices')->format()->get());
 
         $this->assertEquals([
             'Politics' => [
                 'Article 23' => 34,
-                'Article 35' => 78
+                'Article 35' => 78,
             ],
             'Tech' => [
                 'Article 67' => 89,
-                'Article 12' => 17
-            ]
+                'Article 12' => 17,
+            ],
         ], $featured->getOption('choices')->format()->get());
         $this->assertEquals('checkbox', $featured->getLayout());
     }
@@ -644,19 +644,19 @@ class FormCreationTest extends TestCase
                 'choices' => [
                     'Politics' => [
                         'Article 23' => 34,
-                        'Article 35' => 78
+                        'Article 35' => 78,
                     ],
                     'Tech' => [
                         'Article 67' => 89,
-                        'Article 12' => 17
-                    ]
+                        'Article 12' => 17,
+                    ],
                 ],
                 'multiple' => true,
-                'expanded' => true
+                'expanded' => true,
             ]))->get();
 
         $request = Request::create('/', 'POST', [
-            'th_featured' => [78]
+            'th_featured' => [78],
         ]);
 
         $form->handleRequest($request);
@@ -671,16 +671,16 @@ class FormCreationTest extends TestCase
 
         $form = $factory->make()
             ->add($firstname = $fields->text('firstname', [
-                'rules' => 'required|min:3'
+                'rules' => 'required|min:3',
             ]))
             ->add($email = $fields->email('email', [
-                'rules' => 'required|email'
+                'rules' => 'required|email',
             ]))
             ->get();
 
         $request = Request::create('/', 'POST', [
             'th_firstname' => 'Marcel',
-            'th_email' => 'marcel@example.com'
+            'th_email' => 'marcel@example.com',
         ]);
 
         $form->handleRequest($request);
@@ -692,7 +692,7 @@ class FormCreationTest extends TestCase
 
         $failingRequest = Request::create('/', 'POST', [
             'th_firstname' => 'Gilbert',
-            'th_email' => 'notworkingemail'
+            'th_email' => 'notworkingemail',
         ]);
 
         $form->handleRequest($failingRequest);
@@ -712,45 +712,45 @@ class FormCreationTest extends TestCase
                 'rules' => 'required|min:3|max:20|string',
                 'messages' => [
                     'min' => 'The :attribute must be at least 3 characters long.',
-                    'string' => 'The :attribute must be a string.'
-                ]
+                    'string' => 'The :attribute must be a string.',
+                ],
 
             ]))
             ->add($email = $fields->email('email', [
                 'rules' => 'required|email',
                 'messages' => [
-                    'email' => 'The :attribute must be a valid email address.'
-                ]
+                    'email' => 'The :attribute must be a valid email address.',
+                ],
             ]))
             ->add($message = $fields->textarea('message', [
                 'rules' => 'string',
                 'messages' => [
-                    'string' => 'The :attribute must be text.'
-                ]
+                    'string' => 'The :attribute must be text.',
+                ],
             ]))
             ->add($subscribe = $fields->checkbox('subscribe', [
                 'rules' => 'accepted',
                 'messages' => [
-                    'accepted' => 'The :attribute option must be checked.'
-                ]
+                    'accepted' => 'The :attribute option must be checked.',
+                ],
             ]))
             ->get();
 
         $request = Request::create('/', 'POST', [
             'th_firstname' => 3,
             'th_email' => 'notanemail',
-            'th_message' => 34
+            'th_message' => 34,
         ]);
 
         $form->handleRequest($request);
 
         $this->assertEquals([
             'The firstname must be at least 3 characters long.',
-            'The firstname must be a string.'
+            'The firstname must be a string.',
         ], $firstname->error());
 
         $this->assertEquals([
-            'The email must be a valid email address.'
+            'The email must be a valid email address.',
         ], $email->error());
 
         $this->assertEquals('The message must be text.', $message->error($message->getName(), true));
@@ -767,7 +767,7 @@ class FormCreationTest extends TestCase
             ->add($firstname = $fields->text('firstname'))
             ->add($email = $fields->email('email'))
             ->add($message = $fields->textarea('message', [
-                'errors' => false
+                'errors' => false,
             ]))->get();
 
         $this->assertTrue($firstname->getOption('errors'));
@@ -798,11 +798,11 @@ class FormCreationTest extends TestCase
 
         // Test custom form theme.
         $form = $factory->make(null, [
-            'theme' => 'bootstrap'
+            'theme' => 'bootstrap',
         ])
             ->add($firstname = $fields->text('firstname'))
             ->add($email = $fields->email('email', [
-                'theme' => 'themosis'
+                'theme' => 'themosis',
             ]))
             ->get();
 
@@ -828,7 +828,7 @@ class FormCreationTest extends TestCase
         $this->assertTrue($form->getOption('tags'));
 
         $form = $factory->make(null, [
-            'tags' => false
+            'tags' => false,
         ])
             ->get();
 
@@ -843,7 +843,7 @@ class FormCreationTest extends TestCase
         $form = $factory->make()
             ->add($update = $fields->hidden('update'))
             ->add($action = $fields->hidden('action', [
-                'data' => 'something'
+                'data' => 'something',
             ]))
             ->get();
 
@@ -861,18 +861,18 @@ class FormCreationTest extends TestCase
         $form = $factory->make()
             ->add($firstname = ($fields->text('firstname'))->setPrefix('wp_')->setView('custom'))
             ->add($email = $fields->email('email', [
-                'data' => 'me@example.com'
+                'data' => 'me@example.com',
             ]))
             ->add($message = $fields->textarea('message'))
             ->add($colors = $fields->choice('colors', [
                 'choices' => [
                     'Rouge' => 'red',
                     'Vert' => 'green',
-                    'Bleu' => 'blue'
-                ]
+                    'Bleu' => 'blue',
+                ],
             ]))
             ->add($subject = $fields->text('subject', [
-                'rules' => 'required'
+                'rules' => 'required',
             ]))
             ->get();
 
@@ -880,7 +880,7 @@ class FormCreationTest extends TestCase
 
         $request = Request::create('/', 'post', [
             'xy_colors' => 'green',
-            'xy_email' => 'email@example.com'
+            'xy_email' => 'email@example.com',
         ]);
 
         $form->handleRequest($request);
@@ -910,10 +910,10 @@ class FormCreationTest extends TestCase
         $form = $factory->make()
             ->add($fields->text('name'))
             ->add($fields->email('email', [
-                'info' => 'Insert a valid email address.'
+                'info' => 'Insert a valid email address.',
             ]))
             ->add($fields->textarea('message', [
-                'info' => '<strong>HTML</strong>'
+                'info' => '<strong>HTML</strong>',
             ]))
             ->get();
 
@@ -930,17 +930,17 @@ class FormCreationTest extends TestCase
         $factory->make()
             ->add($name = $fields->text('name'))
             ->add($email = $fields->email('email', [
-                'data_type' => 'string'
+                'data_type' => 'string',
             ]))
             ->add($colors = $fields->choice('colors', [
                 'choices' => [
                     'Rouge' => 'red',
                     'Vert' => 'green',
-                    'Bleu' => 'blue'
+                    'Bleu' => 'blue',
                 ],
                 'expanded' => true,
                 'multiple' => true,
-                'data_type' => 'array'
+                'data_type' => 'array',
             ]))
             ->get();
 
@@ -953,7 +953,7 @@ class FormCreationTest extends TestCase
     {
         return array_merge([
             'attributes' => [
-                'method' => 'post'
+                'method' => 'post',
             ],
             'flush' => true,
             'locale' => 'en_US',
@@ -964,8 +964,8 @@ class FormCreationTest extends TestCase
             'type' => 'form',
             'validation' => [
                 'errors' => true,
-                'isValid' => false
-            ]
+                'isValid' => false,
+            ],
         ], $data);
     }
 
@@ -978,19 +978,19 @@ class FormCreationTest extends TestCase
 
         $this->assertEquals($this->expected([
             'fields' => [
-                'data' => []
+                'data' => [],
             ],
             'groups' => [
-                'data' => []
-            ]
+                'data' => [],
+            ],
         ]), $form->toArray());
         $this->assertEquals(json_encode($this->expected([
             'fields' => [
-                'data' => []
+                'data' => [],
             ],
             'groups' => [
-                'data' => []
-            ]
+                'data' => [],
+            ],
         ])), $form->toJson());
     }
 
@@ -1008,7 +1008,7 @@ class FormCreationTest extends TestCase
                 'data' => [
                     [
                         'attributes' => [
-                            'id' => 'th_firstname_field'
+                            'id' => 'th_firstname_field',
                         ],
                         'basename' => 'firstname',
                         'component' => 'themosis.fields.text',
@@ -1018,13 +1018,13 @@ class FormCreationTest extends TestCase
                         'options' => [
                             'group' => 'default',
                             'info' => '',
-                            'l10n' => []
+                            'l10n' => [],
                         ],
                         'label' => [
                             'inner' => 'Firstname',
                             'attributes' => [
-                                'for' => 'th_firstname_field'
-                            ]
+                                'for' => 'th_firstname_field',
+                            ],
                         ],
                         'theme' => 'themosis',
                         'type' => 'text',
@@ -1032,28 +1032,28 @@ class FormCreationTest extends TestCase
                             'errors' => true,
                             'messages' => [],
                             'placeholder' => 'firstname',
-                            'rules' => ''
+                            'rules' => '',
                         ],
-                        'value' => ''
-                    ]
-                ]
+                        'value' => '',
+                    ],
+                ],
             ],
             'groups' => [
                 'data' => [
                     [
                         'id' => 'default',
                         'theme' => 'themosis',
-                        'title' => ''
-                    ]
-                ]
-            ]
+                        'title' => '',
+                    ],
+                ],
+            ],
         ]), $form->toArray());
         $this->assertEquals(json_encode($this->expected([
             'fields' => [
                 'data' => [
                     [
                         'attributes' => [
-                            'id' => 'th_firstname_field'
+                            'id' => 'th_firstname_field',
                         ],
                         'basename' => 'firstname',
                         'component' => 'themosis.fields.text',
@@ -1063,13 +1063,13 @@ class FormCreationTest extends TestCase
                         'options' => [
                             'group' => 'default',
                             'info' => '',
-                            'l10n' => []
+                            'l10n' => [],
                         ],
                         'label' => [
                             'inner' => 'Firstname',
                             'attributes' => [
-                                'for' => 'th_firstname_field'
-                            ]
+                                'for' => 'th_firstname_field',
+                            ],
                         ],
                         'theme' => 'themosis',
                         'type' => 'text',
@@ -1077,21 +1077,21 @@ class FormCreationTest extends TestCase
                             'errors' => true,
                             'messages' => [],
                             'placeholder' => 'firstname',
-                            'rules' => ''
+                            'rules' => '',
                         ],
-                        'value' => ''
-                    ]
-                ]
+                        'value' => '',
+                    ],
+                ],
             ],
             'groups' => [
                 'data' => [
                     [
                         'id' => 'default',
                         'theme' => 'themosis',
-                        'title' => ''
-                    ]
-                ]
-            ]
+                        'title' => '',
+                    ],
+                ],
+            ],
         ])), $form->toJson());
     }
 
@@ -1108,19 +1108,19 @@ class FormCreationTest extends TestCase
                 'choices' => [
                     'red',
                     'green',
-                    'blue'
-                ]
+                    'blue',
+                ],
             ]))
             ->add($fields->choice('sizes', [
                 'choices' => [
                     'Small' => 10,
                     'Medium' => 20,
-                    'Large' => 30
+                    'Large' => 30,
                 ],
-                'multiple' => true
+                'multiple' => true,
             ]))
             ->add($fields->submit('register', [
-                'data' => 'Contact us'
+                'data' => 'Contact us',
             ]))
             ->get();
 
@@ -1129,7 +1129,7 @@ class FormCreationTest extends TestCase
             'th_email' => 'nathan@example.org',
             'th_message' => 'Marco Polo',
             'th_colors' => 'green',
-            'th_sizes' => [20, 30]
+            'th_sizes' => [20, 30],
         ]);
 
         $form->handleRequest($request);
@@ -1144,7 +1144,7 @@ class FormCreationTest extends TestCase
         $this->assertEquals([20, 30], $resource['fields']['data'][4]['value']);
         $this->assertEquals(
             ['key' => 'Small', 'value' => 10, 'type' => 'option'],
-            $resource['fields']['data'][4]['options']['choices'][0]
+            $resource['fields']['data'][4]['options']['choices'][0],
         );
     }
 
@@ -1184,9 +1184,9 @@ class FormCreationTest extends TestCase
                 'choices' => [
                     'red',
                     'green',
-                    'blue'
+                    'blue',
                 ],
-                'multiple' => true
+                'multiple' => true,
             ]))
             ->get();
 
@@ -1195,7 +1195,7 @@ class FormCreationTest extends TestCase
             'th_email' => 'julien@corporation.xyz',
             'th_message' => 'This is a short message with very little details.',
             'th_subscribe' => 'on',
-            'th_colors' => ['green', 'blue']
+            'th_colors' => ['green', 'blue'],
         ]);
 
         $form->handleRequest($request);
@@ -1226,7 +1226,7 @@ class FormCreationTest extends TestCase
         $request = Request::create('/', 'POST', [
             'th_title' => 'Goodbye World',
             'th_content' => 'Another short content.',
-            'th_author' => 'Joe Koe'
+            'th_author' => 'Joe Koe',
         ]);
 
         $form->handleRequest($request);
@@ -1246,20 +1246,20 @@ class FormCreationTest extends TestCase
 
         $form = $factory->make($dto)
             ->add($fields->text('title', [
-                'rules' => 'required|string'
+                'rules' => 'required|string',
             ]))
             ->add($content = $fields->textarea('content', [
-                'rules' => 'required|min:6'
+                'rules' => 'required|min:6',
             ]))
             ->add($fields->text('author', [
-                'rules' => 'required|string'
+                'rules' => 'required|string',
             ]))
             ->get();
 
         $request = Request::create('/', 'POST', [
             'th_title' => '',
             'th_content' => 'Something',
-            'th_author' => 25
+            'th_author' => 25,
         ]);
 
         $form->handleRequest($request);

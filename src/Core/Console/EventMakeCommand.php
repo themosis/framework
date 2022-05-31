@@ -47,7 +47,7 @@ class EventMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/event.stub';
+        return __DIR__ . '/stubs/event.stub';
     }
 
     /**
@@ -59,6 +59,6 @@ class EventMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Events';
+        return $rootNamespace . '\Events';
     }
 }

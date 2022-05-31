@@ -45,7 +45,7 @@ class Twig implements Engine
     {
         $name = array_search($path, $this->finder->getViews());
 
-        return $this->twig->render($this->parseFileName($name).$this->extension, $data);
+        return $this->twig->render($this->parseFileName($name) . $this->extension, $data);
     }
 
     /**

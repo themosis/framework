@@ -89,7 +89,7 @@ class Handler implements ExceptionHandler
         ModelNotFoundException::class,
         SuspiciousOperationException::class,
         TokenMismatchException::class,
-        ValidationException::class
+        ValidationException::class,
     ];
 
     /**
@@ -99,7 +99,7 @@ class Handler implements ExceptionHandler
      */
     protected $dontFlash = [
         'password',
-        'password_confirmation'
+        'password_confirmation',
     ];
 
     public function __construct(Container $container)
@@ -228,9 +228,9 @@ class Handler implements ExceptionHandler
                 $this->exceptionContext($e),
                 $this->context(),
                 [
-                    'exception' => $e
-                ]
-            )
+                    'exception' => $e,
+                ],
+            ),
         );
     }
 
@@ -290,7 +290,7 @@ class Handler implements ExceptionHandler
         try {
             return [
                 'userId' => Auth::id(),
-                'email' => optional(Auth::user())->email
+                'email' => optional(Auth::user())->email,
             ];
         } catch (Throwable $e) {
             return [];
@@ -414,7 +414,7 @@ class Handler implements ExceptionHandler
     {
         return response()->json([
             'message' => $e->getMessage(),
-            'errors' => $e->errors()
+            'errors' => $e->errors(),
         ], $e->status);
     }
 
@@ -449,7 +449,7 @@ class Handler implements ExceptionHandler
             $this->convertExceptionToArray($e),
             $this->isHttpException($e) ? $e->getStatusCode() : 500,
             $this->isHttpException($e) ? $e->getHeaders() : [],
-            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES,
         );
     }
 
@@ -483,9 +483,9 @@ class Handler implements ExceptionHandler
             'line' => $e->getLine(),
             'trace' => collect($e->getTrace())->map(function ($trace) {
                 return Arr::except($trace, ['args']);
-            })->all()
+            })->all(),
         ] : [
-            'message' => $this->isHttpException($e) ? $e->getMessage() : 'Server Error'
+            'message' => $this->isHttpException($e) ? $e->getMessage() : 'Server Error',
         ];
     }
 
@@ -504,7 +504,7 @@ class Handler implements ExceptionHandler
         if (! $this->isHttpException($e) && config('app.debug')) {
             return $this->toIlluminateResponse(
                 $this->convertExceptionToResponse($e),
-                $e
+                $e,
             );
         }
 
@@ -514,7 +514,7 @@ class Handler implements ExceptionHandler
 
         return $this->toIlluminateResponse(
             $this->renderHttpException($e),
-            $e
+            $e,
         );
     }
 
@@ -532,13 +532,13 @@ class Handler implements ExceptionHandler
             $response = new RedirectResponse(
                 $response->getTargetUrl(),
                 $response->getStatusCode(),
-                $response->headers->all()
+                $response->headers->all(),
             );
         } else {
             $response = new Response(
                 $response->getContent(),
                 $response->getStatusCode(),
-                $response->headers->all()
+                $response->headers->all(),
             );
         }
 
@@ -559,7 +559,7 @@ class Handler implements ExceptionHandler
         return new SymfonyResponse(
             $this->renderExceptionContent($e),
             $this->isHttpException($e) ? $e->getStatusCode() : 500,
-            $this->isHttpException($e) ? $e->getHeaders() : []
+            $this->isHttpException($e) ? $e->getHeaders() : [],
         );
     }
 
@@ -644,7 +644,7 @@ class Handler implements ExceptionHandler
         if (view()->exists($view = $this->getHttpExceptionView($e))) {
             return response()->view($view, [
                 'errors' => new ViewErrorBag(),
-                'exception' => $e
+                'exception' => $e,
             ], $e->getStatusCode(), $e->getHeaders());
         }
 

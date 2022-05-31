@@ -9,7 +9,7 @@ use Themosis\Route\Router;
  * @method static array setConditions(array $conditions = [])
  * @method static \Themosis\Route\Route addWordPressBindings(\Themosis\Route\Route $route)
  * @method static void auth(array $options = [])
- * // copied from \Illuminate\Support\Facades\Route
+ *                                                                                                                                                // copied from \Illuminate\Support\Facades\Route
  * @method static \Illuminate\Routing\Route get(string $uri, \Closure|array|string|callable|null $action = null)
  * @method static \Illuminate\Routing\Route post(string $uri, \Closure|array|string|callable|null $action = null)
  * @method static \Illuminate\Routing\Route put(string $uri, \Closure|array|string|callable|null $action = null)

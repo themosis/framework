@@ -17,13 +17,13 @@ class ProviderRepositoryTest extends TestCase
             ->setConstructorArgs([
                 $app,
                 $this->getMockBuilder('Illuminate\Filesystem\Filesystem')->getMock(),
-                __DIR__.'/services.php'
+                __DIR__ . '/services.php',
             ])
             ->setMethods([
                 'loadManifest',
                 'shouldRecompile',
                 'compileManifest',
-                'createProvider'
+                'createProvider',
             ])
             ->getMock();
         $repository->expects($this->once())
@@ -32,7 +32,7 @@ class ProviderRepositoryTest extends TestCase
                 'eager' => ['foo'],
                 'deferred' => ['deferred'],
                 'providers' => ['providers'],
-                'when' => []
+                'when' => [],
             ]);
         $repository->expects($this->once())
             ->method('shouldRecompile')
@@ -53,12 +53,12 @@ class ProviderRepositoryTest extends TestCase
             ->setConstructorArgs([
                 $app,
                 $this->getMockBuilder('Illuminate\Filesystem\Filesystem')->getMock(),
-                __DIR__.'/services.php'
+                __DIR__ . '/services.php',
             ])
             ->setMethods([
                 'loadManifest',
                 'shouldRecompile',
-                'createProvider'
+                'createProvider',
             ])
             ->getMock();
 
@@ -76,7 +76,7 @@ class ProviderRepositoryTest extends TestCase
             ->with('foo')
             ->willReturn($fooMock = $this->getMockBuilder('stdClass')
                 ->setMethods(['isDeferred', 'provides', 'when'])
-                ->getMock());
+                ->getMock(), );
         $fooMock->expects($this->once())->method('isDeferred')->willReturn(true);
         $fooMock->expects($this->once())->method('provides')->willReturn(['foo.provides1', 'foo.provides2']);
         $fooMock->expects($this->once())->method('when')->willReturn([]);
@@ -95,7 +95,7 @@ class ProviderRepositoryTest extends TestCase
         $app->expects($this->any())->method('runningInConsole')->willReturn(false);
         $app->expects($this->once())->method('addDeferredServices')->with([
             'foo.provides1' => 'foo',
-            'foo.provides2' => 'foo'
+            'foo.provides2' => 'foo',
         ]);
 
         $repository->load(['foo']);
@@ -106,7 +106,7 @@ class ProviderRepositoryTest extends TestCase
         $repo = new ProviderRepository(
             new Application(),
             $this->getMockBuilder('Illuminate\Filesystem\Filesystem')->getMock(),
-            __DIR__.'/services.php'
+            __DIR__ . '/services.php',
         );
 
         $this->assertTrue($repo->shouldRecompile(null, []));
@@ -121,16 +121,16 @@ class ProviderRepositoryTest extends TestCase
             $files = $this->getMockBuilder('Illuminate\Filesystem\Filesystem')
                 ->setMethods(['exists', 'getRequire'])
                 ->getMock(),
-            __DIR__.'/services.php'
+            __DIR__ . '/services.php',
         );
 
         $files->expects($this->once())
             ->method('exists')
-            ->with(__DIR__.'/services.php')
+            ->with(__DIR__ . '/services.php')
             ->willReturn(true);
         $files->expects($this->once())
             ->method('getRequire')
-            ->with(__DIR__.'/services.php')
+            ->with(__DIR__ . '/services.php')
             ->willReturn($array = ['users' => ['joe' => true], 'when' => []]);
 
         $this->assertEquals($array, $repo->loadManifest());
@@ -143,12 +143,12 @@ class ProviderRepositoryTest extends TestCase
             $files = $this->getMockBuilder('Illuminate\Filesystem\Filesystem')
                 ->setMethods(['put'])
                 ->getMock(),
-            __DIR__.'/services.php'
+            __DIR__ . '/services.php',
         );
 
         $files->expects($this->once())
             ->method('put')
-            ->with(__DIR__.'/services.php', '<?php return '.var_export(['foo'], true).';');
+            ->with(__DIR__ . '/services.php', '<?php return ' . var_export(['foo'], true) . ';');
         $result = $repo->writeManifest(['foo']);
         $this->assertEquals(['foo', 'when' => []], $result);
     }

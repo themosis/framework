@@ -37,13 +37,13 @@ class ExceptionMakeCommand extends GeneratorCommand
     {
         if ($this->option('render')) {
             return $this->option('report')
-                ? __DIR__.'/stubs/exception-render-report.stub'
-                : __DIR__.'/stubs/exception-render.stub';
+                ? __DIR__ . '/stubs/exception-render-report.stub'
+                : __DIR__ . '/stubs/exception-render.stub';
         }
 
         return $this->option('report')
-            ? __DIR__.'/stubs/exception-report.stub'
-            : __DIR__.'/stubs/exception.stub';
+            ? __DIR__ . '/stubs/exception-report.stub'
+            : __DIR__ . '/stubs/exception.stub';
     }
 
     /**
@@ -55,7 +55,7 @@ class ExceptionMakeCommand extends GeneratorCommand
      */
     protected function alreadyExists($rawName)
     {
-        return class_exists($this->rootNamespace().'Exceptions\\'.$rawName);
+        return class_exists($this->rootNamespace() . 'Exceptions\\' . $rawName);
     }
 
     /**
@@ -67,7 +67,7 @@ class ExceptionMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Exceptions';
+        return $rootNamespace . '\Exceptions';
     }
 
     /**
@@ -79,7 +79,7 @@ class ExceptionMakeCommand extends GeneratorCommand
     {
         return [
             ['render', null, InputOption::VALUE_NONE, 'Create the exception with an empty render method'],
-            ['report', null, InputOption::VALUE_NONE, 'Create the exception with an empty report method']
+            ['report', null, InputOption::VALUE_NONE, 'Create the exception with an empty report method'],
         ];
     }
 }

@@ -25,7 +25,7 @@ function wp_cache_init()
     $GLOBALS['wp_object_cache'] = new WordPressCacheWrapper(
         $store,
         $isMultisite,
-        $isMultisite ? get_current_blog_id().':' : ''
+        $isMultisite ? get_current_blog_id() . ':' : '',
     );
 }
 

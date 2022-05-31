@@ -112,7 +112,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         'nonce_action',
         'referer',
         'tags',
-        'theme'
+        'theme',
     ];
 
     /**
@@ -127,7 +127,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         'flush' => true,
         'tags' => true,
         'errors' => true,
-        'theme' => 'themosis'
+        'theme' => 'themosis',
     ];
 
     /**
@@ -189,7 +189,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         FieldsRepositoryInterface $repository,
         ValidationFactoryInterface $validation,
         ViewFactoryInterface $viewer,
-        DataMapperManager $dataMapper
+        DataMapperManager $dataMapper,
     ) {
         parent::__construct();
         $this->dataClass = $dataClass;
@@ -296,7 +296,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
             $request->all(),
             $this->getFormRules($fields),
             $this->getFormMessages($fields),
-            $this->getFormPlaceholders($fields)
+            $this->getFormPlaceholders($fields),
         );
 
         $data = $this->validator->valid();
@@ -376,7 +376,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         foreach ($fields as $field) {
             /** @var FieldTypeInterface $field */
             foreach ($field->getOption('messages') as $attr => $message) {
-                $messages[$field->getName().'.'.$attr] = $message;
+                $messages[$field->getName() . '.' . $attr] = $message;
             }
         }
 
@@ -497,7 +497,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         // to its view under the private
         // variable "$__form".
         return array_merge($this->data, [
-            '__form' => $this
+            '__form' => $this,
         ]);
     }
 
@@ -618,7 +618,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
         foreach ($options as $name => $option) {
             if (! in_array($name, $this->getAllowedOptions())) {
-                throw new DomainException('The "'.$name.'" option is not allowed on the provided form.');
+                throw new DomainException('The "' . $name . '" option is not allowed on the provided form.');
             }
 
             $validated[$name] = $option;
@@ -640,7 +640,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         $this->options = $this->parseOptions(array_merge(
             $this->getDefaultOptions(),
             $this->options,
-            $options
+            $options,
         ));
 
         return $this;
@@ -775,7 +775,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     public function addAttribute(string $name, string $value, $overwrite = false): FieldTypeInterface
     {
         if (isset($this->options['attributes'][$name]) && ! $overwrite) {
-            $this->options['attributes'][$name] .= ' '.$value;
+            $this->options['attributes'][$name] .= ' ' . $value;
         } else {
             $this->options['attributes'][$name] = $value;
         }
@@ -1003,7 +1003,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         return $this->getOption('tags')
             ? sprintf(
                 '<form %s>',
-                $this->attributes($this->getAttributes())
+                $this->attributes($this->getAttributes()),
             )
             : '';
     }

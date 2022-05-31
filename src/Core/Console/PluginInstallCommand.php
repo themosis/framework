@@ -95,7 +95,7 @@ class PluginInstallCommand extends Command
             'domain_var' => $variable,
             'plugin_prefix' => $prefix,
             'plugin_namespace' => $namespace,
-            'plugin_id' => $name
+            'plugin_id' => $name,
         ];
     }
 
@@ -121,7 +121,7 @@ class PluginInstallCommand extends Command
 
         $this->files->move(
             $this->path($this->option('dir')),
-            $this->path($name)
+            $this->path($name),
         );
 
         $this->files->delete($this->temp);
@@ -137,7 +137,7 @@ class PluginInstallCommand extends Command
     {
         $this->info('Set plugin headers...');
 
-        $path = $this->path($name.'/plugin-name.php');
+        $path = $this->path($name . '/plugin-name.php');
         $handle = fopen($path, 'r');
         $content = [];
 
@@ -161,10 +161,10 @@ class PluginInstallCommand extends Command
     protected function parseLine(string $line, array $headers)
     {
         foreach ($this->headers as $field => $regex) {
-            if (preg_match('/^[ \t\/*#@]*'.preg_quote($regex, '/').':(.*)$/mi', $line, $match)
+            if (preg_match('/^[ \t\/*#@]*' . preg_quote($regex, '/') . ':(.*)$/mi', $line, $match)
                 && $match[0]
                 && isset($headers[$field])) {
-                return preg_replace('/:\s?+.+\s?+/', ': '.$headers[$field], $match[0])."\n";
+                return preg_replace('/:\s?+.+\s?+/', ': ' . $headers[$field], $match[0]) . "\n";
             }
         }
 
@@ -179,7 +179,7 @@ class PluginInstallCommand extends Command
     protected function setPluginRootFile(string $name)
     {
         $this->info('Set plugin root file...');
-        $this->files->move($this->path($name.'/plugin-name.php'), $this->path($name.'/'.$name.'.php'));
+        $this->files->move($this->path($name . '/plugin-name.php'), $this->path($name . '/' . $name . '.php'));
     }
 
     /**
@@ -195,8 +195,8 @@ class PluginInstallCommand extends Command
         $this->info('Set plugin configuration...');
 
         $prefix = trim($headers['plugin_prefix'], '\/_-');
-        $from = $this->path($name.'/config/prefix_plugin.php');
-        $to = $this->path($name.'/config/'.$prefix.'_plugin.php');
+        $from = $this->path($name . '/config/prefix_plugin.php');
+        $to = $this->path($name . '/config/' . $prefix . '_plugin.php');
 
         $this->files->move($from, $to);
         $this->replaceFileContent($to, $headers);
@@ -213,8 +213,8 @@ class PluginInstallCommand extends Command
         $this->info('Set plugin translation file...');
 
         $textdomain = trim($headers['text_domain'], '\/ _-');
-        $from = $this->path($name.'/languages/plugin-textdomain-en_US.po');
-        $to = $this->path($name.'/languages/'.$textdomain.'-en_US.po');
+        $from = $this->path($name . '/languages/plugin-textdomain-en_US.po');
+        $to = $this->path($name . '/languages/' . $textdomain . '-en_US.po');
 
         $this->files->move($from, $to);
     }
@@ -232,8 +232,8 @@ class PluginInstallCommand extends Command
         $this->info('Set default route provider...');
 
         $this->replaceFileContent(
-            $this->path($name.'/resources/Providers/RouteServiceProvider.php'),
-            $headers
+            $this->path($name . '/resources/Providers/RouteServiceProvider.php'),
+            $headers,
         );
     }
 
@@ -251,11 +251,11 @@ class PluginInstallCommand extends Command
         $this->files->put($path, str_replace([
             'DummyNamespace',
             'DummyAutoload',
-            'dummy_path'
+            'dummy_path',
         ], [
             $this->getNamespace($headers['plugin_namespace']),
             $this->getAutoloadNamespace($headers['plugin_namespace']),
-            $this->getPluginPath()
+            $this->getPluginPath(),
         ], $content), true);
     }
 
@@ -280,7 +280,7 @@ class PluginInstallCommand extends Command
      */
     protected function getAutoloadNamespace(string $default)
     {
-        return str_replace(["/", "\\"], ["\\", "\\\\"], trim($default, '\/'))."\\\\";
+        return str_replace(["/", "\\"], ["\\", "\\\\"], trim($default, '\/')) . "\\\\";
     }
 
     /**
@@ -331,7 +331,7 @@ class PluginInstallCommand extends Command
     protected function getArguments()
     {
         return [
-            ['name', InputArgument::REQUIRED, 'The plugin name.']
+            ['name', InputArgument::REQUIRED, 'The plugin name.'],
         ];
     }
 
@@ -345,7 +345,7 @@ class PluginInstallCommand extends Command
         return [
             ['dir', null, InputOption::VALUE_OPTIONAL, 'ZIP file base directory name.', 'plugin-master'],
             ['url', null, InputOption::VALUE_OPTIONAL, 'Plugin ZIP file URL.', 'https://github.com/themosis/plugin/archive/master.zip'],
-            ['mu', null, InputOption::VALUE_NONE, 'Install as mu-plugin.']
+            ['mu', null, InputOption::VALUE_NONE, 'Install as mu-plugin.'],
         ];
     }
 }

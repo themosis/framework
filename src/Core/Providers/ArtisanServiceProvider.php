@@ -153,7 +153,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         'StorageLink' => 'command.storage.link',
         'Up' => 'command.up',
         'ViewCache' => 'command.view.cache',
-        'ViewClear' => 'command.view.clear'
+        'ViewClear' => 'command.view.clear',
     ];
 
     /**
@@ -211,7 +211,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     {
         $this->registerCommands(array_merge(
             $this->commands,
-            $this->devCommands
+            $this->devCommands,
         ));
     }
 

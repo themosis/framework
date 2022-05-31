@@ -66,9 +66,9 @@ class ExceptionHandlerTest extends TestCase
             function () use ($viewFactory, $redirector) {
                 return new ResponseFactory(
                     $viewFactory,
-                    $redirector
+                    $redirector,
                 );
-            }
+            },
         );
 
         $this->handler = new Handler($this->container);
@@ -86,8 +86,8 @@ class ExceptionHandlerTest extends TestCase
             ->with(
                 $this->equalTo('Exception message'),
                 [
-                    'exception' => $exception
-                ]
+                    'exception' => $exception,
+                ],
             );
 
         $this->handler->report($exception);
@@ -103,7 +103,7 @@ class ExceptionHandlerTest extends TestCase
 
         $response = $this->handler->render(
             $this->request,
-            new \Exception('Custom error message')
+            new \Exception('Custom error message'),
         )->getContent();
 
         $this->assertFalse(strpos($response, '<!DOCTYPE html>'));
@@ -130,7 +130,7 @@ class ExceptionHandlerTest extends TestCase
 
         $response = $this->handler->render(
             $this->request,
-            new \Exception('This error message should not be visible')
+            new \Exception('This error message should not be visible'),
         )->getContent();
 
         $this->assertTrue(false !== strpos($response, '"message": "Server Error"'));
@@ -154,8 +154,8 @@ class ExceptionHandlerTest extends TestCase
             $this->request,
             new HttpException(
                 403,
-                'Custom error message'
-            )
+                'Custom error message',
+            ),
         )->getContent();
 
         $this->assertTrue(false !== strpos($response, '"message": "Custom error message"'));
@@ -176,7 +176,7 @@ class ExceptionHandlerTest extends TestCase
 
         $response = $this->handler->render(
             $this->request,
-            new AccessDeniedHttpException('Custom error message')
+            new AccessDeniedHttpException('Custom error message'),
         )->getContent();
 
         $this->assertTrue(false !== strpos($response, '"message": "Custom error message"'));

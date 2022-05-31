@@ -118,7 +118,7 @@ class ExceptionHandler
             $error['message'],
             0,
             $error,
-            $traceOffset
+            $traceOffset,
         );
     }
 

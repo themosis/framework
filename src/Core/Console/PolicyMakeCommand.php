@@ -41,7 +41,7 @@ class PolicyMakeCommand extends GeneratorCommand
     protected function buildClass($name)
     {
         $stub = $this->replaceUserNamespace(
-            parent::buildClass($name)
+            parent::buildClass($name),
         );
 
         $model = $this->option('model');
@@ -65,9 +65,9 @@ class PolicyMakeCommand extends GeneratorCommand
         }
 
         return str_replace(
-            $this->rootNamespace().'User',
+            $this->rootNamespace() . 'User',
             $model,
-            $stub
+            $stub,
         );
     }
 
@@ -83,7 +83,7 @@ class PolicyMakeCommand extends GeneratorCommand
     {
         $model = str_replace('/', '\\', $model);
 
-        $namespaceModel = $this->laravel->getNamespace().$model;
+        $namespaceModel = $this->laravel->getNamespace() . $model;
 
         if (Str::startsWith($model, '\\')) {
             $stub = str_replace('NamespacedDummyModel', trim($model, '\\'), $stub);
@@ -94,7 +94,7 @@ class PolicyMakeCommand extends GeneratorCommand
         $stub = str_replace(
             "use {$namespaceModel};\nuse {$namespaceModel};",
             "use {$namespaceModel};",
-            $stub
+            $stub,
         );
 
         $model = class_basename(trim($model, '\\'));
@@ -122,8 +122,8 @@ class PolicyMakeCommand extends GeneratorCommand
     protected function getStub()
     {
         return $this->option('model')
-            ? __DIR__.'/stubs/policy.stub'
-            : __DIR__.'/stubs/policy.plain.stub';
+            ? __DIR__ . '/stubs/policy.stub'
+            : __DIR__ . '/stubs/policy.plain.stub';
     }
 
     /**
@@ -135,7 +135,7 @@ class PolicyMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Policies';
+        return $rootNamespace . '\Policies';
     }
 
     /**
@@ -146,7 +146,7 @@ class PolicyMakeCommand extends GeneratorCommand
     protected function getOptions()
     {
         return [
-            ['model', 'm', InputOption::VALUE_OPTIONAL, 'The model that the policy applies to']
+            ['model', 'm', InputOption::VALUE_OPTIONAL, 'The model that the policy applies to'],
         ];
     }
 }

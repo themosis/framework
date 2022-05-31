@@ -52,9 +52,9 @@ class CheckboxType extends BaseType implements
         // Set some default CSS classes if chosen theme is "bootstrap".
         if (isset($options['theme']) && 'bootstrap' === $options['theme']) {
             $options['attributes']['class'] = isset($options['attributes']['class']) ?
-                'form-check-input '.$options['attributes']['class'] : 'form-check-input';
+                'form-check-input ' . $options['attributes']['class'] : 'form-check-input';
             $options['label_attr']['class'] = isset($options['label_attr']['class']) ?
-                'form-check-label '.$options['label_attr']['class'] : 'form-check-label';
+                'form-check-label ' . $options['label_attr']['class'] : 'form-check-label';
         }
 
         return $options;

@@ -20,7 +20,7 @@ class CollectionFieldTransformer extends FieldTransformer
         $options['items'] = array_map(function ($id) {
             return [
                 'attributes' => wp_prepare_attachment_for_js($id),
-                'id' => $id
+                'id' => $id,
             ];
         }, (array) $field->getValue());
 

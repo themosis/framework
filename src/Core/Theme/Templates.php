@@ -32,7 +32,7 @@ class Templates
     protected function parse(array $options)
     {
         $templates = [
-            'page' => []
+            'page' => [],
         ];
 
         foreach ($options as $slug => $properties) {

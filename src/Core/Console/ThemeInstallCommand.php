@@ -61,7 +61,7 @@ class ThemeInstallCommand extends Command
             $this->setAsDefaultTheme($theme);
         }
 
-        $this->info('Theme ['.$theme.'] installed.');
+        $this->info('Theme [' . $theme . '] installed.');
     }
 
     /**
@@ -84,7 +84,7 @@ class ThemeInstallCommand extends Command
 
         $this->files->move(
             themes_path($this->option('dir')),
-            themes_path(str_replace(' ', '-', $name))
+            themes_path(str_replace(' ', '-', $name)),
         );
         $this->files->delete($this->temp);
     }
@@ -117,7 +117,7 @@ Domain Path: languages
 */
 STYLES;
 
-        $this->files->put(themes_path($name.'/style.css'), $content);
+        $this->files->put(themes_path($name . '/style.css'), $content);
     }
 
     /**
@@ -155,7 +155,7 @@ STYLES;
     protected function getArguments()
     {
         return [
-            ['name', InputArgument::REQUIRED, 'The theme name.']
+            ['name', InputArgument::REQUIRED, 'The theme name.'],
         ];
     }
 
@@ -169,7 +169,7 @@ STYLES;
         return [
             ['dir', null, InputOption::VALUE_OPTIONAL, 'ZIP file base directory name.', 'theme-master'],
             ['url', null, InputOption::VALUE_OPTIONAL, 'Theme ZIP file URL.', 'https://github.com/themosis/theme/archive/master.zip'],
-            ['default', null, InputOption::VALUE_OPTIONAL, 'Set default theme constant.', true]
+            ['default', null, InputOption::VALUE_OPTIONAL, 'Set default theme constant.', true],
         ];
     }
 }

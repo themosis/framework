@@ -45,7 +45,7 @@ class Kernel implements KernelContract
         \Themosis\Core\Bootstrap\RegisterFacades::class,
         \Themosis\Core\Bootstrap\SetRequestForConsole::class,
         \Themosis\Core\Bootstrap\RegisterProviders::class,
-        \Themosis\Core\Bootstrap\BootProviders::class
+        \Themosis\Core\Bootstrap\BootProviders::class,
     ];
 
     /**
@@ -240,10 +240,10 @@ class Kernel implements KernelContract
         $namespace = $this->app->getNamespace();
 
         foreach ((new Finder())->in($paths)->files() as $command) {
-            $command = $namespace.str_replace(
+            $command = $namespace . str_replace(
                 ['/', '.php'],
                 ['\\', ''],
-                Str::after($command->getPathname(), app_path().DIRECTORY_SEPARATOR)
+                Str::after($command->getPathname(), app_path() . DIRECTORY_SEPARATOR),
             );
 
             if (is_subclass_of($command, Command::class) && ! (new \ReflectionClass($command))->isAbstract()) {

@@ -47,7 +47,7 @@ class FieldsTest extends TestCase
 
         $this->assertInstanceOf(
             FieldTransformer::class,
-            $factory->make('FieldTransformer')
+            $factory->make('FieldTransformer'),
         );
     }
 
@@ -57,7 +57,7 @@ class FieldsTest extends TestCase
 
         $this->assertInstanceOf(
             CustomFieldTransformer::class,
-            $factory->make('Themosis\\Tests\\Forms\\Resources\\Transformers\\CustomFieldTransformer')
+            $factory->make('Themosis\\Tests\\Forms\\Resources\\Transformers\\CustomFieldTransformer'),
         );
     }
 
@@ -102,7 +102,7 @@ class FieldsTest extends TestCase
             'options' => [
                 'group' => 'default',
                 'info' => '',
-                'l10n' => []
+                'l10n' => [],
             ],
             'label' => [],
             'theme' => '',
@@ -111,9 +111,9 @@ class FieldsTest extends TestCase
                 'errors' => true,
                 'messages' => [],
                 'placeholder' => '',
-                'rules' => ''
+                'rules' => '',
             ],
-            'value' => ''
+            'value' => '',
         ], $expected);
     }
 
@@ -127,7 +127,7 @@ class FieldsTest extends TestCase
 
         $expected = $this->expected([
             'attributes' => [
-                'id' => 'th_name_field'
+                'id' => 'th_name_field',
             ],
             'basename' => 'name',
             'component' => 'themosis.fields.text',
@@ -135,16 +135,16 @@ class FieldsTest extends TestCase
             'label' => [
                 'inner' => 'Name',
                 'attributes' => [
-                    'for' => 'th_name_field'
-                ]
+                    'for' => 'th_name_field',
+                ],
             ],
             'type' => 'text',
             'validation' => [
                 'errors' => true,
                 'messages' => [],
                 'placeholder' => 'name',
-                'rules' => ''
-            ]
+                'rules' => '',
+            ],
         ]);
 
         $this->assertEquals($expected, $name->toArray());
@@ -161,7 +161,7 @@ class FieldsTest extends TestCase
 
         $expected = $this->expected([
             'attributes' => [
-                'id' => 'th_message_field'
+                'id' => 'th_message_field',
             ],
             'basename' => 'message',
             'component' => 'themosis.fields.textarea',
@@ -169,16 +169,16 @@ class FieldsTest extends TestCase
             'label' => [
                 'inner' => 'Message',
                 'attributes' => [
-                    'for' => 'th_message_field'
-                ]
+                    'for' => 'th_message_field',
+                ],
             ],
             'type' => 'textarea',
             'validation' => [
                 'errors' => true,
                 'messages' => [],
                 'placeholder' => 'message',
-                'rules' => ''
-            ]
+                'rules' => '',
+            ],
         ]);
 
         $this->assertEquals($expected, $message->toArray());
@@ -193,15 +193,15 @@ class FieldsTest extends TestCase
             'choices' => [
                 'red',
                 'green',
-                'blue'
-            ]
+                'blue',
+            ],
         ])
             ->setManager(new Manager())
             ->setResourceTransformerFactory(new Factory());
 
         $expected = $this->expected([
             'attributes' => [
-                'id' => 'th_colors_field'
+                'id' => 'th_colors_field',
             ],
             'basename' => 'colors',
             'component' => 'themosis.fields.choice',
@@ -209,8 +209,8 @@ class FieldsTest extends TestCase
             'label' => [
                 'inner' => 'Colors',
                 'attributes' => [
-                    'for' => 'th_colors_field'
-                ]
+                    'for' => 'th_colors_field',
+                ],
             ],
             'options' => [
                 'group' => 'default',
@@ -221,17 +221,17 @@ class FieldsTest extends TestCase
                 'choices' => [
                     ['key' => 'Red', 'value' => 'red', 'type' => 'option'],
                     ['key' => 'Green', 'value' => 'green', 'type' => 'option'],
-                    ['key' => 'Blue', 'value' => 'blue', 'type' => 'option']
+                    ['key' => 'Blue', 'value' => 'blue', 'type' => 'option'],
                 ],
-                'layout' => 'select'
+                'layout' => 'select',
             ],
             'type' => 'choice',
             'validation' => [
                 'errors' => true,
                 'messages' => [],
                 'placeholder' => 'colors',
-                'rules' => ''
-            ]
+                'rules' => '',
+            ],
         ]);
 
         $this->assertEquals($expected, $colors->toArray());
@@ -258,7 +258,7 @@ class FieldsTest extends TestCase
         $this->assertEquals(0, $price->getOption('precision'));
 
         $price = $fields->number('other', [
-            'precision' => 4
+            'precision' => 4,
         ]);
 
         $this->assertEquals(4, $price->getOption('precision'));
@@ -273,7 +273,7 @@ class FieldsTest extends TestCase
         $this->assertFalse($name->getOption('show_in_rest'));
 
         $email = $fields->email('email', [
-            'show_in_rest' => true
+            'show_in_rest' => true,
         ]);
 
         $this->assertTrue($email->getOption('show_in_rest'));

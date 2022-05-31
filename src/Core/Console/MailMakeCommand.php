@@ -47,13 +47,13 @@ class MailMakeCommand extends GeneratorCommand
      */
     protected function writeMarkdownTemplate()
     {
-        $path = resource_path('views/'.str_replace('.', '/', $this->option('markdown'))).'.blade.php';
+        $path = resource_path('views/' . str_replace('.', '/', $this->option('markdown'))) . '.blade.php';
 
         if (! $this->files->isDirectory(dirname($path))) {
             $this->files->makeDirectory(dirname($path), 0755, true);
         }
 
-        $this->files->put($path, file_get_contents(__DIR__.'/stubs/markdown.stub'));
+        $this->files->put($path, file_get_contents(__DIR__ . '/stubs/markdown.stub'));
     }
 
     /**
@@ -82,8 +82,8 @@ class MailMakeCommand extends GeneratorCommand
     protected function getStub()
     {
         return $this->option('markdown')
-            ? __DIR__.'/stubs/markdown-mail.stub'
-            : __DIR__.'/stubs/mail.stub';
+            ? __DIR__ . '/stubs/markdown-mail.stub'
+            : __DIR__ . '/stubs/mail.stub';
     }
 
     /**
@@ -95,7 +95,7 @@ class MailMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Mail';
+        return $rootNamespace . '\Mail';
     }
 
     /**
@@ -107,7 +107,7 @@ class MailMakeCommand extends GeneratorCommand
     {
         return [
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the mailable already exists'],
-            ['markdown', 'a', InputOption::VALUE_OPTIONAL, 'Create a new Markdown template for the mailable']
+            ['markdown', 'a', InputOption::VALUE_OPTIONAL, 'Create a new Markdown template for the mailable'],
         ];
     }
 }

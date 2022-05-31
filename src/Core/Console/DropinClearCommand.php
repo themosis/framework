@@ -80,7 +80,7 @@ class DropinClearCommand extends Command
     {
         $choice = $this->choice(
             'Which drop-in file(s) would you like to clear?',
-            $choices = $this->dropinChoices()
+            $choices = $this->dropinChoices(),
         );
 
         if ($choice == $choices[0] || is_null($choice)) {
@@ -102,8 +102,8 @@ class DropinClearCommand extends Command
             preg_filter(
                 '/([a-zA-Z-_]+)/',
                 '<comment>${1}</comment>',
-                array_keys(WordPressDropins::publishableDropins())
-            )
+                array_keys(WordPressDropins::publishableDropins()),
+            ),
         );
     }
 

@@ -66,7 +66,7 @@ class WordPressCacheWrapper
 
         $this->globalGroups = array_merge(
             $this->globalGroups,
-            $groups
+            $groups,
         );
     }
 
@@ -80,8 +80,8 @@ class WordPressCacheWrapper
         $this->nonPersistentGroups = array_unique(
             array_merge(
                 $this->nonPersistentGroups,
-                $groups
-            )
+                $groups,
+            ),
         );
     }
 
@@ -92,7 +92,7 @@ class WordPressCacheWrapper
      */
     public function switchToBlog(int $blog_id)
     {
-        $this->blogPrefix = $this->multisite ? $blog_id.':' : '';
+        $this->blogPrefix = $this->multisite ? $blog_id . ':' : '';
     }
 
     /**
@@ -129,7 +129,7 @@ class WordPressCacheWrapper
         }
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
-            $key = $this->blogPrefix.$key;
+            $key = $this->blogPrefix . $key;
         }
 
         $key = $this->formatKeyName($key, $group);
@@ -162,7 +162,7 @@ class WordPressCacheWrapper
         }
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
-            $key = $this->blogPrefix.$key;
+            $key = $this->blogPrefix . $key;
         }
 
         $key = $this->formatKeyName($key, $group);
@@ -197,7 +197,7 @@ class WordPressCacheWrapper
         $id = $key;
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
-            $id = $this->blogPrefix.$key;
+            $id = $this->blogPrefix . $key;
         }
 
         $id = $this->formatKeyName($id, $group);
@@ -227,7 +227,7 @@ class WordPressCacheWrapper
         }
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
-            $key = $this->blogPrefix.$key;
+            $key = $this->blogPrefix . $key;
         }
 
         $key = $this->formatKeyName($key, $group);
@@ -257,7 +257,7 @@ class WordPressCacheWrapper
         }
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
-            $key = $this->blogPrefix.$key;
+            $key = $this->blogPrefix . $key;
         }
 
         $key = $this->formatKeyName($key, $group);
@@ -286,7 +286,7 @@ class WordPressCacheWrapper
         }
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
-            $key = $this->blogPrefix.$key;
+            $key = $this->blogPrefix . $key;
         }
 
         $key = $this->formatKeyName($key, $group);
@@ -315,7 +315,7 @@ class WordPressCacheWrapper
         $id = $key;
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
-            $id = $this->blogPrefix.$key;
+            $id = $this->blogPrefix . $key;
         }
 
         $id = $this->formatKeyName($id, $group);

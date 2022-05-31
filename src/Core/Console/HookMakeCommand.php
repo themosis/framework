@@ -34,7 +34,7 @@ class HookMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/hook.stub';
+        return __DIR__ . '/stubs/hook.stub';
     }
 
     /**
@@ -46,6 +46,6 @@ class HookMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Hooks';
+        return $rootNamespace . '\Hooks';
     }
 }

@@ -37,7 +37,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
         \Themosis\Core\Bootstrap\ExceptionHandler::class,
         \Themosis\Core\Bootstrap\RegisterFacades::class,
         \Themosis\Core\Bootstrap\RegisterProviders::class,
-        \Themosis\Core\Bootstrap\BootProviders::class
+        \Themosis\Core\Bootstrap\BootProviders::class,
     ];
 
     /**
@@ -69,7 +69,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     protected $middlewarePriority = [
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \Illuminate\Routing\Middleware\SubstituteBindings::class
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
     ];
 
     public function __construct(Application $app, Router $router)
@@ -121,7 +121,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
         }
 
         $this->app['events']->dispatch(
-            new RequestHandled($request, $response)
+            new RequestHandled($request, $response),
         );
 
         return $response;
@@ -211,7 +211,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     {
         $middlewares = $this->app->shouldSkipMiddleware() ? [] : array_merge(
             $this->gatherRouteMiddleware($request),
-            $this->middleware
+            $this->middleware,
         );
 
         foreach ($middlewares as $middleware) {

@@ -88,21 +88,21 @@ class ThemeManagerTest extends TestCase
             'width' => 50,
             'height' => 50,
             'crop' => false,
-            'label' => false
+            'label' => false,
         ], $sizes['square']);
 
         $this->assertEquals([
             'width' => 200,
             'height' => 200,
             'crop' => true,
-            'label' => 'Working Sample'
+            'label' => 'Working Sample',
         ], $sizes['working-sample']);
 
         $this->assertEquals([
             'width' => 200,
             'height' => 200,
             'crop' => false,
-            'label' => false
+            'label' => false,
         ], $sizes['no-dropdown']);
     }
 
@@ -121,7 +121,7 @@ class ThemeManagerTest extends TestCase
         $theme = $this->getThemeManager();
         $theme = $theme->load($app->themesPath('underscore/config'));
 
-        $theme->includes(__DIR__.'/../samples/inc');
+        $theme->includes(__DIR__ . '/../samples/inc');
 
         $this->assertTrue(defined('THEME_MANAGER_INC'));
         $this->assertTrue(defined('THEME_MANAGER_NESTED_INC'));
