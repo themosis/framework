@@ -72,15 +72,19 @@
   "require-dev": {
     "beyondcode/laravel-dump-server": "^1.7",
     "fakerphp/faker": "^1.9.1",
-    "friendsofphp/php-cs-fixer": "^2.17",
+    "friendsofphp/php-cs-fixer": "^3.8",
     "phpunit/phpunit": "^9.0",
     "symfony/var-dumper": "^5.2"
   },
   "scripts": {
-    "test": "phpunit"
+    "test": "phpunit",
+    "fix": "php-cs-fixer fix"
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "composer/installers": true
+    }
   },
   "minimum-stability": "dev",
   "prefer-stable": true
