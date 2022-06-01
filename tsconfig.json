@@ -59,6 +59,6 @@
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
   },
   "include": [
-    "./resources/assets/js/**/*"
+    "./resources/js/**/*"
   ]
 }

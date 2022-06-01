@@ -51,5 +51,5 @@ mix.webpackConfig(webpack => {
  |
  */
 
-mix.react('resources/assets/js/index.ts', 'dist/js/themosis.core.js');
-mix.js('resources/assets/js/deprecated/poststatus.js', 'dist/js/themosis.poststatus.js');
+mix.js('resources/js/index.ts', 'dist/js/themosis.core.js').react();
+mix.js('resources/js/deprecated/poststatus.js', 'dist/js/themosis.poststatus.js');

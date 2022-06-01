@@ -1,4 +1,3 @@
-import "@babel/polyfill/noConflict";
 import axios from "axios";
 import Manager from "./src/components/Manager";
 import MetaboxFactory from "./src/components/MetaboxFactory";
