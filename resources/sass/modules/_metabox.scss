@@ -52,7 +52,7 @@
     button {
       display: block;
       width: 100%;
-      padding: $paddingH $paddingH $paddingH ($paddingH - 4px);
+      padding: $paddingH $paddingH $paddingH calc(#{$paddingH} - 4px);
       font-size: 13px;
       font-weight: 600;
       background-color: #F5F5F5;
@@ -135,7 +135,7 @@
     display: inline-block;
     background-color: $red-medium-100;
     border-radius: $radius-round-rectangle;
-    padding: $paddingH / 2;
+    padding: calc(#{$paddingH} / 2);
     margin: 0;
     color: $red-medium-500;
 
@@ -153,11 +153,11 @@
   border: 1px solid $light-gray-600;
   border-radius: $radius-round-rectangle;
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
-  padding: $paddingH / 2;
+  padding: calc(#{$paddingH} / 2);
 }
 
 .themosis__input__hidden {
-  padding: $paddingH / 2 $paddingH;
+  padding: calc(#{$paddingH} / 2) $paddingH;
   background-color: $light-gray-200;
   border: 1px solid $light-gray-600;
   text-shadow: 0 1px 0 $white;
@@ -169,7 +169,7 @@
   max-width: 100%;
   border: 1px solid $light-gray-600;
   border-radius: $radius-round-rectangle;
-  padding: $paddingH / 2;
+  padding: calc(#{$paddingH} / 2);
 }
 
 .has__errors {
@@ -221,7 +221,7 @@
   .themosis__column {
     &__label {
       width: 100%;
-      padding-bottom: $paddingV / 2;
+      padding-bottom: calc(#{$paddingV} / 2);
     }
 
     &__content {
@@ -259,7 +259,7 @@
   .themosis__column {
     &__label {
       width: 100%;
-      padding-bottom: $paddingV / 2;
+      padding-bottom: calc(#{$paddingV} / 2);
     }
 
     &__content {

@@ -67,13 +67,13 @@
     left: $edge;
     right: $edge;
     top: $edge;
-    bottom: calc(100% - $size);
+    bottom: calc(100% - #{$size});
     width: auto;
   }
 
   @if $direction == "top" {
     background: linear-gradient(to bottom, rgba($color, 0), $color 90%);
-    top: calc(100% - $size);
+    top: calc(100% - #{$size});
     left: $edge;
     right: $edge;
     bottom: $edge;

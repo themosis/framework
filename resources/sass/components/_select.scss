@@ -21,7 +21,7 @@
 
   &__input {
     position: absolute;
-    padding: $paddingV / 2;
+    padding: calc(#{$paddingV} / 2);
     border-radius: $radius-round-rectangle;
     box-sizing: border-box;
     width: 100%;
@@ -38,7 +38,7 @@
   &__output {
     position: relative;
     display: inline-block;
-    padding: $paddingH / 2 $paddingV / 2;
+    padding: calc(#{$paddingH} / 2) calc(#{$paddingV} / 2);
     min-height: 20px;
     z-index: 3;
     pointer-events: none;
@@ -67,7 +67,7 @@
     position: absolute;
     width: 12px;
     height: 7px;
-    right: $paddingV / 2;
+    right: calc(#{$paddingV} / 2);
     top: 13px;
     z-index: 5;
     transform: rotate(0deg);
@@ -80,7 +80,7 @@
 
   &__tag {
     display: inline-block;
-    padding: $paddingH / 4 10px $paddingH / 3;
+    padding: calc(#{$paddingH} / 4) 10px calc(#{$paddingH} / 3);
     background-color: $blue-medium-100;
     color: darken($blue-medium-900, 20%);
     margin: 0 6px 6px 0;
@@ -141,7 +141,7 @@
 .themosis__select.multiple {
   .themosis__select__field {
     min-height: 34px;
-    padding: $paddingH / 2 26px $paddingH / 2 $paddingH / 2;
+    padding: calc(#{$paddingH} / 2) 26px calc(#{$paddingH} / 2) calc(#{$paddingH} / 2);
     cursor: text;
   }
 
@@ -156,7 +156,7 @@
 
 .themosis__select.multiple.selection {
   .themosis__select__field {
-    padding: $paddingH / 2 26px 0 $paddingH / 2;
+    padding: calc(#{$paddingH} / 2) 26px 0 calc(#{$paddingH} / 2);
   }
 }
 

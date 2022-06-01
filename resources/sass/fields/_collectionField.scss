@@ -137,7 +137,7 @@
       display: none;
       color: $red-medium-500;
       background: none;
-      padding: $paddingH / 2 0;
+      padding: calc(#{$paddingH} / 2) 0;
       box-shadow: none;
       border: none;
       cursor: pointer;

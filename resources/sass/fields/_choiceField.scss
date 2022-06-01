@@ -12,7 +12,7 @@
 .themosis__choice__item {
   display: inline-block;
   margin-right: $paddingV;
-  margin-bottom: $paddingV / 2;
+  margin-bottom: calc(#{$paddingV} / 2);
 
   &:last-child {
     margin-right: 0;

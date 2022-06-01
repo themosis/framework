@@ -1,17 +1,18 @@
-import * as React from "react";
+import React from "react";
 import classNames from "classnames";
 
-interface ButtonProps {
-    clickHandler: any;
-    className?: string;
-    primary?: boolean;
-    disabled?: boolean;
+type ButtonProps = {
+    clickHandler: any,
+    className?: string,
+    primary?: boolean,
+    disabled?: boolean,
+    children?: React.ReactNode,
 }
 
 /**
  * Button component.
  */
-class Button extends React.Component <ButtonProps> {
+class Button extends React.Component<ButtonProps> {
     static defaultProps = {
         className: 'button',
         primary: false
