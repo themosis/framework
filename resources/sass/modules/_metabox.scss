@@ -270,7 +270,9 @@
 
 /* Desktop */
 @media screen and (min-width: $break-wide){
-  .themosis__input {
-    max-width: $max;
+  .is-side {
+    .themosis__input {
+      max-width: $max;
+    }
   }
 }
