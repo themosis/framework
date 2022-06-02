@@ -45,13 +45,13 @@ declare namespace themosisGlobal.post {
 |--------------------------------------------------------------------------
 |
 */
-declare interface MediaOptions {
+declare type MediaOptions = {
     filesize: string;
     name: string;
     thumbnail: string;
 }
 
-declare interface FieldType {
+declare type FieldType = {
     attributes: {
         checked: string;
         class?: string;
@@ -103,24 +103,24 @@ declare interface FieldType {
     value: string | Array<string>
 }
 
-declare interface Color {
+declare type Color = {
     name: string;
     color: string;
 }
 
 // Field {field} component property.
-declare interface FieldProps {
-    field: FieldType;
-    changeHandler: any;
+declare type FieldProps = {
+    field: FieldType,
+    changeHandler: any,
 }
 
-declare interface GroupType {
+declare type GroupType = {
     id: string;
     theme?: string;
     title: string;
 }
 
-declare interface OptionType {
+declare type OptionType = {
     key: string;
     value: string;
     selected?: boolean;

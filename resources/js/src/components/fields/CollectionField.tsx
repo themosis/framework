@@ -7,10 +7,10 @@ import Button from "../buttons/Button";
 import classNames from "classnames";
 import {arrayMove, SortableContainer, SortableElement} from "react-sortable-hoc";
 
-interface CollectionState {
-    frame: any;
-    items: Array<any>;
-    selected: Array<number>;
+type CollectionState = {
+    frame: any,
+    items: Array<any>,
+    selected: Array<number>,
 }
 
 /**
@@ -272,6 +272,7 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
                         return (
                             <SortableItem key={`item-${index}`}
                                           index={index}
+                                          // @ts-ignore
                                           item={item}
                                           thumbnail={thumbnail}/>
                         );
@@ -281,6 +282,7 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
         });
 
         return (
+            // @ts-ignore
             <SortableList items={this.state.items}
                           axis={'xy'}
                           distance={12}

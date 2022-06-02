@@ -29554,17 +29554,22 @@ function (_super) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(SortableItem, {
           key: "item-".concat(index),
           index: index,
+          // @ts-ignore
           item: item,
           thumbnail: thumbnail
         });
       }));
     });
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(SortableList, {
-      items: this.state.items,
-      axis: 'xy',
-      distance: 12,
-      onSortEnd: this.onSortEnd
-    });
+    return (
+      /*#__PURE__*/
+      // @ts-ignore
+      react__WEBPACK_IMPORTED_MODULE_0__.createElement(SortableList, {
+        items: this.state.items,
+        axis: 'xy',
+        distance: 12,
+        onSortEnd: this.onSortEnd
+      })
+    );
   };
 
   CollectionField.prototype.componentDidMount = function () {
@@ -32112,62 +32117,16 @@ function (_super) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "default": () => (/* binding */ MetaboxFooter)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-var __extends = undefined && undefined.__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
-    };
 
-    return extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-    extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-
-
-/**
- * Metabox footer.
- */
-
-var MetaboxFooter =
-/** @class */
-function (_super) {
-  __extends(MetaboxFooter, _super);
-
-  function MetaboxFooter() {
-    return _super !== null && _super.apply(this, arguments) || this;
-  }
-  /**
-   * Render the component.
-   */
-
-
-  MetaboxFooter.prototype.render = function () {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-      className: "themosis__metabox__footer"
-    }, this.props.children);
-  };
-
-  return MetaboxFooter;
-}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MetaboxFooter);
+function MetaboxFooter(_a) {
+  var children = _a.children;
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "themosis__metabox__footer"
+  }, children);
+}
 
 /***/ }),
 
