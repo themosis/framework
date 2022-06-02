@@ -6,9 +6,6 @@ use Themosis\Hook\Hookable;
 
 class DummyClass extends Hookable
 {
-    /**
-     * Extend WordPress.
-     */
     public function register()
     {
         //
