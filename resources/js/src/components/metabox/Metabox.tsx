@@ -4,185 +4,128 @@ import MetaboxBody from "./MetaboxBody";
 import MetaboxFooter from "./MetaboxFooter";
 import Button from "../buttons/Button";
 import MetaboxStatus from "./MetaboxStatus";
-import {hasErrors} from "../../helpers";
+import {hasErrors as hasFieldErrors} from "../../helpers";
+import {useEffect, useState} from "react";
 
-interface MetaboxProps {
+type MetaboxProps = {
     id: string;
 }
 
-interface MetaboxState {
-    fields: Array<FieldType>;
-    groups: Array<GroupType>;
-    l10n: {
-        done: string;
-        error: string;
-        saving: string;
-        submit: string;
-    };
-    status: string;
-}
+type L10nProps = {
+    done: string;
+    error: string;
+    saving: string;
+    submit: string;
+};
 
-/**
- * Metabox container component.
- */
-class Metabox extends React.Component <MetaboxProps, MetaboxState> {
-    /**
-     * Status timeout reference.
-     */
-    protected timer: any;
+type StatusProps = keyof Omit<L10nProps, 'submit'> | 'default';
 
-    constructor(props: MetaboxProps) {
-        super(props);
-        this.state = {
-            fields: [],
-            groups: [],
-            l10n: {
-                done: 'Saved',
-                error: 'Errors',
-                saving: 'Saving',
-                submit: 'Save'
-            },
-            status: 'default'
-        };
+const Metabox = function ({id}: MetaboxProps) {
+    const [fields, setFields] = useState<Array<FieldType>>([]);
+    const [groups, setGroups] = useState<Array<GroupType>>([]);
+    const [l10n, setL10n] = useState<L10nProps>({
+        done: 'Saved',
+        error: 'Errors',
+        saving: 'Saving',
+        submit: 'Save'
+    });
+    const [status, setStatus] = useState<StatusProps>('default');
 
-        this.change = this.change.bind(this);
-        this.save = this.save.bind(this);
-        this.clearStatus = this.clearStatus.bind(this);
-    }
+    let timer: any = undefined;
 
-    /**
-     * Render component UI.
-     */
-    render() {
-        return (
-            <div className="themosis__metabox">
-                <MetaboxBody fields={this.state.fields}
-                             groups={this.state.groups}
-                             changeHandler={this.change}/>
-                <MetaboxFooter>
-                    <Button primary={true}
-                            disabled={'saving' === this.state.status}
-                            clickHandler={this.save}>
-                        {this.state.l10n.submit}
-                    </Button>
-                    { 'default' !== this.state.status && <MetaboxStatus status={this.state.status}
-                                                                        label={this.state.l10n[this.state.status]}/> }
-                </MetaboxFooter>
-            </div>
-        );
-    }
+    useEffect(() => {
+        let url = themosisGlobal.api.base_url + 'metabox/' + id + '?post_id=' + themosisGlobal.post.ID;
 
-    /**
-     * Handle onChange events for each field.
-     * This updates the "state" of our metabox fields values.
-     */
-    change(name: string, value: string|Array<string>) {
-        const fields:Array<FieldType> = this.state.fields.map((field: FieldType): FieldType => {
+        axios.get(url)
+            .then((response: AxiosResponse) => {
+                setFields(response.data.fields.data);
+                setGroups(response.data.groups.data);
+                setL10n(response.data.l10n);
+            })
+            .catch((error: AxiosError) => {
+                console.log(error);
+            });
+    }, []);
+
+    const handleChange = (name: string, value: string | Array<string>) => {
+        setFields(fields.map((field: FieldType): FieldType => {
             if (name === field.name) {
                 field.value = value;
             }
 
             return field;
-        });
+        }));
+    };
 
-        this.setState({
-            fields: fields
-        });
-    }
-
-    /**
-     * Save metabox fields data.
-     */
-    save() {
-        let url = themosisGlobal.api.base_url + 'metabox/' + this.props.id + '?post_id=' + themosisGlobal.post.ID;
+    const handleSave = () => {
+        let url = themosisGlobal.api.base_url + 'metabox/' + id + '?post_id=' + themosisGlobal.post.ID;
 
         /*
          * Change current status to "saving"
          */
-        this.setState({
-            status: 'saving'
-        });
+        setStatus('saving');
 
         axios.put(url, {
-            fields: this.state.fields
+            fields: fields
         })
             .then((response: AxiosResponse) => {
                 /*
                  * First check if there are any errors. Some fields
                  * might have failed the validation.
                  */
-                if (this.hasErrors(response.data.fields.data)) {
-                    this.setState({
-                        fields: response.data.fields.data,
-                        status: 'error'
-                    });
+                if (hasErrors(response.data.fields.data)) {
+                    setFields(response.data.fields.data);
+                    setStatus('error');
                 } else {
-                    this.setState({
-                        fields: response.data.fields.data,
-                        status: 'done'
-                    });
+                    setFields(response.data.fields.data);
+                    setStatus('done');
                 }
 
-                this.timer = setTimeout(this.clearStatus, 5000);
+                timer = setTimeout(clearStatus, 5000);
             })
             .catch((error: AxiosError) => {
                 /*
                  * Reset metabox status to default
                  * and log the error to the console.
                  */
-                this.setState({
-                    status: 'default'
-                });
+                setStatus('default');
 
                 console.log(error.message);
             });
-    }
+    };
 
-    /**
-     * Clear metabox footer status.
-     */
-    clearStatus() {
-        this.setState({
-            status: 'default'
-        });
-
-        clearTimeout(this.timer);
-    }
-
-    /**
-     * Check if the metabox has errors.
-     */
-    hasErrors(fields: Array<FieldType>): boolean {
+    const hasErrors = (fields: Array<FieldType>): boolean => {
         for (let idx in fields) {
             let field = fields[idx];
 
-            if (hasErrors(field)) {
+            if (hasFieldErrors(field)) {
                 return true;
             }
         }
 
         return false;
+    };
+
+    const clearStatus = () => {
+        setStatus('default');
+        clearTimeout(timer);
     }
 
-    /**
-     * Fetch metabox data.
-     * Initialize fields.
-     */
-    componentDidMount() {
-        let url = themosisGlobal.api.base_url + 'metabox/' + this.props.id + '?post_id=' + themosisGlobal.post.ID;
-
-        axios.get(url)
-            .then((response: AxiosResponse) => {
-                this.setState({
-                    fields: response.data.fields.data,
-                    groups: response.data.groups.data,
-                    l10n: response.data.l10n
-                });
-            })
-            .catch((error: AxiosError) => {
-                console.log(error);
-            });
-    }
-}
+    return (
+        <div className="themosis__metabox">
+            <MetaboxBody fields={fields}
+                         groups={groups}
+                         changeHandler={handleChange}/>
+            <MetaboxFooter>
+                <Button primary={true}
+                        disabled={'saving' === status}
+                        clickHandler={handleSave}>
+                    {l10n.submit}
+                </Button>
+                {'default' !== status && <MetaboxStatus status={status} label={l10n[status]}/>}
+            </MetaboxFooter>
+        </div>
+    );
+};
 
 export default Metabox;
