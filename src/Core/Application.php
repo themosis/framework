@@ -1461,8 +1461,6 @@ class Application extends Container implements
             shutdown_action_hook();
         }
 
-        $kernel->terminate($request, $response);
-
         if (function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
         } elseif (function_exists('litespeed_finish_request')) {
@@ -1470,6 +1468,8 @@ class Application extends Container implements
         } elseif (! in_array(PHP_SAPI, ['cli', 'phpdbg'], true)) {
             Response::closeOutputBuffers(0, true);
         }
+
+        $kernel->terminate($request, $response);
 
         return $this;
     }
