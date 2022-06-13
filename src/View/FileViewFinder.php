@@ -82,7 +82,7 @@ class FileViewFinder extends IlluminateFileViewFinder
         $orderedPaths = $this->orderedPaths;
 
         uasort($orderedPaths, function ($a, $b) {
-            return $a->getPriority() < $b->getPriority();
+            return $a->getPriority() <=> $b->getPriority();
         });
 
         foreach ($orderedPaths as $orderedPath) {
