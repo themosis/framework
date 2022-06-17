@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import Metabox from "./metabox/Metabox";
+import MetaboxController from "./metabox/MetaboxController";
 
 interface MetaboxFactoryInterface {
     make(list: string[]): MetaboxFactoryInterface;
@@ -31,7 +31,7 @@ class MetaboxFactory implements MetaboxFactoryInterface {
                     'margin: 0; padding: 0;'
                 );
 
-                ReactDOM.render(<Metabox id={id} />, elem);
+                ReactDOM.render(<MetaboxController id={id}/>, elem);
             }
         }
 

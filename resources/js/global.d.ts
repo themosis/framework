@@ -165,6 +165,11 @@ declare namespace wp {
     const oldEditor: {
         initialize: WordPressEditorInit;
     }
+    const data: {
+        select(store: string): any;
+        dispatch(store: string): any;
+        useSelect<T>(callback: (select: (store: string) => any) => T): T;
+    }
 }
 
 /*

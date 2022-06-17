@@ -28558,10 +28558,19 @@ if ('undefined' !== typeof themosisGlobal) {
   var factory = new _src_components_MetaboxFactory__WEBPACK_IMPORTED_MODULE_2__["default"]();
   factory.make(themosisGlobal.metabox);
 }
+
+window.addEventListener('load', function () {
+  var button = document.querySelector('.editor-post-publish-button');
+
+  if (button) {
+    button.addEventListener('mouseup', function () {
+      window.dispatchEvent(new Event('isSavingPost'));
+    });
+  }
+});
 /**
  * Themosis Library Public API.
  */
-
 
 var themosis = {
   /**
@@ -28732,7 +28741,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var _metabox_Metabox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./metabox/Metabox */ "./resources/js/src/components/metabox/Metabox.tsx");
+/* harmony import */ var _metabox_MetaboxController__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./metabox/MetaboxController */ "./resources/js/src/components/metabox/MetaboxController.tsx");
 
 
 
@@ -28763,7 +28772,7 @@ function () {
 
       if (elem) {
         elem.setAttribute('style', 'margin: 0; padding: 0;');
-        react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_metabox_Metabox__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_metabox_MetaboxController__WEBPACK_IMPORTED_MODULE_2__["default"], {
           id: id
         }), elem);
       }
@@ -29551,13 +29560,17 @@ function (_super) {
           thumbnail = 'undefined' !== typeof sizes['thumbnail'] ? sizes.thumbnail.url : sizes.full.url;
         }
 
-        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(SortableItem, {
-          key: "item-".concat(index),
-          index: index,
+        return (
+          /*#__PURE__*/
           // @ts-ignore
-          item: item,
-          thumbnail: thumbnail
-        });
+          react__WEBPACK_IMPORTED_MODULE_0__.createElement(SortableItem, {
+            key: "item-".concat(index),
+            index: index,
+            // @ts-ignore
+            item: item,
+            thumbnail: thumbnail
+          })
+        );
       }));
     });
     return (
@@ -31742,210 +31755,53 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _MetaboxBody__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MetaboxBody */ "./resources/js/src/components/metabox/MetaboxBody.tsx");
-/* harmony import */ var _MetaboxFooter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./MetaboxFooter */ "./resources/js/src/components/metabox/MetaboxFooter.tsx");
-/* harmony import */ var _buttons_Button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../buttons/Button */ "./resources/js/src/components/buttons/Button.tsx");
-/* harmony import */ var _MetaboxStatus__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./MetaboxStatus */ "./resources/js/src/components/metabox/MetaboxStatus.tsx");
-/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../helpers */ "./resources/js/src/helpers.ts");
-var __extends = undefined && undefined.__extends || function () {
-  var extendStatics = function (d, b) {
-    extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+/* harmony import */ var _MetaboxBody__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MetaboxBody */ "./resources/js/src/components/metabox/MetaboxBody.tsx");
+/* harmony import */ var _MetaboxFooter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./MetaboxFooter */ "./resources/js/src/components/metabox/MetaboxFooter.tsx");
+/* harmony import */ var _buttons_Button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../buttons/Button */ "./resources/js/src/components/buttons/Button.tsx");
+/* harmony import */ var _MetaboxStatus__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./MetaboxStatus */ "./resources/js/src/components/metabox/MetaboxStatus.tsx");
+
+
+
+
+
+
+var Metabox = function (_a) {
+  var fields = _a.fields,
+      groups = _a.groups,
+      status = _a.status,
+      l10n = _a.l10n,
+      onChange = _a.onChange,
+      onSave = _a.onSave;
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var handleIsSavingPost = function () {
+      return onSave();
     };
 
-    return extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-    extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
+    if (fields.length) {
+      window.addEventListener('isSavingPost', handleIsSavingPost);
+    } else {
+      window.removeEventListener('isSavingPost', handleIsSavingPost);
     }
 
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-
-
-
-
-
-
-
-
-/**
- * Metabox container component.
- */
-
-var Metabox =
-/** @class */
-function (_super) {
-  __extends(Metabox, _super);
-
-  function Metabox(props) {
-    var _this = _super.call(this, props) || this;
-
-    _this.state = {
-      fields: [],
-      groups: [],
-      l10n: {
-        done: 'Saved',
-        error: 'Errors',
-        saving: 'Saving',
-        submit: 'Save'
-      },
-      status: 'default'
+    return function () {
+      return window.removeEventListener('isSavingPost', handleIsSavingPost);
     };
-    _this.change = _this.change.bind(_this);
-    _this.save = _this.save.bind(_this);
-    _this.clearStatus = _this.clearStatus.bind(_this);
-    return _this;
-  }
-  /**
-   * Render component UI.
-   */
-
-
-  Metabox.prototype.render = function () {
-    return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
-      className: "themosis__metabox"
-    }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_MetaboxBody__WEBPACK_IMPORTED_MODULE_2__["default"], {
-      fields: this.state.fields,
-      groups: this.state.groups,
-      changeHandler: this.change
-    }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_MetaboxFooter__WEBPACK_IMPORTED_MODULE_3__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons_Button__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      primary: true,
-      disabled: 'saving' === this.state.status,
-      clickHandler: this.save
-    }, this.state.l10n.submit), 'default' !== this.state.status && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_MetaboxStatus__WEBPACK_IMPORTED_MODULE_5__["default"], {
-      status: this.state.status,
-      label: this.state.l10n[this.state.status]
-    })));
-  };
-  /**
-   * Handle onChange events for each field.
-   * This updates the "state" of our metabox fields values.
-   */
-
-
-  Metabox.prototype.change = function (name, value) {
-    var fields = this.state.fields.map(function (field) {
-      if (name === field.name) {
-        field.value = value;
-      }
-
-      return field;
-    });
-    this.setState({
-      fields: fields
-    });
-  };
-  /**
-   * Save metabox fields data.
-   */
-
-
-  Metabox.prototype.save = function () {
-    var _this = this;
-
-    var url = themosisGlobal.api.base_url + 'metabox/' + this.props.id + '?post_id=' + themosisGlobal.post.ID;
-    /*
-     * Change current status to "saving"
-     */
-
-    this.setState({
-      status: 'saving'
-    });
-    axios__WEBPACK_IMPORTED_MODULE_1___default().put(url, {
-      fields: this.state.fields
-    }).then(function (response) {
-      /*
-       * First check if there are any errors. Some fields
-       * might have failed the validation.
-       */
-      if (_this.hasErrors(response.data.fields.data)) {
-        _this.setState({
-          fields: response.data.fields.data,
-          status: 'error'
-        });
-      } else {
-        _this.setState({
-          fields: response.data.fields.data,
-          status: 'done'
-        });
-      }
-
-      _this.timer = setTimeout(_this.clearStatus, 5000);
-    }).catch(function (error) {
-      /*
-       * Reset metabox status to default
-       * and log the error to the console.
-       */
-      _this.setState({
-        status: 'default'
-      });
-
-      console.log(error.message);
-    });
-  };
-  /**
-   * Clear metabox footer status.
-   */
-
-
-  Metabox.prototype.clearStatus = function () {
-    this.setState({
-      status: 'default'
-    });
-    clearTimeout(this.timer);
-  };
-  /**
-   * Check if the metabox has errors.
-   */
-
-
-  Metabox.prototype.hasErrors = function (fields) {
-    for (var idx in fields) {
-      var field = fields[idx];
-
-      if ((0,_helpers__WEBPACK_IMPORTED_MODULE_6__.hasErrors)(field)) {
-        return true;
-      }
-    }
-
-    return false;
-  };
-  /**
-   * Fetch metabox data.
-   * Initialize fields.
-   */
-
-
-  Metabox.prototype.componentDidMount = function () {
-    var _this = this;
-
-    var url = themosisGlobal.api.base_url + 'metabox/' + this.props.id + '?post_id=' + themosisGlobal.post.ID;
-    axios__WEBPACK_IMPORTED_MODULE_1___default().get(url).then(function (response) {
-      _this.setState({
-        fields: response.data.fields.data,
-        groups: response.data.groups.data,
-        l10n: response.data.l10n
-      });
-    }).catch(function (error) {
-      console.log(error);
-    });
-  };
-
-  return Metabox;
-}(react__WEBPACK_IMPORTED_MODULE_0__.Component);
+  }, [fields]);
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", {
+    className: "themosis__metabox"
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_MetaboxBody__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    fields: fields,
+    groups: groups,
+    changeHandler: onChange
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_MetaboxFooter__WEBPACK_IMPORTED_MODULE_2__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_buttons_Button__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    primary: true,
+    disabled: 'saving' === status,
+    clickHandler: onSave
+  }, l10n.submit), 'default' !== status && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_MetaboxStatus__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    status: status,
+    label: l10n[status]
+  })));
+};
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Metabox);
 
@@ -32105,6 +31961,136 @@ function (_super) {
 }(react__WEBPACK_IMPORTED_MODULE_0__.Component);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MetaboxBody);
+
+/***/ }),
+
+/***/ "./resources/js/src/components/metabox/MetaboxController.tsx":
+/*!*******************************************************************!*\
+  !*** ./resources/js/src/components/metabox/MetaboxController.tsx ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MetaboxController)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _Metabox__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Metabox */ "./resources/js/src/components/metabox/Metabox.tsx");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../helpers */ "./resources/js/src/helpers.ts");
+
+
+
+
+function MetaboxController(_a) {
+  var id = _a.id;
+
+  var _b = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      fields = _b[0],
+      setFields = _b[1];
+
+  var _c = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      groups = _c[0],
+      setGroups = _c[1];
+
+  var _d = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
+    done: 'Saved',
+    error: 'Errors',
+    saving: 'Saving',
+    submit: 'Save'
+  }),
+      l10n = _d[0],
+      setL10n = _d[1];
+
+  var _e = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('default'),
+      status = _e[0],
+      setStatus = _e[1];
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    var url = themosisGlobal.api.base_url + 'metabox/' + id + '?post_id=' + themosisGlobal.post.ID;
+    axios__WEBPACK_IMPORTED_MODULE_2___default().get(url).then(function (response) {
+      setFields(response.data.fields.data);
+      setGroups(response.data.groups.data);
+      setL10n(response.data.l10n);
+    }).catch(function (error) {
+      console.log(error);
+    });
+  }, []);
+  var timer = undefined;
+
+  var hasErrors = function (fields) {
+    for (var idx in fields) {
+      var field = fields[idx];
+
+      if ((0,_helpers__WEBPACK_IMPORTED_MODULE_3__.hasErrors)(field)) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  var clearStatus = function () {
+    setStatus('default');
+    clearTimeout(timer);
+  };
+
+  var handleChange = function (name, value) {
+    setFields(fields.map(function (field) {
+      if (name === field.name) {
+        field.value = value;
+      }
+
+      return field;
+    }));
+  };
+
+  var handleSave = function () {
+    var url = themosisGlobal.api.base_url + 'metabox/' + id + '?post_id=' + themosisGlobal.post.ID;
+    /*
+     * Change current status to "saving"
+     */
+
+    setStatus('saving');
+    axios__WEBPACK_IMPORTED_MODULE_2___default().put(url, {
+      fields: fields
+    }).then(function (response) {
+      /*
+       * First check if there are any errors. Some fields
+       * might have failed the validation.
+       */
+      if (hasErrors(response.data.fields.data)) {
+        setFields(response.data.fields.data);
+        setStatus('error');
+      } else {
+        setFields(response.data.fields.data);
+        setStatus('done');
+      }
+
+      timer = setTimeout(clearStatus, 5000);
+    }).catch(function (error) {
+      /*
+       * Reset metabox status to default
+       * and log the error to the console.
+       */
+      setStatus('default');
+      console.log(error.message);
+    });
+  };
+
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__.createElement(_Metabox__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    id: id,
+    fields: fields,
+    groups: groups,
+    status: status,
+    l10n: l10n,
+    onChange: handleChange,
+    onSave: handleSave
+  });
+}
+;
 
 /***/ }),
 
@@ -35949,7 +35935,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/**\n * Colors\n */\n/**\n * Breakpoints & Media Queries\n */\n/**\n * Often re-used variables\n */\n/**\n * Breakpoint mixins\n */\n/**\n * Long content fade mixin\n *\n * Creates a fading overlay to signify that the content is longer\n * than the space allows.\n */\n/**\n * Button states and focus styles\n */\n/**\n * Applies editor left position to the selector passed as argument\n */\n/**\n * Applies editor right position to the selector passed as argument\n */\n/**\n * Styles that are reused verbatim in a few places\n */\n@-webkit-keyframes fade-in {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n@keyframes fade-in {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n@-webkit-keyframes editor_region_focus {\n  from {\n    box-shadow: inset 0 0 0 0 #33b3db;\n  }\n  to {\n    box-shadow: inset 0 0 0 4px #33b3db;\n  }\n}\n@keyframes editor_region_focus {\n  from {\n    box-shadow: inset 0 0 0 0 #33b3db;\n  }\n  to {\n    box-shadow: inset 0 0 0 4px #33b3db;\n  }\n}\n@-webkit-keyframes rotation {\n  from {\n    transform: rotate(0deg);\n  }\n  to {\n    transform: rotate(360deg);\n  }\n}\n@keyframes rotation {\n  from {\n    transform: rotate(0deg);\n  }\n  to {\n    transform: rotate(360deg);\n  }\n}\n.themosis__select__body {\n  position: relative;\n}\n\n.themosis__select__field {\n  position: relative;\n  display: inline-block;\n  border-radius: 4px;\n  border: 1px solid #d7dade;\n  width: 100%;\n  min-width: auto;\n  max-width: 100%;\n  margin: 0;\n  padding: 0;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07);\n  box-sizing: border-box;\n  z-index: 3;\n  background-color: #fff;\n}\n\n.themosis__select__input {\n  position: absolute;\n  padding: 8px;\n  border-radius: 4px;\n  box-sizing: border-box;\n  width: 100%;\n  min-width: 260px;\n  max-width: 100%;\n  z-index: 2;\n  margin: 0;\n  box-shadow: none !important;\n  border: none !important;\n  background: none !important;\n  top: 0;\n}\n\n.themosis__select__output {\n  position: relative;\n  display: inline-block;\n  padding: 6px 8px;\n  min-height: 20px;\n  z-index: 3;\n  pointer-events: none;\n  top: 0;\n  left: 0;\n}\n\n.themosis__select__list {\n  position: absolute;\n  width: 100%;\n  padding: 9px 8px 8px;\n  background-color: #f3f4f5;\n  border: 1px solid #d7dade;\n  border-radius: 4px;\n  top: 100%;\n  left: 0;\n  box-sizing: border-box;\n  margin-top: -6px;\n  display: none;\n  z-index: 1;\n  max-height: 200px;\n  overflow-y: scroll;\n}\n\n.themosis__select .icon__arrow__down {\n  position: absolute;\n  width: 12px;\n  height: 7px;\n  right: 8px;\n  top: 13px;\n  z-index: 5;\n  transform: rotate(0deg);\n  transition: transform 0.3s ease-in-out;\n}\n\n.themosis__select .icon__arrow__down path {\n  fill: #606a73;\n}\n\n.themosis__select__tag {\n  display: inline-block;\n  padding: 3px 10px 4px;\n  background-color: #e5f5fa;\n  color: #001a23;\n  margin: 0 6px 6px 0;\n  line-height: 1;\n  border-radius: 20px;\n  cursor: pointer;\n}\n\n.themosis__select__tag:hover {\n  background-color: #d0edf6;\n  color: #001a23;\n}\n\n.themosis__select__tag:active {\n  background-color: #fafdfe;\n  color: #001a23;\n}\n\n.themosis__select__tag .icon__close {\n  margin-left: 10px;\n}\n\n.themosis__select__tag .icon__close path {\n  fill: #006589;\n}\n\n.themosis__select.open .icon__arrow__down {\n  transform: rotate(-180deg);\n}\n\n.themosis__select.open .themosis__select__field {\n  z-index: 9999;\n}\n\n.themosis__select.open .themosis__select__output {\n  z-index: 9999;\n}\n\n.themosis__select.open .themosis__select__input {\n  z-index: 9998;\n}\n\n.themosis__select.open .themosis__select__list {\n  z-index: 9997;\n}\n\n.themosis.wp-editor .themosis__select.open .themosis__select__output {\n  min-height: 26px;\n}\n\n.themosis__select.multiple .themosis__select__field {\n  min-height: 34px;\n  padding: 6px 26px 6px 6px;\n  cursor: text;\n}\n\n.themosis__select.multiple .themosis__select__input {\n  position: static;\n  padding: 0;\n  width: 2.2em;\n  min-width: auto;\n  max-width: 100%;\n}\n\n.themosis__select.multiple.selection .themosis__select__field {\n  padding: 6px 26px 0 6px;\n}\n\n.themosis__select__output.open {\n  min-height: 16px;\n}\n\n.themosis__select__output.default {\n  color: #afb6bd;\n}\n\n.themosis__select__output.open.selection {\n  color: #afb6bd;\n  min-height: 20px;\n}\n\n.themosis__select__output.multiple {\n  position: absolute;\n  top: 6px;\n  left: 8px;\n  padding: 0;\n}\n\n.themosis__select__output.selection.multiple {\n  display: none;\n}\n\n.themosis__select__list.open {\n  display: block;\n}\n\n.themosis__select__group {\n  padding: 8px 0;\n  font-weight: 600;\n  color: #006589;\n}\n\n.themosis__select__group:not(:first-child) {\n  margin-top: 16px;\n}\n\n.themosis__select__item {\n  position: relative;\n  border-radius: 4px;\n  padding: 8px 10px;\n  margin-bottom: 1px;\n  cursor: pointer;\n}\n\n.themosis__select__item:hover {\n  background-color: #e5f5fa;\n  color: #001a23;\n}\n\n.themosis__select__item .themosis__svg {\n  display: none;\n}\n\n.themosis__select__item.selected {\n  background-color: #cfe6d4;\n  color: #1b2d1e;\n  cursor: default;\n}\n\n.themosis__select__item.selected:hover {\n  background-color: #cfe6d4;\n  color: #1b2d1e;\n}\n\n.themosis__select__item.selected .themosis__svg {\n  display: block;\n  position: absolute;\n  top: 50%;\n  right: 8px;\n  margin-top: -5.5px;\n}\n\n.themosis__select__item.selected .themosis__svg path {\n  fill: #2e4d33;\n}\n\n.themosis__select__item.notfound {\n  cursor: default;\n}\n\n.themosis__select__item.notfound:hover {\n  background: none;\n  color: inherit;\n}\n\n.themosis__choice__group {\n  display: block;\n  color: #606a73;\n  margin-bottom: 16px;\n  font-weight: 600;\n}\n\n.themosis__choice__group:not(:first-child) {\n  margin-top: 16px;\n}\n\n.themosis__choice__item {\n  display: inline-block;\n  margin-right: 16px;\n  margin-bottom: 8px;\n}\n\n.themosis__choice__item:last-child {\n  margin-right: 0;\n}\n\n.themosis__choice__item .themosis__input__checkbox,\n.themosis__choice__item .themosis__input__radio {\n  display: inline-block;\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\n.themosis__choice__item .themosis__field__label {\n  display: inline-block;\n  margin-top: -3px;\n  font-weight: 400;\n}\n\n.themosis__field .color__picker {\n  display: block;\n}\n\n@media screen and (min-width: 1280px) {\n  .themosis__field .color__picker {\n    display: flex;\n    flex-wrap: nowrap;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker {\n    position: fixed;\n    left: -194px !important;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker.is-bottom {\n    top: 44px !important;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker.is-top {\n    top: inherit !important;\n    bottom: 44px !important;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile):before,\n.themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile):after {\n    content: \"\";\n    position: absolute;\n    height: 0;\n    width: 0;\n    line-height: 0;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile):before {\n    border: 11px solid #e2e4e7;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile):after {\n    border: 8px solid #fff;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:before,\n.themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:after {\n    border-bottom-style: solid;\n    border-left-color: transparent;\n    border-right-color: transparent;\n    border-top: none;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:before,\n.themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:after {\n    border-top-style: solid;\n    border-left-color: transparent;\n    border-right-color: transparent;\n    border-bottom: none;\n  }\n\n  .themosis__field .color__picker .components-popover:not(.is-mobile).is-center .components-popover__content {\n    transform: translateX(-10%);\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:before {\n    top: -10px;\n    margin-left: 197px;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:after {\n    top: -8px;\n    margin-left: 200px;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:before {\n    bottom: -11px;\n    margin-left: 197px;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:after {\n    bottom: -9px;\n    margin-left: 199px;\n    border-width: 9px;\n  }\n}\n.themosis__field .color__picker .components-color-palette__item span:not(.components-color-palette__custom-color-gradient) {\n  position: relative;\n  transform: scale(1);\n}\n\n.themosis__field .color__picker .components-tooltip.is-top {\n  top: 6px !important;\n}\n\n.themosis__field .color__picker .components-tooltip.is-center {\n  left: 50% !important;\n}\n\n.themosis__field .component-color-indicator,\n.themosis__field .components-color-indicator {\n  display: block;\n  width: 100%;\n  height: 44px;\n  border: 1px solid #d7dade;\n  margin-bottom: 16px;\n}\n\n@media screen and (min-width: 1280px) {\n  .themosis__field .component-color-indicator,\n.themosis__field .components-color-indicator {\n    max-width: 70px;\n    height: 70px;\n    margin-left: 16px;\n    order: 2;\n  }\n}\n.themosis__field .components-color-palette {\n  width: 100%;\n}\n\n@media screen and (min-width: 1280px) {\n  .themosis__field .components-color-palette {\n    max-width: 260px;\n    order: 1;\n  }\n}\n.themosis__field .components-color-palette__item-wrapper {\n  box-sizing: border-box;\n}\n\n.themosis__field .components-color-palette__item-wrapper .components-color-palette__item .components-popover.components-tooltip {\n  transform: scale(0.8);\n}\n\n.themosis__field .components-color-palette__custom-color {\n  transform: scale(1);\n  z-index: 5;\n  transition: none;\n}\n\n.themosis__field .components-color-palette__custom-color .components-color-palette__item {\n  transform: scale(1);\n  transition: 0.1s transform ease;\n}\n\n.themosis__field .components-color-palette__custom-color .components-color-palette__item:hover {\n  transform: scale(1.2);\n}\n\n.themosis__field .components-color-palette__custom-color:hover {\n  transform: scale(1);\n}\n\n.themosis__field .components-color-palette__custom-color .components-color-palette__custom-color-gradient:before {\n  width: 200%;\n  height: 100%;\n}\n\n.themosis__field .components-color-palette__clear {\n  background: none;\n  border: none;\n  display: block;\n  color: #00669b;\n  text-decoration: underline;\n  box-shadow: none;\n  padding: 0;\n  font-size: 13px;\n}\n\n.themosis__field .components-color-palette__clear:hover {\n  color: #00a0d2;\n  box-shadow: none;\n  border: none;\n  background: none;\n  font-size: 13px;\n}\n\n.themosis__field .components-color-palette .components-color-palette__clear {\n  float: none;\n  margin: 0;\n}\n\n/* Gutenberg Styles */\n@media screen and (min-width: 1280px) {\n  .wp-editor .themosis__field .color__picker .components-color-palette__picker {\n    left: -84px !important;\n  }\n\n  .wp-editor .themosis__field .color__picker .components-color-palette__picker.is-bottom {\n    top: 38px !important;\n  }\n\n  .wp-editor .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:before {\n    margin-left: 85px;\n  }\n\n  .wp-editor .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:after {\n    top: -8px;\n    margin-left: 88px;\n  }\n\n  .wp-editor .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:before {\n    margin-left: 85px;\n    bottom: -9px;\n  }\n\n  .wp-editor .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:after {\n    top: -1px;\n    margin-left: 87px;\n  }\n\n  .wp-editor .themosis__field .color__picker .components-popover:not(.is-mobile).is-center .components-popover__content {\n    transform: translateX(-50%);\n  }\n}\n.wp-editor .themosis__field .color__picker .components-tooltip.is-top {\n  top: 6px !important;\n}\n\n.wp-editor .themosis__field .color__picker .components-tooltip.is-center {\n  left: 50% !important;\n}\n\n.wp-editor .themosis__field .components-color-palette .components-color-palette__custom-color-gradient:before {\n  height: 200%;\n}\n\n.themosis__input__number {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n}\n\n.themosis__input__number button {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: center;\n  align-items: center;\n  width: 32px;\n  height: 32px;\n  background-color: #e5f5fa;\n  border: 1px solid #bfe7f3;\n  box-sizing: border-box;\n  margin: 0;\n  cursor: pointer;\n}\n\n.themosis__input__number button .themosis__svg rect,\n.themosis__input__number button .themosis__svg path {\n  fill: #006589;\n}\n\n.themosis__input__number button:hover {\n  background-color: #d0edf6;\n}\n\n.themosis__input__number button:active {\n  background-color: #fafdfe;\n}\n\n.themosis__input__number .button__minus {\n  border-bottom-left-radius: 4px;\n  border-top-left-radius: 4px;\n}\n\n.themosis__input__number .button__plus {\n  border-bottom-right-radius: 4px;\n  border-top-right-radius: 4px;\n}\n\n.themosis__input__number input {\n  border-left: none;\n  border-right: none;\n  border-radius: 0;\n  box-sizing: border-box;\n  width: 70%;\n  height: 32px;\n  margin: 0;\n  text-align: center;\n}\n\n/* Desktop */\n@media screen and (min-width: 1190px) {\n  .themosis__input__number input {\n    max-width: 260px;\n  }\n}\n/* Side Metabox */\n.is-side .themosis__input__number input {\n  border-left: none;\n  border-right: none;\n  border-radius: 0;\n  border-color: #d7dade;\n}\n\n.themosis__field__media {\n  display: flex;\n  justify-content: flex-start;\n  flex-wrap: nowrap;\n}\n\n.themosis__field__media .icon--media {\n  font: normal 18px/1 dashicons;\n  display: inline-block;\n  position: relative;\n  top: 5px;\n  margin-right: 3px;\n}\n\n.themosis__field__media .icon--media:before {\n  color: #6c7781;\n  content: \"\\f104\";\n}\n\n.themosis__media__preview {\n  padding: 10px;\n  background-color: #edeff0;\n  border: 1px solid #e2e4e7;\n}\n\n.themosis__media__thumbnail {\n  width: 100px;\n  height: 100px;\n  overflow: hidden;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  flex-wrap: nowrap;\n  border: 1px solid #e2e4e7;\n  background-color: #fff;\n}\n\n.themosis__media__content {\n  padding-left: 16px;\n}\n\n.themosis__media__content button.button {\n  color: #BE1414;\n  text-decoration: underline;\n  background: none;\n  border: none;\n  box-shadow: none;\n  padding: 6px 0;\n}\n\n.themosis__media__content button.button:hover {\n  background: none;\n  color: #d51616;\n}\n\n.themosis__media__content button.button:active {\n  background: none;\n  color: #a71212;\n  box-shadow: none;\n  transform: none;\n}\n\n.themosis__collection {\n  display: none;\n  background: #edeff0;\n  border: 1px solid #e2e4e7;\n  padding: 10px 2px 2px 10px;\n  margin-bottom: 12px;\n}\n\n.themosis__collection__list {\n  display: flex;\n  justify-content: flex-start;\n  flex-wrap: wrap;\n  align-items: flex-start;\n}\n\n.themosis__collection__item {\n  position: relative;\n  padding: 4px;\n  background: none;\n  cursor: pointer;\n  margin-right: 8px;\n  margin-bottom: 8px;\n  transition: background 0.2s ease-in-out;\n}\n\n.themosis__collection__item__thumbnail {\n  position: relative;\n  width: 100px;\n  height: 100px;\n  overflow: hidden;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  flex-wrap: nowrap;\n  border: 1px solid #e2e4e7;\n  background-color: #fff;\n}\n\n.themosis__collection__item__overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(255, 255, 255, 0.9);\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  text-align: center;\n  z-index: 1;\n  opacity: 0;\n  visibility: hidden;\n  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;\n}\n\n.themosis__collection__item__overlay p {\n  word-break: break-all;\n}\n\n.themosis__collection__item__check {\n  position: absolute;\n  top: -2px;\n  right: -2px;\n  width: 26px;\n  height: 26px;\n  background-color: #00669b;\n  z-index: 5;\n  border: none;\n  box-shadow: 0 0 0 1px #fff, 0 0 0 2px #00669b;\n  cursor: pointer;\n  display: none;\n  box-sizing: border-box;\n}\n\n.themosis__collection__item__check .icon {\n  font: normal 24px/1 dashicons;\n  display: inline-block;\n  color: #fff;\n  position: relative;\n  left: -7px;\n  top: 1px;\n}\n\n.themosis__collection__item__check .icon:before {\n  content: \"\\f147\";\n}\n\n.themosis__collection__item__check:hover .icon:before {\n  content: \"\\f460\";\n}\n\n.themosis__collection__item:hover {\n  background: #e2e4e7;\n}\n\n.themosis__collection__item:hover .themosis__collection__item__overlay {\n  opacity: 1;\n  visibility: visible;\n}\n\n.themosis__collection__item:last-child {\n  margin-right: 0;\n}\n\n.themosis__collection__item.selected {\n  background: #00669b;\n}\n\n.themosis__collection__item.selected .themosis__collection__item__check {\n  display: block;\n}\n\n.themosis__collection__button--add .icon--media {\n  font: normal 18px/1 dashicons;\n  display: inline-block;\n  position: relative;\n  top: 5px;\n  margin-right: 3px;\n}\n\n.themosis__collection__button--add .icon--media:before {\n  color: #6c7781;\n  content: \"\\f104\";\n}\n\n.themosis__collection__button--remove {\n  display: none;\n  color: #BE1414;\n  background: none;\n  padding: 6px 0;\n  box-shadow: none;\n  border: none;\n  cursor: pointer;\n  text-decoration: underline;\n  margin-left: 12px;\n}\n\n.themosis__collection__button--remove:hover {\n  background: none;\n  color: #d51616;\n}\n\n.themosis__collection__button--remove:active {\n  background: none;\n  color: #a71212;\n  box-shadow: none;\n  transform: none;\n}\n\n.themosis__collection__button--remove.show {\n  display: inline-block;\n}\n\n.themosis__collection.show {\n  display: block;\n}\n\n.themosis__metabox__footer {\n  display: flex;\n  background: #f3f4f5;\n  border-top: 1px solid #e2e4e7;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n}\n\n.themosis__metabox__status {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  margin-left: 12px;\n}\n\n.themosis__metabox__status__icon {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  width: 22px;\n  height: 22px;\n}\n\n.themosis__metabox__status__icon svg.icon__saving {\n  -webkit-animation: rotation 1s infinite linear;\n          animation: rotation 1s infinite linear;\n}\n\n.themosis__metabox__status__text {\n  display: inline;\n  margin: 0 0 0 8px;\n  padding: 0;\n  line-height: 1;\n}\n\n.themosis__tabs {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n}\n\n.themosis__tabs__menu {\n  width: 25%;\n  max-width: 260px;\n  background-color: #e2e4e7;\n  padding-right: 1px;\n}\n\n.themosis__tabs__menu button {\n  display: block;\n  width: 100%;\n  padding: 12px 12px 12px 8px;\n  font-size: 13px;\n  font-weight: 600;\n  background-color: #F5F5F5;\n  color: #606a73;\n  border: none;\n  border-left: 4px solid #F5F5F5;\n  margin-bottom: 1px;\n  text-align: left;\n  cursor: pointer;\n  box-sizing: border-box;\n}\n\n.themosis__tabs__menu button:hover {\n  background-color: #fff;\n  border-left: 4px solid #fff;\n}\n\n.themosis__tabs__menu button span.shortname {\n  display: none;\n}\n\n.themosis__tabs__menu button span.fullname {\n  display: inline;\n}\n\n.themosis__tabs__menu button.tab__active {\n  background-color: #fff;\n  color: #008dbe;\n  border-left: 4px solid #008dbe;\n}\n\n.themosis__tabs__menu button.tab__has__errors {\n  color: #BE1414;\n  border-left: 4px solid #BE1414;\n}\n\n.themosis__tabs__body {\n  background-color: #fff;\n  flex: 1 1 auto;\n}\n\n.themosis__field {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n  border-bottom: 1px solid #EEEEEE;\n}\n\n.themosis__field:last-child {\n  border: none;\n}\n\n.themosis__field__label {\n  font-weight: 600;\n}\n\n.themosis__column__label {\n  width: 33.33%;\n}\n\n.themosis__column__content {\n  width: 66.66%;\n}\n\n.themosis__description {\n  margin-top: 8px;\n  color: #606a73;\n}\n\n.themosis__field__errors {\n  margin-top: 8px;\n}\n\n.themosis__field__errors ul {\n  display: inline-block;\n  background-color: #F2DADA;\n  border-radius: 4px;\n  padding: 6px;\n  margin: 0;\n  color: #BE1414;\n}\n\n.themosis__field__errors ul li {\n  color: #BE1414;\n  margin: 0;\n}\n\n.themosis__input {\n  min-width: auto;\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #d7dade;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  padding: 6px;\n}\n\n.themosis__input__hidden {\n  padding: 6px 12px;\n  background-color: #f3f4f5;\n  border: 1px solid #d7dade;\n  text-shadow: 0 1px 0 #fff;\n  border-radius: 4px;\n}\n\n.themosis__textarea {\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #d7dade;\n  border-radius: 4px;\n  padding: 6px;\n}\n\n.has__errors .themosis__input {\n  border-color: #BE1414;\n}\n\n.has__errors .themosis__textarea {\n  border-color: #BE1414;\n}\n\n/* Gutenberg styles */\n.wp-editor .themosis__metabox__footer {\n  background: #f3f4f5;\n  padding: 16px;\n}\n\n.wp-editor .themosis__tabs__menu button {\n  padding: 12px;\n}\n\n.wp-editor .themosis__field {\n  padding: 16px;\n}\n\n.themosis .edit-post-layout__metaboxes:not(:empty) .edit-post-meta-boxes-area {\n  margin: auto 0;\n}\n\n/* Side context */\n#side-sortables .themosis__field {\n  display: block;\n}\n\n#side-sortables .themosis__column__label {\n  width: 100%;\n  padding-bottom: 8px;\n}\n\n#side-sortables .themosis__column__content {\n  width: 100%;\n}\n\n/* Mobile */\n@media screen and (max-width: 782px) {\n  .themosis__tabs__menu {\n    min-width: 50px;\n    width: 50px;\n    max-width: 50px;\n  }\n\n  .themosis__tabs__menu button span.shortname {\n    display: block;\n    text-align: center;\n    font-size: 15px;\n  }\n\n  .themosis__tabs__menu button span.fullname {\n    display: none;\n  }\n\n  .themosis__field {\n    display: block;\n  }\n\n  .themosis__column__label {\n    width: 100%;\n    padding-bottom: 8px;\n  }\n\n  .themosis__column__content {\n    width: 100%;\n  }\n}\n/* Desktop */\n@media screen and (min-width: 1280px) {\n  .themosis__input {\n    max-width: 260px;\n  }\n}\n/* WordPress Components Styles */\n/* @import '~@wordpress/components/src/color-palette/style.scss'; */", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "/**\n * Colors\n */\n/**\n * Breakpoints & Media Queries\n */\n/**\n * Often re-used variables\n */\n/**\n * Breakpoint mixins\n */\n/**\n * Long content fade mixin\n *\n * Creates a fading overlay to signify that the content is longer\n * than the space allows.\n */\n/**\n * Button states and focus styles\n */\n/**\n * Applies editor left position to the selector passed as argument\n */\n/**\n * Applies editor right position to the selector passed as argument\n */\n/**\n * Styles that are reused verbatim in a few places\n */\n@-webkit-keyframes fade-in {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n@keyframes fade-in {\n  from {\n    opacity: 0;\n  }\n  to {\n    opacity: 1;\n  }\n}\n@-webkit-keyframes editor_region_focus {\n  from {\n    box-shadow: inset 0 0 0 0 #33b3db;\n  }\n  to {\n    box-shadow: inset 0 0 0 4px #33b3db;\n  }\n}\n@keyframes editor_region_focus {\n  from {\n    box-shadow: inset 0 0 0 0 #33b3db;\n  }\n  to {\n    box-shadow: inset 0 0 0 4px #33b3db;\n  }\n}\n@-webkit-keyframes rotation {\n  from {\n    transform: rotate(0deg);\n  }\n  to {\n    transform: rotate(360deg);\n  }\n}\n@keyframes rotation {\n  from {\n    transform: rotate(0deg);\n  }\n  to {\n    transform: rotate(360deg);\n  }\n}\n.themosis__select__body {\n  position: relative;\n}\n\n.themosis__select__field {\n  position: relative;\n  display: inline-block;\n  border-radius: 4px;\n  border: 1px solid #d7dade;\n  width: 100%;\n  min-width: auto;\n  max-width: 100%;\n  margin: 0;\n  padding: 0;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.07);\n  box-sizing: border-box;\n  z-index: 3;\n  background-color: #fff;\n}\n\n.themosis__select__input {\n  position: absolute;\n  padding: 8px;\n  border-radius: 4px;\n  box-sizing: border-box;\n  width: 100%;\n  min-width: 260px;\n  max-width: 100%;\n  z-index: 2;\n  margin: 0;\n  box-shadow: none !important;\n  border: none !important;\n  background: none !important;\n  top: 0;\n}\n\n.themosis__select__output {\n  position: relative;\n  display: inline-block;\n  padding: 6px 8px;\n  min-height: 20px;\n  z-index: 3;\n  pointer-events: none;\n  top: 0;\n  left: 0;\n}\n\n.themosis__select__list {\n  position: absolute;\n  width: 100%;\n  padding: 9px 8px 8px;\n  background-color: #f3f4f5;\n  border: 1px solid #d7dade;\n  border-radius: 4px;\n  top: 100%;\n  left: 0;\n  box-sizing: border-box;\n  margin-top: -6px;\n  display: none;\n  z-index: 1;\n  max-height: 200px;\n  overflow-y: scroll;\n}\n\n.themosis__select .icon__arrow__down {\n  position: absolute;\n  width: 12px;\n  height: 7px;\n  right: 8px;\n  top: 13px;\n  z-index: 5;\n  transform: rotate(0deg);\n  transition: transform 0.3s ease-in-out;\n}\n\n.themosis__select .icon__arrow__down path {\n  fill: #606a73;\n}\n\n.themosis__select__tag {\n  display: inline-block;\n  padding: 3px 10px 4px;\n  background-color: #e5f5fa;\n  color: #001a23;\n  margin: 0 6px 6px 0;\n  line-height: 1;\n  border-radius: 20px;\n  cursor: pointer;\n}\n\n.themosis__select__tag:hover {\n  background-color: #d0edf6;\n  color: #001a23;\n}\n\n.themosis__select__tag:active {\n  background-color: #fafdfe;\n  color: #001a23;\n}\n\n.themosis__select__tag .icon__close {\n  margin-left: 10px;\n}\n\n.themosis__select__tag .icon__close path {\n  fill: #006589;\n}\n\n.themosis__select.open .icon__arrow__down {\n  transform: rotate(-180deg);\n}\n\n.themosis__select.open .themosis__select__field {\n  z-index: 9999;\n}\n\n.themosis__select.open .themosis__select__output {\n  z-index: 9999;\n}\n\n.themosis__select.open .themosis__select__input {\n  z-index: 9998;\n}\n\n.themosis__select.open .themosis__select__list {\n  z-index: 9997;\n}\n\n.themosis.wp-editor .themosis__select.open .themosis__select__output {\n  min-height: 26px;\n}\n\n.themosis__select.multiple .themosis__select__field {\n  min-height: 34px;\n  padding: 6px 26px 6px 6px;\n  cursor: text;\n}\n\n.themosis__select.multiple .themosis__select__input {\n  position: static;\n  padding: 0;\n  width: 2.2em;\n  min-width: auto;\n  max-width: 100%;\n}\n\n.themosis__select.multiple.selection .themosis__select__field {\n  padding: 6px 26px 0 6px;\n}\n\n.themosis__select__output.open {\n  min-height: 16px;\n}\n\n.themosis__select__output.default {\n  color: #afb6bd;\n}\n\n.themosis__select__output.open.selection {\n  color: #afb6bd;\n  min-height: 20px;\n}\n\n.themosis__select__output.multiple {\n  position: absolute;\n  top: 6px;\n  left: 8px;\n  padding: 0;\n}\n\n.themosis__select__output.selection.multiple {\n  display: none;\n}\n\n.themosis__select__list.open {\n  display: block;\n}\n\n.themosis__select__group {\n  padding: 8px 0;\n  font-weight: 600;\n  color: #006589;\n}\n\n.themosis__select__group:not(:first-child) {\n  margin-top: 16px;\n}\n\n.themosis__select__item {\n  position: relative;\n  border-radius: 4px;\n  padding: 8px 10px;\n  margin-bottom: 1px;\n  cursor: pointer;\n}\n\n.themosis__select__item:hover {\n  background-color: #e5f5fa;\n  color: #001a23;\n}\n\n.themosis__select__item .themosis__svg {\n  display: none;\n}\n\n.themosis__select__item.selected {\n  background-color: #cfe6d4;\n  color: #1b2d1e;\n  cursor: default;\n}\n\n.themosis__select__item.selected:hover {\n  background-color: #cfe6d4;\n  color: #1b2d1e;\n}\n\n.themosis__select__item.selected .themosis__svg {\n  display: block;\n  position: absolute;\n  top: 50%;\n  right: 8px;\n  margin-top: -5.5px;\n}\n\n.themosis__select__item.selected .themosis__svg path {\n  fill: #2e4d33;\n}\n\n.themosis__select__item.notfound {\n  cursor: default;\n}\n\n.themosis__select__item.notfound:hover {\n  background: none;\n  color: inherit;\n}\n\n.themosis__choice__group {\n  display: block;\n  color: #606a73;\n  margin-bottom: 16px;\n  font-weight: 600;\n}\n\n.themosis__choice__group:not(:first-child) {\n  margin-top: 16px;\n}\n\n.themosis__choice__item {\n  display: inline-block;\n  margin-right: 16px;\n  margin-bottom: 8px;\n}\n\n.themosis__choice__item:last-child {\n  margin-right: 0;\n}\n\n.themosis__choice__item .themosis__input__checkbox,\n.themosis__choice__item .themosis__input__radio {\n  display: inline-block;\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\n.themosis__choice__item .themosis__field__label {\n  display: inline-block;\n  margin-top: -3px;\n  font-weight: 400;\n}\n\n.themosis__field .color__picker {\n  display: block;\n}\n\n@media screen and (min-width: 1280px) {\n  .themosis__field .color__picker {\n    display: flex;\n    flex-wrap: nowrap;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker {\n    position: fixed;\n    left: -194px !important;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker.is-bottom {\n    top: 44px !important;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker.is-top {\n    top: inherit !important;\n    bottom: 44px !important;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile):before,\n.themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile):after {\n    content: \"\";\n    position: absolute;\n    height: 0;\n    width: 0;\n    line-height: 0;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile):before {\n    border: 11px solid #e2e4e7;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile):after {\n    border: 8px solid #fff;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:before,\n.themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:after {\n    border-bottom-style: solid;\n    border-left-color: transparent;\n    border-right-color: transparent;\n    border-top: none;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:before,\n.themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:after {\n    border-top-style: solid;\n    border-left-color: transparent;\n    border-right-color: transparent;\n    border-bottom: none;\n  }\n\n  .themosis__field .color__picker .components-popover:not(.is-mobile).is-center .components-popover__content {\n    transform: translateX(-10%);\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:before {\n    top: -10px;\n    margin-left: 197px;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:after {\n    top: -8px;\n    margin-left: 200px;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:before {\n    bottom: -11px;\n    margin-left: 197px;\n  }\n\n  .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:after {\n    bottom: -9px;\n    margin-left: 199px;\n    border-width: 9px;\n  }\n}\n.themosis__field .color__picker .components-color-palette__item span:not(.components-color-palette__custom-color-gradient) {\n  position: relative;\n  transform: scale(1);\n}\n\n.themosis__field .color__picker .components-tooltip.is-top {\n  top: 6px !important;\n}\n\n.themosis__field .color__picker .components-tooltip.is-center {\n  left: 50% !important;\n}\n\n.themosis__field .component-color-indicator,\n.themosis__field .components-color-indicator {\n  display: block;\n  width: 100%;\n  height: 44px;\n  border: 1px solid #d7dade;\n  margin-bottom: 16px;\n}\n\n@media screen and (min-width: 1280px) {\n  .themosis__field .component-color-indicator,\n.themosis__field .components-color-indicator {\n    max-width: 70px;\n    height: 70px;\n    margin-left: 16px;\n    order: 2;\n  }\n}\n.themosis__field .components-color-palette {\n  width: 100%;\n}\n\n@media screen and (min-width: 1280px) {\n  .themosis__field .components-color-palette {\n    max-width: 260px;\n    order: 1;\n  }\n}\n.themosis__field .components-color-palette__item-wrapper {\n  box-sizing: border-box;\n}\n\n.themosis__field .components-color-palette__item-wrapper .components-color-palette__item .components-popover.components-tooltip {\n  transform: scale(0.8);\n}\n\n.themosis__field .components-color-palette__custom-color {\n  transform: scale(1);\n  z-index: 5;\n  transition: none;\n}\n\n.themosis__field .components-color-palette__custom-color .components-color-palette__item {\n  transform: scale(1);\n  transition: 0.1s transform ease;\n}\n\n.themosis__field .components-color-palette__custom-color .components-color-palette__item:hover {\n  transform: scale(1.2);\n}\n\n.themosis__field .components-color-palette__custom-color:hover {\n  transform: scale(1);\n}\n\n.themosis__field .components-color-palette__custom-color .components-color-palette__custom-color-gradient:before {\n  width: 200%;\n  height: 100%;\n}\n\n.themosis__field .components-color-palette__clear {\n  background: none;\n  border: none;\n  display: block;\n  color: #00669b;\n  text-decoration: underline;\n  box-shadow: none;\n  padding: 0;\n  font-size: 13px;\n}\n\n.themosis__field .components-color-palette__clear:hover {\n  color: #00a0d2;\n  box-shadow: none;\n  border: none;\n  background: none;\n  font-size: 13px;\n}\n\n.themosis__field .components-color-palette .components-color-palette__clear {\n  float: none;\n  margin: 0;\n}\n\n/* Gutenberg Styles */\n@media screen and (min-width: 1280px) {\n  .wp-editor .themosis__field .color__picker .components-color-palette__picker {\n    left: -84px !important;\n  }\n\n  .wp-editor .themosis__field .color__picker .components-color-palette__picker.is-bottom {\n    top: 38px !important;\n  }\n\n  .wp-editor .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:before {\n    margin-left: 85px;\n  }\n\n  .wp-editor .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-bottom:after {\n    top: -8px;\n    margin-left: 88px;\n  }\n\n  .wp-editor .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:before {\n    margin-left: 85px;\n    bottom: -9px;\n  }\n\n  .wp-editor .themosis__field .color__picker .components-color-palette__picker:not(.is-without-arrow):not(.is-mobile).is-top:after {\n    top: -1px;\n    margin-left: 87px;\n  }\n\n  .wp-editor .themosis__field .color__picker .components-popover:not(.is-mobile).is-center .components-popover__content {\n    transform: translateX(-50%);\n  }\n}\n.wp-editor .themosis__field .color__picker .components-tooltip.is-top {\n  top: 6px !important;\n}\n\n.wp-editor .themosis__field .color__picker .components-tooltip.is-center {\n  left: 50% !important;\n}\n\n.wp-editor .themosis__field .components-color-palette .components-color-palette__custom-color-gradient:before {\n  height: 200%;\n}\n\n.themosis__input__number {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n}\n\n.themosis__input__number button {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: center;\n  align-items: center;\n  width: 32px;\n  height: 32px;\n  background-color: #e5f5fa;\n  border: 1px solid #bfe7f3;\n  box-sizing: border-box;\n  margin: 0;\n  cursor: pointer;\n}\n\n.themosis__input__number button .themosis__svg rect,\n.themosis__input__number button .themosis__svg path {\n  fill: #006589;\n}\n\n.themosis__input__number button:hover {\n  background-color: #d0edf6;\n}\n\n.themosis__input__number button:active {\n  background-color: #fafdfe;\n}\n\n.themosis__input__number .button__minus {\n  border-bottom-left-radius: 4px;\n  border-top-left-radius: 4px;\n}\n\n.themosis__input__number .button__plus {\n  border-bottom-right-radius: 4px;\n  border-top-right-radius: 4px;\n}\n\n.themosis__input__number input {\n  border-left: none;\n  border-right: none;\n  border-radius: 0;\n  box-sizing: border-box;\n  width: 70%;\n  height: 32px;\n  margin: 0;\n  text-align: center;\n}\n\n/* Desktop */\n@media screen and (min-width: 1190px) {\n  .themosis__input__number input {\n    max-width: 260px;\n  }\n}\n/* Side Metabox */\n.is-side .themosis__input__number input {\n  border-left: none;\n  border-right: none;\n  border-radius: 0;\n  border-color: #d7dade;\n}\n\n.themosis__field__media {\n  display: flex;\n  justify-content: flex-start;\n  flex-wrap: nowrap;\n}\n\n.themosis__field__media .icon--media {\n  font: normal 18px/1 dashicons;\n  display: inline-block;\n  position: relative;\n  top: 5px;\n  margin-right: 3px;\n}\n\n.themosis__field__media .icon--media:before {\n  color: #6c7781;\n  content: \"\\f104\";\n}\n\n.themosis__media__preview {\n  padding: 10px;\n  background-color: #edeff0;\n  border: 1px solid #e2e4e7;\n}\n\n.themosis__media__thumbnail {\n  width: 100px;\n  height: 100px;\n  overflow: hidden;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  flex-wrap: nowrap;\n  border: 1px solid #e2e4e7;\n  background-color: #fff;\n}\n\n.themosis__media__content {\n  padding-left: 16px;\n}\n\n.themosis__media__content button.button {\n  color: #BE1414;\n  text-decoration: underline;\n  background: none;\n  border: none;\n  box-shadow: none;\n  padding: 6px 0;\n}\n\n.themosis__media__content button.button:hover {\n  background: none;\n  color: #d51616;\n}\n\n.themosis__media__content button.button:active {\n  background: none;\n  color: #a71212;\n  box-shadow: none;\n  transform: none;\n}\n\n.themosis__collection {\n  display: none;\n  background: #edeff0;\n  border: 1px solid #e2e4e7;\n  padding: 10px 2px 2px 10px;\n  margin-bottom: 12px;\n}\n\n.themosis__collection__list {\n  display: flex;\n  justify-content: flex-start;\n  flex-wrap: wrap;\n  align-items: flex-start;\n}\n\n.themosis__collection__item {\n  position: relative;\n  padding: 4px;\n  background: none;\n  cursor: pointer;\n  margin-right: 8px;\n  margin-bottom: 8px;\n  transition: background 0.2s ease-in-out;\n}\n\n.themosis__collection__item__thumbnail {\n  position: relative;\n  width: 100px;\n  height: 100px;\n  overflow: hidden;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  flex-wrap: nowrap;\n  border: 1px solid #e2e4e7;\n  background-color: #fff;\n}\n\n.themosis__collection__item__overlay {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background: rgba(255, 255, 255, 0.9);\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  text-align: center;\n  z-index: 1;\n  opacity: 0;\n  visibility: hidden;\n  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;\n}\n\n.themosis__collection__item__overlay p {\n  word-break: break-all;\n}\n\n.themosis__collection__item__check {\n  position: absolute;\n  top: -2px;\n  right: -2px;\n  width: 26px;\n  height: 26px;\n  background-color: #00669b;\n  z-index: 5;\n  border: none;\n  box-shadow: 0 0 0 1px #fff, 0 0 0 2px #00669b;\n  cursor: pointer;\n  display: none;\n  box-sizing: border-box;\n}\n\n.themosis__collection__item__check .icon {\n  font: normal 24px/1 dashicons;\n  display: inline-block;\n  color: #fff;\n  position: relative;\n  left: -7px;\n  top: 1px;\n}\n\n.themosis__collection__item__check .icon:before {\n  content: \"\\f147\";\n}\n\n.themosis__collection__item__check:hover .icon:before {\n  content: \"\\f460\";\n}\n\n.themosis__collection__item:hover {\n  background: #e2e4e7;\n}\n\n.themosis__collection__item:hover .themosis__collection__item__overlay {\n  opacity: 1;\n  visibility: visible;\n}\n\n.themosis__collection__item:last-child {\n  margin-right: 0;\n}\n\n.themosis__collection__item.selected {\n  background: #00669b;\n}\n\n.themosis__collection__item.selected .themosis__collection__item__check {\n  display: block;\n}\n\n.themosis__collection__button--add .icon--media {\n  font: normal 18px/1 dashicons;\n  display: inline-block;\n  position: relative;\n  top: 5px;\n  margin-right: 3px;\n}\n\n.themosis__collection__button--add .icon--media:before {\n  color: #6c7781;\n  content: \"\\f104\";\n}\n\n.themosis__collection__button--remove {\n  display: none;\n  color: #BE1414;\n  background: none;\n  padding: 6px 0;\n  box-shadow: none;\n  border: none;\n  cursor: pointer;\n  text-decoration: underline;\n  margin-left: 12px;\n}\n\n.themosis__collection__button--remove:hover {\n  background: none;\n  color: #d51616;\n}\n\n.themosis__collection__button--remove:active {\n  background: none;\n  color: #a71212;\n  box-shadow: none;\n  transform: none;\n}\n\n.themosis__collection__button--remove.show {\n  display: inline-block;\n}\n\n.themosis__collection.show {\n  display: block;\n}\n\n.themosis__metabox__footer {\n  display: flex;\n  background: #f3f4f5;\n  border-top: 1px solid #e2e4e7;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n}\n\n.themosis__metabox__status {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  margin-left: 12px;\n}\n\n.themosis__metabox__status__icon {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  align-items: center;\n  width: 22px;\n  height: 22px;\n}\n\n.themosis__metabox__status__icon svg.icon__saving {\n  -webkit-animation: rotation 1s infinite linear;\n          animation: rotation 1s infinite linear;\n}\n\n.themosis__metabox__status__text {\n  display: inline;\n  margin: 0 0 0 8px;\n  padding: 0;\n  line-height: 1;\n}\n\n.themosis__tabs {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n}\n\n.themosis__tabs__menu {\n  width: 25%;\n  max-width: 260px;\n  background-color: #e2e4e7;\n  padding-right: 1px;\n}\n\n.themosis__tabs__menu button {\n  display: block;\n  width: 100%;\n  padding: 12px 12px 12px 8px;\n  font-size: 13px;\n  font-weight: 600;\n  background-color: #F5F5F5;\n  color: #606a73;\n  border: none;\n  border-left: 4px solid #F5F5F5;\n  margin-bottom: 1px;\n  text-align: left;\n  cursor: pointer;\n  box-sizing: border-box;\n}\n\n.themosis__tabs__menu button:hover {\n  background-color: #fff;\n  border-left: 4px solid #fff;\n}\n\n.themosis__tabs__menu button span.shortname {\n  display: none;\n}\n\n.themosis__tabs__menu button span.fullname {\n  display: inline;\n}\n\n.themosis__tabs__menu button.tab__active {\n  background-color: #fff;\n  color: #008dbe;\n  border-left: 4px solid #008dbe;\n}\n\n.themosis__tabs__menu button.tab__has__errors {\n  color: #BE1414;\n  border-left: 4px solid #BE1414;\n}\n\n.themosis__tabs__body {\n  background-color: #fff;\n  flex: 1 1 auto;\n}\n\n.themosis__field {\n  display: flex;\n  flex-direction: row;\n  flex-wrap: nowrap;\n  justify-content: flex-start;\n  padding: 16px 12px;\n  border-bottom: 1px solid #EEEEEE;\n}\n\n.themosis__field:last-child {\n  border: none;\n}\n\n.themosis__field__label {\n  font-weight: 600;\n}\n\n.themosis__column__label {\n  width: 33.33%;\n}\n\n.themosis__column__content {\n  width: 66.66%;\n}\n\n.themosis__description {\n  margin-top: 8px;\n  color: #606a73;\n}\n\n.themosis__field__errors {\n  margin-top: 8px;\n}\n\n.themosis__field__errors ul {\n  display: inline-block;\n  background-color: #F2DADA;\n  border-radius: 4px;\n  padding: 6px;\n  margin: 0;\n  color: #BE1414;\n}\n\n.themosis__field__errors ul li {\n  color: #BE1414;\n  margin: 0;\n}\n\n.themosis__input {\n  min-width: auto;\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #d7dade;\n  border-radius: 4px;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  padding: 6px;\n}\n\n.themosis__input__hidden {\n  padding: 6px 12px;\n  background-color: #f3f4f5;\n  border: 1px solid #d7dade;\n  text-shadow: 0 1px 0 #fff;\n  border-radius: 4px;\n}\n\n.themosis__textarea {\n  width: 100%;\n  max-width: 100%;\n  border: 1px solid #d7dade;\n  border-radius: 4px;\n  padding: 6px;\n}\n\n.has__errors .themosis__input {\n  border-color: #BE1414;\n}\n\n.has__errors .themosis__textarea {\n  border-color: #BE1414;\n}\n\n/* Gutenberg styles */\n.wp-editor .themosis__metabox__footer {\n  background: #f3f4f5;\n  padding: 16px;\n}\n\n.wp-editor .themosis__tabs__menu button {\n  padding: 12px;\n}\n\n.wp-editor .themosis__field {\n  padding: 16px;\n}\n\n.themosis .edit-post-layout__metaboxes:not(:empty) .edit-post-meta-boxes-area {\n  margin: auto 0;\n}\n\n/* Side context */\n#side-sortables .themosis__field {\n  display: block;\n}\n\n#side-sortables .themosis__column__label {\n  width: 100%;\n  padding-bottom: 8px;\n}\n\n#side-sortables .themosis__column__content {\n  width: 100%;\n}\n\n/* Mobile */\n@media screen and (max-width: 782px) {\n  .themosis__tabs__menu {\n    min-width: 50px;\n    width: 50px;\n    max-width: 50px;\n  }\n\n  .themosis__tabs__menu button span.shortname {\n    display: block;\n    text-align: center;\n    font-size: 15px;\n  }\n\n  .themosis__tabs__menu button span.fullname {\n    display: none;\n  }\n\n  .themosis__field {\n    display: block;\n  }\n\n  .themosis__column__label {\n    width: 100%;\n    padding-bottom: 8px;\n  }\n\n  .themosis__column__content {\n    width: 100%;\n  }\n}\n/* Desktop */\n@media screen and (min-width: 1280px) {\n  .is-side .themosis__input {\n    max-width: 260px;\n  }\n}\n/* WordPress Components Styles */\n/* @import '~@wordpress/components/src/color-palette/style.scss'; */", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

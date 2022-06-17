@@ -54,6 +54,16 @@ if ('undefined' !== typeof themosisGlobal) {
     factory.make(themosisGlobal.metabox);
 }
 
+window.addEventListener('load', () => {
+    const button = document.querySelector('.editor-post-publish-button');
+
+    if (button) {
+        button.addEventListener('mouseup', () => {
+            window.dispatchEvent(new Event('isSavingPost'));
+        });
+    }
+});
+
 /**
  * Themosis Library Public API.
  */

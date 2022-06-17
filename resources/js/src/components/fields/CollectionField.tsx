@@ -270,6 +270,7 @@ class CollectionField extends React.Component <FieldProps, CollectionState> {
                         }
 
                         return (
+                            // @ts-ignore
                             <SortableItem key={`item-${index}`}
                                           index={index}
                                           // @ts-ignore
