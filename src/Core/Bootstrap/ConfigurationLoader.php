@@ -51,8 +51,8 @@ class ConfigurationLoader
     /**
      * Load configuration items from all found config files.
      *
-     * @param Application        $app
-     * @param RepositoryContract $repository
+     * @param  Application  $app
+     * @param  RepositoryContract  $repository
      *
      * @throws Exception
      */
@@ -102,8 +102,7 @@ class ConfigurationLoader
     /**
      * Get all configuration files.
      *
-     * @param Application $app
-     *
+     * @param  Application  $app
      * @return array
      */
     protected function getConfigurationFiles(Application $app)
@@ -113,7 +112,7 @@ class ConfigurationLoader
         foreach (Finder::create()->files()->name('*.php')->in($app->configPath()) as $file) {
             $directory = $this->getNestedDirectory($file, $app->configPath());
 
-            $files[$directory . basename($file->getRealPath(), '.php')] = $file->getRealPath();
+            $files[$directory.basename($file->getRealPath(), '.php')] = $file->getRealPath();
         }
 
         ksort($files, SORT_NATURAL);
@@ -124,9 +123,8 @@ class ConfigurationLoader
     /**
      * Get configuration file nesting path.
      *
-     * @param \SplFileInfo $file
-     * @param string       $path
-     *
+     * @param  \SplFileInfo  $file
+     * @param  string  $path
      * @return string
      */
     protected function getNestedDirectory(\SplFileInfo $file, $path)
@@ -134,7 +132,7 @@ class ConfigurationLoader
         $directory = $file->getPath();
 
         if ($nested = trim(str_replace($path, '', $directory), DIRECTORY_SEPARATOR)) {
-            $nested = str_replace(DIRECTORY_SEPARATOR, '.', $nested) . '.';
+            $nested = str_replace(DIRECTORY_SEPARATOR, '.', $nested).'.';
         }
 
         return $nested;

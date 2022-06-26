@@ -45,11 +45,11 @@ class ExceptionHandler
     /**
      * Convert PHP errors to ErrorException instances.
      *
-     * @param int    $level
-     * @param string $message
-     * @param string $file
-     * @param int    $line
-     * @param array  $context
+     * @param  int  $level
+     * @param  string  $message
+     * @param  string  $file
+     * @param  int  $line
+     * @param  array  $context
      *
      * @throws ErrorException
      */
@@ -63,7 +63,7 @@ class ExceptionHandler
     /**
      * Handle an uncaught exception from the application.
      *
-     * @param \Throwable $e
+     * @param  \Throwable  $e
      */
     public function handleException(\Throwable $e)
     {
@@ -95,8 +95,7 @@ class ExceptionHandler
     /**
      * Determine if the error type is fatal.
      *
-     * @param int $type
-     *
+     * @param  int  $type
      * @return bool
      */
     protected function isFatal($type)
@@ -107,9 +106,8 @@ class ExceptionHandler
     /**
      * Create a new fatal exception instance from an error array.
      *
-     * @param array    $error
-     * @param int|null $traceOffset
-     *
+     * @param  array  $error
+     * @param  int|null  $traceOffset
      * @return \Symfony\Component\ErrorHandler\Error\FatalError
      */
     protected function fatalExceptionFromError(array $error, $traceOffset = null)
@@ -125,7 +123,7 @@ class ExceptionHandler
     /**
      * Render an exception to the console.
      *
-     * @param \Throwable $e
+     * @param  \Throwable  $e
      */
     protected function renderForConsole(\Throwable $e)
     {
@@ -135,7 +133,7 @@ class ExceptionHandler
     /**
      * Render an exception as an HTTP Response and send it.
      *
-     * @param \Throwable $e
+     * @param  \Throwable  $e
      */
     protected function renderHttpResponse(\Throwable $e)
     {

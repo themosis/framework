@@ -46,9 +46,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return a text type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function text(string $name, array $options = []): FieldTypeInterface
@@ -62,9 +61,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return a password type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function password(string $name, array $options = []): FieldTypeInterface
@@ -78,9 +76,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return a number field type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function number(string $name, array $options = []): FieldTypeInterface
@@ -94,9 +91,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return an integer field type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function integer(string $name, array $options = []): FieldTypeInterface
@@ -110,9 +106,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return an email type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function email(string $name, array $options = []): FieldTypeInterface
@@ -126,10 +121,9 @@ class Factory implements FieldFactoryInterface
     /**
      * Return a DateField instance.
      *
-     * @param string $name       The name attribute of the date input.
-     * @param array  $features   Custom field features - title, info.
-     * @param array  $attributes Input html attributes.
-     *
+     * @param  string  $name       The name attribute of the date input.
+     * @param  array  $features   Custom field features - title, info.
+     * @param  array  $attributes Input html attributes.
      * @return \Themosis\Field\Fields\DateField
      */
     public function date($name, array $features = [], array $attributes = [])
@@ -146,9 +140,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return a textarea type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function textarea(string $name, array $options = []): FieldTypeInterface
@@ -162,9 +155,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return a checkbox type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function checkbox(string $name, array $options = []): FieldTypeInterface
@@ -178,9 +170,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return a choice type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function choice(string $name, array $options = []): FieldTypeInterface
@@ -194,9 +185,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return a media type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function media($name, array $options = []): FieldTypeInterface
@@ -210,9 +200,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return an editor type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function editor($name, array $options = []): FieldTypeInterface
@@ -226,9 +215,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return a collection type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function collection($name, array $options = []): FieldTypeInterface
@@ -242,9 +230,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return a color type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function color($name, array $options = []): FieldTypeInterface
@@ -258,9 +245,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return a button type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function button(string $name, array $options = []): FieldTypeInterface
@@ -274,9 +260,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return a submit type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function submit(string $name, array $options = []): FieldTypeInterface
@@ -290,9 +275,8 @@ class Factory implements FieldFactoryInterface
     /**
      * Return a hidden type instance.
      *
-     * @param string $name
-     * @param array  $options
-     *
+     * @param  string  $name
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function hidden(string $name, array $options = []): FieldTypeInterface

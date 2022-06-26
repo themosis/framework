@@ -52,8 +52,7 @@ class PostType implements PostTypeInterface
     /**
      * Set the post type labels.
      *
-     * @param array $labels
-     *
+     * @param  array  $labels
      * @return PostTypeInterface
      */
     public function setLabels(array $labels): PostTypeInterface
@@ -80,8 +79,7 @@ class PostType implements PostTypeInterface
     /**
      * Return a defined label value.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     public function getLabel(string $name): string
@@ -94,8 +92,7 @@ class PostType implements PostTypeInterface
     /**
      * Set the post type arguments.
      *
-     * @param array $args
-     *
+     * @param  array  $args
      * @return PostTypeInterface
      */
     public function setArguments(array $args): PostTypeInterface
@@ -118,8 +115,7 @@ class PostType implements PostTypeInterface
     /**
      * Return a post type argument.
      *
-     * @param string $property
-     *
+     * @param  string  $property
      * @return mixed|null
      */
     public function getArgument(string $property)
@@ -188,8 +184,7 @@ class PostType implements PostTypeInterface
     /**
      * Set the post type title input placeholder.
      *
-     * @param string $title
-     *
+     * @param  string  $title
      * @return PostTypeInterface
      */
     public function setTitlePlaceholder(string $title): PostTypeInterface
@@ -236,9 +231,8 @@ class PostType implements PostTypeInterface
     /**
      * Set post type custom status.
      *
-     * @param array|string $status
-     * @param array        $args
-     *
+     * @param  array|string  $status
+     * @param  array  $args
      * @return PostTypeInterface
      */
     public function status($status, array $args = []): PostTypeInterface
@@ -273,8 +267,8 @@ class PostType implements PostTypeInterface
     /**
      * Register custom post type status.
      *
-     * @param string $status
-     * @param array  $args
+     * @param  string  $status
+     * @param  array  $args
      */
     protected function prepareStatus(string $status, array $args)
     {
@@ -319,9 +313,8 @@ class PostType implements PostTypeInterface
     /**
      * Parse the status arguments.
      *
-     * @param string $status
-     * @param array  $args
-     *
+     * @param  string  $status
+     * @param  array  $args
      * @return array
      */
     protected function parseStatusArguments(string $status, array $args): array
@@ -335,8 +328,8 @@ class PostType implements PostTypeInterface
             'show_in_admin_all_list' => true,
             'show_in_admin_status_list' => true,
             'label_count' => _n_noop(
-                $name . ' <span class="count">(%s)</span>',
-                $name . ' <span class="count">(%s)</span>',
+                $name.' <span class="count">(%s)</span>',
+                $name.' <span class="count">(%s)</span>',
             ),
             'publish_text' => __('Apply Changes'),
         ]);
@@ -345,8 +338,7 @@ class PostType implements PostTypeInterface
     /**
      * Apply the selected status on post save.
      *
-     * @param string $value The translated value by WordPress ("publish").
-     *
+     * @param  string  $value The translated value by WordPress ("publish").
      * @return string
      */
     public function applyStatus(string $value)

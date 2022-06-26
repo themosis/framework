@@ -11,8 +11,7 @@ interface UserFieldContract
     /**
      * Make user fields.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return UserFieldContract
      */
     public function make(array $options = []): UserFieldContract;
@@ -20,9 +19,8 @@ interface UserFieldContract
     /**
      * Add a user field.
      *
-     * @param FieldTypeInterface|SectionInterface $field
-     * @param SectionInterface|null               $section
-     *
+     * @param  FieldTypeInterface|SectionInterface  $field
+     * @param  SectionInterface|null  $section
      * @return UserFieldContract
      */
     public function add($field, SectionInterface $section = null): UserFieldContract;

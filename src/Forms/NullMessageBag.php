@@ -29,9 +29,8 @@ class NullMessageBag implements MessageBag
     /**
      * @inheritdoc
      *
-     * @param string $key
-     * @param string $message
-     *
+     * @param  string  $key
+     * @param  string  $message
      * @return $this|MessageBag
      */
     public function add($key, $message)
@@ -42,8 +41,7 @@ class NullMessageBag implements MessageBag
     /**
      * @inheritdoc
      *
-     * @param array|\Illuminate\Contracts\Support\MessageProvider $messages
-     *
+     * @param  array|\Illuminate\Contracts\Support\MessageProvider  $messages
      * @return $this|MessageBag
      */
     public function merge($messages)
@@ -54,8 +52,7 @@ class NullMessageBag implements MessageBag
     /**
      * @inheritdoc
      *
-     * @param array|string $key
-     *
+     * @param  array|string  $key
      * @return bool
      */
     public function has($key)
@@ -66,9 +63,8 @@ class NullMessageBag implements MessageBag
     /**
      * @inheritdoc
      *
-     * @param null $key
-     * @param null $format
-     *
+     * @param  null  $key
+     * @param  null  $format
      * @return null|string
      */
     public function first($key = null, $format = null)
@@ -79,9 +75,8 @@ class NullMessageBag implements MessageBag
     /**
      * @inheritdoc
      *
-     * @param string $key
-     * @param null   $format
-     *
+     * @param  string  $key
+     * @param  null  $format
      * @return array
      */
     public function get($key, $format = null)
@@ -92,8 +87,7 @@ class NullMessageBag implements MessageBag
     /**
      * @inheritdoc
      *
-     * @param null $format
-     *
+     * @param  null  $format
      * @return array
      */
     public function all($format = null)
@@ -124,8 +118,7 @@ class NullMessageBag implements MessageBag
     /**
      * @inheritdoc
      *
-     * @param string $format
-     *
+     * @param  string  $format
      * @return $this|MessageBag
      */
     public function setFormat($format = ':message')

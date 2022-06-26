@@ -17,7 +17,7 @@ class ProviderRepositoryTest extends TestCase
             ->setConstructorArgs([
                 $app,
                 $this->getMockBuilder('Illuminate\Filesystem\Filesystem')->getMock(),
-                __DIR__ . '/services.php',
+                __DIR__.'/services.php',
             ])
             ->setMethods([
                 'loadManifest',
@@ -53,7 +53,7 @@ class ProviderRepositoryTest extends TestCase
             ->setConstructorArgs([
                 $app,
                 $this->getMockBuilder('Illuminate\Filesystem\Filesystem')->getMock(),
-                __DIR__ . '/services.php',
+                __DIR__.'/services.php',
             ])
             ->setMethods([
                 'loadManifest',
@@ -106,7 +106,7 @@ class ProviderRepositoryTest extends TestCase
         $repo = new ProviderRepository(
             new Application(),
             $this->getMockBuilder('Illuminate\Filesystem\Filesystem')->getMock(),
-            __DIR__ . '/services.php',
+            __DIR__.'/services.php',
         );
 
         $this->assertTrue($repo->shouldRecompile(null, []));
@@ -121,16 +121,16 @@ class ProviderRepositoryTest extends TestCase
             $files = $this->getMockBuilder('Illuminate\Filesystem\Filesystem')
                 ->setMethods(['exists', 'getRequire'])
                 ->getMock(),
-            __DIR__ . '/services.php',
+            __DIR__.'/services.php',
         );
 
         $files->expects($this->once())
             ->method('exists')
-            ->with(__DIR__ . '/services.php')
+            ->with(__DIR__.'/services.php')
             ->willReturn(true);
         $files->expects($this->once())
             ->method('getRequire')
-            ->with(__DIR__ . '/services.php')
+            ->with(__DIR__.'/services.php')
             ->willReturn($array = ['users' => ['joe' => true], 'when' => []]);
 
         $this->assertEquals($array, $repo->loadManifest());
@@ -143,12 +143,12 @@ class ProviderRepositoryTest extends TestCase
             $files = $this->getMockBuilder('Illuminate\Filesystem\Filesystem')
                 ->setMethods(['put'])
                 ->getMock(),
-            __DIR__ . '/services.php',
+            __DIR__.'/services.php',
         );
 
         $files->expects($this->once())
             ->method('put')
-            ->with(__DIR__ . '/services.php', '<?php return ' . var_export(['foo'], true) . ';');
+            ->with(__DIR__.'/services.php', '<?php return '.var_export(['foo'], true).';');
         $result = $repo->writeManifest(['foo']);
         $this->assertEquals(['foo', 'when' => []], $result);
     }

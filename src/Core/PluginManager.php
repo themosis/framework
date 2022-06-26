@@ -69,8 +69,7 @@ class PluginManager
     /**
      * Load the plugin.
      *
-     * @param string $configPath
-     *
+     * @param  string  $configPath
      * @return PluginManager
      */
     public function load(string $configPath): PluginManager
@@ -106,20 +105,18 @@ class PluginManager
     /**
      * Return the plugin root path.
      *
-     * @param string $path Path to append to the plugin root path.
-     *
+     * @param  string  $path Path to append to the plugin root path.
      * @return string
      */
     public function getPath(string $path = ''): string
     {
-        return $this->dirPath . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->dirPath.($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Return the plugin root URL.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function getUrl(string $path = ''): string
@@ -130,8 +127,7 @@ class PluginManager
     /**
      * Return a plugin header.
      *
-     * @param string $header
-     *
+     * @param  string  $header
      * @return string|null
      */
     public function getHeader(string $header)
@@ -152,14 +148,13 @@ class PluginManager
     /**
      * Return a plugin configuration value.
      *
-     * @param string $key     Key configuration short name.
-     * @param mixed  $default
-     *
+     * @param  string  $key     Key configuration short name.
+     * @param  mixed  $default
      * @return mixed
      */
     public function config(string $key, $default = null)
     {
-        $fullnameKey = $this->getNamespace() . '_' . $key;
+        $fullnameKey = $this->getNamespace().'_'.$key;
 
         return $this->config->get($fullnameKey, $default);
     }
@@ -167,8 +162,7 @@ class PluginManager
     /**
      * Register plugin assets directories.
      *
-     * @param array $locations
-     *
+     * @param  array  $locations
      * @return $this
      */
     public function assets(array $locations)
@@ -212,11 +206,11 @@ class PluginManager
     /**
      * Load plugin configuration files.
      *
-     * @param string $configPath
+     * @param  string  $configPath
      */
     protected function loadPluginConfiguration(string $configPath)
     {
-        $this->app->loadConfigurationFiles($this->config, $this->dirPath . '/' . trim($configPath, '\/'));
+        $this->app->loadConfigurationFiles($this->config, $this->dirPath.'/'.trim($configPath, '\/'));
     }
 
     /**
@@ -225,7 +219,7 @@ class PluginManager
     protected function setPluginAutoloading()
     {
         foreach ($this->config('plugin.autoloading', []) as $ns => $path) {
-            $path = $this->dirPath . '/' . trim($path, '\/');
+            $path = $this->dirPath.'/'.trim($path, '\/');
             $this->loader->addPsr4($ns, $path);
         }
 
@@ -235,8 +229,7 @@ class PluginManager
     /**
      * Register plugin services providers.
      *
-     * @param array $providers
-     *
+     * @param  array  $providers
      * @return $this
      */
     public function providers(array $providers = [])
@@ -251,8 +244,7 @@ class PluginManager
     /**
      * Register plugin views.
      *
-     * @param array $paths
-     *
+     * @param  array  $paths
      * @return $this
      */
     public function views(array $paths = [])
@@ -269,7 +261,7 @@ class PluginManager
         $twigLoader = $this->app->make('twig.loader');
 
         foreach ($paths as $path) {
-            $uri = $this->dirPath . '/' . trim($path, '\/');
+            $uri = $this->dirPath.'/'.trim($path, '\/');
             $factory->addLocation($uri);
             $twigLoader->addPath($uri);
         }

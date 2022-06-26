@@ -91,7 +91,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Initialize the kernel (bootstrap application base components).
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      */
     public function init($request)
     {
@@ -103,8 +103,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Handle an incoming HTTP request.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return IlluminateResponse
      */
     public function handle($request)
@@ -130,8 +129,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Determine if the kernel has a given middleware.
      *
-     * @param string $middleware
-     *
+     * @param  string  $middleware
      * @return bool
      */
     public function hasMiddleware($middleware)
@@ -142,8 +140,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Send given request through the middleware (if any) and router.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return IlluminateResponse
      */
     protected function sendRequestThroughRouter($request)
@@ -192,8 +189,8 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Call the terminate method on any terminable middleware.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param Response                                  $response
+     * @param  \Symfony\Component\HttpFoundation\Request  $request
+     * @param  Response  $response
      */
     public function terminate($request, $response)
     {
@@ -204,8 +201,8 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Call the terminate method on any terminable middleware.
      *
-     * @param \Illuminate\Http\Request  $request
-     * @param \Illuminate\Http\Response $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Response  $response
      */
     protected function terminateMiddleware($request, $response)
     {
@@ -232,8 +229,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Gather the route middleware for the given request.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     protected function gatherRouteMiddleware($request)
@@ -248,8 +244,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Parse a middleware string to get the name and parameters.
      *
-     * @param string $middleware
-     *
+     * @param  string  $middleware
      * @return array
      */
     protected function parseMiddleware($middleware)
@@ -266,8 +261,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Add a new middleware to beginning of the stack if it does not already exist.
      *
-     * @param string $middleware
-     *
+     * @param  string  $middleware
      * @return $this
      */
     public function prependMiddleware($middleware)
@@ -282,8 +276,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Add a new middleware to end of the stack if it does not already exist.
      *
-     * @param string $middleware
-     *
+     * @param  string  $middleware
      * @return $this
      */
     public function pushMiddleware($middleware)
@@ -328,7 +321,7 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Report the exception to the exception handler.
      *
-     * @param Exception $e
+     * @param  Exception  $e
      */
     protected function reportException(Exception $e)
     {
@@ -338,9 +331,8 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Render the exception to a response.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param Exception                $e
-     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Exception  $e
      * @return Response
      */
     protected function renderException($request, Exception $e)

@@ -14,8 +14,7 @@ interface AssetInterface
     /**
      * Set the asset handle.
      *
-     * @param string $handle
-     *
+     * @param  string  $handle
      * @return AssetInterface
      */
     public function setHandle(string $handle): AssetInterface;
@@ -44,8 +43,7 @@ interface AssetInterface
     /**
      * Set the asset dependencies.
      *
-     * @param array $dependencies
-     *
+     * @param  array  $dependencies
      * @return AssetInterface
      */
     public function setDependencies(array $dependencies): AssetInterface;
@@ -60,8 +58,7 @@ interface AssetInterface
     /**
      * Set the asset version.
      *
-     * @param null|string|bool $version
-     *
+     * @param  null|string|bool  $version
      * @return AssetInterface
      */
     public function setVersion($version): AssetInterface;
@@ -83,8 +80,7 @@ interface AssetInterface
     /**
      * Set the asset type.
      *
-     * @param string $type
-     *
+     * @param  string  $type
      * @return AssetInterface
      */
     public function setType(string $type): AssetInterface;
@@ -99,8 +95,7 @@ interface AssetInterface
     /**
      * Set the asset argument.
      *
-     * @param string|bool $arg
-     *
+     * @param  string|bool  $arg
      * @return AssetInterface
      */
     public function setArgument($arg = null): AssetInterface;
@@ -108,8 +103,7 @@ interface AssetInterface
     /**
      * Load the asset on defined area.
      *
-     * @param string|array $locations
-     *
+     * @param  string|array  $locations
      * @return AssetInterface
      */
     public function to($locations = 'front'): AssetInterface;
@@ -117,9 +111,8 @@ interface AssetInterface
     /**
      * Localize the asset.
      *
-     * @param string $name
-     * @param array  $data
-     *
+     * @param  string  $name
+     * @param  array  $data
      * @return AssetInterface
      */
     public function localize(string $name, array $data): AssetInterface;
@@ -127,9 +120,8 @@ interface AssetInterface
     /**
      * Add asset inline code.
      *
-     * @param string $code
-     * @param bool   $after
-     *
+     * @param  string  $code
+     * @param  bool  $after
      * @return AssetInterface
      */
     public function inline(string $code, bool $after = true): AssetInterface;
@@ -137,8 +129,7 @@ interface AssetInterface
     /**
      * Add asset attributes.
      *
-     * @param array $attributes
-     *
+     * @param  array  $attributes
      * @return AssetInterface
      */
     public function attributes(array $attributes): AssetInterface;

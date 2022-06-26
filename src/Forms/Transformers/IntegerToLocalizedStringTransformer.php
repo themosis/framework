@@ -7,11 +7,10 @@ class IntegerToLocalizedStringTransformer extends NumberToLocalizedStringTransfo
     /**
      * Convert a localized string to an integer value.
      *
-     * @param string $data
+     * @param  string  $data
+     * @return int
      *
      * @throws Exceptions\DataTransformerException
-     *
-     * @return int
      */
     public function reverseTransform($data)
     {

@@ -27,8 +27,7 @@ class ImageSize
     /**
      * Parse the images sizes.
      *
-     * @param array $sizes
-     *
+     * @param  array  $sizes
      * @return array
      */
     protected function parse(array $sizes)
@@ -52,9 +51,8 @@ class ImageSize
     /**
      * Parse image properties.
      *
-     * @param array  $properties
-     * @param string $slug
-     *
+     * @param  array  $properties
+     * @param  string  $slug
      * @return array
      */
     protected function parseProperties(array $properties, string $slug)
@@ -87,8 +85,7 @@ class ImageSize
     /**
      * Format label for display.
      *
-     * @param string $label
-     *
+     * @param  string  $label
      * @return string
      */
     protected function label(string $label)
@@ -129,8 +126,7 @@ class ImageSize
     /**
      * Filter media size drop down options. Add user custom image sizes.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return array
      */
     public function addToDropDown(array $options)

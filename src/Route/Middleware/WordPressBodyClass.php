@@ -21,8 +21,7 @@ class WordPressBodyClass
      * Handle incoming request.
      *
      * @param $request
-     * @param \Closure $next
-     *
+     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, \Closure $next)
@@ -38,8 +37,7 @@ class WordPressBodyClass
     /**
      * Return the callback managing route body CSS classes.
      *
-     * @param Route $route
-     *
+     * @param  Route  $route
      * @return \Closure
      */
     protected function dispatchBodyClass(Route $route)

@@ -22,8 +22,7 @@ interface TaxonomyInterface
     /**
      * Set taxonomy labels.
      *
-     * @param array $labels
-     *
+     * @param  array  $labels
      * @return TaxonomyInterface
      */
     public function setLabels(array $labels): TaxonomyInterface;
@@ -38,8 +37,7 @@ interface TaxonomyInterface
     /**
      * Return a taxonomy label by name.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     public function getLabel(string $name): string;
@@ -47,8 +45,7 @@ interface TaxonomyInterface
     /**
      * Set taxonomy arguments.
      *
-     * @param array $args
-     *
+     * @param  array  $args
      * @return TaxonomyInterface
      */
     public function setArguments(array $args): TaxonomyInterface;
@@ -63,8 +60,7 @@ interface TaxonomyInterface
     /**
      * Return a taxonomy argument.
      *
-     * @param string $property
-     *
+     * @param  string  $property
      * @return mixed
      */
     public function getArgument(string $property);
@@ -79,8 +75,7 @@ interface TaxonomyInterface
     /**
      * Set taxonomy objects.
      *
-     * @param string|array $objects
-     *
+     * @param  string|array  $objects
      * @return TaxonomyInterface
      */
     public function setObjects($objects): TaxonomyInterface;

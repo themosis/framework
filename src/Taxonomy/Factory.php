@@ -27,14 +27,13 @@ class Factory
     /**
      * Register a taxonomy.
      *
-     * @param string       $slug
-     * @param string|array $objects
-     * @param string       $plural
-     * @param string       $singular
+     * @param  string  $slug
+     * @param  string|array  $objects
+     * @param  string  $plural
+     * @param  string  $singular
+     * @return TaxonomyInterface
      *
      * @throws TaxonomyException
-     *
-     * @return TaxonomyInterface
      */
     public function make(string $slug, $objects, string $plural, string $singular): TaxonomyInterface
     {
@@ -73,7 +72,7 @@ class Factory
         if (! $this->container->bound($abstract)) {
             $this->container->instance($abstract, $taxonomy);
         } else {
-            throw new TaxonomyException('The taxonomy [' . $slug . '] already exists.');
+            throw new TaxonomyException('The taxonomy ['.$slug.'] already exists.');
         }
 
         return $taxonomy;

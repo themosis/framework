@@ -29,8 +29,7 @@ class FieldTransformer extends TransformerAbstract
     /**
      * Transform single field.
      *
-     * @param FieldTypeInterface $field
-     *
+     * @param  FieldTypeInterface  $field
      * @return array
      */
     public function transform(FieldTypeInterface $field)
@@ -62,8 +61,7 @@ class FieldTransformer extends TransformerAbstract
     /**
      * Return field options.
      *
-     * @param FieldTypeInterface $field
-     *
+     * @param  FieldTypeInterface  $field
      * @return array
      */
     protected function getOptions(FieldTypeInterface $field)

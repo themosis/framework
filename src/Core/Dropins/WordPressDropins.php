@@ -35,8 +35,7 @@ class WordPressDropins
     /**
      * Return a list of drop-in files paths.
      *
-     * @param string|null $key
-     *
+     * @param  string|null  $key
      * @return array
      */
     public static function dropinPaths($key = null)

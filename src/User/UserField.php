@@ -71,8 +71,7 @@ class UserField implements UserFieldContract
     /**
      * Build user fields.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return UserFieldContract
      */
     public function make(array $options = []): UserFieldContract
@@ -85,8 +84,7 @@ class UserField implements UserFieldContract
     /**
      * Parse options.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return array
      */
     protected function parseOptions(array $options)
@@ -105,9 +103,8 @@ class UserField implements UserFieldContract
     /**
      * Add a user field.
      *
-     * @param \Themosis\Forms\Contracts\FieldTypeInterface|SectionInterface $field
-     * @param SectionInterface|null                                         $section
-     *
+     * @param  \Themosis\Forms\Contracts\FieldTypeInterface|SectionInterface  $field
+     * @param  SectionInterface|null  $section
      * @return UserFieldContract
      */
     public function add($field, SectionInterface $section = null): UserFieldContract
@@ -141,9 +138,8 @@ class UserField implements UserFieldContract
     /**
      * Get section for given field.
      *
-     * @param FieldTypeInterface $field
-     * @param null               $section
-     *
+     * @param  FieldTypeInterface  $field
+     * @param  null  $section
      * @return SectionInterface
      */
     protected function getSection(FieldTypeInterface $field, $section = null): SectionInterface
@@ -199,7 +195,7 @@ class UserField implements UserFieldContract
      * a context: 'add-existing-user' (multisite),
      * 'add-new-user' (single). Else is a WP_User instance.
      *
-     * @param mixed $user
+     * @param  mixed  $user
      */
     public function display($user)
     {
@@ -230,7 +226,7 @@ class UserField implements UserFieldContract
      * a second parameter is available containing an array
      * of previous user meta data.
      *
-     * @param int $user_id
+     * @param  int  $user_id
      *
      * @throws UserException
      */
@@ -252,7 +248,7 @@ class UserField implements UserFieldContract
             if (method_exists($field, 'userSave')) {
                 $field->userSave($validation[$field->getName()] ?? null, $user_id);
             } else {
-                throw new UserException('Unable to save [' . $field->getName() . ']. The [userSave] method is missing.');
+                throw new UserException('Unable to save ['.$field->getName().']. The [userSave] method is missing.');
             }
         }
     }
@@ -260,8 +256,7 @@ class UserField implements UserFieldContract
     /**
      * Return request user meta data.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return array
      */
     protected function getUserData(Request $request)
@@ -302,7 +297,7 @@ class UserField implements UserFieldContract
 
         foreach ($this->repository->all() as $field) {
             foreach ($field->getOption('messages') as $rule => $message) {
-                $messages[$field->getName() . '.' . $rule] = $message;
+                $messages[$field->getName().'.'.$rule] = $message;
             }
         }
 

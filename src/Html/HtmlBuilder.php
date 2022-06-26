@@ -18,8 +18,7 @@ class HtmlBuilder
      * Set the encoding charset.
      * Defaults to UTF8.
      *
-     * @param string $charset
-     *
+     * @param  string  $charset
      * @return \Themosis\Html\HtmlBuilder
      */
     public function setCharset($charset = null)
@@ -38,8 +37,7 @@ class HtmlBuilder
     /**
      * Build a list of HTML attributes from an array.
      *
-     * @param array $attributes An array of html tag attributes.
-     *
+     * @param  array  $attributes An array of html tag attributes.
      * @return string The html attributes output.
      */
     public function attributes(array $attributes)
@@ -60,9 +58,8 @@ class HtmlBuilder
     /**
      * Build the attribute.
      *
-     * @param string $key
-     * @param string $value
-     *
+     * @param  string  $key
+     * @param  string  $value
      * @return string|null
      */
     protected function attributeElement($key, $value)
@@ -80,7 +77,7 @@ class HtmlBuilder
             return $value ? $key : '';
         }
         if (! is_null($value)) {
-            return $key . '="' . $this->special($value) . '"';
+            return $key.'="'.$this->special($value).'"';
         }
 
         return null;
@@ -89,8 +86,7 @@ class HtmlBuilder
     /**
      * Convert HTML characters to entities.
      *
-     * @param string $value A string to encode.
-     *
+     * @param  string  $value A string to encode.
      * @return string The encoded character.
      */
     public function entities($value)
@@ -101,8 +97,7 @@ class HtmlBuilder
     /**
      * Convert special characters to HTML entities.
      *
-     * @param string $value
-     *
+     * @param  string  $value
      * @return string
      */
     public function special($value)

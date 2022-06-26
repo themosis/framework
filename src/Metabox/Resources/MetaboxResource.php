@@ -61,8 +61,7 @@ class MetaboxResource implements MetaboxResourceInterface
     /**
      * Set the metabox data source element.
      *
-     * @param mixed $source
-     *
+     * @param  mixed  $source
      * @return MetaboxResourceInterface
      */
     public function setSource($source): MetaboxResourceInterface

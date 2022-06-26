@@ -41,9 +41,8 @@ class Route extends IlluminateRoute
     /**
      * Determine if the route matches given request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param bool                     $includingMethod
-     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  bool  $includingMethod
      * @return bool
      */
     public function matches(Request $request, $includingMethod = true)
@@ -93,8 +92,7 @@ class Route extends IlluminateRoute
     /**
      * Set route WordPress conditions rules.
      *
-     * @param array $conditions
-     *
+     * @param  array  $conditions
      * @return \Themosis\Route\Route
      */
     public function setConditions(array $conditions = [])
@@ -111,8 +109,7 @@ class Route extends IlluminateRoute
      * Parse the route condition based on global list of conditions.
      * Return the WordPress conditional function.
      *
-     * @param string $condition
-     *
+     * @param  string  $condition
      * @return string
      */
     protected function parseCondition(string $condition): string
@@ -134,8 +131,7 @@ class Route extends IlluminateRoute
      * Parse route action and get any WordPress conditional parameters
      * if any defined.
      *
-     * @param array $action
-     *
+     * @param  array  $action
      * @return array
      */
     protected function parseConditionParams(array $action): array

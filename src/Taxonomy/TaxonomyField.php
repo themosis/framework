@@ -61,8 +61,7 @@ class TaxonomyField
     /**
      * Add a taxonomy custom field.
      *
-     * @param FieldTypeInterface $field
-     *
+     * @param  FieldTypeInterface  $field
      * @return $this
      */
     public function add(FieldTypeInterface $field): TaxonomyField
@@ -88,13 +87,13 @@ class TaxonomyField
         }
 
         // Display fields.
-        $this->action->add($this->taxonomy->getName() . '_add_form_fields', $this->outputAddFields());
-        $this->action->add($this->taxonomy->getName() . '_edit_form_fields', $this->outputEditFields());
+        $this->action->add($this->taxonomy->getName().'_add_form_fields', $this->outputAddFields());
+        $this->action->add($this->taxonomy->getName().'_edit_form_fields', $this->outputEditFields());
 
         // Save fields values.
         $this->action->add([
-            'create_' . $this->taxonomy->getName(),
-            'edit_' . $this->taxonomy->getName(),
+            'create_'.$this->taxonomy->getName(),
+            'edit_'.$this->taxonomy->getName(),
         ], $this->save());
     }
 
@@ -120,8 +119,7 @@ class TaxonomyField
     /**
      * Sanitize term meta value.
      *
-     * @param FieldTypeInterface $field
-     *
+     * @param  FieldTypeInterface  $field
      * @return \Closure
      */
     protected function sanitize(FieldTypeInterface $field)
@@ -166,7 +164,7 @@ class TaxonomyField
                     $field->termSave($validation[$field->getName()] ?? null, $term_id);
                 } else {
                     throw new TaxonomyException(
-                        'Unable to save [' . $field->getName() . ']. The [termSave] method is missing.',
+                        'Unable to save ['.$field->getName().']. The [termSave] method is missing.',
                     );
                 }
             }
@@ -176,8 +174,7 @@ class TaxonomyField
     /**
      * Fetch raw data from the request.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return array
      */
     protected function getTermData(Request $request)
@@ -218,7 +215,7 @@ class TaxonomyField
 
         foreach ($this->repository as $field) {
             foreach ($field->getOption('messages') as $rule => $message) {
-                $messages[$field->getName() . '.' . $rule] = $message;
+                $messages[$field->getName().'.'.$rule] = $message;
             }
         }
 

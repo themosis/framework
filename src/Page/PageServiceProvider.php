@@ -18,7 +18,7 @@ class PageServiceProvider extends ServiceProvider
     {
         /** @var Factory $view */
         $view = $this->app['view'];
-        $view->addLocation(__DIR__ . '/views');
+        $view->addLocation(__DIR__.'/views');
 
         $this->app->bind('page', function ($app) {
             return new PageFactory($app['action'], $app['filter'], $app['view'], $app['validator']);

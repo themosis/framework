@@ -5,10 +5,15 @@ namespace Themosis\Tests\Forms\Resources\Data;
 class ContactFormRequestData
 {
     private $fullname;
+
     private $email;
+
     private $message;
+
     private $subscribe;
+
     private $follow;
+
     private $colors;
 
     /**
@@ -20,7 +25,7 @@ class ContactFormRequestData
     }
 
     /**
-     * @param mixed $colors
+     * @param  mixed  $colors
      */
     public function setColors(array $colors): void
     {
@@ -36,7 +41,7 @@ class ContactFormRequestData
     }
 
     /**
-     * @param mixed $follow
+     * @param  mixed  $follow
      */
     public function setFollow(bool $follow): void
     {
@@ -52,7 +57,7 @@ class ContactFormRequestData
     }
 
     /**
-     * @param mixed $subscribe
+     * @param  mixed  $subscribe
      */
     public function setSubscribe(bool $subscribe): void
     {
@@ -68,7 +73,7 @@ class ContactFormRequestData
     }
 
     /**
-     * @param mixed $message
+     * @param  mixed  $message
      */
     public function setMessage($message): void
     {
@@ -84,7 +89,7 @@ class ContactFormRequestData
     }
 
     /**
-     * @param mixed $email
+     * @param  mixed  $email
      */
     public function setEmail($email): void
     {
@@ -100,7 +105,7 @@ class ContactFormRequestData
     }
 
     /**
-     * @param mixed $fullname
+     * @param  mixed  $fullname
      */
     public function setFullname($fullname): void
     {

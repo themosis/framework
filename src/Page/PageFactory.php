@@ -47,9 +47,8 @@ class PageFactory implements PageFactoryInterface
     /**
      * Make a new page instance.
      *
-     * @param string $slug
-     * @param string $title
-     *
+     * @param  string  $slug
+     * @param  string  $title
      * @return PageInterface
      */
     public function make(string $slug, string $title): PageInterface
@@ -65,7 +64,7 @@ class PageFactory implements PageFactoryInterface
             ->setMenu($title);
 
         // Store page instance within the service container.
-        $this->view->getContainer()->instance($this->prefix . '.' . $page->getSlug(), $page);
+        $this->view->getContainer()->instance($this->prefix.'.'.$page->getSlug(), $page);
 
         return $page;
     }

@@ -36,7 +36,7 @@ class HtmlBuilderTest extends TestCase
         $html = new HtmlBuilder();
 
         $this->assertEquals(
-            "Un &#039;apostrophe&#039; en &lt;strong&gt;gras&lt;/strong&gt;",
+            'Un &#039;apostrophe&#039; en &lt;strong&gt;gras&lt;/strong&gt;',
             $html->entities('Un \'apostrophe\' en <strong>gras</strong>'),
         );
 

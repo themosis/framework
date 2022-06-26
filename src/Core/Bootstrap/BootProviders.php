@@ -9,7 +9,7 @@ class BootProviders
     /**
      * Bootstrap the application.
      *
-     * @param Application $app
+     * @param  Application  $app
      */
     public function bootstrap(Application $app)
     {

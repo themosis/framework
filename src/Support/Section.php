@@ -77,8 +77,7 @@ class Section implements SectionInterface, Iterator, Countable
     /**
      * Set the section title.
      *
-     * @param string $title
-     *
+     * @param  string  $title
      * @return SectionInterface
      */
     public function setTitle(string $title): SectionInterface
@@ -101,8 +100,7 @@ class Section implements SectionInterface, Iterator, Countable
     /**
      * Set the section view file.
      *
-     * @param string $view
-     *
+     * @param  string  $view
      * @return SectionInterface
      */
     public function setView(string $view): SectionInterface
@@ -115,14 +113,13 @@ class Section implements SectionInterface, Iterator, Countable
     /**
      * Get the section view file.
      *
-     * @param bool $prefixed
-     *
+     * @param  bool  $prefixed
      * @return string
      */
     public function getView(bool $prefixed = false): string
     {
         if ($prefixed) {
-            return $this->getTheme() . '.' . $this->view;
+            return $this->getTheme().'.'.$this->view;
         }
 
         return $this->view;
@@ -131,8 +128,7 @@ class Section implements SectionInterface, Iterator, Countable
     /**
      * Set the section theme.
      *
-     * @param string $theme
-     *
+     * @param  string  $theme
      * @return SectionInterface
      */
     public function setTheme(string $theme): SectionInterface
@@ -155,8 +151,7 @@ class Section implements SectionInterface, Iterator, Countable
     /**
      * Set section view data array.
      *
-     * @param array $data
-     *
+     * @param  array  $data
      * @return SectionInterface
      */
     public function setViewData(array $data): SectionInterface
@@ -186,8 +181,7 @@ class Section implements SectionInterface, Iterator, Countable
     /**
      * Set section items instances.
      *
-     * @param array $items
-     *
+     * @param  array  $items
      * @return SectionInterface
      */
     public function setItems(array $items): SectionInterface
@@ -210,8 +204,7 @@ class Section implements SectionInterface, Iterator, Countable
     /**
      * Add an item to the section.
      *
-     * @param mixed $item
-     *
+     * @param  mixed  $item
      * @return SectionInterface
      */
     public function addItem($item): SectionInterface
@@ -246,7 +239,7 @@ class Section implements SectionInterface, Iterator, Countable
      */
     public function next(): void
     {
-        ++$this->position;
+        $this->position++;
     }
 
     /**

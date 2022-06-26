@@ -28,9 +28,8 @@ class Manager implements MetaboxManagerInterface
      * Handle metabox initialization.
      * Set the metabox fields value and return the metabox instance.
      *
-     * @param MetaboxInterface $metabox
-     * @param Request          $request
-     *
+     * @param  MetaboxInterface  $metabox
+     * @param  Request  $request
      * @return MetaboxInterface
      */
     public function getFields(MetaboxInterface $metabox, Request $request): MetaboxInterface
@@ -47,12 +46,11 @@ class Manager implements MetaboxManagerInterface
     /**
      * Handle metabox post meta save.
      *
-     * @param MetaboxInterface $metabox
-     * @param Request          $request
+     * @param  MetaboxInterface  $metabox
+     * @param  Request  $request
+     * @return MetaboxInterface
      *
      * @throws MetaboxException
-     *
-     * @return MetaboxInterface
      */
     public function saveFields(MetaboxInterface $metabox, Request $request): MetaboxInterface
     {
@@ -79,7 +77,7 @@ class Manager implements MetaboxManagerInterface
                 $field->metaboxSave($value, $post_id);
             } else {
                 throw new MetaboxException(
-                    'Unable to save [' . $field->getName() . ']. The [metaboxSave] method is missing.',
+                    'Unable to save ['.$field->getName().']. The [metaboxSave] method is missing.',
                 );
             }
         }
@@ -90,8 +88,7 @@ class Manager implements MetaboxManagerInterface
     /**
      * Return the metabox data for validation.
      *
-     * @param Collection $fields
-     *
+     * @param  Collection  $fields
      * @return array
      */
     protected function getMetaboxData(Collection $fields)
@@ -108,8 +105,7 @@ class Manager implements MetaboxManagerInterface
     /**
      * Return the metabox rules for validation.
      *
-     * @param array $fields
-     *
+     * @param  array  $fields
      * @return array
      */
     protected function getMetaboxRules(array $fields)
@@ -127,8 +123,7 @@ class Manager implements MetaboxManagerInterface
     /**
      * Return the metabox validation messages.
      *
-     * @param array $fields
-     *
+     * @param  array  $fields
      * @return array
      */
     protected function getMetaboxMessages(array $fields)
@@ -141,7 +136,7 @@ class Manager implements MetaboxManagerInterface
         foreach ($fields as $field) {
             /** @var FieldTypeInterface $field */
             foreach ($field->getOption('messages') as $attr => $message) {
-                $messages[$field->getName() . '.' . $attr] = $message;
+                $messages[$field->getName().'.'.$attr] = $message;
             }
         }
 
@@ -151,8 +146,7 @@ class Manager implements MetaboxManagerInterface
     /**
      * Return the metabox messages placeholders.
      *
-     * @param array $fields
-     *
+     * @param  array  $fields
      * @return array
      */
     protected function getMetaboxPlaceholders(array $fields)

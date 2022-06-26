@@ -19,8 +19,7 @@ interface FormInterface
     /**
      * Handle request in order to validate form data.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return FormInterface
      */
     public function handleRequest(Request $request): FormInterface;
@@ -38,9 +37,8 @@ interface FormInterface
      * can fetch the first error message only on the
      * mentioned field.
      *
-     * @param string $name
-     * @param bool   $first
-     *
+     * @param  string  $name
+     * @param  bool  $first
      * @return mixed
      */
     public function error(string $name, bool $first = false);
@@ -48,9 +46,8 @@ interface FormInterface
     /**
      * Set form group view file.
      *
-     * @param string $view
-     * @param string $group
-     *
+     * @param  string  $view
+     * @param  string  $group
      * @return FormInterface
      */
     public function setGroupView(string $view, string $group = 'default'): FormInterface;

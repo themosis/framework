@@ -207,7 +207,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * BaseType constructor.
      *
-     * @param string $name
+     * @param  string  $name
      */
     public function __construct(string $name)
     {
@@ -250,8 +250,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Set field options.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function setOptions(array $options): FieldTypeInterface
@@ -277,8 +276,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * Modify field options by extracting its 'l10n' property
      * and return it.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return array
      */
     protected function handleLocalization(array &$options)
@@ -296,8 +294,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Parse and setup some default options if not set.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return array
      */
     protected function parseOptions(array $options): array
@@ -305,7 +302,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         // Set a default "id" attribute. This attribute can be used on the field
         // and to its associated label as the "for" attribute value if not set.
         if (! isset($options['attributes']['id'])) {
-            $options['attributes']['id'] = $this->getName() . '_field';
+            $options['attributes']['id'] = $this->getName().'_field';
         }
 
         // Set the "for" attribute automatically on the label attributes property.
@@ -333,8 +330,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Return field options.
      *
-     * @param array $excludes
-     *
+     * @param  array  $excludes
      * @return array
      */
     public function getOptions(array $excludes = null): array
@@ -351,9 +347,8 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Return field options.
      *
-     * @param string $key
-     * @param mixed  $default
-     *
+     * @param  string  $key
+     * @param  mixed  $default
      * @return string|array|null
      */
     public function getOption(string $key, $default = null)
@@ -364,8 +359,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Set the field prefix.
      *
-     * @param string $prefix
-     *
+     * @param  string  $prefix
      * @return FieldTypeInterface
      */
     public function setPrefix(string $prefix): FieldTypeInterface
@@ -398,8 +392,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Set the field theme.
      *
-     * @param string $theme
-     *
+     * @param  string  $theme
      * @return FieldTypeInterface
      */
     public function setTheme(string $theme): FieldTypeInterface
@@ -416,7 +409,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      */
     public function getName(): string
     {
-        return trim($this->prefix) . $this->getBaseName();
+        return trim($this->prefix).$this->getBaseName();
     }
 
     /**
@@ -442,8 +435,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Get the value of a defined attribute.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return mixed
      */
     public function getAttribute(string $name)
@@ -456,8 +448,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Set the field attributes.
      *
-     * @param array $attributes
-     *
+     * @param  array  $attributes
      * @return FieldTypeInterface
      */
     public function setAttributes(array $attributes)
@@ -470,10 +461,9 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Add an attribute to the field.
      *
-     * @param string $name
-     * @param string $value
-     * @param bool   $overwrite By default, it appends the value. Set to true, to replace the existing attribute value.
-     *
+     * @param  string  $name
+     * @param  string  $value
+     * @param  bool  $overwrite By default, it appends the value. Set to true, to replace the existing attribute value.
      * @return FieldTypeInterface
      */
     public function addAttribute(string $name, string $value, $overwrite = false): FieldTypeInterface
@@ -485,7 +475,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         }
 
         if (isset($this->options['attributes'][$name])) {
-            $this->options['attributes'][$name] .= ' ' . $value;
+            $this->options['attributes'][$name] .= ' '.$value;
         } else {
             $this->options['attributes'][$name] = $value;
         }
@@ -496,8 +486,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Setup the form instance handling the field.
      *
-     * @param FormInterface $form
-     *
+     * @param  FormInterface  $form
      * @return FieldTypeInterface
      */
     public function setForm(FormInterface $form): FieldTypeInterface
@@ -510,8 +499,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Set the field view factory instance.
      *
-     * @param ViewFactoryInterface $factory
-     *
+     * @param  ViewFactoryInterface  $factory
      * @return FieldTypeInterface
      */
     public function setViewFactory(ViewFactoryInterface $factory): FieldTypeInterface
@@ -552,9 +540,8 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Pass custom data to the field view.
      *
-     * @param array|string $key
-     * @param null         $value
-     *
+     * @param  array|string  $key
+     * @param  null  $value
      * @return FieldTypeInterface
      */
     public function with($key, $value = null): FieldTypeInterface
@@ -571,8 +558,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Specify the view file to use by the form.
      *
-     * @param string $view
-     *
+     * @param  string  $view
      * @return FieldTypeInterface
      */
     public function setView(string $view): FieldTypeInterface
@@ -585,8 +571,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Return the view instance used by the entity.
      *
-     * @param bool $prefixed
-     *
+     * @param  bool  $prefixed
      * @return string
      */
     public function getView(bool $prefixed = true): string
@@ -631,8 +616,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Set the field transformer.
      *
-     * @param DataTransformerInterface $transformer
-     *
+     * @param  DataTransformerInterface  $transformer
      * @return FieldTypeInterface
      */
     public function setTransformer(DataTransformerInterface $transformer): FieldTypeInterface
@@ -645,8 +629,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Set the value property of the field.
      *
-     * @param array|string $value
-     *
+     * @param  array|string  $value
      * @return FieldTypeInterface
      */
     public function setValue($value): FieldTypeInterface
@@ -659,8 +642,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Retrieve the field "normalized" value.
      *
-     * @param mixed $default
-     *
+     * @param  mixed  $default
      * @return mixed
      */
     public function getValue($default = null)
@@ -691,8 +673,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Set the field error message bag instance.
      *
-     * @param MessageBag $messageBag
-     *
+     * @param  MessageBag  $messageBag
      * @return $this
      */
     public function setErrorMessageBag($messageBag)
@@ -719,9 +700,8 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Retrieve the field error messages.
      *
-     * @param string $name
-     * @param bool   $first
-     *
+     * @param  string  $name
+     * @param  bool  $first
      * @return string|array
      */
     public function error(string $name = '', bool $first = false)
@@ -752,8 +732,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Set the field locale.
      *
-     * @param string $locale
-     *
+     * @param  string  $locale
      * @return FieldTypeInterface
      */
     public function setLocale(string $locale): FieldTypeInterface
@@ -776,8 +755,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Set the Fractal manager.
      *
-     * @param Manager $manager
-     *
+     * @param  Manager  $manager
      * @return FieldTypeInterface
      */
     public function setManager(Manager $manager): FieldTypeInterface
@@ -800,8 +778,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
     /**
      * Set the transformer factory.
      *
-     * @param Factory $factory
-     *
+     * @param  Factory  $factory
      * @return FieldTypeInterface
      */
     public function setResourceTransformerFactory(Factory $factory): FieldTypeInterface
@@ -888,8 +865,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      *
      * @link http://php.net/manual/en/arrayaccess.offsetexists.php
      *
-     * @param mixed $offset An offset to check for.
-     *
+     * @param  mixed  $offset An offset to check for.
      * @return bool true on success or false on failure.
      *
      * @since 5.0.0
@@ -904,8 +880,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      *
      * @link http://php.net/manual/en/arrayaccess.offsetget.php
      *
-     * @param mixed $offset The offset to retrieve.
-     *
+     * @param  mixed  $offset The offset to retrieve.
      * @return mixed Can return all value types.
      *
      * @since 5.0.0
@@ -920,8 +895,8 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      *
      * @link http://php.net/manual/en/arrayaccess.offsetset.php
      *
-     * @param mixed $offset The offset to assign the value to.
-     * @param mixed $value  The value to set.
+     * @param  mixed  $offset The offset to assign the value to.
+     * @param  mixed  $value  The value to set.
      *
      * @since 5.0.0
      */
@@ -939,7 +914,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      *
      * @link http://php.net/manual/en/arrayaccess.offsetunset.php
      *
-     * @param mixed $offset The offset to unset.
+     * @param  mixed  $offset The offset to unset.
      *
      * @since 5.0.0
      */

@@ -45,12 +45,11 @@ class Factory
     /**
      * Create a new metabox instance.
      *
-     * @param string                  $id
-     * @param string|array|\WP_Screen $screen
+     * @param  string  $id
+     * @param  string|array|\WP_Screen  $screen
+     * @return MetaboxInterface
      *
      * @throws MetaboxException
-     *
-     * @return MetaboxInterface
      */
     public function make(string $id, $screen = 'post'): MetaboxInterface
     {
@@ -81,8 +80,7 @@ class Factory
     /**
      * Format a default title based on given name.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     protected function setDefaultTitle(string $name): string
@@ -93,8 +91,7 @@ class Factory
     /**
      * Set metabox translations strings.
      *
-     * @param MetaboxInterface $metabox
-     *
+     * @param  MetaboxInterface  $metabox
      * @return $this
      */
     protected function setMetaboxTranslations(MetaboxInterface $metabox)

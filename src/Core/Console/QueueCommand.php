@@ -32,7 +32,7 @@ class QueueCommand implements ShouldQueue
     /**
      * Handle the job.
      *
-     * @param \Illuminate\Contracts\Console\Kernel $kernel
+     * @param  \Illuminate\Contracts\Console\Kernel  $kernel
      */
     public function handle(\Illuminate\Contracts\Console\Kernel $kernel)
     {

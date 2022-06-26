@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Facade;
  * @method static array all()
  * @method static string output()
  *
- * @package Themosis\Core\Support\Facades
- *
  * @see \Illuminate\Contracts\Console\Kernel
  */
 class Artisan extends Facade

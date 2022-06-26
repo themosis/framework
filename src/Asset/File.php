@@ -51,8 +51,7 @@ class File implements AssetFileInterface
     /**
      * Set the asset file external status.
      *
-     * @param bool $isExternal
-     *
+     * @param  bool  $isExternal
      * @return AssetFileInterface
      */
     public function setExternal(bool $isExternal = false): AssetFileInterface
@@ -75,8 +74,7 @@ class File implements AssetFileInterface
     /**
      * Set the asset file path.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return AssetFileInterface
      */
     public function setPath(string $path): AssetFileInterface
@@ -99,8 +97,7 @@ class File implements AssetFileInterface
     /**
      * Set the asset file URL.
      *
-     * @param string $url
-     *
+     * @param  string  $url
      * @return AssetFileInterface
      */
     public function setUrl(string $url): AssetFileInterface
@@ -123,9 +120,8 @@ class File implements AssetFileInterface
     /**
      * Set the asset file type.
      *
-     * @param string $filename
-     * @param string $type
-     *
+     * @param  string  $filename
+     * @param  string  $type
      * @return AssetFileInterface
      */
     public function setType(string $filename, $type = null): AssetFileInterface
@@ -150,8 +146,7 @@ class File implements AssetFileInterface
     /**
      * Find the file type.
      *
-     * @param string $type
-     *
+     * @param  string  $type
      * @return string
      */
     protected function findType(string $type)

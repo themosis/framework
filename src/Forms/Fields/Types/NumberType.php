@@ -8,11 +8,7 @@ use Themosis\Forms\Fields\Contracts\CanHandleTerms;
 use Themosis\Forms\Fields\Contracts\CanHandleUsers;
 use Themosis\Forms\Transformers\NumberToLocalizedStringTransformer;
 
-class NumberType extends BaseType implements
-    CanHandleMetabox,
-    CanHandlePageSettings,
-    CanHandleTerms,
-    CanHandleUsers
+class NumberType extends BaseType implements CanHandleMetabox, CanHandlePageSettings, CanHandleTerms, CanHandleUsers
 {
     /**
      * NumberType field view.
@@ -70,8 +66,7 @@ class NumberType extends BaseType implements
     /**
      * Parse and setup default options.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return array
      */
     protected function parseOptions(array $options): array
@@ -84,8 +79,8 @@ class NumberType extends BaseType implements
     /**
      * Handle metabox post meta registration.
      *
-     * @param mixed $value
-     * @param int   $post_id
+     * @param  mixed  $value
+     * @param  int  $post_id
      */
     public function metaboxSave($value, int $post_id)
     {
@@ -105,7 +100,7 @@ class NumberType extends BaseType implements
     /**
      * Initialize metabox post meta value.
      *
-     * @param int $post_id
+     * @param  int  $post_id
      */
     public function metaboxGet(int $post_id)
     {
@@ -119,8 +114,8 @@ class NumberType extends BaseType implements
     /**
      * Handle field term meta registration.
      *
-     * @param string $value
-     * @param int    $term_id
+     * @param  string  $value
+     * @param  int  $term_id
      */
     public function termSave($value, int $term_id)
     {
@@ -140,7 +135,7 @@ class NumberType extends BaseType implements
     /**
      * Handle field term meta initial value.
      *
-     * @param int $term_id
+     * @param  int  $term_id
      */
     public function termGet(int $term_id)
     {
@@ -154,7 +149,7 @@ class NumberType extends BaseType implements
     /**
      * Handle field user meta initial value.
      *
-     * @param int $user_id
+     * @param  int  $user_id
      */
     public function userGet(int $user_id)
     {
@@ -168,8 +163,8 @@ class NumberType extends BaseType implements
     /**
      * Handle field user meta registration.
      *
-     * @param string $value
-     * @param int    $user_id
+     * @param  string  $value
+     * @param  int  $user_id
      */
     public function userSave($value, int $user_id)
     {
@@ -189,8 +184,8 @@ class NumberType extends BaseType implements
     /**
      * Save the field setting value.
      *
-     * @param mixed  $value
-     * @param string $name
+     * @param  mixed  $value
+     * @param  string  $name
      */
     public function settingSave($value, string $name)
     {

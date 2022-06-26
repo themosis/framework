@@ -148,8 +148,7 @@ class Page implements PageInterface
     /**
      * Set the page slug.
      *
-     * @param string $slug
-     *
+     * @param  string  $slug
      * @return PageInterface
      */
     public function setSlug(string $slug): PageInterface
@@ -172,8 +171,7 @@ class Page implements PageInterface
     /**
      * Set the page title.
      *
-     * @param string $title
-     *
+     * @param  string  $title
      * @return PageInterface
      */
     public function setTitle(string $title): PageInterface
@@ -196,8 +194,7 @@ class Page implements PageInterface
     /**
      * Set the page menu.
      *
-     * @param string $menu
-     *
+     * @param  string  $menu
      * @return PageInterface
      */
     public function setMenu(string $menu): PageInterface
@@ -220,8 +217,7 @@ class Page implements PageInterface
     /**
      * Set the page capability.
      *
-     * @param string $cap
-     *
+     * @param  string  $cap
      * @return PageInterface
      */
     public function setCapability(string $cap): PageInterface
@@ -244,8 +240,7 @@ class Page implements PageInterface
     /**
      * Set the page icon.
      *
-     * @param string $icon
-     *
+     * @param  string  $icon
      * @return PageInterface
      */
     public function setIcon(string $icon): PageInterface
@@ -268,8 +263,7 @@ class Page implements PageInterface
     /**
      * Set the page position.
      *
-     * @param int $position
-     *
+     * @param  int  $position
      * @return PageInterface
      */
     public function setPosition(int $position): PageInterface
@@ -292,8 +286,7 @@ class Page implements PageInterface
     /**
      * Set the page parent.
      *
-     * @param string $parent
-     *
+     * @param  string  $parent
      * @return PageInterface
      */
     public function setParent(string $parent): PageInterface
@@ -306,8 +299,7 @@ class Page implements PageInterface
     /**
      * Set the page for network display.
      *
-     * @param bool $network
-     *
+     * @param  bool  $network
      * @return PageInterface
      */
     public function network(bool $network = true): PageInterface
@@ -330,8 +322,7 @@ class Page implements PageInterface
     /**
      * Set page settings global show in rest property.
      *
-     * @param bool $show
-     *
+     * @param  bool  $show
      * @return PageInterface
      */
     public function showInRest($show = true): PageInterface
@@ -407,7 +398,7 @@ class Page implements PageInterface
         }
 
         // The current page is attached to another one.
-        $abstract = 'page.' . $this->getParent();
+        $abstract = 'page.'.$this->getParent();
 
         if ($this->ui()->factory()->getContainer()->bound($abstract)) {
             // Parent hook is equivalent to the page menu as lowercase.
@@ -471,9 +462,8 @@ class Page implements PageInterface
     /**
      * Add data to the page view.
      *
-     * @param string|array $key
-     * @param mixed        $value
-     *
+     * @param  string|array  $key
+     * @param  mixed  $value
      * @return PageInterface
      */
     public function with($key, $value = null): PageInterface
@@ -496,8 +486,7 @@ class Page implements PageInterface
     /**
      * Add sections to the page.
      *
-     * @param array $sections
-     *
+     * @param  array  $sections
      * @return PageInterface
      */
     public function addSections(array $sections): PageInterface
@@ -523,9 +512,8 @@ class Page implements PageInterface
     /**
      * Add settings to the page.
      *
-     * @param string|array $section
-     * @param array        $settings
-     *
+     * @param  string|array  $section
+     * @param  array  $settings
      * @return PageInterface
      */
     public function addSettings($section, array $settings = []): PageInterface
@@ -563,8 +551,7 @@ class Page implements PageInterface
     /**
      * Set the page settings name prefix.
      *
-     * @param string $prefix
-     *
+     * @param  string  $prefix
      * @return PageInterface
      */
     public function setPrefix(string $prefix): PageInterface
@@ -634,8 +621,7 @@ class Page implements PageInterface
     /**
      * Prepare the setting.
      *
-     * @param FieldTypeInterface $setting
-     *
+     * @param  FieldTypeInterface  $setting
      * @return FieldTypeInterface
      */
     protected function prepareSetting(FieldTypeInterface $setting)
@@ -662,8 +648,7 @@ class Page implements PageInterface
     /**
      * Sanitize the setting before save.
      *
-     * @param string|array $value
-     *
+     * @param  string|array  $value
      * @return string|array
      */
     public function sanitizeSetting($value)
@@ -730,9 +715,9 @@ class Page implements PageInterface
     /**
      * Add settings error message.
      *
-     * @param string $slug
-     * @param string $name
-     * @param string $message
+     * @param  string  $slug
+     * @param  string  $name
+     * @param  string  $message
      */
     private function addSettingsErrorMessage(string $slug, string $name, string $message)
     {
@@ -742,7 +727,7 @@ class Page implements PageInterface
     /**
      * Add settings success message.
      *
-     * @param string $slug
+     * @param  string  $slug
      */
     private function addSettingsSuccessMessage(string $slug)
     {
@@ -757,8 +742,7 @@ class Page implements PageInterface
     /**
      * Return the setting custom error messages.
      *
-     * @param FieldTypeInterface $setting
-     *
+     * @param  FieldTypeInterface  $setting
      * @return array
      */
     protected function getSettingMessages(FieldTypeInterface $setting): array
@@ -766,7 +750,7 @@ class Page implements PageInterface
         $messages = [];
 
         foreach ($setting->getOption('messages', []) as $attr => $message) {
-            $messages[$setting->getName() . '.' . $attr] = $message;
+            $messages[$setting->getName().'.'.$attr] = $message;
         }
 
         return $messages;
@@ -775,8 +759,7 @@ class Page implements PageInterface
     /**
      * Return the setting placeholder.
      *
-     * @param FieldTypeInterface $setting
-     *
+     * @param  FieldTypeInterface  $setting
      * @return array
      */
     protected function getSettingPlaceholder(FieldTypeInterface $setting): array
@@ -793,7 +776,7 @@ class Page implements PageInterface
     /**
      * Output the section HTML.
      *
-     * @param array $args
+     * @param  array  $args
      */
     public function renderSections(array $args)
     {
@@ -811,7 +794,7 @@ class Page implements PageInterface
     /**
      * Output the setting HTML.
      *
-     * @param FieldTypeInterface $setting
+     * @param  FieldTypeInterface  $setting
      */
     public function renderSettings($setting)
     {
@@ -833,8 +816,7 @@ class Page implements PageInterface
     /**
      * Return the setting error from its name.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return array
      */
     public function getSettingError(string $name): array
@@ -853,9 +835,8 @@ class Page implements PageInterface
     /**
      * Set the page view path.
      *
-     * @param string $name
-     * @param bool   $useShortPath
-     *
+     * @param  string  $name
+     * @param  bool  $useShortPath
      * @return PageInterface
      */
     public function setView(string $name, bool $useShortPath = false): PageInterface
@@ -914,18 +895,17 @@ class Page implements PageInterface
         }
 
         foreach ($this->routes['post'] as $action => $callback) {
-            $this->action->add('admin_post_' . $action, $callback);
+            $this->action->add('admin_post_'.$action, $callback);
         }
     }
 
     /**
      * Register page routes.
      *
-     * @param string          $action
-     * @param callable|string $callback
-     * @param string          $method
-     * @param string          $title
-     *
+     * @param  string  $action
+     * @param  callable|string  $callback
+     * @param  string  $method
+     * @param  string  $title
      * @return PageInterface
      */
     public function route(string $action, $callback, string $method = 'get', string $title = ''): PageInterface
@@ -948,9 +928,9 @@ class Page implements PageInterface
     protected function registerRouteActions()
     {
         // Actions for page routing.
-        $this->action->add('load-toplevel_page_' . $this->getSlug(), [$this, 'parseGetRoute']);
-        $this->action->add('load-admin_page_' . $this->getSlug(), [$this, 'parseGetRoute']);
-        $this->action->add('load-' . $this->findParentHook() . '_page_' . $this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('load-toplevel_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('load-admin_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
+        $this->action->add('load-'.$this->findParentHook().'_page_'.$this->getSlug(), [$this, 'parseGetRoute']);
         $this->action->add('admin_init', [$this, 'parsePostRoute']);
 
         $this->filter->add('admin_title', [$this, 'handleTitle']);
@@ -959,15 +939,14 @@ class Page implements PageInterface
     /**
      * Format the action name.
      *
-     * @param string $action
-     * @param string $method
-     *
+     * @param  string  $action
+     * @param  string  $method
      * @return string
      */
     protected function parseAction(string $action, string $method): string
     {
         if ('post' === $method) {
-            return $this->getSlug() . '_' . $action;
+            return $this->getSlug().'_'.$action;
         }
 
         return $action;
@@ -976,8 +955,7 @@ class Page implements PageInterface
     /**
      * Called by the "admin_title" filter. Handle the page titles.
      *
-     * @param string $title
-     *
+     * @param  string  $title
      * @return string
      */
     public function handleTitle($title)
@@ -1026,8 +1004,7 @@ class Page implements PageInterface
     /**
      * Return the action name for POST requests.
      *
-     * @param string $action
-     *
+     * @param  string  $action
      * @return string
      */
     public function getAction(string $action): string

@@ -18,7 +18,7 @@ class WordPressCacheWrapperTest extends TestCase
      */
     public function getCacheStore()
     {
-        return new Repository(new FileStore(new Filesystem(), __DIR__ . '/../storage/cache'));
+        return new Repository(new FileStore(new Filesystem(), __DIR__.'/../storage/cache'));
     }
 
     public function test_wrapper_can_cache_items_using_default_group()

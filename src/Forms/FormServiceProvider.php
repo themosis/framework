@@ -18,7 +18,7 @@ class FormServiceProvider extends ServiceProvider
 
         /** @var \Illuminate\View\Factory $view */
         $view = $this->app['view'];
-        $view->addLocation(__DIR__ . '/views');
+        $view->addLocation(__DIR__.'/views');
 
         $this->app->singleton('form', function ($app) {
             return new FormFactory(

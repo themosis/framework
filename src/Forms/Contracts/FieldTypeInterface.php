@@ -19,8 +19,7 @@ interface FieldTypeInterface
     /**
      * Set the field options.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return FieldTypeInterface
      */
     public function setOptions(array $options): FieldTypeInterface;
@@ -28,8 +27,7 @@ interface FieldTypeInterface
     /**
      * Return field options.
      *
-     * @param array $excludes
-     *
+     * @param  array  $excludes
      * @return array
      */
     public function getOptions(array $excludes = null): array;
@@ -37,9 +35,8 @@ interface FieldTypeInterface
     /**
      * Get field type option defined by key.
      *
-     * @param string $key
-     * @param mixed  $default
-     *
+     * @param  string  $key
+     * @param  mixed  $default
      * @return string|array|null
      */
     public function getOption(string $key, $default = null);
@@ -48,8 +45,7 @@ interface FieldTypeInterface
      * Set a field prefix. Mainly applied to field name to avoid conflict
      * with query variables.
      *
-     * @param string $prefix
-     *
+     * @param  string  $prefix
      * @return FieldTypeInterface
      */
     public function setPrefix(string $prefix): FieldTypeInterface;
@@ -85,8 +81,7 @@ interface FieldTypeInterface
     /**
      * Get the value of a defined attribute.
      *
-     * @param string $name The attribute name.
-     *
+     * @param  string  $name The attribute name.
      * @return mixed
      */
     public function getAttribute(string $name);
@@ -94,8 +89,7 @@ interface FieldTypeInterface
     /**
      * Set the attributes for the field.
      *
-     * @param array $attributes
-     *
+     * @param  array  $attributes
      * @return FieldTypeInterface
      */
     public function setAttributes(array $attributes);
@@ -103,10 +97,9 @@ interface FieldTypeInterface
     /**
      * Add an attribute to the field.
      *
-     * @param string $name
-     * @param string $value
-     * @param bool   $overwrite By default, it appends the value. Set to true, to replace the existing attribute value.
-     *
+     * @param  string  $name
+     * @param  string  $value
+     * @param  bool  $overwrite By default, it appends the value. Set to true, to replace the existing attribute value.
      * @return FieldTypeInterface
      */
     public function addAttribute(string $name, string $value, $overwrite = false): FieldTypeInterface;
@@ -128,8 +121,7 @@ interface FieldTypeInterface
     /**
      * Specify the view file to use by the entity.
      *
-     * @param string $view
-     *
+     * @param  string  $view
      * @return FieldTypeInterface
      */
     public function setView(string $view): FieldTypeInterface;
@@ -137,8 +129,7 @@ interface FieldTypeInterface
     /**
      * Set the field view factory instance.
      *
-     * @param ViewFactoryInterface $factory
-     *
+     * @param  ViewFactoryInterface  $factory
      * @return FieldTypeInterface
      */
     public function setViewFactory(ViewFactoryInterface $factory): FieldTypeInterface;
@@ -146,8 +137,7 @@ interface FieldTypeInterface
     /**
      * Return the view instance used by the entity.
      *
-     * @param bool $prefixed
-     *
+     * @param  bool  $prefixed
      * @return string
      */
     public function getView(bool $prefixed = true): string;
@@ -176,8 +166,7 @@ interface FieldTypeInterface
     /**
      * Set the field transformer.
      *
-     * @param DataTransformerInterface $transformer
-     *
+     * @param  DataTransformerInterface  $transformer
      * @return FieldTypeInterface
      */
     public function setTransformer(DataTransformerInterface $transformer): FieldTypeInterface;
@@ -185,8 +174,7 @@ interface FieldTypeInterface
     /**
      * Set the field raw value.
      *
-     * @param string|array $value
-     *
+     * @param  string|array  $value
      * @return FieldTypeInterface
      */
     public function setValue($value): FieldTypeInterface;
@@ -194,8 +182,7 @@ interface FieldTypeInterface
     /**
      * Retrieve the field "normalized" value.
      *
-     * @param mixed $default
-     *
+     * @param  mixed  $default
      * @return mixed
      */
     public function getValue($default = null);
@@ -217,9 +204,8 @@ interface FieldTypeInterface
     /**
      * Retrieve the error messages of a specific input.
      *
-     * @param string $name
-     * @param bool   $first
-     *
+     * @param  string  $name
+     * @param  bool  $first
      * @return string|array
      */
     public function error(string $name = '', bool $first = false);
@@ -234,8 +220,7 @@ interface FieldTypeInterface
     /**
      * Set the field locale.
      *
-     * @param string $locale
-     *
+     * @param  string  $locale
      * @return FieldTypeInterface
      */
     public function setLocale(string $locale): FieldTypeInterface;
@@ -250,8 +235,7 @@ interface FieldTypeInterface
     /**
      * Set the field theme.
      *
-     * @param string $theme
-     *
+     * @param  string  $theme
      * @return FieldTypeInterface
      */
     public function setTheme(string $theme): FieldTypeInterface;
@@ -266,8 +250,7 @@ interface FieldTypeInterface
     /**
      * Set the Fractal manager.
      *
-     * @param Manager $manager
-     *
+     * @param  Manager  $manager
      * @return FieldTypeInterface
      */
     public function setManager(Manager $manager): FieldTypeInterface;
@@ -282,8 +265,7 @@ interface FieldTypeInterface
     /**
      * Set the transformer factory.
      *
-     * @param Factory $factory
-     *
+     * @param  Factory  $factory
      * @return FieldTypeInterface
      */
     public function setResourceTransformerFactory(Factory $factory): FieldTypeInterface;
@@ -326,9 +308,8 @@ interface FieldTypeInterface
     /**
      * Pass custom data to the field view.
      *
-     * @param string|array $key
-     * @param mixed        $value
-     *
+     * @param  string|array  $key
+     * @param  mixed  $value
      * @return FieldTypeInterface
      */
     public function with($key, $value = null): FieldTypeInterface;

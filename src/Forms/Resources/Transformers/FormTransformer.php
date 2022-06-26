@@ -20,8 +20,7 @@ class FormTransformer extends TransformerAbstract
     /**
      * Transform single form.
      *
-     * @param FieldTypeInterface $form
-     *
+     * @param  FieldTypeInterface  $form
      * @return array
      */
     public function transform(FieldTypeInterface $form)
@@ -45,8 +44,7 @@ class FormTransformer extends TransformerAbstract
     /**
      * Include "fields" property to resource.
      *
-     * @param FieldTypeInterface $form
-     *
+     * @param  FieldTypeInterface  $form
      * @return \League\Fractal\Resource\Collection
      */
     public function includeFields(FieldTypeInterface $form)
@@ -67,8 +65,7 @@ class FormTransformer extends TransformerAbstract
     /**
      * Include "groups" property to resource.
      *
-     * @param FieldTypeInterface $form
-     *
+     * @param  FieldTypeInterface  $form
      * @return \League\Fractal\Resource\Collection
      */
     public function includeGroups(FieldTypeInterface $form)

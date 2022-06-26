@@ -67,8 +67,7 @@ class Taxonomy implements TaxonomyInterface
     /**
      * Set taxonomy labels.
      *
-     * @param array $labels
-     *
+     * @param  array  $labels
      * @return TaxonomyInterface
      */
     public function setLabels(array $labels): TaxonomyInterface
@@ -95,8 +94,7 @@ class Taxonomy implements TaxonomyInterface
     /**
      * Return a taxonomy label by name.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     public function getLabel(string $name): string
@@ -109,8 +107,7 @@ class Taxonomy implements TaxonomyInterface
     /**
      * Set taxonomy arguments.
      *
-     * @param array $args
-     *
+     * @param  array  $args
      * @return TaxonomyInterface
      */
     public function setArguments(array $args): TaxonomyInterface
@@ -133,8 +130,7 @@ class Taxonomy implements TaxonomyInterface
     /**
      * Return a taxonomy argument.
      *
-     * @param string $property
-     *
+     * @param  string  $property
      * @return mixed
      */
     public function getArgument(string $property)
@@ -183,8 +179,7 @@ class Taxonomy implements TaxonomyInterface
     /**
      * Set taxonomy objects.
      *
-     * @param array|string $objects
-     *
+     * @param  array|string  $objects
      * @return TaxonomyInterface
      */
     public function setObjects($objects): TaxonomyInterface
@@ -201,15 +196,14 @@ class Taxonomy implements TaxonomyInterface
     /**
      * Parse attached objects and set default update count callback.
      *
-     * @param array $objects
-     *
+     * @param  array  $objects
      * @return TaxonomyInterface
      */
     protected function parseObjectsForCustomStatus(array $objects): TaxonomyInterface
     {
         foreach ($objects as $object) {
-            if ($this->container->bound('themosis.posttype.' . $object)) {
-                $postType = $this->container['themosis.posttype.' . $object];
+            if ($this->container->bound('themosis.posttype.'.$object)) {
+                $postType = $this->container['themosis.posttype.'.$object];
 
                 if ($postType->hasStatus()) {
                     $this->setArguments([

@@ -17,8 +17,7 @@ interface PageInterface
     /**
      * Set the page slug.
      *
-     * @param string $slug
-     *
+     * @param  string  $slug
      * @return PageInterface
      */
     public function setSlug(string $slug): PageInterface;
@@ -33,8 +32,7 @@ interface PageInterface
     /**
      * Set the page title.
      *
-     * @param string $title
-     *
+     * @param  string  $title
      * @return PageInterface
      */
     public function setTitle(string $title): PageInterface;
@@ -49,8 +47,7 @@ interface PageInterface
     /**
      * Set the page menu title.
      *
-     * @param string $menu
-     *
+     * @param  string  $menu
      * @return PageInterface
      */
     public function setMenu(string $menu): PageInterface;
@@ -65,8 +62,7 @@ interface PageInterface
     /**
      * Set the page capability.
      *
-     * @param string $cap
-     *
+     * @param  string  $cap
      * @return PageInterface
      */
     public function setCapability(string $cap): PageInterface;
@@ -81,8 +77,7 @@ interface PageInterface
     /**
      * Set the page icon.
      *
-     * @param string $icon
-     *
+     * @param  string  $icon
      * @return PageInterface
      */
     public function setIcon(string $icon): PageInterface;
@@ -97,8 +92,7 @@ interface PageInterface
     /**
      * Set the page position.
      *
-     * @param int $position
-     *
+     * @param  int  $position
      * @return PageInterface
      */
     public function setPosition(int $position): PageInterface;
@@ -113,8 +107,7 @@ interface PageInterface
     /**
      * Set the page parent.
      *
-     * @param string $parent
-     *
+     * @param  string  $parent
      * @return PageInterface
      */
     public function setParent(string $parent): PageInterface;
@@ -132,8 +125,7 @@ interface PageInterface
      * Each setting can override individually this option using an
      * option "show_in_rest".
      *
-     * @param bool $show
-     *
+     * @param  bool  $show
      * @return PageInterface
      */
     public function showInRest($show = true): PageInterface;
@@ -148,8 +140,7 @@ interface PageInterface
     /**
      * Set the page for network display.
      *
-     * @param bool $network
-     *
+     * @param  bool  $network
      * @return PageInterface
      */
     public function network(bool $network = true): PageInterface;
@@ -178,9 +169,8 @@ interface PageInterface
     /**
      * Add data to page ui instance.
      *
-     * @param string|array $key
-     * @param mixed        $value
-     *
+     * @param  string|array  $key
+     * @param  mixed  $value
      * @return PageInterface
      */
     public function with($key, $value = null): PageInterface;
@@ -195,8 +185,7 @@ interface PageInterface
     /**
      * Add sections to the page.
      *
-     * @param array $sections
-     *
+     * @param  array  $sections
      * @return PageInterface
      */
     public function addSections(array $sections): PageInterface;
@@ -204,9 +193,8 @@ interface PageInterface
     /**
      * Add settings to the page.
      *
-     * @param string|array $section
-     * @param array        $settings
-     *
+     * @param  string|array  $section
+     * @param  array  $settings
      * @return PageInterface
      */
     public function addSettings($section, array $settings = []): PageInterface;
@@ -221,8 +209,7 @@ interface PageInterface
     /**
      * Set the page settings name prefix.
      *
-     * @param string $prefix
-     *
+     * @param  string  $prefix
      * @return PageInterface
      */
     public function setPrefix(string $prefix): PageInterface;
@@ -230,9 +217,8 @@ interface PageInterface
     /**
      * Set the page view path.
      *
-     * @param string $name
-     * @param bool   $useShortPath
-     *
+     * @param  string  $name
+     * @param  bool  $useShortPath
      * @return PageInterface
      */
     public function setView(string $name, bool $useShortPath = false): PageInterface;
@@ -240,11 +226,10 @@ interface PageInterface
     /**
      * Register page routes.
      *
-     * @param string          $action
-     * @param string|callable $callback
-     * @param string          $method
-     * @param string          $title
-     *
+     * @param  string  $action
+     * @param  string|callable  $callback
+     * @param  string  $method
+     * @param  string  $title
      * @return PageInterface
      */
     public function route(string $action, $callback, string $method = 'get', string $title = ''): PageInterface;
@@ -259,8 +244,7 @@ interface PageInterface
     /**
      * Return the prefixed action name for POST requests.
      *
-     * @param string $action
-     *
+     * @param  string  $action
      * @return string
      */
     public function getAction(string $action): string;

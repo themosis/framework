@@ -17,8 +17,7 @@ interface UIContainerInterface
     /**
      * Set the container theme.
      *
-     * @param string $theme
-     *
+     * @param  string  $theme
      * @return UIContainerInterface
      */
     public function setTheme(string $theme): UIContainerInterface;
@@ -33,8 +32,7 @@ interface UIContainerInterface
     /**
      * Define a layout/view to use for the container (without a namespace).
      *
-     * @param string $layout
-     *
+     * @param  string  $layout
      * @return UIContainerInterface
      */
     public function setLayout(string $layout): UIContainerInterface;
@@ -42,8 +40,7 @@ interface UIContainerInterface
     /**
      * Define a view to use for the container.
      *
-     * @param string $view
-     *
+     * @param  string  $view
      * @return UIContainerInterface
      */
     public function setView(string $view): UIContainerInterface;

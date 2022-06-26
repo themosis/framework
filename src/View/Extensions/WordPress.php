@@ -27,9 +27,8 @@ class WordPress extends AbstractExtension implements GlobalsInterface
      * Allow developers to call WordPress and core PHP
      * functions inside their Twig templates.
      *
-     * @param string $name
-     * @param array  $arguments
-     *
+     * @param  string  $name
+     * @param  array  $arguments
      * @return mixed
      */
     public function __call($name, array $arguments)

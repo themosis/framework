@@ -10,9 +10,8 @@ interface MetaboxManagerInterface
      * Handle metabox initialization.
      * Initialize metabox fields values.
      *
-     * @param MetaboxInterface $metabox
-     * @param Request          $request
-     *
+     * @param  MetaboxInterface  $metabox
+     * @param  Request  $request
      * @return MetaboxInterface
      */
     public function getFields(MetaboxInterface $metabox, Request $request): MetaboxInterface;
@@ -20,9 +19,8 @@ interface MetaboxManagerInterface
     /**
      * Handle metabox post meta save.
      *
-     * @param MetaboxInterface $metabox
-     * @param Request          $request
-     *
+     * @param  MetaboxInterface  $metabox
+     * @param  Request  $request
      * @return MetaboxInterface
      */
     public function saveFields(MetaboxInterface $metabox, Request $request): MetaboxInterface;

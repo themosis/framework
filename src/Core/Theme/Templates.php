@@ -25,8 +25,7 @@ class Templates
     /**
      * Parse templates.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return array
      */
     protected function parse(array $options)
@@ -85,8 +84,7 @@ class Templates
     /**
      * Format the template name.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     protected function formatName(string $name)

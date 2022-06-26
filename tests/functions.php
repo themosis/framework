@@ -30,8 +30,7 @@ function is_home()
 /**
  * Detect if is a WordPress page.
  *
- * @param string|int|array $slug
- *
+ * @param  string|int|array  $slug
  * @return bool
  */
 function is_page($slug = null)
@@ -203,7 +202,7 @@ function is_custom($num)
 function wp_get_theme()
 {
     $theme = new stdClass();
-    $theme->stylesheet = "underscore";
+    $theme->stylesheet = 'underscore';
 
     return $theme;
 }
@@ -212,7 +211,7 @@ function get_home_url($blog_id = null, $path = '')
 {
     $url = 'http://example.com';
     if ($path && is_string($path)) {
-        $url .= '/' . ltrim($path, '/');
+        $url .= '/'.ltrim($path, '/');
     }
 
     return $url;

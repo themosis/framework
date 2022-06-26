@@ -16,9 +16,8 @@ interface FieldsRepositoryInterface
     /**
      * Attach a field to the form.
      *
-     * @param FieldTypeInterface $field
-     * @param SectionInterface   $group
-     *
+     * @param  FieldTypeInterface  $field
+     * @param  SectionInterface  $group
      * @return FieldsRepositoryInterface
      */
     public function addField(FieldTypeInterface $field, SectionInterface $group): FieldsRepositoryInterface;
@@ -27,9 +26,8 @@ interface FieldsRepositoryInterface
      * Return the defined field instance based on its basename property.
      * If not set, return all fields from the "default" group.
      *
-     * @param string $name
-     * @param string $group
-     *
+     * @param  string  $name
+     * @param  string  $group
      * @return mixed
      */
     public function getField(string $name = '', string $group = 'default');
@@ -38,8 +36,7 @@ interface FieldsRepositoryInterface
      * Retrieve a list of attached fields based
      * on provided group name.
      *
-     * @param string $group
-     *
+     * @param  string  $group
      * @return SectionInterface|array
      */
     public function getFieldsByGroup(string $group = '');
@@ -54,8 +51,7 @@ interface FieldsRepositoryInterface
     /**
      * Retrieve a field by its name.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return FieldTypeInterface
      */
     public function getFieldByName(string $name): FieldTypeInterface;
@@ -63,8 +59,7 @@ interface FieldsRepositoryInterface
     /**
      * Check if form contains provided group instance (section).
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return bool
      */
     public function hasGroup(string $name): bool;
@@ -72,8 +67,7 @@ interface FieldsRepositoryInterface
     /**
      * Return the registered group/section instance.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return SectionInterface
      */
     public function getGroup(string $name): SectionInterface;

@@ -14,8 +14,7 @@ interface SectionInterface
     /**
      * Set the section view file.
      *
-     * @param string $view
-     *
+     * @param  string  $view
      * @return SectionInterface
      */
     public function setView(string $view): SectionInterface;
@@ -23,8 +22,7 @@ interface SectionInterface
     /**
      * Set section view data array.
      *
-     * @param array $data
-     *
+     * @param  array  $data
      * @return SectionInterface
      */
     public function setViewData(array $data): SectionInterface;
@@ -39,8 +37,7 @@ interface SectionInterface
     /**
      * Get the section view file.
      *
-     * @param bool $prefixed
-     *
+     * @param  bool  $prefixed
      * @return string
      */
     public function getView(bool $prefixed = false): string;
@@ -48,8 +45,7 @@ interface SectionInterface
     /**
      * Set the section theme.
      *
-     * @param string $theme
-     *
+     * @param  string  $theme
      * @return SectionInterface
      */
     public function setTheme(string $theme): SectionInterface;
@@ -64,8 +60,7 @@ interface SectionInterface
     /**
      * Set section items instances.
      *
-     * @param array $items
-     *
+     * @param  array  $items
      * @return SectionInterface
      */
     public function setItems(array $items): SectionInterface;
@@ -80,8 +75,7 @@ interface SectionInterface
     /**
      * Add an item to the section.
      *
-     * @param mixed $item
-     *
+     * @param  mixed  $item
      * @return SectionInterface
      */
     public function addItem($item): SectionInterface;
@@ -96,8 +90,7 @@ interface SectionInterface
     /**
      * Set the section title.
      *
-     * @param string $title
-     *
+     * @param  string  $title
      * @return SectionInterface
      */
     public function setTitle(string $title): SectionInterface;

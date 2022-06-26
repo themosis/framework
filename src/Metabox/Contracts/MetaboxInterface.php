@@ -19,8 +19,7 @@ interface MetaboxInterface
     /**
      * Set the metabox title.
      *
-     * @param string $title
-     *
+     * @param  string  $title
      * @return MetaboxInterface
      */
     public function setTitle(string $title): MetaboxInterface;
@@ -36,8 +35,7 @@ interface MetaboxInterface
      * Set the metabox screen.
      *
      * @param string|array|\WP_Screen
-     * @param mixed $screen
-     *
+     * @param  mixed  $screen
      * @return MetaboxInterface
      */
     public function setScreen($screen): MetaboxInterface;
@@ -52,8 +50,7 @@ interface MetaboxInterface
     /**
      * Set the metabox context.
      *
-     * @param string $context
-     *
+     * @param  string  $context
      * @return MetaboxInterface
      */
     public function setContext(string $context): MetaboxInterface;
@@ -68,8 +65,7 @@ interface MetaboxInterface
     /**
      * Set the metabox priority.
      *
-     * @param string $priority
-     *
+     * @param  string  $priority
      * @return MetaboxInterface
      */
     public function setPriority(string $priority): MetaboxInterface;
@@ -84,8 +80,7 @@ interface MetaboxInterface
     /**
      * Set the metabox callback.
      *
-     * @param string|callable $callback
-     *
+     * @param  string|callable  $callback
      * @return MetaboxInterface
      */
     public function setCallback($callback): MetaboxInterface;
@@ -100,8 +95,7 @@ interface MetaboxInterface
     /**
      * Set the metabox controller arguments.
      *
-     * @param array $args
-     *
+     * @param  array  $args
      * @return MetaboxInterface
      */
     public function setArguments(array $args): MetaboxInterface;
@@ -116,8 +110,7 @@ interface MetaboxInterface
     /**
      * Set the metabox layout.
      *
-     * @param string $layout
-     *
+     * @param  string  $layout
      * @return MetaboxInterface
      */
     public function setLayout(string $layout): MetaboxInterface;
@@ -139,8 +132,7 @@ interface MetaboxInterface
     /**
      * Set the metabox resource abstraction layer/manager.
      *
-     * @param MetaboxResourceInterface $resource
-     *
+     * @param  MetaboxResourceInterface  $resource
      * @return MetaboxInterface
      */
     public function setResource(MetaboxResourceInterface $resource): MetaboxInterface;
@@ -169,8 +161,7 @@ interface MetaboxInterface
     /**
      * Set the metabox locale.
      *
-     * @param string $locale
-     *
+     * @param  string  $locale
      * @return MetaboxInterface
      */
     public function setLocale(string $locale): MetaboxInterface;
@@ -185,8 +176,7 @@ interface MetaboxInterface
     /**
      * Set the metabox prefix.
      *
-     * @param string $prefix
-     *
+     * @param  string  $prefix
      * @return MetaboxInterface
      */
     public function setPrefix(string $prefix): MetaboxInterface;
@@ -208,9 +198,8 @@ interface MetaboxInterface
     /**
      * Add a field or section of fields to the metabox.
      *
-     * @param FieldTypeInterface|SectionInterface $field
-     * @param SectionInterface                    $section
-     *
+     * @param  FieldTypeInterface|SectionInterface  $field
+     * @param  SectionInterface  $section
      * @return MetaboxInterface
      */
     public function add($field, SectionInterface $section = null): MetaboxInterface;
@@ -225,8 +214,7 @@ interface MetaboxInterface
     /**
      * Return the translation if exists.
      *
-     * @param string $key
-     *
+     * @param  string  $key
      * @return string
      */
     public function getTranslation(string $key): string;
@@ -234,9 +222,8 @@ interface MetaboxInterface
     /**
      * Add metabox translation.
      *
-     * @param string $key
-     * @param string $translation
-     *
+     * @param  string  $key
+     * @param  string  $translation
      * @return MetaboxInterface
      */
     public function addTranslation(string $key, string $translation): MetaboxInterface;
@@ -244,8 +231,7 @@ interface MetaboxInterface
     /**
      * Set the metabox capability.
      *
-     * @param string $cap
-     *
+     * @param  string  $cap
      * @return MetaboxInterface
      */
     public function setCapability(string $cap): MetaboxInterface;
@@ -260,9 +246,8 @@ interface MetaboxInterface
     /**
      * Set the metabox template.
      *
-     * @param string|array $template
-     * @param string       $screen
-     *
+     * @param  string|array  $template
+     * @param  string  $screen
      * @return MetaboxInterface
      */
     public function setTemplate($template, string $screen = 'page'): MetaboxInterface;

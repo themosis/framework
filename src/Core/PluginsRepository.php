@@ -44,7 +44,7 @@ class PluginsRepository
     /**
      * Load application must-use plugins.
      *
-     * @param array $directories
+     * @param  array  $directories
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws Exception
@@ -71,11 +71,10 @@ class PluginsRepository
     /**
      * Compile a new plugin manifest.
      *
-     * @param array $directories
+     * @param  array  $directories
+     * @return array
      *
      * @throws Exception
-     *
-     * @return array
      */
     public function compileManifest(array $directories)
     {
@@ -97,8 +96,7 @@ class PluginsRepository
     /**
      * Get the plugin. Find the root file and return its headers.
      *
-     * @param string $directory
-     *
+     * @param  string  $directory
      * @return array
      */
     public function getPlugin(string $directory)
@@ -119,9 +117,8 @@ class PluginsRepository
     /**
      * Verify if the plugins manifest should be recompiled.
      *
-     * @param array|null $manifest
-     * @param array      $directories
-     *
+     * @param  array|null  $manifest
+     * @param  array  $directories
      * @return bool
      */
     public function shouldRecompile($manifest, $directories)
@@ -132,9 +129,9 @@ class PluginsRepository
     /**
      * Return plugins manifest.
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
      * @return array|null
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function loadManifest()
     {
@@ -148,11 +145,10 @@ class PluginsRepository
     /**
      * Write the plugins manifest file.
      *
-     * @param array $manifest
+     * @param  array  $manifest
+     * @return array
      *
      * @throws Exception
-     *
-     * @return array
      */
     public function writeManifest(array $manifest)
     {
@@ -162,7 +158,7 @@ class PluginsRepository
 
         $this->files->put(
             $this->manifestPath,
-            '<?php return ' . var_export($manifest, true) . ';',
+            '<?php return '.var_export($manifest, true).';',
         );
 
         return $manifest;

@@ -22,8 +22,7 @@ class MetaboxTransformer extends TransformerAbstract
     /**
      * Transform the metabox to a resource.
      *
-     * @param MetaboxInterface $metabox
-     *
+     * @param  MetaboxInterface  $metabox
      * @return array
      */
     public function transform(MetaboxInterface $metabox)
@@ -43,7 +42,6 @@ class MetaboxTransformer extends TransformerAbstract
      * Get the metabox screen data.
      *
      * @param $screen
-     *
      * @return array
      */
     protected function getScreen($screen)
@@ -69,8 +67,7 @@ class MetaboxTransformer extends TransformerAbstract
     /**
      * Return the metabox fields.
      *
-     * @param MetaboxInterface $metabox
-     *
+     * @param  MetaboxInterface  $metabox
      * @return \League\Fractal\Resource\Collection
      */
     public function includeFields(MetaboxInterface $metabox)
@@ -90,8 +87,7 @@ class MetaboxTransformer extends TransformerAbstract
     /**
      * Return the metabox groups.
      *
-     * @param MetaboxInterface $metabox
-     *
+     * @param  MetaboxInterface  $metabox
      * @return \League\Fractal\Resource\Collection
      */
     public function includeGroups(MetaboxInterface $metabox)

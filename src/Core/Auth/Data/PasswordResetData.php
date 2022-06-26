@@ -37,7 +37,7 @@ class PasswordResetData
     }
 
     /**
-     * @param string $token
+     * @param  string  $token
      */
     public function setToken(string $token): void
     {
@@ -57,7 +57,7 @@ class PasswordResetData
     }
 
     /**
-     * @param string $email
+     * @param  string  $email
      */
     public function setEmail(string $email): void
     {
@@ -77,7 +77,7 @@ class PasswordResetData
     }
 
     /**
-     * @param string $password
+     * @param  string  $password
      */
     public function setPassword(string $password): void
     {
@@ -97,7 +97,7 @@ class PasswordResetData
     }
 
     /**
-     * @param string $passwordConfirmation
+     * @param  string  $passwordConfirmation
      */
     public function setPasswordConfirmation(string $passwordConfirmation): void
     {

@@ -33,7 +33,7 @@ class ProviderRepository
     /**
      * Register application service providers.
      *
-     * @param array $providers
+     * @param  array  $providers
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws Exception
@@ -75,9 +75,9 @@ class ProviderRepository
     /**
      * Load the service provider manifest file.
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
      * @return array|null
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function loadManifest()
     {
@@ -93,9 +93,8 @@ class ProviderRepository
     /**
      * Determine if the manifest should be compiled.
      *
-     * @param array $manifest
-     * @param array $providers
-     *
+     * @param  array  $manifest
+     * @param  array  $providers
      * @return bool
      */
     public function shouldRecompile($manifest, $providers)
@@ -106,11 +105,10 @@ class ProviderRepository
     /**
      * Compile the application service manifest file.
      *
-     * @param array $providers
+     * @param  array  $providers
+     * @return array
      *
      * @throws Exception
-     *
-     * @return array
      */
     public function compileManifest(array $providers)
     {
@@ -151,8 +149,7 @@ class ProviderRepository
     /**
      * Create a fresh service manifest data structure.
      *
-     * @param array $providers
-     *
+     * @param  array  $providers
      * @return array
      */
     protected function freshManifest(array $providers)
@@ -163,11 +160,10 @@ class ProviderRepository
     /**
      * Write the service manifest file.
      *
-     * @param array $manifest
+     * @param  array  $manifest
+     * @return array
      *
      * @throws Exception
-     *
-     * @return array
      */
     public function writeManifest(array $manifest)
     {
@@ -177,7 +173,7 @@ class ProviderRepository
 
         $this->files->put(
             $this->manifestPath,
-            '<?php return ' . var_export($manifest, true) . ';',
+            '<?php return '.var_export($manifest, true).';',
         );
 
         return array_merge(['when' => []], $manifest);
@@ -186,8 +182,7 @@ class ProviderRepository
     /**
      * Create a new provider instance.
      *
-     * @param string $provider
-     *
+     * @param  string  $provider
      * @return \Illuminate\Support\ServiceProvider
      */
     public function createProvider($provider)
@@ -199,7 +194,7 @@ class ProviderRepository
      * Register the load events for the given provider.
      *
      * @param $provider
-     * @param array $events
+     * @param  array  $events
      */
     protected function registerLoadEvents($provider, array $events)
     {

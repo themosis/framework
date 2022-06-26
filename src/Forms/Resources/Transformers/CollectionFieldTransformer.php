@@ -9,8 +9,7 @@ class CollectionFieldTransformer extends FieldTransformer
     /**
      * Transform field options.
      *
-     * @param FieldTypeInterface $field
-     *
+     * @param  FieldTypeInterface  $field
      * @return array
      */
     protected function getOptions(FieldTypeInterface $field)

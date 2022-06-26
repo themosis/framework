@@ -38,18 +38,17 @@ class RuleMakeCommand extends GeneratorCommand
 
         return file_exists($customPath = $this->laravel->basePath(trim($relativePath, '/')))
             ? $customPath
-            : __DIR__ . $relativePath;
+            : __DIR__.$relativePath;
     }
 
     /**
      * Get the default namespace for the class.
      *
-     * @param string $rootNamespace
-     *
+     * @param  string  $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Rules';
+        return $rootNamespace.'\Rules';
     }
 }

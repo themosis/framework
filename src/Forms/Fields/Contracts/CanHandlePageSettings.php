@@ -7,8 +7,8 @@ interface CanHandlePageSettings
     /**
      * Save a page setting value.
      *
-     * @param mixed  $value
-     * @param string $name
+     * @param  mixed  $value
+     * @param  string  $name
      */
     public function settingSave($value, string $name);
 

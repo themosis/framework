@@ -50,7 +50,7 @@ class ComponentMakeCommand extends GeneratorCommand
     protected function writeView()
     {
         $path = $this->viewPath(
-            str_replace('.', '/', 'components.' . $this->getView()) . '.blade.php',
+            str_replace('.', '/', 'components.'.$this->getView()).'.blade.php',
         );
 
         if (! $this->files->isDirectory(dirname($path))) {
@@ -66,7 +66,7 @@ class ComponentMakeCommand extends GeneratorCommand
         file_put_contents(
             $path,
             '<div>
-    <!-- ' . HelloDolly::lyric() . ' -->
+    <!-- '.HelloDolly::lyric().' -->
 </div>',
         );
     }
@@ -90,8 +90,7 @@ class ComponentMakeCommand extends GeneratorCommand
     /**
      * Build the class with the given name.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     protected function buildClass($name)
@@ -99,14 +98,14 @@ class ComponentMakeCommand extends GeneratorCommand
         if ($this->option('inline')) {
             return str_replace(
                 'DummyView',
-                "<<<'blade'\n<div>\n    <!-- " . HelloDolly::lyric() . " -->\n</div>\nblade",
+                "<<<'blade'\n<div>\n    <!-- ".HelloDolly::lyric()." -->\n</div>\nblade",
                 parent::buildClass($name),
             );
         }
 
         return str_replace(
             'DummyView',
-            'view(\'components.' . $this->getView() . '\')',
+            'view(\'components.'.$this->getView().'\')',
             parent::buildClass($name),
         );
     }
@@ -118,19 +117,18 @@ class ComponentMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__ . '/stubs/view-component.stub';
+        return __DIR__.'/stubs/view-component.stub';
     }
 
     /**
      * Get the default namespace for the class.
      *
-     * @param string $rootNamespace
-     *
+     * @param  string  $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\View\Components';
+        return $rootNamespace.'\View\Components';
     }
 
     /**

@@ -129,8 +129,7 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox title.
      *
-     * @param string $title
-     *
+     * @param  string  $title
      * @return MetaboxInterface
      */
     public function setTitle(string $title): MetaboxInterface
@@ -153,8 +152,7 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox screen.
      *
-     * @param string|array|\WP_Screen $screen
-     *
+     * @param  string|array|\WP_Screen  $screen
      * @return MetaboxInterface
      */
     public function setScreen($screen): MetaboxInterface
@@ -177,8 +175,7 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox context.
      *
-     * @param string $context
-     *
+     * @param  string  $context
      * @return MetaboxInterface
      */
     public function setContext(string $context): MetaboxInterface
@@ -201,8 +198,7 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox priority.
      *
-     * @param string $priority
-     *
+     * @param  string  $priority
      * @return MetaboxInterface
      */
     public function setPriority(string $priority): MetaboxInterface
@@ -225,8 +221,7 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox callback.
      *
-     * @param callable|string $callback
-     *
+     * @param  callable|string  $callback
      * @return MetaboxInterface
      */
     public function setCallback($callback): MetaboxInterface
@@ -255,8 +250,7 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox callback arguments.
      *
-     * @param array $args
-     *
+     * @param  array  $args
      * @return MetaboxInterface
      */
     public function setArguments(array $args): MetaboxInterface
@@ -283,8 +277,7 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox layout.
      *
-     * @param string $layout
-     *
+     * @param  string  $layout
      * @return MetaboxInterface
      */
     public function setLayout(string $layout): MetaboxInterface
@@ -323,8 +316,8 @@ class Metabox implements MetaboxInterface
     /**
      * Handle "add_meta_boxes" hook and display the metabox.
      *
-     * @param string   $post_type
-     * @param \WP_Post $post
+     * @param  string  $post_type
+     * @param  \WP_Post  $post
      */
     public function display($post_type, $post)
     {
@@ -341,7 +334,7 @@ class Metabox implements MetaboxInterface
                 return $classes;
             }
 
-            $classes.= ' themosis';
+            $classes .= ' themosis';
 
             return $classes;
         });
@@ -360,8 +353,8 @@ class Metabox implements MetaboxInterface
     /**
      * Render the metabox.
      *
-     * @param \WP_Post $post
-     * @param array    $args
+     * @param  \WP_Post  $post
+     * @param  array  $args
      */
     public function render(\WP_Post $post, array $args)
     {
@@ -383,7 +376,7 @@ class Metabox implements MetaboxInterface
     /**
      * Core framework metabox management. Default callback.
      *
-     * @param array $args
+     * @param  array  $args
      */
     public function handle(array $args)
     {
@@ -406,8 +399,7 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox resource abstraction layer/manager.
      *
-     * @param MetaboxResourceInterface $resource
-     *
+     * @param  MetaboxResourceInterface  $resource
      * @return MetaboxInterface
      */
     public function setResource(MetaboxResourceInterface $resource): MetaboxInterface
@@ -450,8 +442,7 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox locale.
      *
-     * @param string $locale
-     *
+     * @param  string  $locale
      * @return MetaboxInterface
      */
     public function setLocale(string $locale): MetaboxInterface
@@ -474,8 +465,7 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox prefix.
      *
-     * @param string $prefix
-     *
+     * @param  string  $prefix
      * @return MetaboxInterface
      */
     public function setPrefix(string $prefix): MetaboxInterface
@@ -508,9 +498,8 @@ class Metabox implements MetaboxInterface
     /**
      * Add a field to the metabox.
      *
-     * @param FieldTypeInterface|SectionInterface $field
-     * @param SectionInterface                    $section
-     *
+     * @param  FieldTypeInterface|SectionInterface  $field
+     * @param  SectionInterface  $section
      * @return MetaboxInterface
      */
     public function add($field, SectionInterface $section = null): MetaboxInterface
@@ -567,8 +556,7 @@ class Metabox implements MetaboxInterface
      * Return the translation based on given key.
      * Return empty string if not defined.
      *
-     * @param string $key
-     *
+     * @param  string  $key
      * @return string
      */
     public function getTranslation(string $key): string
@@ -579,9 +567,8 @@ class Metabox implements MetaboxInterface
     /**
      * Add metabox translation.
      *
-     * @param string $key
-     * @param string $translation
-     *
+     * @param  string  $key
+     * @param  string  $translation
      * @return MetaboxInterface
      */
     public function addTranslation(string $key, string $translation): MetaboxInterface
@@ -594,8 +581,7 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox capability.
      *
-     * @param string $cap
-     *
+     * @param  string  $cap
      * @return MetaboxInterface
      */
     public function setCapability(string $cap): MetaboxInterface
@@ -618,9 +604,8 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox template.
      *
-     * @param array|string $template
-     * @param string       $screen
-     *
+     * @param  array|string  $template
+     * @param  string  $screen
      * @return MetaboxInterface
      */
     public function setTemplate($template, string $screen = 'page'): MetaboxInterface
@@ -643,8 +628,7 @@ class Metabox implements MetaboxInterface
     /**
      * Check if given post should use the template.
      *
-     * @param \WP_Post|\WP_Comment $post
-     *
+     * @param  \WP_Post|\WP_Comment  $post
      * @return bool
      */
     private function hasTemplateForPost($post): bool

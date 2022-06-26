@@ -51,12 +51,11 @@ class VerifyCsrfToken
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
      *
      * @throws TokenMismatchException
-     *
-     * @return mixed
      */
     public function handle($request, \Closure $next)
     {
@@ -78,8 +77,7 @@ class VerifyCsrfToken
     /**
      * Determine if the HTTP request uses a "read" verb.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
     protected function isReading(Request $request)
@@ -100,8 +98,7 @@ class VerifyCsrfToken
     /**
      * Check if the request has a URI that should pass through CSRF verification.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return bool
      */
     protected function inExceptArray(Request $request)
@@ -122,8 +119,7 @@ class VerifyCsrfToken
     /**
      * Check if the session and input CSRF tokens match.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return bool
      */
     protected function tokensMatch(Request $request)
@@ -138,8 +134,7 @@ class VerifyCsrfToken
     /**
      * Return the CSRF token from request.
      *
-     * @param Request $request
-     *
+     * @param  Request  $request
      * @return string
      */
     protected function getTokenFromRequest(Request $request)
@@ -170,12 +165,11 @@ class VerifyCsrfToken
     /**
      * Add the CSRF token to the response cookies.
      *
-     * @param Request  $request
-     * @param Response $response
+     * @param  Request  $request
+     * @param  Response  $response
+     * @return Response
      *
      * @throws \Illuminate\Container\EntryNotFoundException
-     *
-     * @return Response
      */
     protected function addCookieToResponse(Request $request, Response $response)
     {

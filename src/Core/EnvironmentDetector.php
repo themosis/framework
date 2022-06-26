@@ -11,9 +11,8 @@ class EnvironmentDetector
     /**
      * Detect application current environment.
      *
-     * @param Closure    $callback
-     * @param array|null $consoleArgs
-     *
+     * @param  Closure  $callback
+     * @param  array|null  $consoleArgs
      * @return string
      */
     public function detect(Closure $callback, $consoleArgs = null)
@@ -28,8 +27,7 @@ class EnvironmentDetector
     /**
      * Set the application environment for a web request.
      *
-     * @param Closure $callback
-     *
+     * @param  Closure  $callback
      * @return string
      */
     protected function detectWebEnvironment(Closure $callback)
@@ -40,9 +38,8 @@ class EnvironmentDetector
     /**
      * Set the application environment for a command-line request.
      *
-     * @param Closure $callback
-     * @param array   $args
-     *
+     * @param  Closure  $callback
+     * @param  array  $args
      * @return string
      */
     protected function detectConsoleEnvironment(Closure $callback, array $args)
@@ -57,8 +54,7 @@ class EnvironmentDetector
     /**
      * Get the environment argument from the console.
      *
-     * @param array $args
-     *
+     * @param  array  $args
      * @return string|null
      */
     protected function getEnvironmentArgument(array $args)

@@ -51,7 +51,7 @@ class PasswordResetTableCommand extends Command
 
         $this->files->put(
             $fullPath,
-            $this->files->get(__DIR__ . '/stubs/passwords.stub'),
+            $this->files->get(__DIR__.'/stubs/passwords.stub'),
         );
 
         $this->info('Migration created successfully!');

@@ -61,8 +61,7 @@ class PageView implements UIContainerInterface
     /**
      * Set the page view theme.
      *
-     * @param string $theme
-     *
+     * @param  string  $theme
      * @return UIContainerInterface
      */
     public function setTheme(string $theme): UIContainerInterface
@@ -85,8 +84,7 @@ class PageView implements UIContainerInterface
     /**
      * Set the page view layout.
      *
-     * @param string $layout
-     *
+     * @param  string  $layout
      * @return UIContainerInterface
      */
     public function setLayout(string $layout): UIContainerInterface
@@ -99,8 +97,7 @@ class PageView implements UIContainerInterface
     /**
      * Set the page view.
      *
-     * @param string $view
-     *
+     * @param  string  $view
      * @return UIContainerInterface
      */
     public function setView(string $view): UIContainerInterface
@@ -113,8 +110,7 @@ class PageView implements UIContainerInterface
     /**
      * Set the page view instance.
      *
-     * @param Renderable $view
-     *
+     * @param  Renderable  $view
      * @return UIContainerInterface
      */
     public function setViewInstance(Renderable $view): UIContainerInterface
@@ -165,8 +161,7 @@ class PageView implements UIContainerInterface
      * Tell the page UI to use the view path only instead
      * of the composed one with page layout and theme.
      *
-     * @param bool $use
-     *
+     * @param  bool  $use
      * @return $this
      */
     public function useShortPath(bool $use = true): UIContainerInterface

@@ -61,7 +61,7 @@ class PageTest extends TestCase
 
         $bladeCompiler = new BladeCompiler(
             $filesystem,
-            __DIR__ . '/../storage/views',
+            __DIR__.'/../storage/views',
         );
         $application->instance('blade', $bladeCompiler);
 
@@ -78,8 +78,8 @@ class PageTest extends TestCase
         $factory = new \Illuminate\View\Factory(
             $resolver,
             $viewFinder = new FileViewFinder($filesystem, [
-                __DIR__ . '/../../../framework/src/Themosis/Page/views/',
-                __DIR__ . '/views/',
+                __DIR__.'/../../../framework/src/Themosis/Page/views/',
+                __DIR__.'/views/',
             ], ['blade.php', 'php']),
             new Dispatcher($application),
         );
@@ -134,7 +134,7 @@ class PageTest extends TestCase
 
         $page->set();
 
-        $this->assertEquals($page, $factory->getContainer()->make('page.' . $page->getSlug()));
+        $this->assertEquals($page, $factory->getContainer()->make('page.'.$page->getSlug()));
     }
 
     public function testCreateANetworkPage()

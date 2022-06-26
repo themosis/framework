@@ -117,7 +117,7 @@ class VendorPublishCommand extends Command
     /**
      * Parse the answer that was given via the prompt.
      *
-     * @param string $choice
+     * @param  string  $choice
      */
     protected function parseChoice($choice)
     {
@@ -133,7 +133,7 @@ class VendorPublishCommand extends Command
     /**
      * Publish the assets for a tag.
      *
-     * @param string $tag
+     * @param  string  $tag
      */
     protected function publishTag($tag)
     {
@@ -145,8 +145,7 @@ class VendorPublishCommand extends Command
     /**
      * Get all the paths to publish.
      *
-     * @param string $tag
-     *
+     * @param  string  $tag
      * @return array
      */
     protected function pathsToPublish($tag)
@@ -157,8 +156,8 @@ class VendorPublishCommand extends Command
     /**
      * Publish the given item from and to the given location.
      *
-     * @param string $from
-     * @param string $to
+     * @param  string  $from
+     * @param  string  $to
      */
     protected function publishItem($from, $to)
     {
@@ -178,8 +177,8 @@ class VendorPublishCommand extends Command
     /**
      * Publish the file to the given path.
      *
-     * @param string $from
-     * @param string $to
+     * @param  string  $from
+     * @param  string  $to
      */
     protected function publishFile($from, $to)
     {
@@ -193,8 +192,8 @@ class VendorPublishCommand extends Command
     /**
      * Publish the directory to the given directory.
      *
-     * @param string $from
-     * @param string $to
+     * @param  string  $from
+     * @param  string  $to
      *
      * @throws \League\Flysystem\FileNotFoundException
      */
@@ -211,15 +210,15 @@ class VendorPublishCommand extends Command
     /**
      * Move all the files in the given MountManager.
      *
-     * @param \League\Flysystem\MountManager $manager
+     * @param  \League\Flysystem\MountManager  $manager
      *
      * @throws \League\Flysystem\FileNotFoundException
      */
     protected function moveManagedFiles($manager)
     {
         foreach ($manager->listContents('from://', true) as $file) {
-            if ($file['type'] === 'file' && (! $manager->has('to://' . $file['path']) || $this->option('force'))) {
-                $manager->put('to://' . $file['path'], $manager->read('from://' . $file['path']));
+            if ($file['type'] === 'file' && (! $manager->has('to://'.$file['path']) || $this->option('force'))) {
+                $manager->put('to://'.$file['path'], $manager->read('from://'.$file['path']));
             }
         }
     }
@@ -227,7 +226,7 @@ class VendorPublishCommand extends Command
     /**
      * Create the directory to house the published files if needed.
      *
-     * @param string $directory
+     * @param  string  $directory
      */
     protected function createParentDirectory($directory)
     {
@@ -239,9 +238,9 @@ class VendorPublishCommand extends Command
     /**
      * Write a status message to the console.
      *
-     * @param string $from
-     * @param string $to
-     * @param string $type
+     * @param  string  $from
+     * @param  string  $to
+     * @param  string  $type
      */
     protected function status($from, $to, $type)
     {

@@ -5,7 +5,9 @@ namespace Themosis\Tests\Forms\Resources\Data;
 class CreateArticleData
 {
     public $title;
+
     public $content;
+
     private $author;
 
     /**
@@ -17,7 +19,7 @@ class CreateArticleData
     }
 
     /**
-     * @param mixed $author
+     * @param  mixed  $author
      */
     public function setAuthor($author): void
     {

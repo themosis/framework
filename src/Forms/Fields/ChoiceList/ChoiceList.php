@@ -42,8 +42,7 @@ class ChoiceList implements ChoiceListInterface
     /**
      * Parse the choices and format them.
      *
-     * @param array $choices
-     *
+     * @param  array  $choices
      * @return array
      */
     protected function parse(array $choices)

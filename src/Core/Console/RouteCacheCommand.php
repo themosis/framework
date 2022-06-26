@@ -93,15 +93,14 @@ class RouteCacheCommand extends Command
     /**
      * Build the route cache file.
      *
-     * @param RouteCollection $routes
+     * @param  RouteCollection  $routes
+     * @return string
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
-     * @return string
      */
     protected function buildRouteCacheFile(RouteCollection $routes)
     {
-        $stub = $this->files->get(__DIR__ . '/stubs/routes.stub');
+        $stub = $this->files->get(__DIR__.'/stubs/routes.stub');
 
         return str_replace('{{routes}}', base64_encode(serialize($routes)), $stub);
     }

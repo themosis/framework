@@ -9,8 +9,7 @@ class ChoiceToValueTransformer implements DataTransformerInterface
     /**
      * @inheritdoc
      *
-     * @param string|array $data
-     *
+     * @param  string|array  $data
      * @return string|array
      */
     public function transform($data)
@@ -26,8 +25,7 @@ class ChoiceToValueTransformer implements DataTransformerInterface
      * Parse if a value is numeric and cast it
      * to its correct type.
      *
-     * @param string $value
-     *
+     * @param  string  $value
      * @return float|int
      */
     protected function parseNumeric($value)
@@ -46,8 +44,7 @@ class ChoiceToValueTransformer implements DataTransformerInterface
     /**
      * @inheritdoc
      *
-     * @param string|array $data
-     *
+     * @param  string|array  $data
      * @return string|array
      */
     public function reverseTransform($data)

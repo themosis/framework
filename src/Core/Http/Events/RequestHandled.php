@@ -17,8 +17,8 @@ class RequestHandled
     /**
      * RequestHandled constructor.
      *
-     * @param \Illuminate\Http\Request  $request
-     * @param \Illuminate\Http\Response $response
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Response  $response
      */
     public function __construct($request, $response)
     {

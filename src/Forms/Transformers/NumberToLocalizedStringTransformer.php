@@ -29,11 +29,10 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
     /**
      * Convert a numeric value to a localized string.
      *
-     * @param int|float $data
+     * @param  int|float  $data
+     * @return string
      *
      * @throws DataTransformerException
-     *
-     * @return string
      */
     public function transform($data)
     {
@@ -47,7 +46,7 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
 
         $formatter = $this->getFormatter();
 
-        $value =  $formatter->format($data);
+        $value = $formatter->format($data);
 
         if (intl_is_failure($formatter->getErrorCode())) {
             throw new DataTransformerException($formatter->getErrorMessage());
@@ -60,11 +59,10 @@ class NumberToLocalizedStringTransformer implements DataTransformerInterface
     /**
      * Convert a localized string to a numeric value.
      *
-     * @param string $data
+     * @param  string  $data
+     * @return int|float
      *
      * @throws DataTransformerException
-     *
-     * @return int|float
      */
     public function reverseTransform($data)
     {

@@ -218,7 +218,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the given commands.
      *
-     * @param array $commands
+     * @param  array  $commands
      */
     protected function registerCommands(array $commands)
     {
@@ -232,7 +232,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:auth command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerAuthMakeCommand($alias)
     {
@@ -244,7 +244,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the cache:clear command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerCacheClearCommand($alias)
     {
@@ -256,7 +256,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the cache:forget command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerCacheForgetCommand($alias)
     {
@@ -268,7 +268,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the cache:table command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerCacheTableCommand($alias)
     {
@@ -280,7 +280,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:cast command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerCastMakeCommand($alias)
     {
@@ -292,7 +292,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:channel command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerChannelMakeCommand($alias)
     {
@@ -304,7 +304,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the clear-compiled command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerClearCompiledCommand($alias)
     {
@@ -323,7 +323,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:component command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerComponentMakeCommand($alias)
     {
@@ -335,7 +335,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the config:cache command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerConfigCacheCommand($alias)
     {
@@ -347,7 +347,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the config:clear command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerConfigClearCommand($alias)
     {
@@ -359,7 +359,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:command command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerConsoleMakeCommand($alias)
     {
@@ -371,7 +371,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:controller command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerControllerMakeCommand($alias)
     {
@@ -383,7 +383,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the customer:table command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerCustomerTableCommand($alias)
     {
@@ -403,7 +403,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the db:wipe command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerDbWipeCommand($alias)
     {
@@ -415,7 +415,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the down command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerDownCommand($alias)
     {
@@ -427,7 +427,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the dropin:clear command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerDropinClearCommand($alias)
     {
@@ -439,7 +439,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the env command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerEnvironmentCommand($alias)
     {
@@ -451,7 +451,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the event:cache command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerEventCacheCommand($alias)
     {
@@ -463,7 +463,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the event:clear command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerEventClearCommand($alias)
     {
@@ -475,7 +475,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the event:generate command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerEventGenerateCommand($alias)
     {
@@ -487,7 +487,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the event:list command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerEventListCommand($alias)
     {
@@ -499,7 +499,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:event command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerEventMakeCommand($alias)
     {
@@ -511,7 +511,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:exception command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerExceptionMakeCommand($alias)
     {
@@ -523,7 +523,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:factory command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerFactoryMakeCommand($alias)
     {
@@ -535,7 +535,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:form command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerFormMakeCommand($alias)
     {
@@ -547,7 +547,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:hook command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerHookMakeCommand($alias)
     {
@@ -559,7 +559,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:job command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerJobMakeCommand($alias)
     {
@@ -571,7 +571,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the key:generate command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerKeyGenerateCommand($alias)
     {
@@ -583,7 +583,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:listener command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerListenerMakeCommand($alias)
     {
@@ -595,7 +595,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:mail command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerMailMakeCommand($alias)
     {
@@ -607,7 +607,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:middleware command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerMiddlewareMakeCommand($alias)
     {
@@ -619,7 +619,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the migrate command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerMigrateCommand($alias)
     {
@@ -631,7 +631,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the migrate:fresh command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerMigrateFreshCommand($alias)
     {
@@ -643,7 +643,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the migrate:install command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerMigrateInstallCommand($alias)
     {
@@ -655,7 +655,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:migration command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerMigrateMakeCommand($alias)
     {
@@ -673,7 +673,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the migrate:refresh command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerMigrateRefreshCommand($alias)
     {
@@ -685,7 +685,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the migrate:reset command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerMigrateResetCommand($alias)
     {
@@ -697,7 +697,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the migrate:rollback command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerMigrateRollbackCommand($alias)
     {
@@ -709,7 +709,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the migrate:status command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerMigrateStatusCommand($alias)
     {
@@ -721,7 +721,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:model command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerModelMakeCommand($alias)
     {
@@ -733,7 +733,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:notification command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerNotificationMakeCommand($alias)
     {
@@ -745,7 +745,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the notification:table command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerNotificationTableCommand($alias)
     {
@@ -757,7 +757,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:observer command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerObserverMakeCommand($alias)
     {
@@ -769,7 +769,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the optimize command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerOptimizeCommand($alias)
     {
@@ -781,7 +781,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the optimize:clear command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerOptimizeClearCommand($alias)
     {
@@ -793,7 +793,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the package:discover command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerPackageDiscoverCommand($alias)
     {
@@ -805,7 +805,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the password:table command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerPasswordResetTableCommand($alias)
     {
@@ -817,7 +817,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the plugin:install command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerPluginInstallCommand($alias)
     {
@@ -829,7 +829,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:policy command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerPolicyMakeCommand($alias)
     {
@@ -841,7 +841,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:provider command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerProviderMakeCommand($alias)
     {
@@ -853,7 +853,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the queue:clear command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerQueueClearCommand($alias)
     {
@@ -865,7 +865,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the queue:failed command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerQueueFailedCommand($alias)
     {
@@ -877,7 +877,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the queue:flush command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerQueueFlushCommand($alias)
     {
@@ -889,7 +889,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the queue:forget command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerQueueForgetCommand($alias)
     {
@@ -901,7 +901,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the queue:listen command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerQueueListenCommand($alias)
     {
@@ -913,7 +913,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the queue:prune-batches command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerQueuePruneBatchesCommand($alias)
     {
@@ -925,7 +925,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the queue:restart command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerQueueRestartCommand($alias)
     {
@@ -937,7 +937,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the queue:retry-batch command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerQueueRetryBatchCommand($alias)
     {
@@ -949,7 +949,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the queue:retry command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerQueueRetryCommand($alias)
     {
@@ -961,7 +961,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the queue:work command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerQueueWorkCommand($alias)
     {
@@ -973,7 +973,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the queue:failed-table command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerQueueFailedTableCommand($alias)
     {
@@ -985,7 +985,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the queue:table command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerQueueTableCommand($alias)
     {
@@ -997,7 +997,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the queue:batches-table command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerQueueBatchesTableCommand($alias)
     {
@@ -1009,7 +1009,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:request command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerRequestMakeCommand($alias)
     {
@@ -1021,7 +1021,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:resource command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerResourceMakeCommand($alias)
     {
@@ -1033,7 +1033,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the route:cache command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerRouteCacheCommand($alias)
     {
@@ -1045,7 +1045,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the route:clear command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerRouteClearCommand($alias)
     {
@@ -1057,7 +1057,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the route:list command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerRouteListCommand($alias)
     {
@@ -1069,7 +1069,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:rule command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerRuleMakeCommand($alias)
     {
@@ -1081,7 +1081,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the salts:generate command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerSaltsGenerateCommand($alias)
     {
@@ -1133,7 +1133,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the schema:dump command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerSchemaDumpCommand($alias)
     {
@@ -1145,7 +1145,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the db:seed command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerSeedCommand($alias)
     {
@@ -1157,7 +1157,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:seeder command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerSeederMakeCommand($alias)
     {
@@ -1169,7 +1169,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the serve command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerServeCommand($alias)
     {
@@ -1181,7 +1181,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the session:table command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerSessionTableCommand($alias)
     {
@@ -1193,7 +1193,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the storage:link command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerStorageLinkCommand($alias)
     {
@@ -1205,7 +1205,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the stub:publish command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerStubPublishCommand($alias)
     {
@@ -1217,7 +1217,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:test command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerTestMakeCommand($alias)
     {
@@ -1229,7 +1229,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the theme:install command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerThemeInstallCommand($alias)
     {
@@ -1241,7 +1241,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the up command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     public function registerUpCommand($alias)
     {
@@ -1253,7 +1253,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the vendor:publish command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerVendorPublishCommand($alias)
     {
@@ -1265,7 +1265,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the view:cache command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerViewCacheCommand($alias)
     {
@@ -1277,7 +1277,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the view:clear command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerViewClearCommand($alias)
     {
@@ -1289,7 +1289,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     /**
      * Register the make:widget command.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function registerWidgetMakeCommand($alias)
     {

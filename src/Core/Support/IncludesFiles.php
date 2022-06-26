@@ -10,7 +10,7 @@ trait IncludesFiles
      * Automatically includes all .php files found on a specified
      * directory path.
      *
-     * @param string|array $path
+     * @param  string|array  $path
      */
     public function includes($path, string $pattern = '*.php')
     {

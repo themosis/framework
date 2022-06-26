@@ -30,11 +30,7 @@ use Themosis\Core\Bootstrap\EnvironmentLoader;
 use Themosis\Core\Events\LocaleUpdated;
 use Themosis\Route\RouteServiceProvider;
 
-class Application extends Container implements
-    ApplicationContract,
-    CachesConfiguration,
-    CachesRoutes,
-    HttpKernelInterface
+class Application extends Container implements ApplicationContract, CachesConfiguration, CachesRoutes, HttpKernelInterface
 {
     /**
      * Themosis framework version.
@@ -370,20 +366,18 @@ class Application extends Container implements
     /**
      * Get the base path of the Laravel installation.
      *
-     * @param string $path Optional path to append to the base path.
-     *
+     * @param  string  $path Optional path to append to the base path.
      * @return string
      */
     public function basePath($path = '')
     {
-        return $this->basePath . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->basePath.($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Set the base path for the application.
      *
-     * @param string $basePath
-     *
+     * @param  string  $basePath
      * @return $this
      */
     public function setBasePath($basePath)
@@ -438,122 +432,112 @@ class Application extends Container implements
     /**
      * Get the path to the application "themosis-application" directory.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function path($path = '')
     {
-        return $this->basePath . DIRECTORY_SEPARATOR . 'app' . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->basePath.DIRECTORY_SEPARATOR.'app'.($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Get the WordPress "content" directory.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function contentPath($path = '')
     {
-        return WP_CONTENT_DIR . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return WP_CONTENT_DIR.($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Get the WordPress "mu-plugins" directory.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function mupluginsPath($path = '')
     {
-        return $this->contentPath('mu-plugins') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->contentPath('mu-plugins').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Get the WordPress "plugins" directory.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function pluginsPath($path = '')
     {
-        return $this->contentPath('plugins') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->contentPath('plugins').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Get the WordPress "themes" directory.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function themesPath($path = '')
     {
-        return $this->contentPath('themes') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->contentPath('themes').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Get the application directory.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function applicationPath($path = '')
     {
-        return $this->basePath('app') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->basePath('app').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Get the resources directory path.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function resourcePath($path = '')
     {
-        return $this->basePath('resources') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->basePath('resources').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Get the path to the resources "languages" directory.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function langPath($path = '')
     {
-        return $this->resourcePath('languages') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->resourcePath('languages').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Get the path of the web server root.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function webPath($path = '')
     {
-        return $this->basePath(THEMOSIS_PUBLIC_DIR) . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->basePath(THEMOSIS_PUBLIC_DIR).($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Get the root path of the project.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function rootPath($path = '')
     {
         if (defined('THEMOSIS_ROOT')) {
-            return THEMOSIS_ROOT . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+            return THEMOSIS_ROOT.($path ? DIRECTORY_SEPARATOR.$path : $path);
         }
 
         return $this->webPath($path);
@@ -562,36 +546,33 @@ class Application extends Container implements
     /**
      * Get the main application plugin configuration directory.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function configPath($path = '')
     {
-        return $this->basePath('config') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->basePath('config').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Get the storage directory path.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function storagePath($path = '')
     {
         if (defined('THEMOSIS_ROOT')) {
-            return $this->rootPath('storage') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+            return $this->rootPath('storage').($path ? DIRECTORY_SEPARATOR.$path : $path);
         }
 
-        return $this->contentPath('storage') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->contentPath('storage').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Set the storage directory.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return $this
      */
     public function useStoragePath($path)
@@ -606,46 +587,42 @@ class Application extends Container implements
     /**
      * Get the database directory path.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function databasePath($path = '')
     {
-        return $this->rootPath('database') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->rootPath('database').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Get the bootstrap directory path.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return string
      */
     public function bootstrapPath($path = '')
     {
-        return $this->rootPath('bootstrap') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->rootPath('bootstrap').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Get the WordPress directory path.
      *
-     * @param string $path
+     * @param  string  $path
+     * @return string
      *
      * @throws \Illuminate\Container\EntryNotFoundException
-     *
-     * @return string
      */
     public function wordpressPath($path = '')
     {
-        return $this->webPath(env('WP_DIR', 'cms')) . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return $this->webPath(env('WP_DIR', 'cms')).($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * Set the environment file to be loaded during bootstrapping.
      *
-     * @param string $file
-     *
+     * @param  string  $file
      * @return $this
      */
     public function loadEnvironmentFrom($file)
@@ -668,8 +645,7 @@ class Application extends Container implements
     /**
      * Set the directory for the environment file.
      *
-     * @param string $path
-     *
+     * @param  string  $path
      * @return $this
      */
     public function useEnvironmentPath($path)
@@ -696,14 +672,13 @@ class Application extends Container implements
      */
     public function environmentFilePath()
     {
-        return $this->environmentPath() . DIRECTORY_SEPARATOR . $this->environmentFile();
+        return $this->environmentPath().DIRECTORY_SEPARATOR.$this->environmentFile();
     }
 
     /**
      * Get or check the current application environment.
      *
-     * @param string|array $environments
-     *
+     * @param  string|array  $environments
      * @return string|bool
      */
     public function environment(...$environments)
@@ -720,8 +695,7 @@ class Application extends Container implements
     /**
      * Detech application's current environment.
      *
-     * @param Closure $callback
-     *
+     * @param  Closure  $callback
      * @return string
      */
     public function detectEnvironment(Closure $callback)
@@ -744,9 +718,9 @@ class Application extends Container implements
     /**
      * Determine if the application is currently down for maintenance.
      *
-     * @throws \Illuminate\Container\EntryNotFoundException
-     *
      * @return bool
+     *
+     * @throws \Illuminate\Container\EntryNotFoundException
      */
     public function isDownForMaintenance()
     {
@@ -778,8 +752,8 @@ class Application extends Container implements
     /**
      * Register a deferred provider and service.
      *
-     * @param string      $provider
-     * @param string|null $service
+     * @param  string  $provider
+     * @param  string|null  $service
      */
     public function registerDeferredProvider($provider, $service = null)
     {
@@ -799,7 +773,7 @@ class Application extends Container implements
     /**
      * Add an array of services to the application's deferred services.
      *
-     * @param array $services
+     * @param  array  $services
      */
     public function addDeferredServices(array $services)
     {
@@ -819,7 +793,7 @@ class Application extends Container implements
     /**
      * Set the application's deferred services.
      *
-     * @param array $services
+     * @param  array  $services
      */
     public function setDeferredServices(array $services)
     {
@@ -840,14 +814,14 @@ class Application extends Container implements
      * Bootstrap the application with given list of bootstrap
      * classes.
      *
-     * @param array $bootstrappers
+     * @param  array  $bootstrappers
      */
     public function bootstrapWith(array $bootstrappers)
     {
         $this->hasBeenBootstrapped = true;
 
         foreach ($bootstrappers as $bootstrapper) {
-            $this['events']->dispatch('bootstrapping: ' . $bootstrapper, [$this]);
+            $this['events']->dispatch('bootstrapping: '.$bootstrapper, [$this]);
 
             /*
              * Instantiate each bootstrap class and call its "bootstrap" method
@@ -855,7 +829,7 @@ class Application extends Container implements
              */
             $this->make($bootstrapper)->bootstrap($this);
 
-            $this['events']->dispatch('bootstrapped: ' . $bootstrapper, [$this]);
+            $this['events']->dispatch('bootstrapped: '.$bootstrapper, [$this]);
         }
     }
 
@@ -887,7 +861,7 @@ class Application extends Container implements
     /**
      * Call the booting callbacks for the application.
      *
-     * @param array $callbacks
+     * @param  array  $callbacks
      */
     protected function fireAppCallbacks(array $callbacks)
     {
@@ -899,7 +873,7 @@ class Application extends Container implements
     /**
      * Boot the given service provider.
      *
-     * @param ServiceProvider $provider
+     * @param  ServiceProvider  $provider
      */
     protected function bootProvider(ServiceProvider $provider)
     {
@@ -915,7 +889,7 @@ class Application extends Container implements
     /**
      * Register a new boot listener.
      *
-     * @param mixed $callback
+     * @param  mixed  $callback
      */
     public function booting($callback)
     {
@@ -925,7 +899,7 @@ class Application extends Container implements
     /**
      * Register a new "booted" listener.
      *
-     * @param mixed $callback
+     * @param  mixed  $callback
      */
     public function booted($callback)
     {
@@ -982,14 +956,13 @@ class Application extends Container implements
      * When $catch is true, the implementation must catch all exceptions
      * and do its best to convert them to a Response instance.
      *
-     * @param SymfonyRequest $request A Request instance
-     * @param int            $type    The type of the request
+     * @param  SymfonyRequest  $request A Request instance
+     * @param  int  $type    The type of the request
      *                                (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
-     * @param bool           $catch   Whether to catch exceptions or not
+     * @param  bool  $catch   Whether to catch exceptions or not
+     * @return Response A Response instance
      *
      * @throws \Exception When an Exception occurs during processing
-     *
-     * @return Response A Response instance
      */
     public function handle(SymfonyRequest $request, $type = self::MASTER_REQUEST, $catch = true)
     {
@@ -999,10 +972,9 @@ class Application extends Container implements
     /**
      * Register a service provider with the application.
      *
-     * @param \Illuminate\Support\ServiceProvider|string $provider
-     * @param array                                      $options
-     * @param bool                                       $force
-     *
+     * @param  \Illuminate\Support\ServiceProvider|string  $provider
+     * @param  array  $options
+     * @param  bool  $force
      * @return \Illuminate\Support\ServiceProvider
      */
     public function register($provider, $options = [], $force = false)
@@ -1052,8 +1024,7 @@ class Application extends Container implements
     /**
      * Get the registered service provider instance if it exists.
      *
-     * @param ServiceProvider|string $provider
-     *
+     * @param  ServiceProvider|string  $provider
      * @return ServiceProvider|null
      */
     public function getProvider($provider)
@@ -1064,8 +1035,7 @@ class Application extends Container implements
     /**
      * Get the registered service provider instances if any exist.
      *
-     * @param ServiceProvider|string $provider
-     *
+     * @param  ServiceProvider|string  $provider
      * @return array
      */
     public function getProviders($provider)
@@ -1090,8 +1060,7 @@ class Application extends Container implements
     /**
      * Determine if the given service provider is loaded.
      *
-     * @param string $provider
-     *
+     * @param  string  $provider
      * @return bool
      */
     public function providerIsLoaded(string $provider)
@@ -1102,8 +1071,7 @@ class Application extends Container implements
     /**
      * Resolve a service provider instance from the class name.
      *
-     * @param string $provider
-     *
+     * @param  string  $provider
      * @return ServiceProvider
      */
     public function resolveProvider($provider)
@@ -1114,7 +1082,7 @@ class Application extends Container implements
     /**
      * Mark the given provider as registered.
      *
-     * @param ServiceProvider $provider
+     * @param  ServiceProvider  $provider
      */
     protected function markAsRegistered($provider)
     {
@@ -1137,12 +1105,11 @@ class Application extends Container implements
      *
      * (Overriding Container::make)
      *
-     * @param string $abstract
-     * @param array  $parameters
+     * @param  string  $abstract
+     * @param  array  $parameters
+     * @return mixed
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     *
-     * @return mixed
      */
     public function make($abstract, array $parameters = [])
     {
@@ -1173,7 +1140,7 @@ class Application extends Container implements
     /**
      * Load the provider for a deferred service.
      *
-     * @param string $service
+     * @param  string  $service
      */
     public function loadDeferredProvider($service)
     {
@@ -1196,8 +1163,7 @@ class Application extends Container implements
      *
      * (Overriding Container::bound)
      *
-     * @param string $abstract
-     *
+     * @param  string  $abstract
      * @return bool
      */
     public function bound($abstract)
@@ -1229,16 +1195,15 @@ class Application extends Container implements
     /**
      * Bootstrap a Themosis like plugin.
      *
-     * @param string $filePath
-     * @param string $configPath
-     *
+     * @param  string  $filePath
+     * @param  string  $configPath
      * @return PluginManager
      */
     public function loadPlugin(string $filePath, string $configPath)
     {
         $plugin = (new PluginManager($this, $filePath, new ClassLoader()))->load($configPath);
 
-        $this->instance('wp.plugin.' . $plugin->getHeader('plugin_id'), $plugin);
+        $this->instance('wp.plugin.'.$plugin->getHeader('plugin_id'), $plugin);
 
         return $plugin;
     }
@@ -1247,7 +1212,7 @@ class Application extends Container implements
      * Register the framework core "plugin" and auto-load
      * any found mu-plugins after the framework.
      *
-     * @param string $pluginsPath
+     * @param  string  $pluginsPath
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws \Exception
@@ -1266,7 +1231,7 @@ class Application extends Container implements
     /**
      * Register a plugin and load it.
      *
-     * @param string $path Plugin relative path (pluginDirName/pluginMainFile).
+     * @param  string  $path Plugin relative path (pluginDirName/pluginMainFile).
      */
     public function registerPlugin(string $path)
     {
@@ -1286,7 +1251,7 @@ class Application extends Container implements
     /**
      * Register a list of hookable instances.
      *
-     * @param string $config
+     * @param  string  $config
      */
     public function registerConfiguredHooks(string $config = '')
     {
@@ -1302,7 +1267,7 @@ class Application extends Container implements
     /**
      * Create and register a hook instance.
      *
-     * @param string $hook
+     * @param  string  $hook
      */
     public function registerHook(string $hook)
     {
@@ -1325,15 +1290,14 @@ class Application extends Container implements
     /**
      * Load current active theme.
      *
-     * @param string $dirPath    The theme directory path.
-     * @param string $configPath The theme relative configuration folder path.
-     *
+     * @param  string  $dirPath    The theme directory path.
+     * @param  string  $configPath The theme relative configuration folder path.
      * @return ThemeManager
      */
     public function loadTheme(string $dirPath, string $configPath)
     {
         $theme = (new ThemeManager($this, $dirPath, new ClassLoader()))
-            ->load($dirPath . '/' . trim($configPath, '\/'));
+            ->load($dirPath.'/'.trim($configPath, '\/'));
 
         $this->instance('wp.theme', $theme);
 
@@ -1343,9 +1307,8 @@ class Application extends Container implements
     /**
      * Load configuration files based on given path.
      *
-     * @param Repository $config
-     * @param string     $path   The configuration files folder path.
-     *
+     * @param  Repository  $config
+     * @param  string  $path   The configuration files folder path.
      * @return Application
      */
     public function loadConfigurationFiles(Repository $config, $path = '')
@@ -1362,8 +1325,7 @@ class Application extends Container implements
     /**
      * Get all configuration files.
      *
-     * @param mixed $path
-     *
+     * @param  mixed  $path
      * @return array
      */
     protected function getConfigurationFiles($path)
@@ -1372,7 +1334,7 @@ class Application extends Container implements
 
         foreach (Finder::create()->files()->name('*.php')->in($path) as $file) {
             $directory = $this->getNestedDirectory($file, $path);
-            $files[$directory . basename($file->getRealPath(), '.php')] = $file->getRealPath();
+            $files[$directory.basename($file->getRealPath(), '.php')] = $file->getRealPath();
         }
 
         ksort($files, SORT_NATURAL);
@@ -1383,9 +1345,8 @@ class Application extends Container implements
     /**
      * Get configuration file nesting path.
      *
-     * @param SplFileInfo $file
-     * @param string      $path
-     *
+     * @param  SplFileInfo  $file
+     * @param  string  $path
      * @return string
      */
     protected function getNestedDirectory(SplFileInfo $file, $path)
@@ -1393,7 +1354,7 @@ class Application extends Container implements
         $directory = $file->getPath();
 
         if ($nested = trim(str_replace($path, '', $directory), DIRECTORY_SEPARATOR)) {
-            $nested = str_replace(DIRECTORY_SEPARATOR, '.', $nested) . '.';
+            $nested = str_replace(DIRECTORY_SEPARATOR, '.', $nested).'.';
         }
 
         return $nested;
@@ -1402,9 +1363,9 @@ class Application extends Container implements
     /**
      * Throw an HttpException with the given data.
      *
-     * @param int    $code
-     * @param string $message
-     * @param array  $headers
+     * @param  int  $code
+     * @param  string  $message
+     * @param  array  $headers
      */
     public function abort($code, $message = '', array $headers = [])
     {
@@ -1418,8 +1379,7 @@ class Application extends Container implements
     /**
      * Register a terminating callback with the application.
      *
-     * @param Closure $callback
-     *
+     * @param  Closure  $callback
      * @return $this
      */
     public function terminating(Closure $callback)
@@ -1444,9 +1404,8 @@ class Application extends Container implements
      * Abstract the implementation from the user for easy
      * theme integration.
      *
-     * @param string                                    $kernel  Application kernel class name.
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
+     * @param  string  $kernel  Application kernel class name.
+     * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @return $this
      */
     public function manage(string $kernel, $request)
@@ -1478,9 +1437,8 @@ class Application extends Container implements
      * Handle WordPress administration incoming request.
      * Only send response headers.
      *
-     * @param string                                    $kernel
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
+     * @param  string  $kernel
+     * @param  \Symfony\Component\HttpFoundation\Request  $request
      * @return $this;
      */
     public function manageAdmin(string $kernel, $request)
@@ -1498,9 +1456,8 @@ class Application extends Container implements
      * Manage WordPress Admin Init.
      * Handle incoming request and return a response.
      *
-     * @param string $kernel
+     * @param  string  $kernel
      * @param $request
-     *
      * @return Closure
      */
     protected function dispatchToAdmin(string $kernel, $request)
@@ -1525,7 +1482,7 @@ class Application extends Container implements
     /**
      * Register a callback to run after loading the environment.
      *
-     * @param Closure $callback
+     * @param  Closure  $callback
      */
     public function afterLoadingEnvironment(Closure $callback)
     {
@@ -1535,29 +1492,29 @@ class Application extends Container implements
     /**
      * Register a callback to run before a bootstrapper.
      *
-     * @param string  $bootstrapper
-     * @param Closure $callback
+     * @param  string  $bootstrapper
+     * @param  Closure  $callback
      */
     public function beforeBootstrapping($bootstrapper, Closure $callback)
     {
-        $this['events']->listen('bootstrapping: ' . $bootstrapper, $callback);
+        $this['events']->listen('bootstrapping: '.$bootstrapper, $callback);
     }
 
     /**
      * Register a callback to run after a bootstrapper.
      *
-     * @param string  $bootstrapper
-     * @param Closure $callback
+     * @param  string  $bootstrapper
+     * @param  Closure  $callback
      */
     public function afterBootstrapping($bootstrapper, Closure $callback)
     {
-        $this['events']->listen('bootstrapped: ' . $bootstrapper, $callback);
+        $this['events']->listen('bootstrapped: '.$bootstrapper, $callback);
     }
 
     /**
      * Set the application locale.
      *
-     * @param string $locale
+     * @param  string  $locale
      */
     public function setLocale($locale)
     {
@@ -1579,8 +1536,7 @@ class Application extends Container implements
     /**
      * Check if passed locale is current locale.
      *
-     * @param string $locale
-     *
+     * @param  string  $locale
      * @return bool
      */
     public function isLocale($locale)
@@ -1591,9 +1547,9 @@ class Application extends Container implements
     /**
      * Return the application namespace.
      *
-     * @throws \RuntimeException
-     *
      * @return string
+     *
+     * @throws \RuntimeException
      */
     public function getNamespace()
     {
@@ -1657,9 +1613,8 @@ class Application extends Container implements
     /**
      * Normalize a relative or absolute path to a cache file.
      *
-     * @param string $key
-     * @param string $default
-     *
+     * @param  string  $key
+     * @param  string  $default
      * @return string
      */
     protected function normalizeCachePath($key, $default)
@@ -1692,9 +1647,8 @@ class Application extends Container implements
     /**
      * Return a Javascript Global variable.
      *
-     * @param string $name
-     * @param array  $data
-     *
+     * @param  string  $name
+     * @param  array  $data
      * @return string
      */
     public function outputJavascriptGlobal(string $name, array $data)
@@ -1705,7 +1659,7 @@ class Application extends Container implements
 
         if (! empty($data) && is_array($data)) {
             foreach ($data as $key => $value) {
-                $output .= $key . ': ' . json_encode($value) . ",\n\r";
+                $output .= $key.': '.json_encode($value).",\n\r";
             }
         }
 

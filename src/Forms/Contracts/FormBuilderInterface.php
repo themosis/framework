@@ -7,8 +7,7 @@ interface FormBuilderInterface
     /**
      * Add a field to the current form instance.
      *
-     * @param FieldTypeInterface $field
-     *
+     * @param  FieldTypeInterface  $field
      * @return $this
      */
     public function add(FieldTypeInterface $field): FormBuilderInterface;

@@ -121,7 +121,7 @@ class ThemeManagerTest extends TestCase
         $theme = $this->getThemeManager();
         $theme = $theme->load($app->themesPath('underscore/config'));
 
-        $theme->includes(__DIR__ . '/../samples/inc');
+        $theme->includes(__DIR__.'/../samples/inc');
 
         $this->assertTrue(defined('THEME_MANAGER_INC'));
         $this->assertTrue(defined('THEME_MANAGER_NESTED_INC'));

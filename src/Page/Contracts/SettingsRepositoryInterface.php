@@ -11,8 +11,7 @@ interface SettingsRepositoryInterface
     /**
      * Set sections of the repository.
      *
-     * @param array $sections
-     *
+     * @param  array  $sections
      * @return SettingsRepositoryInterface
      */
     public function setSections(array $sections): SettingsRepositoryInterface;
@@ -27,8 +26,7 @@ interface SettingsRepositoryInterface
     /**
      * Set the repository settings.
      *
-     * @param array $settings
-     *
+     * @param  array  $settings
      * @return SettingsRepositoryInterface
      */
     public function setSettings(array $settings): SettingsRepositoryInterface;
@@ -43,8 +41,7 @@ interface SettingsRepositoryInterface
     /**
      * Return the setting instance.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return FieldTypeInterface
      */
     public function getSettingByName(string $name): FieldTypeInterface;
@@ -52,8 +49,7 @@ interface SettingsRepositoryInterface
     /**
      * Return the section instance.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return SectionInterface
      */
     public function getSectionByName(string $name): SectionInterface;

@@ -30,11 +30,10 @@ class ChannelMakeCommand extends GeneratorCommand
     /**
      * Build the class with the given name.
      *
-     * @param string $name
+     * @param  string  $name
+     * @return string|string[]
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
-     * @return string|string[]
      */
     protected function buildClass($name)
     {
@@ -52,18 +51,17 @@ class ChannelMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__ . '/stubs/channel.stub';
+        return __DIR__.'/stubs/channel.stub';
     }
 
     /**
      * Get the default namespace for the class.
      *
-     * @param string $rootNamespace
-     *
+     * @param  string  $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Broadcasting';
+        return $rootNamespace.'\Broadcasting';
     }
 }

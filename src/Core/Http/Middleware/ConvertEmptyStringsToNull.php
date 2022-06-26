@@ -16,7 +16,7 @@ class ConvertEmptyStringsToNull extends TransformsRequest
     /**
      * Register a callback that instructs the middleware to be skipped.
      *
-     * @param Closure $callback
+     * @param  Closure  $callback
      */
     public static function skipWhen(Closure $callback)
     {
@@ -26,9 +26,8 @@ class ConvertEmptyStringsToNull extends TransformsRequest
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
-     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -45,9 +44,8 @@ class ConvertEmptyStringsToNull extends TransformsRequest
     /**
      * Transform the given value.
      *
-     * @param string $key
-     * @param mixed  $value
-     *
+     * @param  string  $key
+     * @param  mixed  $value
      * @return mixed
      */
     protected function transform($key, $value)

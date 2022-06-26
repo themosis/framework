@@ -7,8 +7,7 @@ interface PostTypeInterface
     /**
      * Set the post type labels.
      *
-     * @param array $labels
-     *
+     * @param  array  $labels
      * @return PostTypeInterface
      */
     public function setLabels(array $labels): PostTypeInterface;
@@ -23,8 +22,7 @@ interface PostTypeInterface
     /**
      * Return a defined label value.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     public function getLabel(string $name): string;
@@ -32,8 +30,7 @@ interface PostTypeInterface
     /**
      * Set the post type arguments.
      *
-     * @param array $args
-     *
+     * @param  array  $args
      * @return PostTypeInterface
      */
     public function setArguments(array $args): PostTypeInterface;
@@ -48,8 +45,7 @@ interface PostTypeInterface
     /**
      * Return a post type argument.
      *
-     * @param string $property
-     *
+     * @param  string  $property
      * @return mixed
      */
     public function getArgument(string $property);
@@ -71,8 +67,7 @@ interface PostTypeInterface
     /**
      * Set the post type title input placeholder.
      *
-     * @param string $title
-     *
+     * @param  string  $title
      * @return PostTypeInterface
      */
     public function setTitlePlaceholder(string $title): PostTypeInterface;
@@ -80,9 +75,8 @@ interface PostTypeInterface
     /**
      * Set post type custom status.
      *
-     * @param array|string $status
-     * @param array        $args
-     *
+     * @param  array|string  $status
+     * @param  array  $args
      * @return PostTypeInterface
      */
     public function status($status, array $args = []): PostTypeInterface;

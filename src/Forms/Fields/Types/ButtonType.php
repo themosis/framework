@@ -52,8 +52,7 @@ class ButtonType extends BaseType implements DataTransformerInterface
     /**
      * Parse field options.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return array
      */
     protected function parseOptions(array $options): array
@@ -74,8 +73,7 @@ class ButtonType extends BaseType implements DataTransformerInterface
     /**
      * @inheritdoc
      *
-     * @param mixed $data
-     *
+     * @param  mixed  $data
      * @return string
      */
     public function reverseTransform($data)
@@ -86,8 +84,7 @@ class ButtonType extends BaseType implements DataTransformerInterface
     /**
      * @inheritdoc
      *
-     * @param mixed $data
-     *
+     * @param  mixed  $data
      * @return string
      */
     public function transform($data)

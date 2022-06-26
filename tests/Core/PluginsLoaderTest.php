@@ -68,7 +68,7 @@ class PluginsLoaderTest extends TestCase
         );
 
         $headers = $loader->headers(
-            realpath(__DIR__ . '/../htdocs/content/mu-plugins/fake-plugin/fakeplugin.php'),
+            realpath(__DIR__.'/../htdocs/content/mu-plugins/fake-plugin/fakeplugin.php'),
             $loader->headers,
         );
 
@@ -97,7 +97,7 @@ class PluginsLoaderTest extends TestCase
         $loader = new PluginsRepository(
             new Application(),
             new Filesystem(),
-            realpath(__DIR__ . '/../htdocs/content/mu-plugins'),
+            realpath(__DIR__.'/../htdocs/content/mu-plugins'),
             '',
         );
 

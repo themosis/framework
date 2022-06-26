@@ -33,13 +33,12 @@ class Factory
     /**
      * Create a new post type instance.
      *
-     * @param string $slug
-     * @param string $plural
-     * @param string $singular
+     * @param  string  $slug
+     * @param  string  $plural
+     * @param  string  $singular
+     * @return PostTypeInterface
      *
      * @throws PostTypeException
-     *
-     * @return PostTypeInterface
      */
     public function make(string $slug, string $plural, string $singular): PostTypeInterface
     {
@@ -82,7 +81,7 @@ class Factory
         if (! $this->container->bound($abstract)) {
             $this->container->instance($abstract, $postType);
         } else {
-            throw new PostTypeException('The post type [' . $slug . '] already exists.');
+            throw new PostTypeException('The post type ['.$slug.'] already exists.');
         }
 
         return $postType;
@@ -91,8 +90,7 @@ class Factory
     /**
      * If a given post type exists
      *
-     * @param string $slug
-     *
+     * @param  string  $slug
      * @return bool
      */
     public function exists(string $slug): bool
@@ -102,8 +100,7 @@ class Factory
     }
 
     /**
-     * @param string $slug
-     *
+     * @param  string  $slug
      * @return PostTypeInterface|null
      */
     public function get(string $slug): ?PostTypeInterface

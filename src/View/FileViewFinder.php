@@ -26,8 +26,8 @@ class FileViewFinder extends IlluminateFileViewFinder
     /**
      * Add ordered view location.
      *
-     * @param string $location
-     * @param int    $priority
+     * @param  string  $location
+     * @param  int  $priority
      */
     public function addOrderedLocation(string $location, int $priority = 20)
     {
@@ -49,8 +49,7 @@ class FileViewFinder extends IlluminateFileViewFinder
     /**
      * Get the fully qualified location of the view.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return string
      */
     public function find($name)

@@ -70,8 +70,7 @@ class EventListCommand extends Command
     /**
      * Filter the given events using the provided event name filter.
      *
-     * @param array $events
-     *
+     * @param  array  $events
      * @return array
      */
     protected function filterEvents(array $events)

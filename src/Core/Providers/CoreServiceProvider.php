@@ -55,19 +55,19 @@ class CoreServiceProvider extends AggregateServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../../../dist' => web_path('dist'),
+                __DIR__.'/../../../dist' => web_path('dist'),
             ], 'themosis');
 
             $this->publishes([
-                __DIR__ . '/../Exceptions/views' => resource_path('views/errors/'),
+                __DIR__.'/../Exceptions/views' => resource_path('views/errors/'),
             ], 'themosis-errors');
 
             $this->publishes([
-                __DIR__ . '/../Dropins/files' => content_path(),
+                __DIR__.'/../Dropins/files' => content_path(),
             ], 'themosis-dropins');
 
             $this->publishes([
-                __DIR__ . '/../Dropins/files/object-cache.php' => content_path('object-cache.php'),
+                __DIR__.'/../Dropins/files/object-cache.php' => content_path('object-cache.php'),
             ], 'themosis-dropins-objectcache');
         }
     }
