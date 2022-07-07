@@ -35,6 +35,7 @@ class EditorField extends React.Component <FieldProps> {
     componentDidMount() {
         let settings = {...this.props.field.options.settings_js, ...{
             'tinymce': {
+                ...this.props.field.options.settings_js?.tinymce,
                 'init_instance_callback': (editor: any) => {
                     editor.on('blur', () => {
                         this.props.changeHandler(this.props.field.name, tinyMCE.get(this.props.field.attributes.id).getContent());

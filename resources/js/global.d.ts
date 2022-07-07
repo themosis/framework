@@ -82,7 +82,7 @@ declare type FieldType = {
         name: string;
         precision: number;
         settings: object;
-        settings_js: object;
+        settings_js: object & { tinymce?: object };
         thumbnail: string;
         type: string|Array<string>;
     };
