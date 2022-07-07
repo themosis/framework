@@ -54,12 +54,25 @@ if ('undefined' !== typeof themosisGlobal) {
     factory.make(themosisGlobal.metabox);
 }
 
+/**
+ * Dispatch custom event. Triggers metabox autosave when
+ * end-user is saving a post.
+ */
 window.addEventListener('load', () => {
     const button = document.querySelector('.editor-post-publish-button');
+    const form = document.querySelector('form#post') as HTMLFormElement;
 
     if (button) {
         button.addEventListener('mouseup', () => {
             window.dispatchEvent(new Event('isSavingPost'));
+        });
+    }
+
+    if (form) {
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            window.dispatchEvent(new Event('isSavingPost'));
+            form.submit()
         });
     }
 });
