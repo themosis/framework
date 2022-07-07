@@ -1,3 +1,13 @@
+.themosis {
+  .edit-post-meta-boxes-area {
+    #poststuff {
+      h2.hndle {
+        padding-left: $paddingV;
+      }
+    }
+  }
+}
+
 .themosis__metabox {
   &__footer {
     display: flex;
@@ -6,7 +16,7 @@
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    padding: $paddingV $paddingH;
+    padding: $paddingV;
   }
 
   &__status {
@@ -101,7 +111,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: flex-start;
-  padding: $paddingV $paddingH;
+  padding: $paddingV;
   border-bottom: 1px solid #EEEEEE;
 
   &:last-child {
