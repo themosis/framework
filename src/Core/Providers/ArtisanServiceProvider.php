@@ -78,6 +78,7 @@ use Themosis\Core\Console\PasswordResetTableCommand;
 use Themosis\Core\Console\PluginInstallCommand;
 use Themosis\Core\Console\PolicyMakeCommand;
 use Themosis\Core\Console\ProviderMakeCommand;
+use Themosis\Core\Console\PublishFuturePostCommand;
 use Themosis\Core\Console\RequestMakeCommand;
 use Themosis\Core\Console\ResourceMakeCommand;
 use Themosis\Core\Console\RouteCacheCommand;
@@ -129,6 +130,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         'Optimize' => 'command.optimize',
         'OptimizeClear' => 'command.optimize.clear',
         'PackageDiscover' => 'command.package.discover',
+        'PublishFuturePost' => 'command.publish.future-post',
         'QueueClear' => 'command.queue.clear',
         'QueueFailed' => 'command.queue.failed',
         'QueueFlush' => 'command.queue.flush',
@@ -799,6 +801,13 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     {
         $this->app->singleton($alias, function ($app) {
             return new PackageDiscoverCommand();
+        });
+    }
+
+    protected function registerPublishFuturePostCommand($alias)
+    {
+        $this->app->singleton($alias, function () {
+            return new PublishFuturePostCommand();
         });
     }
 
