@@ -717,7 +717,11 @@ class Page implements PageInterface
                 $validator->getMessageBag()->first($setting->getName()),
             );
 
-            return '';
+            /**
+             * If validation fails for the field,
+             * we return the old stored value if any.
+             */
+            return get_option($setting->getName());
         }
 
         if ($settingName === $lastSetting->getName() && ! $this->errors) {
