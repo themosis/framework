@@ -6,6 +6,7 @@ use Carbon\CarbonImmutable;
 use Carbon\CarbonTimeZone;
 use Illuminate\Console\Command;
 use Themosis\Core\Repositories\PostRepository;
+use Themosis\Core\WordPressLoader;
 use WP_Post;
 
 class PublishFuturePostCommand extends Command
@@ -29,17 +30,18 @@ class PublishFuturePostCommand extends Command
      *
      * --id: publish scheduled post with a specific ID.
      * --post-type: publish all scheduled posts for the given post-type.
-     * --date:
      */
-    public function handle(PostRepository $postRepository): void
+    public function handle(WordPressLoader $wordPressLoader, PostRepository $postRepository): void
     {
-        $this->info('Publishing posts...');
+        $wordPressLoader->load();
+
+        $this->info('Publishing post(s)...');
 
         $id = $this->option('id');
         $postType = $this->option('post-type');
 
         $posts = $id
-            ? collect($postRepository->getBy(id: $id))
+            ? collect([$postRepository->getBy(id: $id)])
             : $postRepository->allScheduledPosts($postType);
 
         if ($posts->isNotEmpty()) {
@@ -53,14 +55,15 @@ class PublishFuturePostCommand extends Command
                 }
 
                 $tz = CarbonTimeZone::create(wp_timezone_string());
-                $today = CarbonImmutable::today($tz);
+                $now = CarbonImmutable::now($tz);
 
-                if ($today->greaterThanOrEqualTo($post->post_date_gmt)) {
+                if ($now->greaterThanOrEqualTo($post->post_date)) {
+                    $this->info("Publishing post with ID: {$post->ID}");
                     wp_publish_post($post->ID);
                 }
             });
         }
 
-        $this->info('Posts published.');
+        $this->info('Post(s) published.');
     }
 }
