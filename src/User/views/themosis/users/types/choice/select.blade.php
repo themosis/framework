@@ -23,7 +23,7 @@
 
                 return ! empty($values) && in_array($option, $values) ? 'selected="selected"' : '';
             }, [$choices, $field->getValue()]);
-            ?>
+                    ?>
             <option value="{{ $choices }}" {!! $selected !!}>{{ $group }}</option>
         @endif
     @endforeach

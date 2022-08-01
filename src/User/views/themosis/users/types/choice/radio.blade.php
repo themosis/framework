@@ -21,7 +21,7 @@
             $checked = $field->checked(function ($value, $choice) {
                 return ! empty($value) && $value === $choice ? 'checked' : '';
             }, [$field->getRawValue(), $choices]);
-            ?>
+                        ?>
             <label>
                 <input type="radio" name="{{ $field->getName() }}" value="{{ $choices }}" {{ $checked }}>{{ $group }}
             </label>

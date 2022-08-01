@@ -21,7 +21,7 @@
                 $checked = $field->checked(function ($choices, $value) {
                     return ! empty($choices) && is_array($choices) && in_array($value, $choices) ? 'checked' : '';
                 }, [$field->getRawValue(), $choices]);
-            ?>
+                        ?>
             <label>
                 <input type="checkbox" name="{{ $field->getName() }}[]" value="{{ $choices }}" {{ $checked }}>{{ $group }}
             </label>
