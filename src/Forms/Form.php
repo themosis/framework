@@ -843,10 +843,11 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * @inheritdoc
      *
      * @param array|string $value
+     * @param bool         $shouldNotBypassTransformer
      *
      * @return FieldTypeInterface
      */
-    public function setValue($value): FieldTypeInterface
+    public function setValue($value, bool $shouldNotBypassTransformer = true): FieldTypeInterface
     {
         return $this;
     }

@@ -664,7 +664,7 @@ class Page implements PageInterface
      *
      * @param string|array $value
      *
-     * @return string|array
+     * @return string|array|null
      */
     public function sanitizeSetting($value)
     {
@@ -679,7 +679,7 @@ class Page implements PageInterface
 
         if ($this->offset > $keys->count() - 1) {
             if (empty($value)) {
-                return '';
+                return null;
             }
 
             // Sanitize is called one more time with a valid value.
@@ -688,7 +688,7 @@ class Page implements PageInterface
             $settingName = $data->search($value, true);
 
             if (! $settingName) {
-                return '';
+                return null;
             }
 
             // Let's add a "fake" error to avoid duplicate success messages.
@@ -728,7 +728,9 @@ class Page implements PageInterface
             $this->addSettingsSuccessMessage($this->getSlug());
         }
 
-        return $value;
+        $setting->setValue($value);
+
+        return $setting->getValue();
     }
 
     /**
@@ -823,7 +825,7 @@ class Page implements PageInterface
         $value = get_option($setting->getName(), null);
 
         if (! is_null($value)) {
-            $setting->setValue($value);
+            $setting->setValue($value, false);
         }
 
         $view = sprintf('%s.%s', $this->ui()->getTheme(), $setting->getView(false));

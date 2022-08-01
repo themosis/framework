@@ -646,12 +646,15 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
      * Set the value property of the field.
      *
      * @param array|string $value
+     * @param bool         $shouldNotBypassTransformer
      *
      * @return FieldTypeInterface
      */
-    public function setValue($value): FieldTypeInterface
+    public function setValue($value, bool $shouldNotBypassTransformer = true): FieldTypeInterface
     {
-        $this->value = $this->transformer->transform($value);
+        $this->value = $shouldNotBypassTransformer
+            ? $this->transformer->transform($value)
+            : $value;
 
         return $this;
     }
@@ -682,7 +685,7 @@ abstract class BaseType extends HtmlBuilder implements \ArrayAccess, \Countable,
         $value = $this->transformer->reverseTransform($this->value);
 
         if ($this->getOption('flush', false)) {
-            return '';
+            return null;
         }
 
         return $value;

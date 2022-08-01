@@ -64,12 +64,13 @@ class CheckboxType extends BaseType implements
      * @inheritdoc
      *
      * @param string $value
+     * @param bool   $shouldNotBypassTransformer
      *
      * @return FieldTypeInterface
      */
-    public function setValue($value): FieldTypeInterface
+    public function setValue($value, bool $shouldNotBypassTransformer = true): FieldTypeInterface
     {
-        parent::setValue($value);
+        parent::setValue($value, $shouldNotBypassTransformer);
 
         if ($this->getValue()) {
             // The value is only set on the field when it fails

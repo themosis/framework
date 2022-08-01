@@ -186,10 +186,11 @@ interface FieldTypeInterface
      * Set the field raw value.
      *
      * @param string|array $value
+     * @param bool         $shouldNotBypassTransformer
      *
      * @return FieldTypeInterface
      */
-    public function setValue($value): FieldTypeInterface;
+    public function setValue($value, bool $shouldNotBypassTransformer = true): FieldTypeInterface;
 
     /**
      * Retrieve the field "normalized" value.
