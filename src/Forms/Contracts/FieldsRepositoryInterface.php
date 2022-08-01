@@ -56,9 +56,9 @@ interface FieldsRepositoryInterface
      *
      * @param string $name
      *
-     * @return FieldTypeInterface
+     * @return FieldTypeInterface | null
      */
-    public function getFieldByName(string $name): FieldTypeInterface;
+    public function getFieldByName(string $name): ?FieldTypeInterface;
 
     /**
      * Check if form contains provided group instance (section).

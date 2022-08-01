@@ -55,7 +55,7 @@ class FieldTransformer extends TransformerAbstract
                 'placeholder' => $field->getOption('placeholder'),
                 'rules' => $field->getOption('rules', ''),
             ],
-            'value' => 'checkbox' === $field->getType() ? $field->getRawValue() : $field->getValue(''),
+            'value' => $field->getRawValue(),
         ];
     }
 

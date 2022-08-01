@@ -63,6 +63,8 @@ class ChoiceType extends BaseType implements
 
         $this->allowedOptions = $this->setAllowedOptions();
         $this->defaultOptions = $this->setDefaultOptions();
+
+        $this->setTransformer(new ChoiceToValueTransformer());
     }
 
     /**
@@ -112,8 +114,6 @@ class ChoiceType extends BaseType implements
      */
     protected function parseOptions(array $options): array
     {
-        $this->setTransformer(new ChoiceToValueTransformer());
-
         $options = parent::parseOptions($options);
 
         if (is_null($options['choices'])) {
@@ -229,12 +229,10 @@ class ChoiceType extends BaseType implements
     {
         $this->setValue($value);
 
-        if (! $this->getOption('multiple', false)) {
-            // Store single value.
-            $this->saveSingleValue($this->getRawValue(), $post_id);
+        if (is_array($this->value)) {
+            $this->saveMultipleValue($this->value, $post_id);
         } else {
-            // Store multiple values.
-            $this->saveMultipleValue($this->getRawValue(), $post_id);
+            $this->saveSingleValue($this->value, $post_id);
         }
     }
 

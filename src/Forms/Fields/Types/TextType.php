@@ -62,9 +62,11 @@ class TextType extends BaseType implements
         return is_null($data) ? '' : (string) $data;
     }
 
-    /**¨
+    /**
      * @inheritdoc
+     *
      * @param string $data
+     *
      * @return string
      */
     public function reverseTransform($data)

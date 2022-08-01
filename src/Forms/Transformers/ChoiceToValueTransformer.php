@@ -9,9 +9,9 @@ class ChoiceToValueTransformer implements DataTransformerInterface
     /**
      * @inheritdoc
      *
-     * @param string|array $data
+     * @param mixed $data
      *
-     * @return string|array
+     * @return mixed
      */
     public function transform($data)
     {
@@ -26,9 +26,9 @@ class ChoiceToValueTransformer implements DataTransformerInterface
      * Parse if a value is numeric and cast it
      * to its correct type.
      *
-     * @param string $value
+     * @param mixed $value
      *
-     * @return float|int
+     * @return float|int|mixed
      */
     protected function parseNumeric($value)
     {
@@ -46,18 +46,12 @@ class ChoiceToValueTransformer implements DataTransformerInterface
     /**
      * @inheritdoc
      *
-     * @param string|array $data
+     * @param mixed $data
      *
-     * @return string|array
+     * @return mixed
      */
     public function reverseTransform($data)
     {
-        if (is_array($data)) {
-            return array_map(function ($value) {
-                return (string) $value;
-            }, $data);
-        }
-
-        return (string) $data;
+        return $data;
     }
 }

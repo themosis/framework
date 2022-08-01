@@ -232,6 +232,7 @@ class FieldsTest extends TestCase
                 'placeholder' => 'colors',
                 'rules' => '',
             ],
+            'value' => null,
         ]);
 
         $this->assertEquals($expected, $colors->toArray());

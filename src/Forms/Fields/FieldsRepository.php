@@ -101,9 +101,9 @@ class FieldsRepository implements FieldsRepositoryInterface
      *
      * @param string $name
      *
-     * @return FieldTypeInterface
+     * @return FieldTypeInterface | null
      */
-    public function getFieldByName(string $name): FieldTypeInterface
+    public function getFieldByName(string $name): ?FieldTypeInterface
     {
         return $this->fields[$name] ?? null;
     }
