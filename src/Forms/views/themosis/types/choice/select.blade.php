@@ -12,7 +12,7 @@
                             $values = (array) $value;
 
                             return ! empty($values) && in_array($option, $values) ? 'selected="selected"' : '';
-                        }, [$choice, $field->getValue()]);
+                        }, [$choice, $field->getRawValue()]);
                     ?>
                     <option value="{{ $choice }}" {!! $selected !!}>{{ $label }}</option>
                 @endforeach
@@ -23,7 +23,7 @@
                     $values = (array) $value;
 
                     return ! empty($values) && in_array($option, $values) ? 'selected="selected"' : '';
-                }, [$choices, $field->getValue()]);
+                }, [$choices, $field->getRawValue()]);
                     ?>
             <option value="{{ $choices }}" {!! $selected !!}>{{ $group }}</option>
         @endif

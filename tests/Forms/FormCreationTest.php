@@ -1100,7 +1100,7 @@ class FormCreationTest extends TestCase
         $factory = $this->getFormFactory();
         $fields = $this->getFieldsFactory();
 
-        $form = $factory->make()
+        $form = $factory->make(null, ['flush' => false])
             ->add($fields->text('firstname'))
             ->add($fields->email('email'))
             ->add($fields->textarea('message'))
