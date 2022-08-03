@@ -10,7 +10,7 @@ class FieldTransformer extends TransformerAbstract
     /**
      * @var array
      */
-    protected $excludedOptions = [
+    protected array $excludedOptions = [
         'attributes',
         'data',
         'data_type',

@@ -77,7 +77,7 @@ class TaxonomyFieldRepository implements \Iterator
      *
      * @since 5.0.0
      */
-    public function current()
+    public function current(): mixed
     {
         return $this->fields[$this->position];
     }
@@ -88,7 +88,7 @@ class TaxonomyFieldRepository implements \Iterator
      * @link https://php.net/manual/en/iterator.next.php
      * @since 5.0.0
      */
-    public function next()
+    public function next(): void
     {
         ++$this->position;
     }
@@ -102,7 +102,7 @@ class TaxonomyFieldRepository implements \Iterator
      *
      * @since 5.0.0
      */
-    public function key()
+    public function key(): mixed
     {
         return $this->position;
     }
@@ -117,7 +117,7 @@ class TaxonomyFieldRepository implements \Iterator
      *
      * @since 5.0.0
      */
-    public function valid()
+    public function valid(): bool
     {
         return isset($this->fields[$this->position]);
     }
@@ -128,7 +128,7 @@ class TaxonomyFieldRepository implements \Iterator
      * @link https://php.net/manual/en/iterator.rewind.php
      * @since 5.0.0
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }

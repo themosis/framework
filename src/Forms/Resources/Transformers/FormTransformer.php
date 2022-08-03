@@ -12,7 +12,7 @@ class FormTransformer extends TransformerAbstract
     /**
      * @var array
      */
-    protected $defaultIncludes = [
+    protected array $defaultIncludes = [
         'fields',
         'groups',
     ];

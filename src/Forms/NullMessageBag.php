@@ -158,7 +158,7 @@ class NullMessageBag implements MessageBag
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return 0;
     }
@@ -168,7 +168,7 @@ class NullMessageBag implements MessageBag
      *
      * @return bool
      */
-    public function any()
+    public function any(): bool
     {
         return $this->count() > 0;
     }

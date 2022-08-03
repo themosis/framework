@@ -11,13 +11,13 @@ use Themosis\Metabox\Contracts\MetaboxInterface;
 
 class MetaboxTransformer extends TransformerAbstract
 {
-    /**
-     * @var array
-     */
-    protected $defaultIncludes = [
-        'fields',
-        'groups',
-    ];
+    public function __construct()
+    {
+        $this->defaultIncludes = [
+            'fields',
+            'groups',
+        ];
+    }
 
     /**
      * Transform the metabox to a resource.
