@@ -5,6 +5,7 @@ namespace Themosis\Route;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Routing\Router as IlluminateRouter;
+use Themosis\Route\Bindings\NullableWpPost;
 
 class Router extends IlluminateRouter
 {
@@ -34,7 +35,7 @@ class Router extends IlluminateRouter
     {
         // WordPress condition could have been already applied.
         // We only try one more time to fetch them if no conditions
-        // are registered. This avoids the overwrite of any pre-existing rules.
+        // are registered. This avoids to overwrite any pre-existing rules.
         if (empty($this->conditions)) {
             $this->setConditions();
         }
@@ -101,6 +102,11 @@ class Router extends IlluminateRouter
         global $post, $wp_query;
 
         foreach (compact('post', 'wp_query') as $key => $value) {
+            if ('post' === $key && null === $value) {
+                $value = (new NullableWpPost())
+                    ->toWpPost();
+            }
+
             $route->setParameter($key, $value);
         }
 
