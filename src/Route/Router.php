@@ -102,7 +102,7 @@ class Router extends IlluminateRouter
         global $post, $wp_query;
 
         foreach (compact('post', 'wp_query') as $key => $value) {
-            if ('post' === $key && null === $value) {
+            if ('post' === $key && null === $value && class_exists('WP_Post')) {
                 $value = (new NullableWpPost())
                     ->toWpPost();
             }
