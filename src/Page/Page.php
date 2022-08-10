@@ -8,6 +8,7 @@ use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Validator;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Themosis\Forms\Contracts\FieldTypeInterface;
 use Themosis\Hook\IHook;
 use Themosis\Page\Contracts\PageInterface;
@@ -301,6 +302,19 @@ class Page implements PageInterface
         $this->parent = $parent;
 
         return $this;
+    }
+
+    public function getUrl(array $queryArgs = []): string
+    {
+        return add_query_arg(
+            array_merge(
+                $queryArgs,
+                [
+                    'page' => $this->getSlug(),
+                ],
+            ),
+            admin_url('admin.php'),
+        );
     }
 
     /**
@@ -896,7 +910,12 @@ class Page implements PageInterface
 
         if (in_array($action, array_keys($this->routes['get']))) {
             $callback = $this->routes['get'][$action];
-            $response = $this->handleCallback($callback);
+            $response = $this->handleCallback($callback, [$this], false);
+
+            if ($response instanceof RedirectResponse) {
+                $response->send();
+                exit();
+            }
 
             if (! is_a($response, Renderable::class)) {
                 throw new \Exception('The controller method must return a view instance.');
@@ -920,7 +939,14 @@ class Page implements PageInterface
         }
 
         foreach ($this->routes['post'] as $action => $callback) {
-            $this->action->add('admin_post_' . $action, $callback);
+            $this->action->add('admin_post_' . $action, function () use ($callback) {
+                $response = $this->handleCallback($callback, [$this], false);
+
+                if ($response instanceof RedirectResponse) {
+                    $response->send();
+                    exit();
+                }
+            });
         }
     }
 
@@ -1039,5 +1065,10 @@ class Page implements PageInterface
     public function getAction(string $action): string
     {
         return $this->parseAction($action, 'post');
+    }
+
+    public function getPostUrl(): string
+    {
+        return admin_url('admin-post.php');
     }
 }

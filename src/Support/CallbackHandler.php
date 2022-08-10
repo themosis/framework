@@ -34,22 +34,28 @@ trait CallbackHandler
      *
      * @return mixed|string
      */
-    protected function handleCallback($callback, array $args = [])
+    protected function handleCallback($callback, array $args = [], bool $asArray = true)
     {
         $response = null;
 
+        $handleResponse = function ($callback, array $args, bool $asArray) {
+            return $asArray
+                ? call_user_func($callback, $args)
+                : call_user_func_array($callback, $args);
+        };
+
         // Check if $callback is a closure.
         if ($callback instanceof \Closure || is_array($callback)) {
-            $response = call_user_func($callback, $args);
+            $response = $handleResponse($callback, $args, $asArray);
         } elseif (is_string($callback)) {
             if (false !== strpos($callback, '@') || class_exists($callback)) {
                 // We use a "ClassName@method" syntax.
                 // Let's get a class instance and call its method.
                 $callbackArray = $this->handleClassCallback($callback);
-                $response = call_user_func($callbackArray, $args);
+                $response = $handleResponse($callbackArray, $args, $asArray);
             } else {
                 // Used as a classic callback function.
-                $response = call_user_func($callback, $args);
+                $response = $handleResponse($callback, $args, $asArray);
             }
         }
 

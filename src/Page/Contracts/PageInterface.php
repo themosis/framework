@@ -127,6 +127,15 @@ interface PageInterface
     public function hasParent(): bool;
 
     /**
+     * Return the page URL.
+     *
+     * @param array $queryArgs
+     *
+     * @return string
+     */
+    public function getUrl(array $queryArgs = []): string;
+
+    /**
      * Set the global page property show in rest.
      * Automatically set all attached settings to this global value.
      * Each setting can override individually this option using an
@@ -264,4 +273,6 @@ interface PageInterface
      * @return string
      */
     public function getAction(string $action): string;
+
+    public function getPostUrl(): string;
 }
