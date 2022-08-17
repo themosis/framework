@@ -2,7 +2,7 @@
 
 namespace Themosis\Forms\Contracts;
 
-use Themosis\Field\Fields\FieldBuilder;
+use Themosis\Forms\FormBuilder;
 
 interface FormFactoryInterface
 {
@@ -15,5 +15,5 @@ interface FormFactoryInterface
      *
      * @return FormBuilderInterface
      */
-    public function make($data = null, $options = [], $builder = FieldBuilder::class): FormBuilderInterface;
+    public function make($data = null, $options = [], $builder = FormBuilder::class): FormBuilderInterface;
 }
