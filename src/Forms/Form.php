@@ -183,6 +183,13 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * @var array
      */
     private $data = [];
+    
+    /**
+     * If the validator should return the value on fail or not.
+     *
+     * @var bool
+     */
+    private $validatorReturnValueOnFail = false;
 
     public function __construct(
         $dataClass,
@@ -299,7 +306,9 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
             $this->getFormPlaceholders($fields),
         );
 
-        $data = $this->validator->valid();
+        $data = $this->validatorReturnValueOnFail
+            ? $this->validator->getData()
+            : $this->validator->valid();
 
         // Attach the errors message bag to each field.
         // Set each field value.
@@ -400,6 +409,21 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         }
 
         return $attributes;
+    }
+
+    /**
+     * Set the validator return value on fail to true.
+     * Pass false as an arugment to put it back to false.
+     *
+     * @param bool $value
+     *
+     * @return $this
+     */
+    public function setValidatorReturnValueOnFail($value = true)
+    {
+        $this->validatorReturnValueOnFail = $value;
+
+        return $this;
     }
 
     /**
