@@ -299,9 +299,9 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
             $this->getFormPlaceholders($fields),
         );
 
-        $data = $this->validatorReturnValueOnFail
-            ? $this->validator->getData()
-            : $this->validator->valid();
+        $data = $this->getOption('flushOnFail', true)
+            ? $this->validator->valid()
+            : $this->validator->getData();
 
         // Attach the errors message bag to each field.
         // Set each field value.
