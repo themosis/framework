@@ -1333,9 +1333,10 @@ class FormCreationTest extends TestCase
             'rules' => 'required|max:3',
         ]);
 
-        $form = $factory->make(null, [
-            'flushOnFail' => false,
-        ])
+        $form = $factory
+            ->make(null, [
+                'flushOnFail' => false,
+            ])
             ->add($field)
             ->get();
 
