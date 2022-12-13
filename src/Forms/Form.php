@@ -405,21 +405,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     }
 
     /**
-     * Set the validator return value on fail to true.
-     * Pass false as an arugment to put it back to false.
-     *
-     * @param bool $value
-     *
-     * @return $this
-     */
-    public function setValidatorReturnValueOnFail($value = true)
-    {
-        $this->validatorReturnValueOnFail = $value;
-
-        return $this;
-    }
-
-    /**
      * Check if submitted form is valid.
      *
      * @return bool
