@@ -183,13 +183,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * @var array
      */
     private $data = [];
-    
-    /**
-     * If the validator should return the value on fail or not.
-     *
-     * @var bool
-     */
-    private $validatorReturnValueOnFail = false;
 
     public function __construct(
         $dataClass,
