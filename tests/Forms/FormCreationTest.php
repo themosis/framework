@@ -1333,11 +1333,11 @@ class FormCreationTest extends TestCase
             'rules' => 'required|max:3',
         ]);
 
-        $form = $factory->make()
+        $form = $factory->make(null, [
+            'flushOnFail' => false,
+        ])
             ->add($field)
             ->get();
-
-        $form->setValidatorReturnValueOnFail();
 
         $request = Request::create('/', 'POST', [
             'th_firstname' => $value = 'John',
