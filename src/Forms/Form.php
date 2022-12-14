@@ -108,6 +108,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         'csrf',
         'errors',
         'flush',
+        'flushOnFail',
         'nonce',
         'nonce_action',
         'referer',
@@ -125,6 +126,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         'container_attr' => [],
         'csrf' => true,
         'flush' => true,
+        'flushOnFail' => true,
         'tags' => true,
         'errors' => true,
         'theme' => 'themosis',
@@ -299,7 +301,9 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
             $this->getFormPlaceholders($fields),
         );
 
-        $data = $this->validator->valid();
+        $data = $this->getOption('flushOnFail', true)
+            ? $this->validator->valid()
+            : $this->validator->getData();
 
         // Attach the errors message bag to each field.
         // Set each field value.

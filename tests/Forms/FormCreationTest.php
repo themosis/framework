@@ -1301,6 +1301,55 @@ class FormCreationTest extends TestCase
         // checked attribute is no longer set.
         $this->assertFalse(isset($attributes['checked']));
     }
+
+    public function test_valdidator_return_no_value_on_fail()
+    {
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+        $field = $fields->text('firstname', [
+            'rules' => 'required|max:3',
+        ]);
+
+        $form = $factory->make()
+            ->add($field)
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_firstname' => 'John',
+        ]);
+
+        $form->handleRequest($request);
+
+        $this->assertFalse($form->isValid());
+
+        $this->assertEmpty($field->getValue());
+    }
+
+    public function test_valdidator_return_value_on_fail()
+    {
+        $factory = $this->getFormFactory();
+        $fields = $this->getFieldsFactory();
+        $field = $fields->text('firstname', [
+            'rules' => 'required|max:3',
+        ]);
+
+        $form = $factory
+            ->make(null, [
+                'flushOnFail' => false,
+            ])
+            ->add($field)
+            ->get();
+
+        $request = Request::create('/', 'POST', [
+            'th_firstname' => $value = 'John',
+        ]);
+
+        $form->handleRequest($request);
+
+        $this->assertFalse($form->isValid());
+
+        $this->assertEquals($value, $field->getValue());
+    }
 }
 
 class CheckboxDto
