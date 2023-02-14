@@ -6,6 +6,7 @@ use Closure;
 use Composer\Autoload\ClassLoader;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Foundation\MaintenanceMode;
 use Illuminate\Contracts\Foundation\Application as ApplicationContract;
 use Illuminate\Contracts\Foundation\CachesConfiguration;
 use Illuminate\Contracts\Foundation\CachesRoutes;
@@ -22,7 +23,7 @@ use Illuminate\Support\Str;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -989,9 +990,9 @@ class Application extends Container implements
      *
      * @throws \Exception When an Exception occurs during processing
      *
-     * @return Response A Response instance
+     * @return SymfonyResponse A Response instance
      */
-    public function handle(SymfonyRequest $request, $type = self::MASTER_REQUEST, $catch = true)
+    public function handle(SymfonyRequest $request, int $type = self::MAIN_REQUEST, bool $catch = true): SymfonyResponse
     {
         return $this[HttpKernelContract::class]->handle(Request::createFromBase($request));
     }
@@ -1422,7 +1423,7 @@ class Application extends Container implements
      *
      * @return $this
      */
-    public function terminating(Closure $callback)
+    public function terminating($callback)
     {
         $this->terminatingCallbacks[] = $callback;
 
@@ -1575,6 +1576,16 @@ class Application extends Container implements
     {
         return $this['config']->get('app.locale');
     }
+        
+    /**
+     * Get the current application fallback locale.
+     *
+     * @return string
+     */
+    public function getFallbackLocale()
+    {
+        return $this['config']->get('app.fallback_locale');
+    }
 
     /**
      * Check if passed locale is current locale.
@@ -1714,5 +1725,13 @@ class Application extends Container implements
         $output .= '</script>';
 
         return $output;
+    }
+
+    /**
+     * @inerhitDoc
+     */
+    public function maintenanceMode(): MaintenanceMode
+    {
+        // TODO: Implement maintenanceMode() method.
     }
 }

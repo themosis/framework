@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Container\Container;
+use Illuminate\Routing\CallableDispatcher;
 use Illuminate\Contracts\Routing\Registrar;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Themosis\Route\Middleware\WordPressBindings;
 use Themosis\Route\Router;
+use Illuminate\Routing\Contracts\CallableDispatcher as CallableDispatcherContract;
 
 class RoutesTest extends TestCase
 {
@@ -696,6 +698,11 @@ class RoutesTest extends TestCase
     {
         $container = new Container();
         $router = new Router(new Dispatcher(), $container);
+
+        $container->singleton(CallableDispatcherContract::class, function ($app) {
+            return new CallableDispatcher($app);
+        });
+
         $container->singleton(Registrar::class, function () use ($router) {
             return $router;
         });
