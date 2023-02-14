@@ -2,6 +2,8 @@
 
 namespace Themosis\Hook;
 
+use Themosis\Hook\Support\ArgumentCountCalculator;
+
 class FilterBuilder extends Hook
 {
     /**
@@ -12,7 +14,7 @@ class FilterBuilder extends Hook
      *
      * @return mixed
      */
-    public function run($hook, $args = null)
+    public function run(string $hook, $args = null)
     {
         if (is_array($args)) {
             return $this->applyFiltersRefArray($hook, $args);
@@ -29,7 +31,7 @@ class FilterBuilder extends Hook
      *
      * @return mixed
      */
-    protected function applyFiltersRefArray($hook, array $args)
+    protected function applyFiltersRefArray(string $hook, array $args)
     {
         return apply_filters_ref_array($hook, $args);
     }
@@ -42,7 +44,7 @@ class FilterBuilder extends Hook
      *
      * @return mixed
      */
-    protected function applyFilters($hook, $args)
+    protected function applyFilters(string $hook, $args)
     {
         return apply_filters($hook, $args);
     }
@@ -55,7 +57,7 @@ class FilterBuilder extends Hook
      * @param int                   $priority
      * @param int                   $accepted_args
      */
-    protected function addEventListener($name, $callback, $priority, $accepted_args)
+    protected function addEventListener(string $name, $callback, int $priority, int $accepted_args)
     {
         $this->hooks[$name] = [$callback, $priority, $accepted_args];
         $this->addFilter($name, $callback, $priority, $accepted_args);
@@ -69,7 +71,7 @@ class FilterBuilder extends Hook
      * @param int                   $priority
      * @param int                   $accepted_args
      */
-    protected function addFilter($name, $callback, $priority, $accepted_args)
+    protected function addFilter(string $name, $callback, int $priority, int $accepted_args)
     {
         add_filter($name, $callback, $priority, $accepted_args);
     }

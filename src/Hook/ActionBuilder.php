@@ -2,6 +2,8 @@
 
 namespace Themosis\Hook;
 
+use Themosis\Hook\Support\ArgumentCountCalculator;
+
 class ActionBuilder extends Hook
 {
     /**
@@ -12,7 +14,7 @@ class ActionBuilder extends Hook
      *
      * @return $this
      */
-    public function run($hook, $args = null)
+    public function run(string $hook, $args = null): self
     {
         if (is_array($args)) {
             $this->doActionRefArray($hook, $args);
@@ -29,7 +31,7 @@ class ActionBuilder extends Hook
      * @param string $hook The hook name.
      * @param mixed  $args Arguments passed to the hook.
      */
-    protected function doAction($hook, $args)
+    protected function doAction(string $hook, $args)
     {
         do_action($hook, $args);
     }
@@ -40,7 +42,7 @@ class ActionBuilder extends Hook
      * @param string $hook The hook name.
      * @param array  $args Arguments passed as an array to the hook.
      */
-    protected function doActionRefArray($hook, array $args)
+    protected function doActionRefArray(string $hook, array $args)
     {
         do_action_ref_array($hook, $args);
     }
@@ -53,7 +55,7 @@ class ActionBuilder extends Hook
      * @param int                   $priority
      * @param int                   $accepted_args
      */
-    protected function addEventListener($name, $callback, $priority, $accepted_args)
+    protected function addEventListener($name, $callback, int $priority, $accepted_args)
     {
         $this->hooks[$name] = [$callback, $priority, $accepted_args];
         $this->addAction($name, $callback, $priority, $accepted_args);
@@ -67,8 +69,8 @@ class ActionBuilder extends Hook
      * @param int                   $priority
      * @param int                   $accepted_args
      */
-    protected function addAction($name, $callback, $priority, $accepted_args)
+    protected function addAction($name, $callback, int $priority, $accepted_args)
     {
-        add_action($name, $callback, $priority, $accepted_args);
+        add_filter($name, $callback, $priority, $accepted_args);
     }
 }
