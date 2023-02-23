@@ -30,22 +30,22 @@
   "require": {
     "php": "^8.0",
     "composer/installers": "^1.9",
-    "laravel/framework": "^9.6",
-    "laravel/tinker": "^2.7",
-    "laravel/ui": "^3.4",
+    "laravel/framework": "^10.1",
+    "laravel/tinker": "^2.8",
     "league/fractal": "^0.20",
     "paragonie/sodium_compat": "^1.17",
     "predis/predis": "^1.1",
     "symfony/property-access": "^6.0",
     "themosis/composer-exclude-files": "^1.0",
-    "twig/twig": " ^3.1"
+    "twig/twig": " ^3.5"
   },
   "require-dev": {
     "ext-pdo": "*",
     "beyondcode/laravel-dump-server": "^1.8",
-    "friendsofphp/php-cs-fixer": "^3.8",
-    "johnpbloch/wordpress-core": "^5.9",
-    "phpunit/phpunit": "^9.5"
+    "friendsofphp/php-cs-fixer": "^3.9",
+    "johnpbloch/wordpress-core": "^6.1",
+    "orchestra/testbench": "^8.0",
+    "phpunit/phpunit": "^10.0"
   },
   "scripts": {
     "test": "XDEBUG_MODE=coverage phpunit",

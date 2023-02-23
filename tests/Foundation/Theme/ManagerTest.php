@@ -3,10 +3,8 @@
 namespace Themosis\Tests\Foundation\Theme;
 
 use Composer\Autoload\ClassLoader;
-use Illuminate\Filesystem\FilesystemServiceProvider;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Factory;
-use Illuminate\View\ViewServiceProvider;
 use Theme\Models\FakeModel;
 use Theme\ThemeHelper;
 use Themosis\Asset\AssetException;
@@ -29,9 +27,6 @@ class ManagerTest extends TestCase
         parent::setUp();
 
         $this->app->make('config')->set('view.paths', []);
-
-        $this->app->register(FilesystemServiceProvider::class);
-        $this->app->register(ViewServiceProvider::class);
 
         $manager = new Manager($this->app, new ClassLoader(), $this->app['config'], new Filter($this->app));
         $manager->load(WP_CONTENT_DIR . '/themes/themosis-fake-theme');
@@ -166,7 +161,7 @@ class ManagerTest extends TestCase
         $factory = $this->app->make('view');
 
         $this->assertEquals(
-            $this->app->basePath('tests/application/public/content/themes/themosis-fake-theme/views/main.blade.php'),
+            $this->app->basePath('public/content/themes/themosis-fake-theme/views/main.blade.php'),
             $factory->getFinder()->find('main'),
         );
     }
