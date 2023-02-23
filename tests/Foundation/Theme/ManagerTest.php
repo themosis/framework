@@ -2,7 +2,6 @@
 
 namespace Themosis\Tests\Foundation\Theme;
 
-use Composer\Autoload\ClassLoader;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Factory;
 use Theme\Models\FakeModel;
@@ -12,6 +11,7 @@ use Themosis\Asset\AssetFileInterface;
 use Themosis\Asset\AssetServiceProvider;
 use Themosis\Asset\Finder;
 use Themosis\Foundation\Theme\Manager;
+use Themosis\Foundation\Theme\ThemeServiceProvider;
 use Themosis\Hook\Filter;
 use Themosis\Tests\Installers\WordPressConfiguration;
 use Themosis\Tests\TestCase;
@@ -22,13 +22,19 @@ class ManagerTest extends TestCase
 
     private WordPressConfiguration $configuration;
 
+    protected function getPackageProviders($app): array
+    {
+        return [
+            ThemeServiceProvider::class,
+            AssetServiceProvider::class,
+        ];
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->app->make('config')->set('view.paths', []);
-
-        $manager = new Manager($this->app, new ClassLoader(), $this->app['config'], new Filter($this->app));
+        $manager = app('themosis.theme');
         $manager->load(WP_CONTENT_DIR . '/themes/themosis-fake-theme');
 
         $this->manager = $manager;
@@ -170,7 +176,6 @@ class ManagerTest extends TestCase
     public function it_can_locate_theme_assets(): void
     {
         $this->app['config']->set('assets.paths', []);
-        $this->app->register(AssetServiceProvider::class);
 
         $assets = [
             $this->manager->getPath('dist') => $this->manager->getUrl('dist'),
