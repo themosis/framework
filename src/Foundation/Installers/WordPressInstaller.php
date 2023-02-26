@@ -1,6 +1,6 @@
 <?php
 
-namespace Themosis\Tests\Installers;
+namespace Themosis\Foundation\Installers;
 
 class WordPressInstaller
 {
@@ -57,7 +57,7 @@ class WordPressInstaller
         /**
          * Paths.
          */
-        define('ABSPATH', __DIR__ . '/../../vendor/johnpbloch/wordpress-core/');
+        define('ABSPATH', realpath(THEMOSIS_ROOT . '/../../vendor/johnpbloch/wordpress-core') . DS);
         define('CONTENT_DIR', 'content');
         define('WP_CONTENT_DIR', realpath(THEMOSIS_ROOT . DS . THEMOSIS_PUBLIC_DIR . DS . CONTENT_DIR));
 
@@ -101,11 +101,11 @@ class WordPressInstaller
     {
         $table_prefix = $this->wordPressConfiguration->tablePrefix();
 
-        if (file_exists($wpSettings = realpath(__DIR__ . '/../../vendor/johnpbloch/wordpress-core/wp-settings.php'))) {
+        if (file_exists($wpSettings = realpath(THEMOSIS_ROOT . '/../../vendor/johnpbloch/wordpress-core/wp-settings.php'))) {
             require $wpSettings;
         }
 
-        if (file_exists($wpUpgrade = realpath(__DIR__ . '/../../vendor/johnpbloch/wordpress-core/wp-admin/includes/upgrade.php'))) {
+        if (file_exists($wpUpgrade = realpath(THEMOSIS_ROOT . '/../../vendor/johnpbloch/wordpress-core/wp-admin/includes/upgrade.php'))) {
             require $wpUpgrade;
         }
     }

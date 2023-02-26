@@ -65,6 +65,11 @@
       "laravel/framework": [
         "src/Illuminate/Foundation/helpers.php"
       ]
+    },
+    "laravel": {
+      "providers": [
+        "Themosis\\Foundation\\Providers\\FoundationServiceProvider"
+      ]
     }
   }
 }

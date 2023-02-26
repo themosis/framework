@@ -2,29 +2,28 @@
 
 namespace Themosis\Tests;
 
-use Themosis\Tests\Installers\WordPressConfiguration;
-use Themosis\Tests\Installers\WordPressInstaller;
+use Orchestra\Testbench\TestCase as BaseTestCase;
+use Themosis\Foundation\Installers\WordPressConfiguration;
 
-class TestCase extends \Orchestra\Testbench\TestCase
+class TestCase extends BaseTestCase
 {
-    protected function setUp(): void
+    protected function defineEnvironment($app): void
     {
-        parent::setUp();
+        $wordpressConfiguration = WordPressConfiguration::make();
 
-        $this->app->bind(WordPressConfiguration::class, function () {
-            return WordPressInstaller::make()->configuration();
-        });
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        WordPressInstaller::make()->refresh();
+        $app['config']->set('database.default', 'themosis');
+        $app['config']->set('database.connections.themosis', [
+            'driver' => 'mysql',
+            'database' => $wordpressConfiguration->databaseName(),
+            'host' => $wordpressConfiguration->databaseHost(),
+            'username' => $wordpressConfiguration->databaseUser(),
+            'password' => $wordpressConfiguration->databasePassword(),
+            'prefix' => $wordpressConfiguration->tablePrefix(),
+        ]);
     }
 
     public static function applicationBasePath(): string
     {
-        return __DIR__ . '/application';
+        return THEMOSIS_ROOT;
     }
 }

@@ -7,6 +7,7 @@ use PhpCsFixer\Finder;
  */
 $finder = Finder::create()
     ->in([
+        'database',
         'src',
         'tests'
     ])

@@ -5,7 +5,7 @@ namespace Themosis\Foundation\Support;
 trait WordPressFileHeaders
 {
     /**
-     * Return the file headers.
+     * Return the headers of a WordPress file.
      */
     public function headers(string $path, array $headers): array
     {

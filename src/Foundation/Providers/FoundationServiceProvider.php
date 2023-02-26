@@ -3,11 +3,12 @@
 namespace Themosis\Foundation\Providers;
 
 use Illuminate\Support\AggregateServiceProvider;
-use Themosis\Foundation\Theme\ThemeServiceProvider;
+use Themosis\Asset\AssetServiceProvider;
 
-class CoreServiceProvider extends AggregateServiceProvider
+class FoundationServiceProvider extends AggregateServiceProvider
 {
     protected $providers = [
+        AssetServiceProvider::class,
         ThemeServiceProvider::class,
     ];
 }

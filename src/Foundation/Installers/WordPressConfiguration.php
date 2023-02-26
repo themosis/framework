@@ -1,6 +1,6 @@
 <?php
 
-namespace Themosis\Tests\Installers;
+namespace Themosis\Foundation\Installers;
 
 class WordPressConfiguration
 {
@@ -45,7 +45,7 @@ class WordPressConfiguration
         $self->blogTitle = 'Themosis Tests';
         $self->username = 'themosis';
         $self->email = 'fake@themosis.com';
-        $self->siteUrl = 'https://themosis.test';
+        $self->siteUrl = 'https://themosis.test/cms';
         $self->homeUrl = 'https://themosis.test';
         $self->defaultTheme = 'themosis-fake-theme';
 

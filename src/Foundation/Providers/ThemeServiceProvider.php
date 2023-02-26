@@ -1,9 +1,10 @@
 <?php
 
-namespace Themosis\Foundation\Theme;
+namespace Themosis\Foundation\Providers;
 
 use Composer\Autoload\ClassLoader;
 use Illuminate\Support\ServiceProvider;
+use Themosis\Foundation\Theme\Manager;
 use Themosis\Hook\Filter;
 
 class ThemeServiceProvider extends ServiceProvider

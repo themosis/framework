@@ -10,10 +10,10 @@ use Themosis\Asset\AssetException;
 use Themosis\Asset\AssetFileInterface;
 use Themosis\Asset\AssetServiceProvider;
 use Themosis\Asset\Finder;
+use Themosis\Foundation\Installers\WordPressConfiguration;
+use Themosis\Foundation\Providers\ThemeServiceProvider;
 use Themosis\Foundation\Theme\Manager;
-use Themosis\Foundation\Theme\ThemeServiceProvider;
 use Themosis\Hook\Filter;
-use Themosis\Tests\Installers\WordPressConfiguration;
 use Themosis\Tests\TestCase;
 
 class ManagerTest extends TestCase
@@ -39,7 +39,7 @@ class ManagerTest extends TestCase
 
         $this->manager = $manager;
 
-        $this->configuration = $this->app->make(WordPressConfiguration::class);
+        $this->configuration = WordPressConfiguration::make();
     }
 
     /** @test */
