@@ -420,14 +420,12 @@ class Application extends Container implements
         $this->instance('path.lang', $this->langPath());
         // Web root
         $this->instance('path.web', $this->webPath());
-        // Public root
-        $this->instance('path.public', $this->publicPath());
         // Root
         $this->instance('path.root', $this->rootPath());
         // Config
         $this->instance('path.config', $this->configPath());
-        // Public
-        $this->instance('path.public', $this->webPath());
+        // Public root
+        $this->instance('path.public', $this->publicPath());
         // Storage
         $this->instance('path.storage', $this->storagePath());
         // Database
@@ -549,7 +547,7 @@ class Application extends Container implements
     /**
      * Get the path to the public directory.
      *
-     * @param string $path
+     * @param  string  $path
      * @return string
      */
     public function publicPath($path = '')
@@ -646,9 +644,9 @@ class Application extends Container implements
      *
      * @param string $path
      *
-     * @return string
      * @throws \Illuminate\Container\EntryNotFoundException
      *
+     * @return string
      */
     public function wordpressPath($path = '')
     {
@@ -758,15 +756,15 @@ class Application extends Container implements
     /**
      * Determine if the application is currently down for maintenance.
      *
-     * @return bool
      * @throws \Illuminate\Container\EntryNotFoundException
      *
+     * @return bool
      */
     public function isDownForMaintenance()
     {
         $filePath = $this->wordpressPath('.maintenance');
 
-        if (function_exists('wp_installing') && !file_exists($filePath)) {
+        if (function_exists('wp_installing') && ! file_exists($filePath)) {
             return \wp_installing();
         }
 
@@ -792,7 +790,7 @@ class Application extends Container implements
     /**
      * Register a deferred provider and service.
      *
-     * @param string $provider
+     * @param string      $provider
      * @param string|null $service
      */
     public function registerDeferredProvider($provider, $service = null)
@@ -803,7 +801,7 @@ class Application extends Container implements
 
         $this->register($instance = new $provider($this));
 
-        if (!$this->booted) {
+        if (! $this->booted) {
             $this->booting(function () use ($instance) {
                 $this->bootProvider($instance);
             });
@@ -997,13 +995,13 @@ class Application extends Container implements
      * and do its best to convert them to a Response instance.
      *
      * @param SymfonyRequest $request A Request instance
-     * @param int $type The type of the request
+     * @param int            $type    The type of the request
      *                                (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
-     * @param bool $catch Whether to catch exceptions or not
+     * @param bool           $catch   Whether to catch exceptions or not
      *
-     * @return Response A Response instance
      * @throws \Exception When an Exception occurs during processing
      *
+     * @return Response A Response instance
      */
     public function handle(\Symfony\Component\HttpFoundation\Request $request, int $type = HttpKernelInterface::MAIN_REQUEST, bool $catch = true): Response
     {
@@ -1014,14 +1012,14 @@ class Application extends Container implements
      * Register a service provider with the application.
      *
      * @param \Illuminate\Support\ServiceProvider|string $provider
-     * @param array $options
-     * @param bool $force
+     * @param array                                      $options
+     * @param bool                                       $force
      *
      * @return \Illuminate\Support\ServiceProvider
      */
     public function register($provider, $options = [], $force = false)
     {
-        if (($registered = $this->getProvider($provider)) && !$force) {
+        if (($registered = $this->getProvider($provider)) && ! $force) {
             return $registered;
         }
 
@@ -1173,17 +1171,17 @@ class Application extends Container implements
      * (Overriding Container::make)
      *
      * @param string $abstract
-     * @param array $parameters
+     * @param array  $parameters
      *
-     * @return mixed
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      *
+     * @return mixed
      */
     public function make($abstract, array $parameters = [])
     {
         $abstract = $this->getAlias($abstract);
 
-        if (isset($this->deferredServices[$abstract]) && !isset($this->instances[$abstract])) {
+        if (isset($this->deferredServices[$abstract]) && ! isset($this->instances[$abstract])) {
             $this->loadDeferredProvider($abstract);
         }
 
@@ -1212,7 +1210,7 @@ class Application extends Container implements
      */
     public function loadDeferredProvider($service)
     {
-        if (!isset($this->deferredServices[$service])) {
+        if (! isset($this->deferredServices[$service])) {
             return;
         }
 
@@ -1221,7 +1219,7 @@ class Application extends Container implements
         // If the service provider has not already been loaded and registered we can
         // register it with the application and remove the service from this list
         // of deferred services, since it will already be loaded on subsequent.
-        if (!isset($this->loadedProviders[$provider])) {
+        if (! isset($this->loadedProviders[$provider])) {
             $this->registerDeferredProvider($provider, $service);
         }
     }
@@ -1344,13 +1342,13 @@ class Application extends Container implements
         // Build a "Hookable" instance.
         // Hookable instances must extend the "Hookable" class.
         $instance = new $hook($this);
-        $hooks = (array)$instance->hook;
+        $hooks = (array) $instance->hook;
 
-        if (!method_exists($instance, 'register')) {
+        if (! method_exists($instance, 'register')) {
             return;
         }
 
-        if (!empty($hooks)) {
+        if (! empty($hooks)) {
             $this['action']->add($hooks, [$instance, 'register'], $instance->priority);
         } else {
             $instance->register();
@@ -1360,7 +1358,7 @@ class Application extends Container implements
     /**
      * Load current active theme.
      *
-     * @param string $dirPath The theme directory path.
+     * @param string $dirPath    The theme directory path.
      * @param string $configPath The theme relative configuration folder path.
      *
      * @return ThemeManager
@@ -1379,7 +1377,7 @@ class Application extends Container implements
      * Load configuration files based on given path.
      *
      * @param Repository $config
-     * @param string $path The configuration files folder path.
+     * @param string     $path   The configuration files folder path.
      *
      * @return Application
      */
@@ -1419,7 +1417,7 @@ class Application extends Container implements
      * Get configuration file nesting path.
      *
      * @param SplFileInfo $file
-     * @param string $path
+     * @param string      $path
      *
      * @return string
      */
@@ -1437,9 +1435,9 @@ class Application extends Container implements
     /**
      * Throw an HttpException with the given data.
      *
-     * @param int $code
+     * @param int    $code
      * @param string $message
-     * @param array $headers
+     * @param array  $headers
      */
     public function abort($code, $message = '', array $headers = [])
     {
@@ -1479,7 +1477,7 @@ class Application extends Container implements
      * Abstract the implementation from the user for easy
      * theme integration.
      *
-     * @param string $kernel Application kernel class name.
+     * @param string                                    $kernel  Application kernel class name.
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return $this
@@ -1500,7 +1498,7 @@ class Application extends Container implements
             fastcgi_finish_request();
         } elseif (function_exists('litespeed_finish_request')) {
             litespeed_finish_request();
-        } elseif (!in_array(PHP_SAPI, ['cli', 'phpdbg'], true)) {
+        } elseif (! in_array(PHP_SAPI, ['cli', 'phpdbg'], true)) {
             Response::closeOutputBuffers(0, true);
         }
 
@@ -1513,14 +1511,14 @@ class Application extends Container implements
      * Handle WordPress administration incoming request.
      * Only send response headers.
      *
-     * @param string $kernel
+     * @param string                                    $kernel
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return $this;
      */
     public function manageAdmin(string $kernel, $request)
     {
-        if (!$this->isWordPressAdmin() && !$this->has('action')) {
+        if (! $this->isWordPressAdmin() && ! $this->has('action')) {
             return $this;
         }
 
@@ -1570,7 +1568,7 @@ class Application extends Container implements
     /**
      * Register a callback to run before a bootstrapper.
      *
-     * @param string $bootstrapper
+     * @param string  $bootstrapper
      * @param Closure $callback
      */
     public function beforeBootstrapping($bootstrapper, Closure $callback)
@@ -1581,7 +1579,7 @@ class Application extends Container implements
     /**
      * Register a callback to run after a bootstrapper.
      *
-     * @param string $bootstrapper
+     * @param string  $bootstrapper
      * @param Closure $callback
      */
     public function afterBootstrapping($bootstrapper, Closure $callback)
@@ -1623,6 +1621,7 @@ class Application extends Container implements
         return $this->getLocale() == $locale;
     }
 
+
     /**
      * Get the current application locale.
      *
@@ -1646,7 +1645,7 @@ class Application extends Container implements
     /**
      * Set the current application fallback locale.
      *
-     * @param string $fallbackLocale
+     * @param  string  $fallbackLocale
      * @return void
      */
     public function setFallbackLocale($fallbackLocale)
@@ -1660,20 +1659,20 @@ class Application extends Container implements
     /**
      * Return the application namespace.
      *
-     * @return string
      * @throws \RuntimeException
      *
+     * @return string
      */
     public function getNamespace()
     {
-        if (!is_null($this->namespace)) {
+        if (! is_null($this->namespace)) {
             return $this->namespace;
         }
 
         $composer = json_decode(file_get_contents(base_path('composer.json')), true);
 
-        foreach ((array)data_get($composer, 'autoload.psr-4') as $namespace => $path) {
-            foreach ((array)$path as $pathChoice) {
+        foreach ((array) data_get($composer, 'autoload.psr-4') as $namespace => $path) {
+            foreach ((array) $path as $pathChoice) {
                 if (realpath(app_path()) == realpath(base_path($pathChoice))) {
                     return $this->namespace = $namespace;
                 }
@@ -1762,7 +1761,7 @@ class Application extends Container implements
      * Return a Javascript Global variable.
      *
      * @param string $name
-     * @param array $data
+     * @param array  $data
      *
      * @return string
      */
@@ -1772,7 +1771,7 @@ class Application extends Container implements
         $output .= "/* <![CDATA[ */\n\r";
         $output .= "var {$name} = {\n\r";
 
-        if (!empty($data) && is_array($data)) {
+        if (! empty($data) && is_array($data)) {
             foreach ($data as $key => $value) {
                 $output .= $key . ': ' . json_encode($value) . ",\n\r";
             }
