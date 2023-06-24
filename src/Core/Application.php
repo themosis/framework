@@ -35,14 +35,14 @@ class Application extends Container implements ApplicationContract, CachesConfig
     /**
      * Themosis framework version.
      */
-    public const THEMOSIS_VERSION = '3.1.0';
+    public const THEMOSIS_VERSION = '4.0.0';
 
     /**
      * Laravel version.
      *
      * @var string
      */
-    public const VERSION = '8.0.0';
+    public const VERSION = '8.1.0';
 
     /**
      * Application textdomain.
