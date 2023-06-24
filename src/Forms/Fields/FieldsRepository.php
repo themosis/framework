@@ -23,7 +23,7 @@ class FieldsRepository implements FieldsRepositoryInterface
     protected $groups = [];
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function all(): array
     {
@@ -32,11 +32,6 @@ class FieldsRepository implements FieldsRepositoryInterface
 
     /**
      * Add a field to the form instance.
-     *
-     * @param FieldTypeInterface $field
-     * @param SectionInterface   $group
-     *
-     * @return FieldsRepositoryInterface
      */
     public function addField(FieldTypeInterface $field, SectionInterface $group): FieldsRepositoryInterface
     {
@@ -56,8 +51,6 @@ class FieldsRepository implements FieldsRepositoryInterface
      * Return the defined field instance based on its basename property.
      * If not set, return all fields from the "default" group.
      *
-     * @param string $name
-     * @param string $group
      *
      * @return FieldTypeInterface|FieldTypeInterface[]|array
      */
@@ -77,7 +70,6 @@ class FieldsRepository implements FieldsRepositoryInterface
      * Retrieve a list of attached fields based
      * on provided group name.
      *
-     * @param string $group
      *
      * @return SectionInterface|array
      */
@@ -88,8 +80,6 @@ class FieldsRepository implements FieldsRepositoryInterface
 
     /**
      * Return a list of registered groups within the form.
-     *
-     * @return array
      */
     public function getGroups(): array
     {
@@ -98,10 +88,6 @@ class FieldsRepository implements FieldsRepositoryInterface
 
     /**
      * Retrieve a field by its name.
-     *
-     * @param string $name
-     *
-     * @return FieldTypeInterface | null
      */
     public function getFieldByName(string $name): ?FieldTypeInterface
     {
@@ -110,10 +96,6 @@ class FieldsRepository implements FieldsRepositoryInterface
 
     /**
      * Check if form contains provided group instance (section).
-     *
-     * @param string $name
-     *
-     * @return bool
      */
     public function hasGroup(string $name): bool
     {
@@ -122,10 +104,6 @@ class FieldsRepository implements FieldsRepositoryInterface
 
     /**
      * Return the registered group/section instance.
-     *
-     * @param string $name
-     *
-     * @return SectionInterface
      */
     public function getGroup(string $name): SectionInterface
     {

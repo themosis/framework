@@ -15,7 +15,6 @@ trait CallbackHandler
     /**
      * Set the instance container.
      *
-     * @param Container $container
      *
      * @return $this
      */
@@ -29,9 +28,7 @@ trait CallbackHandler
     /**
      * Handle the callback to execute.
      *
-     * @param string|array|callable $callback
-     * @param array                 $args
-     *
+     * @param  string|array|callable  $callback
      * @return mixed|string
      */
     protected function handleCallback($callback, array $args = [], bool $asArray = true)
@@ -65,15 +62,12 @@ trait CallbackHandler
     /**
      * Handle a class callback using "ClassName@method" syntax
      *
-     * @param string $callback
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     *
-     * @return array
      */
     protected function handleClassCallback(string $callback): array
     {
-        list($class, $method) = $this->parseCallback($callback);
+        [$class, $method] = $this->parseCallback($callback);
         $instance = $this->container->make($class);
 
         return [$instance, $method];
@@ -81,10 +75,6 @@ trait CallbackHandler
 
     /**
      * Return an array with the class name and its method.
-     *
-     * @param string $callback
-     *
-     * @return array
      */
     protected function parseCallback(string $callback): array
     {

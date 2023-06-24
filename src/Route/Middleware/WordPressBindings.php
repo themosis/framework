@@ -13,8 +13,6 @@ class WordPressBindings
 
     /**
      * Create a new WordPressBindings substitutor.
-     *
-     * @param Registrar $router
      */
     public function __construct(Registrar $router)
     {
@@ -24,8 +22,6 @@ class WordPressBindings
     /**
      * Handle an incoming request.
      *
-     * @param $request
-     * @param \Closure $next
      *
      * @return mixed
      */

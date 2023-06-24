@@ -82,8 +82,6 @@ class Asset implements AssetInterface
 
     /**
      * Return the asset handle.
-     *
-     * @return string
      */
     public function getHandle(): string
     {
@@ -92,10 +90,6 @@ class Asset implements AssetInterface
 
     /**
      * Set the asset handle.
-     *
-     * @param string $handle
-     *
-     * @return AssetInterface
      */
     public function setHandle(string $handle): AssetInterface
     {
@@ -106,8 +100,6 @@ class Asset implements AssetInterface
 
     /**
      * Return the asset file instance.
-     *
-     * @return AssetFileInterface
      */
     public function file(): AssetFileInterface
     {
@@ -116,8 +108,6 @@ class Asset implements AssetInterface
 
     /**
      * Return the asset path.
-     *
-     * @return string
      */
     public function getPath(): string
     {
@@ -126,8 +116,6 @@ class Asset implements AssetInterface
 
     /**
      * Return the asset URL.
-     *
-     * @return string
      */
     public function getUrl(): string
     {
@@ -136,10 +124,6 @@ class Asset implements AssetInterface
 
     /**
      * Set the asset dependencies.
-     *
-     * @param array $dependencies
-     *
-     * @return AssetInterface
      */
     public function setDependencies(array $dependencies): AssetInterface
     {
@@ -161,9 +145,7 @@ class Asset implements AssetInterface
     /**
      * Set the asset version.
      *
-     * @param bool|null|string $version
-     *
-     * @return AssetInterface
+     * @param  bool|null|string  $version
      */
     public function setVersion($version): AssetInterface
     {
@@ -185,10 +167,6 @@ class Asset implements AssetInterface
     /**
      * Set the asset type.
      * Override the auto-discovered type if any.
-     *
-     * @param string $type
-     *
-     * @return AssetInterface
      */
     public function setType(string $type): AssetInterface
     {
@@ -222,9 +200,7 @@ class Asset implements AssetInterface
     /**
      * Set the asset argument.
      *
-     * @param bool|string $arg
-     *
-     * @return AssetInterface
+     * @param  bool|string  $arg
      */
     public function setArgument($arg = null): AssetInterface
     {
@@ -250,9 +226,7 @@ class Asset implements AssetInterface
     /**
      * Load the asset on the defined area. Default to front-end.
      *
-     * @param string|array $locations
-     *
-     * @return AssetInterface
+     * @param  string|array  $locations
      */
     public function to($locations = 'front'): AssetInterface
     {
@@ -273,8 +247,6 @@ class Asset implements AssetInterface
 
     /**
      * Register the asset with appropriate action hook.
-     *
-     * @param string $hook
      */
     protected function install(string $hook)
     {
@@ -345,11 +317,6 @@ class Asset implements AssetInterface
 
     /**
      * Localize the asset.
-     *
-     * @param string $name
-     * @param array  $data
-     *
-     * @return AssetInterface
      */
     public function localize(string $name, array $data): AssetInterface
     {
@@ -360,11 +327,6 @@ class Asset implements AssetInterface
 
     /**
      * Add asset inline code.
-     *
-     * @param string $code
-     * @param bool   $after
-     *
-     * @return AssetInterface
      */
     public function inline(string $code, bool $after = true): AssetInterface
     {
@@ -379,11 +341,8 @@ class Asset implements AssetInterface
     /**
      * Add asset attributes.
      *
-     * @param array $attributes
      *
      * @throws AssetException
-     *
-     * @return AssetInterface
      */
     public function attributes(array $attributes): AssetInterface
     {
@@ -400,7 +359,7 @@ class Asset implements AssetInterface
                 return $tag;
             }
 
-            return preg_replace('/(src|href)(.+>)/', $attributes . ' $1$2', $tag);
+            return preg_replace('/(src|href)(.+>)/', $attributes.' $1$2', $tag);
         });
 
         return $this;

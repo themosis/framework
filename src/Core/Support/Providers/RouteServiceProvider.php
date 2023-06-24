@@ -97,12 +97,11 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Pass dynamic methods onto the router instance.
      *
-     * @param string $method
-     * @param array  $parameters
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return mixed
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     *
-     * @return mixed
      */
     public function __call($method, $parameters)
     {
@@ -116,7 +115,6 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Register the callback that will be used to load the application's routes.
      *
-     * @param Closure $routesCallback
      *
      * @return $this
      */

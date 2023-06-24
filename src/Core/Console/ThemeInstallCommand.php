@@ -61,13 +61,13 @@ class ThemeInstallCommand extends Command
             $this->setAsDefaultTheme($theme);
         }
 
-        $this->info('Theme [' . $theme . '] installed.');
+        $this->info('Theme ['.$theme.'] installed.');
     }
 
     /**
      * Install theme.
      *
-     * @param string $name The theme name from user
+     * @param  string  $name The theme name from user
      */
     protected function installTheme(string $name)
     {
@@ -91,8 +91,6 @@ class ThemeInstallCommand extends Command
 
     /**
      * Setup basic theme information.
-     *
-     * @param string $name
      */
     protected function setupTheme(string $name)
     {
@@ -117,13 +115,11 @@ Domain Path: languages
 */
 STYLES;
 
-        $this->files->put(themes_path($name . '/style.css'), $content);
+        $this->files->put(themes_path($name.'/style.css'), $content);
     }
 
     /**
      * Set default theme constant in main "wordpress.php" config file.
-     *
-     * @param string $name
      */
     protected function setAsDefaultTheme(string $name)
     {

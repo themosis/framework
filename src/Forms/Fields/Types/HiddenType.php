@@ -31,9 +31,7 @@ class HiddenType extends TextType
      * Handle hidden field post meta registration.
      * We do not allow registration as this is a read-only field.
      *
-     * @param string $value
-     * @param int    $post_id
-     *
+     * @param  string  $value
      * @return null|void
      */
     public function metaboxSave($value, int $post_id)
@@ -44,50 +42,46 @@ class HiddenType extends TextType
     /**
      * Handle field term meta registration.
      *
-     * @param string $value
-     * @param int    $term_id
+     * @param  string  $value
      *
      * @throws NotSupportedFieldException
      */
     public function termSave($value, int $term_id)
     {
-        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on term meta.');
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on term meta.');
     }
 
     /**
      * Handle field term meta initial value.
      *
-     * @param int $term_id
      *
      * @throws NotSupportedFieldException
      */
     public function termGet(int $term_id)
     {
-        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on term meta.');
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on term meta.');
     }
 
     /**
      * Handle field user meta initial value.
      *
-     * @param int $user_id
      *
      * @throws NotSupportedFieldException
      */
     public function userGet(int $user_id)
     {
-        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on user meta.');
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on user meta.');
     }
 
     /**
      * Handle field user meta registration.
      *
-     * @param string $value
-     * @param int    $user_id
+     * @param  string  $value
      *
      * @throws NotSupportedFieldException
      */
     public function userSave($value, int $user_id)
     {
-        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on user meta.');
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on user meta.');
     }
 }

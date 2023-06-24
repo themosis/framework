@@ -35,8 +35,6 @@ class TaxonomyFieldFactory
     /**
      * Create a new TaxonomyField instance.
      *
-     * @param TaxonomyInterface $taxonomy
-     * @param array             $options
      *
      * @return TaxonomyField
      */

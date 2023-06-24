@@ -22,8 +22,6 @@ abstract class Hook implements IHook
 
     /**
      * Hook constructor.
-     *
-     * @param Application $container
      */
     public function __construct(Application $container)
     {
@@ -34,14 +32,13 @@ abstract class Hook implements IHook
      * Wrapper of the "add_action" or "add_filter" functions. Allows
      * a developer to specify a controller class or closure.
      *
-     * @param string|array          $hooks         The action hook name.
-     * @param \Closure|string|array $callback      The action hook callback instance.
-     * @param int                   $priority      The priority order for this action.
-     * @param int                   $accepted_args Default number of accepted arguments.
+     * @param  string|array  $hooks         The action hook name.
+     * @param  \Closure|string|array  $callback      The action hook callback instance.
+     * @param  int  $priority      The priority order for this action.
+     * @param  int  $accepted_args Default number of accepted arguments.
+     * @return $this
      *
      * @throws BadMethodCallException
-     *
-     * @return $this
      */
     public function add($hooks, $callback, $priority = 10, $accepted_args = 3)
     {
@@ -55,8 +52,7 @@ abstract class Hook implements IHook
     /**
      * Check if a registered hook exists.
      *
-     * @param string $hook
-     *
+     * @param  string  $hook
      * @return bool
      */
     public function exists($hook)
@@ -67,10 +63,9 @@ abstract class Hook implements IHook
     /**
      * Remove a registered action or filter.
      *
-     * @param string          $hook
-     * @param \Closure|string $callback
-     * @param int             $priority
-     *
+     * @param  string  $hook
+     * @param  \Closure|string  $callback
+     * @param  int  $priority
      * @return mixed The Hook instance or false.
      */
     public function remove($hook, $callback = null, $priority = 10)
@@ -82,7 +77,7 @@ abstract class Hook implements IHook
                 return false;
             }
 
-            list($callback, $priority, $accepted_args) = $callback;
+            [$callback, $priority, $accepted_args] = $callback;
 
             // Unset the hook.
             unset($this->hooks[$hook]);
@@ -96,8 +91,7 @@ abstract class Hook implements IHook
     /**
      * Return the callback registered with the hook.
      *
-     * @param string $hook The hook name.
-     *
+     * @param  string  $hook The hook name.
      * @return array|null
      */
     public function getCallback($hook)
@@ -112,9 +106,9 @@ abstract class Hook implements IHook
     /**
      * Remove hook (filter and or action).
      *
-     * @param string                $hook
-     * @param \Closure|string|array $callback
-     * @param int                   $priority
+     * @param  string  $hook
+     * @param  \Closure|string|array  $callback
+     * @param  int  $priority
      */
     protected function removeAction($hook, $callback, $priority)
     {
@@ -124,14 +118,13 @@ abstract class Hook implements IHook
     /**
      * Add an event for the specified hook.
      *
-     * @param string                $hook          The hook name.
-     * @param \Closure|string|array $callback      The hook callback instance.
-     * @param int                   $priority      The priority order.
-     * @param int                   $accepted_args The default number of accepted arguments.
+     * @param  string  $hook          The hook name.
+     * @param  \Closure|string|array  $callback      The hook callback instance.
+     * @param  int  $priority      The priority order.
+     * @param  int  $accepted_args The default number of accepted arguments.
+     * @return \Closure|array|string
      *
      * @throws BadMethodCallException
-     *
-     * @return \Closure|array|string
      */
     protected function addHookEvent($hook, $callback, $priority, $accepted_args)
     {
@@ -154,14 +147,13 @@ abstract class Hook implements IHook
     /**
      * Prepare the hook callback for use in a class method.
      *
-     * @param string $hook
-     * @param string $class
-     * @param int    $priority
-     * @param int    $accepted_args
+     * @param  string  $hook
+     * @param  string  $class
+     * @param  int  $priority
+     * @param  int  $accepted_args
+     * @return array
      *
      * @throws BadMethodCallException
-     *
-     * @return array
      */
     protected function addClassEvent($hook, $class, $priority, $accepted_args)
     {
@@ -175,16 +167,15 @@ abstract class Hook implements IHook
     /**
      * Build the array in order to call a class method.
      *
-     * @param string $class
-     * @param string $hook
+     * @param  string  $class
+     * @param  string  $hook
+     * @return array
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     *
-     * @return array
      */
     protected function buildClassEventCallback($class, $hook)
     {
-        list($class, $method) = $this->parseClassEvent($class, $hook);
+        [$class, $method] = $this->parseClassEvent($class, $hook);
 
         $instance = $this->container->make($class);
 
@@ -194,9 +185,8 @@ abstract class Hook implements IHook
     /**
      * Parse a class name and returns its name and its method.
      *
-     * @param string $class
-     * @param string $hook
-     *
+     * @param  string  $class
+     * @param  string  $hook
      * @return array
      */
     protected function parseClassEvent($class, $hook)
@@ -214,10 +204,10 @@ abstract class Hook implements IHook
     /**
      * Add an event for the specified hook.
      *
-     * @param string                $name
-     * @param \Closure|string|array $callback
-     * @param int                   $priority
-     * @param int                   $accepted_args
+     * @param  string  $name
+     * @param  \Closure|string|array  $callback
+     * @param  int  $priority
+     * @param  int  $accepted_args
      *
      * @throws BadMethodCallException
      */

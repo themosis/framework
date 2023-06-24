@@ -7,9 +7,6 @@ use Themosis\Forms\Contracts\FieldTypeInterface;
 
 class FieldTransformer extends TransformerAbstract
 {
-    /**
-     * @var array
-     */
     protected array $excludedOptions = [
         'attributes',
         'data',
@@ -29,7 +26,6 @@ class FieldTransformer extends TransformerAbstract
     /**
      * Transform single field.
      *
-     * @param FieldTypeInterface $field
      *
      * @return array
      */
@@ -62,7 +58,6 @@ class FieldTransformer extends TransformerAbstract
     /**
      * Return field options.
      *
-     * @param FieldTypeInterface $field
      *
      * @return array
      */

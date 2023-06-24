@@ -21,8 +21,6 @@ class QueueCommand implements ShouldQueue
     /**
      * QueueCommand constructor.
      * Create a new job instance.
-     *
-     * @param $data
      */
     public function __construct($data)
     {
@@ -31,8 +29,6 @@ class QueueCommand implements ShouldQueue
 
     /**
      * Handle the job.
-     *
-     * @param \Illuminate\Contracts\Console\Kernel $kernel
      */
     public function handle(\Illuminate\Contracts\Console\Kernel $kernel)
     {

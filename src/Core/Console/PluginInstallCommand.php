@@ -74,7 +74,6 @@ class PluginInstallCommand extends Command
     /**
      * Generate plugin headers.
      *
-     * @param string $name
      *
      * @return array
      */
@@ -101,8 +100,6 @@ class PluginInstallCommand extends Command
 
     /**
      * Install the plugin.
-     *
-     * @param string $name
      */
     protected function installPlugin(string $name)
     {
@@ -129,15 +126,12 @@ class PluginInstallCommand extends Command
 
     /**
      * Setup the plugin headers.
-     *
-     * @param string $name
-     * @param array  $headers
      */
     protected function setPluginHeaders(string $name, array $headers)
     {
         $this->info('Set plugin headers...');
 
-        $path = $this->path($name . '/plugin-name.php');
+        $path = $this->path($name.'/plugin-name.php');
         $handle = fopen($path, 'r');
         $content = [];
 
@@ -153,18 +147,16 @@ class PluginInstallCommand extends Command
     /**
      * Parse file header line.
      *
-     * @param string $line
-     * @param array  $headers
      *
      * @return string
      */
     protected function parseLine(string $line, array $headers)
     {
         foreach ($this->headers as $field => $regex) {
-            if (preg_match('/^[ \t\/*#@]*' . preg_quote($regex, '/') . ':(.*)$/mi', $line, $match)
+            if (preg_match('/^[ \t\/*#@]*'.preg_quote($regex, '/').':(.*)$/mi', $line, $match)
                 && $match[0]
                 && isset($headers[$field])) {
-                return preg_replace('/:\s?+.+\s?+/', ': ' . $headers[$field], $match[0]) . "\n";
+                return preg_replace('/:\s?+.+\s?+/', ': '.$headers[$field], $match[0])."\n";
             }
         }
 
@@ -173,20 +165,16 @@ class PluginInstallCommand extends Command
 
     /**
      * Set the plugin root file name.
-     *
-     * @param string $name
      */
     protected function setPluginRootFile(string $name)
     {
         $this->info('Set plugin root file...');
-        $this->files->move($this->path($name . '/plugin-name.php'), $this->path($name . '/' . $name . '.php'));
+        $this->files->move($this->path($name.'/plugin-name.php'), $this->path($name.'/'.$name.'.php'));
     }
 
     /**
      * Set the plugin configuration file.
      *
-     * @param string $name
-     * @param array  $headers
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
@@ -195,8 +183,8 @@ class PluginInstallCommand extends Command
         $this->info('Set plugin configuration...');
 
         $prefix = trim($headers['plugin_prefix'], '\/_-');
-        $from = $this->path($name . '/config/prefix_plugin.php');
-        $to = $this->path($name . '/config/' . $prefix . '_plugin.php');
+        $from = $this->path($name.'/config/prefix_plugin.php');
+        $to = $this->path($name.'/config/'.$prefix.'_plugin.php');
 
         $this->files->move($from, $to);
         $this->replaceFileContent($to, $headers);
@@ -205,16 +193,15 @@ class PluginInstallCommand extends Command
     /**
      * Set the plugin translation file.
      *
-     * @param string $name
-     * @param array  $headers
+     * @param  string  $name
      */
     protected function setTranslationFile($name, array $headers)
     {
         $this->info('Set plugin translation file...');
 
         $textdomain = trim($headers['text_domain'], '\/ _-');
-        $from = $this->path($name . '/languages/plugin-textdomain-en_US.po');
-        $to = $this->path($name . '/languages/' . $textdomain . '-en_US.po');
+        $from = $this->path($name.'/languages/plugin-textdomain-en_US.po');
+        $to = $this->path($name.'/languages/'.$textdomain.'-en_US.po');
 
         $this->files->move($from, $to);
     }
@@ -222,8 +209,6 @@ class PluginInstallCommand extends Command
     /**
      * Set the content of default route provider.
      *
-     * @param string $name
-     * @param array  $headers
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
@@ -232,7 +217,7 @@ class PluginInstallCommand extends Command
         $this->info('Set default route provider...');
 
         $this->replaceFileContent(
-            $this->path($name . '/resources/Providers/RouteServiceProvider.php'),
+            $this->path($name.'/resources/Providers/RouteServiceProvider.php'),
             $headers,
         );
     }
@@ -240,8 +225,7 @@ class PluginInstallCommand extends Command
     /**
      * Replace file content with given headers values.
      *
-     * @param string $path
-     * @param array  $headers
+     * @param  string  $path
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
@@ -262,25 +246,23 @@ class PluginInstallCommand extends Command
     /**
      * Return the default namespace: "Tld\Domain\Plugin"
      *
-     * @param string $default
      *
      * @return string
      */
     protected function getNamespace(string $default)
     {
-        return str_replace("/", "\\", trim($default, '\/'));
+        return str_replace('/', '\\', trim($default, '\/'));
     }
 
     /**
      * Return namespace for autoloading rule: "Tld\\Domain\\Plugin\\"
      *
-     * @param string $default
      *
      * @return string
      */
     protected function getAutoloadNamespace(string $default)
     {
-        return str_replace(["/", "\\"], ["\\", "\\\\"], trim($default, '\/')) . "\\\\";
+        return str_replace(['/', '\\'], ['\\', '\\\\'], trim($default, '\/')).'\\\\';
     }
 
     /**
@@ -298,7 +280,6 @@ class PluginInstallCommand extends Command
     /**
      * Parse the plugin name.
      *
-     * @param string $name
      *
      * @return string
      */
@@ -310,7 +291,6 @@ class PluginInstallCommand extends Command
     /**
      * Return the plugin path. Handle -mu case.
      *
-     * @param string $path
      *
      * @return string
      */

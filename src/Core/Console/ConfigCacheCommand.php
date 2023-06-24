@@ -48,7 +48,7 @@ class ConfigCacheCommand extends Command
 
         $this->files->put(
             $configPath,
-            '<?php return ' . var_export($config, true) . ';' . PHP_EOL,
+            '<?php return '.var_export($config, true).';'.PHP_EOL,
         );
 
         try {

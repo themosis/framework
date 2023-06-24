@@ -61,9 +61,7 @@ class MetaboxResource implements MetaboxResourceInterface
     /**
      * Set the metabox data source element.
      *
-     * @param mixed $source
-     *
-     * @return MetaboxResourceInterface
+     * @param  mixed  $source
      */
     public function setSource($source): MetaboxResourceInterface
     {
@@ -74,8 +72,6 @@ class MetaboxResource implements MetaboxResourceInterface
 
     /**
      * Return an array representation of the data source.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -84,8 +80,6 @@ class MetaboxResource implements MetaboxResourceInterface
 
     /**
      * Return a JSON representation of the data source.
-     *
-     * @return string
      */
     public function toJson(): string
     {

@@ -38,7 +38,6 @@ class AliasLoader
     /**
      * Get or create the alias loader singleton.
      *
-     * @param array $aliases
      *
      * @return static
      */
@@ -67,8 +66,6 @@ class AliasLoader
 
     /**
      * Set aliases.
-     *
-     * @param array $aliases
      */
     public function setAliases(array $aliases)
     {
@@ -98,8 +95,7 @@ class AliasLoader
     /**
      * Load a class alias if it is registered.
      *
-     * @param string $alias
-     *
+     * @param  string  $alias
      * @return bool|null
      */
     public function load($alias)
@@ -118,7 +114,7 @@ class AliasLoader
     /**
      * Load a real-time facade for the given alias.
      *
-     * @param string $alias
+     * @param  string  $alias
      */
     protected function loadFacade($alias)
     {
@@ -128,19 +124,18 @@ class AliasLoader
     /**
      * Ensure that the given alias has an existing real-time facade class.
      *
-     * @param string $alias
-     *
+     * @param  string  $alias
      * @return string
      */
     protected function ensureFacadeExists($alias)
     {
-        if (file_exists($path = storage_path('framework/cache/facade-' . sha1($alias) . '.php'))) {
+        if (file_exists($path = storage_path('framework/cache/facade-'.sha1($alias).'.php'))) {
             return $path;
         }
 
         file_put_contents($path, $this->formatFacadeStub(
             $alias,
-            file_get_contents(__DIR__ . '/stubs/facade.stub'),
+            file_get_contents(__DIR__.'/stubs/facade.stub'),
         ));
 
         return $path;
@@ -149,9 +144,8 @@ class AliasLoader
     /**
      * Format the facade stub with the proper namespace and class.
      *
-     * @param string $alias
-     * @param string $stub
-     *
+     * @param  string  $alias
+     * @param  string  $stub
      * @return string
      */
     protected function formatFacadeStub($alias, $stub)
@@ -172,8 +166,8 @@ class AliasLoader
     /**
      * Add an alias to the loader.
      *
-     * @param string $class
-     * @param string $alias
+     * @param  string  $class
+     * @param  string  $alias
      */
     public function alias($class, $alias)
     {
@@ -193,7 +187,7 @@ class AliasLoader
     /**
      * Set the registered state of the loader.
      *
-     * @param bool $value
+     * @param  bool  $value
      */
     public function setRegistered($value)
     {
@@ -203,17 +197,17 @@ class AliasLoader
     /**
      * Set the real-time facade namespace.
      *
-     * @param string $namespace
+     * @param  string  $namespace
      */
     public static function setFacadeNamespace($namespace)
     {
-        static::$facadeNamespace = rtrim($namespace, '\\') . '\\';
+        static::$facadeNamespace = rtrim($namespace, '\\').'\\';
     }
 
     /**
      * Set the value of the singleton loader.
      *
-     * @param \Themosis\Core\AliasLoader $loader
+     * @param  \Themosis\Core\AliasLoader  $loader
      */
     public static function setInstance($loader)
     {

@@ -11,8 +11,6 @@ class DiscoverEvents
     /**
      * Get all of the events and listeners by searching the given listener directory.
      *
-     * @param $listenerPath
-     * @param $basePath
      *
      * @return array
      */
@@ -29,8 +27,6 @@ class DiscoverEvents
     /**
      * Get all of the listeners and their corresponding events.
      *
-     * @param $listeners
-     * @param $basePath
      *
      * @return array
      */
@@ -54,7 +50,7 @@ class DiscoverEvents
                     continue;
                 }
 
-                $listenerEvents[$listener->name . '@' . $method->name] = Reflector::getParameterClassName(
+                $listenerEvents[$listener->name.'@'.$method->name] = Reflector::getParameterClassName(
                     $method->getParameters()[0],
                 );
             }
@@ -66,8 +62,6 @@ class DiscoverEvents
     /**
      * Extract the class name from the given file path.
      *
-     * @param \SplFileInfo $file
-     * @param $basePath
      *
      * @return string
      */
@@ -76,7 +70,7 @@ class DiscoverEvents
         $class = trim(Str::replaceFirst($basePath, '', $file->getRealPath()), DIRECTORY_SEPARATOR);
 
         return str_replace(
-            [DIRECTORY_SEPARATOR, ucfirst(basename(app()->path())) . '\\'],
+            [DIRECTORY_SEPARATOR, ucfirst(basename(app()->path())).'\\'],
             ['\\', app()->getNamespace()],
             ucfirst(Str::replaceLast('.php', '', $class)),
         );

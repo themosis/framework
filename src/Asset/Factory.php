@@ -38,15 +38,11 @@ class Factory
     /**
      * Create and return an Asset instance.
      *
-     * @param string           $handle
-     * @param string           $path
-     * @param array            $dependencies
-     * @param null|string|bool $version
-     * @param null|string|bool $arg
+     * @param  null|string|bool  $version
+     * @param  null|string|bool  $arg
+     * @return AssetInterface
      *
      * @throws AssetException
-     *
-     * @return AssetInterface
      */
     public function add(string $handle, string $path, array $dependencies = [], $version = null, $arg = null)
     {

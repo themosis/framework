@@ -10,13 +10,11 @@ class WordPressAuthorize
     /**
      * Handle incoming request.
      *
-     * @param Request  $request
-     * @param \Closure $next
-     * @param string   $capability
+     * @param  Request  $request
+     * @param  string  $capability
+     * @return mixed
      *
      * @throws HttpException
-     *
-     * @return mixed
      */
     public function handle($request, \Closure $next, $capability = 'edit_posts')
     {

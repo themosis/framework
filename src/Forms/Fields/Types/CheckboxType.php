@@ -9,11 +9,7 @@ use Themosis\Forms\Fields\Contracts\CanHandleTerms;
 use Themosis\Forms\Fields\Contracts\CanHandleUsers;
 use Themosis\Forms\Transformers\StringToBooleanTransformer;
 
-class CheckboxType extends BaseType implements
-    CanHandleMetabox,
-    CanHandlePageSettings,
-    CanHandleTerms,
-    CanHandleUsers
+class CheckboxType extends BaseType implements CanHandleMetabox, CanHandlePageSettings, CanHandleTerms, CanHandleUsers
 {
     /**
      * CheckboxType field view.
@@ -38,10 +34,6 @@ class CheckboxType extends BaseType implements
 
     /**
      * Parse field options.
-     *
-     * @param array $options
-     *
-     * @return array
      */
     protected function parseOptions(array $options): array
     {
@@ -52,21 +44,18 @@ class CheckboxType extends BaseType implements
         // Set some default CSS classes if chosen theme is "bootstrap".
         if (isset($options['theme']) && 'bootstrap' === $options['theme']) {
             $options['attributes']['class'] = isset($options['attributes']['class']) ?
-                'form-check-input ' . $options['attributes']['class'] : 'form-check-input';
+                'form-check-input '.$options['attributes']['class'] : 'form-check-input';
             $options['label_attr']['class'] = isset($options['label_attr']['class']) ?
-                'form-check-label ' . $options['label_attr']['class'] : 'form-check-label';
+                'form-check-label '.$options['label_attr']['class'] : 'form-check-label';
         }
 
         return $options;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
-     * @param string $value
-     * @param bool   $shouldNotBypassTransformer
-     *
-     * @return FieldTypeInterface
+     * @param  string  $value
      */
     public function setValue($value, bool $shouldNotBypassTransformer = true): FieldTypeInterface
     {
@@ -87,8 +76,7 @@ class CheckboxType extends BaseType implements
     /**
      * Handle checkbox field post meta registration.
      *
-     * @param mixed $value
-     * @param int   $post_id
+     * @param  mixed  $value
      */
     public function metaboxSave($value, int $post_id)
     {
@@ -107,8 +95,6 @@ class CheckboxType extends BaseType implements
 
     /**
      * Initialize the checkbox field post meta value.
-     *
-     * @param int $post_id
      */
     public function metaboxGet(int $post_id)
     {
@@ -124,8 +110,7 @@ class CheckboxType extends BaseType implements
     /**
      * Handle field term meta registration.
      *
-     * @param string $value
-     * @param int    $term_id
+     * @param  string  $value
      */
     public function termSave($value, int $term_id)
     {
@@ -144,8 +129,6 @@ class CheckboxType extends BaseType implements
 
     /**
      * Handle field term meta initial value.
-     *
-     * @param int $term_id
      */
     public function termGet(int $term_id)
     {
@@ -158,8 +141,6 @@ class CheckboxType extends BaseType implements
 
     /**
      * Handle field user meta initial value.
-     *
-     * @param int $user_id
      */
     public function userGet(int $user_id)
     {
@@ -173,8 +154,7 @@ class CheckboxType extends BaseType implements
     /**
      * Handle field user meta registration.
      *
-     * @param array|string $value
-     * @param int          $user_id
+     * @param  array|string  $value
      */
     public function userSave($value, int $user_id)
     {
@@ -194,8 +174,7 @@ class CheckboxType extends BaseType implements
     /**
      * Save the field setting value.
      *
-     * @param mixed  $value
-     * @param string $name
+     * @param  mixed  $value
      */
     public function settingSave($value, string $name)
     {

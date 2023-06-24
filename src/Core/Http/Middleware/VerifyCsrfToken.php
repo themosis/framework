@@ -51,12 +51,10 @@ class VerifyCsrfToken
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
      *
      * @throws TokenMismatchException
-     *
-     * @return mixed
      */
     public function handle($request, \Closure $next)
     {
@@ -78,7 +76,6 @@ class VerifyCsrfToken
     /**
      * Determine if the HTTP request uses a "read" verb.
      *
-     * @param \Illuminate\Http\Request $request
      *
      * @return bool
      */
@@ -100,7 +97,6 @@ class VerifyCsrfToken
     /**
      * Check if the request has a URI that should pass through CSRF verification.
      *
-     * @param Request $request
      *
      * @return bool
      */
@@ -122,7 +118,6 @@ class VerifyCsrfToken
     /**
      * Check if the session and input CSRF tokens match.
      *
-     * @param Request $request
      *
      * @return bool
      */
@@ -138,7 +133,6 @@ class VerifyCsrfToken
     /**
      * Return the CSRF token from request.
      *
-     * @param Request $request
      *
      * @return string
      */
@@ -170,12 +164,10 @@ class VerifyCsrfToken
     /**
      * Add the CSRF token to the response cookies.
      *
-     * @param Request  $request
-     * @param Response $response
-     *
-     * @throws \Illuminate\Container\EntryNotFoundException
      *
      * @return Response
+     *
+     * @throws \Illuminate\Container\EntryNotFoundException
      */
     protected function addCookieToResponse(Request $request, Response $response)
     {

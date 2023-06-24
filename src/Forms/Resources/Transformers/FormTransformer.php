@@ -9,9 +9,6 @@ use Themosis\Forms\Resources\Factory;
 
 class FormTransformer extends TransformerAbstract
 {
-    /**
-     * @var array
-     */
     protected array $defaultIncludes = [
         'fields',
         'groups',
@@ -20,7 +17,6 @@ class FormTransformer extends TransformerAbstract
     /**
      * Transform single form.
      *
-     * @param FieldTypeInterface $form
      *
      * @return array
      */
@@ -45,7 +41,6 @@ class FormTransformer extends TransformerAbstract
     /**
      * Include "fields" property to resource.
      *
-     * @param FieldTypeInterface $form
      *
      * @return \League\Fractal\Resource\Collection
      */
@@ -67,7 +62,6 @@ class FormTransformer extends TransformerAbstract
     /**
      * Include "groups" property to resource.
      *
-     * @param FieldTypeInterface $form
      *
      * @return \League\Fractal\Resource\Collection
      */

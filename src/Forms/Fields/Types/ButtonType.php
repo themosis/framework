@@ -29,8 +29,6 @@ class ButtonType extends BaseType implements DataTransformerInterface
 
     /**
      * Get default button options.
-     *
-     * @return array
      */
     public function getDefaultOptions(): array
     {
@@ -51,10 +49,6 @@ class ButtonType extends BaseType implements DataTransformerInterface
 
     /**
      * Parse field options.
-     *
-     * @param array $options
-     *
-     * @return array
      */
     protected function parseOptions(array $options): array
     {
@@ -72,10 +66,9 @@ class ButtonType extends BaseType implements DataTransformerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
-     * @param mixed $data
-     *
+     * @param  mixed  $data
      * @return string
      */
     public function reverseTransform($data)
@@ -84,10 +77,9 @@ class ButtonType extends BaseType implements DataTransformerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
-     * @param mixed $data
-     *
+     * @param  mixed  $data
      * @return string
      */
     public function transform($data)

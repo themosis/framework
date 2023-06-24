@@ -23,8 +23,6 @@ class PreventRequestsDuringMaintenance
 
     /**
      * Create a new middleware instance.
-     *
-     * @param \Illuminate\Contracts\Foundation\Application $app
      */
     public function __construct(Application $app)
     {

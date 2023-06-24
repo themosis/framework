@@ -22,14 +22,9 @@ class Factory implements UserFactoryContract
     /**
      * Create a WordPress user and save it to the database.
      *
-     * @param string $username
-     * @param string $password
-     * @param string $email
      *
      * @throws UserException
      * @throws DuplicateUserException
-     *
-     * @return User
      */
     public function make(string $username, string $password, string $email): User
     {
@@ -50,8 +45,6 @@ class Factory implements UserFactoryContract
 
     /**
      * Return the current application user.
-     *
-     * @return User
      */
     public function current(): User
     {
@@ -62,10 +55,6 @@ class Factory implements UserFactoryContract
 
     /**
      * Return a user instance based on given id.
-     *
-     * @param int $user_id
-     *
-     * @return User
      */
     public function get(int $user_id): User
     {
@@ -75,7 +64,6 @@ class Factory implements UserFactoryContract
     /**
      * Validate user credentials.
      *
-     * @param array $data
      *
      * @throws UserException
      */

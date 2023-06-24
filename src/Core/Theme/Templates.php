@@ -25,7 +25,6 @@ class Templates
     /**
      * Parse templates.
      *
-     * @param array $options
      *
      * @return array
      */
@@ -85,7 +84,6 @@ class Templates
     /**
      * Format the template name.
      *
-     * @param string $name
      *
      * @return string
      */

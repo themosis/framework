@@ -53,9 +53,9 @@ class PendingChain
     /**
      * PendingChain constructor.
      *
-     * @param string $class
-     * @param array  $chain
-     * @param mixed  $job
+     * @param  string  $class
+     * @param  array  $chain
+     * @param  mixed  $job
      */
     public function __construct($job, $chain)
     {
@@ -66,8 +66,7 @@ class PendingChain
     /**
      * Set the desired connection for the job.
      *
-     * @param string|null $connection
-     *
+     * @param  string|null  $connection
      * @return $this
      */
     public function onConnection($connection)
@@ -80,8 +79,7 @@ class PendingChain
     /**
      * Set the desired queue for the job.
      *
-     * @param string|null $queue
-     *
+     * @param  string|null  $queue
      * @return $this
      */
     public function onQueue($queue)
@@ -94,8 +92,7 @@ class PendingChain
     /**
      * Set the desired delay for the chain.
      *
-     * @param \DateTimeInterface|\DateInterval|int|null $delay
-     *
+     * @param  \DateTimeInterface|\DateInterval|int|null  $delay
      * @return $this
      */
     public function delay($delay)
@@ -108,8 +105,7 @@ class PendingChain
     /**
      * Add a callback to be executed on job failure.
      *
-     * @param callable $callback
-     *
+     * @param  callable  $callback
      * @return $this
      */
     public function catch($callback)

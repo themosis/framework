@@ -10,11 +10,10 @@ class StringToBooleanTransformer implements DataTransformerInterface
     /**
      * Convert a string to a boolean value.
      *
-     * @param string $data
+     * @param  string  $data
+     * @return bool
      *
      * @throws DataTransformerException
-     *
-     * @return bool
      */
     public function transform($data)
     {
@@ -44,8 +43,7 @@ class StringToBooleanTransformer implements DataTransformerInterface
     /**
      * Convert a boolean to a string value.
      *
-     * @param bool $data
-     *
+     * @param  bool  $data
      * @return string
      */
     public function reverseTransform($data)

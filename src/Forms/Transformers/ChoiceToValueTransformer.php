@@ -7,10 +7,9 @@ use Themosis\Forms\Contracts\DataTransformerInterface;
 class ChoiceToValueTransformer implements DataTransformerInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
-     * @param mixed $data
-     *
+     * @param  mixed  $data
      * @return mixed
      */
     public function transform($data)
@@ -26,8 +25,7 @@ class ChoiceToValueTransformer implements DataTransformerInterface
      * Parse if a value is numeric and cast it
      * to its correct type.
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return float|int|mixed
      */
     protected function parseNumeric($value)
@@ -44,10 +42,9 @@ class ChoiceToValueTransformer implements DataTransformerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
-     * @param mixed $data
-     *
+     * @param  mixed  $data
      * @return mixed
      */
     public function reverseTransform($data)

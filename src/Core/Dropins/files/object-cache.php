@@ -7,7 +7,7 @@
 use Themosis\Core\Cache\WordPressCacheWrapper;
 
 if (! defined('ABSPATH')) {
-    die();
+    exit();
 }
 
 /**
@@ -25,18 +25,17 @@ function wp_cache_init()
     $GLOBALS['wp_object_cache'] = new WordPressCacheWrapper(
         $store,
         $isMultisite,
-        $isMultisite ? get_current_blog_id() . ':' : '',
+        $isMultisite ? get_current_blog_id().':' : '',
     );
 }
 
 /**
  * Adds data to the cache if the cache key doesn't already exist.
  *
- * @param string|int $key
- * @param mixed      $data
- * @param string     $group
- * @param int        $expire
- *
+ * @param  string|int  $key
+ * @param  mixed  $data
+ * @param  string  $group
+ * @param  int  $expire
  * @return bool True on success. False if cache value is already in the store.
  */
 function wp_cache_add($key, $data, $group = '', $expire = 0)
@@ -59,10 +58,9 @@ function wp_cache_close()
 /**
  * Decrement numeric cache item's value.
  *
- * @param string|int $key
- * @param int        $offset
- * @param string     $group
- *
+ * @param  string|int  $key
+ * @param  int  $offset
+ * @param  string  $group
  * @return bool|int False on failure. The item's new value on success.
  */
 function wp_cache_decr($key, $offset = 1, $group = '')
@@ -75,10 +73,9 @@ function wp_cache_decr($key, $offset = 1, $group = '')
 /**
  * Increment numeric cache item's value.
  *
- * @param string|int $key
- * @param int        $offset
- * @param string     $group
- *
+ * @param  string|int  $key
+ * @param  int  $offset
+ * @param  string  $group
  * @return bool|int False on failure. The item's new value on success.
  */
 function wp_cache_incr($key, $offset = 1, $group = '')
@@ -91,9 +88,8 @@ function wp_cache_incr($key, $offset = 1, $group = '')
 /**
  * Removes the cache contents matching key.
  *
- * @param string|int $key
- * @param string     $group
- *
+ * @param  string|int  $key
+ * @param  string  $group
  * @return bool True on success. False on failure.
  */
 function wp_cache_delete($key, $group = '')
@@ -118,11 +114,10 @@ function wp_cache_flush()
 /**
  * Retrieve the cache content from the cache by key.
  *
- * @param string|int $key
- * @param string     $group
- * @param bool       $force
- * @param null       $found
- *
+ * @param  string|int  $key
+ * @param  string  $group
+ * @param  bool  $force
+ * @param  null  $found
  * @return mixed False on failure. Cache content on success.
  */
 function wp_cache_get($key, $group = '', $force = false, &$found = null)
@@ -135,11 +130,10 @@ function wp_cache_get($key, $group = '', $force = false, &$found = null)
 /**
  * Store an item in the cache.
  *
- * @param string|int $key
- * @param mixed      $data
- * @param string     $group
- * @param int        $expire
- *
+ * @param  string|int  $key
+ * @param  mixed  $data
+ * @param  string  $group
+ * @param  int  $expire
  * @return bool False on failure. True on success.
  */
 function wp_cache_set($key, $data, $group = '', $expire = 0)
@@ -152,11 +146,10 @@ function wp_cache_set($key, $data, $group = '', $expire = 0)
 /**
  * Replaces the content of the cache with new data.
  *
- * @param string|int $key
- * @param mixed      $data
- * @param string     $group
- * @param int        $expire
- *
+ * @param  string|int  $key
+ * @param  mixed  $data
+ * @param  string  $group
+ * @param  int  $expire
  * @return bool False if original value does not exists. True if replaced.
  */
 function wp_cache_replace($key, $data, $group = '', $expire = 0)
@@ -169,7 +162,7 @@ function wp_cache_replace($key, $data, $group = '', $expire = 0)
 /**
  * Switches the internal blog ID (prefix).
  *
- * @param string|int $blog_id
+ * @param  string|int  $blog_id
  */
 function wp_cache_switch_to_blog($blog_id)
 {
@@ -181,7 +174,7 @@ function wp_cache_switch_to_blog($blog_id)
 /**
  * Adds a group or set of groups to the list of global groups.
  *
- * @param string|array $groups
+ * @param  string|array  $groups
  */
 function wp_cache_add_global_groups($groups)
 {
@@ -193,7 +186,7 @@ function wp_cache_add_global_groups($groups)
 /**
  * Adds a group or set of groups to the list of non-persistent groups.
  *
- * @param string|array $groups
+ * @param  string|array  $groups
  */
 function wp_cache_add_non_persistent_groups($groups)
 {

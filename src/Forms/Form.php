@@ -25,8 +25,6 @@ use Themosis\Support\Contracts\SectionInterface;
 
 /**
  * Class Form
- *
- * @package Themosis\Forms
  */
 class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 {
@@ -206,8 +204,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Get the form repository instance.
-     *
-     * @return FieldsRepositoryInterface
      */
     public function repository(): FieldsRepositoryInterface
     {
@@ -217,10 +213,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Set the form prefix. If fields are attached to the form,
      * all fields are updated with the given prefix.
-     *
-     * @param string $prefix
-     *
-     * @return FieldTypeInterface
      */
     public function setPrefix(string $prefix): FieldTypeInterface
     {
@@ -237,8 +229,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return the form prefix.
-     *
-     * @return string
      */
     public function getPrefix(): string
     {
@@ -247,8 +237,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return the form theme.
-     *
-     * @return string
      */
     public function getTheme(): string
     {
@@ -257,10 +245,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Set the form and attached fields theme.
-     *
-     * @param string $theme
-     *
-     * @return FieldTypeInterface
      */
     public function setTheme(string $theme): FieldTypeInterface
     {
@@ -284,11 +268,10 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Handle current request and start form data validation.
      *
-     * @param Request $request
-     *
-     * @throws \Illuminate\Validation\ValidationException
      *
      * @return $this
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function handleRequest(Request $request): FormInterface
     {
@@ -347,8 +330,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Get the list of form rules.
      *
-     * @param array $fields The form fields instances.
-     *
+     * @param  array  $fields The form fields instances.
      * @return array
      */
     protected function getFormRules(array $fields)
@@ -366,8 +348,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Get the list of form fields messages.
      *
-     * @param array $fields The form fields instances.
-     *
+     * @param  array  $fields The form fields instances.
      * @return array
      */
     protected function getFormMessages(array $fields)
@@ -380,7 +361,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
         foreach ($fields as $field) {
             /** @var FieldTypeInterface $field */
             foreach ($field->getOption('messages') as $attr => $message) {
-                $messages[$field->getName() . '.' . $attr] = $message;
+                $messages[$field->getName().'.'.$attr] = $message;
             }
         }
 
@@ -390,8 +371,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Get the list of custom :attribute placeholders values.
      *
-     * @param array $fields The form fields instances.
-     *
+     * @param  array  $fields The form fields instances.
      * @return array
      */
     protected function getFormPlaceholders(array $fields)
@@ -408,8 +388,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Check if submitted form is valid.
-     *
-     * @return bool
      */
     public function isValid(): bool
     {
@@ -422,8 +400,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Check if submitted form is not valid.
-     *
-     * @return bool
      */
     public function isNotValid(): bool
     {
@@ -432,8 +408,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return a list of form errors.
-     *
-     * @return MessageBag
      */
     public function errors(): MessageBag
     {
@@ -450,8 +424,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
      * can fetch the first error message only on the
      * mentioned field.
      *
-     * @param string $name
-     * @param bool   $first
      *
      * @return string|array
      */
@@ -476,8 +448,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Render a form and returns its HTML structure.
-     *
-     * @return string
      */
     public function render(): string
     {
@@ -492,8 +462,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Retrieve form view data.
-     *
-     * @return array
      */
     protected function getFormData(): array
     {
@@ -508,10 +476,8 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Pass custom data to the form view.
      *
-     * @param array|string $key
-     * @param null         $value
-     *
-     * @return FieldTypeInterface
+     * @param  array|string  $key
+     * @param  null  $value
      */
     public function with($key, $value = null): FieldTypeInterface
     {
@@ -526,11 +492,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Set form group view file.
-     *
-     * @param string $view
-     * @param string $group
-     *
-     * @return FormInterface
      */
     public function setGroupView(string $view, string $group = 'default'): FormInterface
     {
@@ -547,10 +508,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Specify the view file to use by the form.
-     *
-     * @param string $view
-     *
-     * @return FieldTypeInterface
      */
     public function setView(string $view): FieldTypeInterface
     {
@@ -561,10 +518,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Set the field view factory instance.
-     *
-     * @param ViewFactoryInterface $factory
-     *
-     * @return FieldTypeInterface
      */
     public function setViewFactory(ViewFactoryInterface $factory): FieldTypeInterface
     {
@@ -575,10 +528,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return the view path instance used by the form.
-     *
-     * @param bool $prefixed
-     *
-     * @return string
      */
     public function getView(bool $prefixed = true): string
     {
@@ -591,8 +540,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Get the view factory instance.
-     *
-     * @return ViewFactoryInterface
      */
     public function getViewer(): ViewFactoryInterface
     {
@@ -601,8 +548,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Indicates if the form has been rendered or not.
-     *
-     * @return bool
      */
     public function isRendered(): bool
     {
@@ -612,7 +557,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Validate form options.
      *
-     * @param array $options
      *
      * @return array
      */
@@ -622,7 +566,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
         foreach ($options as $name => $option) {
             if (! in_array($name, $this->getAllowedOptions())) {
-                throw new DomainException('The "' . $name . '" option is not allowed on the provided form.');
+                throw new DomainException('The "'.$name.'" option is not allowed on the provided form.');
             }
 
             $validated[$name] = $option;
@@ -633,10 +577,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Set form options.
-     *
-     * @param array $options
-     *
-     * @return FieldTypeInterface
      */
     public function setOptions(array $options): FieldTypeInterface
     {
@@ -653,7 +593,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Parse form options and add some default parameters.
      *
-     * @param array $options
      *
      * @return array
      */
@@ -681,9 +620,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Return form options.
      *
-     * @param array $excludes
-     *
-     * @return array
+     * @param  array  $excludes
      */
     public function getOptions(array $excludes = null): array
     {
@@ -699,9 +636,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Return form options.
      *
-     * @param string $key
-     * @param mixed  $default
-     *
+     * @param  mixed  $default
      * @return string|array|null
      */
     public function getOption(string $key, $default = null)
@@ -711,8 +646,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Get the form "name" attribute value.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -721,8 +654,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * getName() method alias.
-     *
-     * @return string
      */
     public function getBaseName(): string
     {
@@ -742,8 +673,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Get the value of a defined attribute.
      *
-     * @param string $name The attribute name.
-     *
+     * @param  string  $name The attribute name.
      * @return mixed
      */
     public function getAttribute(string $name)
@@ -756,7 +686,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Set the form attributes.
      *
-     * @param array $attributes
      *
      * @return FieldTypeInterface
      */
@@ -770,16 +699,12 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     /**
      * Add an attribute to the field.
      *
-     * @param string $name
-     * @param string $value
-     * @param bool   $overwrite
-     *
-     * @return FieldTypeInterface
+     * @param  bool  $overwrite
      */
     public function addAttribute(string $name, string $value, $overwrite = false): FieldTypeInterface
     {
         if (isset($this->options['attributes'][$name]) && ! $overwrite) {
-            $this->options['attributes'][$name] .= ' ' . $value;
+            $this->options['attributes'][$name] .= ' '.$value;
         } else {
             $this->options['attributes'][$name] = $value;
         }
@@ -789,8 +714,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return the list of default options.
-     *
-     * @return array
      */
     public function getDefaultOptions(): array
     {
@@ -799,8 +722,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return allowed options for the form.
-     *
-     * @return array
      */
     public function getAllowedOptions(): array
     {
@@ -809,10 +730,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Set the form locale.
-     *
-     * @param string $locale
-     *
-     * @return FieldTypeInterface
      */
     public function setLocale(string $locale): FieldTypeInterface
     {
@@ -823,8 +740,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return the form locale.
-     *
-     * @return string
      */
     public function getLocale(): string
     {
@@ -832,11 +747,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     }
 
     /**
-     * @inheritdoc
-     *
-     * @param DataTransformerInterface $transformer
-     *
-     * @return FieldTypeInterface
+     * {@inheritdoc}
      */
     public function setTransformer(DataTransformerInterface $transformer): FieldTypeInterface
     {
@@ -844,12 +755,9 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
-     * @param array|string $value
-     * @param bool         $shouldNotBypassTransformer
-     *
-     * @return FieldTypeInterface
+     * @param  array|string  $value
      */
     public function setValue($value, bool $shouldNotBypassTransformer = true): FieldTypeInterface
     {
@@ -857,10 +765,9 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
-     * @param mixed $default
-     *
+     * @param  mixed  $default
      * @return mixed|null
      */
     public function getValue($default = null)
@@ -869,7 +776,7 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
      * @return mixed
      */
@@ -880,10 +787,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Set the Fractal manager.
-     *
-     * @param Manager $manager
-     *
-     * @return FieldTypeInterface
      */
     public function setManager(Manager $manager): FieldTypeInterface
     {
@@ -894,8 +797,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return the Fractal manager.
-     *
-     * @return Manager
      */
     public function getManager(): Manager
     {
@@ -904,8 +805,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return the transformer factory.
-     *
-     * @return TransformerFactory
      */
     public function getResourceTransformerFactory(): TransformerFactory
     {
@@ -914,10 +813,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Set the transformer factory.
-     *
-     * @param TransformerFactory $factory
-     *
-     * @return FieldTypeInterface
      */
     public function setResourceTransformerFactory(TransformerFactory $factory): FieldTypeInterface
     {
@@ -928,8 +823,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return form resource transformer class name.
-     *
-     * @return string
      */
     public function getResourceTransformer(): string
     {
@@ -938,8 +831,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Define the Fractal resource used by the form.
-     *
-     * @return ResourceInterface
      */
     protected function resource(): ResourceInterface
     {
@@ -948,8 +839,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Define the serialization for the form resource.
-     *
-     * @return Form
      */
     protected function serialize(): Form
     {
@@ -960,8 +849,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return an associative array representation of the field.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -970,8 +857,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return a JSON representation of the form instance.
-     *
-     * @return string
      */
     public function toJson(): string
     {
@@ -980,8 +865,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return the form type.
-     *
-     * @return string
      */
     public function getType(): string
     {
@@ -990,8 +873,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return the form component name.
-     *
-     * @return string
      */
     public function getComponent(): string
     {
@@ -1000,8 +881,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return form HTML element open tag.
-     *
-     * @return string
      */
     public function open(): string
     {
@@ -1015,8 +894,6 @@ class Form extends HtmlBuilder implements FormInterface, FieldTypeInterface
 
     /**
      * Return form HTML element close tag.
-     *
-     * @return string
      */
     public function close(): string
     {

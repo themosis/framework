@@ -49,9 +49,9 @@ class StorageLinkCommand extends Command
     /**
      * Get the symbolic links that are configured for the application.
      *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     *
      * @return array
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function links()
     {

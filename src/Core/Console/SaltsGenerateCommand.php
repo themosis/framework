@@ -60,13 +60,11 @@ class SaltsGenerateCommand extends Command
             return;
         }
 
-        $this->info("Application salt keys set successfully.");
+        $this->info('Application salt keys set successfully.');
     }
 
     /**
      * Display the salt keys.
-     *
-     * @param array $salts
      */
     protected function showSaltKeys(array $salts)
     {
@@ -90,8 +88,6 @@ class SaltsGenerateCommand extends Command
 
     /**
      * Write new environment file with the given key.
-     *
-     * @param string $key
      */
     protected function writeNewEnvironmentFileWith(string $key, string $salt)
     {
@@ -99,7 +95,7 @@ class SaltsGenerateCommand extends Command
             $this->laravel->environmentFilePath(),
             preg_replace(
                 $this->keyReplacementPattern($key),
-                $key . '="' . $salt . '"',
+                $key.'="'.$salt.'"',
                 file_get_contents($this->laravel->environmentFilePath()),
             ),
         );
@@ -112,7 +108,7 @@ class SaltsGenerateCommand extends Command
      */
     protected function keyReplacementPattern(string $key)
     {
-        $alias = 'app.salts.' . strtolower($key);
+        $alias = 'app.salts.'.strtolower($key);
         $escaped = preg_quote($this->laravel['config'][$alias], '/');
 
         return "/^{$key}=\"?{$escaped}\"?/m";
@@ -121,12 +117,10 @@ class SaltsGenerateCommand extends Command
     /**
      * Generate the random string salt,
      *
-     * @param int    $length
-     * @param string $chars
-     *
-     * @throws \SodiumException
      *
      * @return string
+     *
+     * @throws \SodiumException
      */
     protected function generateRandomSalt(int $length, string $chars)
     {

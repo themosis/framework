@@ -51,10 +51,6 @@ class PostType implements PostTypeInterface
 
     /**
      * Set the post type labels.
-     *
-     * @param array $labels
-     *
-     * @return PostTypeInterface
      */
     public function setLabels(array $labels): PostTypeInterface
     {
@@ -69,8 +65,6 @@ class PostType implements PostTypeInterface
 
     /**
      * Return the post type labels.
-     *
-     * @return array
      */
     public function getLabels(): array
     {
@@ -79,10 +73,6 @@ class PostType implements PostTypeInterface
 
     /**
      * Return a defined label value.
-     *
-     * @param string $name
-     *
-     * @return string
      */
     public function getLabel(string $name): string
     {
@@ -93,10 +83,6 @@ class PostType implements PostTypeInterface
 
     /**
      * Set the post type arguments.
-     *
-     * @param array $args
-     *
-     * @return PostTypeInterface
      */
     public function setArguments(array $args): PostTypeInterface
     {
@@ -107,8 +93,6 @@ class PostType implements PostTypeInterface
 
     /**
      * Return the post type arguments.
-     *
-     * @return array
      */
     public function getArguments(): array
     {
@@ -118,7 +102,6 @@ class PostType implements PostTypeInterface
     /**
      * Return a post type argument.
      *
-     * @param string $property
      *
      * @return mixed|null
      */
@@ -141,8 +124,6 @@ class PostType implements PostTypeInterface
 
     /**
      * Return the post type slug.
-     *
-     * @return string
      */
     public function getSlug(): string
     {
@@ -152,8 +133,6 @@ class PostType implements PostTypeInterface
     /**
      * Return the post type slug.
      * Aliased method for getSlug.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -162,8 +141,6 @@ class PostType implements PostTypeInterface
 
     /**
      * Register the post type.
-     *
-     * @return PostTypeInterface
      */
     public function set(): PostTypeInterface
     {
@@ -187,10 +164,6 @@ class PostType implements PostTypeInterface
 
     /**
      * Set the post type title input placeholder.
-     *
-     * @param string $title
-     *
-     * @return PostTypeInterface
      */
     public function setTitlePlaceholder(string $title): PostTypeInterface
     {
@@ -236,10 +209,7 @@ class PostType implements PostTypeInterface
     /**
      * Set post type custom status.
      *
-     * @param array|string $status
-     * @param array        $args
-     *
-     * @return PostTypeInterface
+     * @param  array|string  $status
      */
     public function status($status, array $args = []): PostTypeInterface
     {
@@ -262,8 +232,6 @@ class PostType implements PostTypeInterface
 
     /**
      * Check if post type has custom status.
-     *
-     * @return bool
      */
     public function hasStatus(): bool
     {
@@ -272,9 +240,6 @@ class PostType implements PostTypeInterface
 
     /**
      * Register custom post type status.
-     *
-     * @param string $status
-     * @param array  $args
      */
     protected function prepareStatus(string $status, array $args)
     {
@@ -318,11 +283,6 @@ class PostType implements PostTypeInterface
 
     /**
      * Parse the status arguments.
-     *
-     * @param string $status
-     * @param array  $args
-     *
-     * @return array
      */
     protected function parseStatusArguments(string $status, array $args): array
     {
@@ -335,8 +295,8 @@ class PostType implements PostTypeInterface
             'show_in_admin_all_list' => true,
             'show_in_admin_status_list' => true,
             'label_count' => _n_noop(
-                $name . ' <span class="count">(%s)</span>',
-                $name . ' <span class="count">(%s)</span>',
+                $name.' <span class="count">(%s)</span>',
+                $name.' <span class="count">(%s)</span>',
             ),
             'publish_text' => __('Apply Changes'),
         ]);
@@ -345,8 +305,7 @@ class PostType implements PostTypeInterface
     /**
      * Apply the selected status on post save.
      *
-     * @param string $value The translated value by WordPress ("publish").
-     *
+     * @param  string  $value The translated value by WordPress ("publish").
      * @return string
      */
     public function applyStatus(string $value)

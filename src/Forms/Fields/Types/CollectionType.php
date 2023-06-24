@@ -10,8 +10,6 @@ use Themosis\Forms\Resources\Transformers\CollectionFieldTransformer;
 
 /**
  * Class CollectionType
- *
- * @package Themosis\Forms\Fields\Types
  */
 class CollectionType extends BaseType implements DataTransformerInterface, CanHandleMetabox, CanHandlePageSettings
 {
@@ -46,8 +44,6 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
 
     /**
      * Set field allowed options.
-     *
-     * @return array
      */
     protected function setAllowedOptions(): array
     {
@@ -58,8 +54,6 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
 
     /**
      * Set field default options values.
-     *
-     * @return array
      */
     protected function setDefaultOptions(): array
     {
@@ -83,10 +77,6 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
 
     /**
      * Parse and setup default options.
-     *
-     * @param array $options
-     *
-     * @return array
      */
     protected function parseOptions(array $options): array
     {
@@ -96,10 +86,9 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
-     * @param array $data
-     *
+     * @param  array  $data
      * @return array
      */
     public function transform($data)
@@ -108,10 +97,9 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
-     * @param array $data
-     *
+     * @param  array  $data
      * @return array
      */
     public function reverseTransform($data)
@@ -122,8 +110,7 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
     /**
      * Handle collection field post meta registration.
      *
-     * @param array $value
-     * @param int   $post_id
+     * @param  array  $value
      */
     public function metaboxSave($value, int $post_id)
     {
@@ -148,8 +135,6 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
 
     /**
      * Initialize collection field post meta value.
-     *
-     * @param int $post_id
      */
     public function metaboxGet(int $post_id)
     {
@@ -163,8 +148,7 @@ class CollectionType extends BaseType implements DataTransformerInterface, CanHa
     /**
      * Save the field setting value.
      *
-     * @param mixed  $value
-     * @param string $name
+     * @param  mixed  $value
      */
     public function settingSave($value, string $name)
     {

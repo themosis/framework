@@ -22,10 +22,6 @@ class PageSettingsRepository implements SettingsRepositoryInterface
 
     /**
      * Set the page repository sections.
-     *
-     * @param array $sections
-     *
-     * @return SettingsRepositoryInterface
      */
     public function setSections(array $sections): SettingsRepositoryInterface
     {
@@ -41,15 +37,11 @@ class PageSettingsRepository implements SettingsRepositoryInterface
      */
     public function getSections(): Collection
     {
-        return (new Collection($this->sections));
+        return new Collection($this->sections);
     }
 
     /**
      * Set the page repository settings.
-     *
-     * @param array $settings
-     *
-     * @return SettingsRepositoryInterface
      */
     public function setSettings(array $settings): SettingsRepositoryInterface
     {
@@ -66,15 +58,11 @@ class PageSettingsRepository implements SettingsRepositoryInterface
      */
     public function getSettings(): Collection
     {
-        return (new Collection($this->settings));
+        return new Collection($this->settings);
     }
 
     /**
      * Return the setting instance based on its name.
-     *
-     * @param string $name
-     *
-     * @return FieldTypeInterface
      */
     public function getSettingByName(string $name): FieldTypeInterface
     {
@@ -86,10 +74,6 @@ class PageSettingsRepository implements SettingsRepositoryInterface
 
     /**
      * Return the section instance based on its name.
-     *
-     * @param string $name
-     *
-     * @return SectionInterface
      */
     public function getSectionByName(string $name): SectionInterface
     {
@@ -103,7 +87,6 @@ class PageSettingsRepository implements SettingsRepositoryInterface
      * Parse page settings.
      * Throw an exception if user is using a field not supported.
      *
-     * @param array $settings
      *
      * @throws \Exception
      */

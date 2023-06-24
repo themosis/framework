@@ -9,8 +9,6 @@ class SetRequestForConsole
 {
     /**
      * Setup the request for console application.
-     *
-     * @param Application $app
      */
     public function bootstrap(Application $app)
     {

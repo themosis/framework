@@ -20,8 +20,7 @@ class DataMapperManager
     /**
      * Map data from object to field.
      *
-     * @param mixed              $data
-     * @param FieldTypeInterface $field
+     * @param  mixed  $data
      */
     public function mapFromObjectToField($data, FieldTypeInterface $field)
     {
@@ -37,8 +36,7 @@ class DataMapperManager
     /**
      * Map data from field to object.
      *
-     * @param FieldTypeInterface $field
-     * @param mixed              $data
+     * @param  mixed  $data
      */
     public function mapFromFieldToObject(FieldTypeInterface $field, $data)
     {

@@ -41,8 +41,8 @@ class EventGenerateCommand extends Command
     /**
      * Make the event and listeners for the given event.
      *
-     * @param string $event
-     * @param array  $listeners
+     * @param  string  $event
+     * @param  array  $listeners
      */
     protected function makeEventAndListeners($event, $listeners)
     {
@@ -57,8 +57,8 @@ class EventGenerateCommand extends Command
     /**
      * Make the listeners for the given event.
      *
-     * @param string $event
-     * @param array  $listeners
+     * @param  string  $event
+     * @param  array  $listeners
      */
     protected function makeListeners($event, $listeners)
     {

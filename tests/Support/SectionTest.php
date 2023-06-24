@@ -68,11 +68,11 @@ class SectionTest extends TestCase
         $section = new Section('empty');
         $this->assertFalse($section->hasItems());
 
-        $section = new Section('custom', 'Custom', [1,2]);
+        $section = new Section('custom', 'Custom', [1, 2]);
         $this->assertTrue($section->hasItems());
 
         $section = new Section('panel');
-        $section->setItems([3,4]);
+        $section->setItems([3, 4]);
         $this->assertTrue($section->hasItems());
     }
 }

@@ -50,8 +50,6 @@ class PageView implements UIContainerInterface
 
     /**
      * Return the page view theme.
-     *
-     * @return string
      */
     public function getTheme(): string
     {
@@ -60,10 +58,6 @@ class PageView implements UIContainerInterface
 
     /**
      * Set the page view theme.
-     *
-     * @param string $theme
-     *
-     * @return UIContainerInterface
      */
     public function setTheme(string $theme): UIContainerInterface
     {
@@ -74,8 +68,6 @@ class PageView implements UIContainerInterface
 
     /**
      * Return the page view layout.
-     *
-     * @return string
      */
     public function getLayout(): string
     {
@@ -84,10 +76,6 @@ class PageView implements UIContainerInterface
 
     /**
      * Set the page view layout.
-     *
-     * @param string $layout
-     *
-     * @return UIContainerInterface
      */
     public function setLayout(string $layout): UIContainerInterface
     {
@@ -98,10 +86,6 @@ class PageView implements UIContainerInterface
 
     /**
      * Set the page view.
-     *
-     * @param string $view
-     *
-     * @return UIContainerInterface
      */
     public function setView(string $view): UIContainerInterface
     {
@@ -112,10 +96,6 @@ class PageView implements UIContainerInterface
 
     /**
      * Set the page view instance.
-     *
-     * @param Renderable $view
-     *
-     * @return UIContainerInterface
      */
     public function setViewInstance(Renderable $view): UIContainerInterface
     {
@@ -126,8 +106,6 @@ class PageView implements UIContainerInterface
 
     /**
      * Return the page view path.
-     *
-     * @return string
      */
     public function getViewPath(): string
     {
@@ -136,8 +114,6 @@ class PageView implements UIContainerInterface
 
     /**
      * Return the page view.
-     *
-     * @return View
      */
     public function getView(): View
     {
@@ -153,8 +129,6 @@ class PageView implements UIContainerInterface
 
     /**
      * Return the page view factory.
-     *
-     * @return Factory
      */
     public function factory(): Factory
     {
@@ -165,7 +139,6 @@ class PageView implements UIContainerInterface
      * Tell the page UI to use the view path only instead
      * of the composed one with page layout and theme.
      *
-     * @param bool $use
      *
      * @return $this
      */

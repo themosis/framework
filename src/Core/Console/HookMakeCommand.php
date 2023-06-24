@@ -34,18 +34,17 @@ class HookMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__ . '/stubs/hook.stub';
+        return __DIR__.'/stubs/hook.stub';
     }
 
     /**
      * Return the class default namespace.
      *
-     * @param string $rootNamespace
-     *
+     * @param  string  $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Hooks';
+        return $rootNamespace.'\Hooks';
     }
 }

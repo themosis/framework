@@ -118,8 +118,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return the metabox id.
-     *
-     * @return string
      */
     public function getId(): string
     {
@@ -128,10 +126,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Set the metabox title.
-     *
-     * @param string $title
-     *
-     * @return MetaboxInterface
      */
     public function setTitle(string $title): MetaboxInterface
     {
@@ -142,8 +136,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return the metabox title.
-     *
-     * @return string
      */
     public function getTitle(): string
     {
@@ -153,9 +145,7 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox screen.
      *
-     * @param string|array|\WP_Screen $screen
-     *
-     * @return MetaboxInterface
+     * @param  string|array|\WP_Screen  $screen
      */
     public function setScreen($screen): MetaboxInterface
     {
@@ -176,10 +166,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Set the metabox context.
-     *
-     * @param string $context
-     *
-     * @return MetaboxInterface
      */
     public function setContext(string $context): MetaboxInterface
     {
@@ -190,8 +176,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return the metabox context.
-     *
-     * @return string
      */
     public function getContext(): string
     {
@@ -200,10 +184,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Set the metabox priority.
-     *
-     * @param string $priority
-     *
-     * @return MetaboxInterface
      */
     public function setPriority(string $priority): MetaboxInterface
     {
@@ -214,8 +194,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return the metabox priority.
-     *
-     * @return string
      */
     public function getPriority(): string
     {
@@ -225,9 +203,7 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox callback.
      *
-     * @param callable|string $callback
-     *
-     * @return MetaboxInterface
+     * @param  callable|string  $callback
      */
     public function setCallback($callback): MetaboxInterface
     {
@@ -254,10 +230,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Set the metabox callback arguments.
-     *
-     * @param array $args
-     *
-     * @return MetaboxInterface
      */
     public function setArguments(array $args): MetaboxInterface
     {
@@ -268,8 +240,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return the metabox callback arguments.
-     *
-     * @return array
      */
     public function getArguments(): array
     {
@@ -282,10 +252,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Set the metabox layout.
-     *
-     * @param string $layout
-     *
-     * @return MetaboxInterface
      */
     public function setLayout(string $layout): MetaboxInterface
     {
@@ -296,8 +262,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return the metabox layout.
-     *
-     * @return string
      */
     public function getLayout(): string
     {
@@ -310,8 +274,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Set the metabox for display.
-     *
-     * @return MetaboxInterface
      */
     public function set(): MetaboxInterface
     {
@@ -323,8 +285,8 @@ class Metabox implements MetaboxInterface
     /**
      * Handle "add_meta_boxes" hook and display the metabox.
      *
-     * @param string   $post_type
-     * @param \WP_Post $post
+     * @param  string  $post_type
+     * @param  \WP_Post  $post
      */
     public function display($post_type, $post)
     {
@@ -341,7 +303,7 @@ class Metabox implements MetaboxInterface
                 return $classes;
             }
 
-            $classes.= ' themosis';
+            $classes .= ' themosis';
 
             return $classes;
         });
@@ -359,9 +321,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Render the metabox.
-     *
-     * @param \WP_Post $post
-     * @param array    $args
      */
     public function render(\WP_Post $post, array $args)
     {
@@ -382,8 +341,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Core framework metabox management. Default callback.
-     *
-     * @param array $args
      */
     public function handle(array $args)
     {
@@ -405,10 +362,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Set the metabox resource abstraction layer/manager.
-     *
-     * @param MetaboxResourceInterface $resource
-     *
-     * @return MetaboxInterface
      */
     public function setResource(MetaboxResourceInterface $resource): MetaboxInterface
     {
@@ -419,8 +372,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return the metabox resource manager.
-     *
-     * @return MetaboxResourceInterface
      */
     public function getResource(): MetaboxResourceInterface
     {
@@ -429,8 +380,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return the metabox as an array resource.
-     *
-     * @return array
      */
     public function toArray(): array
     {
@@ -439,8 +388,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return the metabox as a JSON resource.
-     *
-     * @return string
      */
     public function toJson(): string
     {
@@ -449,10 +396,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Set the metabox locale.
-     *
-     * @param string $locale
-     *
-     * @return MetaboxInterface
      */
     public function setLocale(string $locale): MetaboxInterface
     {
@@ -463,8 +406,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return the metabox locale.
-     *
-     * @return string
      */
     public function getLocale(): string
     {
@@ -473,10 +414,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Set the metabox prefix.
-     *
-     * @param string $prefix
-     *
-     * @return MetaboxInterface
      */
     public function setPrefix(string $prefix): MetaboxInterface
     {
@@ -487,8 +424,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return the metabox prefix.
-     *
-     * @return string
      */
     public function getPrefix(): string
     {
@@ -497,8 +432,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return the metabox fields repository instance.
-     *
-     * @return FieldsRepositoryInterface
      */
     public function repository(): FieldsRepositoryInterface
     {
@@ -508,10 +441,8 @@ class Metabox implements MetaboxInterface
     /**
      * Add a field to the metabox.
      *
-     * @param FieldTypeInterface|SectionInterface $field
-     * @param SectionInterface                    $section
-     *
-     * @return MetaboxInterface
+     * @param  FieldTypeInterface|SectionInterface  $field
+     * @param  SectionInterface  $section
      */
     public function add($field, SectionInterface $section = null): MetaboxInterface
     {
@@ -551,8 +482,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return metabox all translations.
-     *
-     * @return array
      */
     public function getTranslations(): array
     {
@@ -566,10 +495,6 @@ class Metabox implements MetaboxInterface
     /**
      * Return the translation based on given key.
      * Return empty string if not defined.
-     *
-     * @param string $key
-     *
-     * @return string
      */
     public function getTranslation(string $key): string
     {
@@ -578,11 +503,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Add metabox translation.
-     *
-     * @param string $key
-     * @param string $translation
-     *
-     * @return MetaboxInterface
      */
     public function addTranslation(string $key, string $translation): MetaboxInterface
     {
@@ -593,10 +513,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Set the metabox capability.
-     *
-     * @param string $cap
-     *
-     * @return MetaboxInterface
      */
     public function setCapability(string $cap): MetaboxInterface
     {
@@ -607,8 +523,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return the metabox capability.
-     *
-     * @return string
      */
     public function getCapability(): string
     {
@@ -618,10 +532,7 @@ class Metabox implements MetaboxInterface
     /**
      * Set the metabox template.
      *
-     * @param array|string $template
-     * @param string       $screen
-     *
-     * @return MetaboxInterface
+     * @param  array|string  $template
      */
     public function setTemplate($template, string $screen = 'page'): MetaboxInterface
     {
@@ -632,8 +543,6 @@ class Metabox implements MetaboxInterface
 
     /**
      * Return the metabox template.
-     *
-     * @return array
      */
     public function getTemplate(): array
     {
@@ -643,9 +552,7 @@ class Metabox implements MetaboxInterface
     /**
      * Check if given post should use the template.
      *
-     * @param \WP_Post|\WP_Comment $post
-     *
-     * @return bool
+     * @param  \WP_Post|\WP_Comment  $post
      */
     private function hasTemplateForPost($post): bool
     {

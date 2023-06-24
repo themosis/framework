@@ -29,7 +29,6 @@ class Support
     /**
      * Parse theme features.
      *
-     * @param array $features
      *
      * @return array
      */
@@ -47,7 +46,7 @@ class Support
                     $allowed[$value] = $value;
                 } else {
                     throw new \InvalidArgumentException(
-                        'The theme feature [' . $value . '] must have a defined property in order to work.',
+                        'The theme feature ['.$value.'] must have a defined property in order to work.',
                     );
                 }
             } else {

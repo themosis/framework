@@ -19,7 +19,7 @@ class AssetsTest extends TestCase
     {
         $finder = new Finder(new Filesystem());
         $finder->addLocation(
-            __DIR__ . '/files',
+            __DIR__.'/files',
             'https://www.domain.com/dist',
         );
 
@@ -79,20 +79,20 @@ class AssetsTest extends TestCase
         $finder = new Finder(new Filesystem());
 
         $finder->addLocation(
-            __DIR__ . '/files/',
+            __DIR__.'/files/',
             'https://www.domain.com/dist',
         );
 
         $file = $finder->find('theme.css');
 
-        $this->assertEquals(__DIR__ . '/files/theme.css', $file->getPath());
+        $this->assertEquals(__DIR__.'/files/theme.css', $file->getPath());
         $this->assertEquals('https://www.domain.com/dist/theme.css', $file->getUrl());
         $this->assertFalse($file->isExternal());
 
         $file = $finder->find('/js/carousel.js');
 
         $this->assertFalse($file->isExternal());
-        $this->assertEquals(__DIR__ . '/files/js/carousel.js', $file->getPath());
+        $this->assertEquals(__DIR__.'/files/js/carousel.js', $file->getPath());
         $this->assertEquals('https://www.domain.com/dist/js/carousel.js', $file->getUrl());
     }
 
@@ -144,7 +144,7 @@ class AssetsTest extends TestCase
 
         $this->assertEquals('theme', $asset->getHandle());
         $this->assertFalse($asset->file()->isExternal());
-        $this->assertEquals(__DIR__ . '/files/theme.min.js', $asset->getPath());
+        $this->assertEquals(__DIR__.'/files/theme.min.js', $asset->getPath());
         $this->assertEquals('https://www.domain.com/dist/theme.min.js', $asset->getUrl());
         $this->assertEmpty($asset->getDependencies());
         $this->assertNull($asset->getVersion());

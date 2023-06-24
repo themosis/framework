@@ -25,8 +25,6 @@ class ChoiceList implements ChoiceListInterface
 
     /**
      * Format the choices for use on output.
-     *
-     * @return ChoiceListInterface
      */
     public function format(): ChoiceListInterface
     {
@@ -42,7 +40,6 @@ class ChoiceList implements ChoiceListInterface
     /**
      * Parse the choices and format them.
      *
-     * @param array $choices
      *
      * @return array
      */
@@ -69,8 +66,6 @@ class ChoiceList implements ChoiceListInterface
 
     /**
      * Return formatted choices.
-     *
-     * @return array
      */
     public function get(): array
     {

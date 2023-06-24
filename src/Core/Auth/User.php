@@ -11,10 +11,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordInterface;
 use Illuminate\Database\Eloquent\Model;
 use Themosis\Core\Auth\Access\Authorizable;
 
-class User extends Model implements
-    AuthenticatableInterface,
-    AuthorizableInterface,
-    CanResetPasswordInterface
+class User extends Model implements AuthenticatableInterface, AuthorizableInterface, CanResetPasswordInterface
 {
     use Authenticatable;
     use Authorizable;

@@ -32,26 +32,24 @@ class Twig implements Engine
     /**
      * Get the evaluated contents of the view.
      *
-     * @param string $path The file name with its file extension.
-     * @param array  $data View data (context)
+     * @param  string  $path The file name with its file extension.
+     * @param  array  $data View data (context)
+     * @return string
      *
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
-     *
-     * @return string
      */
     public function get($path, array $data = [])
     {
         $name = array_search($path, $this->finder->getViews());
 
-        return $this->twig->render($this->parseFileName($name) . $this->extension, $data);
+        return $this->twig->render($this->parseFileName($name).$this->extension, $data);
     }
 
     /**
      * Parse the view file name. Replace "." by "/" characters.
      *
-     * @param string $name
      *
      * @return string
      */

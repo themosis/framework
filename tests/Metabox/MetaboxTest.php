@@ -264,7 +264,7 @@ class MetaboxTest extends TestCase
         $factory = $this->getFactory();
 
         $box = $factory->make('properties')
-                ->setTemplate('fullwidth');
+            ->setTemplate('fullwidth');
 
         $this->assertEquals(['page' => ['fullwidth']], $box->getTemplate());
 

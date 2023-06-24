@@ -20,18 +20,18 @@ class ApplicationTest extends TestCase
 {
     public function testBasePathSetup()
     {
-        $path = realpath(__DIR__ . '/../../');
+        $path = realpath(__DIR__.'/../../');
         $app = new Application($path);
         $this->assertEquals($path, $app->basePath());
     }
 
     public function testApplicationPaths()
     {
-        $path = realpath(__DIR__ . '/../');
+        $path = realpath(__DIR__.'/../');
         $app = new Application($path);
 
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'app',
+            $path.DIRECTORY_SEPARATOR.'app',
             $app['path'],
             'Cannot get the default path',
         );
@@ -41,41 +41,41 @@ class ApplicationTest extends TestCase
             'Cannot get the base path',
         );
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'content',
+            $path.DIRECTORY_SEPARATOR.'htdocs'.DIRECTORY_SEPARATOR.'content',
             $app['path.content'],
             'Cannot get the content path',
         );
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'mu-plugins',
+            $path.DIRECTORY_SEPARATOR.'htdocs'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'mu-plugins',
             $app['path.muplugins'],
             'Cannot get the mu-plugins path',
         );
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'plugins',
+            $path.DIRECTORY_SEPARATOR.'htdocs'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'plugins',
             $app['path.plugins'],
             'Cannot get the plugins path',
         );
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'themes',
+            $path.DIRECTORY_SEPARATOR.'htdocs'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'themes',
             $app['path.themes'],
             'Cannot get the themes path',
         );
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'app',
+            $path.DIRECTORY_SEPARATOR.'app',
             $app['path.application'],
             'Cannot get the app path',
         );
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'resources',
+            $path.DIRECTORY_SEPARATOR.'resources',
             $app['path.resources'],
         );
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'languages',
+            $path.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'languages',
             $app['path.lang'],
             'Cannot get the languages path',
         );
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'htdocs',
+            $path.DIRECTORY_SEPARATOR.'htdocs',
             $app['path.web'],
             'Cannot get the web path',
         );
@@ -85,32 +85,32 @@ class ApplicationTest extends TestCase
             'Cannot get the root path',
         );
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'config',
+            $path.DIRECTORY_SEPARATOR.'config',
             $app['path.config'],
             'Cannot get the defaut config path',
         );
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'htdocs',
+            $path.DIRECTORY_SEPARATOR.'htdocs',
             $app['path.public'],
             'Cannot get the public path',
         );
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'storage',
+            $path.DIRECTORY_SEPARATOR.'storage',
             $app['path.storage'],
             'Cannot get the storage path',
         );
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'database',
+            $path.DIRECTORY_SEPARATOR.'database',
             $app['path.database'],
             'Cannot get the database path',
         );
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'bootstrap',
+            $path.DIRECTORY_SEPARATOR.'bootstrap',
             $app['path.bootstrap'],
             'Cannot get the bootstrap path',
         );
         $this->assertEquals(
-            $path . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'cms',
+            $path.DIRECTORY_SEPARATOR.'htdocs'.DIRECTORY_SEPARATOR.'cms',
             $app['path.wp'],
             'Cannot get the WordPress path',
         );
@@ -118,7 +118,7 @@ class ApplicationTest extends TestCase
 
     public function testApplicationBaseBindings()
     {
-        $path = realpath(__DIR__ . '/../');
+        $path = realpath(__DIR__.'/../');
         $app = new Application($path);
 
         $this->assertInstanceOf(
@@ -140,7 +140,7 @@ class ApplicationTest extends TestCase
 
     public function testApplicationBaseServiceProviders()
     {
-        $path = realpath(__DIR__ . '/../');
+        $path = realpath(__DIR__.'/../');
         $app = new Application($path);
 
         $this->assertInstanceOf(
@@ -226,7 +226,7 @@ class ApplicationTest extends TestCase
             'foo' => 'Themosis\Tests\Core\ApplicationDeferredServiceStub',
         ]);
         $app->extend('foo', function ($instance, $container) {
-            return $instance . 'bar';
+            return $instance.'bar';
         });
 
         $this->assertEquals('foobar', $app->make('foo'));
@@ -266,7 +266,7 @@ class ApplicationTest extends TestCase
         $this->assertFalse(ApplicationDeferredServiceStub::$initialized);
 
         $app->extend('foo', function ($instance) {
-            return $instance . 'bar';
+            return $instance.'bar';
         });
 
         $this->assertFalse(ApplicationDeferredServiceStub::$initialized);
@@ -394,7 +394,7 @@ class ApplicationMultiProvider extends ServiceProvider
         });
 
         $this->app->singleton('bar', function ($app) {
-            return $app['foo'] . 'bar';
+            return $app['foo'].'bar';
         });
     }
 }

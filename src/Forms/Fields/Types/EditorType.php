@@ -37,8 +37,6 @@ class EditorType extends TextareaType
 
     /**
      * Return field allowed options.
-     *
-     * @return array
      */
     protected function setAllowedOptions(): array
     {
@@ -50,8 +48,6 @@ class EditorType extends TextareaType
 
     /**
      * Return field default options values.
-     *
-     * @return array
      */
     protected function setDefaultOptions(): array
     {
@@ -71,25 +67,23 @@ class EditorType extends TextareaType
     /**
      * Handle field term meta registration.
      *
-     * @param string $value
-     * @param int    $term_id
+     * @param  string  $value
      *
      * @throws NotSupportedFieldException
      */
     public function termSave($value, int $term_id)
     {
-        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on term meta.');
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on term meta.');
     }
 
     /**
      * Handle field term meta initial value.
      *
-     * @param int $term_id
      *
      * @throws NotSupportedFieldException
      */
     public function termGet(int $term_id)
     {
-        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on term meta.');
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on term meta.');
     }
 }

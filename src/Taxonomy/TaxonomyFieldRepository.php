@@ -22,7 +22,7 @@ class TaxonomyFieldRepository implements \Iterator
     /**
      * Add a field to the taxonomy.
      *
-     * @param FieldTypeInterface|array $field
+     * @param  FieldTypeInterface|array  $field
      */
     public function add($field)
     {
@@ -48,11 +48,10 @@ class TaxonomyFieldRepository implements \Iterator
     /**
      * Return a field instance by name.
      *
-     * @param string $name
-     *
-     * @throws TaxonomyFieldNotFoundException
      *
      * @return FieldTypeInterface
+     *
+     * @throws TaxonomyFieldNotFoundException
      */
     public function getFieldByName(string $name)
     {
@@ -90,7 +89,7 @@ class TaxonomyFieldRepository implements \Iterator
      */
     public function next(): void
     {
-        ++$this->position;
+        $this->position++;
     }
 
     /**

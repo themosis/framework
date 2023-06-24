@@ -66,8 +66,6 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Return the section identifier.
-     *
-     * @return string
      */
     public function getId(): string
     {
@@ -76,10 +74,6 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Set the section title.
-     *
-     * @param string $title
-     *
-     * @return SectionInterface
      */
     public function setTitle(string $title): SectionInterface
     {
@@ -90,8 +84,6 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Return the section title.
-     *
-     * @return string
      */
     public function getTitle(): string
     {
@@ -100,10 +92,6 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Set the section view file.
-     *
-     * @param string $view
-     *
-     * @return SectionInterface
      */
     public function setView(string $view): SectionInterface
     {
@@ -114,15 +102,11 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Get the section view file.
-     *
-     * @param bool $prefixed
-     *
-     * @return string
      */
     public function getView(bool $prefixed = false): string
     {
         if ($prefixed) {
-            return $this->getTheme() . '.' . $this->view;
+            return $this->getTheme().'.'.$this->view;
         }
 
         return $this->view;
@@ -130,10 +114,6 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Set the section theme.
-     *
-     * @param string $theme
-     *
-     * @return SectionInterface
      */
     public function setTheme(string $theme): SectionInterface
     {
@@ -144,8 +124,6 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Return the section theme.
-     *
-     * @return string
      */
     public function getTheme(): string
     {
@@ -154,10 +132,6 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Set section view data array.
-     *
-     * @param array $data
-     *
-     * @return SectionInterface
      */
     public function setViewData(array $data): SectionInterface
     {
@@ -175,8 +149,6 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Return the view data array.
-     *
-     * @return array
      */
     public function getViewData(): array
     {
@@ -185,10 +157,6 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Set section items instances.
-     *
-     * @param array $items
-     *
-     * @return SectionInterface
      */
     public function setItems(array $items): SectionInterface
     {
@@ -199,8 +167,6 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Get section items instances.
-     *
-     * @return array
      */
     public function getItems(): array
     {
@@ -210,9 +176,7 @@ class Section implements SectionInterface, Iterator, Countable
     /**
      * Add an item to the section.
      *
-     * @param mixed $item
-     *
-     * @return SectionInterface
+     * @param  mixed  $item
      */
     public function addItem($item): SectionInterface
     {
@@ -223,8 +187,6 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Check if the section contains items.
-     *
-     * @return bool
      */
     public function hasItems(): bool
     {
@@ -233,8 +195,6 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Get current item.
-     *
-     * @return mixed
      */
     public function current(): mixed
     {
@@ -246,13 +206,11 @@ class Section implements SectionInterface, Iterator, Countable
      */
     public function next(): void
     {
-        ++$this->position;
+        $this->position++;
     }
 
     /**
      * Get current key position.
-     *
-     * @return int
      */
     public function key(): int
     {
@@ -261,8 +219,6 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Check if item is valid or exists.
-     *
-     * @return bool
      */
     public function valid(): bool
     {
@@ -279,8 +235,6 @@ class Section implements SectionInterface, Iterator, Countable
 
     /**
      * Return the number of items.
-     *
-     * @return int
      */
     public function count(): int
     {

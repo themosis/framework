@@ -8,11 +8,7 @@ use Themosis\Forms\Fields\Contracts\CanHandleTerms;
 use Themosis\Forms\Fields\Contracts\CanHandleUsers;
 use Themosis\Forms\Transformers\IntegerToLocalizedStringTransformer;
 
-class IntegerType extends BaseType implements
-    CanHandleMetabox,
-    CanHandlePageSettings,
-    CanHandleTerms,
-    CanHandleUsers
+class IntegerType extends BaseType implements CanHandleMetabox, CanHandlePageSettings, CanHandleTerms, CanHandleUsers
 {
     /**
      * IntegerType field view.
@@ -37,10 +33,6 @@ class IntegerType extends BaseType implements
 
     /**
      * Parse and setup default options.
-     *
-     * @param array $options
-     *
-     * @return array
      */
     protected function parseOptions(array $options): array
     {
@@ -52,8 +44,7 @@ class IntegerType extends BaseType implements
     /**
      * Handle integer field post meta registration.
      *
-     * @param string $value
-     * @param int    $post_id
+     * @param  string  $value
      */
     public function metaboxSave($value, int $post_id)
     {
@@ -72,8 +63,6 @@ class IntegerType extends BaseType implements
 
     /**
      * Initialize the integer field value.
-     *
-     * @param int $post_id
      */
     public function metaboxGet(int $post_id)
     {
@@ -87,8 +76,7 @@ class IntegerType extends BaseType implements
     /**
      * Handle field term meta registration.
      *
-     * @param string $value
-     * @param int    $term_id
+     * @param  string  $value
      */
     public function termSave($value, int $term_id)
     {
@@ -107,8 +95,6 @@ class IntegerType extends BaseType implements
 
     /**
      * Handle field term meta initial value.
-     *
-     * @param int $term_id
      */
     public function termGet(int $term_id)
     {
@@ -121,8 +107,6 @@ class IntegerType extends BaseType implements
 
     /**
      * Handle field user meta initial value.
-     *
-     * @param int $user_id
      */
     public function userGet(int $user_id)
     {
@@ -136,8 +120,7 @@ class IntegerType extends BaseType implements
     /**
      * Handle field user meta registration.
      *
-     * @param array|string $value
-     * @param int          $user_id
+     * @param  array|string  $value
      */
     public function userSave($value, int $user_id)
     {
@@ -157,8 +140,7 @@ class IntegerType extends BaseType implements
     /**
      * Save the field setting value.
      *
-     * @param mixed  $value
-     * @param string $name
+     * @param  mixed  $value
      */
     public function settingSave($value, string $name)
     {

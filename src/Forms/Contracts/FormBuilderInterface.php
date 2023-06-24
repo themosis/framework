@@ -7,7 +7,6 @@ interface FormBuilderInterface
     /**
      * Add a field to the current form instance.
      *
-     * @param FieldTypeInterface $field
      *
      * @return $this
      */
@@ -15,8 +14,6 @@ interface FormBuilderInterface
 
     /**
      * Return generated form instance.
-     *
-     * @return FormInterface
      */
     public function get(): FormInterface;
 }

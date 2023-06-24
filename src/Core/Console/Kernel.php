@@ -100,8 +100,6 @@ class Kernel implements KernelContract
 
     /**
      * Define the application's command schedule.
-     *
-     * @param Schedule $schedule
      */
     protected function schedule(Schedule $schedule)
     {
@@ -123,9 +121,8 @@ class Kernel implements KernelContract
     /**
      * Run the console application.
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $input
-     * @param null                                            $output
-     *
+     * @param  \Symfony\Component\Console\Input\InputInterface  $input
+     * @param  null  $output
      * @return int
      */
     public function handle($input, $output = null)
@@ -145,8 +142,8 @@ class Kernel implements KernelContract
     /**
      * Terminate the application.
      *
-     * @param InputInterface $input
-     * @param int            $status
+     * @param  InputInterface  $input
+     * @param  int  $status
      */
     public function terminate($input, $status)
     {
@@ -182,9 +179,7 @@ class Kernel implements KernelContract
     /**
      * Register a closure based command with the application.
      *
-     * @param string   $signature
-     * @param \Closure $callback
-     *
+     * @param  string  $signature
      * @return ClosureCommand
      */
     public function command($signature, \Closure $callback)
@@ -201,7 +196,7 @@ class Kernel implements KernelContract
     /**
      * Register the given command with the console applicationb.
      *
-     * @param \Symfony\Component\Console\Command\Command $command
+     * @param  \Symfony\Component\Console\Command\Command  $command
      */
     public function registerCommand($command)
     {
@@ -221,7 +216,7 @@ class Kernel implements KernelContract
     /**
      * Register all of the commands in the given directory.
      *
-     * @param array|string $paths
+     * @param  array|string  $paths
      *
      * @throws \ReflectionException
      */
@@ -240,10 +235,10 @@ class Kernel implements KernelContract
         $namespace = $this->app->getNamespace();
 
         foreach ((new Finder())->in($paths)->files() as $command) {
-            $command = $namespace . str_replace(
+            $command = $namespace.str_replace(
                 ['/', '.php'],
                 ['\\', ''],
-                Str::after($command->getPathname(), app_path() . DIRECTORY_SEPARATOR),
+                Str::after($command->getPathname(), app_path().DIRECTORY_SEPARATOR),
             );
 
             if (is_subclass_of($command, Command::class) && ! (new \ReflectionClass($command))->isAbstract()) {
@@ -282,7 +277,7 @@ class Kernel implements KernelContract
     /**
      * Alias. Set the console application instance.
      *
-     * @param \Illuminate\Console\Application $console
+     * @param  \Illuminate\Console\Application  $console
      */
     public function setConsole($console)
     {
@@ -292,7 +287,7 @@ class Kernel implements KernelContract
     /**
      * Set the console application instance.
      *
-     * @param \Illuminate\Console\Application $artisan
+     * @param  \Illuminate\Console\Application  $artisan
      */
     public function setArtisan($artisan)
     {
@@ -302,10 +297,8 @@ class Kernel implements KernelContract
     /**
      * Run a console command by name.
      *
-     * @param string          $command
-     * @param array           $parameters
-     * @param OutputInterface $outputBuffer
-     *
+     * @param  string  $command
+     * @param  OutputInterface  $outputBuffer
      * @return int
      */
     public function call($command, array $parameters = [], $outputBuffer = null)
@@ -318,9 +311,7 @@ class Kernel implements KernelContract
     /**
      * Queue the given console command.
      *
-     * @param string $command
-     * @param array  $parameters
-     *
+     * @param  string  $command
      * @return \Themosis\Core\Bus\PendingDispatch
      */
     public function queue($command, array $parameters = [])
@@ -354,8 +345,6 @@ class Kernel implements KernelContract
 
     /**
      * Report the exception to the exception handler.
-     *
-     * @param Throwable $e
      */
     protected function reportException(Throwable $e)
     {
@@ -365,8 +354,7 @@ class Kernel implements KernelContract
     /**
      * Render the exception.
      *
-     * @param OutputInterface $output
-     * @param Throwable       $e
+     * @param  OutputInterface  $output
      */
     protected function renderException($output, Throwable $e)
     {

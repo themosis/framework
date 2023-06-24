@@ -9,7 +9,6 @@ class ChoiceFieldTransformer extends FieldTransformer
     /**
      * Return choice field options.
      *
-     * @param FieldTypeInterface $field
      *
      * @return array
      */
@@ -25,7 +24,6 @@ class ChoiceFieldTransformer extends FieldTransformer
     /**
      * Parse field choices.
      *
-     * @param array $choices
      *
      * @return array
      */

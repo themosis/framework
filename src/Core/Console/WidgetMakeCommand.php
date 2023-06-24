@@ -34,18 +34,17 @@ class WidgetMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__ . '/stubs/widget.stub';
+        return __DIR__.'/stubs/widget.stub';
     }
 
     /**
      * Return the class default namespace.
      *
-     * @param string $rootNamespace
-     *
+     * @param  string  $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Widgets';
+        return $rootNamespace.'\Widgets';
     }
 }

@@ -37,15 +37,15 @@ class PackageManifest
         $this->files = $files;
         $this->basePath = $basePath;
         $this->manifestPath = $manifestPath;
-        $this->vendorPath = $basePath . '/vendor';
+        $this->vendorPath = $basePath.'/vendor';
     }
 
     /**
      * Get aliases of all the packages.
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
      * @return array
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function aliases()
     {
@@ -55,9 +55,9 @@ class PackageManifest
     /**
      * Get providers of all the packages.
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
      * @return array
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function providers()
     {
@@ -67,11 +67,10 @@ class PackageManifest
     /**
      * Get manifest items by key.
      *
-     * @param string $key
+     * @param  string  $key
+     * @return array
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
-     * @return array
      */
     public function get($key = 'aliases')
     {
@@ -83,9 +82,9 @@ class PackageManifest
     /**
      * Get the current packages manifest.
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
      * @return array
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function getManifest()
     {
@@ -108,7 +107,7 @@ class PackageManifest
     {
         $packages = [];
 
-        if ($this->files->exists($path = $this->vendorPath . '/composer/installed.json')) {
+        if ($this->files->exists($path = $this->vendorPath.'/composer/installed.json')) {
             $packages = json_decode($this->files->get($path), true);
         }
 
@@ -130,12 +129,12 @@ class PackageManifest
      */
     protected function packagesToIgnore()
     {
-        if (! file_exists($this->basePath . '/composer.json')) {
+        if (! file_exists($this->basePath.'/composer.json')) {
             return [];
         }
 
         return json_decode(
-            file_get_contents($this->basePath . '/composer.json'),
+            file_get_contents($this->basePath.'/composer.json'),
             true,
         )['extra']['laravel']['dont-discover'] ?? [];
     }
@@ -143,31 +142,29 @@ class PackageManifest
     /**
      * Format given package name.
      *
-     * @param string $package
-     *
+     * @param  string  $package
      * @return string
      */
     protected function format($package)
     {
-        return str_replace($this->vendorPath . '/', '', $package);
+        return str_replace($this->vendorPath.'/', '', $package);
     }
 
     /**
      * Write the given manifest to disk.
      *
-     * @param array $manifest
      *
      * @throws Exception
      */
     protected function write(array $manifest)
     {
         if (! is_writable(dirname($this->manifestPath))) {
-            throw new Exception('The ' . dirname($this->manifestPath) . ' directory must be present and writable.');
+            throw new Exception('The '.dirname($this->manifestPath).' directory must be present and writable.');
         }
 
         $this->files->put(
             $this->manifestPath,
-            '<?php return ' . var_export($manifest, true) . ';',
+            '<?php return '.var_export($manifest, true).';',
         );
     }
 }

@@ -14,13 +14,7 @@ use Themosis\Forms\Fields\Contracts\CanHandleUsers;
 use Themosis\Forms\Resources\Transformers\ChoiceFieldTransformer;
 use Themosis\Forms\Transformers\ChoiceToValueTransformer;
 
-class ChoiceType extends BaseType implements
-    CheckableInterface,
-    SelectableInterface,
-    CanHandleMetabox,
-    CanHandlePageSettings,
-    CanHandleTerms,
-    CanHandleUsers
+class ChoiceType extends BaseType implements CheckableInterface, SelectableInterface, CanHandleMetabox, CanHandlePageSettings, CanHandleTerms, CanHandleUsers
 {
     /**
      * Field layout.
@@ -69,8 +63,6 @@ class ChoiceType extends BaseType implements
 
     /**
      * Define the field allowed options.
-     *
-     * @return array
      */
     protected function setAllowedOptions(): array
     {
@@ -84,8 +76,6 @@ class ChoiceType extends BaseType implements
 
     /**
      * Define the field default options values.
-     *
-     * @return array
      */
     protected function setDefaultOptions(): array
     {
@@ -107,10 +97,6 @@ class ChoiceType extends BaseType implements
 
     /**
      * Parse and setup some default options if not set.
-     *
-     * @param array $options
-     *
-     * @return array
      */
     protected function parseOptions(array $options): array
     {
@@ -140,9 +126,8 @@ class ChoiceType extends BaseType implements
     /**
      * Set the field layout option.
      *
-     * @param bool $expanded
-     * @param bool $multiple
-     *
+     * @param  bool  $expanded
+     * @param  bool  $multiple
      * @return $this
      */
     protected function setLayout($expanded = false, $multiple = false)
@@ -158,10 +143,6 @@ class ChoiceType extends BaseType implements
 
     /**
      * Return choice type field options.
-     *
-     * @param array|null $excludes
-     *
-     * @return array
      */
     public function getOptions(array $excludes = null): array
     {
@@ -194,12 +175,7 @@ class ChoiceType extends BaseType implements
     }
 
     /**
-     * @inheritdoc
-     *
-     * @param callable $callback
-     * @param array    $args
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function checked(callable $callback, array $args): string
     {
@@ -207,12 +183,7 @@ class ChoiceType extends BaseType implements
     }
 
     /**
-     * @inheritdoc
-     *
-     * @param callable $callback
-     * @param array    $args
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function selected(callable $callback, array $args): string
     {
@@ -222,8 +193,7 @@ class ChoiceType extends BaseType implements
     /**
      * Handle metabox field value registration.
      *
-     * @param string|array $value
-     * @param int          $post_id
+     * @param  string|array  $value
      */
     public function metaboxSave($value, int $post_id)
     {
@@ -238,8 +208,6 @@ class ChoiceType extends BaseType implements
 
     /**
      * Initialize metabox field value.
-     *
-     * @param int $post_id
      */
     public function metaboxGet(int $post_id)
     {
@@ -253,8 +221,7 @@ class ChoiceType extends BaseType implements
     /**
      * Save a single value.
      *
-     * @param string $value
-     * @param int    $post_id
+     * @param  string  $value
      */
     protected function saveSingleValue($value, int $post_id)
     {
@@ -272,8 +239,7 @@ class ChoiceType extends BaseType implements
     /**
      * Save multiple values.
      *
-     * @param array $value
-     * @param int   $post_id
+     * @param  array  $value
      */
     protected function saveMultipleValue($value, int $post_id)
     {
@@ -297,8 +263,7 @@ class ChoiceType extends BaseType implements
     /**
      * Handle field term meta registration.
      *
-     * @param string|array $value
-     * @param int          $term_id
+     * @param  string|array  $value
      */
     public function termSave($value, int $term_id)
     {
@@ -314,8 +279,7 @@ class ChoiceType extends BaseType implements
     /**
      * Handle field single term meta registration.
      *
-     * @param string $value
-     * @param int    $term_id
+     * @param  string  $value
      */
     protected function saveTermSingleValue($value, int $term_id)
     {
@@ -332,9 +296,6 @@ class ChoiceType extends BaseType implements
 
     /**
      * Handle field multiple term meta registration.
-     *
-     * @param $value
-     * @param int $term_id
      */
     protected function saveTermMultipleValue($value, int $term_id)
     {
@@ -357,8 +318,6 @@ class ChoiceType extends BaseType implements
 
     /**
      * Handle field term meta initial value.
-     *
-     * @param int $term_id
      */
     public function termGet(int $term_id)
     {
@@ -371,8 +330,6 @@ class ChoiceType extends BaseType implements
 
     /**
      * Handle field user meta initial value.
-     *
-     * @param int $user_id
      */
     public function userGet(int $user_id)
     {
@@ -386,8 +343,7 @@ class ChoiceType extends BaseType implements
     /**
      * Handle field user meta registration.
      *
-     * @param array|string $value
-     * @param int          $user_id
+     * @param  array|string  $value
      */
     public function userSave($value, int $user_id)
     {
@@ -403,8 +359,7 @@ class ChoiceType extends BaseType implements
     /**
      * Handle field user meta single data registration.
      *
-     * @param string $value
-     * @param int    $user_id
+     * @param  string  $value
      */
     protected function saveUserSingleValue($value, int $user_id)
     {
@@ -422,8 +377,7 @@ class ChoiceType extends BaseType implements
     /**
      * Handle field user meta multiple data registration.
      *
-     * @param array $value
-     * @param int   $user_id
+     * @param  array  $value
      */
     protected function saveUserMultipleValue($value, int $user_id)
     {
@@ -447,8 +401,7 @@ class ChoiceType extends BaseType implements
     /**
      * Save the field setting value.
      *
-     * @param mixed  $value
-     * @param string $name
+     * @param  mixed  $value
      */
     public function settingSave($value, string $name)
     {

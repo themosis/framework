@@ -11,12 +11,7 @@ use Themosis\Forms\Fields\Contracts\CanHandleUsers;
 use Themosis\Forms\Fields\Exceptions\NotSupportedFieldException;
 use Themosis\Forms\Resources\Transformers\MediaFieldTransformer;
 
-class MediaType extends BaseType implements
-    DataTransformerInterface,
-    CanHandleMetabox,
-    CanHandlePageSettings,
-    CanHandleTerms,
-    CanHandleUsers
+class MediaType extends BaseType implements DataTransformerInterface, CanHandleMetabox, CanHandlePageSettings, CanHandleTerms, CanHandleUsers
 {
     /**
      * Field type.
@@ -49,8 +44,6 @@ class MediaType extends BaseType implements
 
     /**
      * Define the field allowed options.
-     *
-     * @return array
      */
     protected function setAllowedOptions(): array
     {
@@ -61,8 +54,6 @@ class MediaType extends BaseType implements
 
     /**
      * Define the field default options values.
-     *
-     * @return array
      */
     protected function setDefaultOptions(): array
     {
@@ -86,10 +77,6 @@ class MediaType extends BaseType implements
 
     /**
      * Parse and setup default options.
-     *
-     * @param array $options
-     *
-     * @return array
      */
     protected function parseOptions(array $options): array
     {
@@ -99,10 +86,9 @@ class MediaType extends BaseType implements
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
-     * @param string|null $data
-     *
+     * @param  string|null  $data
      * @return int|string
      */
     public function transform($data)
@@ -111,10 +97,9 @@ class MediaType extends BaseType implements
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      *
-     * @param string $data
-     *
+     * @param  string  $data
      * @return int|string
      */
     public function reverseTransform($data)
@@ -125,8 +110,7 @@ class MediaType extends BaseType implements
     /**
      * Handle media field post meta registration.
      *
-     * @param string|int $value
-     * @param int        $post_id
+     * @param  string|int  $value
      */
     public function metaboxSave($value, int $post_id)
     {
@@ -145,8 +129,6 @@ class MediaType extends BaseType implements
 
     /**
      * Initialize media field value on a metabox context.
-     *
-     * @param int $post_id
      */
     public function metaboxGet(int $post_id)
     {
@@ -160,70 +142,65 @@ class MediaType extends BaseType implements
     /**
      * Handle field term meta registration.
      *
-     * @param string $value
-     * @param int    $term_id
+     * @param  string  $value
      *
      * @throws NotSupportedFieldException
      */
     public function termSave($value, int $term_id)
     {
-        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on term meta.');
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on term meta.');
     }
 
     /**
      * Handle field term meta initial value.
      *
-     * @param int $term_id
      *
      * @throws NotSupportedFieldException
      */
     public function termGet(int $term_id)
     {
-        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on term meta.');
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on term meta.');
     }
 
     /**
      * Handle field user meta initial value.
      *
-     * @param int $user_id
      *
      * @throws NotSupportedFieldException
      */
     public function userGet(int $user_id)
     {
-        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on user meta.');
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on user meta.');
     }
 
     /**
      * Handle field user meta registration.
      *
-     * @param array|string $value
-     * @param int          $user_id
+     * @param  array|string  $value
      *
      * @throws NotSupportedFieldException
      */
     public function userSave($value, int $user_id)
     {
-        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on user meta.');
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on user meta.');
     }
 
     /**
      * Return the field setting value.
      *
-     * @throws NotSupportedFieldException
-     *
      * @return mixed
+     *
+     * @throws NotSupportedFieldException
      */
     public function settingGet()
     {
-        throw new NotSupportedFieldException('Field ' . get_class($this) . ' is not supported on page settings.');
+        throw new NotSupportedFieldException('Field '.get_class($this).' is not supported on page settings.');
     }
 
     /**
      * Save the field setting value.
      *
-     * @param mixed  $value
-     * @param string $name
+     * @param  mixed  $value
      */
     public function settingSave($value, string $name)
     {

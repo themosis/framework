@@ -25,10 +25,9 @@ class Router extends IlluminateRouter
     /**
      * Create a new Route object.
      *
-     * @param array|string $methods
-     * @param string       $uri
-     * @param mixed        $action
-     *
+     * @param  array|string  $methods
+     * @param  string  $uri
+     * @param  mixed  $action
      * @return \Illuminate\Routing\Route
      */
     public function newRoute($methods, $uri, $action)
@@ -49,11 +48,10 @@ class Router extends IlluminateRouter
     /**
      * Find the route matching a given request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Routing\Route
      *
      * @throws \Illuminate\Container\EntryNotFoundException
-     *
-     * @return \Illuminate\Routing\Route
      */
     protected function findRoute($request)
     {
@@ -73,8 +71,6 @@ class Router extends IlluminateRouter
 
     /**
      * Setup WordPress conditions.
-     *
-     * @param array $conditions
      */
     public function setConditions(array $conditions = [])
     {
@@ -93,8 +89,7 @@ class Router extends IlluminateRouter
     /**
      * Add WordPress default parameters if WordPress route.
      *
-     * @param \Themosis\Route\Route $route
-     *
+     * @param  \Themosis\Route\Route  $route
      * @return \Themosis\Route\Route
      */
     public function addWordPressBindings($route)
@@ -116,8 +111,6 @@ class Router extends IlluminateRouter
     /**
      * Register the typical authentication routes for an application.
      * Avoid WordPress default endpoints.
-     *
-     * @param array $options
      */
     public function auth(array $options = [])
     {

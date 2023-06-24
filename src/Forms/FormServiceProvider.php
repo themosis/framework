@@ -18,7 +18,7 @@ class FormServiceProvider extends ServiceProvider
 
         /** @var \Illuminate\View\Factory $view */
         $view = $this->app['view'];
-        $view->addLocation(__DIR__ . '/views');
+        $view->addLocation(__DIR__.'/views');
 
         $this->app->singleton('form', function ($app) {
             return new FormFactory(
@@ -71,7 +71,7 @@ class FormServiceProvider extends ServiceProvider
         // second parameter is a string representing the field name
         // without a prefix - as registered when building the form.
         Blade::directive('formField', function ($expression) {
-            list($form, $fieldName) = array_map('trim', explode(',', $expression));
+            [$form, $fieldName] = array_map('trim', explode(',', $expression));
 
             return "<?php echo ($form)->repository()->getFieldByName($fieldName)->render(); ?>";
         });

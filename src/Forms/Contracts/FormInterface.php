@@ -11,24 +11,16 @@ interface FormInterface
 {
     /**
      * Return the form repository instance.
-     *
-     * @return FieldsRepositoryInterface
      */
     public function repository(): FieldsRepositoryInterface;
 
     /**
      * Handle request in order to validate form data.
-     *
-     * @param Request $request
-     *
-     * @return FormInterface
      */
     public function handleRequest(Request $request): FormInterface;
 
     /**
      * Return a list of errors.
-     *
-     * @return MessageBag
      */
     public function errors(): MessageBag;
 
@@ -38,8 +30,6 @@ interface FormInterface
      * can fetch the first error message only on the
      * mentioned field.
      *
-     * @param string $name
-     * @param bool   $first
      *
      * @return mixed
      */
@@ -47,25 +37,16 @@ interface FormInterface
 
     /**
      * Set form group view file.
-     *
-     * @param string $view
-     * @param string $group
-     *
-     * @return FormInterface
      */
     public function setGroupView(string $view, string $group = 'default'): FormInterface;
 
     /**
      * Get the view factory instance.
-     *
-     * @return Factory
      */
     public function getViewer(): Factory;
 
     /**
      * Get the Fractal manager.
-     *
-     * @return Manager
      */
     public function getManager(): Manager;
 }

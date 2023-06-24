@@ -5,9 +5,13 @@ namespace Themosis\Tests\Forms\Entities;
 class ContactEntity
 {
     private $id;
+
     private $firstname;
+
     private $lastname;
+
     private $email;
+
     private $company;
 
     /**
@@ -19,7 +23,7 @@ class ContactEntity
     }
 
     /**
-     * @param mixed $company
+     * @param  mixed  $company
      */
     public function setCompany($company): void
     {
@@ -35,8 +39,7 @@ class ContactEntity
     }
 
     /**
-     * @param mixed $id
-     *
+     * @param  mixed  $id
      * @return $this
      */
     public function setId($id)
@@ -55,8 +58,7 @@ class ContactEntity
     }
 
     /**
-     * @param mixed $firstname
-     *
+     * @param  mixed  $firstname
      * @return $this
      */
     public function setFirstname($firstname)
@@ -75,8 +77,7 @@ class ContactEntity
     }
 
     /**
-     * @param mixed $lastname
-     *
+     * @param  mixed  $lastname
      * @return $this
      */
     public function setLastname($lastname)
@@ -95,8 +96,7 @@ class ContactEntity
     }
 
     /**
-     * @param mixed $email
-     *
+     * @param  mixed  $email
      * @return $this
      */
     public function setEmail($email)

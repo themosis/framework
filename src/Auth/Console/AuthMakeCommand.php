@@ -93,7 +93,7 @@ class AuthMakeCommand extends Command
             $this->exportForms();
             $this->files->append(
                 base_path('routes/web.php'),
-                $this->files->get(__DIR__ . '/stubs/make/routes.stub'),
+                $this->files->get(__DIR__.'/stubs/make/routes.stub'),
             );
         }
 
@@ -128,14 +128,14 @@ class AuthMakeCommand extends Command
     protected function exportViews()
     {
         foreach ($this->views as $pathIn => $pathOut) {
-            if ($this->files->exists($view = resource_path('views/' . $pathOut)) && ! $this->option('force')) {
+            if ($this->files->exists($view = resource_path('views/'.$pathOut)) && ! $this->option('force')) {
                 if (! $this->confirm("The [{$pathOut}] view already exists. Do you want to overwrite it?")) {
                     continue;
                 }
             }
 
             $this->files->copy(
-                __DIR__ . '/stubs/make/views/' . $pathIn,
+                __DIR__.'/stubs/make/views/'.$pathIn,
                 $view,
             );
         }
@@ -147,7 +147,7 @@ class AuthMakeCommand extends Command
     protected function exportControllers()
     {
         foreach ($this->controllers as $pathIn => $pathOut) {
-            if ($this->files->exists($controller = app_path('Http/Controllers/' . $pathOut))
+            if ($this->files->exists($controller = app_path('Http/Controllers/'.$pathOut))
                 && ! $this->option('force')) {
                 if (! $this->confirm("The [{$pathOut}] controller already exists. Do you want to overwrite it?")) {
                     continue;
@@ -156,7 +156,7 @@ class AuthMakeCommand extends Command
 
             $this->files->put(
                 $controller,
-                $this->compileStub($this->files->get(__DIR__ . '/stubs/make/controllers/' . $pathIn)),
+                $this->compileStub($this->files->get(__DIR__.'/stubs/make/controllers/'.$pathIn)),
             );
         }
     }
@@ -167,7 +167,7 @@ class AuthMakeCommand extends Command
     protected function exportForms()
     {
         foreach ($this->forms as $pathIn => $pathOut) {
-            if ($this->files->exists($form = app_path('Forms/' . $pathOut)) && ! $this->option('force')) {
+            if ($this->files->exists($form = app_path('Forms/'.$pathOut)) && ! $this->option('force')) {
                 if (! $this->confirm("The [{$pathOut}] form already exists. Do you want to overwrite it?")) {
                     continue;
                 }
@@ -175,7 +175,7 @@ class AuthMakeCommand extends Command
 
             $this->files->put(
                 $form,
-                $this->compileStub($this->files->get(__DIR__ . '/stubs/make/forms/' . $pathIn)),
+                $this->compileStub($this->files->get(__DIR__.'/stubs/make/forms/'.$pathIn)),
             );
         }
     }
@@ -183,11 +183,10 @@ class AuthMakeCommand extends Command
     /**
      * Compile controller content.
      *
-     * @param string $content
-     *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
      * @return string
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function compileStub(string $content)
     {

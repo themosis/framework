@@ -37,37 +37,35 @@ class ExceptionMakeCommand extends GeneratorCommand
     {
         if ($this->option('render')) {
             return $this->option('report')
-                ? __DIR__ . '/stubs/exception-render-report.stub'
-                : __DIR__ . '/stubs/exception-render.stub';
+                ? __DIR__.'/stubs/exception-render-report.stub'
+                : __DIR__.'/stubs/exception-render.stub';
         }
 
         return $this->option('report')
-            ? __DIR__ . '/stubs/exception-report.stub'
-            : __DIR__ . '/stubs/exception.stub';
+            ? __DIR__.'/stubs/exception-report.stub'
+            : __DIR__.'/stubs/exception.stub';
     }
 
     /**
      * Determine if the class already exists.
      *
-     * @param string $rawName
-     *
+     * @param  string  $rawName
      * @return bool
      */
     protected function alreadyExists($rawName)
     {
-        return class_exists($this->rootNamespace() . 'Exceptions\\' . $rawName);
+        return class_exists($this->rootNamespace().'Exceptions\\'.$rawName);
     }
 
     /**
      * Get the default namespace for the class.
      *
-     * @param string $rootNamespace
-     *
+     * @param  string  $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Exceptions';
+        return $rootNamespace.'\Exceptions';
     }
 
     /**

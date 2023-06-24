@@ -22,9 +22,7 @@ class MetaboxApiController
     /**
      * GET /metabox/{id} API route
      *
-     * @param Request $request
-     * @param string  $id      The metabox unique ID.
-     *
+     * @param  string  $id      The metabox unique ID.
      * @return JsonResponse
      */
     public function show(Request $request, $id)
@@ -47,9 +45,7 @@ class MetaboxApiController
      * PUT /metabox/{id} API route
      * Handle metabox fields update/save data.
      *
-     * @param Request $request
-     * @param string  $id      The metabox unique ID.
-     *
+     * @param  string  $id      The metabox unique ID.
      * @return JsonResponse
      */
     public function update(Request $request, $id)

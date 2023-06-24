@@ -16,7 +16,7 @@ class FieldTest extends TestCase
     {
         return new Factory(
             $this->getApplication(),
-            $this->getViewFactory($this->getApplication(), [__DIR__ . '/views']),
+            $this->getViewFactory($this->getApplication(), [__DIR__.'/views']),
         );
     }
 

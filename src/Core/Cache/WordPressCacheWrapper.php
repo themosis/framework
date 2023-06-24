@@ -57,8 +57,6 @@ class WordPressCacheWrapper
 
     /**
      * Sets the list of global cache groups.
-     *
-     * @param array $groups
      */
     public function addGlobalGroups(array $groups)
     {
@@ -72,8 +70,6 @@ class WordPressCacheWrapper
 
     /**
      * Adds a group or set of groups to the list of non-persistent groups.
-     *
-     * @param array $groups
      */
     public function addNonPersistentGroups(array $groups)
     {
@@ -87,12 +83,10 @@ class WordPressCacheWrapper
 
     /**
      * Switches the internal blog prefix ID.
-     *
-     * @param int $blog_id
      */
     public function switchToBlog(int $blog_id)
     {
-        $this->blogPrefix = $this->multisite ? $blog_id . ':' : '';
+        $this->blogPrefix = $this->multisite ? $blog_id.':' : '';
     }
 
     /**
@@ -100,8 +94,6 @@ class WordPressCacheWrapper
      * WordPress cache keys are stored using a nomenclature
      * in their name: groupname_keyname
      *
-     * @param string $key
-     * @param string $group
      *
      * @return string
      */
@@ -113,14 +105,13 @@ class WordPressCacheWrapper
     /**
      * Retrieves the cache contents, it it exists.
      *
-     * @param string|int $key
-     * @param string     $group
-     * @param bool       $force
-     * @param null       $found
+     * @param  string|int  $key
+     * @param  string  $group
+     * @param  bool  $force
+     * @param  null  $found
+     * @return bool|mixed False on failure. Cache value on success.
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *
-     * @return bool|mixed False on failure. Cache value on success.
      */
     public function get($key, $group = 'default', $force = false, &$found = null)
     {
@@ -129,7 +120,7 @@ class WordPressCacheWrapper
         }
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
-            $key = $this->blogPrefix . $key;
+            $key = $this->blogPrefix.$key;
         }
 
         $key = $this->formatKeyName($key, $group);
@@ -146,14 +137,13 @@ class WordPressCacheWrapper
     /**
      * Store an item into the cache.
      *
-     * @param string|int $key
-     * @param mixed      $data
-     * @param string     $group
-     * @param int        $expire
+     * @param  string|int  $key
+     * @param  mixed  $data
+     * @param  string  $group
+     * @param  int  $expire
+     * @return bool
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *
-     * @return bool
      */
     public function set($key, $data, $group = 'default', $expire = 0)
     {
@@ -162,7 +152,7 @@ class WordPressCacheWrapper
         }
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
-            $key = $this->blogPrefix . $key;
+            $key = $this->blogPrefix.$key;
         }
 
         $key = $this->formatKeyName($key, $group);
@@ -173,14 +163,12 @@ class WordPressCacheWrapper
     /**
      * Adds data to the cache if the cache key doesn't already exist.
      *
-     * @param string|int $key
-     * @param mixed      $data
-     * @param string     $group
-     * @param int        $expire
+     * @param  string|int  $key
+     * @param  mixed  $data
+     * @param  string  $group
+     * @param  int  $expire
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *
-     * @return bool
      */
     public function add($key, $data, $group = 'default', $expire = 0): bool
     {
@@ -197,7 +185,7 @@ class WordPressCacheWrapper
         $id = $key;
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
-            $id = $this->blogPrefix . $key;
+            $id = $this->blogPrefix.$key;
         }
 
         $id = $this->formatKeyName($id, $group);
@@ -212,13 +200,12 @@ class WordPressCacheWrapper
     /**
      * Decrement numeric cache item's value.
      *
-     * @param string|int $key
-     * @param int        $offset
-     * @param string     $group
+     * @param  string|int  $key
+     * @param  int  $offset
+     * @param  string  $group
+     * @return bool|int
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *
-     * @return bool|int
      */
     public function decrement($key, $offset = 1, $group = 'default')
     {
@@ -227,7 +214,7 @@ class WordPressCacheWrapper
         }
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
-            $key = $this->blogPrefix . $key;
+            $key = $this->blogPrefix.$key;
         }
 
         $key = $this->formatKeyName($key, $group);
@@ -242,13 +229,12 @@ class WordPressCacheWrapper
     /**
      * Increment numeric cache item's value.
      *
-     * @param string|int $key
-     * @param int        $offset
-     * @param string     $group
+     * @param  string|int  $key
+     * @param  int  $offset
+     * @param  string  $group
+     * @return bool|int
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *
-     * @return bool|int
      */
     public function increment($key, $offset = 1, $group = 'default')
     {
@@ -257,7 +243,7 @@ class WordPressCacheWrapper
         }
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
-            $key = $this->blogPrefix . $key;
+            $key = $this->blogPrefix.$key;
         }
 
         $key = $this->formatKeyName($key, $group);
@@ -272,12 +258,11 @@ class WordPressCacheWrapper
     /**
      * Removes the cache contents matching key.
      *
-     * @param string|int $key
-     * @param string     $group
+     * @param  string|int  $key
+     * @param  string  $group
+     * @return bool
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *
-     * @return bool
      */
     public function delete($key, $group = 'default')
     {
@@ -286,7 +271,7 @@ class WordPressCacheWrapper
         }
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
-            $key = $this->blogPrefix . $key;
+            $key = $this->blogPrefix.$key;
         }
 
         $key = $this->formatKeyName($key, $group);
@@ -297,14 +282,13 @@ class WordPressCacheWrapper
     /**
      * Replaces the content in the cache, if content already exists.
      *
-     * @param string|int $key
-     * @param mixed      $data
-     * @param string     $group
-     * @param int        $expire
+     * @param  string|int  $key
+     * @param  mixed  $data
+     * @param  string  $group
+     * @param  int  $expire
+     * @return bool
      *
      * @throws \Psr\SimpleCache\InvalidArgumentException
-     *
-     * @return bool
      */
     public function replace($key, $data, $group = 'default', $expire = 0)
     {
@@ -315,7 +299,7 @@ class WordPressCacheWrapper
         $id = $key;
 
         if ($this->multisite && ! isset($this->globalGroups[$group])) {
-            $id = $this->blogPrefix . $key;
+            $id = $this->blogPrefix.$key;
         }
 
         $id = $this->formatKeyName($id, $group);

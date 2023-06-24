@@ -22,7 +22,6 @@ class MetaboxTransformer extends TransformerAbstract
     /**
      * Transform the metabox to a resource.
      *
-     * @param MetaboxInterface $metabox
      *
      * @return array
      */
@@ -42,7 +41,6 @@ class MetaboxTransformer extends TransformerAbstract
     /**
      * Get the metabox screen data.
      *
-     * @param $screen
      *
      * @return array
      */
@@ -69,7 +67,6 @@ class MetaboxTransformer extends TransformerAbstract
     /**
      * Return the metabox fields.
      *
-     * @param MetaboxInterface $metabox
      *
      * @return \League\Fractal\Resource\Collection
      */
@@ -90,7 +87,6 @@ class MetaboxTransformer extends TransformerAbstract
     /**
      * Return the metabox groups.
      *
-     * @param MetaboxInterface $metabox
      *
      * @return \League\Fractal\Resource\Collection
      */

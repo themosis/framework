@@ -13,8 +13,6 @@ class WordPress extends AbstractExtension implements GlobalsInterface
      * Register Twig templates globals.
      * The "fn" global can be used to call any
      * WordPress or core PHP functions.
-     *
-     * @return array
      */
     public function getGlobals(): array
     {
@@ -27,9 +25,7 @@ class WordPress extends AbstractExtension implements GlobalsInterface
      * Allow developers to call WordPress and core PHP
      * functions inside their Twig templates.
      *
-     * @param string $name
-     * @param array  $arguments
-     *
+     * @param  string  $name
      * @return mixed
      */
     public function __call($name, array $arguments)

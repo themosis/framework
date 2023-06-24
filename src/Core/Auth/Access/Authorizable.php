@@ -9,12 +9,11 @@ trait Authorizable
     /**
      * Determine if the entity has the given abilities.
      *
-     * @param iterable|string $abilities
-     * @param array|mixed     $arguments
+     * @param  iterable|string  $abilities
+     * @param  array|mixed  $arguments
+     * @return bool
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     *
-     * @return bool
      */
     public function can($abilities, $arguments = [])
     {
@@ -24,12 +23,11 @@ trait Authorizable
     /**
      * Determine if the entity has any of the given abilities.
      *
-     * @param iterable|string $abilities
-     * @param array|mixed     $arguments
+     * @param  iterable|string  $abilities
+     * @param  array|mixed  $arguments
+     * @return bool
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     *
-     * @return bool
      */
     public function canAny($abilities, $arguments = [])
     {
@@ -39,9 +37,8 @@ trait Authorizable
     /**
      * Determine if the entity does not have the given abilities.
      *
-     * @param iterable|string $abilities
-     * @param array|mixed     $arguments
-     *
+     * @param  iterable|string  $abilities
+     * @param  array|mixed  $arguments
      * @return bool
      */
     public function cant($abilities, $arguments = [])
@@ -52,9 +49,8 @@ trait Authorizable
     /**
      * Determine if the entity does not have the given abilities.
      *
-     * @param iterable|string $abilities
-     * @param array|mixed     $arguments
-     *
+     * @param  iterable|string  $abilities
+     * @param  array|mixed  $arguments
      * @return bool
      */
     public function cannot($abilities, $arguments = [])

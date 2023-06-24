@@ -74,8 +74,7 @@ class FormRequestTest extends TestCase
     /**
      * Create a validation factory.
      *
-     * @param \Illuminate\Container\Container $container
-     *
+     * @param  \Illuminate\Container\Container  $container
      * @return Factory
      */
     protected function createValidationFactory($container)
@@ -91,8 +90,7 @@ class FormRequestTest extends TestCase
     /**
      * Create a mock redirector.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Routing\Redirector
      */
     protected function createRedirector($request)

@@ -9,7 +9,6 @@ class Factory
     /**
      * Return a resource transformer instance.
      *
-     * @param $className
      *
      * @return TransformerAbstract
      */
@@ -18,7 +17,7 @@ class Factory
         if (false !== strpos($className, '\\')) {
             $class = $className;
         } else {
-            $class = 'Themosis\\Forms\\Resources\\Transformers\\' . $className;
+            $class = 'Themosis\\Forms\\Resources\\Transformers\\'.$className;
         }
 
         return new $class();

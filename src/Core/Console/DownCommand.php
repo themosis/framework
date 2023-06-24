@@ -26,8 +26,8 @@ class DownCommand extends Command
     public function handle()
     {
         file_put_contents(
-            web_path(config('app.wp.dir') . '/.maintenance'),
-            '<?php $upgrading = ' . $this->getDuration() . '; ?>',
+            web_path(config('app.wp.dir').'/.maintenance'),
+            '<?php $upgrading = '.$this->getDuration().'; ?>',
         );
 
         $this->comment('Application is now in maintenance mode.');

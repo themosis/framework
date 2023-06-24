@@ -13,12 +13,10 @@ trait ValidatesRequests
     /**
      * Run the validation routine against the given validator.
      *
-     * @param Validator|array $validator
-     * @param Request|null    $request
+     * @param  Validator|array  $validator
+     * @return array
      *
      * @throws ValidationException
-     *
-     * @return array
      */
     public function validateWith($validator, Request $request = null)
     {
@@ -37,10 +35,6 @@ trait ValidatesRequests
     /**
      * Validate the given request with the given rules.
      *
-     * @param Request $request
-     * @param array   $rules
-     * @param array   $messages
-     * @param array   $attributes
      *
      * @return array
      */
@@ -54,15 +48,9 @@ trait ValidatesRequests
     }
 
     /**
-     * @param $errorBag
-     * @param Request $request
-     * @param array   $rules
-     * @param array   $messages
-     * @param array   $attributes
+     * @return array
      *
      * @throws ValidationException
-     *
-     * @return array
      */
     public function validateWithBag(
         $errorBag,
@@ -83,8 +71,6 @@ trait ValidatesRequests
     /**
      * Get the request input based on the given validation rules.
      *
-     * @param Request $request
-     * @param array   $rules
      *
      * @return array
      */

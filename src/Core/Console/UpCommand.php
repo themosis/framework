@@ -25,7 +25,7 @@ class UpCommand extends Command
      */
     public function handle()
     {
-        @unlink(web_path(config('app.wp.dir') . '/.maintenance'));
+        @unlink(web_path(config('app.wp.dir').'/.maintenance'));
 
         $this->info('Application is now live.');
     }

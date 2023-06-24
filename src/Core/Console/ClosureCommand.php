@@ -26,12 +26,10 @@ class ClosureCommand extends Command
     /**
      * Execute the console command.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @throws \ReflectionException
      *
      * @return mixed
+     *
+     * @throws \ReflectionException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -54,7 +52,6 @@ class ClosureCommand extends Command
     /**
      * Set the command description.
      *
-     * @param $description
      *
      * @return $this
      */

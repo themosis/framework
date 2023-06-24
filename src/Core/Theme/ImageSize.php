@@ -27,7 +27,6 @@ class ImageSize
     /**
      * Parse the images sizes.
      *
-     * @param array $sizes
      *
      * @return array
      */
@@ -36,7 +35,7 @@ class ImageSize
         $images = [];
 
         foreach ($sizes as $slug => $properties) {
-            list($width, $height, $crop, $label) = $this->parseProperties($properties, $slug);
+            [$width, $height, $crop, $label] = $this->parseProperties($properties, $slug);
 
             $images[$slug] = [
                 'width' => $width,
@@ -52,8 +51,6 @@ class ImageSize
     /**
      * Parse image properties.
      *
-     * @param array  $properties
-     * @param string $slug
      *
      * @return array
      */
@@ -87,7 +84,6 @@ class ImageSize
     /**
      * Format label for display.
      *
-     * @param string $label
      *
      * @return string
      */
@@ -129,7 +125,6 @@ class ImageSize
     /**
      * Filter media size drop down options. Add user custom image sizes.
      *
-     * @param array $options
      *
      * @return array
      */

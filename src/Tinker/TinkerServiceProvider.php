@@ -12,7 +12,7 @@ class TinkerServiceProvider extends LaravelTinkerServiceProvider
      */
     public function boot()
     {
-        $source = realpath($raw = __DIR__ . '/config/tinker.php') ?: $raw;
+        $source = realpath($raw = __DIR__.'/config/tinker.php') ?: $raw;
 
         if ($this->app instanceof Application && $this->app->runningInConsole()) {
             $this->publishes([$source => config_path('tinker.php')]);

@@ -53,11 +53,9 @@ class FormFactory implements FormFactoryInterface
     /**
      * Create a FormBuilderInterface instance.
      *
-     * @param mixed  $data    Data object (DTO).
-     * @param array  $options
-     * @param string $builder A FieldBuilderInterface class.
-     *
-     * @return FormBuilderInterface
+     * @param  mixed  $data    Data object (DTO).
+     * @param  array  $options
+     * @param  string  $builder A FieldBuilderInterface class.
      */
     public function make($data = null, $options = [], $builder = FormBuilder::class): FormBuilderInterface
     {

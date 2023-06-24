@@ -87,7 +87,6 @@ class RouteListCommand extends Command
     /**
      * Get the route information for a given route.
      *
-     * @param Route $route
      *
      * @return array
      */
@@ -106,7 +105,6 @@ class RouteListCommand extends Command
     /**
      * Get before filters.
      *
-     * @param Route $route
      *
      * @return string
      */
@@ -120,7 +118,6 @@ class RouteListCommand extends Command
     /**
      * Filter the route by URI and/or name.
      *
-     * @param array $route
      *
      * @return array|null
      */
@@ -138,9 +135,8 @@ class RouteListCommand extends Command
     /**
      * Sort the routes by a given element.
      *
-     * @param string $sort
-     * @param array  $routes
-     *
+     * @param  string  $sort
+     * @param  array  $routes
      * @return array
      */
     protected function sortRoutes($sort, $routes)
@@ -152,8 +148,6 @@ class RouteListCommand extends Command
 
     /**
      * Display the route information to the console.
-     *
-     * @param array $routes
      */
     protected function displayRoutes(array $routes)
     {

@@ -45,8 +45,6 @@ class Taxonomy implements TaxonomyInterface
 
     /**
      * Return the taxonomy slug.
-     *
-     * @return string
      */
     public function getSlug(): string
     {
@@ -56,8 +54,6 @@ class Taxonomy implements TaxonomyInterface
     /**
      * Return the taxonomy slug.
      * Aliased method for getSlug.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -66,10 +62,6 @@ class Taxonomy implements TaxonomyInterface
 
     /**
      * Set taxonomy labels.
-     *
-     * @param array $labels
-     *
-     * @return TaxonomyInterface
      */
     public function setLabels(array $labels): TaxonomyInterface
     {
@@ -84,8 +76,6 @@ class Taxonomy implements TaxonomyInterface
 
     /**
      * Return taxonomy labels.
-     *
-     * @return array
      */
     public function getLabels(): array
     {
@@ -94,10 +84,6 @@ class Taxonomy implements TaxonomyInterface
 
     /**
      * Return a taxonomy label by name.
-     *
-     * @param string $name
-     *
-     * @return string
      */
     public function getLabel(string $name): string
     {
@@ -108,10 +94,6 @@ class Taxonomy implements TaxonomyInterface
 
     /**
      * Set taxonomy arguments.
-     *
-     * @param array $args
-     *
-     * @return TaxonomyInterface
      */
     public function setArguments(array $args): TaxonomyInterface
     {
@@ -122,8 +104,6 @@ class Taxonomy implements TaxonomyInterface
 
     /**
      * Return taxonomy arguments.
-     *
-     * @return array
      */
     public function getArguments(): array
     {
@@ -133,7 +113,6 @@ class Taxonomy implements TaxonomyInterface
     /**
      * Return a taxonomy argument.
      *
-     * @param string $property
      *
      * @return mixed
      */
@@ -146,8 +125,6 @@ class Taxonomy implements TaxonomyInterface
 
     /**
      * Register the taxonomy.
-     *
-     * @return TaxonomyInterface
      */
     public function set(): TaxonomyInterface
     {
@@ -183,9 +160,7 @@ class Taxonomy implements TaxonomyInterface
     /**
      * Set taxonomy objects.
      *
-     * @param array|string $objects
-     *
-     * @return TaxonomyInterface
+     * @param  array|string  $objects
      */
     public function setObjects($objects): TaxonomyInterface
     {
@@ -200,16 +175,12 @@ class Taxonomy implements TaxonomyInterface
 
     /**
      * Parse attached objects and set default update count callback.
-     *
-     * @param array $objects
-     *
-     * @return TaxonomyInterface
      */
     protected function parseObjectsForCustomStatus(array $objects): TaxonomyInterface
     {
         foreach ($objects as $object) {
-            if ($this->container->bound('themosis.posttype.' . $object)) {
-                $postType = $this->container['themosis.posttype.' . $object];
+            if ($this->container->bound('themosis.posttype.'.$object)) {
+                $postType = $this->container['themosis.posttype.'.$object];
 
                 if ($postType->hasStatus()) {
                     $this->setArguments([
@@ -226,8 +197,6 @@ class Taxonomy implements TaxonomyInterface
 
     /**
      * Return taxonomy attached objects.
-     *
-     * @return array
      */
     public function getObjects(): array
     {

@@ -11,10 +11,10 @@ defined('DS') ? DS : define('DS', DIRECTORY_SEPARATOR);
 define('THEMOSIS_PUBLIC_DIR', 'htdocs');
 define('THEMOSIS_ROOT', realpath(__DIR__));
 define('CONTENT_DIR', 'content');
-define('WP_CONTENT_DIR', realpath(THEMOSIS_ROOT . DS . THEMOSIS_PUBLIC_DIR . DS . CONTENT_DIR));
+define('WP_CONTENT_DIR', realpath(THEMOSIS_ROOT.DS.THEMOSIS_PUBLIC_DIR.DS.CONTENT_DIR));
 
 /*----------------------------------------------------*/
 // Composer autoload
 /*----------------------------------------------------*/
-require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/functions.php';
+require __DIR__.'/../vendor/autoload.php';
+require __DIR__.'/functions.php';

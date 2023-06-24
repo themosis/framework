@@ -30,7 +30,7 @@ class TaxonomyTest extends TestCase
         return new \Themosis\Field\Factory(
             $app,
             $this->getViewFactory($app, [
-                __DIR__ . '/../../../framework/src/Forms/views',
+                __DIR__.'/../../../framework/src/Forms/views',
             ]),
         );
     }

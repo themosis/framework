@@ -40,8 +40,6 @@ class File implements AssetFileInterface
 
     /**
      * Check if the file is external or local.
-     *
-     * @return bool
      */
     public function isExternal(): bool
     {
@@ -50,10 +48,6 @@ class File implements AssetFileInterface
 
     /**
      * Set the asset file external status.
-     *
-     * @param bool $isExternal
-     *
-     * @return AssetFileInterface
      */
     public function setExternal(bool $isExternal = false): AssetFileInterface
     {
@@ -64,8 +58,6 @@ class File implements AssetFileInterface
 
     /**
      * Return the asset file path.
-     *
-     * @return string
      */
     public function getPath(): string
     {
@@ -74,10 +66,6 @@ class File implements AssetFileInterface
 
     /**
      * Set the asset file path.
-     *
-     * @param string $path
-     *
-     * @return AssetFileInterface
      */
     public function setPath(string $path): AssetFileInterface
     {
@@ -88,8 +76,6 @@ class File implements AssetFileInterface
 
     /**
      * Return the asset file URL.
-     *
-     * @return string
      */
     public function getUrl(): string
     {
@@ -98,10 +84,6 @@ class File implements AssetFileInterface
 
     /**
      * Set the asset file URL.
-     *
-     * @param string $url
-     *
-     * @return AssetFileInterface
      */
     public function setUrl(string $url): AssetFileInterface
     {
@@ -123,10 +105,7 @@ class File implements AssetFileInterface
     /**
      * Set the asset file type.
      *
-     * @param string $filename
-     * @param string $type
-     *
-     * @return AssetFileInterface
+     * @param  string  $type
      */
     public function setType(string $filename, $type = null): AssetFileInterface
     {
@@ -150,7 +129,6 @@ class File implements AssetFileInterface
     /**
      * Find the file type.
      *
-     * @param string $type
      *
      * @return string
      */

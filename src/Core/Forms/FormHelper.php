@@ -12,7 +12,6 @@ trait FormHelper
     /**
      * Create and return a form instance.
      *
-     * @param Formidable $formClass
      *
      * @return FormInterface
      */

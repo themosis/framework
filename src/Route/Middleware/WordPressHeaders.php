@@ -10,8 +10,6 @@ class WordPressHeaders
     /**
      * Cleanup response headers.
      *
-     * @param Request  $request
-     * @param \Closure $next
      *
      * @return Response
      */

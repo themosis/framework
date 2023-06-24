@@ -40,7 +40,6 @@ class FormBuilder implements FormBuilderInterface
     /**
      * Validate the "options" used by a field instance.
      *
-     * @param array $options
      *
      * @return array
      */
@@ -50,7 +49,7 @@ class FormBuilder implements FormBuilderInterface
 
         foreach ($options as $key => $value) {
             if (! in_array($key, $field->getAllowedOptions(), true)) {
-                throw new \DomainException('The "' . $key . '" option is not allowed on the provided field.');
+                throw new \DomainException('The "'.$key.'" option is not allowed on the provided field.');
             }
 
             $parsed[$key] = $value;
@@ -61,10 +60,6 @@ class FormBuilder implements FormBuilderInterface
 
     /**
      * Add a field to the current form instance.
-     *
-     * @param FieldTypeInterface $field
-     *
-     * @return FormBuilderInterface
      */
     public function add(FieldTypeInterface $field): FormBuilderInterface
     {
@@ -109,8 +104,6 @@ class FormBuilder implements FormBuilderInterface
 
     /**
      * Return generated form instance.
-     *
-     * @return FormInterface
      */
     public function get(): FormInterface
     {

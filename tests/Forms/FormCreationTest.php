@@ -74,7 +74,7 @@ class FormCreationTest extends TestCase
 
         $bladeCompiler = new BladeCompiler(
             $filesystem,
-            __DIR__ . '/../storage/views',
+            __DIR__.'/../storage/views',
         );
         $application->instance('blade', $bladeCompiler);
 
@@ -91,8 +91,8 @@ class FormCreationTest extends TestCase
         $factory = new \Illuminate\View\Factory(
             $resolver,
             $viewFinder = new FileViewFinder($filesystem, [
-                __DIR__ . '/../../../framework/src/Forms/views/',
-                __DIR__ . '/views/',
+                __DIR__.'/../../../framework/src/Forms/views/',
+                __DIR__.'/views/',
             ], ['blade.php', 'php']),
             new Dispatcher($application),
         );
@@ -178,15 +178,15 @@ class FormCreationTest extends TestCase
         $fields = $this->getFieldsFactory();
 
         $form = $factory->make($contact)
-                ->add($firstname = $fields->text('firstname'))
-                ->add($lastname = $fields->text('lastname'))
-                ->add($email = $fields->email('email', [
-                    'group' => 'corporate',
-                ]))
-                ->add($company = $fields->text('company', [
-                    'group' => 'corporate',
-                ]))
-                ->get();
+            ->add($firstname = $fields->text('firstname'))
+            ->add($lastname = $fields->text('lastname'))
+            ->add($email = $fields->email('email', [
+                'group' => 'corporate',
+            ]))
+            ->add($company = $fields->text('company', [
+                'group' => 'corporate',
+            ]))
+            ->get();
 
         $this->assertEquals('default', $firstname->getOption('group'));
         $this->assertEquals('default', $lastname->getOption('group'));
@@ -197,9 +197,9 @@ class FormCreationTest extends TestCase
         $this->assertEquals(2, count($form->repository()->getFieldsByGroup('default')));
         $this->assertEquals(2, count($form->repository()->getFieldsByGroup('corporate')));
         $this->assertEquals([
-                $email,
-                $company,
-            ], $form->repository()->getFieldsByGroup('corporate')->getItems());
+            $email,
+            $company,
+        ], $form->repository()->getFieldsByGroup('corporate')->getItems());
 
         // Form instance should be aware of its groups.
         $this->assertEquals(2, count($form->repository()->getGroups()));

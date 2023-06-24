@@ -21,9 +21,8 @@ trait ViewFactory
     /**
      * Return a View factory instance.
      *
-     * @param \Themosis\Core\Application $app
-     * @param array                      $paths
-     *
+     * @param  \Themosis\Core\Application  $app
+     * @param  array  $paths
      * @return Factory
      */
     public function getViewFactory($app, $paths = [])
@@ -36,7 +35,7 @@ trait ViewFactory
 
         $bladeCompiler = new BladeCompiler(
             $filesystem,
-            __DIR__ . '/storage/views',
+            __DIR__.'/storage/views',
         );
 
         $app->instance('blade', $bladeCompiler);

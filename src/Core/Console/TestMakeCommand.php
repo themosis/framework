@@ -44,45 +44,42 @@ class TestMakeCommand extends GeneratorCommand
     /**
      * Resolve the fully-qualified path to the stub.
      *
-     * @param string $stub
-     *
+     * @param  string  $stub
      * @return string
      */
     protected function resolveStubPath($stub)
     {
         return file_exists($customPath = $this->laravel->basePath(trim($stub, '/')))
             ? $customPath
-            : __DIR__ . $stub;
+            : __DIR__.$stub;
     }
 
     /**
      * Get the destination class path.
      *
-     * @param string $name
+     * @param  string  $name
+     * @return string
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     *
-     * @return string
      */
     protected function getPath($name)
     {
         $name = Str::replaceFirst($this->rootNamespace(), '', $name);
 
-        return base_path('tests') . str_replace('\\', '/', $name) . '.php';
+        return base_path('tests').str_replace('\\', '/', $name).'.php';
     }
 
     /**
      * Get the default namespace for the class.
      *
-     * @param string $rootNamespace
-     *
+     * @param  string  $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
         return $this->option('unit')
-            ? $rootNamespace . '\Unit'
-            : $rootNamespace . '\Feature';
+            ? $rootNamespace.'\Unit'
+            : $rootNamespace.'\Feature';
     }
 
     /**

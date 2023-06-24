@@ -39,8 +39,6 @@ class ViewCacheCommand extends Command
 
     /**
      * Compile the given view files.
-     *
-     * @param Collection $views
      */
     protected function compileViews(Collection $views)
     {
@@ -54,7 +52,6 @@ class ViewCacheCommand extends Command
     /**
      * Get the Blade files in the given path.
      *
-     * @param array $paths
      *
      * @return Collection
      */

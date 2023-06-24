@@ -7,8 +7,7 @@ interface DataTransformerInterface
     /**
      * Return normalized data.
      *
-     * @param mixed $data
-     *
+     * @param  mixed  $data
      * @return mixed
      */
     public function transform($data);
@@ -16,8 +15,7 @@ interface DataTransformerInterface
     /**
      * Return raw data.
      *
-     * @param mixed $data
-     *
+     * @param  mixed  $data
      * @return mixed
      */
     public function reverseTransform($data);

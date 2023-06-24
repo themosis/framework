@@ -110,7 +110,7 @@ class DropinClearCommand extends Command
     /**
      * Clear dropin file(s).
      *
-     * @param string|null $file
+     * @param  string|null  $file
      */
     private function clearDropin($file)
     {

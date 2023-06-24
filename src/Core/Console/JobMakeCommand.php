@@ -34,20 +34,19 @@ class JobMakeCommand extends GeneratorCommand
     protected function getStub()
     {
         return $this->option('sync')
-            ? __DIR__ . '/stubs/job.stub'
-            : __DIR__ . '/stubs/job.queued.stub';
+            ? __DIR__.'/stubs/job.stub'
+            : __DIR__.'/stubs/job.queued.stub';
     }
 
     /**
      * Return the default class namespace.
      *
-     * @param string $rootNamespace
-     *
+     * @param  string  $rootNamespace
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Jobs';
+        return $rootNamespace.'\Jobs';
     }
 
     /**

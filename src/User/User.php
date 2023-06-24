@@ -9,8 +9,7 @@ class User extends \WP_User
     /**
      * Check if the user has role.
      *
-     * @param string $role
-     *
+     * @param  string  $role
      * @return bool
      */
     public function hasRole($role)
@@ -21,9 +20,7 @@ class User extends \WP_User
     /**
      * Set User role.
      *
-     * @param string $role
-     *
-     * @return User
+     * @param  string  $role
      */
     public function setRole($role): User
     {
@@ -35,8 +32,7 @@ class User extends \WP_User
     /**
      * Check if the user can do a defined capability.
      *
-     * @param string $cap
-     *
+     * @param  string  $cap
      * @return bool
      */
     public function can($cap)
@@ -47,11 +43,8 @@ class User extends \WP_User
     /**
      * Update user properties.
      *
-     * @param array $data
      *
      * @throws UserException
-     *
-     * @return User
      */
     public function update(array $data): User
     {
@@ -69,12 +62,8 @@ class User extends \WP_User
     /**
      * Update single user meta data.
      *
-     * @param string $key
-     * @param string $value
      *
      * @throws UserException
-     *
-     * @return User
      */
     public function updateMetaData(string $key, string $value): User
     {

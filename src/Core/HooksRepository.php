@@ -19,7 +19,7 @@ class HooksRepository
     /**
      * Load a list of registered hookable instances.
      *
-     * @param array $hooks The list of hookable instances.
+     * @param  array  $hooks The list of hookable instances.
      */
     public function load(array $hooks)
     {

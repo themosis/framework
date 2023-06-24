@@ -20,8 +20,6 @@ class WordPressBodyClass
     /**
      * Handle incoming request.
      *
-     * @param $request
-     * @param \Closure $next
      *
      * @return mixed
      */
@@ -38,7 +36,6 @@ class WordPressBodyClass
     /**
      * Return the callback managing route body CSS classes.
      *
-     * @param Route $route
      *
      * @return \Closure
      */

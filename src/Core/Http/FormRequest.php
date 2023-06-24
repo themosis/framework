@@ -63,9 +63,9 @@ class FormRequest extends Request implements ValidatesWhenResolved
     /**
      * Get the validator instance for the request.
      *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     *
      * @return ValidatorContract
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function getValidatorInstance()
     {
@@ -93,7 +93,6 @@ class FormRequest extends Request implements ValidatesWhenResolved
     /**
      * Create the default validator instance.
      *
-     * @param ValidationFactory $factory
      *
      * @return Validator
      */
@@ -150,7 +149,6 @@ class FormRequest extends Request implements ValidatesWhenResolved
     /**
      * Handle a failed validation attempt.
      *
-     * @param Validator $validator
      *
      * @throws ValidationException
      */
@@ -198,9 +196,9 @@ class FormRequest extends Request implements ValidatesWhenResolved
     /**
      * Handle a failed authorization attempt.
      *
-     * @throws AuthorizationException
-     *
      * @return AuthorizationException
+     *
+     * @throws AuthorizationException
      */
     protected function failedAuthorization()
     {
@@ -210,7 +208,6 @@ class FormRequest extends Request implements ValidatesWhenResolved
     /**
      * Set the validator instance.
      *
-     * @param Validator $validator
      *
      * @return $this
      */
@@ -224,7 +221,6 @@ class FormRequest extends Request implements ValidatesWhenResolved
     /**
      * Set the redirector instance.
      *
-     * @param Redirector $redirector
      *
      * @return $this
      */
@@ -238,7 +234,6 @@ class FormRequest extends Request implements ValidatesWhenResolved
     /**
      * Set the container.
      *
-     * @param Container $container
      *
      * @return $this
      */
