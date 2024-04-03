@@ -580,6 +580,10 @@ class Application extends Container implements
      */
     public function storagePath($path = '')
     {
+        if ($this->storagePath) {
+            return $this->storagePath . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        }
+
         if (defined('THEMOSIS_ROOT')) {
             return $this->rootPath('storage') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
         }
