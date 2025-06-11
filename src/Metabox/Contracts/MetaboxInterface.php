@@ -213,7 +213,7 @@ interface MetaboxInterface
      *
      * @return MetaboxInterface
      */
-    public function add($field, SectionInterface $section = null): MetaboxInterface;
+    public function add($field, ?SectionInterface $section = null): MetaboxInterface;
 
     /**
      * Return the metabox translations.

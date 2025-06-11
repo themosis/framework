@@ -46,10 +46,10 @@ class PluginsLoaderTest extends TestCase
 
         $filesystem->expects($this->once())
             ->method('exists')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
         $filesystem->expects($this->once())
             ->method('getRequire')
-            ->will($this->returnValue($plugins));
+            ->willReturn($plugins);
 
         $manifest = $loader->loadManifest();
         $this->assertTrue(is_array($manifest));

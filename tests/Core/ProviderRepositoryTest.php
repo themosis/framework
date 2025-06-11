@@ -6,12 +6,35 @@ use PHPUnit\Framework\TestCase;
 use Themosis\Core\Application;
 use Themosis\Core\ProviderRepository;
 
+class TestDeferredProvider extends \Illuminate\Support\ServiceProvider
+{
+    public function register()
+    {
+        // Do nothing
+    }
+
+    public function isDeferred()
+    {
+        return true;
+    }
+
+    public function provides()
+    {
+        return ['foo.provides1', 'foo.provides2'];
+    }
+
+    public function when()
+    {
+        return [];
+    }
+}
+
 class ProviderRepositoryTest extends TestCase
 {
     public function testServicesAreRegisteredWhenManifestIsNotRecompiled()
     {
         $app = $this->getMockBuilder('Themosis\Core\Application')
-            ->setMethods(['register', 'addDeferredServices', 'runningInConsole'])
+            ->onlyMethods(['register', 'addDeferredServices', 'runningInConsole'])
             ->getMock();
         $repository = $this->getMockBuilder('Themosis\Core\ProviderRepository')
             ->setConstructorArgs([
@@ -19,7 +42,7 @@ class ProviderRepositoryTest extends TestCase
                 $this->getMockBuilder('Illuminate\Filesystem\Filesystem')->getMock(),
                 __DIR__ . '/services.php',
             ])
-            ->setMethods([
+            ->onlyMethods([
                 'loadManifest',
                 'shouldRecompile',
                 'compileManifest',
@@ -47,52 +70,31 @@ class ProviderRepositoryTest extends TestCase
     public function testManifestIsProperlyRecompiled()
     {
         $app = $this->getMockBuilder('Themosis\Core\Application')
-            ->setMethods(['register', 'addDeferredServices', 'runningInConsole'])
+            ->onlyMethods(['register', 'addDeferredServices', 'runningInConsole'])
             ->getMock();
+        $app->method('register');
+        $app->method('runningInConsole')->willReturn(false);
+
         $repository = $this->getMockBuilder('Themosis\Core\ProviderRepository')
             ->setConstructorArgs([
                 $app,
                 $this->getMockBuilder('Illuminate\Filesystem\Filesystem')->getMock(),
                 __DIR__ . '/services.php',
             ])
-            ->setMethods([
-                'loadManifest',
-                'shouldRecompile',
-                'createProvider',
-            ])
+            ->onlyMethods(['loadManifest', 'shouldRecompile', 'createProvider'])
             ->getMock();
 
-        $repository->expects($this->once())
-            ->method('loadManifest')
-            ->willReturn([
-                'eager' => [],
-                'deferred' => ['deferred'],
-            ]);
-        $repository->expects($this->once())->method('shouldRecompile')->willReturn(true);
+        $repository->method('loadManifest')->willReturn([
+            'eager' => [],
+            'deferred' => ['foo'],
+        ]);
+        $repository->method('shouldRecompile')->willReturn(true);
 
-        // foo mock is just a deferred provider
-        $repository->expects($this->once())
-            ->method('createProvider')
+        $fooMock = new TestDeferredProvider($app);
+        $repository->method('createProvider')
             ->with('foo')
-            ->willReturn($fooMock = $this->getMockBuilder('stdClass')
-                ->setMethods(['isDeferred', 'provides', 'when'])
-                ->getMock(), );
-        $fooMock->expects($this->once())->method('isDeferred')->willReturn(true);
-        $fooMock->expects($this->once())->method('provides')->willReturn(['foo.provides1', 'foo.provides2']);
-        $fooMock->expects($this->once())->method('when')->willReturn([]);
+            ->willReturn($fooMock);
 
-        // bar mock is added to eagers since it's not reserved
-        /*$repository
-            ->method('createProvider')
-            ->with('bar')
-            ->willReturn($barMock = $this->getMockBuilder('Illuminate\Support\ServiceProvider')
-                ->setConstructorArgs([$app])
-                ->setMethods(['isDeferred'])
-                ->getMock());*/
-
-        //$app->expects($this->once())->method('register')->with('bar');
-
-        $app->expects($this->any())->method('runningInConsole')->willReturn(false);
         $app->expects($this->once())->method('addDeferredServices')->with([
             'foo.provides1' => 'foo',
             'foo.provides2' => 'foo',
@@ -119,7 +121,7 @@ class ProviderRepositoryTest extends TestCase
         $repo = new ProviderRepository(
             new Application(),
             $files = $this->getMockBuilder('Illuminate\Filesystem\Filesystem')
-                ->setMethods(['exists', 'getRequire'])
+                ->onlyMethods(['exists', 'getRequire'])
                 ->getMock(),
             __DIR__ . '/services.php',
         );
@@ -141,7 +143,7 @@ class ProviderRepositoryTest extends TestCase
         $repo = new ProviderRepository(
             new Application(),
             $files = $this->getMockBuilder('Illuminate\Filesystem\Filesystem')
-                ->setMethods(['put'])
+                ->onlyMethods(['put'])
                 ->getMock(),
             __DIR__ . '/services.php',
         );

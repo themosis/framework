@@ -33,7 +33,7 @@ class ClosureCommand extends Command
      *
      * @return mixed
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $inputs = array_merge($input->getArguments(), $input->getOptions());
 

@@ -1,6 +1,6 @@
 <?php
 
-class AnActionClassForTest
+class AnActionClassForTestHelper
 {
     public function init()
     {

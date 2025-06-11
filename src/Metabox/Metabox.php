@@ -513,7 +513,7 @@ class Metabox implements MetaboxInterface
      *
      * @return MetaboxInterface
      */
-    public function add($field, SectionInterface $section = null): MetaboxInterface
+    public function add($field, ?SectionInterface $section = null): MetaboxInterface
     {
         if ($field instanceof SectionInterface) {
             $section = $field;

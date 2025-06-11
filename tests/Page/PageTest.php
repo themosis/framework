@@ -24,7 +24,7 @@ class PageTest extends TestCase
     protected function getActionMock()
     {
         return $this->getMockBuilder(\Themosis\Hook\ActionBuilder::class)
-            ->setMethods(['add'])
+            ->onlyMethods(['add'])
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -32,7 +32,7 @@ class PageTest extends TestCase
     protected function getFilter()
     {
         return $this->getMockBuilder(\Themosis\Hook\FilterBuilder::class)
-            ->setMethods(['add'])
+            ->onlyMethods(['add'])
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -40,8 +40,8 @@ class PageTest extends TestCase
     protected function getApplication()
     {
         $application = $this->getMockBuilder(\Themosis\Core\Application::class)
+            ->onlyMethods(['getLocale'])
             ->disableOriginalConstructor()
-            ->setMethods(['getLocale'])
             ->getMock();
 
         $application->method('getLocale')->willReturn('en_US');

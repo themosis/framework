@@ -46,7 +46,7 @@ class Application extends Container implements
      *
      * @var string
      */
-    public const VERSION = '8.0.0';
+    public const VERSION = '12.0.0';
 
     /**
      * Application textdomain.
@@ -991,7 +991,7 @@ class Application extends Container implements
      *
      * @return Response A Response instance
      */
-    public function handle(SymfonyRequest $request, $type = self::MASTER_REQUEST, $catch = true)
+    public function handle(SymfonyRequest $request, int $type = self::MAIN_REQUEST, bool $catch = true): Response
     {
         return $this[HttpKernelContract::class]->handle(Request::createFromBase($request));
     }
@@ -1422,11 +1422,9 @@ class Application extends Container implements
      *
      * @return $this
      */
-    public function terminating(Closure $callback)
+    public function terminating($callback): void
     {
-        $this->terminatingCallbacks[] = $callback;
-
-        return $this;
+        $this->events->listen(Events\Terminates::class, $callback);
     }
 
     /**
@@ -1714,5 +1712,36 @@ class Application extends Container implements
         $output .= '</script>';
 
         return $output;
+    }
+
+    /**
+     * Get the public path.
+     *
+     * @return string
+     */
+    public function publicPath($path = '')
+    {
+        return $this->basePath.DIRECTORY_SEPARATOR.'public'.($path ? DIRECTORY_SEPARATOR.$path : '');
+    }
+
+    /**
+     * Determine if debug mode is enabled.
+     *
+     * @return bool
+     */
+    public function hasDebugModeEnabled(): bool
+    {
+        return (bool) ($this['config']['app.debug'] ?? false);
+    }
+
+    /**
+     * Get the maintenance mode instance.
+     *
+     * @return \Illuminate\Contracts\Foundation\MaintenanceMode|null
+     */
+    public function maintenanceMode()
+    {
+        // Return null for now, or implement as needed for your app
+        return null;
     }
 }

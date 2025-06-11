@@ -172,4 +172,15 @@ class NullMessageBag implements MessageBag
     {
         return $this->count() > 0;
     }
+
+    /**
+     * Remove one or many messages.
+     *
+     * @param string|array $keys
+     * @return $this|MessageBag
+     */
+    public function forget($keys)
+    {
+        return $this;
+    }
 }

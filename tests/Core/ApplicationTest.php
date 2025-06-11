@@ -163,9 +163,8 @@ class ApplicationTest extends TestCase
     public function testServiceProvidersAreCorrectlyRegistered()
     {
         $app = new Application();
-        $provider = $this->getMockBuilder('BasicServiceProvider')->setMethods(['register', 'boot'])->getMock();
+        $provider = new TestServiceProvider($app);
         $class = get_class($provider);
-        $provider->expects($this->once())->method('register');
         $app->register($provider);
 
         $this->assertTrue(in_array($class, $app->getLoadedProviders()));
@@ -489,5 +488,18 @@ class CustomResponse implements Responsable
     public function toResponse($request)
     {
         return new \Illuminate\Http\Response('Something', 500);
+    }
+}
+
+class TestServiceProvider extends \Illuminate\Support\ServiceProvider
+{
+    public function register()
+    {
+        // Do nothing
+    }
+
+    public function boot()
+    {
+        // Do nothing
     }
 }

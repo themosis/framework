@@ -110,7 +110,7 @@ class UserField implements UserFieldContract
      *
      * @return UserFieldContract
      */
-    public function add($field, SectionInterface $section = null): UserFieldContract
+    public function add($field, ?SectionInterface $section = null): UserFieldContract
     {
         if ($field instanceof SectionInterface) {
             $section = $field;
