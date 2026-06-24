@@ -10,6 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Themosis\Route\Middleware\WordPressBindings;
+use Themosis\Route\Route;
 use Themosis\Route\Router;
 
 class RoutesTest extends TestCase
@@ -699,8 +700,87 @@ class RoutesTest extends TestCase
         $container->singleton(Registrar::class, function () use ($router) {
             return $router;
         });
+        $container->singleton(
+            \Illuminate\Routing\Contracts\CallableDispatcher::class,
+            fn ($app) => new \Illuminate\Routing\CallableDispatcher($app),
+        );
+        $container->singleton(
+            \Illuminate\Routing\Contracts\ControllerDispatcher::class,
+            fn ($app) => new \Illuminate\Routing\ControllerDispatcher($app),
+        );
 
         return $router;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Themosis Route override — condition parsing and WordPress matching
+    |--------------------------------------------------------------------------
+    */
+
+    public function testSetConditionsParsesUriToWordPressFunctionName()
+    {
+        $router = $this->getWordPressRouter();
+        $route = $router->get('home', function () {
+            return 'hello';
+        });
+
+        $this->assertSame('is_home', $route->getCondition());
+    }
+
+    public function testGetConditionsReturnsTheRegisteredConditionsMap()
+    {
+        $router = $this->getWordPressRouter();
+        $route = $router->get('home', function () {
+            return 'hello';
+        });
+
+        $this->assertArrayHasKey('is_home', $route->getConditions());
+        $this->assertContains('home', $route->getConditions()['is_home']);
+    }
+
+    public function testRouteHasNoConditionWhenUriIsNotInConditionsMap()
+    {
+        $router = $this->getWordPressRouter();
+        $route = $router->get('not-a-wp-condition', function () {
+            return 'hello';
+        });
+
+        $this->assertSame('', $route->getCondition());
+        $this->assertFalse($route->hasCondition());
+    }
+
+    public function testRouteMatchesTrueWhenWordPressConditionIsTrue()
+    {
+        // is_home() always returns true in the test stub (tests/functions.php)
+        $router = $this->getWordPressRouter();
+        $route = $router->get('home', function () {
+            return 'hello';
+        });
+
+        $this->assertTrue($route->matches(Request::create('/', 'GET')));
+    }
+
+    public function testAddWordPressBindingsSetsPostAndWpQueryOnRoute()
+    {
+        $router = $this->getWordPressRouter();
+        $route = $router->get('home', function () {
+            return 'hello';
+        });
+
+        // Bind the route so parameters can be set.
+        $route->bind(Request::create('/', 'GET'));
+
+        global $post, $wp_query;
+        $post = null;
+        $wpQuery = new stdClass();
+        $wp_query = $wpQuery;
+
+        $router->addWordPressBindings($route);
+
+        // WP_Post does not exist in test bootstrap, so null post stays null.
+        $this->assertNull($route->parameter('post'));
+        $this->assertSame($wpQuery, $route->parameter('wp_query'));
     }
 }
 

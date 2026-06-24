@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
-use League\Flysystem\Adapter\Local;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\MountManager;
 
 class VendorPublishCommand extends Command
@@ -195,14 +195,12 @@ class VendorPublishCommand extends Command
      *
      * @param string $from
      * @param string $to
-     *
-     * @throws \League\Flysystem\FileNotFoundException
      */
     protected function publishDirectory($from, $to)
     {
         $this->moveManagedFiles(new MountManager([
-            'from' => new \League\Flysystem\Filesystem(new Local($from)),
-            'to' => new \League\Flysystem\Filesystem(new Local($to)),
+            'from' => new \League\Flysystem\Filesystem(new LocalFilesystemAdapter($from)),
+            'to' => new \League\Flysystem\Filesystem(new LocalFilesystemAdapter($to)),
         ]));
 
         $this->status($from, $to, 'Directory');
@@ -212,14 +210,14 @@ class VendorPublishCommand extends Command
      * Move all the files in the given MountManager.
      *
      * @param \League\Flysystem\MountManager $manager
-     *
-     * @throws \League\Flysystem\FileNotFoundException
      */
     protected function moveManagedFiles($manager)
     {
         foreach ($manager->listContents('from://', true) as $file) {
-            if ($file['type'] === 'file' && (! $manager->has('to://' . $file['path']) || $this->option('force'))) {
-                $manager->put('to://' . $file['path'], $manager->read('from://' . $file['path']));
+            $toPath = preg_replace('{^from://}', 'to://', $file['path']);
+
+            if ($file['type'] === 'file' && (! $manager->has($toPath) || $this->option('force'))) {
+                $manager->write($toPath, $manager->read($file['path']));
             }
         }
     }

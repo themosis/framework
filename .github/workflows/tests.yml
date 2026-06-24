@@ -1,0 +1,62 @@
+name: Pull Request Check
+
+on: [pull_request]
+
+jobs:
+  unit-test:
+    name: Unit testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: /tmp/composer-cache
+          key: ${{ runner.os }}-${{ hashFiles('composer.lock') }}
+
+      - name: Installing dependencies
+        uses: php-actions/composer@v6
+        with:
+          php_version: "8.1"
+          php_extensions: "mbstring json zip dom curl libxml intl fileinfo bcmath"
+
+      - name: Running unit test
+        uses: php-actions/phpunit@v3
+        with:
+          version: "9.6"
+          php_version: "8.1"
+          php_extensions: "mbstring json zip dom curl libxml intl fileinfo bcmath"
+          args: "-d date.timezone=UTC"
+          memory_limit: 512M
+          configuration: phpunit.xml.dist
+
+  static-analysis:
+    name: Static analysis (PHPStan)
+    runs-on: ubuntu-latest
+    # Non-blocking: the legacy code currently has many findings. This job reports
+    # them on the PR without failing the check until they are progressively cleaned up.
+    continue-on-error: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
+          extensions: mbstring, dom, curl, libxml, intl, zip, fileinfo
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.json') }}
+
+      - name: Run composer install
+        run: composer install -n --prefer-dist --no-progress
+
+      - name: Run PHPStan
+        run: php -d memory_limit=768M vendor/bin/phpstan analyse --no-progress --error-format=github

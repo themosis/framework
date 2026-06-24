@@ -1,0 +1,491 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method Themosis\\\\Core\\\\AliasLoader\\:\\:load\\(\\) should return bool\\|null but return statement is missing\\.$#"
+			count: 1
+			path: src/Core/AliasLoader.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: src/Core/AliasLoader.php
+
+		-
+			message: "#^Access to an undefined property Themosis\\\\Core\\\\Application\\:\\:\\$config\\.$#"
+			count: 2
+			path: src/Core/Application.php
+
+		-
+			message: "#^Access to an undefined property hasMethod\\(register\\)\\:\\:\\$priority\\.$#"
+			count: 1
+			path: src/Core/Application.php
+
+		-
+			message: "#^Class Twig_Environment not found\\.$#"
+			count: 1
+			path: src/Core/Application.php
+
+		-
+			message: "#^Constant THEMOSIS_PUBLIC_DIR not found\\.$#"
+			count: 1
+			path: src/Core/Application.php
+
+		-
+			message: "#^PHPDoc tag @return has invalid value \\(\\$this;\\)\\: Unexpected token \";\", expected TOKEN_HORIZONTAL_WS at offset 259 on line 8$#"
+			count: 1
+			path: src/Core/Application.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:detectEnvironment\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Bootstrap/ConfigurationLoader.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:getCachedConfigPath\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Bootstrap/ConfigurationLoader.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:configurationIsCached\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Bootstrap/EnvironmentLoader.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:environmentFile\\(\\)\\.$#"
+			count: 3
+			path: src/Core/Bootstrap/EnvironmentLoader.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:environmentPath\\(\\)\\.$#"
+			count: 2
+			path: src/Core/Bootstrap/EnvironmentLoader.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:loadEnvironmentFrom\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Bootstrap/EnvironmentLoader.php
+
+		-
+			message: "#^Instantiated class Illuminate\\\\Queue\\\\SerializableClosure not found\\.$#"
+			count: 1
+			path: src/Core/Bus/PendingChain.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$class$#"
+			count: 1
+			path: src/Core/Bus/PendingChain.php
+
+		-
+			message: "#^Call to method getComposer\\(\\) on an unknown class Composer\\\\Script\\\\Event\\.$#"
+			count: 3
+			path: src/Core/ComposerScripts.php
+
+		-
+			message: "#^Constant CONTENT_DIR not found\\.$#"
+			count: 1
+			path: src/Core/ComposerScripts.php
+
+		-
+			message: "#^Constant THEMOSIS_PUBLIC_DIR not found\\.$#"
+			count: 1
+			path: src/Core/ComposerScripts.php
+
+		-
+			message: "#^Constant THEMOSIS_ROOT not found\\.$#"
+			count: 1
+			path: src/Core/ComposerScripts.php
+
+		-
+			message: "#^Parameter \\$event of method Themosis\\\\Core\\\\ComposerScripts\\:\\:postAutoloadDump\\(\\) has invalid type Composer\\\\Script\\\\Event\\.$#"
+			count: 2
+			path: src/Core/ComposerScripts.php
+
+		-
+			message: "#^Parameter \\$event of method Themosis\\\\Core\\\\ComposerScripts\\:\\:postInstall\\(\\) has invalid type Composer\\\\Script\\\\Event\\.$#"
+			count: 2
+			path: src/Core/ComposerScripts.php
+
+		-
+			message: "#^Parameter \\$event of method Themosis\\\\Core\\\\ComposerScripts\\:\\:postUpdate\\(\\) has invalid type Composer\\\\Script\\\\Event\\.$#"
+			count: 2
+			path: src/Core/ComposerScripts.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:getCachedPackagesPath\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Console/ClearCompiledCommand.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:getCachedServicesPath\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Console/ClearCompiledCommand.php
+
+		-
+			message: "#^Method Themosis\\\\Core\\\\Console\\\\ComponentMakeCommand\\:\\:handle\\(\\) should return bool\\|null but return statement is missing\\.$#"
+			count: 2
+			path: src/Core/Console/ComponentMakeCommand.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:getCachedConfigPath\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Console/ConfigCacheCommand.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:getCachedConfigPath\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Console/ConfigClearCommand.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:getCachedEventsPath\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Console/EventCacheCommand.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:getCachedEventsPath\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Console/EventClearCommand.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:environmentFilePath\\(\\)\\.$#"
+			count: 2
+			path: src/Core/Console/KeyGenerateCommand.php
+
+		-
+			message: "#^Method Themosis\\\\Core\\\\Console\\\\MailMakeCommand\\:\\:handle\\(\\) should return bool\\|null but return statement is missing\\.$#"
+			count: 2
+			path: src/Core/Console/MailMakeCommand.php
+
+		-
+			message: "#^Method Themosis\\\\Core\\\\Console\\\\ModelMakeCommand\\:\\:handle\\(\\) should return bool\\|null but return statement is missing\\.$#"
+			count: 2
+			path: src/Core/Console/ModelMakeCommand.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 6
+			path: src/Core/Console/QueueCommand.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:getCachedRoutesPath\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Console/RouteCacheCommand.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:getCachedRoutesPath\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Console/RouteClearCommand.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:environmentFilePath\\(\\)\\.$#"
+			count: 2
+			path: src/Core/Console/SaltsGenerateCommand.php
+
+		-
+			message: "#^Call to an undefined method Exception\\:\\:getHeaders\\(\\)\\.$#"
+			count: 2
+			path: src/Core/Exceptions/Handler.php
+
+		-
+			message: "#^Call to an undefined method Exception\\:\\:getStatusCode\\(\\)\\.$#"
+			count: 2
+			path: src/Core/Exceptions/Handler.php
+
+		-
+			message: "#^PHPDoc tag @return has invalid value \\(\\\\Symfony\\\\Component\\\\HttpFoundation\\\\Response;\\)\\: Unexpected token \";\", expected TOKEN_HORIZONTAL_WS at offset 261 on line 8$#"
+			count: 1
+			path: src/Core/Exceptions/Handler.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:registerHook\\(\\)\\.$#"
+			count: 1
+			path: src/Core/HooksRepository.php
+
+		-
+			message: "#^Instantiated class Symfony\\\\Component\\\\Debug\\\\Exception\\\\FatalThrowableError not found\\.$#"
+			count: 1
+			path: src/Core/Http/Kernel.php
+
+		-
+			message: "#^Comparison operation \"\\>\" between array\\|string\\|null and int\\<1, max\\> results in an error\\.$#"
+			count: 1
+			path: src/Core/Http/Middleware/ValidatePostSize.php
+
+		-
+			message: "#^PHPDoc tag @var with type SplFileInfo is not subtype of native type Symfony\\\\Component\\\\Finder\\\\SplFileInfo\\.$#"
+			count: 1
+			path: src/Core/PluginManager.php
+
+		-
+			message: "#^Method Themosis\\\\Core\\\\PluginsRepository\\:\\:getPlugin\\(\\) should return array but return statement is missing\\.$#"
+			count: 1
+			path: src/Core/PluginsRepository.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:addDeferredServices\\(\\)\\.$#"
+			count: 1
+			path: src/Core/ProviderRepository.php
+
+		-
+			message: "#^Method Themosis\\\\Core\\\\ProviderRepository\\:\\:loadManifest\\(\\) should return array\\|null but return statement is missing\\.$#"
+			count: 2
+			path: src/Core/ProviderRepository.php
+
+		-
+			message: "#^Class Illuminate\\\\Database\\\\Console\\\\Migrations\\\\MigrateCommand constructor invoked with 1 parameter, 2 required\\.$#"
+			count: 1
+			path: src/Core/Providers/ArtisanServiceProvider.php
+
+		-
+			message: "#^Call to an undefined method Themosis\\\\Core\\\\Providers\\\\CoreServiceProvider\\:\\:all\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Providers/CoreServiceProvider.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:eventsAreCached\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Support/Providers/EventServiceProvider.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:getCachedEventsPath\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Support/Providers/EventServiceProvider.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:path\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Support/Providers/EventServiceProvider.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:getCachedRoutesPath\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Support/Providers/RouteServiceProvider.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Foundation\\\\Application\\:\\:routesAreCached\\(\\)\\.$#"
+			count: 1
+			path: src/Core/Support/Providers/RouteServiceProvider.php
+
+		-
+			message: "#^Constant CONTENT_DIR not found\\.$#"
+			count: 1
+			path: src/Core/ThemeManager.php
+
+		-
+			message: "#^Constant SUBDOMAIN_INSTALL not found\\.$#"
+			count: 2
+			path: src/Core/ThemeManager.php
+
+		-
+			message: "#^PHPDoc tag @var with type SplFileInfo is not subtype of native type Symfony\\\\Component\\\\Finder\\\\SplFileInfo\\.$#"
+			count: 1
+			path: src/Core/ThemeManager.php
+
+		-
+			message: "#^Class Gate not found\\.$#"
+			count: 1
+			path: src/Core/helpers.php
+
+		-
+			message: "#^Instantiated class CallQueuedClosure not found\\.$#"
+			count: 1
+			path: src/Core/helpers.php
+
+		-
+			message: "#^Instantiated class Illuminate\\\\Queue\\\\SerializableClosure not found\\.$#"
+			count: 1
+			path: src/Core/helpers.php
+
+		-
+			message: "#^Instantiated class Symfony\\\\Component\\\\Debug\\\\Exception\\\\FatalThrowableError not found\\.$#"
+			count: 1
+			path: src/Core/helpers.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(dynamic  key\\|key,default\\|data,expiration\\|null\\)\\: Unexpected token \"key\", expected variable at offset 158 on line 6$#"
+			count: 1
+			path: src/Core/helpers.php
+
+		-
+			message: "#^Call to an undefined method Themosis\\\\Field\\\\Factory\\:\\:make\\(\\)\\.$#"
+			count: 1
+			path: src/Field/Factory.php
+
+		-
+			message: "#^Method Themosis\\\\Field\\\\Factory\\:\\:date\\(\\) has invalid return type Themosis\\\\Field\\\\Fields\\\\DateField\\.$#"
+			count: 1
+			path: src/Field/Factory.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Validation\\\\Validator\\:\\:valid\\(\\)\\.$#"
+			count: 1
+			path: src/Forms/Form.php
+
+		-
+			message: "#^Variable \\$field in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$attr, \\$message$#"
+			count: 1
+			path: src/Forms/Form.php
+
+		-
+			message: "#^PHPDoc tag @var with type Themosis\\\\Forms\\\\Contracts\\\\FieldTypeInterface\\|Themosis\\\\Forms\\\\Contracts\\\\FormInterface is not subtype of native type Themosis\\\\Forms\\\\Contracts\\\\FieldTypeInterface\\.$#"
+			count: 2
+			path: src/Forms/Resources/Transformers/FormTransformer.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\|array\\|\\\\WP_Screen\\)\\: Unexpected token \"\\\\n     \\* \", expected variable at offset 79 on line 4$#"
+			count: 1
+			path: src/Metabox/Contracts/MetaboxInterface.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Validation\\\\Validator\\:\\:valid\\(\\)\\.$#"
+			count: 1
+			path: src/Metabox/Manager.php
+
+		-
+			message: "#^Call to an undefined method Themosis\\\\Forms\\\\Contracts\\\\FieldTypeInterface\\|Themosis\\\\Forms\\\\Fields\\\\Contracts\\\\CanHandleMetabox\\:\\:setErrorMessageBag\\(\\)\\.$#"
+			count: 1
+			path: src/Metabox/Manager.php
+
+		-
+			message: "#^PHPDoc tag @var has invalid value \\(\\$validator Validator\\)\\: Unexpected token \"\\$validator\", expected type at offset 9 on line 1$#"
+			count: 1
+			path: src/Metabox/Manager.php
+
+		-
+			message: "#^Variable \\$field in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$attr, \\$message$#"
+			count: 1
+			path: src/Metabox/Manager.php
+
+		-
+			message: "#^PHPDoc tag @return with type array is incompatible with native type Illuminate\\\\Support\\\\Collection\\.$#"
+			count: 2
+			path: src/Page/Contracts/SettingsRepositoryInterface.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\View\\\\Factory\\:\\:getContainer\\(\\)\\.$#"
+			count: 3
+			path: src/Page/Page.php
+
+		-
+			message: "#^Call to an undefined method Themosis\\\\Support\\\\Contracts\\\\UIContainerInterface\\:\\:setViewInstance\\(\\)\\.$#"
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: "#^Call to an undefined method Themosis\\\\Support\\\\Contracts\\\\UIContainerInterface\\:\\:useShortPath\\(\\)\\.$#"
+			count: 1
+			path: src/Page/Page.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\View\\\\Factory\\:\\:getContainer\\(\\)\\.$#"
+			count: 2
+			path: src/Page/PageFactory.php
+
+		-
+			message: "#^PHPDoc tag @return with type array is incompatible with native type Illuminate\\\\Support\\\\Collection\\.$#"
+			count: 2
+			path: src/Page/PageSettingsRepository.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Routing\\\\Route\\:\\:getCondition\\(\\)\\.$#"
+			count: 1
+			path: src/Route/Matching/ConditionValidator.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Routing\\\\Route\\:\\:getConditionParameters\\(\\)\\.$#"
+			count: 1
+			path: src/Route/Matching/ConditionValidator.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Routing\\\\Registrar\\:\\:addWordPressBindings\\(\\)\\.$#"
+			count: 1
+			path: src/Route/Middleware/WordPressBindings.php
+
+		-
+			message: "#^Cannot call method hasCondition\\(\\) on object\\|string\\.$#"
+			count: 1
+			path: src/Route/Middleware/WordPressHeaders.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Routing\\\\Route\\:\\:getConditionParameters\\(\\)\\.$#"
+			count: 2
+			path: src/Route/RouteCollection.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Routing\\\\Route\\:\\:hasCondition\\(\\)\\.$#"
+			count: 1
+			path: src/Route/RouteCollection.php
+
+		-
+			message: "#^Variable \\$method might not be defined\\.$#"
+			count: 1
+			path: src/Route/RouteCollection.php
+
+		-
+			message: "#^Call to an undefined method Themosis\\\\Route\\\\Router\\:\\:emailVerification\\(\\)\\.$#"
+			count: 1
+			path: src/Route/Router.php
+
+		-
+			message: "#^Call to an undefined method Themosis\\\\Route\\\\Router\\:\\:resetPassword\\(\\)\\.$#"
+			count: 1
+			path: src/Route/Router.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Validation\\\\Validator\\:\\:valid\\(\\)\\.$#"
+			count: 1
+			path: src/Taxonomy/TaxonomyField.php
+
+		-
+			message: "#^Call to an undefined method Themosis\\\\Forms\\\\Contracts\\\\FieldTypeInterface\\|Themosis\\\\Forms\\\\Fields\\\\Contracts\\\\CanHandleTerms\\:\\:setErrorMessageBag\\(\\)\\.$#"
+			count: 1
+			path: src/Taxonomy/TaxonomyField.php
+
+		-
+			message: "#^Variable \\$term in PHPDoc tag @var does not match any variable in the foreach loop\\: \\$field$#"
+			count: 1
+			path: src/Taxonomy/TaxonomyField.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Contracts\\\\Validation\\\\Validator\\:\\:valid\\(\\)\\.$#"
+			count: 1
+			path: src/User/UserField.php
+
+		-
+			message: "#^Call to an undefined method Themosis\\\\Forms\\\\Contracts\\\\FieldTypeInterface\\|Themosis\\\\Forms\\\\Fields\\\\Contracts\\\\CanHandleUsers\\:\\:setErrorMessageBag\\(\\)\\.$#"
+			count: 1
+			path: src/User/UserField.php
+
+		-
+			message: "#^Call to method render\\(\\) on an unknown class Twig_Environment\\.$#"
+			count: 1
+			path: src/View/Engines/Twig.php
+
+		-
+			message: "#^Property Themosis\\\\View\\\\Engines\\\\Twig\\:\\:\\$twig has unknown class Twig_Environment as its type\\.$#"
+			count: 1
+			path: src/View/Engines/Twig.php
+
+		-
+			message: "#^Method Themosis\\\\View\\\\Extensions\\\\WordPress\\:\\:getFilters\\(\\) has invalid return type Twig_Filter\\.$#"
+			count: 1
+			path: src/View/Extensions/WordPress.php
+
+		-
+			message: "#^Method Themosis\\\\View\\\\Extensions\\\\WordPress\\:\\:getFunctions\\(\\) has invalid return type Twig_Function\\.$#"
+			count: 1
+			path: src/View/Extensions/WordPress.php
+
+		-
+			message: "#^PHPDoc tag @var with type array\\<Themosis\\\\View\\\\FileViewLocation\\> is not subtype of native type mixed\\.$#"
+			count: 1
+			path: src/View/FileViewFinder.php
+
+		-
+			message: "#^Class WP_Post referenced with incorrect case\\: WP_post\\.$#"
+			count: 1
+			path: src/View/Loop.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int\\|\\\\WP_Post The post ID or WP_Post object\\)\\: Unexpected token \"The\", expected variable at offset 157 on line 5$#"
+			count: 1
+			path: src/View/Loop.php

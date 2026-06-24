@@ -742,6 +742,18 @@ class Application extends Container implements
     }
 
     /**
+     * Get the maintenance mode manager.
+     *
+     * @return \Illuminate\Contracts\Foundation\MaintenanceMode
+     */
+    public function maintenanceMode()
+    {
+        return new \Themosis\Core\Maintenance\WordPressMaintenanceMode(
+            $this->wordpressPath('.maintenance'),
+        );
+    }
+
+    /**
      * Determine if the application is currently down for maintenance.
      *
      * @throws \Illuminate\Container\EntryNotFoundException
@@ -750,13 +762,11 @@ class Application extends Container implements
      */
     public function isDownForMaintenance()
     {
-        $filePath = $this->wordpressPath('.maintenance');
-
-        if (function_exists('wp_installing') && ! file_exists($filePath)) {
+        if (function_exists('wp_installing') && ! $this->maintenanceMode()->active()) {
             return \wp_installing();
         }
 
-        return file_exists($filePath);
+        return $this->maintenanceMode()->active();
     }
 
     /**
@@ -984,14 +994,14 @@ class Application extends Container implements
      *
      * @param SymfonyRequest $request A Request instance
      * @param int            $type    The type of the request
-     *                                (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
+     *                                (one of HttpKernelInterface::MAIN_REQUEST or HttpKernelInterface::SUB_REQUEST)
      * @param bool           $catch   Whether to catch exceptions or not
      *
      * @throws \Exception When an Exception occurs during processing
      *
      * @return Response A Response instance
      */
-    public function handle(SymfonyRequest $request, $type = self::MASTER_REQUEST, $catch = true)
+    public function handle(SymfonyRequest $request, int $type = self::MAIN_REQUEST, bool $catch = true): Response
     {
         return $this[HttpKernelContract::class]->handle(Request::createFromBase($request));
     }
@@ -1422,7 +1432,7 @@ class Application extends Container implements
      *
      * @return $this
      */
-    public function terminating(Closure $callback)
+    public function terminating($callback)
     {
         $this->terminatingCallbacks[] = $callback;
 
@@ -1574,6 +1584,29 @@ class Application extends Container implements
     public function getLocale()
     {
         return $this['config']->get('app.locale');
+    }
+
+    /**
+     * Get the application fallback locale.
+     *
+     * @return string
+     */
+    public function getFallbackLocale()
+    {
+        return $this['config']->get('app.fallback_locale');
+    }
+
+    /**
+     * Set the application fallback locale.
+     *
+     * @param string $fallbackLocale
+     *
+     * @return void
+     */
+    public function setFallbackLocale(string $fallbackLocale)
+    {
+        $this['config']->set('app.fallback_locale', $fallbackLocale);
+        $this['translator']->setFallback($fallbackLocale);
     }
 
     /**

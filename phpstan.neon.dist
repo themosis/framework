@@ -4,11 +4,12 @@ includes:
     # https://github.com/phpstan/phpstan/blob/master/conf/bleedingEdge.neon
     - phar://phpstan.phar/conf/bleedingEdge.neon
     - vendor/szepeviktor/phpstan-wordpress/extension.neon
+    - phpstan-baseline.neon
 parameters:
     level: 2
     paths:
         - %currentWorkingDirectory%/src/
-    excludes_analyse:
+    excludePaths:
         - %currentWorkingDirectory%/src/Page/views
         - %currentWorkingDirectory%/src/Core/Exceptions/views
         - %currentWorkingDirectory%/src/Taxonomy/views
