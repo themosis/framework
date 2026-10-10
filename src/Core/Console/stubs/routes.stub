@@ -11,6 +11,8 @@
 |
 */
 
+app()->instance('routes.cached.providers', {{providers}});
+
 app('router')->setRoutes(
     unserialize(base64_decode('{{routes}}'))
 );

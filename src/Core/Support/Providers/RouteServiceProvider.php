@@ -33,13 +33,16 @@ class RouteServiceProvider extends ServiceProvider
 
             if ($this->routesAreCached()) {
                 $this->loadCachedRoutes();
-            } else {
-                $this->loadRoutes();
 
+                // Providers not part of the route cache (e.g. theme providers, which are
+                // only registered once WordPress loads the theme) still load their routes.
                 $this->app->booted(function () {
-                    $this->app['router']->getRoutes()->refreshNameLookups();
-                    $this->app['router']->getRoutes()->refreshActionLookups();
+                    if (! $this->routesAreCachedForProvider()) {
+                        $this->loadRoutesAndRefreshLookups();
+                    }
                 });
+            } else {
+                $this->loadRoutesAndRefreshLookups();
             }
         });
     }
@@ -70,7 +73,40 @@ class RouteServiceProvider extends ServiceProvider
     protected function loadCachedRoutes()
     {
         $this->app->booted(function () {
-            require $this->app->getCachedRoutesPath();
+            // The cache file binds "routes.cached.providers": only load it once.
+            if (! $this->app->bound('routes.cached.providers')) {
+                require $this->app->getCachedRoutesPath();
+            }
+        });
+    }
+
+    /**
+     * Determine if this provider's routes are part of the route cache.
+     *
+     * Route caches built before the providers list was recorded are assumed
+     * to contain every provider's routes.
+     *
+     * @return bool
+     */
+    protected function routesAreCachedForProvider()
+    {
+        if (! $this->app->bound('routes.cached.providers')) {
+            return true;
+        }
+
+        return in_array(static::class, $this->app['routes.cached.providers'], true);
+    }
+
+    /**
+     * Load the provider routes and refresh the router lookups.
+     */
+    protected function loadRoutesAndRefreshLookups()
+    {
+        $this->loadRoutes();
+
+        $this->app->booted(function () {
+            $this->app['router']->getRoutes()->refreshNameLookups();
+            $this->app['router']->getRoutes()->refreshActionLookups();
         });
     }
 
