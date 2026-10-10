@@ -29,6 +29,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Themosis\Core\Bootstrap\EnvironmentLoader;
 use Themosis\Core\Events\LocaleUpdated;
+use Themosis\Core\Maintenance\WordPressMaintenanceMode;
 use Themosis\Route\RouteServiceProvider;
 
 class Application extends Container implements
@@ -582,6 +583,10 @@ class Application extends Container implements
      */
     public function storagePath($path = '')
     {
+        if ($this->storagePath) {
+            return $this->storagePath . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        }
+
         if (defined('THEMOSIS_ROOT')) {
             return $this->rootPath('storage') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
         }
@@ -752,13 +757,13 @@ class Application extends Container implements
      */
     public function isDownForMaintenance()
     {
-        $filePath = $this->wordpressPath('.maintenance');
+        $active = $this->maintenanceMode()->active();
 
-        if (function_exists('wp_installing') && ! file_exists($filePath)) {
+        if (function_exists('wp_installing') && ! $active) {
             return \wp_installing();
         }
 
-        return file_exists($filePath);
+        return $active;
     }
 
     /**
@@ -1002,13 +1007,17 @@ class Application extends Container implements
      * Register a service provider with the application.
      *
      * @param \Illuminate\Support\ServiceProvider|string $provider
-     * @param array                                      $options
      * @param bool                                       $force
      *
      * @return \Illuminate\Support\ServiceProvider
      */
-    public function register($provider, $options = [], $force = false)
+    public function register($provider, $force = false)
     {
+        // Backward compatibility with the former register($provider, $options, $force) signature.
+        if (is_array($force)) {
+            $force = (bool) (func_get_args()[2] ?? false);
+        }
+
         if (($registered = $this->getProvider($provider)) && ! $force) {
             return $registered;
         }
@@ -1733,7 +1742,23 @@ class Application extends Container implements
      */
     public function publicPath($path = '')
     {
-        return $this->basePath.DIRECTORY_SEPARATOR.'public'.($path ? DIRECTORY_SEPARATOR.$path : '');
+        $publicPath = $this->bound('path.public') ? $this->make('path.public') : $this->webPath();
+
+        return $publicPath . ($path ? DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR) : '');
+    }
+
+    /**
+     * Set the public (web root) directory.
+     *
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function usePublicPath($path)
+    {
+        $this->instance('path.public', rtrim($path, '\\/'));
+
+        return $this;
     }
 
     /**
@@ -1753,7 +1778,9 @@ class Application extends Container implements
      */
     public function maintenanceMode()
     {
-        // Return null for now, or implement as needed for your app
-        return null;
+        return new WordPressMaintenanceMode(
+            $this->wordpressPath('.maintenance'),
+            $this->storagePath('framework' . DIRECTORY_SEPARATOR . 'down'),
+        );
     }
 }
