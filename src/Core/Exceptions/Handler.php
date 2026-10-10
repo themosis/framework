@@ -26,6 +26,7 @@ use Illuminate\Support\ViewErrorBag;
 use Illuminate\Validation\ValidationException;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 use Symfony\Component\HttpFoundation\Exception\SuspiciousOperationException;
@@ -54,6 +55,13 @@ class Handler implements ExceptionHandler
      * @var array
      */
     protected $dontReport = [];
+
+    /**
+     * A map of exceptions with their corresponding custom log levels.
+     *
+     * @var array<class-string<\Throwable>, string>
+     */
+    protected $levels = [];
 
     /**
      * The callbacks that should be used during reporting.
@@ -98,6 +106,7 @@ class Handler implements ExceptionHandler
      * @var array
      */
     protected $dontFlash = [
+        'current_password',
         'password',
         'password_confirmation',
     ];
@@ -180,11 +189,59 @@ class Handler implements ExceptionHandler
      *
      * @return $this
      */
-    protected function ignore(string $class)
+    public function ignore(string $class)
     {
         $this->dontReport[] = $class;
 
         return $this;
+    }
+
+    /**
+     * Indicate that the given exception type(s) should be reported again.
+     *
+     * @param array|string $exceptions
+     *
+     * @return $this
+     */
+    public function stopIgnoring(array|string $exceptions)
+    {
+        $exceptions = (array) $exceptions;
+
+        $this->dontReport = array_values(array_diff($this->dontReport, $exceptions));
+        $this->internalDontReport = array_values(array_diff($this->internalDontReport, $exceptions));
+
+        return $this;
+    }
+
+    /**
+     * Set the log level for the given exception type.
+     *
+     * @param class-string<\Throwable> $type
+     * @param string                   $level
+     *
+     * @return $this
+     */
+    public function level(string $type, string $level)
+    {
+        $this->levels[$type] = $level;
+
+        return $this;
+    }
+
+    /**
+     * Get the log level for the given exception.
+     *
+     * @param \Throwable $e
+     *
+     * @return string
+     */
+    protected function mapLogLevel(Throwable $e)
+    {
+        return Arr::first(
+            $this->levels,
+            fn ($level, $type) => $e instanceof $type,
+            LogLevel::ERROR,
+        );
     }
 
     /**
@@ -222,7 +279,8 @@ class Handler implements ExceptionHandler
             throw $e;
         }
 
-        $logger->error(
+        $logger->log(
+            $this->mapLogLevel($e),
             $e->getMessage(),
             array_merge(
                 $this->exceptionContext($e),

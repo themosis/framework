@@ -15,6 +15,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -82,8 +83,9 @@ class ExceptionHandlerTest extends TestCase
         $exception = new \RuntimeException('Exception message');
 
         $logger->expects($this->once())
-            ->method('error')
+            ->method('log')
             ->with(
+                LogLevel::ERROR,
                 $this->equalTo('Exception message'),
                 [
                     'exception' => $exception,
@@ -91,6 +93,37 @@ class ExceptionHandlerTest extends TestCase
             );
 
         $this->handler->report($exception);
+    }
+
+    public function testHandlerReportsWithCustomLogLevel()
+    {
+        $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
+        $this->container->instance(LoggerInterface::class, $logger);
+
+        $logger->expects($this->once())
+            ->method('log')
+            ->with(LogLevel::CRITICAL, 'Critical message');
+
+        $this->handler->level(\RuntimeException::class, LogLevel::CRITICAL);
+        $this->handler->report(new \RuntimeException('Critical message'));
+    }
+
+    public function testHandlerCanIgnoreAndStopIgnoringExceptions()
+    {
+        $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
+        $this->container->instance(LoggerInterface::class, $logger);
+
+        $logger->expects($this->exactly(2))->method('log');
+
+        $this->handler->ignore(\RuntimeException::class);
+        $this->handler->report(new \RuntimeException('Ignored'));
+
+        $this->handler->stopIgnoring(\RuntimeException::class);
+        $this->handler->report(new \RuntimeException('Reported'));
+
+        // Internal "do not report" exceptions can be re-enabled as well.
+        $this->handler->stopIgnoring(HttpException::class);
+        $this->handler->report(new HttpException(500, 'Reported'));
     }
 
     public function testReturnsJsonWithStackTraceWhenAjaxRequestAndDebugTrue()
