@@ -74,6 +74,7 @@ use Themosis\Core\Console\MailMakeCommand;
 use Themosis\Core\Console\ModelMakeCommand;
 use Themosis\Core\Console\NotificationMakeCommand;
 use Themosis\Core\Console\ObserverCommand;
+use Themosis\Core\Console\OpcacheClearCommand;
 use Themosis\Core\Console\OptimizeClearCommand;
 use Themosis\Core\Console\OptimizeCommand;
 use Themosis\Core\Console\PackageDiscoverCommand;
@@ -137,6 +138,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         'MigrateReset' => 'command.migrate.reset',
         'MigrateRollback' => 'command.migrate.rollback',
         'MigrateStatus' => 'command.migrate.status',
+        'OpcacheClear' => 'command.opcache.clear',
         'Optimize' => 'command.optimize',
         'OptimizeClear' => 'command.optimize.clear',
         'PackageDiscover' => 'command.package.discover',
@@ -823,6 +825,18 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     {
         $this->app->singleton($alias, function ($app) {
             return new ObserverCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the opcache:clear command.
+     *
+     * @param string $alias
+     */
+    protected function registerOpcacheClearCommand($alias)
+    {
+        $this->app->singleton($alias, function () {
+            return new OpcacheClearCommand();
         });
     }
 
