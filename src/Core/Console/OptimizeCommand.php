@@ -26,7 +26,9 @@ class OptimizeCommand extends Command
     public function handle()
     {
         $this->call('config:cache');
+        $this->call('event:cache');
         $this->call('route:cache');
+        $this->call('view:cache');
 
         $this->info('Files cached successfully!');
     }
