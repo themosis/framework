@@ -31,7 +31,7 @@ class ClosureCommand extends Command
      *
      * @throws \ReflectionException
      *
-     * @return mixed
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -45,7 +45,7 @@ class ClosureCommand extends Command
             }
         }
 
-        return $this->laravel->call(
+        return (int) $this->laravel->call(
             $this->callback->bindTo($this, $this),
             $parameters,
         );

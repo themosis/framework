@@ -265,7 +265,8 @@ class Kernel implements KernelContract
             $artisan = new Artisan($this->app, $this->events, $this->app->version());
             $artisan->setName('Themosis Framework');
 
-            return $this->artisan = $artisan->resolveCommands($this->commands);
+            return $this->artisan = $artisan->resolveCommands($this->commands)
+                ->setContainerCommandLoader();
         }
 
         return $this->artisan;
