@@ -20,7 +20,6 @@ use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\HtmlString;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -820,14 +819,10 @@ if (! function_exists('report')) {
     /**
      * Report an exception.
      *
-     * @param \Exception $exception
+     * @param \Throwable $exception
      */
     function report($exception)
     {
-        if ($exception instanceof Throwable &&
-            ! $exception instanceof Exception) {
-            $exception = new FatalThrowableError($exception);
-        }
         app(ExceptionHandler::class)->report($exception);
     }
 }
