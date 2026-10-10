@@ -18,10 +18,10 @@ class EnvironmentLoader
      */
     public function bootstrap(Application $app)
     {
-        if ($app->configurationIsCached()) {
-            return;
-        }
-
+        // Unlike Laravel, the environment is loaded even when the configuration is
+        // cached: config/wordpress.php is still executed on each request to define
+        // the WordPress constants, and WordPress code (themes, plugins) commonly
+        // reads env() at runtime.
         $this->checkForSpecificEnvironmentFile($app);
 
         try {
