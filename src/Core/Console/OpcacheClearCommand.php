@@ -45,14 +45,18 @@ class OpcacheClearCommand extends Command
      *
      * The CLI has its own OPcache: the PHP-FPM one can only be reset from a
      * PHP-FPM worker. A one-off script is written to the storage directory
-     * (not web accessible) and executed through a FastCGI request.
+     * and executed through a FastCGI request. As the storage directory may be
+     * inside the web root, the script only acts when the FastCGI request
+     * carries a random token (a non HTTP_ parameter, which web clients cannot
+     * set), and it deletes itself.
      */
     public function handle(Filesystem $files): int
     {
         $address = $this->option('fcgi') ?: env('OPCACHE_FCGI', '127.0.0.1:9000');
         $script = $this->laravel->storagePath('framework' . DIRECTORY_SEPARATOR . 'opcache-reset-' . Str::random(32) . '.php');
+        $token = Str::random(64);
 
-        $files->put($script, '<?php echo json_encode(["enabled" => function_exists("opcache_get_status") && is_array(@opcache_get_status(false)), "reset" => function_exists("opcache_reset") && @opcache_reset()]);');
+        $files->put($script, $this->script($token));
 
         try {
             $output = $this->request($address, [
@@ -66,6 +70,7 @@ class OpcacheClearCommand extends Command
                 'SERVER_SOFTWARE' => 'themosis/opcache-clear',
                 'REMOTE_ADDR' => '127.0.0.1',
                 'CONTENT_LENGTH' => '0',
+                'THEMOSIS_OPCACHE_TOKEN' => $token,
             ]);
         } catch (RuntimeException $e) {
             $this->components->error("Unable to reach PHP-FPM at [{$address}]: {$e->getMessage()}");
@@ -84,14 +89,14 @@ class OpcacheClearCommand extends Command
             return self::FAILURE;
         }
 
-        if (! $result['enabled']) {
+        if (! ($result['loaded'] ?? false) || ! ($result['enabled'] ?? false)) {
             $this->components->info('OPcache is not enabled in PHP-FPM, nothing to reset.');
 
             return self::SUCCESS;
         }
 
-        if (! $result['reset']) {
-            $this->components->error('PHP-FPM refused to reset OPcache (check opcache.restrict_api).');
+        if (! ($result['reset'] ?? false)) {
+            $this->components->error('PHP-FPM did not reset OPcache (check opcache.restrict_api).');
 
             return self::FAILURE;
         }
@@ -99,6 +104,29 @@ class OpcacheClearCommand extends Command
         $this->components->info('PHP-FPM OPcache reset successfully.');
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Get the one-off OPcache reset script source.
+     *
+     * @param string $token
+     *
+     * @return string
+     */
+    protected function script(string $token): string
+    {
+        return '<?php' . PHP_EOL
+            . '@unlink(__FILE__);' . PHP_EOL
+            . 'if (PHP_SAPI !== "fpm-fcgi" || ! hash_equals(' . var_export($token, true) . ', (string) ($_SERVER["THEMOSIS_OPCACHE_TOKEN"] ?? ""))) {' . PHP_EOL
+            . '    http_response_code(404);' . PHP_EOL
+            . '    exit;' . PHP_EOL
+            . '}' . PHP_EOL
+            . '$loaded = function_exists("opcache_reset");' . PHP_EOL
+            . 'echo json_encode([' . PHP_EOL
+            . '    "loaded" => $loaded,' . PHP_EOL
+            . '    "enabled" => $loaded && filter_var(ini_get("opcache.enable"), FILTER_VALIDATE_BOOLEAN),' . PHP_EOL
+            . '    "reset" => $loaded && @opcache_reset(),' . PHP_EOL
+            . ']);' . PHP_EOL;
     }
 
     /**
