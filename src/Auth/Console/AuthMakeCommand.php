@@ -3,13 +3,10 @@
 namespace Themosis\Auth\Console;
 
 use Illuminate\Console\Command;
-use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Filesystem\Filesystem;
 
 class AuthMakeCommand extends Command
 {
-    use DetectsApplicationNamespace;
-
     /**
      * The console command name and signature.
      *
@@ -196,5 +193,15 @@ class AuthMakeCommand extends Command
             $this->getAppNamespace(),
             $content,
         );
+    }
+
+    /**
+     * Get the application namespace.
+     *
+     * @return string
+     */
+    protected function getAppNamespace()
+    {
+        return $this->getLaravel()->getNamespace();
     }
 }
