@@ -29,6 +29,17 @@ class FormRequestTest extends TestCase
         $this->assertEquals(['name' => 'something'], $request->validated());
     }
 
+    public function testValidatedMethodAcceptsKeyAndDefault()
+    {
+        $request = $this->createRequest(['name' => 'something', 'with' => 'brush']);
+
+        $request->validateResolved();
+
+        $this->assertSame('something', $request->validated('name'));
+        $this->assertNull($request->validated('with'));
+        $this->assertSame('fallback', $request->validated('missing', 'fallback'));
+    }
+
     public function testValidateThrowsWhenValidationFails()
     {
         $this->expectException(ValidationException::class);
