@@ -7,9 +7,9 @@ use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Log\LogManager;
-use Monolog\Handler\NullHandler;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\ErrorHandler\Error\FatalError;
+use Throwable;
 
 class ExceptionHandler
 {
@@ -55,18 +55,20 @@ class ExceptionHandler
      */
     public function handleError($level, $message, $file = '', $line = 0, $context = [])
     {
-        if (! (error_reporting() & $level)) {
-            return;
-        }
-
-        // Handle deprecations
+        // Deprecations are logged regardless of the error_reporting() mask (as Laravel does),
+        // so a WordPress or mu-plugin mask keeps them off-screen while they still reach the log.
         if ($this->isDeprecation($level)) {
             try {
-                return $this->handleDeprecation($message, $file, $line);
-            } catch (Exception $e) {
-                // If deprecation handling fails, silently continue to avoid blocking execution
-                return;
+                $this->handleDeprecation($message, $file, $line, $level);
+            } catch (Throwable $e) {
+                // Never let deprecation handling block execution.
             }
+
+            return true;
+        }
+
+        if (! (error_reporting() & $level)) {
+            return;
         }
 
         // Check if this is a warning or notice that shouldn't stop execution
@@ -97,90 +99,97 @@ class ExceptionHandler
     }
 
     /**
-     * Reports a deprecation to the "deprecations" logger.
+     * Reports a deprecation to the configured deprecations log channel.
      *
      * @param string $message
      * @param string $file
      * @param int    $line
+     * @param int    $level
      */
-    public function handleDeprecation($message, $file, $line)
+    public function handleDeprecation($message, $file, $line, $level = E_DEPRECATED)
     {
-        if (
-            ! class_exists(LogManager::class)
+        if ($this->shouldIgnoreDeprecationErrors()) {
+            return;
+        }
+
+        $options = $this->deprecationLoggingOptions();
+
+        if (is_null($channel = $this->resolveDeprecationChannel($options['channel']))) {
+            return;
+        }
+
+        try {
+            $logger = $this->app->make(LogManager::class)->channel($channel);
+        } catch (Throwable $e) {
+            return;
+        }
+
+        if ($options['trace']) {
+            $logger->warning((string) new ErrorException($message, 0, $level, $file, $line));
+
+            return;
+        }
+
+        $logger->warning(sprintf('%s in %s on line %s', $message, $file, $line));
+    }
+
+    /**
+     * Determine if deprecation errors should be ignored.
+     *
+     * @return bool
+     */
+    protected function shouldIgnoreDeprecationErrors()
+    {
+        return ! class_exists(LogManager::class)
             || ! $this->app->hasBeenBootstrapped()
-            || $this->app->runningUnitTests()
-        ) {
-            return;
-        }
-
-        try {
-            $logger = $this->app->make(LogManager::class);
-            $this->ensureDeprecationLoggerIsConfigured();
-
-            $logger->channel('deprecations')->warning(sprintf(
-                '%s in %s on line %s',
-                $message,
-                $file,
-                $line,
-            ));
-        } catch (Exception $e) {
-            // Silently fail deprecation logging to prevent emergency logger fallback
-            return;
-        }
+            || $this->app->runningUnitTests();
     }
 
-    protected function ensureDeprecationLoggerIsConfigured()
+    /**
+     * Get the deprecations logging options from the "logging.deprecations" configuration.
+     *
+     * Accepts a channel name or a ['channel' => ..., 'trace' => ...] array (Laravel format).
+     * A "null" or false channel discards deprecations. Without a channel, deprecations are
+     * logged to the "deprecations" channel when WP_DEBUG is enabled and discarded otherwise.
+     *
+     * @return array{channel: string, trace: bool}
+     */
+    protected function deprecationLoggingOptions()
     {
-        try {
-            $config = $this->app['config'];
+        $options = $this->app['config']->get('logging.deprecations');
 
-            if ($config->get('logging.channels.deprecations')) {
-                return;
-            }
-
-            $this->ensureNullLogDriverIsConfigured();
-
-            $deprecationConfig = $config->get('logging.deprecations');
-
-            // Case 1: The config is an array (modern inline definition).
-            if (is_array($deprecationConfig)) {
-                $config->set('logging.channels.deprecations', $deprecationConfig);
-                // Case 2: The config is a string (legacy channel name).
-            } elseif (is_string($deprecationConfig)) {
-                $existingChannel = $config->get("logging.channels.{$deprecationConfig}");
-                if ($existingChannel) {
-                    $config->set('logging.channels.deprecations', $existingChannel);
-                } else {
-                    // Fallback to null if referenced channel doesn't exist
-                    $config->set('logging.channels.deprecations', $config->get('logging.channels.null'));
-                }
-                // Case 3: The config is null or not set, default to the 'null' channel.
-            } else {
-                $config->set('logging.channels.deprecations', $config->get('logging.channels.null'));
-            }
-        } catch (Exception $e) {
-            // If configuration fails, silently continue - caller will handle logging failures
-            return;
+        if (! is_array($options)) {
+            $options = ['channel' => $options];
         }
+
+        $channel = $options['channel'] ?? null;
+
+        if ($channel === false) {
+            $channel = 'null';
+        } elseif (! is_string($channel) || $channel === '') {
+            $channel = (defined('WP_DEBUG') && WP_DEBUG) ? 'deprecations' : 'null';
+        }
+
+        return [
+            'channel' => $channel,
+            'trace' => (bool) ($options['trace'] ?? false),
+        ];
     }
 
-    protected function ensureNullLogDriverIsConfigured()
+    /**
+     * Resolve the log channel to use for deprecations, or null to discard them.
+     *
+     * @param string $channel
+     *
+     * @return string|null
+     */
+    protected function resolveDeprecationChannel($channel)
     {
-        try {
-            $config = $this->app['config'];
-
-            if ($config->get('logging.channels.null')) {
-                return;
-            }
-
-            $config->set('logging.channels.null', [
-                'driver' => 'monolog',
-                'handler' => NullHandler::class,
-            ]);
-        } catch (Exception $e) {
-            // If null driver configuration fails, silently continue
-            return;
+        if ($channel === 'null' || ! $this->app['config']->get("logging.channels.{$channel}")) {
+            return null;
         }
+
+        return $channel;
     }
 
     /**
@@ -277,7 +286,6 @@ class ExceptionHandler
             E_USER_WARNING => 'User Warning',
             E_NOTICE => 'Notice',
             E_USER_NOTICE => 'User Notice',
-            E_STRICT => 'Strict Standards',
             E_RECOVERABLE_ERROR => 'Recoverable Error',
         ];
 
