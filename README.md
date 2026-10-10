@@ -1,64 +1,106 @@
-Themosis framework
-==================
+Themosis Framework 12
+=====================
 
-[![Build Status](https://travis-ci.com/themosis/framework.svg?branch=develop)](https://travis-ci.com/themosis/framework)
-[![Join the chat at https://gitter.im/themosis/framework](https://badges.gitter.im/themosis/framework.svg)](https://gitter.im/themosis/framework?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+A modernization of the [Themosis framework](https://github.com/themosis/framework) 3.1 (WordPress framework built on Laravel components) to **Laravel 12**, **PHP 8.4/8.5** and **WordPress 7**.
 
-The Themosis framework is a WordPress focused framework. It helps you develop enterprise level WordPress application and website using an elegant and simple code syntax.
-
-Getting started
----------------
-
-### Prerequisites
-
-In order to start a new installation of the Themosis framework, you need to have all [WordPress requirements](https://wordpress.org/about/requirements/) and [Composer](https://getcomposer.org/) installed on your computer.
-
-> We recommend to install Composer globally on your computer.
-
-### Installing
-
-Once you have Composer setup, run the following command in your Terminal or Console in order to install a fresh copy of the Themosis framework:
-
-```bash
-composer create-project themosis/themosis myproject
-```
-
-The above command will install a new instance of the Themosis framework under the `myproject` directory.
-
-### Learn more
-
-In order to learn more about how to use the framework and its features, please follow the official documentation and read the "Getting started" guide:
-
-- [Official documentation](https://framework.themosis.com)
-
-Contributing
-------------
-Any help is appreciated. The project is open-source and we encourage you to participate. You can contribute to the project in multiple ways by:
-
-- Reporting a code issue
-- Suggesting features
-- Sending a pull request with code fix or feature
-- Following the project on [GitHub](https://github.com/themosis/framework)
-- Following us on [Twitter](https://twitter.com/Themosis)
-- Sharing the project around your community
-
-For details about contributing to the framework, please check the [contribution guide](https://github.com/themosis/framework/.github/CONTRIBUTING.md).
+> [!WARNING]
+> **This fork is not meant to be stable or maintained for third-party users.**
+> It is a sane modernization of the work of the original author, kept up to date for a handful of existing projects.
+> There is no support, no backward compatibility promise and it may change at any time.
+> Issues and pull requests are not monitored.
 
 Versioning
 ----------
 
-We use SemVer for versioning. For available versions, please check this repository tags if you need a specific version for your project.
+The major version follows the Laravel major version: **12.x requires Laravel 12** (`illuminate/*` `^12.69`).
 
-When starting from scratch, Composer will always install the most recent stable version.
+Requirements
+------------
 
-Authors
+- PHP `^8.2` (used on PHP 8.4 and 8.5)
+- WordPress 6.8+ (used on WordPress 7.1)
+- Composer 2
+
+Installation
+------------
+
+Add the repository and require the package in an existing Themosis application:
+
+```json
+{
+    "repositories": [
+        { "type": "vcs", "url": "https://github.com/fatk/themosis-framework" }
+    ],
+    "require": {
+        "themosis/framework": "^12.0"
+    }
+}
+```
+
+The [original documentation](https://framework.themosis.com) still applies to the framework APIs (routes, post types, taxonomies, metaboxes, fields, forms, pages, hooks...).
+
+Changes from Themosis 3.1
+-------------------------
+
+### Dependencies
+
+| Package                    | Themosis 3.1 | Themosis 12          |
+|----------------------------|--------------|----------------------|
+| PHP                        | `^8.0`       | `^8.2`               |
+| `illuminate/*`             | `^8.83`      | `^12.69`             |
+| `league/flysystem`         | `^1.1`       | `^3.29`              |
+| `laravel/ui`               | `^3.1`       | `^4.0`               |
+| `laravel/tinker`           | `^2.5`       | `^2.10` / `^3.0`     |
+| `composer/installers`      | `^1.9`       | `^2`                 |
+| `predis/predis`            | `^1.1`       | `^2.3` / `^3.0`      |
+| `symfony/property-access`  | `^5.4`       | `^7.4` / `^8.0`      |
+| `paragonie/sodium_compat`  | `^1.15`      | `^1.24.2` / `^2.5.2` |
+| `guzzlehttp/guzzle`        | `^7.2`       | `^7.8`               |
+| `league/fractal`           | `^0.20`      | `^0.20` / `^0.21`    |
+| PHPUnit (dev)              | `^9`         | `^12` / `^13`        |
+
+### Major fixes
+
+- **Laravel 9 → 12 port**: container, contracts and helpers aligned with Laravel 12 (`Application::register()` force flag, `publicPath()`, `useStoragePath()`, `maintenanceMode()`, fallback locale, terminating callbacks, removed `symfony/debug`, `SerializableClosure` and `DetectsApplicationNamespace` usages).
+- **Errors & deprecations**: PHP warnings and notices are logged instead of rendering an error page; deprecations go to a dedicated log channel (on when `WP_DEBUG` is enabled, off otherwise) and no longer depend on the `error_reporting()` mask; PHP 8.4+ deprecations fixed.
+- **Console**: `migrate*` and `schedule:*` commands restored, closure commands and `#[AsCommand]` commands fixed, `vendor:publish` works with Flysystem 3, `make:auth` fixed.
+- **Queues**: queued closures, closure chains and scheduled closures work with standalone `illuminate/*` components.
+- **Production caches**: `config:cache` keeps `.env` available to WordPress configuration and themes, `route:cache` no longer drops theme routes, `optimize` / `optimize:clear` cover config, events, routes and views.
+- **Service providers**: Metabox, Page and Composer providers are deferred again (`DeferrableProvider`).
+- **Laravel parity**: exception handler `ignore()` / `stopIgnoring()` / `level()`, `FormRequest::validated($key, $default)`, automatic policy registration, `current_password` never flashed.
+
+### Additions
+
+- `opcache:clear`: resets the **PHP-FPM** OPcache from the CLI through FastCGI (`--fcgi=host:port|/path/to.sock`, or `OPCACHE_FCGI`, default `127.0.0.1:9000`).
+
+Production
+----------
+
+After a deployment:
+
+```bash
+php artisan optimize        # config, events, routes and views
+php artisan opcache:clear   # reset the PHP-FPM OPcache last
+```
+
+Theme routes and theme views are registered when WordPress loads the theme: they are not part of the route and view caches and keep loading at runtime.
+
+Deprecations logging (`config/logging.php`):
+
+```php
+'deprecations' => [
+    'channel' => env('LOG_DEPRECATIONS_CHANNEL'), // null: follows WP_DEBUG, false: disabled
+    'trace' => env('LOG_DEPRECATIONS_TRACE', false),
+],
+```
+
+Credits
 -------
 
-- **[Julien Lambé](https://github.com/jlambe)** - *Project Lead*
-
-See also the list of [contributors](https://github.com/themosis/framework/graphs/contributors) who participated in this project.
+- **[Julien Lambé](https://github.com/jlambe)**, author of the Themosis framework, and the [Themosis contributors](https://github.com/themosis/framework/graphs/contributors).
+- Some fixes are ported from other community forks: [digitalmeat](https://github.com/digitalmeat/themosis-framework), [MyronS-Leobit](https://github.com/MyronS-Leobit/themosis-framework), [AmphiBee](https://github.com/AmphiBee/framework), [brand42](https://github.com/brand42/themosis-framework).
 
 License
 -------
 
-This project is licensed under the GPL-2.0+ License - see the [LICENSE.md](https://github.com/themosis/framework/LICENSE.md) file for details.
+GPL-2.0-or-later, see [LICENSE.md](LICENSE.md).
