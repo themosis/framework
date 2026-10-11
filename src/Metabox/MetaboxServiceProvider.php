@@ -2,21 +2,15 @@
 
 namespace Themosis\Metabox;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use League\Fractal\Manager;
 use League\Fractal\Serializer\ArraySerializer;
 use Themosis\Metabox\Resources\MetaboxResource;
 use Themosis\Metabox\Resources\Transformers\MetaboxTransformer;
 
-class MetaboxServiceProvider extends ServiceProvider
+class MetaboxServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Defer metabox factory.
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
     public function register()
     {
         $this->registerMetabox();
@@ -54,6 +48,6 @@ class MetaboxServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['metabox'];
+        return ['metabox', 'Themosis\Metabox\Contracts\MetaboxManagerInterface'];
     }
 }

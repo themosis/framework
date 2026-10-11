@@ -32,7 +32,7 @@ interface FieldTypeInterface
      *
      * @return array
      */
-    public function getOptions(array $excludes = null): array;
+    public function getOptions(?array $excludes = null): array;
 
     /**
      * Get field type option defined by key.

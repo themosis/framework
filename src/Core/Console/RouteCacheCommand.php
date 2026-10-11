@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Routing\RouteCollection;
 use Themosis\Core\Application;
+use Themosis\Core\Support\Providers\RouteServiceProvider;
 use Themosis\Route\Route;
 
 class RouteCacheCommand extends Command
@@ -43,7 +44,8 @@ class RouteCacheCommand extends Command
     {
         $this->call('route:clear');
 
-        $routes = $this->getFreshApplicationRoutes();
+        $app = $this->getFreshApplication();
+        $routes = $this->getFreshApplicationRoutes($app);
 
         if (0 == count($routes)) {
             $this->error('Your application does not have any routes.');
@@ -58,7 +60,7 @@ class RouteCacheCommand extends Command
 
         $this->files->put(
             $this->laravel->getCachedRoutesPath(),
-            $this->buildRouteCacheFile($routes),
+            $this->buildRouteCacheFile($routes, $this->getRouteProviders($app)),
         );
 
         $this->info('Routes cached successfully.');
@@ -69,9 +71,11 @@ class RouteCacheCommand extends Command
      *
      * @return RouteCollection
      */
-    protected function getFreshApplicationRoutes()
+    protected function getFreshApplicationRoutes($app = null)
     {
-        return tap($this->getFreshApplication()['router']->getRoutes(), function ($routes) {
+        $app ??= $this->getFreshApplication();
+
+        return tap($app['router']->getRoutes(), function ($routes) {
             /** @var RouteCollection $routes */
             $routes->refreshNameLookups();
             $routes->refreshActionLookups();
@@ -99,10 +103,32 @@ class RouteCacheCommand extends Command
      *
      * @return string
      */
-    protected function buildRouteCacheFile(RouteCollection $routes)
+    protected function buildRouteCacheFile(RouteCollection $routes, array $providers = [])
     {
         $stub = $this->files->get(__DIR__ . '/stubs/routes.stub');
 
-        return str_replace('{{routes}}', base64_encode(serialize($routes)), $stub);
+        return str_replace(
+            ['{{routes}}', '{{providers}}'],
+            [base64_encode(serialize($routes)), var_export($providers, true)],
+            $stub,
+        );
+    }
+
+    /**
+     * Get the route service providers whose routes are part of the cache.
+     *
+     * Theme route providers are only registered once WordPress loads the theme,
+     * so they are not part of the cache and keep loading their routes at runtime.
+     *
+     * @param \Illuminate\Contracts\Foundation\Application $app
+     *
+     * @return array<int, class-string>
+     */
+    protected function getRouteProviders($app): array
+    {
+        return array_values(array_filter(
+            array_keys($app->getLoadedProviders()),
+            fn ($provider) => is_a($provider, RouteServiceProvider::class, true),
+        ));
     }
 }

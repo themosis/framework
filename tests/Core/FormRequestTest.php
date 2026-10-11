@@ -29,6 +29,17 @@ class FormRequestTest extends TestCase
         $this->assertEquals(['name' => 'something'], $request->validated());
     }
 
+    public function testValidatedMethodAcceptsKeyAndDefault()
+    {
+        $request = $this->createRequest(['name' => 'something', 'with' => 'brush']);
+
+        $request->validateResolved();
+
+        $this->assertSame('something', $request->validated('name'));
+        $this->assertNull($request->validated('with'));
+        $this->assertSame('fallback', $request->validated('missing', 'fallback'));
+    }
+
     public function testValidateThrowsWhenValidationFails()
     {
         $this->expectException(ValidationException::class);
@@ -99,7 +110,7 @@ class FormRequestTest extends TestCase
     {
         $redirector = $this->mocks['redirector'] = $this->getMockBuilder(Redirector::class)
             ->setConstructorArgs([$generator = $this->createUrlGenerator()])
-            ->setMethods(['getUrlGenerator', 'to'])
+            ->onlyMethods(['getUrlGenerator', 'to'])
             ->getMock();
 
         $redirector->expects($this->any())->method('getUrlGenerator')->willReturn($generator);
@@ -120,7 +131,7 @@ class FormRequestTest extends TestCase
     {
         return $this->mocks['generator'] = $this->getMockBuilder(UrlGenerator::class)
             ->disableOriginalConstructor()
-            ->setMethods(['previous'])
+            ->onlyMethods(['previous'])
             ->getMock();
     }
 
@@ -133,7 +144,7 @@ class FormRequestTest extends TestCase
     {
         return $this->mocks['redirect'] = $this->getMockBuilder(RedirectResponse::class)
             ->disableOriginalConstructor()
-            ->setMethods(['withInput', 'WithErrors'])
+            ->onlyMethods(['withInput', 'WithErrors'])
             ->getMock();
     }
 }

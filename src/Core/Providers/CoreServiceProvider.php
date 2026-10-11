@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\URL;
 class CoreServiceProvider extends AggregateServiceProvider
 {
     /**
-     * The provider class names.
+     * The provider class CoreServiceProvider.
      *
      * @var array
      */
@@ -26,6 +26,11 @@ class CoreServiceProvider extends AggregateServiceProvider
 
         $this->registerRequestValidate();
         $this->registerRequestSignatureValidation();
+
+        // Register console providers when running in console
+        if ($this->app->runningInConsole()) {
+            $this->app->register(ConsoleCoreServiceProvider::class);
+        }
     }
 
     /**

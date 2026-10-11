@@ -163,7 +163,7 @@ class ChoiceType extends BaseType implements
      *
      * @return array
      */
-    public function getOptions(array $excludes = null): array
+    public function getOptions(?array $excludes = null): array
     {
         $options = parent::getOptions($excludes);
 

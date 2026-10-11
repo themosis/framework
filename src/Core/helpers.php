@@ -15,15 +15,15 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Log\LogManager;
-use Illuminate\Queue\SerializableClosure;
+use Illuminate\Queue\CallQueuedClosure;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\HtmlString;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Themosis\Core\Bus\PendingClosureDispatch;
 use Themosis\Core\Bus\PendingDispatch;
 use Themosis\Core\Mix;
 
@@ -447,11 +447,9 @@ if (! function_exists('dispatch')) {
      */
     function dispatch($job)
     {
-        if ($job instanceof Closure) {
-            $job = new CallQueuedClosure(new SerializableClosure($job));
-        }
-
-        return new PendingDispatch($job);
+        return $job instanceof Closure
+            ? new PendingClosureDispatch(CallQueuedClosure::create($job))
+            : new PendingDispatch($job);
     }
 }
 
@@ -820,14 +818,10 @@ if (! function_exists('report')) {
     /**
      * Report an exception.
      *
-     * @param \Exception $exception
+     * @param \Throwable $exception
      */
     function report($exception)
     {
-        if ($exception instanceof Throwable &&
-            ! $exception instanceof Exception) {
-            $exception = new FatalThrowableError($exception);
-        }
         app(ExceptionHandler::class)->report($exception);
     }
 }

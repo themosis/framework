@@ -2,12 +2,10 @@
 
 namespace Themosis\Core\Http;
 
-use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Response as IlluminateResponse;
 use Illuminate\Routing\Pipeline;
 use Illuminate\Support\Facades\Facade;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\HttpFoundation\Response;
 use Themosis\Core\Exceptions\Handler;
 use Themosis\Core\Http\Events\RequestHandled;
@@ -112,11 +110,8 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
         try {
             $request->enableHttpMethodParameterOverride();
             $response = $this->sendRequestThroughRouter($request);
-        } catch (Exception $e) {
-            $this->reportException($e);
-            $response = $this->renderException($request, $e);
         } catch (Throwable $e) {
-            $this->reportException($e = new FatalThrowableError($e));
+            $this->reportException($e);
             $response = $this->renderException($request, $e);
         }
 
@@ -328,9 +323,9 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
     /**
      * Report the exception to the exception handler.
      *
-     * @param Exception $e
+     * @param Throwable $e
      */
-    protected function reportException(Exception $e)
+    protected function reportException(Throwable $e)
     {
         $this->app[Handler::class]->report($e);
     }
@@ -339,11 +334,11 @@ class Kernel implements \Illuminate\Contracts\Http\Kernel
      * Render the exception to a response.
      *
      * @param \Illuminate\Http\Request $request
-     * @param Exception                $e
+     * @param Throwable                $e
      *
      * @return Response
      */
-    protected function renderException($request, Exception $e)
+    protected function renderException($request, Throwable $e)
     {
         return $this->app[Handler::class]->render($request, $e);
     }

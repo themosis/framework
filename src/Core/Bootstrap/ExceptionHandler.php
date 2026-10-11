@@ -7,9 +7,9 @@ use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Log\LogManager;
-use Monolog\Handler\NullHandler;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\ErrorHandler\Error\FatalError;
+use Throwable;
 
 class ExceptionHandler
 {
@@ -30,8 +30,6 @@ class ExceptionHandler
         self::$reservedMemory = str_repeat('x', 10240);
 
         $this->app = $app;
-
-        error_reporting(-1);
 
         set_error_handler([$this, 'handleError']);
 
@@ -57,75 +55,141 @@ class ExceptionHandler
      */
     public function handleError($level, $message, $file = '', $line = 0, $context = [])
     {
+        // Deprecations are logged regardless of the error_reporting() mask (as Laravel does),
+        // so a WordPress or mu-plugin mask keeps them off-screen while they still reach the log.
         if ($this->isDeprecation($level)) {
-            return $this->handleDeprecation($message, $file, $line);
+            try {
+                $this->handleDeprecation($message, $file, $line, $level);
+            } catch (Throwable $e) {
+                // Never let deprecation handling block execution.
+            }
+
+            return true;
         }
 
-        if (error_reporting() & $level) {
+        if (! (error_reporting() & $level)) {
+            return;
+        }
+
+        // Check if this is a warning or notice that shouldn't stop execution
+        if ($this->isWarning($level)) {
+            try {
+                // Log the warning if the app is bootstrapped
+                if ($this->app->hasBeenBootstrapped() && $this->app->bound('log')) {
+                    $this->app->make('log')->warning(sprintf(
+                        'PHP %s: %s in %s on line %s',
+                        $this->getErrorLevelString($level),
+                        $message,
+                        $file,
+                        $line
+                    ));
+                }
+                // Don't throw exception for warnings - allow execution to continue
+                return;
+            } catch (Exception $e) {
+                // If logging fails, continue without blocking
+                return;
+            }
+        }
+
+        // Only throw exceptions for fatal/serious errors
+        if ($this->shouldThrowException($level)) {
             throw new ErrorException($message, 0, $level, $file, $line);
         }
     }
 
     /**
-     * Reports a deprecation to the "deprecations" logger.
+     * Reports a deprecation to the configured deprecations log channel.
      *
      * @param string $message
      * @param string $file
      * @param int    $line
+     * @param int    $level
      */
-    public function handleDeprecation($message, $file, $line)
+    public function handleDeprecation($message, $file, $line, $level = E_DEPRECATED)
     {
-        if (! class_exists(LogManager::class)
-        || ! $this->app->hasBeenBootstrapped()
-        || $this->app->runningUnitTests()) {
+        if ($this->shouldIgnoreDeprecationErrors()) {
+            return;
+        }
+
+        $options = $this->deprecationLoggingOptions();
+
+        if (is_null($channel = $this->resolveDeprecationChannel($options['channel']))) {
             return;
         }
 
         try {
-            $logger = $this->app->make(LogManager::class);
-        } catch (Exception $e) {
+            $logger = $this->app->make(LogManager::class)->channel($channel);
+        } catch (Throwable $e) {
             return;
         }
 
-        $this->ensureDeprecationLoggerIsConfigured();
+        if ($options['trace']) {
+            $logger->warning((string) new ErrorException($message, 0, $level, $file, $line));
 
-        with($logger->channel('deprecations'), function ($log) use ($message, $file, $line) {
-            $log->warning(sprintf(
-                '%s in %s on line %s',
-                $message,
-                $file,
-                $line,
-            ));
-        });
+            return;
+        }
+
+        $logger->warning(sprintf('%s in %s on line %s', $message, $file, $line));
     }
 
-    protected function ensureDeprecationLoggerIsConfigured()
+    /**
+     * Determine if deprecation errors should be ignored.
+     *
+     * @return bool
+     */
+    protected function shouldIgnoreDeprecationErrors()
     {
-        with($this->app['config'], function ($config) {
-            if ($config->get('logging.channels.deprecations')) {
-                return;
-            }
-
-            $this->ensureNullLogDriverIsConfigured();
-
-            $driver = $config->get('logging.deprecations') ?? 'null';
-
-            $config->set('logging.channels.deprecations', $config->get("logging.channels.{$driver}"));
-        });
+        return ! class_exists(LogManager::class)
+            || ! $this->app->hasBeenBootstrapped()
+            || $this->app->runningUnitTests();
     }
 
-    protected function ensureNullLogDriverIsConfigured()
+    /**
+     * Get the deprecations logging options from the "logging.deprecations" configuration.
+     *
+     * Accepts a channel name or a ['channel' => ..., 'trace' => ...] array (Laravel format).
+     * A "null" or false channel discards deprecations. Without a channel, deprecations are
+     * logged to the "deprecations" channel when WP_DEBUG is enabled and discarded otherwise.
+     *
+     * @return array{channel: string, trace: bool}
+     */
+    protected function deprecationLoggingOptions()
     {
-        with($this->app['config'], function ($config) {
-            if ($config->get('logging.channels.null')) {
-                return;
-            }
+        $options = $this->app['config']->get('logging.deprecations');
 
-            $config->set('logging.channels.null', [
-                'driver' => 'monolog',
-                'handler' => NullHandler::class,
-            ]);
-        });
+        if (! is_array($options)) {
+            $options = ['channel' => $options];
+        }
+
+        $channel = $options['channel'] ?? null;
+
+        if ($channel === false) {
+            $channel = 'null';
+        } elseif (! is_string($channel) || $channel === '') {
+            $channel = (defined('WP_DEBUG') && WP_DEBUG) ? 'deprecations' : 'null';
+        }
+
+        return [
+            'channel' => $channel,
+            'trace' => (bool) ($options['trace'] ?? false),
+        ];
+    }
+
+    /**
+     * Resolve the log channel to use for deprecations, or null to discard them.
+     *
+     * @param string $channel
+     *
+     * @return string|null
+     */
+    protected function resolveDeprecationChannel($channel)
+    {
+        if ($channel === 'null' || ! $this->app['config']->get("logging.channels.{$channel}")) {
+            return null;
+        }
+
+        return $channel;
     }
 
     /**
@@ -170,6 +234,62 @@ class ExceptionHandler
     protected function isDeprecation($level)
     {
         return in_array($level, [E_DEPRECATED, E_USER_DEPRECATED]);
+    }
+
+    /**
+     * Determine if the error level is a warning or notice.
+     *
+     * @param int $level
+     *
+     * @return bool
+     */
+    protected function isWarning($level)
+    {
+        return in_array($level, [
+            E_WARNING,
+            E_USER_WARNING,
+            E_NOTICE,
+            E_USER_NOTICE
+        ]);
+    }
+
+    /**
+     * Determine if the error level should throw an exception.
+     *
+     * @param int $level
+     *
+     * @return bool
+     */
+    protected function shouldThrowException($level)
+    {
+        return in_array($level, [
+            E_ERROR,
+            E_CORE_ERROR,
+            E_COMPILE_ERROR,
+            E_USER_ERROR,
+            E_RECOVERABLE_ERROR,
+            E_PARSE
+        ]);
+    }
+
+    /**
+     * Get a string representation of the error level.
+     *
+     * @param int $level
+     *
+     * @return string
+     */
+    protected function getErrorLevelString($level)
+    {
+        $levels = [
+            E_WARNING => 'Warning',
+            E_USER_WARNING => 'User Warning',
+            E_NOTICE => 'Notice',
+            E_USER_NOTICE => 'User Notice',
+            E_RECOVERABLE_ERROR => 'Recoverable Error',
+        ];
+
+        return $levels[$level] ?? 'Unknown Error';
     }
 
     /**

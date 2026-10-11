@@ -473,8 +473,13 @@ class FormCreationTest extends TestCase
         $this->assertTrue(is_string($num->getValue()));
         $this->assertTrue(32 === $num->getRawValue());
         $this->assertTrue(is_int($num->getRawValue()));
-        $this->assertEquals('24,99', $price->getValue());
-        $this->assertFalse(is_numeric($price->getValue()));
+        // Expected output comes from ICU: '24,99' with full locale data, '24.99' on
+        // minimal ICU builds (e.g. Alpine's icu-data-en) lacking fr_FR data.
+        $this->assertEquals(
+            (new \NumberFormatter('fr_FR', \NumberFormatter::DECIMAL))->format(24.99),
+            $price->getValue(),
+        );
+        $this->assertTrue(is_string($price->getValue()));
         $this->assertEquals(24.99, $price->getRawValue());
         $this->assertTrue($enable->getValue());
         $this->assertEquals('on', $enable->getRawValue());

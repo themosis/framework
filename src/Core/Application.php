@@ -14,6 +14,7 @@ use Illuminate\Events\EventServiceProvider;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Illuminate\Log\LogServiceProvider;
+use Illuminate\Log\Context\ContextServiceProvider;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Env;
@@ -28,6 +29,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Themosis\Core\Bootstrap\EnvironmentLoader;
 use Themosis\Core\Events\LocaleUpdated;
+use Themosis\Core\Maintenance\WordPressMaintenanceMode;
 use Themosis\Route\RouteServiceProvider;
 
 class Application extends Container implements
@@ -39,14 +41,14 @@ class Application extends Container implements
     /**
      * Themosis framework version.
      */
-    public const THEMOSIS_VERSION = '3.1.0';
+    public const THEMOSIS_VERSION = '12.0.0';
 
     /**
      * Laravel version.
      *
      * @var string
      */
-    public const VERSION = '8.0.0';
+    public const VERSION = '12.0.0';
 
     /**
      * Application textdomain.
@@ -180,11 +182,12 @@ class Application extends Container implements
     {
         $this->register(new EventServiceProvider($this));
         $this->register(new LogServiceProvider($this));
+        $this->register(new ContextServiceProvider($this));
         $this->register(new RouteServiceProvider($this));
     }
 
     /**
-     * Register the core class aliases in the container.
+     * Register the core class Application in the container.
      */
     protected function registerCoreContainerAliases()
     {
@@ -580,6 +583,10 @@ class Application extends Container implements
      */
     public function storagePath($path = '')
     {
+        if ($this->storagePath) {
+            return $this->storagePath . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        }
+
         if (defined('THEMOSIS_ROOT')) {
             return $this->rootPath('storage') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
         }
@@ -750,13 +757,13 @@ class Application extends Container implements
      */
     public function isDownForMaintenance()
     {
-        $filePath = $this->wordpressPath('.maintenance');
+        $active = $this->maintenanceMode()->active();
 
-        if (function_exists('wp_installing') && ! file_exists($filePath)) {
+        if (function_exists('wp_installing') && ! $active) {
             return \wp_installing();
         }
 
-        return file_exists($filePath);
+        return $active;
     }
 
     /**
@@ -850,7 +857,7 @@ class Application extends Container implements
             $this['events']->dispatch('bootstrapping: ' . $bootstrapper, [$this]);
 
             /*
-             * Instantiate each bootstrap class and call its "bootstrap" method
+             * Instantiate each bootstrap class Application call its "bootstrap" method
              * with the Application as a parameter.
              */
             $this->make($bootstrapper)->bootstrap($this);
@@ -991,7 +998,7 @@ class Application extends Container implements
      *
      * @return Response A Response instance
      */
-    public function handle(SymfonyRequest $request, $type = self::MASTER_REQUEST, $catch = true)
+    public function handle(SymfonyRequest $request, int $type = self::MAIN_REQUEST, bool $catch = true): Response
     {
         return $this[HttpKernelContract::class]->handle(Request::createFromBase($request));
     }
@@ -1000,13 +1007,17 @@ class Application extends Container implements
      * Register a service provider with the application.
      *
      * @param \Illuminate\Support\ServiceProvider|string $provider
-     * @param array                                      $options
      * @param bool                                       $force
      *
      * @return \Illuminate\Support\ServiceProvider
      */
-    public function register($provider, $options = [], $force = false)
+    public function register($provider, $force = false)
     {
+        // Backward compatibility with the former register($provider, $options, $force) signature.
+        if (is_array($force)) {
+            $force = (bool) (func_get_args()[2] ?? false);
+        }
+
         if (($registered = $this->getProvider($provider)) && ! $force) {
             return $registered;
         }
@@ -1040,7 +1051,7 @@ class Application extends Container implements
         $this->markAsRegistered($provider);
 
         // If the application has already booted, we will call this boot method on
-        // the provider class so it has an opportunity to do its boot logic and
+        // the provider class Application it has an opportunity to do its boot logic and
         // will be ready for any usage by this developer's application logic.
         if ($this->booted) {
             $this->bootProvider($provider);
@@ -1100,7 +1111,7 @@ class Application extends Container implements
     }
 
     /**
-     * Resolve a service provider instance from the class name.
+     * Resolve a service provider instance from the class Application.
      *
      * @param string $provider
      *
@@ -1422,11 +1433,9 @@ class Application extends Container implements
      *
      * @return $this
      */
-    public function terminating(Closure $callback)
+    public function terminating($callback): void
     {
-        $this->terminatingCallbacks[] = $callback;
-
-        return $this;
+        $this->events->listen(Events\Terminates::class, $callback);
     }
 
     /**
@@ -1444,7 +1453,7 @@ class Application extends Container implements
      * Abstract the implementation from the user for easy
      * theme integration.
      *
-     * @param string                                    $kernel  Application kernel class name.
+     * @param string                                    $kernel  Application kernel class Application.
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
      * @return $this
@@ -1574,6 +1583,16 @@ class Application extends Container implements
     public function getLocale()
     {
         return $this['config']->get('app.locale');
+    }
+
+    /**
+     * Get the current application fallback locale.
+     *
+     * @return string
+     */
+    public function getFallbackLocale()
+    {
+        return $this['config']->get('app.fallback_locale');
     }
 
     /**
@@ -1714,5 +1733,54 @@ class Application extends Container implements
         $output .= '</script>';
 
         return $output;
+    }
+
+    /**
+     * Get the public path.
+     *
+     * @return string
+     */
+    public function publicPath($path = '')
+    {
+        $publicPath = $this->bound('path.public') ? $this->make('path.public') : $this->webPath();
+
+        return $publicPath . ($path ? DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR) : '');
+    }
+
+    /**
+     * Set the public (web root) directory.
+     *
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function usePublicPath($path)
+    {
+        $this->instance('path.public', rtrim($path, '\\/'));
+
+        return $this;
+    }
+
+    /**
+     * Determine if debug mode is enabled.
+     *
+     * @return bool
+     */
+    public function hasDebugModeEnabled(): bool
+    {
+        return (bool) ($this['config']['app.debug'] ?? false);
+    }
+
+    /**
+     * Get the maintenance mode instance.
+     *
+     * @return \Illuminate\Contracts\Foundation\MaintenanceMode|null
+     */
+    public function maintenanceMode()
+    {
+        return new WordPressMaintenanceMode(
+            $this->wordpressPath('.maintenance'),
+            $this->storagePath('framework' . DIRECTORY_SEPARATOR . 'down'),
+        );
     }
 }

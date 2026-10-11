@@ -11,8 +11,8 @@ use Illuminate\Console\Scheduling\ScheduleListCommand;
 use Illuminate\Console\Scheduling\ScheduleRunCommand;
 use Illuminate\Console\Scheduling\ScheduleTestCommand;
 use Illuminate\Console\Scheduling\ScheduleWorkCommand;
-use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Database\Console\DbCommand;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Database\Console\DumpCommand;
 use Illuminate\Database\Console\Factories\FactoryMakeCommand;
 use Illuminate\Database\Console\Migrations\FreshCommand;
@@ -24,6 +24,9 @@ use Illuminate\Database\Console\Migrations\ResetCommand;
 use Illuminate\Database\Console\Migrations\RollbackCommand;
 use Illuminate\Database\Console\Migrations\StatusCommand;
 use Illuminate\Database\Console\Seeds\SeedCommand;
+use Illuminate\Database\Migrations\DatabaseMigrationRepository;
+use Illuminate\Database\Migrations\MigrationCreator;
+use Illuminate\Database\Migrations\Migrator;
 use Illuminate\Database\Console\Seeds\SeederMakeCommand;
 use Illuminate\Database\Console\WipeCommand;
 use Illuminate\Notifications\Console\NotificationTableCommand;
@@ -71,6 +74,7 @@ use Themosis\Core\Console\MailMakeCommand;
 use Themosis\Core\Console\ModelMakeCommand;
 use Themosis\Core\Console\NotificationMakeCommand;
 use Themosis\Core\Console\ObserverCommand;
+use Themosis\Core\Console\OpcacheClearCommand;
 use Themosis\Core\Console\OptimizeClearCommand;
 use Themosis\Core\Console\OptimizeCommand;
 use Themosis\Core\Console\PackageDiscoverCommand;
@@ -127,6 +131,14 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         'EventClear' => 'command.event.clear',
         'EventList' => 'command.event.list',
         'KeyGenerate' => 'command.key.generate',
+        'Migrate' => 'command.migrate',
+        'MigrateFresh' => 'command.migrate.fresh',
+        'MigrateInstall' => 'command.migrate.install',
+        'MigrateRefresh' => 'command.migrate.refresh',
+        'MigrateReset' => 'command.migrate.reset',
+        'MigrateRollback' => 'command.migrate.rollback',
+        'MigrateStatus' => 'command.migrate.status',
+        'OpcacheClear' => 'command.opcache.clear',
         'Optimize' => 'command.optimize',
         'OptimizeClear' => 'command.optimize.clear',
         'PackageDiscover' => 'command.package.discover',
@@ -145,11 +157,11 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         'RouteClear' => 'command.route.clear',
         'RouteList' => 'command.route.list',
         'SaltsGenerate' => 'command.salts.generate',
-        'ScheduleFinish' => ScheduleFinishCommand::class,
-        'ScheduleList' => ScheduleListCommand::class,
-        'ScheduleRun' => ScheduleRunCommand::class,
-        'ScheduleTest' => ScheduleTestCommand::class,
-        'ScheduleWork' => ScheduleWorkCommand::class,
+        'ScheduleFinish' => 'command.schedule.finish',
+        'ScheduleRun' => 'command.schedule.run',
+        'ScheduleList' => 'command.schedule.list',
+        'ScheduleTest' => 'command.schedule.test',
+        'ScheduleWork' => 'command.schedule.work',
         'SchemaDump' => 'command.schema.dump',
         'Seed' => 'command.seed',
         'StorageLink' => 'command.storage.link',
@@ -182,6 +194,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
         'ListenerMake' => 'command.listener.make',
         'MailMake' => 'command.mail.make',
         'MiddlewareMake' => 'command.middleware.make',
+        'MigrateMake' => 'command.migrate.make',
         'ModelMake' => 'command.model.make',
         'NotificationMake' => 'command.notification.make',
         'NotificationTable' => 'command.notification.table',
@@ -211,10 +224,57 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
      */
     public function register()
     {
+        $this->registerMigrationServices();
+        
         $this->registerCommands(array_merge(
             $this->commands,
             $this->devCommands,
         ));
+    }
+
+    /**
+     * Register migration-related services.
+     */
+    protected function registerMigrationServices()
+    {
+        $this->registerRepository();
+        $this->registerMigrator();
+        $this->registerCreator();
+    }
+
+    /**
+     * Register the migration repository service.
+     */
+    protected function registerRepository()
+    {
+        $this->app->singleton('migration.repository', function ($app) {
+            $migrations = $app['config']['database.migrations'];
+            $table = is_array($migrations) ? ($migrations['table'] ?? null) : $migrations;
+            return new DatabaseMigrationRepository($app['db'], $table);
+        });
+    }
+
+    /**
+     * Register the migrator service.
+     */
+    protected function registerMigrator()
+    {
+        $this->app->singleton('migrator', function ($app) {
+            $repository = $app['migration.repository'];
+            return new Migrator($repository, $app['db'], $app['files'], $app['events']);
+        });
+
+        $this->app->bind(Migrator::class, fn ($app) => $app['migrator']);
+    }
+
+    /**
+     * Register the migration creator.
+     */
+    protected function registerCreator()
+    {
+        $this->app->singleton('migration.creator', function ($app) {
+            return new MigrationCreator($app['files'], $app->basePath('stubs'));
+        });
     }
 
     /**
@@ -626,7 +686,7 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     protected function registerMigrateCommand($alias)
     {
         $this->app->singleton($alias, function ($app) {
-            return new MigrateCommand($app['migrator']);
+            return new MigrateCommand($app['migrator'], $app['events']);
         });
     }
 
@@ -637,8 +697,8 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
      */
     protected function registerMigrateFreshCommand($alias)
     {
-        $this->app->singleton($alias, function () {
-            return new FreshCommand();
+        $this->app->singleton($alias, function ($app) {
+            return new FreshCommand($app['migrator']);
         });
     }
 
@@ -765,6 +825,18 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     {
         $this->app->singleton($alias, function ($app) {
             return new ObserverCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the opcache:clear command.
+     *
+     * @param string $alias
+     */
+    protected function registerOpcacheClearCommand($alias)
+    {
+        $this->app->singleton($alias, function () {
+            return new OpcacheClearCommand();
         });
     }
 
@@ -1100,43 +1172,63 @@ class ArtisanServiceProvider extends ServiceProvider implements DeferrableProvid
     }
 
     /**
-     * Register the schedule:finish {id} command.
+     * Register the command.
+     *
+     * @return void
      */
     protected function registerScheduleFinishCommand()
     {
-        $this->app->singleton(ScheduleFinishCommand::class);
+        $this->app->singleton('command.schedule.finish', function () {
+            return new ScheduleFinishCommand;
+        });
     }
 
     /**
-     * Register the schedule:list command.
-     */
-    protected function registerScheduleListCommand()
-    {
-        $this->app->singleton(ScheduleListCommand::class);
-    }
-
-    /**
-     * Register the schedule:run command.
+     * Register the command.
+     *
+     * @return void
      */
     protected function registerScheduleRunCommand()
     {
-        $this->app->singleton(ScheduleRunCommand::class);
+        $this->app->singleton('command.schedule.run', function () {
+            return new ScheduleRunCommand;
+        });
     }
 
     /**
-     * Register the schedule:test command.
-     */
-    protected function registerScheduleTestCommand()
-    {
-        $this->app->singleton(ScheduleTestCommand::class);
-    }
-
-    /**
-     * Register the schedule:work command.
+     * Register the command.
+     *
+     * @return void
      */
     protected function registerScheduleWorkCommand()
     {
-        $this->app->singleton(ScheduleWorkCommand::class);
+        $this->app->singleton('command.schedule.work', function () {
+            return new ScheduleWorkCommand;
+        });
+    }
+
+    /**
+     * Register the command.
+     *
+     * @return void
+     */
+    protected function registerScheduleListCommand()
+    {
+        $this->app->singleton('command.schedule.list', function () {
+            return new ScheduleListCommand;
+        });
+    }
+
+    /**
+     * Register the command.
+     *
+     * @return void
+     */
+    protected function registerScheduleTestCommand()
+    {
+        $this->app->singleton('command.schedule.test', function () {
+            return new ScheduleTestCommand;
+        });
     }
 
     /**

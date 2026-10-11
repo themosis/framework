@@ -1,6 +1,6 @@
 <?php
 
-class AFilterClassForTest
+class AFilterClassForTestHelper
 {
     public function custom_filter()
     {

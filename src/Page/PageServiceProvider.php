@@ -2,18 +2,12 @@
 
 namespace Themosis\Page;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Factory;
 
-class PageServiceProvider extends ServiceProvider
+class PageServiceProvider extends ServiceProvider implements DeferrableProvider
 {
-    /**
-     * Defer page factory.
-     *
-     * @var bool
-     */
-    protected $defer = true;
-
     public function register()
     {
         /** @var Factory $view */

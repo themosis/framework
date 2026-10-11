@@ -15,10 +15,19 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Themosis\Core\Exceptions\Handler;
+
+class TestRequest
+{
+    public function expectsJson()
+    {
+        return true;
+    }
+}
 
 class ExceptionHandlerTest extends TestCase
 {
@@ -43,23 +52,15 @@ class ExceptionHandlerTest extends TestCase
     {
         $this->container = Container::setInstance(new Container());
 
-        $this->request = $this->getMockBuilder('stdClass')
-            ->setMethods(['expectsJson'])
-            ->getMock();
+        $this->request = new TestRequest();
 
-        $this->config = $config = $this->getMockBuilder(Repository::class)
-            ->setMethods(['get'])
-            ->getMock();
-        $this->container->singleton('config', function () use ($config) {
-            return $config;
+        $this->config = $this->createMock(Repository::class);
+        $this->container->singleton('config', function () {
+            return $this->config;
         });
 
-        $viewFactory = $this->getMockBuilder(Factory::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $redirector = $this->getMockBuilder(Redirector::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $viewFactory = $this->createMock(Factory::class);
+        $redirector = $this->createMock(Redirector::class);
 
         $this->container->singleton(
             'Illuminate\Contracts\Routing\ResponseFactory',
@@ -82,8 +83,9 @@ class ExceptionHandlerTest extends TestCase
         $exception = new \RuntimeException('Exception message');
 
         $logger->expects($this->once())
-            ->method('error')
+            ->method('log')
             ->with(
+                LogLevel::ERROR,
                 $this->equalTo('Exception message'),
                 [
                     'exception' => $exception,
@@ -93,13 +95,43 @@ class ExceptionHandlerTest extends TestCase
         $this->handler->report($exception);
     }
 
+    public function testHandlerReportsWithCustomLogLevel()
+    {
+        $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
+        $this->container->instance(LoggerInterface::class, $logger);
+
+        $logger->expects($this->once())
+            ->method('log')
+            ->with(LogLevel::CRITICAL, 'Critical message');
+
+        $this->handler->level(\RuntimeException::class, LogLevel::CRITICAL);
+        $this->handler->report(new \RuntimeException('Critical message'));
+    }
+
+    public function testHandlerCanIgnoreAndStopIgnoringExceptions()
+    {
+        $logger = $this->getMockBuilder(LoggerInterface::class)->getMock();
+        $this->container->instance(LoggerInterface::class, $logger);
+
+        $logger->expects($this->exactly(2))->method('log');
+
+        $this->handler->ignore(\RuntimeException::class);
+        $this->handler->report(new \RuntimeException('Ignored'));
+
+        $this->handler->stopIgnoring(\RuntimeException::class);
+        $this->handler->report(new \RuntimeException('Reported'));
+
+        // Internal "do not report" exceptions can be re-enabled as well.
+        $this->handler->stopIgnoring(HttpException::class);
+        $this->handler->report(new HttpException(500, 'Reported'));
+    }
+
     public function testReturnsJsonWithStackTraceWhenAjaxRequestAndDebugTrue()
     {
         $this->config->expects($this->once())
             ->method('get')
             ->with('app.debug', $this->equalTo(null))
-            ->will($this->returnValue(true));
-        $this->request->expects($this->once())->method('expectsJson')->will($this->returnValue(true));
+            ->willReturn(true);
 
         $response = $this->handler->render(
             $this->request,
@@ -125,8 +157,7 @@ class ExceptionHandlerTest extends TestCase
         $this->config->expects($this->once())
             ->method('get')
             ->with('app.debug', $this->equalTo(null))
-            ->will($this->returnValue(false));
-        $this->request->expects($this->once())->method('expectsJson')->will($this->returnValue(true));
+            ->willReturn(false);
 
         $response = $this->handler->render(
             $this->request,
@@ -147,8 +178,7 @@ class ExceptionHandlerTest extends TestCase
         $this->config->expects($this->once())
             ->method('get')
             ->with('app.debug', $this->equalTo(null))
-            ->will($this->returnValue(false));
-        $this->request->expects($this->once())->method('expectsJson')->will($this->returnValue(true));
+            ->willReturn(false);
 
         $response = $this->handler->render(
             $this->request,
@@ -171,8 +201,7 @@ class ExceptionHandlerTest extends TestCase
         $this->config->expects($this->once())
             ->method('get')
             ->with('app.debug', $this->equalTo(null))
-            ->will($this->returnValue(false));
-        $this->request->expects($this->once())->method('expectsJson')->will($this->returnValue(true));
+            ->willReturn(false);
 
         $response = $this->handler->render(
             $this->request,
@@ -218,8 +247,8 @@ class ExceptionHandlerTest extends TestCase
         $file = $this->createMock(UploadedFile::class);
         $file->method('getPathname')->willReturn('photo.jpg');
         $file->method('getClientOriginalName')->willReturn('photo.jpg');
-        $file->method('getClientMimeType')->willReturn(null);
-        $file->method('getError')->willReturn(null);
+        $file->method('getClientMimeType')->willReturn('image/jpeg');
+        $file->method('getError')->willReturn(0);
 
         $request = Request::create('/', 'POST', $argumentExpected, [], ['photo' => $file]);
 

@@ -699,6 +699,11 @@ class RoutesTest extends TestCase
         $container->singleton(Registrar::class, function () use ($router) {
             return $router;
         });
+        
+        // Add CallableDispatcher binding
+        $container->singleton('Illuminate\Routing\Contracts\CallableDispatcher', function () use ($container) {
+            return new \Illuminate\Routing\CallableDispatcher($container);
+        });
 
         return $router;
     }
